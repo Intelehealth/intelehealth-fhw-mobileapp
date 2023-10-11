@@ -2599,18 +2599,18 @@ public class VisitSummaryActivity extends BaseActivity {
         if (bpSysValue!=null && !bpSysValue.isEmpty()) {
             Double bpSys = Double.valueOf(bpSysValue);
             if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {   // red
-                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpSys +"</font>";
+                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpSysValue +"</font>";
             }
             else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {  // yellow
                 if (bpSys < Double.valueOf(SYS_YELLOW_MAX))
-                    return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpSys +"</font>";
+                    return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpSysValue +"</font>";
             }
             else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {   //green
                 if (bpSys < Double.valueOf(SYS_GREEN_MAX))
-                    return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpSys +"</font>";
+                    return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpSysValue +"</font>";
             }
             else
-                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpSys +"</font>";
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpSysValue +"</font>";
         }
         return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + "" +"</font>";
     }
@@ -2620,17 +2620,17 @@ public class VisitSummaryActivity extends BaseActivity {
             Double bpDia = Double.valueOf(bpDiaValue);
 
             if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
-                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpDia +"</font>";
+                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpDiaValue +"</font>";
             }
             else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
                 if (bpDia < Double.valueOf(DIA_YELLOW_MAX))
-                    return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpDia +"</font>";
+                    return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpDiaValue +"</font>";
             }
             else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
-                return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpDia +"</font>";
+                return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpDiaValue +"</font>";
             }
             else
-                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpDia +"</font>";
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpDiaValue +"</font>";
         }
         return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + "" +"</font>";
     }

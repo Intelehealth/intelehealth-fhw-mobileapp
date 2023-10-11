@@ -1137,10 +1137,18 @@ public class VitalsActivity extends AppCompatActivity {
         // *. BP - Systolic
         String bp_sys_value = mBpSys.getText().toString().trim();
         if (bp_sys_value != null && !bp_sys_value.isEmpty()) {
+            String diaValue = "";
+            if(mBpDia!=null)
+                diaValue = mBpDia.getText().toString();
             if ((Double.parseDouble(bp_sys_value) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS)) ||
                     (Double.parseDouble(bp_sys_value) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS))) {
                 mBpSys.requestFocus();
                 mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
+                return;
+            }
+            else if(!diaValue.trim().isEmpty() && Double.valueOf(bp_sys_value) <= Double.valueOf(diaValue) ){
+                mBpSys.requestFocus();
+                mBpSys.setError(getString(R.string.bpsys_not_less_error));
                 return;
             }
         }
@@ -1149,27 +1157,23 @@ public class VitalsActivity extends AppCompatActivity {
 // *. BP - Diastolic
         String bp_dia_value = mBpDia.getText().toString().trim();
         if (bp_dia_value != null && !bp_dia_value.isEmpty()) {
+            String sysValue = "";
+            if(mBpSys!=null)
+                sysValue = mBpSys.getText().toString();
             if ((Double.parseDouble(bp_dia_value) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS)) ||
                     (Double.parseDouble(bp_dia_value) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS))) {
                 mBpDia.requestFocus();
                 mBpDia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
                 return;
             }
-        }
-        // end
-
-// *. BP - Sys < Dia
-        String bpsys_value = mBpSys.getText().toString().trim();
-        String bpdia_value = mBpDia.getText().toString().trim();
-
-        if (bpsys_value != null && !bpsys_value.isEmpty() && bpdia_value != null && !bpdia_value.isEmpty()) {
-            if (Double.parseDouble(bpsys_value) < Double.parseDouble(bpdia_value)) {
-                //  mBpSys.setText("");
-                mBpSys.requestFocus();
-                mBpSys.setError(getString(R.string.systolic_pressure_cannot_be_lower_than_diastolic_pressure));
+            else if(!sysValue.trim().isEmpty() && Double.valueOf(bp_dia_value) >= Double.valueOf(sysValue) ){
+                mBpDia.requestFocus();
+                mBpDia.setError(getString(R.string.bpdia_not_more_error));
                 return;
             }
         }
+        // end
+
 
         // *. spo2
         String spo2_value = mSpo2.getText().toString().trim();
