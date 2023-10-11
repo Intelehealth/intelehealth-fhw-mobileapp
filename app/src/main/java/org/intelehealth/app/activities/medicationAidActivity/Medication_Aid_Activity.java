@@ -17,10 +17,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
+import org.intelehealth.app.models.MedicationAidModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +32,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     private RecyclerView rv_medication, rv_aid;
     private MedicationAidAdapter med_adapter, aid_adapter;
     private Context context = Medication_Aid_Activity.this;
-    private List<String> med_list, aid_list;
+    private List<MedicationAidModel> med_list, aid_list;
     private TextView tvDispense, tvAdminister, tvDispenseAdminister;
     private String tag = "", medData = "", aidData = "";
     private FrameLayout fl_aid;
@@ -42,16 +45,39 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         initUI();
 
         tvDispenseAdminister.setOnClickListener(v -> {
+
+                if (tag.equalsIgnoreCase("dispense")) {
+                    if (med_adapter != null && med_adapter.getFinalList().size() < 1 &&
+                            aid_adapter != null && aid_adapter.getFinalList().size() < 1) {   // ie. 0 or < 0
+                        Toast.makeText(context, getString(R.string.select_at_least_one_item_to_proceed), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+            }
+
+                 if (tag.equalsIgnoreCase("administer")) {
+                    if (med_adapter != null && med_adapter.getFinalList().size() < 1) {   // ie. 0 or < 0
+                        Toast.makeText(context, getString(R.string.select_at_least_one_item_to_proceed), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+            List<MedicationAidModel> medCheckedList = new ArrayList<>();
+            List<MedicationAidModel> aidCheckedList = new ArrayList<>();
+            if (med_adapter != null)
+                medCheckedList = med_adapter.getFinalList();
+
+            if (aid_adapter != null)
+                aidCheckedList = aid_adapter.getFinalList();
+
             Intent intent = new Intent(context, AdministerDispenseActivity.class);
             intent.putExtra("tag", tag);
+            if (medCheckedList.size() > 0)
+                intent.putExtra("med", (Serializable) medCheckedList);
+            if (aidCheckedList.size() > 0)
+                intent.putExtra("aid", (Serializable) aidCheckedList);
             startActivity(intent);
             Log.d("TAG", " 1st screen: onCreate: " + tag);
         });
-
-/*        tvAdminister.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AdministerDispenseActivity.class);
-            startActivity(intent);
-        });*/
 
     }
 
@@ -96,17 +122,31 @@ public class Medication_Aid_Activity extends AppCompatActivity {
 
         if (!medData.isEmpty()) {
             ArrayList<String> list = new ArrayList<>(Arrays.asList(medData.split("\n")));
-            for (String med: list) {
-                if (!med.isEmpty())
+            ArrayList<MedicationAidModel> mm = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                MedicationAidModel a = new MedicationAidModel();
+                a.setValue(list.get(i));
+                mm.add(a);
+            }
+
+            for (MedicationAidModel med: mm) {
+                if (!med.getValue().isEmpty())
                     med_list.add(med);
             }
         }
 
         if (aidData != null && !aidData.isEmpty()) {
             ArrayList<String> list = new ArrayList<>(Arrays.asList(aidData.split("\n")));
-            for (String aid: list) {
-                if (!aid.isEmpty())
-                    aid_list.add(aid);
+            ArrayList<MedicationAidModel> aa = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                MedicationAidModel a = new MedicationAidModel();
+                a.setValue(list.get(i));
+                aa.add(a);
+            }
+
+                for (MedicationAidModel aid: aa) {
+                    if (!aid.getValue().isEmpty())
+                        aid_list.add(aid);
             }
 
         }

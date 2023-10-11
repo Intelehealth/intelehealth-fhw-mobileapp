@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,16 +14,21 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.prescription.AdvicePrescAdapter;
+import org.intelehealth.app.models.MedicationAidModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdapter.MyViewHolder> {
     private Context context;
-    private List<String> list;
+    private List<MedicationAidModel> list, checkedList;
+    private OnSelectedItems onSelectedItems;
 
-    public MedicationAidAdapter(Context context, List<String> list) {
+    public MedicationAidAdapter(Context context, List<MedicationAidModel> list/*, OnSelectedItems onSelectedItems*/) {
         this.context = context;
         this.list = list;
+        checkedList = new ArrayList<>();
+      //  this.onSelectedItems = onSelectedItems;
     }
 
     @NonNull
@@ -35,8 +41,8 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        String model = list.get(position);
-        holder.tvMedAidName.setText(model);
+        MedicationAidModel model = list.get(position);
+        holder.tvMedAidName.setText(model.getValue());
 
        /* if (model.contains("Type")) {
             holder.cb_administer.setVisibility(View.GONE);
@@ -52,14 +58,42 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tvMedAidName;
-        private MaterialCheckBox cb_dispense, cb_administer;
+        private MaterialCheckBox cb_value/*, cb_administer*/;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvMedAidName = itemView.findViewById(R.id.tvMedAidName);
-            cb_dispense = itemView.findViewById(R.id.cb_dispense);
+            cb_value = itemView.findViewById(R.id.cb_value);
           //  cb_administer = itemView.findViewById(R.id.cb_administer);
+
+            cb_value.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (compoundButton.isChecked()) {
+                        list.get(getAdapterPosition()).setChecked(b);
+                        checkedList.add(list.get(getAdapterPosition()));
+                    }
+                    else {
+                        list.get(getAdapterPosition()).setChecked(b);
+                        checkedList.remove(list.get(getAdapterPosition()));
+                    }
+
+                }
+            });
         }
+    }
+
+    public List<MedicationAidModel> getFinalList() {
+        return checkedList;
+    }
+
+    public interface OnSelectedItems {
+
+        public void getCheckedValues(ArrayList<MedicationAidModel> model);
+
+
+      /*  public void getCheckedMedData();
+        public void getCheckedAidData();*/
     }
 }
