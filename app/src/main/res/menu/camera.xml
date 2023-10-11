@@ -6,6 +6,7 @@
         android:id="@+id/switch_flash"
         android:icon="@drawable/ic_flash_auto"
         android:title="@string/flash_auto"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
 </menu>
