@@ -646,6 +646,7 @@
     <string name="booked_txt">ବୁକ୍ ହୋଇଛି |</string>
     <string name="cancelled_txt">ବାତିଲ ହେଲା</string>
     <string name="please_upload_visit">ନିଯୁକ୍ତି ବୁକିଂ କରିବା ପୂର୍ବରୁ ଦୟାକରି ପ୍ରଥମେ ଭ୍ରମଣ ଅପଲୋଡ୍ କରନ୍ତୁ |</string>
+    <string name="appointment_booking_not_available">"ଅଗ୍ରାଧିକାର ଭିତ୍ତିରେ ନିଯୁକ୍ତି ଲଭ୍ୟ/ ସହଜ ପ୍ରାପ୍ୟ ନାହିଁ "</string>
     <string name="appointment_booked_successfully">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବୁକ୍ ହୋଇଛି!</string>
     <string name="appointment_booked_failed">ନିଯୁକ୍ତି ବୁକିଂ ବିଫଳ ହେଲା!</string>
     <string name="failed_to_cancel_appointment">ନିଯୁକ୍ତି ବାତିଲ କରିବାରେ ବିଫଳ!</string>
@@ -1013,6 +1014,8 @@
     <string name="spo2_error" translatable="false">SpO2 %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
     <string name="pulse_error" translatable="false">ନାଡ %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
     <string name="bpsys_error" translatable="false">ସିଷ୍ଟୋଲିକ୍ ଚାପ %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
+    <string name="bpsys_not_less_error">ସିଷ୍ଟୋଲିକ୍ ଚାପ ଡାଇଷ୍ଟୋଲିକ୍ ଚାପଠାରୁ କମ୍ କିମ୍ବା ସମାନ ହେବା ଉଚିତ୍ ନୁହେଁ |</string>
+    <string name="bpdia_not_more_error">ଡାଇଷ୍ଟୋଲିକ୍ ଚାପ ସିଷ୍ଟୋଲିକ୍ ଚାପଠାରୁ ଅଧିକ କିମ୍ବା ସମାନ ହେବା ଉଚିତ୍ ନୁହେଁ |</string>
     <string name="bpdia_error" translatable="false">ଡାଇଷ୍ଟୋଲିକ୍ ଚାପ %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
     <string name="resp_error" translatable="false">ଶ୍ୱାସ ପ୍ରଶ୍ୱାସ ହାର ମିନିଟ୍ ପ୍ରତି %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ୍</string>
     <string name="temp_error" translatable="false">ତାପମାତ୍ରା %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
@@ -1050,14 +1053,22 @@
     <string name="fetching_details_please_wait">ସବିଶେଷ ତଥ୍ୟ ଆଣିବା | ଦୟାକରି ଅପେକ୍ଷା କର...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">ଡାକ୍ତରଙ୍କ ଦ୍ Pres ାରା ପ୍ରେସକ୍ରିପସନ୍ ଏପର୍ଯ୍ୟନ୍ତ ପ୍ରଦାନ କରାଯାଇ ନାହିଁ |</string>
     <string name="download_prescription_first">ପ୍ରଥମେ ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ |</string>
-    <string name="height_ft">Height (ft)</string>
-    <string name="ft">ft</string>
-    <string name="in">in</string>
-    <string name="please_select_patient_height">Please select patient height!</string>
-    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">Systolic pressure cannot be lower than Diastolic pressure.</string>
-    <string name="enter_field">Enter field</string>
-    <string name="following_fields_are_not_filled">Following fields are not filled:</string>
-    <string name="do_you_still_want_to_continue">Do you still want to continue?</string>
-    <string name="enter_valid_phone_number">Enter valid phone number.</string>
+    <string name="location_setup">ସ୍ଥାନ ନିରୂପଣ %s</string>
+    <string name="app_version_string">"ବ୍ୟବହୃତ % , ଆପ ର ବ୍ୟକ୍ତିଗତ ବିବରଣ "</string>
+    <string name="height_ft">"ଫୁଟ "</string>
+    <string name="ft">"ଇଞ୍ଚ "</string>
+    <string name="in">"ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର "</string>
+    <string name="please_select_patient_height">"ସିଷ୍ଟୋଲିକ ଚାପ ଡiଆଷ୍ଟୋଲିକ ଚାପ ଠାରୁ କମ୍ ହେବ ନାହିଁ "</string>
+    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">"କ୍ଷେତ୍ର ପ୍ରବେଶ କର "</string>
+    <string name="enter_field">"ନିମ୍ନ ଲିଖିତ କ୍ଷେତ୍ର ସବୁ ପୂରଣ ହୋଇ ନାହିଁ "</string>
+    <string name="following_fields_are_not_filled">ତଥାପି ଆପଣ କ୍ରମାଗତ ଭାବେ ଚାଲୁ ରଖିବା ପାଇଁ ଚାହୁଁଛନ୍ତି କି ?</string>
+    <string name="do_you_still_want_to_continue">"ଠିକ୍ ଫୋନ୍ ନମ୍ବର ଦିଅନ୍ତୁ "</string>
+    <string name="enter_valid_phone_number">"ରୋଗୀର ଫୋନ୍ ନମ୍ବର୍ ଦିଅନ୍ତୁ "</string>
+    <string name="enter_patient_phone_number">"ସ୍ୱାଭାବିକ ଓଜନ ଠାରୁ ଅଧିକ "</string>
+    <string name="overweight">ସ୍ୱାଭାବିକ ଓଜନ ଠାରୁ କମ୍</string>
+    <string name="underweight">"ସାଧାରଣ "</string>
+    <string name="normal">"ପରିମିତ ( ଅତି ବେଶି ନୁହେଁ ) ମୋଟାପଣ "</string>
+    <string name="moderate_obesity">"ଅତ୍ୟଧିକ ମୋଟାପଣ "</string>
+    <string name="severe_obesity">ଭୟଙ୍କର ମେଦବହୁଳତା</string>
 
 </resources>
