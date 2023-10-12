@@ -119,7 +119,7 @@ public class Fragment_ThirdScreen extends Fragment {
     boolean patient_detail = false;
     private ArrayAdapter<CharSequence> workingSpinnerAdapter;
     private RadioGroup mRgVegNonVeg;
-    private String areYouValue;
+    private String isVegetarian;
     private RadioButton mRbVeg, mRbNonVeg;
 
     @Nullable
@@ -265,9 +265,9 @@ public class Fragment_ThirdScreen extends Fragment {
 
         mRgVegNonVeg.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rb_vegetarian) {
-                areYouValue = getString(R.string.vegetarian);
+                isVegetarian = getString(R.string.vegetarian);
             } else if (checkedId == R.id.rb_nonVegetarian) {
-                areYouValue = getString(R.string.non_vegetarian);
+                isVegetarian = getString(R.string.non_vegetarian);
             }
         });
     }
@@ -410,12 +410,12 @@ public class Fragment_ThirdScreen extends Fragment {
         if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().isEmpty())
             mNationalIDEditText.setText(patientDTO.getNationalID());
 
-        if (patientDTO.getAreYou() != null && !patientDTO.getAreYou().isEmpty()){
-            if(patientDTO.getAreYou().equalsIgnoreCase("vegetarian")){
-                areYouValue= getString(R.string.vegetarian);
+        if (patientDTO.getIsVegetarian() != null && !patientDTO.getIsVegetarian().isEmpty()){
+            if(patientDTO.getIsVegetarian().equalsIgnoreCase("vegetarian")){
+                isVegetarian= getString(R.string.vegetarian);
                 mRbVeg.setChecked(true);
             }else{
-                areYouValue= getString(R.string.non_vegetarian);
+                isVegetarian= getString(R.string.non_vegetarian);
                 mRbNonVeg.setChecked(true);
             }
         }
@@ -627,7 +627,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
         patientDTO.setOccupation(StringUtils.getValue(mWorkingSpinner.getSelectedItem().toString()));
-        patientDTO.setAreYou(StringUtils.getValue(areYouValue));
+        patientDTO.setIsVegetarian(StringUtils.getValue(isVegetarian));
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
@@ -649,7 +649,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
         patientDTO.setOccupation(StringUtils.getValue(mWorkingSpinner.getSelectedItem().toString()));
-        patientDTO.setAreYou(StringUtils.getValue(areYouValue));
+        patientDTO.setIsVegetarian(StringUtils.getValue(isVegetarian));
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -781,6 +781,15 @@ public class Fragment_ThirdScreen extends Fragment {
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
         patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicstatusSpinner));
         patientAttributesDTOList.add(patientAttributesDTO);
+
+        // is vegetarian
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IsVegetarian"));
+        patientAttributesDTO.setValue(StringUtils.getValue(isVegetarian));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
 
         // createdDate
         patientAttributesDTO = new PatientAttributesDTO();

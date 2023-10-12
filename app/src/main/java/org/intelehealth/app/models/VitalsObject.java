@@ -12,6 +12,26 @@ public class VitalsObject {
     private String temperature;
     private String spo2;
     private String resp;
+    private String hemoglobin;
+
+    public String getHemoglobin() {
+        return hemoglobin;
+    }
+
+    public void setHemoglobin(String hemoglobin) {
+        this.hemoglobin = hemoglobin;
+    }
+
+    public String getBloodSugar() {
+        return bloodSugar;
+    }
+
+    public void setBloodSugar(String bloodSugar) {
+        this.bloodSugar = bloodSugar;
+    }
+
+    private String bloodSugar;
+
 
     public String getPatientUuid() {
         return patientUuid;

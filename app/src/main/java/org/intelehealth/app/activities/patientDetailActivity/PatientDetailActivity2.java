@@ -181,7 +181,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private NetworkUtils networkUtils;
     String tag = "";
     private TableRow trAddress2;
-
+private TextView isVegetarian;
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -534,6 +534,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        isVegetarian = findViewById(R.id.isVegetarian);
 
         initForOpenVisit();
         initForPastVisit();
@@ -823,6 +824,9 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                 }
                 if (name.equalsIgnoreCase("providerUUID")) {
                     patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("isVegetarian")) {
+                    patientDTO.setIsVegetarian(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -1152,6 +1156,9 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             phone.setText(getResources().getString(R.string.no_mobile_number_added));
         }
 
+        if(patientDTO.getIsVegetarian()!=null){
+            isVegetarian.setText(patientDTO.getIsVegetarian());
+        }
         // setting education status
         if(patientDTO.getEducation()!=null) {
             if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&

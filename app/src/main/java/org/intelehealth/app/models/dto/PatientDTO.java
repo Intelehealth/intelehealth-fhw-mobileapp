@@ -79,17 +79,18 @@ public class PatientDTO implements Serializable {
 
     private VisitDTO visitDTO;
 
-    public String getAreYou() {
-        return areYou;
+
+    public String getIsVegetarian() {
+        return isVegetarian;
     }
 
-    public void setAreYou(String areYou) {
-        this.areYou = areYou;
+    public void setIsVegetarian(String isVegetarian) {
+        this.isVegetarian = isVegetarian;
     }
 
-    @SerializedName("areYou")
+    @SerializedName("isVegetarian")
     @Expose
-    private String areYou;
+    private String isVegetarian;
 
     public String getUuid() {
         return uuid;

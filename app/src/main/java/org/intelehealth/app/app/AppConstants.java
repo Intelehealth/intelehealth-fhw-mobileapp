@@ -92,6 +92,11 @@ public class AppConstants {
 
     public static final String MAXIMUM_RESPIRATORY = "80";
     public static final String MINIMUM_RESPIRATORY = "10";
+    public static final String MAXIMUM_HEMOGLOBIN = "17";
+    public static final String MINIMUM_HEMOGLOBIN = "5";
+
+    public static final String MAXIMUM_SUGAR= "500";
+    public static final String MINIMUM_SUGAR= "60";
 
 
     //functions constants
@@ -169,9 +174,12 @@ public class AppConstants {
     //public static final String DEMO_URL = "demo2.intelehealth.org";
     //public static final String DEMO_URL = "demo.intelehealth.org";
 
-    public static final String DEMO_URL = "dev.intelehealth.org";
+    //public static final String DEMO_URL = "dev.intelehealth.org";
 //    public static final String DEMO_URL = "revamp.intelehealth.org";
     //public static final String DEMO_URL = "testing.intelehealth.org";
+
+    public static final String DEMO_URL = "naktraining.intelehealth.org";//For namma arogya
+
 
     public static final int INTENT_FROM_AYU_FOR_SETUP = 1;
     public static final int INTENT_FROM_HOME_FOR_PATIENT_CREATION = 2;

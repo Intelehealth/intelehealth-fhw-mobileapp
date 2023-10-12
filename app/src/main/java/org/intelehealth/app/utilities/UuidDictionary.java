@@ -75,6 +75,7 @@ public class UuidDictionary {
     public static final String SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
     public static final String ADDITIONAL_NOTES = "64aa50c8-e913-48c6-b8ad-dfa0bccb202b";
     public static final String PRESCRIPTION_LINK = "1e02db7e-e117-4b16-9a1e-6e583c3994da";
-
-
+    public static final String IS_VEGETARIAN = "78bf7330-57f1-49a2-9be5-9050dc2669c9";
+    public static final String HEMOGLOBIN_LEVEL = "88222164-e7d1-4fef-b9b4-fdad6330f3f5";
+    public static final String BLOOD_SUGAR_LEVEL = "c683403a-f169-4fb0-852d-b5521513c4ec";
 }

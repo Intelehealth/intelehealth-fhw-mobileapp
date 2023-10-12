@@ -504,6 +504,82 @@
                 android:textSize="@null"
                 android:visibility="visible" />
 
+            <TextView
+                android:id="@+id/tv_hemoglobin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/hemoglobin"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <EditText
+                android:id="@+id/etv_hemoglobin"
+                style="@style/edittext_textcolor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:background="@drawable/edittext_border"
+                android:hint="@string/enter_value"
+                android:inputType="number"
+                android:maxLength="3"
+                android:padding="@dimen/padding_10"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/etv_hemoglobin_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textColor="@color/red"
+                android:textSize="@null"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_sugar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/blood_sugar"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <EditText
+                android:id="@+id/etv_sugar"
+                style="@style/edittext_textcolor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:background="@drawable/edittext_border"
+                android:hint="@string/enter_value"
+                android:inputType="number"
+                android:maxLength="3"
+                android:padding="@dimen/padding_10"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/etv_sugar_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textColor="@color/red"
+                android:textSize="@null"
+                android:visibility="visible" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

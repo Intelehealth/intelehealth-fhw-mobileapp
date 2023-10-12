@@ -79,7 +79,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private List<Integer> mHeightMasterList = new ArrayList<>();
     private List<Integer> mWeightMasterList = new ArrayList<>();
     private boolean mIsEditMode = false;
-
+    private EditText mHemoglobinEdittext, mSugarEdittext;
+    private TextView mHemoglobinErrorTextView,mBloodSugarErrorTextview;
     public VitalCollectionFragment() {
         // Required empty public constructor
     }
@@ -215,6 +216,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             loadSavedDateForEditFromDB();
         }
 
+        mHemoglobinEdittext = view.findViewById(R.id.etv_hemoglobin);
+        mSugarEdittext = view.findViewById(R.id.etv_sugar);
+        mBloodSugarErrorTextview = view.findViewById(R.id.etv_sugar_error);
+        mHemoglobinErrorTextView = view.findViewById(R.id.etv_hemoglobin_error);
+        mHemoglobinEdittext.addTextChangedListener(new MyTextWatcher(mHemoglobinEdittext));
+        mSugarEdittext.addTextChangedListener(new MyTextWatcher(mSugarEdittext));
+
         return view;
     }
 
@@ -238,7 +246,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            if(val.equals(".")){
+            if (val.equals(".")) {
                 editText.setText("");
                 return;
             }
@@ -482,6 +490,44 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
                 weightvalue = val;
                 calculateBMI();
+            } else if (this.editText.getId() == R.id.etv_hemoglobin) {
+                if (val.isEmpty()) {
+                    mHemoglobinErrorTextView.setVisibility(View.GONE);
+                    mHemoglobinEdittext.setBackgroundResource(R.drawable.edittext_border);
+                } else {
+                    if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_HEMOGLOBIN)) ||
+                            (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_HEMOGLOBIN))) {
+
+                        mHemoglobinErrorTextView.setText(getString(R.string.hemoglobin_error, AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
+                        mHemoglobinErrorTextView.setVisibility(View.VISIBLE);
+                        mHemoglobinEdittext.requestFocus();
+                        mHemoglobinEdittext.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                    } else {
+                        mHemoglobinErrorTextView.setVisibility(View.GONE);
+                        mHemoglobinEdittext.setBackgroundResource(R.drawable.edittext_border);
+                    }
+
+                }
+            }else if (this.editText.getId() == R.id.etv_sugar) {
+                if (val.isEmpty()) {
+                    mBloodSugarErrorTextview.setVisibility(View.GONE);
+                    mSugarEdittext.setBackgroundResource(R.drawable.edittext_border);
+                } else {
+                    if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_SUGAR)) ||
+                            (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_SUGAR))) {
+
+                        mBloodSugarErrorTextview.setText(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                        mBloodSugarErrorTextview.setVisibility(View.VISIBLE);
+                        mSugarEdittext.requestFocus();
+                        mSugarEdittext.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                    } else {
+                        mBloodSugarErrorTextview.setVisibility(View.GONE);
+                        mSugarEdittext.setBackgroundResource(R.drawable.edittext_border);
+                    }
+
+                }
             }
         }
     }
@@ -617,6 +663,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
             if (results.getResp() != null && !results.getResp().isEmpty())
                 mRespEditText.setText(results.getResp());
+
+            if (results.getHemoglobin() != null && !results.getHemoglobin().isEmpty())
+                mHemoglobinEdittext.setText(results.getHemoglobin());
+
+            if (results.getBloodSugar() != null && !results.getBloodSugar().isEmpty())
+              mSugarEdittext.setText(results.getBloodSugar());
 
         }
     }
@@ -770,6 +822,16 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             case UuidDictionary.SPO2: //SpO2
                 if (value != null && !value.isEmpty())
                     mSpo2EditText.setText(value);
+                break;
+
+            case UuidDictionary.HEMOGLOBIN_LEVEL: //Hemoglobin
+                if (value != null && !value.isEmpty())
+                    mHemoglobinEdittext.setText(value);
+                break;
+
+            case UuidDictionary.BLOOD_SUGAR_LEVEL: //Blood sugar
+                if (value != null && !value.isEmpty())
+                    mSugarEdittext.setText(value);
                 break;
             default:
                 break;
@@ -1072,7 +1134,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             if (mSpo2EditText.getText() != null) {
                 results.setBmi(mBMITextView.getText().toString().split(" ")[0]);
             }
-
+            if (mHemoglobinEdittext.getText() != null) {
+                results.setHemoglobin((mHemoglobinEdittext.getText().toString()));
+            }
+            if (mSugarEdittext.getText() != null) {
+                results.setBloodSugar((mSugarEdittext.getText().toString()));
+            }
 
         } catch (NumberFormatException e) {
             //Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -1160,6 +1227,28 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
 
                 obsDAO.updateObs(obsDTO);
+
+                //For Hemoglobin
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN_LEVEL);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getHemoglobin());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEMOGLOBIN_LEVEL));
+
+                obsDAO.updateObs(obsDTO);
+
+                //For blood sugar
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_SUGAR_LEVEL);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBloodSugar());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_SUGAR_LEVEL));
+
+                obsDAO.updateObs(obsDTO);
+
+
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {
@@ -1281,6 +1370,32 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getSpo2());
+
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            //for hemoglobin
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN_LEVEL);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getHemoglobin());
+
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            //for blood sugar
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_SUGAR_LEVEL);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getBloodSugar());
 
             try {
                 obsDAO.insertObs(obsDTO);
