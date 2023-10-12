@@ -288,7 +288,7 @@ public class VisitSummaryActivity extends BaseActivity {
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
     CardView followUpDateCard;
-    CardView card_print, card_share;
+    CardView card_print, card_share, speciality_card, flaggedDetails;
 
 
     TextView diagnosisTextView;
@@ -656,10 +656,10 @@ public class VisitSummaryActivity extends BaseActivity {
         mDoctorName = findViewById(R.id.doctor_details);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
         frameLayout_doctor.setVisibility(View.GONE);
-
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
-
+        speciality_card = findViewById(R.id.speciality_card);
+        flaggedDetails = findViewById(R.id.flageddetails);
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
@@ -842,31 +842,7 @@ public class VisitSummaryActivity extends BaseActivity {
 
         downloadButton.setEnabled(false);
         downloadButton.setVisibility(View.GONE);
-        if (isPastVisit) {
-            editVitals.setVisibility(View.GONE);
-            editComplaint.setVisibility(View.GONE);
-            editPhysical.setVisibility(View.GONE);
-            editFamHist.setVisibility(View.GONE);
-            editMedHist.setVisibility(View.GONE);
-            editAddDocs.setVisibility(View.GONE);
-            uploadButton.setVisibility(View.GONE);
-            invalidateOptionsMenu();
-        } else {
-            String visitIDorderBy = "startdate";
-            String visitIDSelection = "uuid = ?";
-            String[] visitIDArgs = {visitUuid};
-            final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
-                visitIDCursor.moveToFirst();
-                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
-            }
-            if (visitIDCursor != null) visitIDCursor.close();
-            if (visitUUID != null && !visitUUID.isEmpty()) {
-                addDownloadButton();
 
-            }
-
-        }
         flag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1363,7 +1339,39 @@ public class VisitSummaryActivity extends BaseActivity {
         patHistView.setText(Html.fromHtml(fetchObsValue_REG(patHistory_REG, patHistory, sessionManager)));
         famHistView.setText(Html.fromHtml(fetchObsValue_REG(famHistory_REG, famHistory, sessionManager)));
         physFindingsView.setText(Html.fromHtml(fetchObsValue_REG(phyExam_REG, phyExam, sessionManager)));
+        if (isPastVisit) {
+            editVitals.setVisibility(View.GONE);
+            editComplaint.setVisibility(View.GONE);
+            editPhysical.setVisibility(View.GONE);
+            editFamHist.setVisibility(View.GONE);
+            editMedHist.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
+            uploadButton.setVisibility(View.GONE);
+            invalidateOptionsMenu();
+            if(complaintView==null || complaintView.getText().toString().isEmpty() || complaintView.getText().toString().trim().equalsIgnoreCase(""))
+            {
+                speciality_card.setVisibility(View.GONE);
+                flaggedDetails.setVisibility(View.GONE);
+                card_share.setVisibility(View.GONE);
+                card_print.setVisibility(View.GONE);
+            }
 
+        } else {
+            String visitIDorderBy = "startdate";
+            String visitIDSelection = "uuid = ?";
+            String[] visitIDArgs = {visitUuid};
+            final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                visitIDCursor.moveToFirst();
+                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+            }
+            if (visitIDCursor != null) visitIDCursor.close();
+            if (visitUUID != null && !visitUUID.isEmpty()) {
+                addDownloadButton();
+
+            }
+
+        }
 /*
         if (patHistory_REG.getValue() != null) {
             try {
