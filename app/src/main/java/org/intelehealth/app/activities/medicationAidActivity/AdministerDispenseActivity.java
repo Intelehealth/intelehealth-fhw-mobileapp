@@ -2,7 +2,10 @@ package org.intelehealth.app.activities.medicationAidActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,15 +16,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.MedicationAidModel;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +46,12 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private String tag = "";
     private FrameLayout fl_med, fl_aid;
     private List<MedicationAidModel> medList, aidList;
+    private ImageButton imgbtn_uploadDocs;
+    private Context context;
+    private RecyclerView rv_docs;
+    private RecyclerView.LayoutManager docsLayoutManager;
+    private String patientUuid, visitUuid, encounterVitals, encounterAdultIntials;
+
 
 
     @Override
@@ -39,6 +59,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_administer_dispense);
 
+        context = AdministerDispenseActivity.this;
         initUI();
 
         tie_medNotes.setHint(getString(R.string.enter_details_here));
@@ -110,6 +131,9 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         fl_aid = findViewById(R.id.fl_aid);
         fl_med = findViewById(R.id.fl_med);
 
+        imgbtn_uploadDocs = findViewById(R.id.imgbtn_uploadDocs);
+
+        rv_docs = findViewById(R.id.rv_docs);
         tvSave = findViewById(R.id.tvSave);
 
         medList = new ArrayList<>();
@@ -117,8 +141,16 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         tag = intent.getStringExtra("tag");
+        patientUuid = intent.getStringExtra("patientUuid");
+        visitUuid = intent.getStringExtra("visitUuid");
+        encounterVitals = intent.getStringExtra("encounterUuidVitals");
+        encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+
         medList = (List<MedicationAidModel>) intent.getSerializableExtra("med");
         aidList = (List<MedicationAidModel>) intent.getSerializableExtra("aid");    // null on empty.
+
+        setImagesToRV();    // TODO: handle this later with new concept id for UPLOAD_DOCS obs.
+        // TODO: here max 4 images will only come.
 
         if (medList != null && medList.size() > 0) {
             fl_med.setVisibility(View.VISIBLE);
@@ -136,15 +168,17 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         }
         else {  // ie. dispense
             getSupportActionBar().setTitle(getString(R.string.dispense_medication_and_aid));
-            fl_aid.setVisibility(View.VISIBLE);
 
             if (aidList != null && aidList.size() > 0) {
+                fl_aid.setVisibility(View.VISIBLE);
                 String aidData = "";
                 for (MedicationAidModel aid : aidList) {
                     aidData = aidData + (Node.bullet + " " + aid.getValue()) + "\n\n";
                 }
                 tv_aidData.setText(aidData.substring(0, aidData.length() - 2));
             }
+            else fl_aid.setVisibility(View.GONE);
+
         }
 
         // Edit Text - start
@@ -219,9 +253,45 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         });
         // Edit Text - end
 
+        imgbtn_uploadDocs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent docIntent = new Intent(context, AdditionalDocumentsActivity.class);
+                docIntent.putExtra("patientUuid", patientUuid);
+                docIntent.putExtra("visitUuid", visitUuid);
+                docIntent.putExtra("encounterUuidVitals", encounterVitals);
+                docIntent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                startActivity(docIntent);
+            }
+        });
+
         tvSave.setOnClickListener(v -> {
             checkValidation();
         });
+    }
+
+    private void setImagesToRV() {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        ArrayList<String> fileuuidList = new ArrayList<String>();
+        ArrayList<File> fileList = new ArrayList<File>();
+        try {
+            fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);  // Todo: here uploads docs new concept Id will come.
+            for (String fileuuid : fileuuidList) {
+                String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                if (new File(filename).exists()) {
+                    fileList.add(new File(filename));
+                }
+            }
+        }
+        catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        } catch (Exception file) {
+            Logger.logD("TAG", file.getMessage());
+        }
+        HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+        docsLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        rv_docs.setLayoutManager(docsLayoutManager);
+        rv_docs.setAdapter(horizontalAdapter);
     }
 
     private void checkValidation() {

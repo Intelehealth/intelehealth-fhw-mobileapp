@@ -36,6 +36,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     private TextView tvDispense, tvAdminister, tvDispenseAdminister;
     private String tag = "", medData = "", aidData = "";
     private FrameLayout fl_aid;
+    private String patientUuid, visitUuid, encounterVitals, encounterAdultIntials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +72,16 @@ public class Medication_Aid_Activity extends AppCompatActivity {
 
             Intent intent = new Intent(context, AdministerDispenseActivity.class);
             intent.putExtra("tag", tag);
+            intent.putExtra("patientUuid", patientUuid);
+            intent.putExtra("visitUuid", visitUuid);
+            intent.putExtra("encounterUuidVitals", encounterVitals);
+            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+
             if (medCheckedList.size() > 0)
                 intent.putExtra("med", (Serializable) medCheckedList);
             if (aidCheckedList.size() > 0)
                 intent.putExtra("aid", (Serializable) aidCheckedList);
+
             startActivity(intent);
             Log.d("TAG", " 1st screen: onCreate: " + tag);
         });
@@ -104,6 +111,10 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         tag = intent.getStringExtra("tag");
         medData = intent.getStringExtra("medicineData");
         aidData = intent.getStringExtra("aidData");
+        patientUuid = intent.getStringExtra("patientUuid");
+        visitUuid = intent.getStringExtra("visitUuid");
+        encounterVitals = intent.getStringExtra("encounterUuidVitals");
+        encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
 
         if (tag.equalsIgnoreCase("administer")) {
             getSupportActionBar().setTitle(getString(R.string.administer_medication));

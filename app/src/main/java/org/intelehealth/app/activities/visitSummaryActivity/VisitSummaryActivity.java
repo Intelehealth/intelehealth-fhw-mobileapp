@@ -1031,6 +1031,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             i.putExtra("tag", "dispense");
             i.putExtra("medicineData", med);
             i.putExtra("aidData", aid);
+            i.putExtra("patientUuid", patientUuid);
+            i.putExtra("visitUuid", visitUuid);
+            i.putExtra("encounterUuidVitals", encounterVitals);
+            i.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
             startActivity(i);
         });
 
@@ -1040,6 +1044,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             Intent i = new Intent(context, Medication_Aid_Activity.class);
             i.putExtra("tag", "administer");
             i.putExtra("medicineData", med);
+            i.putExtra("patientUuid", patientUuid);
+            i.putExtra("visitUuid", visitUuid);
+            i.putExtra("encounterUuidVitals", encounterVitals);
+            i.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
             startActivity(i);
         });
 

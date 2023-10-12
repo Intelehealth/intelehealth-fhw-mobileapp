@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:layout_marginTop="-500dp"
     tools:context=".activities.medicationAidActivity.AdministerDispenseActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -347,7 +348,7 @@
                             android:textSize="@dimen/card_content_text_size" />
 
                         <ImageButton
-                            android:id="@+id/imagebutton_edit_additional_document"
+                            android:id="@+id/imgbtn_uploadDocs"
                             style="@style/SelectableItemBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -356,12 +357,12 @@
                             android:contentDescription="TODO"
                             android:foreground="?android:attr/selectableItemBackground"
                             android:padding="15dp"
-                            app:srcCompat="@drawable/ic_add_24dp" />
+                            app:srcCompat="@drawable/edit_icon" />
 
                     </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recy_additional_documents"
+                        android:id="@+id/rv_docs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/layout_addDoc"
