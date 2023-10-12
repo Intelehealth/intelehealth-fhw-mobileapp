@@ -464,7 +464,8 @@ private TextView isVegetarian;
         visitDTO.setUuid(uuid);
         visitDTO.setPatientuuid(patientDTO.getUuid());
         visitDTO.setStartdate(thisDate);
-        visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
+        //visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE); //committed for NAK
+        visitDTO.setVisitTypeUuid(""); //committed for NAK
         visitDTO.setLocationuuid(sessionManager.getLocationUuid());
         visitDTO.setSyncd(false);
         visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static

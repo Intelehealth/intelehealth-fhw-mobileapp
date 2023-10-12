@@ -122,6 +122,7 @@ import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
@@ -289,8 +290,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     File obsImgdir;
     String gender_tv;
     String mFileName = "config.json";
-    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
-    String speciality_selected = "";
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp, mHemoglobin, mBloodSugar;
+    String speciality_selected = "Gynecologist";
     private TextView physcialExaminationDownloadText, vd_special_value;
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -326,7 +327,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private boolean priorityVisit = false;
     private ObjectAnimator syncAnimator;
     TooltipWindow tipWindow;
-
+    TextView tvBloodSugar, tvHemoglobin;
+    ObsDTO hemoglobin = new ObsDTO();
+    ObsDTO bloodSugar = new ObsDTO();
+    private Spinner spinnerVisitType;
+    private String visitType;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -599,8 +604,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 if (!addnotes_value.equalsIgnoreCase("")) {
                     if (addnotes_value.equalsIgnoreCase("No notes added for Doctor.")) {
                         tvAddNotesValueVS.setText(getString(R.string.no_notes_added_for_doctor));
-                    }
-                    else
+                    } else
                         tvAddNotesValueVS.setText(addnotes_value);
                 } else {
                     addnotes_value = getString(R.string.no_notes_added_for_doctor);  // "No notes added for Doctor."
@@ -1021,6 +1025,24 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 respiratory.setText(resp.getValue());
         } else
             respiratory.setText(getResources().getString(R.string.no_information));
+
+        //hemoglobin
+        if (hemoglobin.getValue() != null) {
+            if (hemoglobin.getValue().trim().isEmpty() || hemoglobin.getValue().trim().equals("0"))
+                tvHemoglobin.setText(getResources().getString(R.string.no_information));
+            else
+                tvHemoglobin.setText(hemoglobin.getValue());
+        } else
+            tvHemoglobin.setText(getResources().getString(R.string.no_information));
+
+        //blood sugar
+        if (bloodSugar.getValue() != null) {
+            if (bloodSugar.getValue().trim().isEmpty() || bloodSugar.getValue().trim().equals("0"))
+                tvBloodSugar.setText(getResources().getString(R.string.no_information));
+            else
+                tvBloodSugar.setText(bloodSugar.getValue());
+        } else
+            tvBloodSugar.setText(getResources().getString(R.string.no_information));
         // vitals values set - end
 
         setQAData();
@@ -1147,6 +1169,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         });
         // todo: speciality code comes in upload btn as well so add that too....later...
         // speciality data - end
+
+        //for visit type
+        selectVisitType();
+
 
         if (visitUuid != null) {
             // Priority data
@@ -1759,7 +1785,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), getResources().getString(R.string.send_visit),
+                visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon),
+                        getResources().getString(R.string.send_visit),
                         getResources().getString(R.string.are_you_sure_you_want_to_send_visit),
                         getResources().getString(R.string.yes), getResources().getString(R.string.no));
             }
@@ -1810,6 +1837,51 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 filter_framelayout.setVisibility(View.GONE);
             else
                 filter_framelayout.setVisibility(View.VISIBLE);
+        });
+    }
+
+    private void selectVisitType() {
+        List<String> itemList = new ArrayList<>();
+        itemList.add("Video consultation");
+        itemList.add("Routine check up");
+        itemList.add("Urgent care");
+
+        ArrayAdapter<String> stringArrayAdapter;
+
+        //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
+        if (itemList != null) {
+            itemList.add(0, getString(R.string.select_visit_type));
+            stringArrayAdapter =
+                    new ArrayAdapter<String>
+                            (this, android.R.layout.simple_spinner_dropdown_item, itemList);
+            spinnerVisitType.setAdapter(stringArrayAdapter);
+        }
+
+        spinnerVisitType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
+                    String visitType1 = adapterView.getItemAtPosition(i).toString();
+                    // vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
+                    if (visitType1.equalsIgnoreCase("Video consultation")) {
+                        visitType = UuidDictionary.VIDEO_CONSULTATION;
+                    } else if (visitType1.equalsIgnoreCase("Routine check up")) {
+                        visitType = UuidDictionary.ROUTINE_CHECK_UP;
+                    } else if (visitType1.equalsIgnoreCase("Urgent care")) {
+                        visitType = UuidDictionary.URGENT_CARE;
+
+                    }
+                } else {
+                    visitType = "";
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
         });
     }
 
@@ -2067,6 +2139,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // Permission - end
     private AlertDialog mImagePickerAlertDialog;
+
     /**
      * Open dialog to Select douments from Image and Camera as Per the Choices
      */
@@ -2228,6 +2301,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         respiratory = findViewById(R.id.textView_respiratory_value);
         respiratoryText = findViewById(R.id.textView_respiratory);
         bmiView = findViewById(R.id.textView_bmi_value);
+
+        tvHemoglobin = findViewById(R.id.textView_hemoglobin_value);
+        tvBloodSugar = findViewById(R.id.textView_blood_sugar_value);
+
         // vitals ids - end
 
         // complaint ids
@@ -2258,6 +2335,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         // speciality ids
         speciality_spinner = findViewById(R.id.speciality_spinner);
+        spinnerVisitType = findViewById(R.id.spinner_visit_type);
+
         // speciality ids - end
 
         // priority id
@@ -2327,8 +2406,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
                     } else
                         Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
                 }
 
@@ -2578,7 +2656,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle,
                                  String positiveBtnTxt, String negativeBtnTxt) {
-
+        speciality_selected = "Gynecologist";
         if (speciality_selected == null || speciality_selected.isEmpty()) {
             showSelectSpeciliatyErrorDialog();
             return;
@@ -2622,7 +2700,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Log.d("visitUUID", "upload_click: " + visitUUID);
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+        speciality_selected = "Gynecologist";
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
+            VisitsDAO visitsDAO = new VisitsDAO();
+            try {
+                visitsDAO.updateVisitType(visitType, visitUUID);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
             vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
             boolean isUpdateVisitDone = false;
@@ -3014,6 +3099,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             case UuidDictionary.SPO2: //SpO2
             {
                 spO2.setValue(value);
+                break;
+            }
+            case UuidDictionary.HEMOGLOBIN_LEVEL: //hemoglobin
+            {
+                hemoglobin.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_SUGAR_LEVEL: //blood sugar
+            {
+                bloodSugar.setValue(value);
                 break;
             }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
@@ -3871,6 +3966,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
+        mHemoglobin = hemoglobin.getValue();
+        mBloodSugar = bloodSugar.getValue();
+
         try {
             JSONObject obj = null;
             if (hasLicense) {
@@ -3943,7 +4041,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             String val = mChiefComplainList.get(i).trim();
             val = val.replaceAll("<.*?>", "");
-            Log.v("mChiefComplainList", "CC - "+val);
+            Log.v("mChiefComplainList", "CC - " + val);
             if (!val.toLowerCase().contains("h/o specific illness")) {
                 if (!stringBuilder.toString().isEmpty()) {
                     stringBuilder.append(",");
@@ -4364,6 +4462,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
+        mHemoglobin = hemoglobin.getValue();
+        mBloodSugar = bloodSugar.getValue();
+
         try {
             JSONObject obj = null;
             if (hasLicense) {
@@ -5158,7 +5259,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         String reports[] = valueArray[1].replace("• Patient reports -<br>", "• Patient reports -<br/>")
                                 .split("• Patient reports -<br/>");
                         patientReports = reports[1];
-                    }else if (valueArray[1].contains("• Patient denies")) {
+                    } else if (valueArray[1].contains("• Patient denies")) {
                         // todo: handle later -> comment added on 14 nov 2022
                         String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
                                 .split("• Patient denies -<br/>");

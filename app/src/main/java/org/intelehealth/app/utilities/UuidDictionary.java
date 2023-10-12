@@ -78,4 +78,9 @@ public class UuidDictionary {
     public static final String IS_VEGETARIAN = "78bf7330-57f1-49a2-9be5-9050dc2669c9";
     public static final String HEMOGLOBIN_LEVEL = "88222164-e7d1-4fef-b9b4-fdad6330f3f5";
     public static final String BLOOD_SUGAR_LEVEL = "c683403a-f169-4fb0-852d-b5521513c4ec";
+
+    public static final String URGENT_CARE = "42ad5b5a-debc-4c7d-be0b-c321dae26999";
+    public static final String ROUTINE_CHECK_UP = "a4e94155-f7b4-439d-a856-c0b03f6d5de3";
+    public static final String VIDEO_CONSULTATION = "39dfa8d7-ff8b-4587-92dc-f6cbbae47d94";
+
 }

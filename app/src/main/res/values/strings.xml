@@ -1874,5 +1874,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="blood_sugar">Blood Sugar</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
     <string name="sugar_error">Sugar should be in between %1$s and %2$s</string>
+    <string name="gynecologist">Gynecologist</string>
+    <string name="visit_type">Visit Type</string>
+    <string name="select_visit_type">Select Visit Type</string>
 
 </resources>

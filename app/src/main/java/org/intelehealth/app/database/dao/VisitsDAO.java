@@ -3,6 +3,7 @@ package org.intelehealth.app.database.dao;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +19,7 @@ import java.util.List;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
+import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.app.AppConstants;
@@ -931,5 +933,31 @@ public class VisitsDAO {
         return count;
     }
 
+    public boolean updateVisitType(String visitTypeUUID, String visitUUID) throws DAOException {
+        boolean isUpdated = true;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] whereargs = {visitUUID};
+        try {
+            values.put("visit_type_uuid", visitTypeUUID);
+           // values.put("sync", 0);
+            int update = db.update("tbl_visit", values, whereclause, whereargs);
+            Log.d("TAG", "updateVisitType:update : "+update);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            Logger.logD("patient", "patient" + sql.getMessage());
+            FirebaseCrashlytics.getInstance().recordException(sql);
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+
+
+        }
+        Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
+        IntelehealthApplication.getAppContext().startService(intent);
+        return isUpdated;
+    }
 
 }

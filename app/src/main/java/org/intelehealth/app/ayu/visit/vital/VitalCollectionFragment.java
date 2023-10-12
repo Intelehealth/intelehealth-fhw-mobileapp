@@ -212,9 +212,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         //showWeightListing();
 
-        if (mIsEditMode && results == null) {
-            loadSavedDateForEditFromDB();
-        }
+
 
         mHemoglobinEdittext = view.findViewById(R.id.etv_hemoglobin);
         mSugarEdittext = view.findViewById(R.id.etv_sugar);
@@ -222,7 +220,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mHemoglobinErrorTextView = view.findViewById(R.id.etv_hemoglobin_error);
         mHemoglobinEdittext.addTextChangedListener(new MyTextWatcher(mHemoglobinEdittext));
         mSugarEdittext.addTextChangedListener(new MyTextWatcher(mSugarEdittext));
+        mHemoglobinErrorTextView.setVisibility(View.GONE);
+        mBloodSugarErrorTextview.setVisibility(View.GONE);
 
+
+        if (mIsEditMode && results == null) {
+            loadSavedDateForEditFromDB();
+        }
         return view;
     }
 
@@ -825,7 +829,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 break;
 
             case UuidDictionary.HEMOGLOBIN_LEVEL: //Hemoglobin
+                Log.d(TAG, "parseData: value :: kz :: "+value);
                 if (value != null && !value.isEmpty())
+
                     mHemoglobinEdittext.setText(value);
                 break;
 
@@ -884,8 +890,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         values.add(mPulseEditText); // 3
         values.add(mRespEditText); // 4
         values.add(mTemperatureEditText); // 5
-
-        // Check to see if values were inputted.
+      //  values.add(mHemoglobinEdittext); // 6
+         //values.add(mSugarEdittext); // 7
+       //  Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
 
             if (i == 3) {
