@@ -132,7 +132,7 @@
                 android:id="@+id/til_totalCost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_aidData">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -146,7 +146,7 @@
                     android:freezesText="true"
                     android:hint="@string/total_cost"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textCapWords"
+                    android:inputType="number"
                     android:maxLength="25"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -163,7 +163,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/til_totalCost">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tie_pharmacyDiscount"
+                    android:id="@+id/tie_vendorDiscount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingVertical="15dp"
@@ -173,7 +173,7 @@
                     android:freezesText="true"
                     android:hint="@string/vendor_discount"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textCapWords"
+                    android:inputType="number"
                     android:maxLength="25"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -200,7 +200,7 @@
                     android:freezesText="true"
                     android:hint="@string/covered_cost"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textCapWords"
+                    android:inputType="number"
                     android:maxLength="25"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -226,7 +226,7 @@
                     android:freezesText="true"
                     android:hint="@string/out_of_pocket"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textCapWords"
+                    android:inputType="number"
                     android:maxLength="25"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -239,6 +239,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:enabled="false"
                 app:layout_constraintTop_toBottomOf="@+id/til_outOfPocket">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -252,7 +253,7 @@
                     android:freezesText="true"
                     android:hint="@string/other_aids"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textCapWords"
+                    android:inputType="number"
                     android:maxLength="25"
                     android:maxLines="1"
                     android:singleLine="true"

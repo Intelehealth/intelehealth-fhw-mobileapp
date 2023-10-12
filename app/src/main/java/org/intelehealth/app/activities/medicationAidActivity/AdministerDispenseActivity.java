@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdministerDispenseActivity extends AppCompatActivity {
-    private TextInputEditText tie_medNotes, tie_aidNotes;
+    private TextInputEditText tie_medNotes, tie_aidNotes,
+            tie_totalCost, tie_vendorDiscount, tie_coveredCost, tie_outOfPocket, tie_others;
     private TextView tv_medData, tv_aidData;
     private String tag = "";
     private FrameLayout fl_aid;
@@ -93,6 +94,13 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         tie_medNotes = findViewById(R.id.tie_medNotes);
         tie_aidNotes = findViewById(R.id.tie_aidNotes);
+
+        tie_totalCost = findViewById(R.id.tie_totalCost);
+        tie_vendorDiscount = findViewById(R.id.tie_vendorDiscount);
+        tie_coveredCost = findViewById(R.id.tie_coveredCost);
+        tie_outOfPocket = findViewById(R.id.tie_outOfPocket);
+        tie_others = findViewById(R.id.tie_others);
+
         tv_medData = findViewById(R.id.tv_medData);
         tv_aidData = findViewById(R.id.tv_aidData);
         fl_aid = findViewById(R.id.fl_aid);
@@ -129,6 +137,78 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             }
         }
 
+        // Edit Text - start
+        tie_totalCost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!tie_totalCost.getText().toString().trim().isEmpty())
+                    calculateOtherAids();
+            }
+        });
+        tie_vendorDiscount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!tie_vendorDiscount.getText().toString().trim().isEmpty())
+                    calculateOtherAids();
+            }
+        });
+        tie_coveredCost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!tie_coveredCost.getText().toString().trim().isEmpty())
+                    calculateOtherAids();
+            }
+        });
+
+        tie_outOfPocket.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!tie_outOfPocket.getText().toString().trim().isEmpty())
+                    calculateOtherAids();
+            }
+        });
+
+        // Edit Text - end
 
     }
 
@@ -150,5 +230,26 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void calculateOtherAids() {
+        int totalCost = 0, vendorDiscount = 0, coveredCost = 0, outPocket = 0;
+        int otherAid = 0;
+
+        if (!tie_totalCost.getText().toString().isEmpty())
+            totalCost = Integer.parseInt(tie_totalCost.getText().toString().trim());
+
+        if (!tie_vendorDiscount.getText().toString().isEmpty())
+            vendorDiscount = Integer.parseInt(tie_vendorDiscount.getText().toString().trim());
+
+        if (!tie_coveredCost.getText().toString().isEmpty())
+            coveredCost = Integer.parseInt(tie_coveredCost.getText().toString().trim());
+
+        if (!tie_outOfPocket.getText().toString().isEmpty())
+            outPocket = Integer.parseInt(tie_outOfPocket.getText().toString().trim());
+
+        otherAid = totalCost - vendorDiscount - coveredCost - outPocket;
+
+        tie_others.setText(String.valueOf(otherAid));
     }
 }
