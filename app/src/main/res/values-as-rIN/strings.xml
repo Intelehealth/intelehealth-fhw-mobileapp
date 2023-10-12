@@ -367,6 +367,8 @@
     <string name="spo2_error" translatable="false">SpO2 %1$s আৰু %2$s ৰ মাজত থাকিব লাগে</string>
     <string name="pulse_error" translatable="false">পালছ %1$s আৰু %2$s ৰ মাজত থাকিব লাগে</string>
     <string name="bpsys_error" translatable="false">চিষ্টোলিক চাপ %1$s আৰু %2$s ৰ ভিতৰত হ’ব লাগে</string>
+    <string name="bpsys_not_less_error">চিষ্টোলিক চাপ ডায়েষ্টোলিক চাপতকৈ কম বা সমান হ’ব নালাগে।</string>
+    <string name="bpdia_not_more_error">ডায়েষ্টোলিক চাপ চিষ্টোলিক চাপতকৈ বেছি বা সমান হ’ব নালাগে।</string>
     <string name="bpdia_error" translatable="false">ডায়েষ্টোলিক চাপ %1$s আৰু %2$s ৰ ভিতৰত থাকিব লাগে</string>
     <string name="resp_error" translatable="false">শ্বাস-প্ৰশ্বাসৰ হাৰ %1$s আৰু %2$s ৰ ভিতৰত হ’ব লাগে</string>
     <string name="temp_error" translatable="false">উষ্ণতা %1$s আৰু %2$s ৰ মাজত হব লাগে</string>
@@ -1138,6 +1140,7 @@
     <string name="fetching_details_please_wait">সবিশেষ আনিছে। অনুগ্ৰহ কৰি অপেক্ষা কৰক...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">প্ৰেছক্ৰিপচন এতিয়াও চিকিৎসকৰ দ্বাৰা দিয়া হোৱা নাই।</string>
     <string name="download_prescription_first">প্ৰথমে প্ৰেছক্ৰিপচন ডাউনলোড কৰক।</string>
+    <string name="location_setup">অবস্থান সেটআপ %1$s</string>
     <string name="height_ft">Height (ft)</string>
     <string name="ft">ft</string>
     <string name="in">in</string>

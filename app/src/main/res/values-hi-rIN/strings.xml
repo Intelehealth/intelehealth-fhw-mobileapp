@@ -387,6 +387,8 @@
     <string name="spo2_error">SpO2 %1$s और %2$s के बीच होना चाहिए</string>
     <string name="pulse_error">पल्स %1$s और %2$s के बीच होना चाहिए</string>
     <string name="bpsys_error">सिस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="bpsys_not_less_error">सिस्टोलिक दबाव डायस्टोलिक दबाव से कम या बराबर नहीं होना चाहिए।</string>
+    <string name="bpdia_not_more_error">डायस्टोलिक दबाव सिस्टोलिक दबाव से अधिक या उसके बराबर नहीं होना चाहिए।</string>
     <string name="bpdia_error">डायस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
     <string name="resp_error">श्वसन दर %1$s और %2$s के बीच होनी चाहिए</string>
     <string name="temp_error">तापमान %1$s और %2$s के बीच होना चाहिए</string>
@@ -777,6 +779,7 @@
     <string name="booked_txt">बुक</string>
     <string name="cancelled_txt">रद्द</string>
     <string name="please_upload_visit">कृपया अपॉइंटमेंट बुक करने से पहले विज़िट को पहले अपलोड करें।</string>
+    <string name="appointment_booking_not_available">प्राथमिकता वाली विजिट के लिए अपॉइंटमेंट बुकिंग उपलब्ध नहीं है।</string>
     <string name="appointment_booked_successfully">अपॉइंटमेंट सफलतापूर्वक बुक किया गया!</string>
     <string name="appointment_booked_failed">अपॉइंटमेंट बुक हो गया विफल!</string>
     <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करने में विफल!</string>
@@ -1171,14 +1174,22 @@
     <string name="fetching_details_please_wait">विवरण लाया जा रहा है. कृपया प्रतीक्षा करें...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">डॉक्टर द्वारा प्रिस्क्रिप्शन अभी तक उपलब्ध नहीं कराया गया है।</string>
     <string name="download_prescription_first">सबसे पहले प्रिस्क्रिप्शन डाउनलोड करें.</string>
-    <string name="height_ft">Height(ft)</string>
-    <string name="ft">फीट</string>
+    <string name="location_setup">लोकेशन सेटअप %1$s</string>
+    <string name="app_version_string">उपयोगकर्ता: %1$s, ऐप संस्करण: %2$s</string>
+    <string name="height_ft">ऊंचाई(फीट)</string>
+    <string name="ft">फुट</string>
     <string name="in">इंच</string>
-    <string name="please_select_patient_height">Please select patient height!</string>
-    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">Systolic pressure cannot be lower than Diastolic pressure.</string>
-    <string name="enter_field">Enter field</string>
-    <string name="following_fields_are_not_filled">Following fields are not filled:</string>
-    <string name="do_you_still_want_to_continue">Do you still want to continue?</string>
-    <string name="enter_valid_phone_number">Enter valid phone number.</string>
+    <string name="please_select_patient_height">कृपया रोगी की ऊंचाई चुनें!</string>
+    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">सिस्टोलिक दबाव डायस्टोलिक दबाव से कम नहीं हो सकता।</string>
+    <string name="enter_field">फ़ील्ड दर्ज करें</string>
+    <string name="following_fields_are_not_filled">निम्नलिखित फ़ील्ड भरे नहीं गए हैं:</string>
+    <string name="do_you_still_want_to_continue">क्या आप अब भी जारी रखना चाहते हैं?</string>
+    <string name="enter_valid_phone_number">मान्य फ़ोन नंबर दर्ज करें.</string>
+    <string name="enter_patient_phone_number">मरीज़ का फ़ोन नंबर दर्ज करें.</string>
+    <string name="overweight">अधिक वजन</string>
+    <string name="underweight">कम वजन</string>
+    <string name="normal">सामान्य</string>
+    <string name="moderate_obesity">मध्यम मोटापा</string>
+    <string name="severe_obesity">गंभीर मोटापा</string>
 
 </resources>
