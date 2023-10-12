@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="no_answer_from">No answer from %1$s</string>
-    <string name="call_canceled_by">Call canceled by %1$s</string>
+    <string name="call_canceled_by">Call end by %1$s</string>
     <string name="call_rejected_by">Call rejected by %1$s</string>
     <string name="call_time_up">Call time up</string>
     <string name="left_the_call">Call left by %1$s</string>

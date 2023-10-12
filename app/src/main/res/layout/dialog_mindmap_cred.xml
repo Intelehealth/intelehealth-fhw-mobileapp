@@ -1,43 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:orientation="vertical">
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:paddingRight="10dp">
 
-        <AutoCompleteTextView
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/server_url"
+        app:boxBackgroundMode="filled"
+        app:hintEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/licenseurl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="5dp"
-            android:hint="@string/server_url"
-            android:inputType="textAutoComplete"
-            android:maxLines="1"
             android:fontFamily="@font/lato_regular"
-            android:textSize="14sp"
-            android:singleLine="true" />
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+        <!--        <AutoCompleteTextView-->
+        <!--            android:id="@+id/licenseurl"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:fontFamily="@font/lato_regular"-->
+        <!--            android:hint="@string/server_url"-->
+        <!--            android:inputType="textAutoComplete"-->
+        <!--            android:maxLines="1"-->
+        <!--            android:singleLine="true"-->
+        <!--            android:text="sdffsdf"-->
+        <!--            android:textSize="14sp" />-->
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="@string/prompt_licensekey"
+        app:boxBackgroundMode="filled"
+        app:hintEnabled="true">
 
 
-        <AutoCompleteTextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/licensekey"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:hint="@string/prompt_licensekey"
+            android:layout_height="match_parent"
             android:fontFamily="@font/lato_regular"
-            android:textSize="14sp"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textSize="14sp" />
+        <!--        <AutoCompleteTextView-->
+        <!--            android:id="@+id/licensekey"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:fontFamily="@font/lato_regular"-->
+        <!--            android:hint="@string/prompt_licensekey"-->
+        <!--            android:inputType="textEmailAddress"-->
+        <!--            android:maxLines="1"-->
+        <!--            android:padding="@dimen/std_16dp"-->
+        <!--            android:singleLine="true"-->
+        <!--            android:textSize="14sp" />-->
 
 
     </com.google.android.material.textfield.TextInputLayout>

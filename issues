@@ -1,3 +1,7 @@
 1. SocketManager => cancel_dr => ["webapp"]
 Initiate call from doctor side, received on HW side, accepted by HW, after few second call end by
 doctor, getting above event in this scenario. Here only need to disconnect room, no need to call above event
+
+2 - Web app going blank when scroll to bottom and click on chat or video
+3 - Multiple time chat and video click event happening
+4 - 255 limit chars issue in chat
