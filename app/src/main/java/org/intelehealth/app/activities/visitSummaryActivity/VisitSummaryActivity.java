@@ -260,7 +260,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     ImageButton editMedHist;
     ImageButton editAddDocs;
 
-    FrameLayout frameLayout_doctor;
+    FrameLayout frameLayout_doctor, fl_DispenseAdminister;
     TextView nameView;
     TextView ageView;
     TextView genderView;
@@ -718,6 +718,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
+        fl_DispenseAdminister = findViewById(R.id.fl_DispenseAdminister);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
         frameLayout_doctor.setVisibility(View.GONE);
         saveButton = findViewById(R.id.card_save);
@@ -1040,6 +1041,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         tvAdminister.setOnClickListener(v -> {
             String med = getMedicationData();
+            if (med.trim().isEmpty()) {
+                Toast.makeText(context, "No medication data present to administer.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             Intent i = new Intent(context, Medication_Aid_Activity.class);
             i.putExtra("tag", "administer");
@@ -4307,6 +4312,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         Gson gson = new Gson();
         objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
+
+        // Dispense & Administer - START
+        fl_DispenseAdminister.setVisibility(View.VISIBLE);
+        // Dispense & Administer - END
 
         String doctorSign = "";
         String doctrRegistartionNum = "";

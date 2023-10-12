@@ -77,11 +77,24 @@
         </TableRow>
     </TableLayout>
 
+        <FrameLayout
+            android:id="@+id/fl_med"
+            android:visibility="visible"
+            tools:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="12dp"
+            >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
     <TextView
         android:id="@+id/tv_medication"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:gravity="top"
         android:lineSpacingExtra="3sp"
         android:text="Medication"
@@ -99,6 +112,8 @@
         tools:listitem="@layout/item_medication_aid"
         tools:itemCount="6"
         />
+        </RelativeLayout>
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/fl_aid"
@@ -106,7 +121,7 @@
             tools:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rv_medication"
+            android:layout_below="@id/fl_med"
             android:layout_marginBottom="10dp"
             >
 

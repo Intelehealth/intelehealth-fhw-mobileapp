@@ -35,7 +35,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     private List<MedicationAidModel> med_list, aid_list;
     private TextView tvDispense, tvAdminister, tvDispenseAdminister;
     private String tag = "", medData = "", aidData = "";
-    private FrameLayout fl_aid;
+    private FrameLayout fl_med, fl_aid;
     private String patientUuid, visitUuid, encounterVitals, encounterAdultIntials;
 
     @Override
@@ -102,6 +102,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         rv_aid = findViewById(R.id.rv_aid);
       //  rv_aid.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
+        fl_med = findViewById(R.id.fl_med);
         fl_aid = findViewById(R.id.fl_aid);
         tvDispenseAdminister = findViewById(R.id.tvDispenseAdminister);
         tvDispense = findViewById(R.id.tvDispense);
@@ -131,7 +132,8 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         med_list = new ArrayList<>();
         aid_list = new ArrayList<>();
 
-        if (!medData.isEmpty()) {
+        if (medData != null && !medData.trim().isEmpty()) {
+            fl_med.setVisibility(View.VISIBLE);
             ArrayList<String> list = new ArrayList<>(Arrays.asList(medData.split("\n")));
             ArrayList<MedicationAidModel> mm = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
@@ -145,8 +147,10 @@ public class Medication_Aid_Activity extends AppCompatActivity {
                     med_list.add(med);
             }
         }
+        else fl_med.setVisibility(View.GONE);
 
-        if (aidData != null && !aidData.isEmpty()) {
+        if (aidData != null && !aidData.trim().isEmpty()) {
+            fl_aid.setVisibility(View.VISIBLE);
             ArrayList<String> list = new ArrayList<>(Arrays.asList(aidData.split("\n")));
             ArrayList<MedicationAidModel> aa = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
@@ -161,6 +165,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
 
         }
+        else fl_aid.setVisibility(View.GONE);
 
        /* med_list.add("Crocin");
         med_list.add("Albendazol");
