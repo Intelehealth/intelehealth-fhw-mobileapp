@@ -97,6 +97,30 @@ public class AllAppointmentsFragment extends Fragment {
     int totalCompleted = 0;
     SessionManager sessionManager;
 
+    private final int upcomingLimit = 15;
+    private final int completedLimit = 15;
+    private final int cancelledLimit = 15;
+    private int upcomingStart = 0, upcomingEnd = upcomingStart + upcomingLimit;
+    private int completedStart = 0, completedEnd = completedStart + completedLimit;
+    private int cancelledStart = 0, cancelledEnd = cancelledStart + cancelledLimit;
+
+    private boolean isUpcomingFullyLoaded = false;
+    private boolean isCompletedFullyLoaded = false;
+    private boolean isCancelledFullyLoaded = false;
+
+    private List<AppointmentInfo> upcomingAppointmentInfoList;
+    private List<AppointmentInfo> completedAppointmentInfoList;
+    private List<AppointmentInfo> cancelledAppointmentInfoList;
+
+    private final List<AppointmentInfo> upcomingSearchList = new ArrayList<>();
+    private final List<AppointmentInfo> completedSearchList = new ArrayList<>();
+    private final List<AppointmentInfo> cancelledSearchList = new ArrayList<>();
+
+    private AllAppointmentsAdapter upcomingAllAppointmentsAdapter;
+    private AllAppointmentsAdapter completedAllAppointmentsAdapter;
+    private AllAppointmentsAdapter cancelledAllAppointmentsAdapter;
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -606,66 +630,63 @@ public class AllAppointmentsFragment extends Fragment {
         //recyclerview for upcoming appointments
         tvUpcomingAppsCount.setText("0");
         tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText);
+        upcomingAppointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart);
 
-        if (appointmentInfoList.size() > 0) {
+        if (upcomingAppointmentInfoList.size() > 0) {
             rvUpcomingApp.setVisibility(View.VISIBLE);
             noDataFoundForUpcoming.setVisibility(View.GONE);
 
-            appointmentInfoList.forEach(appointmentInfo -> {
+            upcomingAppointmentInfoList.forEach(appointmentInfo -> {
                 String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
                 appointmentInfo.setPatientProfilePhoto(patientProfilePath);
             });
 
-            AllAppointmentsAdapter allAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), appointmentInfoList, "upcoming");
-            rvUpcomingApp.setAdapter(allAppointmentsAdapter);
-
+            upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), upcomingAppointmentInfoList, "upcoming");
+            rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
+            upcomingStart = upcomingEnd;
+            upcomingEnd += upcomingLimit;
         } else {
             rvUpcomingApp.setVisibility(View.GONE);
             noDataFoundForUpcoming.setVisibility(View.VISIBLE);
         }
 
-        tvUpcomingAppsCount.setText(appointmentInfoList.size() + "");
-        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + appointmentInfoList.size() + ")");
-
+        tvUpcomingAppsCount.setText(upcomingAppointmentInfoList.size() + "");
+        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentInfoList.size() + ")");
     }
-
 
     private void getCancelledAppointments() {
         //recyclerview for getCancelledAppointments appointments
         tvCancelledAppsCount.setText("0");
         tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, searchPatientText);
+        cancelledAppointmentInfoList = new AppointmentDAO().getAllCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart);
 
-        if (appointmentInfoList.size() > 0) {
+        if (cancelledAppointmentInfoList.size() > 0) {
             rvCancelledApp.setVisibility(View.VISIBLE);
             noDataFoundForCancelled.setVisibility(View.GONE);
 
-            appointmentInfoList.forEach(appointmentInfo -> {
+            cancelledAppointmentInfoList.forEach(appointmentInfo -> {
                 String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
                 appointmentInfo.setPatientProfilePhoto(patientProfilePath);
             });
 
-            AllAppointmentsAdapter allAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), appointmentInfoList, "cancelled");
-            rvCancelledApp.setAdapter(allAppointmentsAdapter);
-
+            cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledAppointmentInfoList, "cancelled");
+            rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
+            cancelledStart = cancelledEnd;
+            cancelledEnd += cancelledLimit;
         } else {
-
             rvCancelledApp.setVisibility(View.GONE);
             noDataFoundForCancelled.setVisibility(View.VISIBLE);
         }
 
-        tvCancelledAppsCount.setText(appointmentInfoList.size() + "");
-        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + appointmentInfoList.size() + ")");
-
+        tvCancelledAppsCount.setText(cancelledAppointmentInfoList.size() + "");
+        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentInfoList.size() + ")");
     }
 
 
     private void getCompletedAppointments() {
-
         tvCompletedAppsCount.setText("0");
         tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, searchPatientText);
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAllCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart);
 
         if (appointmentInfoList.size() > 0) {
             rvCompletedApp.setVisibility(View.VISIBLE);
@@ -673,6 +694,8 @@ public class AllAppointmentsFragment extends Fragment {
             tvCompletedAppsCount.setText(appointmentInfoList.size() + "");
             tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + appointmentInfoList.size() + ")");
             getDataForCompletedAppointments(appointmentInfoList);
+            completedStart = completedEnd;
+            completedEnd += completedLimit;
         } else {
             //no data found
             rvCompletedApp.setVisibility(View.GONE);
