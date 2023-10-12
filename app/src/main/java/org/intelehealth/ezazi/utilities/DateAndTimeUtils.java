@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -108,14 +110,14 @@ public class DateAndTimeUtils {
 
     public String twoMinuteDelayTime() {
 //        Locale.setDefault(Locale.getDefault());
-        DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+//        DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
         //  DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.setTimeZone(TimeZone.getDefault());
+        calendar.setTimeZone(DateTimeUtils.getUTCTimeZone());
         calendar.add(Calendar.MINUTE, 2);
-        return date.format(calendar.getTime());
+        return DateTimeUtils.formatDate(calendar.getTime(), AppConstants.UTC_FORMAT, DateTimeUtils.getUTCTimeZone());
     }
 
     public static int getAge(String s, Context context) {

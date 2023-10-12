@@ -91,7 +91,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.Serializable;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -166,9 +165,12 @@ public class PatientPersonalInfoFragment extends Fragment {
     private PatientAttributesModel patientAttributesModel;
     private NestedScrollView scrollviewPersonalInfo;
 
+    private Date defaultDobDate;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        defaultDobDate = getMaxDate();
         updateLocale();
         view = inflater.inflate(R.layout.fragment_patient_personal_info, container, false);
         mContext = getActivity();
@@ -204,6 +206,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         etLayoutDob = view.findViewById(R.id.etLayout_dob);
 
         tvDobForDb = view.findViewById(R.id.tv_selected_date_dob);
+        tvDobForDb.setText(DateTimeUtils.formatToLocalDate(getMaxDate(), DateTimeUtils.YYYY_MM_DD_HYPHEN));
         tvAgeDob = view.findViewById(R.id.tv_age_dob);
 
         //cards for input fields
@@ -295,6 +298,28 @@ public class PatientPersonalInfoFragment extends Fragment {
         });
     }
 
+    private void setDefaultDob(CalendarDialog dialog) {
+        // to set existing dob as a default in edit mode
+        String date = tvDobForDb.getText().toString();
+        Date defaultDt = DateTimeUtils.parseDate(date, DateTimeUtils.YYYY_MM_DD_HYPHEN, TimeZone.getDefault());
+//        if (patient1.getDate_of_birth() != null && patient1.getDate_of_birth().length() > 0) {
+//            defaultDobDate = DateTimeUtils.parseDate(patient1.getDate_of_birth(), DateTimeUtils.YYYY_MM_DD, TimeZone.getDefault());
+//        } else {
+//            String date = getSelectedDob(requireContext());
+//            if (date != null && date.length() > 0) {
+//                defaultDobDate = DateTimeUtils.parseDate(date, DateTimeUtils.YYYY_MM_DD, TimeZone.getDefault());
+//            }
+//        }
+
+        dialog.setDefaultDate(defaultDt.getTime());
+    }
+
+    private Date getMaxDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -10);
+        return calendar.getTime();
+    }
+
     private void selectDob() {
         boolean isTable = getResources().getBoolean(R.bool.isTabletSize);
         int maxHeight = getResources().getDimensionPixelOffset(R.dimen.std_430dp);
@@ -305,17 +330,10 @@ public class PatientPersonalInfoFragment extends Fragment {
                 .maxHeight(!isTable ? maxHeight : 0)
                 .build();
 
-        // to set existing dob as a default in edit mode
-        if (patient1.getDate_of_birth() != null && patient1.getDate_of_birth().length() > 0) {
-            Date date = DateTimeUtils.parseDate(patient1.getDate_of_birth(), DateTimeUtils.YYYY_MM_DD, TimeZone.getDefault());
-            dialog.setDefaultDate(date.getTime());
-        }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, -10);
-        dialog.setMaxDate(calendar.getTimeInMillis());
-        Log.d(TAG, "selectDob: " + calendar.getTime());
-
+        dialog.setMaxDate(getMaxDate().getTime());
+        Log.d(TAG, "selectDob: " + getMaxDate().getTime());
+        setDefaultDob(dialog);
         dialog.setListener((day, month, year, value) -> {
             Log.e(TAG, "Date = >" + value);
             //dd/mm/yyyy
@@ -323,6 +341,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
             if (!selectedDate.isEmpty()) {
                 dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+                patient1.setDate_of_birth(dobToDb);
 //            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
                 //for age
                 String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
@@ -353,6 +372,16 @@ public class PatientPersonalInfoFragment extends Fragment {
 
     }
 
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        setSelectedDob(requireContext(), "");
+//    }
+//
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//    }
 
     private void updatePatientDetailsFromSecondScreen() {
         fragment_secondScreen = new PatientAddressInfoFragment();

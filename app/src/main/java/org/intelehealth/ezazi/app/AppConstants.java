@@ -65,7 +65,9 @@ public class AppConstants {
 
 //    public static final String UTC_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
-    public static final String UTC_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    public static final String UTC_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    public static final String VISIT_FORMAT = "MMM dd, yyyy hh:mm:ss a";
 
     //functions constants 2023-10-12 08:14:52
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());

@@ -22,7 +22,7 @@
     <string name="live_birth">Live Birth</string>
     <string name="still_birth">Stillbirth</string>
     <string name="action_birthoutcome">Birth Outcome</string>
-    <string name="this_option_available_tablet_device">Please use 8inch or more tablet for viewing the epartogram</string>
+    <string name="this_option_available_tablet_device">Please use 8inch or more tablet for viewing the eLCG</string>
     <string name="move_to_stage2">Move to Stage 2</string>
     <string name="refer_to_other_hospital">Refer to other Hospital</string>
     <string name="self_discharge_medical_advice">Self discharge against Medical Advice</string>

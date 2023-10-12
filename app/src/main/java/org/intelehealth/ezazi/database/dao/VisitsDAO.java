@@ -60,9 +60,12 @@ public class VisitsDAO {
             values.put("locationuuid", visit.getLocationuuid());
             values.put("visit_type_uuid", visit.getVisitTypeUuid());
             values.put("creator", visit.getCreatoruuid());
-            values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
-            values.put("enddate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getEnddate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
-            values.put("modified_date", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getModifiedDate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+//            values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+//            values.put("enddate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getEnddate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+//            values.put("modified_date", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getModifiedDate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+            values.put("startdate", visit.getStartdate());
+            values.put("enddate", visit.getEnddate());
+            values.put("modified_date", visit.getModifiedDate());
             values.put("sync", visit.getSyncd());
             createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
@@ -363,7 +366,7 @@ public class VisitsDAO {
     public boolean updateVisitEnddate(String uuid, String enddate) throws DAOException {
         boolean isUpdated = true;
         if (enddate.length() == 0) return isUpdated;
-        Logger.logD("visitdao", "updatesynv visit uuid:" + uuid +" EndDate:"+ enddate);
+        Logger.logD("visitdao", "updatesynv visit uuid:" + uuid + " EndDate:" + enddate);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
@@ -565,7 +568,7 @@ public class VisitsDAO {
                 .from("tbl_visit V")
                 .join(" LEFT OUTER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid ")
                 .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
-                        "AND V.voided = '0' AND VA.value = '" + providerId + "' AND V.enddate IN (NULL, '') ")
+                        "AND V.voided = '0' AND VA.value = '" + providerId + "' AND (V.enddate IS NULL OR  V.enddate = '') ")
                 .groupBy("V.uuid").orderBy("V.startdate")
                 .orderIn("DESC")
                 .build();

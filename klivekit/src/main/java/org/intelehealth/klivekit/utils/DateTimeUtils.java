@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.text.format.DateUtils;
 import android.util.Log;
 
-import com.github.ajalt.timberkt.Timber;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,8 +26,8 @@ public class DateTimeUtils {
 
     public static final String TIME_FORMAT = "hh:mm a";
 
-    public static final String YYYY_MM_DD = "yyyy-MM-dd";
-
+    public static final String YYYY_MM_DD_HYPHEN = "yyyy-MM-dd";
+    public static final String YYYY_MM_DD_WITH_SPLASH = "dd/MM/yyyy";
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat getSimpleDateFormat(String format, TimeZone timeZone) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -44,6 +42,11 @@ public class DateTimeUtils {
 
     public static String formatToLocalDate(Date date, String format) {
         SimpleDateFormat sdf = getSimpleDateFormat(format, TimeZone.getDefault());
+        return sdf.format(date);
+    }
+
+    public static String formatDate(Date date, String format, TimeZone timeZone) {
+        SimpleDateFormat sdf = getSimpleDateFormat(format, timeZone);
         return sdf.format(date);
     }
 
