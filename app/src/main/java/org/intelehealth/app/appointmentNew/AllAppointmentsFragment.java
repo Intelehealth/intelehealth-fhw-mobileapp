@@ -36,6 +36,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,6 +98,8 @@ public class AllAppointmentsFragment extends Fragment {
     int totalCompleted = 0;
     SessionManager sessionManager;
 
+    private NestedScrollView nsvToday;
+
     private final int upcomingLimit = 15;
     private final int completedLimit = 15;
     private final int cancelledLimit = 15;
@@ -124,8 +127,6 @@ public class AllAppointmentsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-
     }
 
     @Override
@@ -147,11 +148,9 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setLocale(getContext());
-        parentView = inflater.inflate(R.layout.fragment_all_appointments_ui2,
-                container, false);
+        parentView = inflater.inflate(R.layout.fragment_all_appointments_ui2, container, false);
         initUI();
         clickListeners();
         return parentView;
@@ -330,6 +329,98 @@ public class AllAppointmentsFragment extends Fragment {
         filtersList = new ArrayList<>();
         filtersListNew = new ArrayList<>();
         updateCardBackgrounds("upcoming");
+
+        nsvToday = parentView.findViewById(R.id.nsv_today);
+        nsvToday.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                if (scrollY > oldScrollY) {
+
+                    if (upcomingAppointmentInfoList != null && upcomingAppointmentInfoList.size() == 0) {
+                        isUpcomingFullyLoaded = true;
+                    }
+
+                    if (!isUpcomingFullyLoaded) {
+                        setMoreDataIntoUpcomingRecyclerView();
+                    }
+
+                    if (isUpcomingFullyLoaded) {
+                        setMoreDataIntoCancelledRecyclerView();
+                    }
+
+                    if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        if (completedAppointmentInfoList != null && completedAppointmentInfoList.size() == 0) {
+                            isCompletedFullyLoaded = true;
+                            return;
+                        }
+
+                        if (!isCompletedFullyLoaded) {
+                            setMoreDataIntoCompletedRecyclerView();
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void setMoreDataIntoUpcomingRecyclerView() {
+        if (upcomingSearchList.size() > 0 || cancelledSearchList.size() > 0 || completedSearchList.size() > 0) {
+            return;
+        }
+
+        if (upcomingAppointmentInfoList != null && upcomingAppointmentInfoList.size() == 0) {
+            isUpcomingFullyLoaded = true;
+            return;
+        }
+
+        List<AppointmentInfo> tempList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart);
+        if (tempList.size() > 0) {
+            upcomingAppointmentInfoList.addAll(tempList);
+            upcomingAllAppointmentsAdapter.appointmentsList.addAll(tempList);
+            upcomingAllAppointmentsAdapter.notifyDataSetChanged();
+            upcomingStart = upcomingEnd;
+            upcomingEnd += upcomingLimit;
+        }
+    }
+
+    private void setMoreDataIntoCancelledRecyclerView() {
+        if (upcomingSearchList.size() > 0 || cancelledSearchList.size() > 0 || completedSearchList.size() > 0) {
+            return;
+        }
+
+        if (cancelledAppointmentInfoList != null && cancelledAppointmentInfoList.size() == 0) {
+            isCancelledFullyLoaded = true;
+            return;
+        }
+
+        List<AppointmentInfo> tempList = new AppointmentDAO().getAllCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart);
+        if (tempList.size() > 0) {
+            cancelledAppointmentInfoList.addAll(tempList);
+            cancelledAllAppointmentsAdapter.appointmentsList.addAll(tempList);
+            cancelledAllAppointmentsAdapter.notifyDataSetChanged();
+            cancelledStart = cancelledEnd;
+            cancelledEnd += cancelledLimit;
+        }
+    }
+
+    private void setMoreDataIntoCompletedRecyclerView() {
+        if (upcomingSearchList.size() > 0 || cancelledSearchList.size() > 0 || completedSearchList.size() > 0) {
+            return;
+        }
+
+        if (completedAppointmentInfoList != null && completedAppointmentInfoList.size() == 0) {
+            isCompletedFullyLoaded = true;
+            return;
+        }
+
+        List<AppointmentInfo> tempList = new AppointmentDAO().getAllCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart);
+        if (tempList.size() > 0) {
+            completedAppointmentInfoList.addAll(tempList);
+            completedAllAppointmentsAdapter.appointmentsList.addAll(tempList);
+            completedAllAppointmentsAdapter.notifyDataSetChanged();
+            upcomingStart = upcomingEnd;
+            upcomingEnd += upcomingLimit;
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

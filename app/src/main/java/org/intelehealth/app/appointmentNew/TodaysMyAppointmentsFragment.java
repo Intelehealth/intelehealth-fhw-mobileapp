@@ -299,7 +299,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsForToday(currentDate, upcomingLimit, upcomingStart);
+        List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsForToday(currentDate, cancelledLimit, cancelledStart);
         if (tempList.size() > 0) {
             cancelledAppointmentInfoList.addAll(tempList);
             cancelledMyAppointmentsAdapter.appointmentInfoList.addAll(tempList);
