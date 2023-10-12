@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -27,9 +28,9 @@ import java.util.List;
 public class AdministerDispenseActivity extends AppCompatActivity {
     private TextInputEditText tie_medNotes, tie_aidNotes,
             tie_totalCost, tie_vendorDiscount, tie_coveredCost, tie_outOfPocket, tie_others;
-    private TextView tv_medData, tv_aidData;
+    private TextView tv_medData, tv_aidData, tvSave;
     private String tag = "";
-    private FrameLayout fl_aid;
+    private FrameLayout fl_med, fl_aid;
     private List<MedicationAidModel> medList, aidList;
 
 
@@ -82,6 +83,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                     tie_aidNotes.setHint("");
             }
         });
+
+
     }
 
     private void initUI() {
@@ -103,7 +106,12 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         tv_medData = findViewById(R.id.tv_medData);
         tv_aidData = findViewById(R.id.tv_aidData);
+
         fl_aid = findViewById(R.id.fl_aid);
+        fl_med = findViewById(R.id.fl_med);
+
+        tvSave = findViewById(R.id.tvSave);
+
         medList = new ArrayList<>();
         aidList = new ArrayList<>();
 
@@ -113,12 +121,14 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         aidList = (List<MedicationAidModel>) intent.getSerializableExtra("aid");    // null on empty.
 
         if (medList != null && medList.size() > 0) {
+            fl_med.setVisibility(View.VISIBLE);
             String medData = "";
             for (MedicationAidModel med : medList) {
                 medData = medData + (Node.bullet + " " + med.getValue()) + "\n\n";
             }
             tv_medData.setText(medData.substring(0, medData.length() - 2));
         }
+        else fl_med.setVisibility(View.GONE);
 
         if (tag.equalsIgnoreCase("administer")) {
             getSupportActionBar().setTitle(getString(R.string.administer_medication));
@@ -207,8 +217,80 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                     calculateOtherAids();
             }
         });
-
         // Edit Text - end
+
+        tvSave.setOnClickListener(v -> {
+            checkValidation();
+        });
+    }
+
+    private void checkValidation() {
+        if (medList != null && medList.size() > 0) {
+            if (tie_medNotes.getText().toString().isEmpty()) {
+                tie_medNotes.requestFocus();
+                tie_medNotes.setError(getString(R.string.error_field_required));
+                return;
+            }
+        }
+
+        if (aidList != null && aidList.size() > 0) {
+            if (tie_totalCost.getText().toString().isEmpty()) {
+                tie_totalCost.requestFocus();
+                tie_totalCost.setError(getString(R.string.error_field_required));
+                return;
+            }
+            if (tie_vendorDiscount.getText().toString().isEmpty()) {
+                tie_vendorDiscount.requestFocus();
+                tie_vendorDiscount.setError(getString(R.string.error_field_required));
+                return;
+            }
+            if (tie_coveredCost.getText().toString().isEmpty()) {
+                tie_coveredCost.requestFocus();
+                tie_coveredCost.setError(getString(R.string.error_field_required));
+                return;
+            }
+            if (tie_outOfPocket.getText().toString().isEmpty()) {
+                tie_outOfPocket.requestFocus();
+                tie_outOfPocket.setError(getString(R.string.error_field_required));
+                return;
+            }
+            if (tie_aidNotes.getText().toString().isEmpty()) {
+                tie_aidNotes.requestFocus();
+                tie_aidNotes.setError(getString(R.string.error_field_required));
+                return;
+            }
+        }
+
+        saveDataToDB();
+    }
+
+    private void saveDataToDB() {
+        String medicineValue = tv_medData.getText().toString().trim();
+        String medNotesValue = tie_medNotes.getText().toString().trim();
+
+        String aidValue = tv_aidData.getText().toString().trim();
+        String aidNotesValue = tie_aidNotes.getText().toString().trim();
+        String totalCostValue = tie_totalCost.getText().toString().trim();
+        String vendorDiscountValue = tie_vendorDiscount.getText().toString().trim();
+        String coveredCostValue = tie_coveredCost.getText().toString().trim();
+        String outOfPocketValue = tie_outOfPocket.getText().toString().trim();
+
+        if (tag.equalsIgnoreCase("dispense")) {
+            if (medList != null && medList.size() > 0) {
+
+            }
+
+            if (aidList != null && aidList.size() > 0) {
+
+            }
+            Toast.makeText(this, "Dispense Data Saved.", Toast.LENGTH_SHORT).show();
+        }
+        else if (tag.equalsIgnoreCase("administer")) {
+            if (aidList != null && aidList.size() > 0) {
+
+            }
+            Toast.makeText(this, "Administer Data Saved.", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

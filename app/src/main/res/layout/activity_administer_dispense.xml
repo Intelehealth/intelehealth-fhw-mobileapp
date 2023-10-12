@@ -38,6 +38,19 @@
             android:layout_height="match_parent">
 
 
+        <FrameLayout
+            android:id="@+id/fl_med"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/tv_medication"
             android:layout_width="match_parent"
@@ -58,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textSize="@dimen/card_content_sub_text_size"
-            android:text="1. Medicine A \n2. Medicine B"
+            tools:text="1. Medicine A \n2. Medicine B"
             app:layout_constraintTop_toBottomOf="@id/tv_medication"
             />
 
@@ -90,12 +103,14 @@
                     android:textSize="@dimen/find_patient_hint_size"
                     />
             </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/fl_aid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/til_medNotes"
+                app:layout_constraintTop_toBottomOf="@id/fl_med"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 >
@@ -124,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textSize="@dimen/card_content_sub_text_size"
-                android:text="1. Aid A \n2. Aid B"
+                tools:text="1. Aid A \n2. Aid B"
                 app:layout_constraintTop_toBottomOf="@id/tv_aid"
                 />
 
