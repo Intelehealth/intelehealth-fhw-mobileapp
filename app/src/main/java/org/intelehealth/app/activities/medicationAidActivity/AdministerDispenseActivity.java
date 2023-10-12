@@ -104,6 +104,14 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         medList = (List<MedicationAidModel>) intent.getSerializableExtra("med");
         aidList = (List<MedicationAidModel>) intent.getSerializableExtra("aid");    // null on empty.
 
+        if (medList != null && medList.size() > 0) {
+            String medData = "";
+            for (MedicationAidModel med : medList) {
+                medData = medData + (Node.bullet + " " + med.getValue()) + "\n\n";
+            }
+            tv_medData.setText(medData.substring(0, medData.length() - 2));
+        }
+
         if (tag.equalsIgnoreCase("administer")) {
             getSupportActionBar().setTitle(getString(R.string.administer_medication));
             fl_aid.setVisibility(View.GONE);
@@ -111,14 +119,6 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         else {  // ie. dispense
             getSupportActionBar().setTitle(getString(R.string.dispense_medication_and_aid));
             fl_aid.setVisibility(View.VISIBLE);
-
-            if (medList != null && medList.size() > 0) {
-                String medData = "";
-                for (MedicationAidModel med : medList) {
-                    medData = medData + (Node.bullet + " " + med.getValue()) + "\n\n";
-                }
-                tv_medData.setText(medData.substring(0, medData.length() - 2));
-            }
 
             if (aidList != null && aidList.size() > 0) {
                 String aidData = "";
