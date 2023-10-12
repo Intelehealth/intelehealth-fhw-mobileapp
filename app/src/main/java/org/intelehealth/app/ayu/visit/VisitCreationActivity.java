@@ -576,7 +576,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             /*if (i == 0) {
                 optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(0).getOptionsList().get(0));
             }*/
-            if (map.containsKey(filterNode.getOptionsList().get(i).getText())) {
+            if (map.containsKey(filterNode.getOptionsList().get(i).getText()) && filterNode.getOptionsList().get(i).getOptionsList()!=null) {
                 for (int j = 0; j < filterNode.getOptionsList().get(i).getOptionsList().size(); j++) {
                     optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(j).getOptionsList().get(0));
                 }

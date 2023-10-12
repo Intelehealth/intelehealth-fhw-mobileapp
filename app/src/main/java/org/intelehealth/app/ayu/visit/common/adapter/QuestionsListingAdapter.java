@@ -83,12 +83,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private String engineVersion = "3.0";
 
     public String getEngineVersion() {
-        Log.v(TAG, "engineVersion - "+engineVersion);
+        Log.v(TAG, "engineVersion - " + engineVersion);
         return engineVersion;
     }
 
     public void setEngineVersion(String engineVersion) {
-        Log.v(TAG, "setEngineVersion - "+engineVersion);
+        Log.v(TAG, "setEngineVersion - " + engineVersion);
         if (engineVersion == null) return;
         this.engineVersion = engineVersion;
     }
@@ -168,12 +168,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
 
     public void addItem(Node node, String engineVersion) {
-        Log.v(TAG, "addItem() engineVersion - "+engineVersion);
+        Log.v(TAG, "addItem() engineVersion - " + engineVersion);
         mItemList.add(node);
         int key = mItemList.size() - 1;
         if (!mIndexMappingHashMap.containsKey(key)) mIndexMappingHashMap.put(key, mRootIndex);
 
-        if(engineVersion==null || engineVersion.isEmpty()){
+        if (engineVersion == null || engineVersion.isEmpty()) {
             engineVersion = "3.0";
         }
         if (!mMindMapVersionMappingHashMap.containsKey(key)) {
@@ -464,7 +464,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                     node.setDataCaptured(true);
                     holder.node.setDataCaptured(true);
-
 
 
                     AdapterUtils.setToDisable(skipButton);
@@ -1087,6 +1086,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (mItemList.get(index).isMultiChoice()) {
                     holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
                     holder.submitButton.setVisibility(View.VISIBLE);
+                    holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, selectedNode.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
                     holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
                     if (mItemList.get(index).isDataCaptured()) {
                         AdapterUtils.setToDisable(holder.skipButton);
@@ -1147,11 +1147,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             mItemList.get(index).setSelected(false);
                             mItemList.get(index).setDataCaptured(false);
                         }
+                        boolean isRequiredToShowParentActionButtons = false;
                         for (int i = 0; i < options.size(); i++) {
                             if (options.get(i).isSelected()) {
                                 mItemList.get(index).setSelected(true);
                                 //mItemList.get(index).setDataCaptured(true);
-                                break;
+                                //break;
+                                if (!isRequiredToShowParentActionButtons)
+                                    isRequiredToShowParentActionButtons = !isAnySubChildOpenedWithAction(options.get(i));
                             }
                         }
                         //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
@@ -1203,7 +1206,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                             if (mItemList.get(index).isMultiChoice()) {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                                if (!isAnyOtherOptionSelected)
+                                if (!isAnyOtherOptionSelected || isRequiredToShowParentActionButtons)
                                     holder.submitButton.setVisibility(View.VISIBLE);
                             } else {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
@@ -1227,7 +1230,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             if (mItemList.get(index).isRequired()) {
                                 holder.skipButton.setVisibility(View.GONE);
                             } else {
-                                if (!isAnyOtherOptionSelected)
+                                if (!isAnyOtherOptionSelected || isRequiredToShowParentActionButtons)
                                     holder.skipButton.setVisibility(View.VISIBLE);
                             }
 
@@ -1240,6 +1243,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             }
                             return;
                         }
+
+
 
                         switch (type) {
                             case "text":
@@ -1321,6 +1326,23 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }*/
         }
 
+    }
+
+    private boolean isAnySubChildOpenedWithAction(Node node) {
+        String type = node.getInputType() == null ? "" : node.getInputType();
+
+        if (type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+            type = "options";
+        }
+        if (type.isEmpty()) {
+            if (node.isSelected()) {
+                return node.getOptionsList() != null && node.getOptionsList().size() != 0;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, boolean isRootNodeQuestion) {
@@ -1948,14 +1970,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
         final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
         Button submitButton = view.findViewById(R.id.btn_submit);
-        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
-        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         Button skipButton = view.findViewById(R.id.btn_skip);
-        if (node.isSkipped()) {
-            skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
-            skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
-            AdapterUtils.setToDisable(submitButton);
-        }
+
        /* if (node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);
         } else {
@@ -2096,6 +2112,20 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         } else {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }*/
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+                submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+
+                if (node.isSkipped()) {
+                    skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
+                    skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+                    AdapterUtils.setToDisable(submitButton);
+                }
+            }
+        },1000);
 
         holder.singleComponentContainer.addView(view);
         Log.v(TAG, "addDurationView holder.singleComponentContainer count child - " + holder.singleComponentContainer.getChildCount());
@@ -2420,15 +2450,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         Button skipButton = view.findViewById(R.id.btn_skip);
+        String oldValue = node.getLanguage();
         if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
         }
-        if(node.isDataCaptured()){
-            String dateString = node.getLanguage();
-            displayDateButton.setText(dateString);
-            displayDateButton.setTag(dateString);
+        if (node.isDataCaptured()) {
+            displayDateButton.setText(oldValue);
+            displayDateButton.setTag(oldValue);
         }
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -2482,7 +2512,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 String d = (String) displayDateButton.getTag();
-                if (d!=null && !d.contains("/")) {
+                if (d != null && !d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
                     /*Calendar cal = Calendar.getInstance();

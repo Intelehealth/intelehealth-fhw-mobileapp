@@ -783,8 +783,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     }
 
                     if (type.equals("options")) {
-                        //addItem(node);
-                        showNestedItemsV2(node, holder, node.getOptionsList(), index, false, false);
+                        addItem(node);
+                        //showNestedItemsV2(node, holder, node.getOptionsList(), index, false, false);
                     } else {
                         routeByType(holder, selectedNode, node, index, true, true);
                     }
@@ -811,7 +811,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         linearLayoutManager.setStackFromEnd(false);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         holder.superNestedRecyclerView.setLayoutManager(linearLayoutManager);
-        int nestedLevel = 0;
+        int nestedLevel = mNestedLevel+1;
         holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, new OnItemSelection() {
             @Override
             public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode) {
