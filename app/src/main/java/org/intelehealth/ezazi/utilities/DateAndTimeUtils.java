@@ -365,6 +365,7 @@ public class DateAndTimeUtils {
 
     }
 
+
     public String currentDateTimeInHome() {
         DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it

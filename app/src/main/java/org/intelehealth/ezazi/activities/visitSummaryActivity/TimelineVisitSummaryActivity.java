@@ -297,9 +297,10 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_view_partogram:
-                boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-                if (isTablet) showEpartogram();
-                else showRequireTabletView();
+//                boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+//                if (isTablet) showEpartogram();
+//                else showRequireTabletView();
+                showEpartogram();
                 break;
             case android.R.id.home:
                 finish();

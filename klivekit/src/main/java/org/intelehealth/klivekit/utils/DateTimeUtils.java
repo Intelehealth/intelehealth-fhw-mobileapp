@@ -24,6 +24,8 @@ public class DateTimeUtils {
 
     public static final String TIME_FORMAT = "HH:mm a";
 
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
+
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat getSimpleDateFormat(String format, TimeZone timeZone) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);

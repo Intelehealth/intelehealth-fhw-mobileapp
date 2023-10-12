@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 
 import org.intelehealth.ezazi.R;
@@ -49,7 +48,7 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
         this.minDate = minDate;
     }
 
-    public void setCurrentDate(Long currentDate) {
+    public void setDefaultDate(Long currentDate) {
         calendar.setTimeInMillis(currentDate);
     }
 
