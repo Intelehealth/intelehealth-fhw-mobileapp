@@ -2,6 +2,9 @@ package org.intelehealth.klivekit.utils;
 
 import android.annotation.SuppressLint;
 import android.text.format.DateUtils;
+import android.util.Log;
+
+import com.github.ajalt.timberkt.Timber;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,13 +19,14 @@ import java.util.concurrent.TimeUnit;
  * Mob   : +919727206702
  **/
 public class DateTimeUtils {
+    public static final String TAG = "DateTimeUtils";
     public static final String DB_FORMAT = "EEE, dd MMM yyyy HH:mm:ss z";
     public static final String MESSAGE_TIME_FORMAT = "h:mm a";
     public static final String MESSAGE_DAY_FORMAT = "EEE, dd MMM yyyy";
     public static final String TIME_ZONE_UTC = "UTC";
     public static final String TIME_ZONE_ISD = "Asia/Kolkata";
 
-    public static final String TIME_FORMAT = "HH:mm a";
+    public static final String TIME_FORMAT = "hh:mm a";
 
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
 
@@ -48,6 +52,7 @@ public class DateTimeUtils {
         try {
             return sdf.parse(date);
         } catch (ParseException e) {
+            Log.e(TAG, "parseDate: ", e);
             return getCurrentDate(getUTCTimeZone());
         }
     }

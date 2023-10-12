@@ -17,5 +17,5 @@ fun String.toLocalDateFormat(format: String): String {
     val date = this.toDate(DateTimeUtils.DB_FORMAT)
     return if (DateTimeUtils.isToday(date)) "Today"
     else if (DateTimeUtils.isYesterday(date)) "Yesterday"
-    else DateTimeUtils.formatInDefaultTimeZoneDate(this.toDate(DateTimeUtils.DB_FORMAT), format)
+    else DateTimeUtils.formatToLocalDate(this.toDate(DateTimeUtils.DB_FORMAT), format)
 }

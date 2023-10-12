@@ -262,12 +262,12 @@ public class PatientDetailActivity extends BaseActionBarActivity {
             public void onClick(View v) {
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
-                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
-                SimpleDateFormat timeLineTime = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
+//                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+//                SimpleDateFormat timeLineTime = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
 
-                Date todayDate = new Date();
-                String thisDate = currentDate.format(todayDate);
-                String timeLineTimeValue = timeLineTime.format(todayDate);
+                String thisDate = DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT);
+                Log.e(TAG, "onClick: create visit : time =>" + thisDate);
+//                String timeLineTimeValue = timeLineTime.format(todayDate);
 
 
                 String uuid = UUID.randomUUID().toString();

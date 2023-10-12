@@ -307,7 +307,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
         // to set existing dob as a default in edit mode
         if (patient1.getDate_of_birth() != null && patient1.getDate_of_birth().length() > 0) {
-            Date date = DateTimeUtils.parseDate(patient1.getDate_of_birth(), DateTimeUtils.YYYY_MM_DD, DateTimeUtils.TIME_ZONE_ISD);
+            Date date = DateTimeUtils.parseDate(patient1.getDate_of_birth(), DateTimeUtils.YYYY_MM_DD, TimeZone.getDefault());
             dialog.setDefaultDate(date.getTime());
         }
 

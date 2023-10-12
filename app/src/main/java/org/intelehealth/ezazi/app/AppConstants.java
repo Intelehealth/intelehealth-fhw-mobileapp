@@ -63,9 +63,11 @@ public class AppConstants {
     public static final String MAXIMUM_BASELINE_FHR = "220";
     public static final String MINIMUM_BASELINE_FHR = "90";
 
-    public static final String UTC_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+//    public static final String UTC_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
-    //functions constants
+    public static final String UTC_FORMAT = "yyyy-MM-dd hh:mm:ss";
+
+    //functions constants 2023-10-12 08:14:52
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
     public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
