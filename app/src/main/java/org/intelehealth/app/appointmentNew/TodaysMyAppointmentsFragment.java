@@ -27,13 +27,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-
 import org.intelehealth.app.R;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -57,8 +55,7 @@ import retrofit2.Callback;
 public class TodaysMyAppointmentsFragment extends Fragment {
     private static final String TAG = "TodaysMyAppointmentsFra";
     View view;
-    LinearLayout cardUpcomingAppointments, cardCancelledAppointments, cardCompletedAppointments, layoutMainAppOptions,
-            layoutUpcoming, layoutCancelled, layoutCompleted;
+    LinearLayout cardUpcomingAppointments, cardCancelledAppointments, cardCompletedAppointments, layoutMainAppOptions, layoutUpcoming, layoutCancelled, layoutCompleted;
     RecyclerView rvUpcomingApp, rvCancelledApp, rvCompletedApp;
     LinearLayout layoutParentAll;
     TextView tvUpcomingAppointments, tvUpcomingAppointmentsTitle, tvCompletedAppointments, tvCompletedAppointmentsTitle, tvCancelledAppsCount, tvCancelledAppsCountTitle;
@@ -73,6 +70,30 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     int totalCancelled = 0;
     int totalCompleted = 0;
     private UpdateAppointmentsCount listener;
+    private NestedScrollView nsvToday;
+
+    private final int upcomingLimit = 15;
+    private final int completedLimit = 15;
+    private final int cancelledLimit = 15;
+    private int upcomingStart = 0, upcomingEnd = upcomingStart + upcomingLimit;
+    private int completedStart = 0, completedEnd = completedStart + completedLimit;
+    private int cancelledStart = 0, cancelledEnd = cancelledStart + cancelledLimit;
+
+    private boolean isUpcomingFullyLoaded = false;
+    private boolean isCompletedFullyLoaded = false;
+    private boolean isCancelledFullyLoaded = false;
+
+    private List<AppointmentInfo> upcomingAppointmentInfoList;
+    private List<AppointmentInfo> completedAppointmentInfoList;
+    private List<AppointmentInfo> cancelledAppointmentInfoList;
+
+    private final List<AppointmentInfo> upcomingSearchList = new ArrayList<>();
+    private final List<AppointmentInfo> completedSearchList = new ArrayList<>();
+    private final List<AppointmentInfo> cancelledSearchList = new ArrayList<>();
+
+    private TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter;
+    private TodaysMyAppointmentsAdapter completedMyAppointmentsAdapter;
+    private TodaysMyAppointmentsAdapter cancelledMyAppointmentsAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,8 +114,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setLocale(getContext());
         view = inflater.inflate(R.layout.fragment_todays_appointments_ui2, container, false);
         initUI();
@@ -175,7 +195,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         ivClearText.setOnClickListener(v -> {
             autotvSearch.setText("");
             searchPatientText = "";
-            getAppointments();
+            resetData();
         });
 
         cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
@@ -193,10 +213,120 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
         layoutUpcoming.setLayoutParams(params);
 
+        nsvToday = view.findViewById(R.id.nsv_today);
+        nsvToday.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                if (scrollY > oldScrollY) {
+
+                    if (upcomingAppointmentInfoList != null && upcomingAppointmentInfoList.size() == 0) {
+                        isUpcomingFullyLoaded = true;
+                    }
+
+                    if (!isUpcomingFullyLoaded) {
+                        setMoreDataIntoUpcomingRecyclerView();
+                    }
+
+                    if (isUpcomingFullyLoaded) {
+                        setMoreDataIntoCancelledRecyclerView();
+                    }
+
+                    if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        if (completedAppointmentInfoList != null && completedAppointmentInfoList.size() == 0) {
+                            isCompletedFullyLoaded = true;
+                            return;
+                        }
+
+                        if (!isCompletedFullyLoaded) {
+                            setMoreDataIntoCompletedRecyclerView();
+                        }
+                    }
+                }
+            }
+        });
+
         searchPatient();
         //getSlots();
 
 
+    }
+
+    private void resetData() {
+        completedSearchList.clear();
+        cancelledSearchList.clear();
+        upcomingSearchList.clear();
+
+        initLimits();
+        getAppointments();
+    }
+
+    private void initLimits() {
+        upcomingStart = 0;
+        cancelledStart = 0;
+        completedStart = 0;
+
+        upcomingEnd = upcomingStart + upcomingLimit;
+        cancelledEnd = cancelledStart + cancelledLimit;
+        completedEnd = completedEnd + completedLimit;
+    }
+
+    private void setMoreDataIntoUpcomingRecyclerView() {
+        if (upcomingSearchList.size() > 0 || cancelledSearchList.size() > 0 || completedSearchList.size() > 0) {
+            return;
+        }
+
+        if (upcomingAppointmentInfoList != null && upcomingAppointmentInfoList.size() == 0) {
+            isUpcomingFullyLoaded = true;
+            return;
+        }
+
+        List<AppointmentInfo> tempList = new AppointmentDAO().getUpcomingAppointmentsForToday(currentDate, upcomingLimit, upcomingStart);
+        if (tempList.size() > 0) {
+            upcomingAppointmentInfoList.addAll(tempList);
+            todaysMyAppointmentsAdapter.appointmentInfoList.addAll(tempList);
+            todaysMyAppointmentsAdapter.notifyDataSetChanged();
+            upcomingStart = upcomingEnd;
+            upcomingEnd += upcomingLimit;
+        }
+    }
+
+    private void setMoreDataIntoCancelledRecyclerView() {
+        if (upcomingSearchList.size() > 0 || cancelledSearchList.size() > 0 || completedSearchList.size() > 0) {
+            return;
+        }
+
+        if (cancelledAppointmentInfoList != null && cancelledAppointmentInfoList.size() == 0) {
+            isCancelledFullyLoaded = true;
+            return;
+        }
+
+        List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsForToday(currentDate, upcomingLimit, upcomingStart);
+        if (tempList.size() > 0) {
+            cancelledAppointmentInfoList.addAll(tempList);
+            cancelledMyAppointmentsAdapter.appointmentInfoList.addAll(tempList);
+            cancelledMyAppointmentsAdapter.notifyDataSetChanged();
+            cancelledStart = cancelledEnd;
+            cancelledEnd += cancelledLimit;
+        }
+    }
+
+    private void setMoreDataIntoCompletedRecyclerView() {
+        if (upcomingSearchList.size() > 0 || cancelledSearchList.size() > 0 || completedSearchList.size() > 0) {
+            return;
+        }
+
+        if (completedAppointmentInfoList != null && completedAppointmentInfoList.size() == 0) {
+            isCompletedFullyLoaded = true;
+            return;
+        }
+
+        List<AppointmentInfo> tempList = new AppointmentDAO().getCompletedAppointmentsForToday(currentDate, completedLimit, completedStart);
+        if (tempList.size() > 0) {
+            completedAppointmentInfoList.addAll(tempList);
+            completedMyAppointmentsAdapter.appointmentInfoList.addAll(tempList);
+            completedMyAppointmentsAdapter.notifyDataSetChanged();
+            upcomingStart = upcomingEnd;
+            upcomingEnd += upcomingLimit;
+        }
     }
 
     private void searchPatient() {
@@ -218,26 +348,18 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     searchPatientText = "";
                     getAppointments();
                     ivClearText.setVisibility(View.GONE);
-
                 }
             }
-
         });
 
         autotvSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (!autotvSearch.getText().toString().isEmpty()) {
-                        searchPatientText = autotvSearch.getText().toString();
-                        getUpcomingAppointments();
-                        getCompletedAppointments();
-                        getCancelledAppointments();
-
+                    String searchText = autotvSearch.getText().toString();
+                    if (!searchText.isEmpty()) {
+                        searchOperation(searchText);
                     } else {
-                        searchPatientText = "";
-
-                        Log.d(TAG, "afterTextChanged: in else");
                         getAppointments();
                     }
                     return true;
@@ -315,39 +437,43 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         //recyclerview for upcoming appointments
         tvUpcomingAppointments.setText("0");
         tvUpcomingAppointmentsTitle.setText(getResources().getString(R.string.upcoming_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsForToday(searchPatientText, currentDate);
+        upcomingAppointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsForToday(currentDate, upcomingLimit, upcomingStart);
 
-        if (appointmentInfoList.size() > 0) {
+        if (upcomingAppointmentInfoList.size() > 0) {
             rvUpcomingApp.setVisibility(View.VISIBLE);
             noDataFoundForUpcoming.setVisibility(View.GONE);
-            totalUpcomingApps = appointmentInfoList.size();
+            totalUpcomingApps = upcomingAppointmentInfoList.size();
 
-            appointmentInfoList.forEach((appointmentInfo) -> {
+            upcomingAppointmentInfoList.forEach((appointmentInfo) -> {
                 String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
                 appointmentInfo.setPatientProfilePhoto(patientProfilePath);
             });
 
-            TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), appointmentInfoList, "upcoming");
+            todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), upcomingAppointmentInfoList, "upcoming");
             rvUpcomingApp.setAdapter(todaysMyAppointmentsAdapter);
+            upcomingStart = upcomingEnd;
+            upcomingEnd += upcomingLimit;
         } else {
             rvUpcomingApp.setVisibility(View.GONE);
             noDataFoundForUpcoming.setVisibility(View.VISIBLE);
         }
 
-        tvUpcomingAppointments.setText(appointmentInfoList.size() + "");
-        tvUpcomingAppointmentsTitle.setText(getResources().getString(R.string.upcoming) + " (" + appointmentInfoList.size() + ")");
+        tvUpcomingAppointments.setText(upcomingAppointmentInfoList.size() + "");
+        tvUpcomingAppointmentsTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentInfoList.size() + ")");
     }
 
     private void getCompletedAppointments() {
         //recyclerview for completed appointments
         tvCompletedAppointments.setText("0");
         tvCompletedAppointmentsTitle.setText(getResources().getString(R.string.completed_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCompletedAppointmentsForToday(searchPatientText, currentDate);
+        completedAppointmentInfoList = new AppointmentDAO().getCompletedAppointmentsForToday(currentDate, completedLimit, completedStart);
 
-        if (appointmentInfoList.size() > 0) {
+        if (completedAppointmentInfoList.size() > 0) {
             rvCompletedApp.setVisibility(View.VISIBLE);
             noDataFoundForCompleted.setVisibility(View.GONE);
-            getDataForCompletedAppointments(appointmentInfoList);
+            getDataForCompletedAppointments(completedAppointmentInfoList);
+            completedStart = completedEnd;
+            completedEnd += completedLimit;
         } else {
             rvCompletedApp.setVisibility(View.GONE);
             noDataFoundForCompleted.setVisibility(View.VISIBLE);
@@ -367,11 +493,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             if (visitDTO.getUuid() != null && visitDTO.getStartdate() != null) {
 
                 String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
-                if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
-                    appointmentsDaoList.get(i).setPrescription_exists(true);
-                } else {
-                    appointmentsDaoList.get(i).setPrescription_exists(false);
-                }
+                appointmentsDaoList.get(i).setPrescription_exists(!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase(""));
                 String patientProfilePath = getPatientProfile(appointmentsDaoList.get(i).getPatientId());
                 // String patientProfilePath = getPatientProfile("984af313-83c7-479e-b8a7-8e72e7384346");
                 appointmentsDaoList.get(i).setPatientProfilePhoto(patientProfilePath);
@@ -394,9 +516,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         //recyclerview for completed appointments
         totalCompleted = appointmentsDaoList.size();
 
-        TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter1 = new
-                TodaysMyAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
-        rvCompletedApp.setAdapter(todaysMyAppointmentsAdapter1);
+        completedMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
+        rvCompletedApp.setAdapter(completedMyAppointmentsAdapter);
         tvCompletedAppointments.setText(appointmentsDaoList.size() + "");
         tvCompletedAppointmentsTitle.setText(getResources().getString(R.string.completed) + " (" + appointmentsDaoList.size() + ")");
 
@@ -408,8 +529,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
         String imagePath = "";
 
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where uuid = ? ",
-                new String[]{patientUuid});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where uuid = ? ", new String[]{patientUuid});
 
         if (idCursor.moveToFirst()) {
             do {
@@ -425,27 +545,29 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         //recyclerview for getCancelledAppointments appointments
         tvCancelledAppsCount.setText("0");
         tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFiltersForToday(searchPatientText, currentDate);
+        cancelledAppointmentInfoList = new AppointmentDAO().getCancelledAppointmentsForToday(currentDate, cancelledLimit, cancelledStart);
 
-        if (appointmentInfoList.size() > 0) {
+        if (cancelledAppointmentInfoList.size() > 0) {
             rvCancelledApp.setVisibility(View.VISIBLE);
             noDataFoundForCancelled.setVisibility(View.GONE);
-            totalCancelled = appointmentInfoList.size();
+            totalCancelled = cancelledAppointmentInfoList.size();
 
-            appointmentInfoList.forEach(appointmentInfo -> {
+            cancelledAppointmentInfoList.forEach(appointmentInfo -> {
                 String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
                 appointmentInfo.setPatientProfilePhoto(patientProfilePath);
             });
 
-            TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), appointmentInfoList, "cancelled");
-            rvCancelledApp.setAdapter(todaysMyAppointmentsAdapter);
+            cancelledMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), cancelledAppointmentInfoList, "cancelled");
+            rvCancelledApp.setAdapter(cancelledMyAppointmentsAdapter);
+            cancelledStart = cancelledEnd;
+            cancelledEnd += cancelledLimit;
         } else {
             rvCancelledApp.setVisibility(View.GONE);
             noDataFoundForCancelled.setVisibility(View.VISIBLE);
         }
 
-        tvCancelledAppsCount.setText(appointmentInfoList.size() + "");
-        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + appointmentInfoList.size() + ")");
+        tvCancelledAppsCount.setText(cancelledAppointmentInfoList.size() + "");
+        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentInfoList.size() + ")");
 
     }
 
@@ -461,31 +583,28 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             int totalTodayApps = totalUpcomingApps + totalCancelled + totalCompleted;
             listener.updateCount("today", 1000);
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentCommunicationListener");
+            throw new RuntimeException(context + " must implement OnFragmentCommunicationListener");
         }
     }
 
     private void getSlots() {
         String serverUrl = "https://" + sessionManager.getServerUrl() + ":3004";
 
-        ApiClientAppointment.getInstance(serverUrl).getApi()
-                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())
-                .enqueue(new Callback<AppointmentListingResponse>() {
-                    @Override
-                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
-                        if (response.body() == null) return;
-                        AppointmentListingResponse slotInfoResponse = response.body();
-                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-                        appointmentDAO.deleteAllAppointments();
-                        for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
+        ApiClientAppointment.getInstance(serverUrl).getApi().getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid()).enqueue(new Callback<AppointmentListingResponse>() {
+            @Override
+            public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                if (response.body() == null) return;
+                AppointmentListingResponse slotInfoResponse = response.body();
+                AppointmentDAO appointmentDAO = new AppointmentDAO();
+                appointmentDAO.deleteAllAppointments();
+                for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
 
-                            try {
-                                appointmentDAO.insert(slotInfoResponse.getData().get(i));
-                            } catch (DAOException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                    try {
+                        appointmentDAO.insert(slotInfoResponse.getData().get(i));
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                }
                         /*if (slotInfoResponse.getCancelledAppointments() != null) {
                             if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
                                 for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
@@ -501,14 +620,73 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                         }*/
 
 
-                        getAppointments();
-                    }
+                getAppointments();
+            }
 
-                    @Override
-                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                    }
-                });
+            @Override
+            public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
+                Log.v("onFailure", t.getMessage());
+            }
+        });
     }
 
+    private void searchOperation(String query) {
+        query = query.toLowerCase().trim();
+        query = query.replaceAll(" {2}", " ");
+        String finalQuery = query;
+
+        new Thread(() -> {
+            List<AppointmentInfo> allUpcomingList = new AppointmentDAO().getAllUpcomingAppointmentsForToday(currentDate);
+            List<AppointmentInfo> allCancelledList = new AppointmentDAO().getAllCancelledAppointmentsForToday(currentDate);
+            List<AppointmentInfo> allCompletedList = new AppointmentDAO().getAllCompletedAppointmentsForToday(currentDate);
+
+            if (!finalQuery.isEmpty()) {
+                upcomingSearchList.clear();
+                cancelledSearchList.clear();
+                completedSearchList.clear();
+
+                if (allUpcomingList.size() > 0) {
+                    for (AppointmentInfo info : allUpcomingList) {
+                        String patientName = info.getPatientName().toLowerCase();
+                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
+                            upcomingSearchList.add(info);
+                        }
+                    }
+                }
+
+                if (allCancelledList.size() > 0) {
+                    for (AppointmentInfo info : allCancelledList) {
+                        String patientName = info.getPatientName().toLowerCase();
+                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
+                            cancelledSearchList.add(info);
+                        }
+                    }
+                }
+
+                if (allCompletedList.size() > 0) {
+                    for (AppointmentInfo info : allCompletedList) {
+                        String patientName = info.getPatientName().toLowerCase();
+                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
+                            completedSearchList.add(info);
+                        }
+                    }
+                }
+
+                requireActivity().runOnUiThread(() -> {
+                    todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), completedAppointmentInfoList, "upcoming");
+                    rvUpcomingApp.setNestedScrollingEnabled(true);
+                    rvUpcomingApp.setAdapter(todaysMyAppointmentsAdapter);
+
+                    cancelledMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), cancelledAppointmentInfoList, "cancelled");
+                    rvCancelledApp.setNestedScrollingEnabled(true);
+                    rvCancelledApp.setAdapter(cancelledMyAppointmentsAdapter);
+
+                    completedMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), completedAppointmentInfoList, "completed");
+                    rvCompletedApp.setNestedScrollingEnabled(true);
+                    rvCompletedApp.setAdapter(completedMyAppointmentsAdapter);
+                });
+            }
+
+        }).start();
+    }
 }
