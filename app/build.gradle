@@ -12,7 +12,7 @@ android {
         applicationId "org.intelehealth.ekalarogya"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 52
+        versionCode 53
         buildToolsVersion('29.0.2')
         versionName '2.1.2'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
