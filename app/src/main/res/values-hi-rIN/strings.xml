@@ -1177,7 +1177,7 @@
     <string name="location_setup">लोकेशन सेटअप %1$s</string>
     <string name="app_version_string">उपयोगकर्ता: %1$s, ऐप संस्करण: %2$s</string>
     <string name="height_ft">ऊंचाई(फीट)</string>
-    <string name="ft">फुट</string>
+    <string name="ft">फीट</string>
     <string name="in">इंच</string>
     <string name="please_select_patient_height">कृपया रोगी की ऊंचाई चुनें!</string>
     <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">सिस्टोलिक दबाव डायस्टोलिक दबाव से कम नहीं हो सकता।</string>

@@ -1160,8 +1160,8 @@
     <string name="fetching_details_please_wait">ವಿವರಗಳನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ. ದಯಮಾಡಿ ನಿರೀಕ್ಷಿಸಿ...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">ವೈದ್ಯರಿಂದ ಇನ್ನೂ ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ನೀಡಲಾಗಿಲ್ಲ.</string>
     <string name="download_prescription_first">ಮೊದಲು ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.</string>
-    <string name="location_setup">ಸ್ಥಳ ಸೆಟಪ್ % 1 $s</string>
-    <string name="app_version_string">ಬಳಕೆದಾರ: % 1$s, ಅಪ್ಲಿಕೇಶನ್ ಆವೃತ್ತಿ: % 2$s</string>
+    <string name="location_setup">ಸ್ಥಳ ಸೆಟಪ್ %1$s</string>
+    <string name="app_version_string">ಬಳಕೆದಾರ: %1$s, ಅಪ್ಲಿಕೇಶನ್ ಆವೃತ್ತಿ: %2$s</string>
     <string name="height_ft">ಎತ್ತರ (ಅಡಿ)</string>
     <string name="ft">ಅಡಿ</string>
     <string name="in">ಒಳಗೆ</string>

@@ -277,11 +277,11 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
     private void showAppClosingDialog() {
         new MaterialAlertDialogBuilder(this)
                 .setMessage(R.string.call_end_aler_txt)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.survey_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sayBye("Call ended by you", null);
                     }
-                }).setNegativeButton(R.string.no, null).create().show();
+                }).setNegativeButton(R.string.survey_no, null).create().show();
     }
 }

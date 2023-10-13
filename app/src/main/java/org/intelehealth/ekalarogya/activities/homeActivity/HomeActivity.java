@@ -1079,9 +1079,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onAttachedToWindow() {
         Window window = getWindow();
-
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-
         super.onAttachedToWindow();
     }
 

@@ -831,7 +831,7 @@ public class VitalsActivity extends AppCompatActivity {
                 mBMI.setTextColor(getResources().getColor(R.color.green));
             } else if (bmi >= Double.valueOf(BMI_DARK_RED_MIN)) {   // red
                 mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.severe_obesity) + ")");
-                mBMI.setTextColor(getResources().getColor(R.color.dark_red));
+                mBMI.setTextColor(getResources().getColor(R.color.scale_1));
             }
             else mBMI.setTextColor(null);
         }
@@ -1969,7 +1969,7 @@ public class VitalsActivity extends AppCompatActivity {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
-        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.survey_yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // upon yes click move forward.
@@ -1977,7 +1977,7 @@ public class VitalsActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-        alertDialog.setNegativeButton(context.getResources().getString(R.string.no),
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.survey_no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // upon No click do nothing.

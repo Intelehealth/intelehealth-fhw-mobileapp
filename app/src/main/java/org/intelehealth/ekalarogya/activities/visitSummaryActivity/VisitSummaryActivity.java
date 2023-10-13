@@ -2034,7 +2034,7 @@ public class VisitSummaryActivity extends BaseActivity {
                 bmiView.setTextColor(getResources().getColor(R.color.green));
             }
             else if (bmi >= Double.valueOf(BMI_DARK_RED_MIN)) {   // red
-                bmiView.setTextColor(getResources().getColor(R.color.dark_red));
+                bmiView.setTextColor(getResources().getColor(R.color.scale_1));
             }
             else
                 bmiView.setTextColor(null);
@@ -4428,14 +4428,14 @@ public class VisitSummaryActivity extends BaseActivity {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setMessage(getString(R.string.appointment_booking_cancel_confirmation_txt))
                 //set positive button
-                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.survey_no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         askReason();
                     }
                 })
                 //set negative button
-                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.survey_no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 

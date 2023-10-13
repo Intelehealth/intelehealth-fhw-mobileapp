@@ -101,14 +101,14 @@ public class SlotListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     + "\n" + StringUtils.getTranslatedDays(slotInfo.getSlotDay(), new SessionManager(mContext).getAppLanguage())
                             )
                             //set positive button
-                            .setPositiveButton(mContext.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            .setPositiveButton(mContext.getString(R.string.survey_yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     mOnItemSelection.onSelect(slotInfo);
                                 }
                             })
                             //set negative button
-                            .setNegativeButton(mContext.getString(R.string.no), new DialogInterface.OnClickListener() {
+                            .setNegativeButton(mContext.getString(R.string.survey_no), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
