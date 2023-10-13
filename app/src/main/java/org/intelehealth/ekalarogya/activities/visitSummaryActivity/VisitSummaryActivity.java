@@ -4428,7 +4428,7 @@ public class VisitSummaryActivity extends BaseActivity {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setMessage(getString(R.string.appointment_booking_cancel_confirmation_txt))
                 //set positive button
-                .setPositiveButton(getString(R.string.survey_no), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.survey_yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         askReason();
