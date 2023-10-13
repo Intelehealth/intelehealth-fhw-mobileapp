@@ -187,4 +187,36 @@ public class VisitAttributeListDAO {
 
         return specialityValue;
     }
+
+    public String getVisitTypeOfSpecificVisit(String VISITUUID, String visit_attribute_type_uuid) {
+        String isValue = "";
+
+        if (VISITUUID != null) {
+            Log.d("specc", "spec_fun: " + VISITUUID);
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+            //db.beginTransaction();
+
+            Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? and " +
+                            "visit_attribute_type_uuid = ? and voided = 0",
+                    new String[]{VISITUUID, visit_attribute_type_uuid});
+
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    isValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                    Log.d("specc", "spec_3: " + isValue);
+                }
+            } else {
+                isValue = "";
+            }
+            cursor.close();
+            //db.setTransactionSuccessful();
+            //db.endTransaction();
+            db.close();
+
+            Log.d("specc", "spec_4: " + isValue);
+        }
+
+        return isValue;
+    }
+
 }

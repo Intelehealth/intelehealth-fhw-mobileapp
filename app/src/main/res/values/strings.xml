@@ -1867,15 +1867,16 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="income_level">Income level</string>
     <string name="abha_number">ABHA number</string>
     <string name="enter_abha_no">Enter ABHA number</string>
-    <string name="are_you">Are you</string>
+    <string name="are_you">Are you?</string>
     <string name="vegetarian">Vegetarian</string>
     <string name="non_vegetarian">Non Vegetarian</string>
     <string name="hemoglobin">Hemoglobin</string>
     <string name="blood_sugar">Blood Sugar</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
-    <string name="sugar_error">Sugar should be in between %1$s and %2$s</string>
+    <string name="sugar_error">Blood sugar should be in between %1$s and %2$s</string>
     <string name="gynecologist">Gynecologist</string>
     <string name="visit_type">Visit Type</string>
     <string name="select_visit_type">Select Visit Type</string>
+    <string name="please_select_visit_type">Please select visit type</string>
 
 </resources>

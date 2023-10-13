@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,7 +81,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private List<Integer> mWeightMasterList = new ArrayList<>();
     private boolean mIsEditMode = false;
     private EditText mHemoglobinEdittext, mSugarEdittext;
-    private TextView mHemoglobinErrorTextView,mBloodSugarErrorTextview;
+    private TextView mHemoglobinErrorTextView, mBloodSugarErrorTextview;
+
     public VitalCollectionFragment() {
         // Required empty public constructor
     }
@@ -213,7 +215,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         //showWeightListing();
 
 
-
         mHemoglobinEdittext = view.findViewById(R.id.etv_hemoglobin);
         mSugarEdittext = view.findViewById(R.id.etv_sugar);
         mBloodSugarErrorTextview = view.findViewById(R.id.etv_sugar_error);
@@ -222,6 +223,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mSugarEdittext.addTextChangedListener(new MyTextWatcher(mSugarEdittext));
         mHemoglobinErrorTextView.setVisibility(View.GONE);
         mBloodSugarErrorTextview.setVisibility(View.GONE);
+        mHemoglobinEdittext.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
+
+        // Add a TextWatcher to enforce the range and one decimal place rule
 
 
         if (mIsEditMode && results == null) {
@@ -513,7 +517,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 
                 }
-            }else if (this.editText.getId() == R.id.etv_sugar) {
+            } else if (this.editText.getId() == R.id.etv_sugar) {
                 if (val.isEmpty()) {
                     mBloodSugarErrorTextview.setVisibility(View.GONE);
                     mSugarEdittext.setBackgroundResource(R.drawable.edittext_border);
@@ -672,7 +676,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mHemoglobinEdittext.setText(results.getHemoglobin());
 
             if (results.getBloodSugar() != null && !results.getBloodSugar().isEmpty())
-              mSugarEdittext.setText(results.getBloodSugar());
+                mSugarEdittext.setText(results.getBloodSugar());
 
         }
     }
@@ -829,7 +833,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 break;
 
             case UuidDictionary.HEMOGLOBIN_LEVEL: //Hemoglobin
-                Log.d(TAG, "parseData: value :: kz :: "+value);
+                Log.d(TAG, "parseData: value :: kz :: " + value);
                 if (value != null && !value.isEmpty())
 
                     mHemoglobinEdittext.setText(value);
@@ -890,9 +894,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         values.add(mPulseEditText); // 3
         values.add(mRespEditText); // 4
         values.add(mTemperatureEditText); // 5
-      //  values.add(mHemoglobinEdittext); // 6
-         //values.add(mSugarEdittext); // 7
-       //  Check to see if values were inputted.
+        //  values.add(mHemoglobinEdittext); // 6
+        //values.add(mSugarEdittext); // 7
+        //  Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
 
             if (i == 3) {
@@ -1085,9 +1089,39 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
         }
+
         if (cancel) {
             return false;
         }
+        String hemoglobin = mHemoglobinEdittext.getText().toString();
+        if (!hemoglobin.isEmpty()) {
+            if (Double.parseDouble(hemoglobin) > Double.parseDouble(AppConstants.MAXIMUM_HEMOGLOBIN) || Double.parseDouble(hemoglobin) < Double.parseDouble(AppConstants.MINIMUM_HEMOGLOBIN)) {
+                mHemoglobinErrorTextView.setText(getString(R.string.hemoglobin_error, AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
+                mHemoglobinErrorTextView.setVisibility(View.VISIBLE);
+                mHemoglobinEdittext.requestFocus();
+                mHemoglobinEdittext.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mHemoglobinErrorTextView.setVisibility(View.GONE);
+                mHemoglobinEdittext.setBackgroundResource(R.drawable.edittext_border);
+
+            }
+        }
+        String sugar = mSugarEdittext.getText().toString();
+        if (!sugar.isEmpty()) {
+            if (Double.parseDouble(sugar) > Double.parseDouble(AppConstants.MAXIMUM_SUGAR) || Double.parseDouble(sugar) < Double.parseDouble(AppConstants.MINIMUM_SUGAR)) {
+                mBloodSugarErrorTextview.setText(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                mBloodSugarErrorTextview.setVisibility(View.VISIBLE);
+                mSugarEdittext.requestFocus();
+                mSugarEdittext.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mBloodSugarErrorTextview.setVisibility(View.GONE);
+                mSugarEdittext.setBackgroundResource(R.drawable.edittext_border);
+
+            }
+        }
+
 
         if (mBpSysEditText.getText().toString().trim().isEmpty() && !mBpDiaEditText.getText().toString().trim().isEmpty()) {
             mBpSysErrorTextView.setVisibility(View.VISIBLE);
@@ -1463,6 +1497,30 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         return result;
 
     }*/
+    class InputFilterMinMax implements InputFilter {
+        private int min, max;
 
+        public InputFilterMinMax(int min, int max) {
+            this.min = min;
+            this.max = max;
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            try {
+                String newVal = dest.subSequence(0, dstart).toString() + source.subSequence(start, end).toString() + dest.subSequence(dend, dest.length()).toString();
+                int input = Integer.parseInt(newVal);
+                if (isInRange(min, max, input))
+                    return null;
+            } catch (NumberFormatException nfe) {
+            }
+            return "";
+        }
+
+        private boolean isInRange(int a, int b, int c) {
+            return b > a ? c >= a && c <= b : c >= b && c <= a;
+        }
+
+    }
 
 }

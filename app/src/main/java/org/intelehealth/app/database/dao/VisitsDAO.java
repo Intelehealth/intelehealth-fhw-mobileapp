@@ -960,4 +960,30 @@ public class VisitsDAO {
         return isUpdated;
     }
 
+    public String getVisitType(String visituuid) throws DAOException {
+        String visitType = null;
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        //db.beginTransaction();
+
+        try {
+            Cursor cursor = db.rawQuery("SELECT visit_type_uuid FROM tbl_visit where uuid = ? ", new String[]{visituuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    visitType = cursor.getString(cursor.getColumnIndexOrThrow("visit_type_uuid"));
+                }
+            }
+            cursor.close();
+
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            //db.setTransactionSuccessful();
+            //db.endTransaction();
+        }
+        return visitType;
+    }
+
+
 }

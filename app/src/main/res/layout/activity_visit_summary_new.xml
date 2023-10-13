@@ -610,10 +610,11 @@
 
 
             <!--Visibility - start -->
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/relative_speciality_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_below="@+id/add_doc_relative"
                 android:layout_marginTop="@dimen/margin_16">
 
@@ -705,57 +706,12 @@
                 </androidx.cardview.widget.CardView>
 
                 <!--Visibility - end -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/doc_speciality_card1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/toolbar_margin_left"
-                    android:layout_marginTop="@dimen/margin_5"
-                    android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:layout_marginBottom="@dimen/margin_10"
-                    android:elevation="16dp"
-                    app:cardCornerRadius="@dimen/margin_5"
-                    app:cardElevation="@dimen/margin_5">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/fu_card_margin_sides">
-
-                        <TextView
-                            android:id="@+id/doc_speciality_title1"
-                            style="@style/vs_title_head_14sp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/doctor_speciality"
-                            android:textColor="@color/colorPrimary"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:id="@+id/tv_dr_speciality_nak"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/edittext_height_44dp"
-                            android:layout_marginTop="@dimen/fu_margin_start"
-                            android:layout_marginBottom="@dimen/margin_16dp"                            android:background="@drawable/edittext_border"
-                            android:text="@string/gynecologist"
-                            android:inputType="textCapWords"
-                            android:layout_below="@+id/doc_speciality_title1"
-                            android:paddingStart="@dimen/fu_margin_start"
-                            android:gravity="center_vertical"
-                            android:paddingTop="@dimen/margin_10"
-                            android:paddingBottom="@dimen/margin_10"
-                            android:textColorHint="@color/edittext_hint_color"
-                            android:textSize="@dimen/edittext_textsize_16sp" />
-
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/doc_speciality_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
-                    android:layout_below="@+id/card_visit_type"
                     android:layout_marginTop="@dimen/margin_5"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
                     android:layout_marginBottom="@dimen/margin_10"
@@ -838,7 +794,8 @@
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
 
-            </RelativeLayout>
+
+            </LinearLayout>
 
             <!--            Priority Visit-->
             <androidx.cardview.widget.CardView

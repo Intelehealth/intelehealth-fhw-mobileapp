@@ -597,6 +597,38 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 special_vd_card.setVisibility(View.VISIBLE);
                 // vs_add_notes.setVisibility(View.GONE);
 
+                //add for visit type
+                List<String> itemList = new ArrayList<>();
+                itemList.add(0, getString(R.string.select_visit_type));
+                itemList.add(1,"Video consultation");
+                itemList.add(2,"Routine check up");
+                itemList.add(3,"Urgent care");
+                ArrayAdapter stringArrayAdapter =
+                        new ArrayAdapter<String>
+                                (this, android.R.layout.simple_spinner_dropdown_item, itemList);
+                spinnerVisitType.setAdapter(stringArrayAdapter);
+                String visitType = "";
+                VisitsDAO visitsDAO = new VisitsDAO();
+                try {
+                    visitType = visitsDAO.getVisitType(visitUUID);
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
+                Log.d(TAG, "fetchingIntent: visitType : "+visitType);
+                if (visitType.trim().equals(UuidDictionary.VIDEO_CONSULTATION)) {
+                    spinnerVisitType.setSelection(1);
+                    Log.d(TAG, "fetchingIntent: 0");
+                } else if (visitType.trim().equals(UuidDictionary.ROUTINE_CHECK_UP)) {
+                    spinnerVisitType.setSelection(2);
+                    Log.d(TAG, "fetchingIntent: 1");
+                } else if (visitType.trim().equals(UuidDictionary.URGENT_CARE)) {
+                    spinnerVisitType.setSelection(3);
+                    Log.d(TAG, "fetchingIntent: 2");
+
+                }
+                spinnerVisitType.setEnabled(false);
+
+
                 addnotes_vd_card.setVisibility(View.VISIBLE);
                 tilAdditionalNotesVS.setVisibility(View.GONE);
                 tvAddNotesValueVS.setVisibility(View.VISIBLE);
@@ -1167,11 +1199,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             }
         });
+
+        //NAK speciality - by default - Gynac
+        String[] specialityArray = {"Gynecologist"};
+        stringArrayAdapter =
+                new ArrayAdapter<String>
+                        (this, android.R.layout.simple_spinner_dropdown_item, specialityArray);
+        speciality_spinner.setAdapter(stringArrayAdapter);
+        speciality_spinner.setSelection(0);
+        speciality_spinner.setEnabled(false);
         // todo: speciality code comes in upload btn as well so add that too....later...
         // speciality data - end
 
         //for visit type
-        selectVisitType();
+       /// selectVisitType();
 
 
         if (visitUuid != null) {
@@ -2108,6 +2149,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         t.setTextColor(Color.RED);
         showSpecialisationDialog();
     }
+    private void showSelectVisitTypeErrorDialog() {
+        TextView t = (TextView) spinnerVisitType.getSelectedView();
+        t.setError(getString(R.string.please_select_visit_type));
+        t.setTextColor(Color.RED);
+        showVisitDialog();
+    }
 
     private void showSpecialisationDialog() {
         DialogUtils dialogUtils = new DialogUtils();
@@ -2118,7 +2165,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
         });
     }
+    private void showVisitDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.please_select_visit_type), "", true, getResources().getString(R.string.okay), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
 
+            }
+        });
+    }
     // Permission - start
     private void checkPerm(int item) {
         if (item == 0) {
@@ -2336,6 +2391,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // speciality ids
         speciality_spinner = findViewById(R.id.speciality_spinner);
         spinnerVisitType = findViewById(R.id.spinner_visit_type);
+        selectVisitType();
 
         // speciality ids - end
 
@@ -2661,6 +2717,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             showSelectSpeciliatyErrorDialog();
             return;
         }
+        if (visitType == null || visitType.isEmpty()) {
+            showSelectVisitTypeErrorDialog();
+            return;
+        }
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
@@ -2701,7 +2761,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         speciality_selected = "Gynecologist";
-        if (speciality_selected != null && !speciality_selected.isEmpty()) {
+        if (visitType != null && !visitType.isEmpty()) {
             VisitsDAO visitsDAO = new VisitsDAO();
             try {
                 visitsDAO.updateVisitType(visitType, visitUUID);
@@ -2842,7 +2902,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
             }
         } else {
-            showSelectSpeciliatyErrorDialog();
+            showSelectVisitTypeErrorDialog();
         }
     }
 
