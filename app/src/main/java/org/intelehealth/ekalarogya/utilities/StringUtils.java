@@ -5090,12 +5090,12 @@ public final class StringUtils {
             return updatedContext.getString(R.string.generic_no);
         }
         // Translate string Yes.. to English
-        if (context.getString(R.string.yes).equalsIgnoreCase(text)) {
-            return updatedContext.getString(R.string.yes);
+        if (context.getString(R.string.survey_yes).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.survey_yes);
         }
         // Translate string No.. to English
-        if (context.getString(R.string.no).equalsIgnoreCase(text)) {
-            return updatedContext.getString(R.string.no);
+        if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
+            return updatedContext.getString(R.string.survey_no);
         }
         // Translate string Not Sure to English
         if (context.getString(R.string.not_sure).equalsIgnoreCase(text)) {
@@ -5835,12 +5835,12 @@ public final class StringUtils {
     public static String getTobaccoHistoryStrings(String text, Context context, Context updatedContext, String locale) {
         text = getSurveyValue(text);
         // Yes string conversion
-        if (context.getString(R.string.yes).equalsIgnoreCase(text))
-            return updatedContext.getString(R.string.yes);
+        if (context.getString(R.string.survey_yes).equalsIgnoreCase(text))
+            return updatedContext.getString(R.string.survey_yes);
 
         // No string conversion
-        if (context.getString(R.string.no).equalsIgnoreCase(text))
-            return updatedContext.getString(R.string.no);
+        if (context.getString(R.string.survey_no).equalsIgnoreCase(text))
+            return updatedContext.getString(R.string.survey_no);
 
         // Declined to answer string conversion
         if (context.getString(R.string.denied_to_answer).equalsIgnoreCase(text))

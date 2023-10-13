@@ -2042,4 +2042,178 @@
     <item>6फीट 5इंच</item>
     <item>6फीट 6इंच</item>
     </string-array>
+
+    <string-array name="height_bn">
+        <item>@string/select</item>
+        <item>4ফুট 6ভিতরে</item>
+        <item>4ফুট 7ভিতরে</item>
+        <item>4ফুট 8ভিতরে</item>
+        <item>4ফুট 9ভিতরে</item>
+        <item>4ফুট 10ভিতরে</item>
+        <item>4ফুট 11ভিতরে</item>
+        <item>5ফুট 0ভিতরে</item>
+        <item>5ফুট 1ভিতরে</item>
+        <item>5ফুট 2ভিতরে</item>
+        <item>5ফুট 3ভিতরে</item>
+        <item>5ফুট 4ভিতরে</item>
+        <item>5ফুট 5ভিতরে</item>
+        <item>5ফুট 6ভিতরে</item>
+        <item>5ফুট 7ভিতরে</item>
+        <item>5ফুট 8ভিতরে</item>
+        <item>5ফুট 9ভিতরে</item>
+        <item>5ফুট 10ভিতরে</item>
+        <item>5ফুট 11ভিতরে</item>
+        <item>6ফুট 0ভিতরে</item>
+        <item>6ফুট 1ভিতরে</item>
+        <item>6ফুট 2ভিতরে</item>
+        <item>6ফুট 3ভিতরে</item>
+        <item>6ফুট 4ভিতরে</item>
+        <item>6ফুট 5ভিতরে</item>
+        <item>6ফুট 6ভিতরে</item>
+    </string-array>
+
+    <string-array name="height_as">
+        <item>@string/select</item>
+        <item>4ফুট 6ভিতৰত</item>
+        <item>4ফুট 7ভিতৰত</item>
+        <item>4ফুট 8ভিতৰত</item>
+        <item>4ফুট 9ভিতৰত</item>
+        <item>4ফুট 10ভিতৰত</item>
+        <item>4ফুট 11ভিতৰত</item>
+        <item>5ফুট 0ভিতৰত</item>
+        <item>5ফুট 1ভিতৰত</item>
+        <item>5ফুট 2ভিতৰত</item>
+        <item>5ফুট 3ভিতৰত</item>
+        <item>5ফুট 4ভিতৰত</item>
+        <item>5ফুট 5ভিতৰত</item>
+        <item>5ফুট 6ভিতৰত</item>
+        <item>5ফুট 7ভিতৰত</item>
+        <item>5ফুট 8ভিতৰত</item>
+        <item>5ফুট 9ভিতৰত</item>
+        <item>5ফুট 10ভিতৰত</item>
+        <item>5ফুট 11ভিতৰত</item>
+        <item>6ফুট 0ভিতৰত</item>
+        <item>6ফুট 1ভিতৰত</item>
+        <item>6ফুট 2ভিতৰত</item>
+        <item>6ফুট 3ভিতৰত</item>
+        <item>6ফুট 4ভিতৰত</item>
+        <item>6ফুট 5ভিতৰত</item>
+        <item>6ফুট 6ভিতৰত</item>
+    </string-array>
+
+    <string-array name="height_gu">
+        <item>@string/select</item>
+        <item>4ફૂટ 6ઇંચ</item>
+        <item>4ફૂટ 7ઇંચ</item>
+        <item>4ફૂટ 8ઇંચ</item>
+        <item>4ફૂટ 9ઇંચ</item>
+        <item>4ફૂટ 10ઇંચ</item>
+        <item>4ફૂટ 11ઇંચ</item>
+        <item>5ફૂટ 0ઇંચ</item>
+        <item>5ફૂટ 1ઇંચ</item>
+        <item>5ફૂટ 2ઇંચ</item>
+        <item>5ફૂટ 3ઇંચ</item>
+        <item>5ફૂટ 4ઇંચ</item>
+        <item>5ફૂટ 5ઇંચ</item>
+        <item>5ફૂટ 6ઇંચ</item>
+        <item>5ફૂટ 7ઇંચ</item>
+        <item>5ફૂટ 8ઇંચ</item>
+        <item>5ફૂટ 9ઇંચ</item>
+        <item>5ફૂટ 10ઇંચ</item>
+        <item>5ફૂટ 11ઇંચ</item>
+        <item>6ફૂટ 0ઇંચ</item>
+        <item>6ફૂટ 1ઇંચ</item>
+        <item>6ફૂટ 2ઇંચ</item>
+        <item>6ફૂટ 3ઇંચ</item>
+        <item>6ફૂટ 4ઇંચ</item>
+        <item>6ફૂટ 5ઇંચ</item>
+        <item>6ફૂટ 6ઇંચ</item>
+    </string-array>
+
+    <string-array name="height_kn">
+        <item>@string/select</item>
+        <item>4ಅಡಿ 6ಒಳಗೆ</item>
+        <item>4ಅಡಿ 7ಒಳಗೆ</item>
+        <item>4ಅಡಿ 8ಒಳಗೆ</item>
+        <item>4ಅಡಿ 9ಒಳಗೆ</item>
+        <item>4ಅಡಿ 10ಒಳಗೆ</item>
+        <item>4ಅಡಿ 11ಒಳಗೆ</item>
+        <item>5ಅಡಿ 0ಒಳಗೆ</item>
+        <item>5ಅಡಿ 1ಒಳಗೆ</item>
+        <item>5ಅಡಿ 2ಒಳಗೆ</item>
+        <item>5ಅಡಿ 3ಒಳಗೆ</item>
+        <item>5ಅಡಿ 4ಒಳಗೆ</item>
+        <item>5ಅಡಿ 5ಒಳಗೆ</item>
+        <item>5ಅಡಿ 6ಒಳಗೆ</item>
+        <item>5ಅಡಿ 7ಒಳಗೆ</item>
+        <item>5ಅಡಿ 8ಒಳಗೆ</item>
+        <item>5ಅಡಿ 9ಒಳಗೆ</item>
+        <item>5ಅಡಿ 10ಒಳಗೆ</item>
+        <item>5ಅಡಿ 11ಒಳಗೆ</item>
+        <item>6ಅಡಿ 0ಒಳಗೆ</item>
+        <item>6ಅಡಿ 1ಒಳಗೆ</item>
+        <item>6ಅಡಿ 2ಒಳಗೆ</item>
+        <item>6ಅಡಿ 3ಒಳಗೆ</item>
+        <item>6ಅಡಿ 4ಒಳಗೆ</item>
+        <item>6ಅಡಿ 5ಒಳಗೆ</item>
+        <item>6ಅಡಿ 6ಒಳಗೆ</item>
+    </string-array>
+
+    <string-array name="height_mr">
+        <item>@string/select</item>
+        <item>4फूट 6मध्ये</item>
+        <item>4फूट 7मध्ये</item>
+        <item>4फूट 8मध्ये</item>
+        <item>4फूट 9मध्ये</item>
+        <item>4फूट 10मध्ये</item>
+        <item>4फूट 11मध्ये</item>
+        <item>5फूट 0मध्ये</item>
+        <item>5फूट 1मध्ये</item>
+        <item>5फूट 2मध्ये</item>
+        <item>5फूट 3मध्ये</item>
+        <item>5फूट 4मध्ये</item>
+        <item>5फूट 5मध्ये</item>
+        <item>5फूट 6मध्ये</item>
+        <item>5फूट 7मध्ये</item>
+        <item>5फूट 8मध्ये</item>
+        <item>5फूट 9मध्ये</item>
+        <item>5फूट 10मध्ये</item>
+        <item>5फूट 11मध्ये</item>
+        <item>6फूट 0मध्ये</item>
+        <item>6फूट 1मध्ये</item>
+        <item>6फूट 2मध्ये</item>
+        <item>6फूट 3मध्ये</item>
+        <item>6फूट 4मध्ये</item>
+        <item>6फूट 5मध्ये</item>
+        <item>6फूट 6मध्ये</item>
+    </string-array>
+
+    <string-array name="height_or">
+        <item>@string/select</item>
+        <item>4ଇଞ୍ଚ 6ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>4ଇଞ୍ଚ 7ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>4ଇଞ୍ଚ 8ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>4ଇଞ୍ଚ 9ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>4ଇଞ୍ଚ 10ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>4ଇଞ୍ଚ 11ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 0ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 1ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 2ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 3ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 4ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 5ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 6ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 7ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 8ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 9ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 10ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>5ଇଞ୍ଚ 11ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>6ଇଞ୍ଚ 0ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>6ଇଞ୍ଚ 1ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>6ଇଞ୍ଚ 2ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>6ଇଞ୍ଚ 3ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>6ଇଞ୍ଚ 4ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>6ଇଞ୍ଚ 5ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+        <item>6ଇଞ୍ଚ 6ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</item>
+    </string-array>
 </resources>

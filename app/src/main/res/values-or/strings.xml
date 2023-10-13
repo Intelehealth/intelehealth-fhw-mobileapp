@@ -1053,11 +1053,11 @@
     <string name="fetching_details_please_wait">ସବିଶେଷ ତଥ୍ୟ ଆଣିବା | ଦୟାକରି ଅପେକ୍ଷା କର...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">ଡାକ୍ତରଙ୍କ ଦ୍ Pres ାରା ପ୍ରେସକ୍ରିପସନ୍ ଏପର୍ଯ୍ୟନ୍ତ ପ୍ରଦାନ କରାଯାଇ ନାହିଁ |</string>
     <string name="download_prescription_first">ପ୍ରଥମେ ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ |</string>
-    <string name="location_setup">ସ୍ଥାନ ନିରୂପଣ %s</string>
-    <string name="app_version_string">"ବ୍ୟବହୃତ % , ଆପ ର ବ୍ୟକ୍ତିଗତ ବିବରଣ "</string>
-    <string name="height_ft">"ଫୁଟ "</string>
-    <string name="ft">"ଇଞ୍ଚ "</string>
-    <string name="in">"ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର "</string>
+    <string name="location_setup">ସ୍ଥାନ ନିରୂପଣ %1$s</string>
+    <string name="app_version_string">ବ୍ୟବହୃତ %1$s , ଆପ ର ବ୍ୟକ୍ତିଗତ ବିବରଣ %2$s</string>
+    <string name="height_ft">ଫୁଟ</string>
+    <string name="ft">ଇଞ୍ଚ</string>
+    <string name="in">ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</string>
     <string name="please_select_patient_height">"ସିଷ୍ଟୋଲିକ ଚାପ ଡiଆଷ୍ଟୋଲିକ ଚାପ ଠାରୁ କମ୍ ହେବ ନାହିଁ "</string>
     <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">"କ୍ଷେତ୍ର ପ୍ରବେଶ କର "</string>
     <string name="enter_field">"ନିମ୍ନ ଲିଖିତ କ୍ଷେତ୍ର ସବୁ ପୂରଣ ହୋଇ ନାହିଁ "</string>
