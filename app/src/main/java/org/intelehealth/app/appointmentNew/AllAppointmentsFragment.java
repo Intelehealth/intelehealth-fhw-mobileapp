@@ -34,6 +34,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.widget.NestedScrollView;
@@ -140,6 +141,7 @@ public class AllAppointmentsFragment extends Fragment {
             @Override
             public void onFinished(int eventFlag) {
                 Log.v(TAG, "onFinished");
+                initLimits();
                 getAppointments();
             }
         });
@@ -308,7 +310,7 @@ public class AllAppointmentsFragment extends Fragment {
         ivClearText.setOnClickListener(v -> {
             autotvSearch.setText("");
             searchPatientText = "";
-            getAppointments();
+            resetData();
         });
         //no data found
         noDataFoundForUpcoming = parentView.findViewById(R.id.layout_no_data_found_upcoming);
@@ -341,7 +343,11 @@ public class AllAppointmentsFragment extends Fragment {
                         setMoreDataIntoUpcomingRecyclerView();
                     }
 
-                    if (isUpcomingFullyLoaded) {
+                    if (cancelledAppointmentInfoList != null && cancelledAppointmentInfoList.size() == 0) {
+                        isCancelledFullyLoaded = true;
+                    }
+
+                    if (isUpcomingFullyLoaded && !isCancelledFullyLoaded) {
                         setMoreDataIntoCancelledRecyclerView();
                     }
 
@@ -374,10 +380,11 @@ public class AllAppointmentsFragment extends Fragment {
         List<AppointmentInfo> tempList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart);
         if (tempList.size() > 0) {
             upcomingAppointmentInfoList.addAll(tempList);
-            upcomingAllAppointmentsAdapter.appointmentsList.addAll(tempList);
             upcomingAllAppointmentsAdapter.notifyDataSetChanged();
             upcomingStart = upcomingEnd;
             upcomingEnd += upcomingLimit;
+            tvUpcomingAppsCount.setText(upcomingAppointmentInfoList.size() + "");
+            tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentInfoList.size() + ")");
         }
     }
 
@@ -394,10 +401,11 @@ public class AllAppointmentsFragment extends Fragment {
         List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart);
         if (tempList.size() > 0) {
             cancelledAppointmentInfoList.addAll(tempList);
-            cancelledAllAppointmentsAdapter.appointmentsList.addAll(tempList);
             cancelledAllAppointmentsAdapter.notifyDataSetChanged();
             cancelledStart = cancelledEnd;
             cancelledEnd += cancelledLimit;
+            tvCancelledAppsCount.setText(cancelledAppointmentInfoList.size() + "");
+            tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentInfoList.size() + ")");
         }
     }
 
@@ -413,11 +421,13 @@ public class AllAppointmentsFragment extends Fragment {
 
         List<AppointmentInfo> tempList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart);
         if (tempList.size() > 0) {
+            getDataForCompletedAppointments(tempList);
             completedAppointmentInfoList.addAll(tempList);
-            completedAllAppointmentsAdapter.appointmentsList.addAll(tempList);
             completedAllAppointmentsAdapter.notifyDataSetChanged();
             upcomingStart = upcomingEnd;
             upcomingEnd += upcomingLimit;
+            tvCompletedAppsCount.setText(completedAppointmentInfoList.size() + "");
+            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");
         }
     }
 
@@ -833,22 +843,22 @@ public class AllAppointmentsFragment extends Fragment {
     private void getCompletedAppointments() {
         tvCompletedAppsCount.setText("0");
         tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart);
+        completedAppointmentInfoList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart);
 
-        if (appointmentInfoList.size() > 0) {
+        if (completedAppointmentInfoList.size() > 0) {
             rvCompletedApp.setVisibility(View.VISIBLE);
             noDataFoundForCompleted.setVisibility(View.GONE);
-            tvCompletedAppsCount.setText(appointmentInfoList.size() + "");
-            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + appointmentInfoList.size() + ")");
-            getDataForCompletedAppointments(appointmentInfoList);
+            tvCompletedAppsCount.setText(completedAppointmentInfoList.size() + "");
+            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");
+            getDataForCompletedAppointments(completedAppointmentInfoList);
             completedStart = completedEnd;
             completedEnd += completedLimit;
         } else {
             //no data found
             rvCompletedApp.setVisibility(View.GONE);
             noDataFoundForCompleted.setVisibility(View.VISIBLE);
-            tvCompletedAppsCount.setText(appointmentInfoList.size() + "");
-            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + appointmentInfoList.size() + ")");
+            tvCompletedAppsCount.setText(completedAppointmentInfoList.size() + "");
+            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");
         }
     }
 
@@ -949,6 +959,7 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void filterAsPerSelectedOptions() {
+        initLimits();
         if (whichAppointment.isEmpty() && fromDate.isEmpty() && toDate.isEmpty()) {
             //all data
             getUpcomingAppointments();
@@ -1049,5 +1060,23 @@ public class AllAppointmentsFragment extends Fragment {
         }
     }
 
+    private void initLimits() {
+        upcomingStart = 0;
+        cancelledStart = 0;
+        completedStart = 0;
+
+        upcomingEnd = upcomingStart + upcomingLimit;
+        cancelledEnd = cancelledStart + cancelledLimit;
+        completedEnd = completedEnd + completedLimit;
+    }
+
+    private void resetData() {
+        completedSearchList.clear();
+        cancelledSearchList.clear();
+        upcomingSearchList.clear();
+
+        initLimits();
+        getAppointments();
+    }
 
 }
