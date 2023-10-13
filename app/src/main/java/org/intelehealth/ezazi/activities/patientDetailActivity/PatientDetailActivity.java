@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.activities.patientDetailActivity;
 
+import static org.intelehealth.ezazi.app.AppConstants.OBSTETRICIAN_GYNECOLOGIST;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__gu_dob;
@@ -386,7 +387,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     speciality_attributes
-                            .insertVisitAttributes(uuid, "General Physician", VISIT_DR_SPECIALITY);
+                            .insertVisitAttributes(uuid, OBSTETRICIAN_GYNECOLOGIST, VISIT_DR_SPECIALITY);
                     speciality_attributes
                             .insertVisitAttributes(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
                     speciality_attributes

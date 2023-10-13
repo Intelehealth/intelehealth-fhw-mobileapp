@@ -158,6 +158,10 @@ public class AppConstants {
 
     public static final String SHIFTED_PATIENT_RECEIVER = "SHIFTED_PATIENT_RECEIVER";
 
+    public static final String GENERAL_PHYSICIAN = "General Physician";
+
+    public static final String OBSTETRICIAN_GYNECOLOGIST = "Obstetrician & Gynecologist";
+
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;
     }
