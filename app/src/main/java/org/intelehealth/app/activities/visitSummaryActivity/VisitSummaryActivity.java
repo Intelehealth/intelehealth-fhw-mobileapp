@@ -4840,6 +4840,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         hasPartialPrescription = "true"; //if any kind of prescription data is present...
                         presc_status.setText(getResources().getString(R.string.prescription_in_progress));
                         presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
+
+                        // Dispense & Administer - START
+                        fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                        // Dispense & Administer - END
+
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
                             parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
@@ -4904,6 +4909,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 hasPartialPrescription = "true"; //if any kind of prescription data is present...
                 presc_status.setText(getResources().getString(R.string.prescription_in_progress));
                 presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
+
+                // Dispense & Administer - START
+                fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                // Dispense & Administer - END
+
                 if (dbValue.startsWith("{")) {
                     AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
                     parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
