@@ -341,6 +341,32 @@ public class ObsDAO {
         return list;
     }
 
+    public static ObsDTO getObsAid(String encounterUuid, String conceptUuid) throws DAOException {
+        ObsDTO obsDTO = new ObsDTO();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor obsCursoursor = db.rawQuery("select * from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' " +
+                "and comment is null", new String[]{conceptUuid, encounterUuid});
+        try {
+            if (obsCursoursor.getCount() > 0) {
+                while (obsCursoursor.moveToNext()) {
+                    obsDTO.setUuid(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")));
+                    obsDTO.setValue(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")));
+                }
+                db.setTransactionSuccessful();
+            }
+        } catch (SQLException sql) {
+            FirebaseCrashlytics.getInstance().recordException(sql);
+            throw new DAOException(sql);
+        } finally {
+            obsCursoursor.close();
+            db.endTransaction();
+        }
+
+        return obsDTO;
+    }
+
 
 
 }

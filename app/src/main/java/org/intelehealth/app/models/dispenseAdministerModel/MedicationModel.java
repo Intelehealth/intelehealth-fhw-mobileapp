@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class DispenseAdministerModel {
+public class MedicationModel {
     @SerializedName("medicationUuidList")
     @Expose
     private List<String> medicationUuidList;
@@ -26,7 +26,7 @@ public class DispenseAdministerModel {
     @Expose
     private String dateTime;
 
-    public DispenseAdministerModel() {
+    public MedicationModel() {
     }
 
     public List<String> getMedicationUuidList() {
@@ -71,7 +71,7 @@ public class DispenseAdministerModel {
 
     @Override
     public String toString() {
-        return "DispenseAdministerModel{" +
+        return "MedicationModel{" +
                 "medicationUuidList=" + medicationUuidList +
                 ", medicationNotesList=" + medicationNotesList +
                 ", documentsList=" + documentsList +
