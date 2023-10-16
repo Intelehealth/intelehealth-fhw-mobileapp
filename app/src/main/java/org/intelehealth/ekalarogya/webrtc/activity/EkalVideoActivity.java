@@ -23,7 +23,7 @@ import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.databinding.ActivityVideoCallBinding;
 import org.intelehealth.klivekit.model.RtcArgs;
-import org.intelehealth.klivekit.ui.activity.CoreVideoCallActivity;
+import org.intelehealth.klivekit.call.ui.activity.CoreVideoCallActivity;
 import org.intelehealth.klivekit.call.utils.CallMode;
 import org.intelehealth.klivekit.utils.RemoteActionType;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;

@@ -1,4 +1,4 @@
-package org.intelehealth.klivekit.ui.activity
+package org.intelehealth.klivekit.call.ui.activity
 
 import android.Manifest
 import android.media.MediaPlayer
@@ -26,9 +26,9 @@ import org.intelehealth.app.registry.allGranted
 import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
-import org.intelehealth.klivekit.ui.viewmodel.CallViewModel
-import org.intelehealth.klivekit.ui.viewmodel.SocketViewModel
-import org.intelehealth.klivekit.ui.viewmodel.VideoCallViewModel
+import org.intelehealth.klivekit.call.ui.viewmodel.CallViewModel
+import org.intelehealth.klivekit.socket.SocketViewModel
+import org.intelehealth.klivekit.call.ui.viewmodel.VideoCallViewModel
 import org.intelehealth.klivekit.utils.AudioType
 import org.intelehealth.klivekit.utils.RTC_ARGS
 import org.intelehealth.klivekit.utils.extensions.showToast
@@ -156,6 +156,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
         videoCallViewModel.callTimeUpStatus.observe(this) { callTimeUp(it) }
         socketViewModel.eventCallTimeUp.observe(this) { callTimeUp(it) }
+        socketViewModel.eventCallHangUp.observe(this) { if (it) endCall() }
     }
 
     private fun callTimeUp(it: Boolean) {
@@ -227,7 +228,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
                 Timber.d { "Args => ${Gson().toJson(args)}" }
                 Timber.e { "Room Token : ${args.appToken}" }
                 preventDuplicationData(args)
-                if (args.isIncomingCall) onIncomingCall()
+                if (args.isIncomingCall()) onIncomingCall()
                 else onGoingCall()
             }
 
@@ -337,7 +338,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     open fun declineCall() {
         isDeclined = true
         showToast(getString(R.string.you_declined_call))
-        if (args.isIncomingCall.not()) {
+        if (args.isIncomingCall().not()) {
             socketViewModel.emit(
                 SocketManager.EVENT_CALL_CANCEL_BY_HW,
                 socketViewModel.buildOutGoingCallParams(args)

@@ -3,10 +3,7 @@ package org.intelehealth.klivekit.call.utils
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.TaskStackBuilder
 import android.content.Context
-import android.content.Intent
 import android.content.Intent.ACTION_CALL
 import android.media.AudioAttributes
 import android.media.RingtoneManager
@@ -31,17 +28,17 @@ import kotlin.random.Random
  * Created by Vaghela Mithun R. on 8/28/2021.
  * vaghela@codeglo.com
  */
-object NotificationHandlerUtils {
+object CallNotificationHandler {
 
-    const val NOTIFICATION_CHANNEL_ID = "call_channel_id"
-    const val NOTIFICATION_CHANNEL_NAME = "call_channel"
+    private const val NOTIFICATION_CHANNEL_ID = "call_channel_id"
+    private const val NOTIFICATION_CHANNEL_NAME = "call_channel"
 
     /**
      * Retrieve NotificationManager instance
      * @param context service context
      * @return NotificationManager instance
      */
-    fun getNotificationManager(context: Context): NotificationManager {
+    private fun getNotificationManager(context: Context): NotificationManager {
         return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
@@ -93,13 +90,16 @@ object NotificationHandlerUtils {
      * @param [context] service context
      *
      * */
-    fun getHangUpAction(
+    private fun getHangUpAction(
         context: Context,
         messageBody: RtcArgs
     ): NotificationCompat.Action = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_HANG_UP,
-        IntentUtils.getBroadCastIntent(context, messageBody)
+        IntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
+            callAction = CallAction.HANG_UP
+            callStatus = CallStatus.ON_GOING
+        })
     ).build()
 
     /**
@@ -128,7 +128,7 @@ object NotificationHandlerUtils {
         context: Context
     ): NotificationCompat.Builder {
 
-        return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+        return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setContentTitle(messageBody.doctorName)
             .setContentText("Calling")
@@ -167,8 +167,8 @@ object NotificationHandlerUtils {
             .setContentIntent(lockScreenIntent)
             .setFullScreenIntent(lockScreenIntent, true)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-            .addAction(getDeclineAction(context, messageBody))
             .addAction(getAcceptAction(context, messageBody))
+            .addAction(getDeclineAction(context, messageBody))
     }
 
     /**
@@ -188,14 +188,14 @@ object NotificationHandlerUtils {
 
         Timber.d("Local time date ***** ${messageBody.notificationTime}")
 
-        return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+        return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setContentTitle("Ongoing call")
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
             .setSmallIcon(messageBody.notificationIcon)
             .setCategory(NotificationCompat.CATEGORY_CALL)
             .setContentIntent(notificationIntent)
-            //.setUsesChronometer(true)
+            .setUsesChronometer(true)
             .setSilent(true)
             .addAction(getHangUpAction(context, messageBody.apply {
                 callAction = CallAction.HANG_UP
@@ -221,7 +221,7 @@ object NotificationHandlerUtils {
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             setBypassDnd(true)
             if (priority == 1) {
-                setSound(getDefaultRingtoneUrl(), NotificationHandlerUtils.getAudioAttributes())
+                setSound(getDefaultRingtoneUrl(), CallNotificationHandler.getAudioAttributes())
             }
         }
     }
@@ -270,7 +270,7 @@ object NotificationHandlerUtils {
      * Build AudioAttributes
      * @return AudioAttributes for notification ringtone
      */
-    fun getAudioAttributes(): AudioAttributes {
+    private fun getAudioAttributes(): AudioAttributes {
         return AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
             .build()
@@ -283,11 +283,13 @@ object NotificationHandlerUtils {
     private fun getDefaultRingtoneUrl() =
         RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
 
-    fun getChannelId(context: Context) = context.applicationContext.packageName.apply {
-        "${this}.$NOTIFICATION_CHANNEL_ID"
-    }
+    private fun getChannelId(context: Context): String =
+        context.applicationContext.packageName.apply {
+            "${this}.$NOTIFICATION_CHANNEL_ID"
+        }
 
-    fun getChannelName(context: Context) = context.applicationContext.packageName.apply {
-        "${this}.$NOTIFICATION_CHANNEL_NAME"
-    }
+    private fun getChannelName(context: Context): String =
+        context.applicationContext.packageName.apply {
+            "${this}.$NOTIFICATION_CHANNEL_NAME"
+        }
 }

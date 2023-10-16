@@ -1,31 +1,8 @@
 package org.intelehealth.klivekit.call.notification
 
-import android.R
-import android.app.KeyguardManager
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
-import android.content.Context
 import android.content.Intent
-import android.media.AudioAttributes
-import android.media.AudioFocusRequest
-import android.media.AudioManager
-import android.media.AudioManager.OnAudioFocusChangeListener
-import android.media.MediaPlayer
-import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
 import android.os.IBinder
-import android.os.Vibrator
-import android.provider.Settings
-import android.util.Log
-import androidx.core.app.NotificationCompat
-import org.intelehealth.klivekit.call.utils.NotificationHandlerUtils
-import java.util.Objects
-import java.util.concurrent.TimeUnit
 
 
 /**

@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.IntentCompat
+import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.RTC_ARGS
+import org.intelehealth.klivekit.utils.extensions.printExtra
 
 
 /**
@@ -16,11 +18,17 @@ import org.intelehealth.klivekit.utils.RTC_ARGS
  **/
 class CallReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        intent?.let { handleReceivedIntentData(context!!, it) }
+        Timber.d { "CallReceiver executed" }
+        intent?.let { handleReceivedIntentData(context!!, intent) } ?: Timber.d {
+            "call argument intent is null"
+        }
     }
 
     private fun handleReceivedIntentData(context: Context, intent: Intent) {
-        if (intent.hasCategory(RTC_ARGS)) {
+        intent.printExtra()
+        Timber.d { "handleReceivedIntentData executed ${intent.hasExtra("Temp")}" }
+        if (intent.hasExtra(RTC_ARGS)) {
+            Timber.d { "handleReceivedIntentData executed" }
             val args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
             args?.let {
                 CallHandlerUtils.notifyCallNotification(args, context)

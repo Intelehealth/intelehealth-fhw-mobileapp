@@ -175,6 +175,11 @@ open class SocketManager @Inject constructor() {
         }
     }
 
+    fun emitLocalEvent(event: String, args: Any? = null) {
+        Timber.e { "emitLocalEvent $event args $args" }
+        emitterListener?.invoke(event)?.call(args)
+    }
+
     fun disconnect() {
         socket?.off(EVENT_IS_READ)
         socket?.off(EVENT_UPDATE_MESSAGE)
@@ -233,6 +238,9 @@ open class SocketManager @Inject constructor() {
         const val EVENT_CALL_CANCEL_BY_HW = "cancel_hw"
         const val EVENT_CALL_CANCEL_BY_DR = "cancel_dr"
         const val EVENT_CALL_TIME_UP = "call_time_up"
+
+        // Local event
+        const val EVENT_CALL_HANG_UP = "call_hang_up"
 
         // Chat message event
         const val EVENT_UPDATE_MESSAGE = "updateMessage"

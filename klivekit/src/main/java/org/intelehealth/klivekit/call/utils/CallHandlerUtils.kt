@@ -7,16 +7,13 @@ import android.hardware.SensorManager
 import android.media.AudioManager
 import android.media.MediaPlayer
 import androidx.core.content.ContextCompat
-import com.google.gson.Gson
+import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.R
-import org.intelehealth.klivekit.call.model.CallArg
 import org.intelehealth.klivekit.call.notification.CallReceiver
 import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
-import org.intelehealth.klivekit.utils.extensions.fromJson
-import timber.log.Timber
 
 /**
  * Created by Vaghela Mithun R. on 8/28/2021.
@@ -33,16 +30,20 @@ object CallHandlerUtils {
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
     fun notifyCallNotification(callArgs: RtcArgs, context: Context) {
-        if (callArgs.isIncomingCall() or callArgs.isAcceptCall() or callArgs.isOutGoingCall()) {
+        Timber.d { "notifyCallNotification : ${callArgs.toJson()}" }
+        context.stopService(Intent(context, HeadsUpNotificationService::class.java))
+        if (callArgs.isCallDeclined()) {
+            SocketManager.instance.emit(SocketManager.EVENT_CALL_REJECT_BY_HW)
+            context.stopService(Intent(context, HeadsUpNotificationService::class.java))
+        } else if (callArgs.isCallHangUp()) {
+            SocketManager.instance.emitLocalEvent(SocketManager.EVENT_CALL_HANG_UP)
+        } else if (callArgs.isIncomingCall() or callArgs.isAcceptCall() or callArgs.isOutGoingCall()) {
             IntentUtils.getHeadsUpNotificationServiceIntent(callArgs, context).also {
                 ContextCompat.startForegroundService(context, it)
             }
-        } else if (callArgs.isCallDeclined()) {
-            SocketManager.instance.emit(SocketManager.EVENT_CALL_REJECT_BY_HW)
-            context.stopService(Intent(context, HeadsUpNotificationService::class.java))
         } else if (callArgs.isMissedCall()) {
             context.stopService(Intent(context, HeadsUpNotificationService::class.java))
-            NotificationHandlerUtils.notifyMissedCall(context, callArgs)
+            CallNotificationHandler.notifyMissedCall(context, callArgs)
         } else if (callArgs.isBusyCall()) {
             // cancel notification with busy message
         } else if (callArgs.isCallOnGoing()) {
@@ -60,7 +61,7 @@ object CallHandlerUtils {
      */
     fun operateIncomingCall(context: Context, callArgs: RtcArgs, clazz: Class<*>) {
         callArgs.callMode = CallMode.INCOMING
-        callArgs.callIntent = Intent(context, clazz)
+        callArgs.callCallName = clazz.name
         notifyCallNotification(callArgs, context)
     }
 
@@ -73,6 +74,7 @@ object CallHandlerUtils {
     fun operateCallAction(messageBody: RtcArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            action = IntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -83,7 +85,7 @@ object CallHandlerUtils {
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
     fun declineCall(messageBody: RtcArgs, context: Context) {
-        Timber.d("Call declined **** ${messageBody.callStatus}")
+        Timber.d { "Call declined **** ${messageBody.callStatus}" }
 //        if (messageBody.isAttendedCall() or messageBody.isCallOnGoing()) {
 //            messageBody.messageType = CALL_NONE
 //            messageBody.action = CALL_ACTION_HANGUP
@@ -108,6 +110,7 @@ object CallHandlerUtils {
     fun hangUpCall(messageBody: RtcArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            action = IntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -116,6 +119,7 @@ object CallHandlerUtils {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
 //            messageBody.callStatus = CALL_FINISHED
             putExtra(RTC_ARGS, messageBody)
+            action = IntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -130,6 +134,7 @@ object CallHandlerUtils {
 //        messageBody.callStatus = CALL_TIMED_OUT
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            action = IntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -142,6 +147,7 @@ object CallHandlerUtils {
     fun callMissed(messageBody: RtcArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            action = IntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -161,10 +167,10 @@ object CallHandlerUtils {
         mediaPlayer?.isLooping = true
 
         if (messageBody.isVideoCall().not()) {
-            Timber.d("Audio call ****** ")
+            Timber.d { "Audio call ****** " }
             audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
         } else {
-            Timber.d("Video call ****** ")
+            Timber.d { "Video call ****** " }
             audioManager.mode = AudioManager.MODE_RINGTONE
         }
         //audioManager.isSpeakerphoneOn = false
@@ -202,7 +208,7 @@ object CallHandlerUtils {
             sensorManager.registerListener(service, sensor, SensorManager.SENSOR_DELAY_NORMAL)
             sensor
         } else {
-            Timber.d("Sensor is null **** ")
+            Timber.d { "Sensor is null **** " }
             null
         }
     }

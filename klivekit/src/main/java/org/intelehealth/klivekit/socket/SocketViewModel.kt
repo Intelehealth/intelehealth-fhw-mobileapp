@@ -1,4 +1,4 @@
-package org.intelehealth.klivekit.ui.viewmodel
+package org.intelehealth.klivekit.socket
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.intelehealth.klivekit.model.RtcArgs
-import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.extensions.hide
 import org.json.JSONObject
 import javax.inject.Inject
@@ -76,6 +75,9 @@ class SocketViewModel @Inject constructor(private val socketManager: SocketManag
     private val mutableCallTimeUp = MutableLiveData(false)
     val eventCallTimeUp = mutableCallTimeUp.hide()
 
+    private val mutableCallHangUp = MutableLiveData(false)
+    val eventCallHangUp = mutableCallTimeUp.hide()
+
     private fun emitter(event: String) = Emitter.Listener {
         when (event) {
             SocketManager.EVENT_BYE -> sayByeToWeb()
@@ -100,6 +102,10 @@ class SocketViewModel @Inject constructor(private val socketManager: SocketManag
 
             SocketManager.EVENT_UPDATE_MESSAGE -> executeInUIThread {
                 mutableEventUpdateMessage.postValue(it)
+            }
+
+            SocketManager.EVENT_CALL_HANG_UP -> executeInUIThread {
+                mutableCallHangUp.postValue(true)
             }
 
             SocketManager.EVENT_ALL_USER -> checkActiveUser(it, SocketManager.EVENT_ALL_USER)

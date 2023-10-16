@@ -76,6 +76,7 @@ import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
 import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.klivekit.call.utils.CallMode;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
@@ -1062,7 +1063,8 @@ public class HomeActivity extends BaseActivity {
                     in.putExtra("nurseId", nurseId);
 
                     RtcArgs args = remoteMessage.getParcelable(RtcUtilsKt.RTC_ARGS);
-                    args.setIncomingCall(true);
+                    args.setCallMode(CallMode.INCOMING);
+//                    args.setIncomingCall(true);
                     in.putExtra(RtcUtilsKt.RTC_ARGS, args);
 
                     int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();

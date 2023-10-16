@@ -20,15 +20,15 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.annotation.RequiresApi
 import androidx.core.content.IntentCompat
+import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallConstants
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallStatus
-import org.intelehealth.klivekit.call.utils.NotificationHandlerUtils
+import org.intelehealth.klivekit.call.utils.CallNotificationHandler
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.RTC_ARGS
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.random.Random
@@ -94,7 +94,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
     override fun onCreate() {
         super.onCreate()
-        Timber.d("Service is created ***** ")
+        Timber.d { "Service is created ***** " }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrationEffect = VibrationEffect.createWaveform(
@@ -105,16 +105,17 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Timber.d("OnstartCommand is created ***** ")
+        Timber.d { "OnstartCommand is created ***** " }
         intent?.let {
 
             setVibrateorNormalRinger()
             val messageBody = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
             messageBody?.let {
                 messageBody.notificationId = notificationId
-                Timber.d("Message call type **** ${messageBody.callType}")
-                Timber.d("Message call mode **** ${messageBody.callMode}")
-                Timber.d("Message call status **** ${messageBody.callStatus}")
+                Timber.d { "Message call type **** ${messageBody.callType}" }
+                Timber.d { "Message call mode **** ${messageBody.callMode}" }
+                Timber.d { "Message call status **** ${messageBody.callStatus}" }
+                Timber.d { "Message call action **** ${messageBody.callAction}" }
                 if (messageBody.isAcceptCall()) {
                     showAcceptedCallNotification(messageBody)
                 } else if (messageBody.isIncomingCall()) {
@@ -153,7 +154,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
     private fun setVibrateorNormalRinger() {
 
-        Timber.d("Audio manager mode ***** ${audioManager.ringerMode}")
+        Timber.d { "Audio manager mode ***** ${audioManager.ringerMode}" }
 
         when (audioManager.ringerMode) {
 
@@ -176,7 +177,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getNotificationChannel(context: Context, priority: Int): NotificationChannel {
-        return NotificationHandlerUtils.getNotificationChannel(context, priority)
+        return CallNotificationHandler.getNotificationChannel(context, priority)
     }
 
     private fun showOutGoingNotification(context: Context, messageBody: RtcArgs) {
@@ -186,7 +187,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         }
 
         val notificationCompatBuilder =
-            NotificationHandlerUtils.outGoingCallNotificationBuilder(messageBody, this)
+            CallNotificationHandler.outGoingCallNotificationBuilder(messageBody, this)
 
         notificationManager.notify(notificationId, notificationCompatBuilder.build())
         startForeground(notificationId, notificationCompatBuilder.build())
@@ -203,22 +204,23 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
 
     private fun showAcceptedCallNotification(messageBody: RtcArgs) {
+        Timber.d { "showAcceptedCallNotification" }
         destroySetting()
 
         messageBody.notificationId = notificationId
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(
-                NotificationHandlerUtils.getNotificationChannel(this, 2)
+                CallNotificationHandler.getNotificationChannel(this, 2)
             )
         }
 
 
         val notificationCompatBuilder =
-            NotificationHandlerUtils.getAttendedCallNotificationBuilder(this, messageBody)
+            CallNotificationHandler.getAttendedCallNotificationBuilder(this, messageBody)
 
         notificationManager.notify(notificationId, notificationCompatBuilder.build())
-
+        startForeground(notificationId, notificationCompatBuilder.build())
         if (messageBody.isVideoCall().not()) {
             sensor = CallHandlerUtils.initSensor(sensorManager, this)
         }
@@ -230,12 +232,12 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         messageBody.callMode = CallMode.INCOMING
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(
-                NotificationHandlerUtils.getNotificationChannel(this, 1)
+                CallNotificationHandler.getNotificationChannel(this, 1)
             )
         }
 
         val notificationCompatBuilder =
-            NotificationHandlerUtils.getIncomingNotificationBuilder(this, messageBody)
+            CallNotificationHandler.getIncomingNotificationBuilder(this, messageBody)
 
         val notification: Notification = notificationCompatBuilder.build()
         notification.flags = Notification.FLAG_INSISTENT
@@ -276,33 +278,33 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        Timber.d("Call service is destroyed ***** ")
+        Timber.d { "Call service is destroyed ***** " }
         destroySetting()
 
         wakeLock.let {
             if (it.isHeld) {
                 it.release()
-                Timber.d("Wake lock is released ******* ")
+                Timber.d { "Wake lock is released ******* " }
             } else {
-                Timber.d("Wake lock is not released **** ")
+                Timber.d { "Wake lock is not released **** " }
             }
         }
         sensor?.let {
-            Timber.d("Sensor manager is released **** ")
+            Timber.d { "Sensor manager is released **** " }
             sensorManager.unregisterListener(this, it)
-        } ?: Timber.d("The sensor is empty ****** ")
+        } ?: Timber.d { "The sensor is empty ****** " }
 
         //leave channel
         /* App.rtcEngine?.muteLocalAudioStream(false)
          App.rtcEngine?.setEnableSpeakerphone(true)*/
 //        App.rtcEngine?.leaveChannel()
 //        RtcEngine.destroy()
-        NotificationHandlerUtils.cancelNotification(notificationId, this)
+        CallNotificationHandler.cancelNotification(notificationId, this)
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
 
-        Timber.d("OnSensorChanged **** ")
+        Timber.d { "OnSensorChanged **** " }
 
         event?.let {
 
@@ -310,27 +312,27 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
                 if (event.values[0] < event.sensor.maximumRange) {
 
-                    Timber.d("OnSensorChanged - acquiring wakelock **** ")
+                    Timber.d { "OnSensorChanged - acquiring wakelock **** " }
 
-                    Timber.d("Power Manager is screen on **** ${powerManager.isInteractive}")
+                    Timber.d { "Power Manager is screen on **** ${powerManager.isInteractive}" }
 
                     if (powerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) {
 
                         wakeLock?.let {
 
                             if (it.isHeld) {
-                                Timber.d("Release then acquire ***** ")
+                                Timber.d { "Release then acquire ***** " }
                                 it.release()
                             } else {
-                                Timber.d("Not held wake lock ***** ")
+                                Timber.d { "Not held wake lock ***** " }
                             }
                             it.acquire(10 * 60 * 1000L)
                         }
                     } else {
-                        Timber.d("wake lock not supported ****** ")
+                        Timber.d { "wake lock not supported ****** " }
                     }
                 } else {
-                    Timber.d("OnSensorChanged - event value greater than sensor max range **** ")
+                    Timber.d { "OnSensorChanged - event value greater than sensor max range **** " }
                 }
             }
         }
@@ -338,13 +340,13 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        Timber.d("OnAccuracyChanged - **** $accuracy")
+        Timber.d { "OnAccuracyChanged - **** $accuracy" }
     }
 
 
     private fun countDownTimer(messageBody: RtcArgs) {
 
-        Timber.d("Counterdown ***** ")
+        Timber.d { "Counterdown ***** " }
 
         countDownTimer = object : CountDownTimer(
             Companion.MAX_TIMEOUT,
@@ -352,7 +354,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         ) {
 
             override fun onTick(millisUntilFinished: Long) {
-                Timber.d("Remaining time **** $millisUntilFinished")
+                Timber.d { "Remaining time **** $millisUntilFinished" }
             }
 
             override fun onFinish() {

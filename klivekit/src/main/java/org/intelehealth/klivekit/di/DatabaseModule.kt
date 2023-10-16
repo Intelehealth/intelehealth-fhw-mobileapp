@@ -31,4 +31,9 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideChatRoom(appDatabase: WebRtcDatabase) = appDatabase.chatRoomDao()
+
+    @Singleton
+    @Provides
+    fun provideRtcCallLogDao(appDatabase: WebRtcDatabase) = appDatabase.rtcCallLogDao()
+
 }

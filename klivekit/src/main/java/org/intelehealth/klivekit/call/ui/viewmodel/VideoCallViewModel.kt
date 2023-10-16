@@ -1,4 +1,4 @@
-package org.intelehealth.klivekit.ui.viewmodel
+package org.intelehealth.klivekit.call.ui.viewmodel
 
 import android.app.Application
 import android.content.BroadcastReceiver

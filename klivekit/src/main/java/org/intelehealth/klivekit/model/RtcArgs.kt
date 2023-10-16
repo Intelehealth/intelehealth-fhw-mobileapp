@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.call.utils.CallType
@@ -34,7 +35,7 @@ data class RtcArgs(
     @SerializedName("connectToDrId")
     var doctorId: String? = null,
     var appToken: String? = null,
-    var isIncomingCall: Boolean = false,
+//    var isIncomingCall: Boolean = false,
     @SerializedName("device_token")
     var deviceToken: String? = "",
     var actionType: String = RemoteActionType.TEXT_CHAT.name,
@@ -46,12 +47,12 @@ data class RtcArgs(
     var callStatus: CallStatus = CallStatus.NONE,
     var callAction: CallAction = CallAction.NONE,
     var callMode: CallMode = CallMode.NONE,
-    var callIntent: Intent? = null,
+    var callCallName: String? = null,
     var notificationChannelName: String? = null,
     var notificationChannelId: String? = null,
     var notificationId: Int = 0,
-    var notificationIcon: Int = 0,
-    var notificationTime:String? = null
+    var notificationIcon: Int = R.drawable.ic_call_accept,
+    var notificationTime: String? = null
 ) : Parcelable {
     fun toJson(): String = Gson().toJson(this)
 
@@ -67,9 +68,41 @@ data class RtcArgs(
 
     fun isCallDeclined() = callAction == CallAction.DECLINE
 
+    fun isCallHangUp() = callAction == CallAction.HANG_UP
+
     fun isCallOnGoing() = callStatus == CallStatus.ON_GOING
 
     fun isMissedCall() = callStatus == CallStatus.MISSED
 
     fun isBusyCall() = callStatus == CallStatus.BUSY
+
+    companion object {
+
+        fun dummy(): RtcArgs {
+            val json = "{" +
+                    "  \"actionType\": \"VIDEO_CALL\"," +
+                    "  \"appToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6ImM0MWNmMWU5LTMxNWUtNGFlNi05ZTIwLWNiNzJmZTMwZDg4MyIsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiZXhwIjoiMTAgZGF5cyJ9LCJpYXQiOjE2OTcyODk4MDksIm5iZiI6MTY5NzI4OTgwOSwiZXhwIjoxNjk3MzExNDA5LCJpc3MiOiJkZXZrZXkiLCJzdWIiOiJjMWVmYTQxZC0zYzQzLTQ1ZDYtOWUzYS00NzI4MjNiNjFhNTkiLCJqdGkiOiJjMWVmYTQxZC0zYzQzLTQ1ZDYtOWUzYS00NzI4MjNiNjFhNTkifQ.LTJJ_BF4c8hZo2Cfe7ItPnP5-GUXfqgQqYIkiSSiZG8\"," +
+                    "  \"assignorNurseName\": \"\"," +
+                    "  \"callEnded\": false," +
+                    "  \"device_token\": \"\"," +
+                    "  \"doctorId\": \"30cd7a4f-421e-45c1-b64f-392705fd4eae\"," +
+                    "  \"doctorName\": \"Waghela Mithun Ravjibhai\"," +
+                    "  \"id\": \"3d86222b-9645-4fff-af8a-fab8e772f8bf\"," +
+                    "  \"isIncomingCall\": false," +
+                    "  \"nurseId\": \"c1efa41d-3c43-45d6-9e3a-472823b61a59\"," +
+                    "  \"nurseName\": \"mithunnurse\"," +
+                    "  \"shift_change\": \"\"," +
+                    "  \"patientUuid\": \"\"," +
+                    "  \"providerID\": \"\"," +
+                    "  \"roomId\": \"c41cf1e9-315e-4ae6-9e20-cb72fe30d883\"," +
+                    "  \"socketUrl\": \"https://ezazi.intelehealth.org:3004?userId\\u003dc1efa41d-3c43-45d6-9e3a-472823b61a59\\u0026name\\u003dmithunnurse\"," +
+                    "  \"tag\": \"\"," +
+                    "  \"timestamp\": 1697289811433," +
+                    "  \"url\": \"wss://ezazi.intelehealth.org:9090\"," +
+                    "  \"visitId\": \"52b1d64c-5843-44e9-b042-8019263e151b\"," +
+                    "  \"visitUuid\": \"\"" +
+                    "}"
+            return Gson().fromJson(json, RtcArgs::class.java)
+        }
+    }
 }

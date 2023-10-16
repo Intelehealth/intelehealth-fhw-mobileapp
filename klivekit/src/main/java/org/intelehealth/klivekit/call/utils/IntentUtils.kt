@@ -5,11 +5,12 @@ import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.call.notification.CallReceiver
 import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
 import org.intelehealth.klivekit.call.utils.CallConstants.MAX_INT
 import org.intelehealth.klivekit.model.RtcArgs
-import org.intelehealth.klivekit.ui.activity.VideoCallActivity
+import org.intelehealth.klivekit.call.ui.activity.VideoCallActivity
 import org.intelehealth.klivekit.utils.RTC_ARGS
 import kotlin.random.Random
 
@@ -19,7 +20,8 @@ import kotlin.random.Random
  */
 object IntentUtils {
 
-    const val REQUEST_CODE = 10001
+    private const val REQUEST_CODE = 10001
+    const val CALL_RECEIVER_ACTION = "CALL_RECEIVER_ACTION"
 
     /**
      * @param context Context of current scope
@@ -27,9 +29,11 @@ object IntentUtils {
      * @return Intent ChatCallActivity intent to start
      */
     fun getCallActivityIntent(messageBody: RtcArgs, context: Context): Intent? {
-        return messageBody.callIntent?.let {
-            it.putExtra(RTC_ARGS, messageBody)
-            return@let it
+        return messageBody.callCallName?.let {
+            val callClass: Class<*> = Class.forName(it)
+            return@let Intent(context, callClass).apply {
+                putExtra(RTC_ARGS, messageBody)
+            }
         }
     }
 
@@ -53,10 +57,14 @@ object IntentUtils {
         messageBody: RtcArgs,
         context: Context
     ): Intent {
-
-        return messageBody.callIntent?.apply {
+        return messageBody.callCallName?.let {
+            val callClass: Class<*> = Class.forName(it)
+            return@let Intent(context, callClass).apply {
+                putExtra(RTC_ARGS, messageBody)
+            }
+        } ?: Intent(context, VideoCallActivity::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
-        } ?: Intent(context, VideoCallActivity::class.java)
+        }
     }
 
     /**
@@ -64,12 +72,15 @@ object IntentUtils {
      * @param messageBody an instance of RtcArgs to send with intent
      * @return ChatCallBroadCastReceiver intent
      */
-    fun getCallBroadcastIntent(
+    private fun getCallBroadcastIntent(
         messageBody: RtcArgs,
         context: Context
     ): Intent {
+        Timber.d { "getCallBroadcastIntent: ${messageBody.toJson()}" }
         return Intent(context, CallReceiver::class.java).apply {
-            putExtra(RTC_ARGS, messageBody)
+            this.putExtra(RTC_ARGS, messageBody)
+            this.putExtra("Temp", "Temp")
+            this.action = getCallReceiverAction(context)
         }
     }
 
@@ -220,4 +231,7 @@ object IntentUtils {
     } else {
         PendingIntent.FLAG_UPDATE_CURRENT
     }
+
+    fun getCallReceiverAction(context: Context) =
+        "${context.applicationContext.packageName}.$CALL_RECEIVER_ACTION"
 }

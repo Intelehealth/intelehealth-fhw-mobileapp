@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
-<!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <uses-permission
         android:name="android.permission.BLUETOOTH"
@@ -20,18 +20,29 @@
     <application>
         <service android:name=".service.ForegroundService" />
 
+        <service android:name=".call.notification.HeadsUpNotificationService" />
+
+        <receiver
+            android:name=".call.notification.CallReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="${applicationId}.CALL_RECEIVER_ACTION" />
+            </intent-filter>
+        </receiver>
+
         <activity
-            android:name=".ui.activity.VideoCallActivity"
+            android:name=".call.ui.activity.VideoCallActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".chat.ui.activity.ChatActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
     </application>

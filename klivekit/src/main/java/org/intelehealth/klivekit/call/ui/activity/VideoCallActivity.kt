@@ -1,4 +1,4 @@
-package org.intelehealth.klivekit.ui.activity
+package org.intelehealth.klivekit.call.ui.activity
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
