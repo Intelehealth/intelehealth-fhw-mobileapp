@@ -499,6 +499,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Node node = mChiefComplainRootNodeList.get(i);
             Log.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
             String val = formatComplainRecord(node, i == mChiefComplainRootNodeList.size() - 1);
+            Log.v(TAG, "val- " + val);
             String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0);
             Log.v(TAG, "answerInLocale- " + answerInLocale);
 

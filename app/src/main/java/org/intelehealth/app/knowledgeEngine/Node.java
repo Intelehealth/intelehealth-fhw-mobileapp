@@ -1897,6 +1897,7 @@ public class Node implements Serializable {
         List<Node> mOptions = optionsList;
         if (optionsList != null && !optionsList.isEmpty()) {
             for (Node node_opt : mOptions) {
+                String r1 = generateAssociatedSymptomsOrHistory(node_opt, false);
                 if (node_opt.isSelected()) {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
@@ -1915,17 +1916,17 @@ public class Node implements Serializable {
                                 || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
                                 || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
                                 || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
-                            if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
+                            if (!r1.isEmpty()) {
                                 //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 //raw = raw.substring(6);
-                                raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                                raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + r1) + next_line;
                                 Log.e("FinalText= ", raw);
                             } else {
                                 Log.e("FinalText= ", raw);
 
                             }
                         } else {
-                            raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + r1) + next_line;
                         }
 
                     } else {
@@ -1950,10 +1951,10 @@ public class Node implements Serializable {
                             || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
                             || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
                             || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
-                        if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
+                        if (!r1.isEmpty()) {
                             //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                             //raw = raw.substring(6);
-                            raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + r1) + next_line;
                             Log.e("FinalText= ", raw);
                         } else {
                             Log.e("FinalText= ", raw);
@@ -1983,6 +1984,7 @@ public class Node implements Serializable {
     public String generateLanguageSingleNode() {
 
         String raw = "";
+        String r1 = generateAssociatedSymptomsOrHistory(this, true);
         if (isSelected()) {
             String associatedTest = getText();
             if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
@@ -2001,17 +2003,18 @@ public class Node implements Serializable {
                         || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
                         || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
                         || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
-                    if (!generateAssociatedSymptomsOrHistory(this).isEmpty()) {
+
+                    if (!r1.isEmpty()) {
                         //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                         //raw = raw.substring(6);
-                        raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
+                        raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + r1) + next_line;
                         Log.e("FinalText= ", raw);
                     } else {
                         Log.e("FinalText= ", raw);
 
                     }
                 } else {
-                    raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
+                    raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + r1) + next_line;
                 }
 
             } else {
@@ -2036,10 +2039,10 @@ public class Node implements Serializable {
                     || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
                     || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
                     || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
-                if (!generateAssociatedSymptomsOrHistory(this).isEmpty()) {
+                if (!r1.isEmpty()) {
                     //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                     //raw = raw.substring(6);
-                    raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
+                    raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + r1) + next_line;
                     Log.e("FinalText= ", raw);
                 } else {
                     Log.e("FinalText= ", raw);
@@ -2580,7 +2583,7 @@ public class Node implements Serializable {
         isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
 
-    private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {
+    private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode, boolean isForAssociatedSymptoms) {
 
         List<String> positiveAssociations = new ArrayList<>();
         List<String> negativeAssociations = new ArrayList<>();
@@ -2602,23 +2605,27 @@ public class Node implements Serializable {
 
             if (mOptions.get(i).isSelected()) {
                 if (!mOptions.get(i).getLanguage().isEmpty()) {
-                    if (mOptions.get(i).getLanguage().equals("%")) {
-                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
-                        positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
-                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                        positiveAssociations.add(mOptions.get(i).getText());
-                    } else {
-                        positiveAssociations.add(mOptions.get(i).getLanguage());
-                    }
-                }
-                if (!mOptions.get(i).isTerminal()) {
-                    if (positiveAssociations.size() > 0) {
-                        String tempString = positiveAssociations.get(positiveAssociations.size() - 1) + " - " +
-                                mOptions.get(i).formLanguage();
+                    if (!mOptions.get(i).isTerminal()) {
+                        if (positiveAssociations.size() > 0) {
+                            String tempString = mOptions.get(i).getText() + bullet_arrow +
+                                    mOptions.get(i).formLanguage();
 
-                        positiveAssociations.set(positiveAssociations.size() - 1, tempString);
+                            positiveAssociations.add(tempString);
+                        }
+                    } else if (isForAssociatedSymptoms && isUserInputsTypeNode(mOptions.get(i))) {
+                        positiveAssociations.add(mOptions.get(i).getText().replaceAll("\\[(.*?)\\]","") + bullet_arrow + mOptions.get(i).getLanguage());
+                    } else {
+                        if (mOptions.get(i).getLanguage().equals("%")) {
+                        } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                            positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                        } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                            positiveAssociations.add(mOptions.get(i).getText());
+                        } else {
+                            positiveAssociations.add(mOptions.get(i).getLanguage());
+                        }
                     }
                 }
+
 
             } else if (mOptions.get(i).isNoSelected()) {
                 if (!mOptions.get(i).getLanguage().isEmpty()) {
@@ -3370,6 +3377,16 @@ public class Node implements Serializable {
         return flag;
     }
 
+    public boolean isUserInputsTypeNode(Node node) {
+        boolean result = false;
+        String type = node.getInputType();
+        Log.v(TAG, "isUserInputsTypeNode - type : "+type);
+        if (type.equals("text") || type.equals("date") || type.equals("location") || type.equals("number") || type.equals("area") || type.equals("duration") || type.equals("range") || type.equals("frequency")) {
+            result = true;
+        }
+        Log.v(TAG, "isUserInputsTypeNode - result : "+result);
+        return result;
+    }
 
     public String formQuestionAnswerV2(int level) {
         List<String> stringsList = new ArrayList<>();
@@ -3471,6 +3488,7 @@ public class Node implements Serializable {
 
         return mLanguage;
     }
+
     public String formQuestionAnswerForAssociateSymptomsV2(int level) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
@@ -3576,6 +3594,7 @@ public class Node implements Serializable {
 
         return mLanguage;
     }
+
     public boolean isSkipped() {
         return isSkipped;
     }
