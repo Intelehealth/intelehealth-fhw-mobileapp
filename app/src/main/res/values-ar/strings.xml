@@ -1646,6 +1646,8 @@
     <string name="vendor_discount">Vendor Discount</string>
     <string name="out_of_pocket">Out of Pocket</string>
     <string name="other_aids">Other Aids</string>
+    <string name="dispense_data_saved">Dispense Data Saved.</string>
+    <string name="administer_data_saved">Administer Data Saved.</string>
 
 
 </resources>

@@ -310,5 +310,37 @@ public class ObsDAO {
 
     }
 
+    // select * from tbl_obs where encounteruuid = '795d291f-3f70-4086-8847-1972f797d8e6' and
+    // conceptuuid = 'c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca' and comment is null
+    public static List<ObsDTO> getObsDispenseAdministerData(String encounterUuid, String conceptUuid) throws DAOException {
+        List<ObsDTO> list = new ArrayList<>();
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor obsCursoursor = db.rawQuery("select * from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' " +
+                "and comment is null", new String[]{conceptUuid, encounterUuid});
+        try {
+            if (obsCursoursor.getCount() > 0) {
+                while (obsCursoursor.moveToNext()) {
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setUuid(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")));
+                    obsDTO.setValue(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")));
+                    list.add(obsDTO);
+                }
+                db.setTransactionSuccessful();
+            }
+        } catch (SQLException sql) {
+            FirebaseCrashlytics.getInstance().recordException(sql);
+            throw new DAOException(sql);
+        } finally {
+            obsCursoursor.close();
+            db.endTransaction();
+        }
+
+        return list;
+    }
+
+
 
 }

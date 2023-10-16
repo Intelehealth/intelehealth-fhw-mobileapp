@@ -2,7 +2,6 @@ package org.intelehealth.app.activities.medicationAidActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.prescription.PrescriptionActivity;
-import org.intelehealth.app.models.MedicationAidModel;
+import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     private TextView tvDispense, tvAdminister, tvDispenseAdminister;
     private String tag = "", medData = "", aidData = "";
     private FrameLayout fl_med, fl_aid;
-    private String patientUuid, visitUuid, encounterVitals, encounterAdultIntials;
+    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +72,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             intent.putExtra("tag", tag);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
+            intent.putExtra("encounterVisitNote", encounterVisitNote);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
 
@@ -114,6 +113,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         aidData = intent.getStringExtra("aidData");
         patientUuid = intent.getStringExtra("patientUuid");
         visitUuid = intent.getStringExtra("visitUuid");
+        encounterVisitNote = intent.getStringExtra("encounterVisitNote");
         encounterVitals = intent.getStringExtra("encounterUuidVitals");
         encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
 

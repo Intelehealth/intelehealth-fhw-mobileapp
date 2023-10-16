@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,22 +23,33 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.models.MedicationAidModel;
+import org.intelehealth.app.models.PatientAttributeLanguageModel;
+import org.intelehealth.app.models.dispenseAdministerModel.DispenseAdministerModel;
+import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class AdministerDispenseActivity extends AppCompatActivity {
     private TextInputEditText tie_medNotes, tie_aidNotes,
@@ -50,9 +62,11 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private Context context;
     private RecyclerView rv_docs;
     private RecyclerView.LayoutManager docsLayoutManager;
-    private String patientUuid, visitUuid, encounterVitals, encounterAdultIntials;
-
-
+    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials;
+    private ObsDTO obsDTOMedication, obsDTOAid;
+    private List<ObsDTO> obsDTOList_Medication;
+    private SessionManager sessionManager;
+    private DispenseAdministerModel model = new DispenseAdministerModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +130,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
+        sessionManager = new SessionManager(context);
         tie_medNotes = findViewById(R.id.tie_medNotes);
         tie_aidNotes = findViewById(R.id.tie_aidNotes);
 
@@ -143,11 +158,21 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         tag = intent.getStringExtra("tag");
         patientUuid = intent.getStringExtra("patientUuid");
         visitUuid = intent.getStringExtra("visitUuid");
+        encounterVisitNote = intent.getStringExtra("encounterVisitNote");
         encounterVitals = intent.getStringExtra("encounterUuidVitals");
         encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
 
         medList = (List<MedicationAidModel>) intent.getSerializableExtra("med");
         aidList = (List<MedicationAidModel>) intent.getSerializableExtra("aid");    // null on empty.
+
+        // fetched medication values from local db.
+        try {
+            obsDTOList_Medication = ObsDAO.getObsDispenseAdministerData(encounterVisitNote, UuidDictionary.JSV_MEDICATIONS);
+
+          //  obsDTOAid = ObsDAO.getObsDispenseAdministerData(encounterVisitNote, UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
 
         setImagesToRV();    // TODO: handle this later with new concept id for UPLOAD_DOCS obs.
         // TODO: here max 4 images will only come.
@@ -159,6 +184,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 medData = medData + (Node.bullet + " " + med.getValue()) + "\n\n";
             }
             tv_medData.setText(medData.substring(0, medData.length() - 2));
+
         }
         else fl_med.setVisibility(View.GONE);
 
@@ -345,21 +371,115 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         String coveredCostValue = tie_coveredCost.getText().toString().trim();
         String outOfPocketValue = tie_outOfPocket.getText().toString().trim();
 
+        boolean isEncounterCreated = false;
         if (tag.equalsIgnoreCase("dispense")) {
-            if (medList != null && medList.size() > 0) {
 
+            isEncounterCreated = false;
+            EncounterDAO encounterDAO = new EncounterDAO();
+            EncounterDTO encounterDTO = new EncounterDTO();
+            encounterDTO.setUuid(UUID.randomUUID().toString());
+            encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_DISPENSE);
+            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setVisituuid(visitUuid);
+            encounterDTO.setSyncd(false);
+            encounterDTO.setProvideruuid(sessionManager.getProviderID());
+            Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
+            encounterDTO.setVoided(0);
+            try {
+                isEncounterCreated = encounterDAO.createEncountersToDB(encounterDTO);
+                if (isEncounterCreated) {
+
+                    // Dispense - medication push
+                    if (obsDTOList_Medication != null && obsDTOList_Medication.size() > 0) {
+                        insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid());
+                    }
+
+
+
+
+                    // Create OBS and push - END
+
+                }
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
 
-            if (aidList != null && aidList.size() > 0) {
-
-            }
-            Toast.makeText(this, "Dispense Data Saved.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.dispense_data_saved), Toast.LENGTH_SHORT).show();
         }
         else if (tag.equalsIgnoreCase("administer")) {
-            if (aidList != null && aidList.size() > 0) {
+           /* if (aidList != null && aidList.size() > 0) {
 
+            }*/
+            isEncounterCreated = false;
+            EncounterDAO encounterDAO = new EncounterDAO();
+            EncounterDTO encounterDTO = new EncounterDTO();
+            encounterDTO.setUuid(UUID.randomUUID().toString());
+            encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_ADMINISTER);
+            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setVisituuid(visitUuid);
+            encounterDTO.setSyncd(false);
+            encounterDTO.setProvideruuid(sessionManager.getProviderID());
+            Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
+            encounterDTO.setVoided(0);
+            try {
+                isEncounterCreated = encounterDAO.createEncountersToDB(encounterDTO);
+                if (isEncounterCreated) {
+
+                    // Administer - medication push
+                    if (obsDTOList_Medication != null && obsDTOList_Medication.size() > 0) {
+                        insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid());
+                    }
+                }
+
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
-            Toast.makeText(this, "Administer Data Saved.", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(this, getString(R.string.administer_data_saved), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void insertMedicationObs(String medicineValue, String medNotesValue, String encounteruuid) {
+        ObsDAO obsDAO;
+        ObsDTO obsDTO;
+        List<String> medUuidList = new ArrayList<>();
+        for (ObsDTO dto : obsDTOList_Medication) {
+            String tvMed = medicineValue.replaceAll("<br>", "");
+            PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(dto.getValue());
+            String enValue = patientAttributeLanguageModel.getEn().replaceAll("\n", "");
+
+            if (tvMed.contains(enValue)) {
+                medUuidList.add(dto.getUuid());
+                model.setMedicationUuidList(medUuidList);   // 1. medicines uuid
+            }
+        }
+
+        List<String> notesList = new ArrayList<>();
+        notesList.add(medNotesValue);
+        model.setMedicationNotesList(notesList);    // 2. notes
+        model.setHwName(sessionManager.getProviderID());    // 3. hw name
+        model.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.
+
+        // Create OBS and push - START
+        Gson gson = new Gson();
+        obsDAO = new ObsDAO();
+        obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(UuidDictionary.OBS_DISPENSE_MEDICATION);  // OBS medicine data.
+        obsDTO.setEncounteruuid(encounteruuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(gson.toJson(model));
+
+        try {
+            boolean isInserted = obsDAO.insertObs(obsDTO);
+            if (isInserted) {
+                if (NetworkConnection.isOnline(getApplication())) {
+                    SyncUtils syncUtils = new SyncUtils();
+                    syncUtils.syncForeground("dispense_administer");
+                }
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
     }
@@ -404,4 +524,10 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         tie_others.setText(String.valueOf(otherAid));
     }
+
+    private PatientAttributeLanguageModel getPatientAttributeFromJSON(String jsonString) {
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        return gson.fromJson(jsonString, PatientAttributeLanguageModel.class);
+    }
+
 }

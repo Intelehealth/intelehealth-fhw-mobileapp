@@ -119,6 +119,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         }
     }
 
+
     public List<FollowUpModel> getAllPatientsFromDB(int offset) {
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
         String table = "tbl_patient";

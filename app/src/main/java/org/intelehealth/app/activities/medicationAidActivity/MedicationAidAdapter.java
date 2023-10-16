@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.prescription.AdvicePrescAdapter;
-import org.intelehealth.app.models.MedicationAidModel;
+import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
 
 import java.util.ArrayList;
 import java.util.List;

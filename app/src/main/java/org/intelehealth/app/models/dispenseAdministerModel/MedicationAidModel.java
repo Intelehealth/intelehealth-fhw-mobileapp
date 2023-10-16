@@ -1,4 +1,4 @@
-package org.intelehealth.app.models;
+package org.intelehealth.app.models.dispenseAdministerModel;
 
 import java.io.Serializable;
 

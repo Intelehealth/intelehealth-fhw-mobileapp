@@ -75,6 +75,13 @@ public class UuidDictionary {
     public static final String ATTRIBUTE_OCCUPATION = "ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87";
     public static final String ATTRIBUTE_HEALTH_CENTER = "8d87236c-c2cc-11de-8d13-0010c6dffd0f";
 
+    public static final String ENCOUNTER_ADMINISTER = "2b8735f5-93ad-447c-95a5-ddb44ced119f";
+    public static final String ENCOUNTER_DISPENSE = "046153c7-c22b-4bb1-a679-288c82128f2d";
+
+    public static final String OBS_DISPENSE_MEDICATION = "27f6b6df-d3a5-47b6-8a36-5843ed204794";
+    public static final String OBS_DISPENSE_AID = "708b7a0b-4069-4540-b653-12fe16380055";
+    public static final String OBS_ADMINISTER_MEDICATION = "e56b6d72-9a58-4c1b-aa72-36822ebb691f";
+    public static final String OBS_ADMINISTER_AID = "99c51b56-b9d3-4449-98b9-63945097f385";
 
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";

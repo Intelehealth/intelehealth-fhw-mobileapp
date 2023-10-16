@@ -1034,6 +1034,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             i.putExtra("aidData", aid);
             i.putExtra("patientUuid", patientUuid);
             i.putExtra("visitUuid", visitUuid);
+            i.putExtra("encounterVisitNote", visitnoteencounteruuid);
             i.putExtra("encounterUuidVitals", encounterVitals);
             i.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
             startActivity(i);
