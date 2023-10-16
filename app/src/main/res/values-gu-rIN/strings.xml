@@ -146,7 +146,7 @@
     <string name="table_hw" translatable="false">શારીરિક માપ</string>
     <string name="table_height" translatable="false">ઊંચાઈ (સે.મી.)</string>
     <string name="table_weight" translatable="false">વજન (કિલો)</string>
-    <string name="table_bmi" translatable="false">BMI </string>
+    <string name="table_bmi" translatable="false">બીએમઆઈ</string>
     <string name="table_pulse" translatable="false">પલ્સ (bpm)</string>
     <string name="table_bp" translatable="false">મહત્વપૂર્ણ સંકેતો</string>
     <string name="table_bpsys" translatable="false">બીપી Sys</string>
@@ -205,7 +205,7 @@
     <string name="visit_summary_tests_prescribed" translatable="false">ટેસ્ટ/રેફરલ્સ</string>
     <string name="visit_summary_additional_comments" translatable="false">વધારાની ટિપ્પણીઓ</string>
     <string name="visit_summary_heading_name" translatable="false">નામ</string>
-    <string name="visit_summary_heading_id" translatable="false">ID</string>
+    <string name="visit_summary_heading_id" translatable="false">" આઈડી"</string>
     <string name="visit_summary_button_download" translatable="false">ડાઉનલોડ કરો</string>
     <string name="visit_summary_button_upload" translatable="false">અપલોડ કરો</string>
     <string name="name_button_download" translatable="false">button_download</string>

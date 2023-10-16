@@ -761,6 +761,7 @@
     <string name="booked_txt">বুকিং কৰা হৈছে</string>
     <string name="cancelled_txt">বাতিল কৰা হৈছে</string>
     <string name="please_upload_visit">এপইণ্টমেণ্ট বুকিং কৰাৰ আগতে প্ৰথমে ভ্ৰমণটো আপলোড কৰক।</string>
+    <string name="appointment_booking_not_available">অগ্ৰাধিকাৰ ভ্ৰমণৰ বাবে এপইণ্টমেণ্ট বুকিং উপলব্ধ নহয়।</string>
     <string name="appointment_booked_successfully">এপইণ্টমেণ্ট সফলতাৰে বুকিং কৰা হৈছে!</string>
     <string name="appointment_booked_failed">এপইণ্টমেণ্ট বুকিং কৰা ব্যৰ্থ!</string>
     <string name="failed_to_cancel_appointment">এপইণ্টমেণ্ট বাতিল কৰাত ব্যৰ্থ!</string>

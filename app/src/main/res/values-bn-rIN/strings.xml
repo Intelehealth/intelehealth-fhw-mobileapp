@@ -84,7 +84,7 @@
     <string name="identification_screen_prompt_address">ঠিকানা লাইন 1</string>
     <string name="identification_screen_prompt_address2">ঠিকানা লাইন ২</string>
     <string name="identification_screen_prompt_phone_number">ফোন নম্বর *</string>
-    <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
+    <string name="admin_password_dialog_heading" translatable="false">প্ৰশাসক পাছৱৰ্ড দিয়ক</string>
     <string name="identification_screen_prompt_gender" translatable="false">লিঙ্গ *</string>
     <string name="identification_screen_checkbox_male">পুরুষ</string>
     <string name="identification_screen_checkbox_female">মহিলা</string>
@@ -100,8 +100,8 @@
     <string name="identification_screen_prompt_postal_code" translatable="false">পোস্ট অফিসের নাম্বার</string>
     <string name="identification_screen_prompt_relationship" translatable="false">এর পুত্র/কন্যা/স্ত্রী</string>
     <string name="identification_screen_prompt_occupation" translatable="false">পেশা</string>
-    <string name="identification_screen_snack_patient_created" translatable="false">Patient created! Uploading to server.</string>
-    <string name="identification_screen_error_data_fields" translatable="false">Error: data fields are not formatted correctly</string>
+    <string name="identification_screen_snack_patient_created" translatable="false">ৰোগী সৃষ্টি কৰা হৈছে! চাৰ্ভাৰলৈ আপলোড কৰা হৈছে।</string>
+    <string name="identification_screen_error_data_fields" translatable="false">ত্ৰুটি: তথ্য ক্ষেত্ৰসমূহ সঠিকভাৱে ফৰ্মেট কৰা হোৱা নাই</string>
     <string name="identification_screen_dialog_age" translatable="false">অনুগ্রহ করে বছরগুলিতে বয়স লিখুন৷</string>
     <string name="identification_screen_dialog_error_dob" translatable="false">জন্ম তারিখ নির্ধারণ করা হয়েছে আজকের পরের তারিখ</string>
     <string name="identification_screen_dialog_error_gender" translatable="false">লিঙ্গ নির্বাচন করা হয় না</string>
@@ -250,17 +250,15 @@
     <!-- Example General settings -->
     <string name="pref_header_general" translatable="false">সাধারণ</string>
 
-    <string name="pref_title_social_recommendations" translatable="false">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations" translatable="false">Recommendations for people to contact based on your message
-        history
-    </string>
+    <string name="pref_title_social_recommendations" translatable="false">সামাজিক পৰামৰ্শসমূহ সক্ষম কৰক</string>
+    <string name="pref_description_social_recommendations" translatable="false">আপোনাৰ বাৰ্তাৰ ওপৰত ভিত্তি কৰি মানুহে যোগাযোগ কৰিব পৰা পৰামৰ্শ। ইতিহাস</string>
 
     <string name="pref_title_display_name" translatable="false">প্রদর্শনের নাম</string>
     <string name="pref_default_display_name" translatable="false">John Smith</string>
 
 
     <!-- Example settings for Data & syncBackground -->
-    <string name="pref_header_data_sync" translatable="false">Data &amp; Refresh</string>
+    <string name="pref_header_data_sync" translatable="false">ডেটা এবং রিফ্রেশ</string>
 
     <string name="pref_title_server_url" translatable="false">সার্ভার URL</string>
     <string name="pref_title_id_prefix" translatable="false">Location Prefix</string>

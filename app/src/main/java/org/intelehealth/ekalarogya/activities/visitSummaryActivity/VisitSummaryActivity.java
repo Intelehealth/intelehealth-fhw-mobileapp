@@ -2352,7 +2352,7 @@ public class VisitSummaryActivity extends BaseActivity {
         mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "");
         mSugarRandom = "Sugar Level (Random): " + (!TextUtils.isEmpty(sugarrandom.getValue()) ? sugarrandom.getValue() : "");
         mSugarFasting = "Sugar Level (Fasting): " + (!TextUtils.isEmpty(sugarfasting.getValue()) ? sugarfasting.getValue() : "");
-        mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "");
+        mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "NA");
 
         String mComplaint = complaint.getValue();
 
@@ -2731,7 +2731,7 @@ public class VisitSummaryActivity extends BaseActivity {
         mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "");
         mSugarRandom = "Sugar Level (Random): " + (!TextUtils.isEmpty(sugarrandom.getValue()) ? sugarrandom.getValue() : "");
         mSugarFasting = "Sugar Level (Fasting): " + (!TextUtils.isEmpty(sugarfasting.getValue()) ? sugarfasting.getValue() : "");
-        mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "");
+        mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "NA");
 
         String mComplaint = complaint.getValue();
 
