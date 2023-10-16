@@ -33,12 +33,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.InputFilter;
@@ -46,13 +43,9 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
@@ -61,7 +54,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -69,21 +61,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.cameraActivity.CameraActivity;
 import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
-import org.intelehealth.ezazi.customCalendar.CustomCalendarViewUI2;
 import org.intelehealth.ezazi.database.dao.ImagesDAO;
-import org.intelehealth.ezazi.database.dao.ImagesPushDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
-import org.intelehealth.ezazi.database.dao.SyncDAO;
 import org.intelehealth.ezazi.models.Patient;
-import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientAttributesModel;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
@@ -94,15 +81,10 @@ import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.EditTextUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.IReturnValues;
-import org.intelehealth.ezazi.utilities.Logger;
-import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.SessionManager;
-import org.intelehealth.ezazi.utilities.StringUtils;
 import org.intelehealth.ezazi.utilities.UuidGenerator;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -118,6 +100,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 import java.util.UUID;
 
 /**
@@ -182,9 +165,12 @@ public class PatientPersonalInfoFragment extends Fragment {
     private PatientAttributesModel patientAttributesModel;
     private NestedScrollView scrollviewPersonalInfo;
 
+    private Date defaultDobDate;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        defaultDobDate = getMaxDate();
         updateLocale();
         view = inflater.inflate(R.layout.fragment_patient_personal_info, container, false);
         mContext = getActivity();
@@ -220,6 +206,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         etLayoutDob = view.findViewById(R.id.etLayout_dob);
 
         tvDobForDb = view.findViewById(R.id.tv_selected_date_dob);
+        tvDobForDb.setText(DateTimeUtils.formatToLocalDate(getMaxDate(), DateTimeUtils.YYYY_MM_DD_HYPHEN));
         tvAgeDob = view.findViewById(R.id.tv_age_dob);
 
         //cards for input fields
@@ -311,6 +298,28 @@ public class PatientPersonalInfoFragment extends Fragment {
         });
     }
 
+    private void setDefaultDob(CalendarDialog dialog) {
+        // to set existing dob as a default in edit mode
+        String date = tvDobForDb.getText().toString();
+        Date defaultDt = DateTimeUtils.parseDate(date, DateTimeUtils.YYYY_MM_DD_HYPHEN, TimeZone.getDefault());
+//        if (patient1.getDate_of_birth() != null && patient1.getDate_of_birth().length() > 0) {
+//            defaultDobDate = DateTimeUtils.parseDate(patient1.getDate_of_birth(), DateTimeUtils.YYYY_MM_DD, TimeZone.getDefault());
+//        } else {
+//            String date = getSelectedDob(requireContext());
+//            if (date != null && date.length() > 0) {
+//                defaultDobDate = DateTimeUtils.parseDate(date, DateTimeUtils.YYYY_MM_DD, TimeZone.getDefault());
+//            }
+//        }
+
+        dialog.setDefaultDate(defaultDt.getTime());
+    }
+
+    private Date getMaxDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -10);
+        return calendar.getTime();
+    }
+
     private void selectDob() {
         boolean isTable = getResources().getBoolean(R.bool.isTabletSize);
         int maxHeight = getResources().getDimensionPixelOffset(R.dimen.std_430dp);
@@ -321,11 +330,10 @@ public class PatientPersonalInfoFragment extends Fragment {
                 .maxHeight(!isTable ? maxHeight : 0)
                 .build();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, -10);
-        dialog.setMaxDate(calendar.getTimeInMillis());
-        Log.d(TAG, "selectDob: " + calendar.getTime());
 
+        dialog.setMaxDate(getMaxDate().getTime());
+        Log.d(TAG, "selectDob: " + getMaxDate().getTime());
+        setDefaultDob(dialog);
         dialog.setListener((day, month, year, value) -> {
             Log.e(TAG, "Date = >" + value);
             //dd/mm/yyyy
@@ -333,6 +341,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
             if (!selectedDate.isEmpty()) {
                 dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+                patient1.setDate_of_birth(dobToDb);
 //            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
                 //for age
                 String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
@@ -359,10 +368,20 @@ public class PatientPersonalInfoFragment extends Fragment {
                 Log.d(TAG, "onClick: date empty");
             }
         });
-        dialog.show(requireFragmentManager(), "DatePicker");
+        dialog.show(getChildFragmentManager(), "DatePicker");
 
     }
 
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        setSelectedDob(requireContext(), "");
+//    }
+//
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//    }
 
     private void updatePatientDetailsFromSecondScreen() {
         fragment_secondScreen = new PatientAddressInfoFragment();
@@ -491,7 +510,7 @@ public class PatientPersonalInfoFragment extends Fragment {
                 fromSummary = intent.getBooleanExtra("fromSummary", false);
                 if (fromSummary) {
                     patient1.setUuid(patientID_edit);
-                    setscreen(patientID_edit);
+                    bindDataWithUI(patientID_edit);
                     updateUI(patient1);
                 }
 
@@ -549,7 +568,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
     }
 
-    private void setscreen(String patientUID) {
+    private void bindDataWithUI(String patientUID) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String patientSelection = "uuid=?";

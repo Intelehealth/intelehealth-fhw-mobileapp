@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 
 import org.intelehealth.ezazi.R;
@@ -33,6 +32,9 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
     private Long maxDate = System.currentTimeMillis();
 
     private Long minDate = 0L;
+
+    private Long currentDate = 0L;
+
     private String dateFormat = "dd/MM/yyyy";
 
     private DayOfWeek weekStartFromDay = DayOfWeek.MON;
@@ -49,8 +51,9 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
         this.minDate = minDate;
     }
 
-    public void setCurrentDate(Long currentDate) {
-        calendar.setTimeInMillis(currentDate);
+    public void setDefaultDate(Long currentDate) {
+        this.currentDate = currentDate;
+//        calendar.setTimeInMillis(currentDate);
     }
 
     public void setDateFormat(String dateFormat) {
@@ -103,17 +106,24 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
     }
 
     private void setupCalendarSetting() {
-        calendar.setTimeInMillis(maxDate);
+//        calendar.setTimeInMillis(maxDate);
+        if (currentDate > 0) calendar.setTimeInMillis(currentDate);
+        else calendar.setTimeInMillis(maxDate);
+
         changeMonth();
         createMonthsGrid();
         hideHeader();
         setDisplayDate();
-        calendarBinding.calendar.calendarView.setMaxDate(calendar.getTimeInMillis());
+        calendarBinding.calendar.calendarView.setMaxDate(maxDate);
         if (minDate != 0)
             calendarBinding.calendar.calendarView.setMinDate(minDate);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             calendarBinding.calendar.calendarView.setOnDateChangedListener(this);
+            calendarBinding.calendar.calendarView.updateDate(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH));
         } else {
             calendarBinding.calendar.calendarView.init(
                     calendar.get(Calendar.YEAR),

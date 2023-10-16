@@ -38,6 +38,7 @@
     <string-array name="speciality_values">
         <item>Select Specialization</item>
         <item>General Physician</item>
+        <item><![CDATA[Obstetrician & Gynecologist]]></item>
     </string-array>
 
     <string-array name="speciality_value_hindi">

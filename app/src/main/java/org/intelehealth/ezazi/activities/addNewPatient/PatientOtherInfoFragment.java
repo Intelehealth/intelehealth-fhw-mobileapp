@@ -3,6 +3,7 @@ package org.intelehealth.ezazi.activities.addNewPatient;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -1076,6 +1077,7 @@ public class PatientOtherInfoFragment extends Fragment {
                     i.putExtra("hasPrescription", "false");
                     Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
 //                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    setSelectedDob(requireContext(), "");
                     mContext.startActivity(i);
                     getActivity().finish();
                 } else {
@@ -1088,6 +1090,13 @@ public class PatientOtherInfoFragment extends Fragment {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+    }
+
+    public void setSelectedDob(Context context, String dob) {
+        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("dobPatient", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("dobPatient", dob);
+        editor.apply();
     }
 
     private void setFocus(View view) {

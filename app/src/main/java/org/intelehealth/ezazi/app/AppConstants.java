@@ -63,8 +63,13 @@ public class AppConstants {
     public static final String MAXIMUM_BASELINE_FHR = "220";
     public static final String MINIMUM_BASELINE_FHR = "90";
 
+//    public static final String UTC_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
-    //functions constants
+    public static final String UTC_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    public static final String VISIT_FORMAT = "MMM dd, yyyy hh:mm:ss a";
+
+    //functions constants 2023-10-12 08:14:52
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
     public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
@@ -152,6 +157,10 @@ public class AppConstants {
     public static final String SHIFTED_DATA = "shifted_data";
 
     public static final String SHIFTED_PATIENT_RECEIVER = "SHIFTED_PATIENT_RECEIVER";
+
+    public static final String GENERAL_PHYSICIAN = "General Physician";
+
+    public static final String OBSTETRICIAN_GYNECOLOGIST = "Obstetrician & Gynecologist";
 
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;

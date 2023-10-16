@@ -119,7 +119,7 @@ public class PatientQueryBuilder extends QueryBuilder {
                         " WHERE name = '" + PatientAttributesDTO.Columns.BED_NUMBER.value + "')")
                 .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
                         "AND V.voided IN ('0', 'false', 'FALSE') AND VA.value = '" + providerId + "'" +
-                        " AND V.enddate IN (NULL, '')")
+                        " AND  (V.enddate IS NULL OR  V.enddate = '')")
                 .groupBy("V.uuid")
                 .orderBy("V.startdate")
                 .orderIn("DESC")

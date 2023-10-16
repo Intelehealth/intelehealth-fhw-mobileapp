@@ -10,6 +10,7 @@ import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.util.UUID;
 
@@ -287,7 +288,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         encounterDTO.setUuid(UUID.randomUUID().toString());
         encounterDTO.setVisituuid(visit_UUID);
-        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        encounterDTO.setEncounterTime(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
         encounterDTO.setProvideruuid(provider_ID);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid(nextEncounterTypeUuid));
         encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...

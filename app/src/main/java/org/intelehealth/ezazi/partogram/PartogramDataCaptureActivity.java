@@ -152,15 +152,15 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         context.getString(R.string.this_option_available_tablet_device) *//*+ ": " + dpi*//*, context.getString(R.string.ok));
             }*/
 
-            boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-            if (isTablet) {
+//            boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+//            if (isTablet) {
                 Intent intent = new Intent(this, EpartogramViewActivity.class);
                 intent.putExtra("patientuuid", mPatientUuid);
                 intent.putExtra("visituuid", mVisitUUID);
                 startActivity(intent);
-            } else {
-                new ConfirmationDialogFragment.Builder(this).content(getString(R.string.this_option_available_tablet_device)).positiveButtonLabel(R.string.ok).hideNegativeButton(true).build().show(getSupportFragmentManager(), "ConfirmationDialogFragment");
-            }
+//            } else {
+//                new ConfirmationDialogFragment.Builder(this).content(getString(R.string.this_option_available_tablet_device)).positiveButtonLabel(R.string.ok).hideNegativeButton(true).build().show(getSupportFragmentManager(), "ConfirmationDialogFragment");
+//            }
 
 //            int dpi = context.getResources().getConfiguration().densityDpi;
 //            Log.i("Timeline", "Screen size in DP: " + dpi);

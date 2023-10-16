@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.activities.patientDetailActivity;
 
+import static org.intelehealth.ezazi.app.AppConstants.OBSTETRICIAN_GYNECOLOGIST;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__gu_dob;
@@ -74,6 +75,7 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UrlModifiers;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -261,12 +263,12 @@ public class PatientDetailActivity extends BaseActionBarActivity {
             public void onClick(View v) {
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
-                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
-                SimpleDateFormat timeLineTime = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
+//                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+//                SimpleDateFormat timeLineTime = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
 
-                Date todayDate = new Date();
-                String thisDate = currentDate.format(todayDate);
-                String timeLineTimeValue = timeLineTime.format(todayDate);
+                String thisDate = DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT);
+                Log.e(TAG, "onClick: create visit : time =>" + thisDate);
+//                String timeLineTimeValue = timeLineTime.format(todayDate);
 
 
                 String uuid = UUID.randomUUID().toString();
@@ -385,7 +387,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     speciality_attributes
-                            .insertVisitAttributes(uuid, "General Physician", VISIT_DR_SPECIALITY);
+                            .insertVisitAttributes(uuid, OBSTETRICIAN_GYNECOLOGIST, VISIT_DR_SPECIALITY);
                     speciality_attributes
                             .insertVisitAttributes(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
                     speciality_attributes
@@ -405,7 +407,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 stage1Hr1_1_EncounterUuid = UUID.randomUUID().toString();
                 eDTO.setUuid(stage1Hr1_1_EncounterUuid);
                 eDTO.setVisituuid(uuid);
-                eDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+                eDTO.setEncounterTime(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
                 eDTO.setProvideruuid(sessionManager.getProviderID());
                 eDTO.setEncounterTypeUuid(eDAO.getEncounterTypeUuid("Stage1_Hour1_1"));
                 eDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
@@ -462,7 +464,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
         eDTO.setUuid(UUID.randomUUID().toString());
         eDTO.setVisituuid(uuid);
-        eDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        eDTO.setEncounterTime(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
         eDTO.setProvideruuid(sessionManager.getProviderID());
         eDTO.setEncounterTypeUuid(eDAO.getEncounterTypeUuid(encounterTypeUUIDValue));
         eDTO.setSyncd(true); // so that this 23 encounters are just created but not pushed to the payload...

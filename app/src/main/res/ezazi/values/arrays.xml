@@ -7,12 +7,12 @@
         <item>Young Primigravida (Age less than 20 Years)</item>
         <item>Elderly Gravida (Age more that 35 Years)</item>
         <item>Grand Multipara (&gt; 4 Livebirths)</item>
-        <item>History of Abortions (Bad Obstetric History)</item>
-        <item>History of Stillbirth (Bad Obstetric History)</item>
-        <item>History of Neonatal Deaths (Bad Obstetric History)</item>
-        <item>History of Newborn with Congenital Defect (Bad Obstetric History)</item>
-        <item>History of Obstructed Labour (Bad Obstetric History)</item>
-        <item>History of Premature Birth (Bad Obstetric History)</item>
+        <item>History of Abortions </item>
+        <item>History of Stillbirth </item>
+        <item>History of Neonatal Deaths </item>
+        <item>History of Newborn with Congenital Defect </item>
+        <item>History of Obstructed Labour </item>
+        <item>History of Premature Birth </item>
         <item>History of Newborn with Low Birth Weight (&lt; 2500 g)</item>
         <item>History of Newborn with Excess Birth Weight (&gt; 4500 g)</item>
         <item>History of Treatment for Infertility</item>

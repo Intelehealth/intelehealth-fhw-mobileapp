@@ -1,6 +1,5 @@
 package org.intelehealth.ezazi.activities.visitSummaryActivity;
 
-import static org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity.TAG;
 import static org.intelehealth.ezazi.partogram.PartogramConstants.TIMELINE_MODE;
 
 import android.content.Context;
@@ -9,19 +8,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textview.MaterialTextView;
 
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
@@ -29,13 +26,12 @@ import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.PartogramDataCaptureActivity;
 import org.intelehealth.ezazi.utilities.SessionManager;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -110,182 +106,232 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
 
                 String time = encounterDTOList.get(position).getEncounterTime();
-                SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
-                SimpleDateFormat longTimeFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
+//                SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+//                SimpleDateFormat longTimeFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+//                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 String encounterTimeAmPmFormat = "";
                 Calendar encounterTimeCalendar = Calendar.getInstance();
+                encounterTimeCalendar.setTimeZone(TimeZone.getDefault());
                 // check for this enc any obs created if yes than show submitted...
                 obsDAO = new ObsDAO();
                 submitted = obsDAO.checkObsAddedOrNt(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
-                try {
-                    Date timeDateType = time.contains("T") && time.contains("+") ? longTimeFormat.parse(time) : longTimeFormat_.parse(time);
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(timeDateType);
-                    encounterTimeCalendar.setTime(timeDateType);
 
-                    Log.v("Timeline", "position&CardTime: " + position + " - " + calendar.getTime());
-                    if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
-                            encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
-                        if (position % 2 == 0) { // Even
-                            //calendar.add(Calendar.HOUR, 1);
-                            calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
-                            // calendar.add(Calendar.MINUTE, 2); // Testing
-                            Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
-                        } else { // Odd
-                            calendar.add(Calendar.MINUTE, 10); // Add 30min + 10min
-                            // calendar.add(Calendar.MINUTE, 1); // Testing
-                            Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
-                        }
-                    } // end.
-                    else if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
-                            encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
-                        calendar.add(Calendar.MINUTE, 5); // Add 15min + 5min since Stage 2
-                        // calendar.add(Calendar.MINUTE, 1); // Testing
+//                try {
+                Date timeDateType = DateTimeUtils.utcToLocalDate(time, AppConstants.UTC_FORMAT);
+
+//                    if (time != null && !time.isEmpty()) {
+//                        String[] splitDate = time.split("-");
+//
+//                        if (time.contains("T") && time.contains("+")) {
+//                            timeDateType = longTimeFormat.parse(time);
+//                        } else if (splitDate.length == 4) { //If accessed from US app crashed. because US date does not have + in it
+//                            timeDateType = longTimeFormat.parse(time);
+//                        } else {
+//                            timeDateType = longTimeFormat_.parse(time);
+//                        }
+//                    }
+//                    // Date timeDateType = time.contains("T") && time.contains("+") ? longTimeFormat.parse(time) : longTimeFormat_.parse(time);//commented because of crash
+//
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeZone(TimeZone.getDefault());
+                calendar.setTime(timeDateType);
+                encounterTimeCalendar.setTime(timeDateType);
+
+                Log.v("Timeline", "position&CardTime: " + position + " - " + timeDateType.getTime());
+                if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
+                        encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
+                    if (position % 2 == 0) { // Even
+                        //calendar.add(Calendar.HOUR, 1);
+                        calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
+                        // calendar.add(Calendar.MINUTE, 2); // Testing
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
-                    } else {
-                        // do nothing
+                    } else { // Odd
+                        calendar.add(Calendar.MINUTE, 10); // Add 30min + 10min
+                        // calendar.add(Calendar.MINUTE, 1); // Testing
+                        Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
                     }
+                } // end.
+                else if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
+                        encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
+                    calendar.add(Calendar.MINUTE, 5); // Add 15min + 5min since Stage 2
+                    // calendar.add(Calendar.MINUTE, 1); // Testing
+                    Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
+                } else {
+                    // do nothing
+                }
 
-                    if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
-                        holder.cardview.setClickable(true);
-                        holder.cardview.setTag(PartogramConstants.AccessMode.WRITE);
-                        holder.cardview.setEnabled(true);
+                if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
+                    holder.cardview.setClickable(true);
+                    holder.cardview.setTag(PartogramConstants.AccessMode.WRITE);
+                    holder.cardview.setEnabled(true);
+                    holder.cardview.setActivated(false);
+                    holder.circle.setActivated(false);
+                    holder.circle.setEnabled(true);
+                    int content = getContentRes(encounterDTOList.get(position).getEncounterType(), status);
+                    holder.summaryNoteTextview.setText(context.getResources().getText(content));
+                    holder.summary_textview.setText(context.getResources().getText(R.string.pending_obs));
+                    holder.ivEdit.setVisibility(View.GONE);
+                } else {
+                    holder.cardview.setClickable(false);
+                    holder.cardview.setEnabled(false);
+
+                        /* since card is disabled that means the either the user has filled data or has forgotten to fill.
+                         We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
+                         If no obs created than create Missed Enc obs for this disabled encounter. */
+                    status = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
+                    if (status == EncounterDTO.Status.MISSED) {
+                        holder.cardview.setEnabled(false);
                         holder.cardview.setActivated(false);
                         holder.circle.setActivated(false);
+                        holder.circle.setEnabled(false);
+                        int content = getContentRes(encounterDTOList.get(position).getEncounterType(), status);
+                        holder.summaryNoteTextview.setText(context.getResources().getText(content));
+                        holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
+                        holder.summary_textview.setEnabled(false);
+                        holder.ivEdit.setVisibility(View.GONE);
+                    } else if (status == EncounterDTO.Status.SUBMITTED) {
+                        holder.cardview.setEnabled(true);
+                        holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
+                        holder.cardview.setActivated(true);
+                        holder.circle.setActivated(true);
                         holder.circle.setEnabled(true);
                         int content = getContentRes(encounterDTOList.get(position).getEncounterType(), status);
                         holder.summaryNoteTextview.setText(context.getResources().getText(content));
-                        holder.summary_textview.setText(context.getResources().getText(R.string.pending_obs));
-                        holder.ivEdit.setVisibility(View.GONE);
-                    } else {
-                        holder.cardview.setClickable(false);
-                        holder.cardview.setEnabled(false);
-
-                        /* since card is disabled that means the either the user has filled data or has forgotten to fill.
-                         We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
-                         If no obs created than create Missed Enc obs for this disabled encounter. */
-                        status = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
-                        if (status == EncounterDTO.Status.MISSED) {
-                            holder.cardview.setEnabled(false);
-                            holder.cardview.setActivated(false);
-                            holder.circle.setActivated(false);
-                            holder.circle.setEnabled(false);
-                            int content = getContentRes(encounterDTOList.get(position).getEncounterType(), status);
-                            holder.summaryNoteTextview.setText(context.getResources().getText(content));
-                            holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
-                            holder.summary_textview.setEnabled(false);
-                            holder.ivEdit.setVisibility(View.GONE);
-                        } else if (status == EncounterDTO.Status.SUBMITTED) {
-                            holder.cardview.setEnabled(true);
-                            holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
-                            holder.cardview.setActivated(true);
-                            holder.circle.setActivated(true);
-                            holder.circle.setEnabled(true);
-                            int content = getContentRes(encounterDTOList.get(position).getEncounterType(), status);
-                            holder.summaryNoteTextview.setText(context.getResources().getText(content));
-                            holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
-                            holder.summary_textview.setActivated(true);
-                            holder.ivEdit.setVisibility(View.VISIBLE);
-                        }
+                        holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
+                        holder.summary_textview.setActivated(true);
+                        holder.ivEdit.setVisibility(View.VISIBLE);
                     }
-
-                    encounterTimeAmPmFormat = timeFormat.format(timeDateType);
-                    Log.v("timeline", "AM Format: " + encounterTimeAmPmFormat);
-                    updateEditIconVisibility(holder.ivEdit);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    Log.e("timeline", "AM Format: " + e.getMessage());
-
-                    // work around since backend end Time not coming in same format in which we r sending
-                    Date timeDateType = null;
-                    try {
-                        timeDateType = longTimeFormat_.parse(time);
-                    } catch (ParseException ex) {
-                        ex.printStackTrace();
-                    }
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(timeDateType);
-
-                    Log.v("Timeline", "position&CardTime: " + position + "- " + calendar.getTime());
-                    if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
-                            encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
-                        if (position % 2 == 0) { // Even
-                            calendar.add(Calendar.HOUR, 1);
-                            calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
-                            //  calendar.add(Calendar.MINUTE, 2); // Testing
-                            Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
-                        } else { // Odd
-                            calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
-                            // calendar.add(Calendar.MINUTE, 1); // Testing
-                            Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
-                        }
-                    } else if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
-                            encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
-                        calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
-                        // calendar.add(Calendar.MINUTE, 1); // Testing
-
-                        Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
-                    } else {
-                        // do nothing
-                    }
-
-                    if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
-                        holder.cardview.setClickable(true);
-                        holder.cardview.setEnabled(true);
-                        holder.cardview.setActivated(true);
-                        holder.cardview.setTag(PartogramConstants.AccessMode.WRITE);
-                        holder.circle.setEnabled(true);
-                        holder.circle.setActivated(true);
-                        //  holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
-                        holder.ivEdit.setVisibility(View.GONE);
-                    } else {
-                        holder.cardview.setClickable(false);
-                        holder.cardview.setEnabled(false);
-                        //  holder.cardview.setCardElevation(0);
-
-                        /* since card is disabled that means the either the user has filled data or has forgotten to fill.
-                         We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
-                         If no obs created than create Missed Enc obs for this disabled encounter. */
-                        status = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
-                        if (status == EncounterDTO.Status.MISSED) {
-                            holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
-                            holder.summary_textview.setEnabled(false);
-                            holder.summary_textview.setActivated(false);
-                            holder.cardview.setEnabled(false);
-                            holder.cardview.setActivated(false);
-                            holder.circle.setEnabled(false);
-                            holder.circle.setActivated(false);
-                            holder.ivEdit.setVisibility(View.GONE);
-                        } else if (status == EncounterDTO.Status.SUBMITTED) {
-                            holder.summary_textview.setEnabled(true);
-                            holder.summary_textview.setActivated(true);
-                            holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
-                            holder.cardview.setEnabled(true);
-                            holder.cardview.setActivated(true);
-                            holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
-                            holder.ivEdit.setVisibility(View.VISIBLE);
-
-//                            Log.v("timeline", "minutes enc time: " + time);
-//                            Log.v("timeline", "minutes enc time: " + encounterTimeCalendar.getTime().toString());
-//                            long diff = Calendar.getInstance().getTimeInMillis() - encounterTimeCalendar.getTimeInMillis();//as given
-//
-//                            long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
-//                            long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-//                            Log.v("timeline", "minutes : " + minutes);
-//                            int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
-//                            if (minutes <= limit) {
-//                                holder.ivEdit.setVisibility(View.VISIBLE);
-//                            } else {
-//                                holder.ivEdit.setVisibility(View.GONE);
-//                            }
-                        }
-                    }
-
-                    encounterTimeAmPmFormat = timeFormat.format(timeDateType);
-                    Log.v("timeline", "AM Format: " + encounterTimeAmPmFormat);
-                    //
                 }
+
+                encounterTimeAmPmFormat = DateTimeUtils.formatToLocalDate(timeDateType, DateTimeUtils.TIME_FORMAT);
+                Log.v("timeline", "AM Format: " + encounterTimeAmPmFormat);
+//                    updateEditIconVisibility(holder.ivEdit);
+//
+//                    if (submitted == EncounterDTO.Status.SUBMITTED) { // This so that once submitted it should be closed and not allowed to edit again.
+//                        holder.cardview.setClickable(false); // added by Mithun
+//                        holder.cardview.setEnabled(false);
+//                        holder.cardview.setActivated(true);
+//                        holder.circle.setEnabled(true);
+//                        holder.circle.setActivated(true);
+//                        int content = getContentRes(encounterDTOList.get(position).getEncounterType(), submitted);
+//                        holder.summaryNoteTextview.setText(context.getResources().getText(content));
+//                        holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
+//                        holder.summary_textview.setActivated(true);
+//                        holder.ivEdit.setVisibility(View.VISIBLE);
+//                        Log.v("timeline", "minutes enc time: " + time);
+//                        Log.v("timeline", "minutes enc time: " + encounterTimeCalendar.getTime().toString());
+//                        long diff = Calendar.getInstance().getTimeInMillis() - encounterTimeCalendar.getTimeInMillis();//as given
+//
+//                        long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+//                        long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+//                        Log.v("timeline", "minutes : " + minutes);
+//                        int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
+//                        if (minutes <= limit) {
+//                            holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
+//                            holder.ivEdit.setVisibility(View.VISIBLE);
+//                        } else {
+//                            holder.cardview.setTag(PartogramConstants.AccessMode.READ);
+//                            holder.ivEdit.setVisibility(View.GONE);
+//                            holder.cardview.setClickable(true); // added by Mithun
+//                            holder.cardview.setEnabled(true);
+//                        }
+//                    }
+//
+//                    if (!isVCEPresent.equalsIgnoreCase("")) { // If visit complete than disable all the cards.
+//                        holder.cardview.setClickable(false);
+//                        holder.cardview.setEnabled(false);
+//                    }
+//
+//                    holder.timeTextview.setText(encounterTimeAmPmFormat);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                    Log.e("timeline", "AM Format: " + e.getMessage());
+//
+//                    // work around since backend end Time not coming in same format in which we r sending
+//                    Date timeDateType = null;
+//                    timeDateType = DateTimeUtils.utcToLocalDate(time, AppConstants.UTC_FORMAT);
+//                    Calendar calendar = Calendar.getInstance();
+//                    calendar.setTime(timeDateType);
+//
+//                    Log.v("Timeline", "position&CardTime: " + position + "- " + calendar.getTime());
+//                    if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
+//                            encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
+//                        if (position % 2 == 0) { // Even
+//                            calendar.add(Calendar.HOUR, 1);
+//                            calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
+//                            //  calendar.add(Calendar.MINUTE, 2); // Testing
+//                            Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
+//                        } else { // Odd
+//                            calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
+//                            // calendar.add(Calendar.MINUTE, 1); // Testing
+//                            Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
+//                        }
+//                    } else if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
+//                            encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
+//                        calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
+//                        // calendar.add(Calendar.MINUTE, 1); // Testing
+//
+//                        Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
+//                    } else {
+//                        // do nothing
+//                    }
+//
+//                    if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
+//                        holder.cardview.setClickable(true);
+//                        holder.cardview.setEnabled(true);
+//                        holder.cardview.setActivated(true);
+//                        holder.cardview.setTag(PartogramConstants.AccessMode.WRITE);
+//                        holder.circle.setEnabled(true);
+//                        holder.circle.setActivated(true);
+//                        //  holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
+//                        holder.ivEdit.setVisibility(View.GONE);
+//                    } else {
+//                        holder.cardview.setClickable(false);
+//                        holder.cardview.setEnabled(false);
+//                        //  holder.cardview.setCardElevation(0);
+//
+//                        /* since card is disabled that means the either the user has filled data or has forgotten to fill.
+//                         We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
+//                         If no obs created than create Missed Enc obs for this disabled encounter. */
+//                        status = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
+//                        if (status == EncounterDTO.Status.MISSED) {
+//                            holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
+//                            holder.summary_textview.setEnabled(false);
+//                            holder.summary_textview.setActivated(false);
+//                            holder.cardview.setEnabled(false);
+//                            holder.cardview.setActivated(false);
+//                            holder.circle.setEnabled(false);
+//                            holder.circle.setActivated(false);
+//                            holder.ivEdit.setVisibility(View.GONE);
+//                        } else if (status == EncounterDTO.Status.SUBMITTED) {
+//                            holder.summary_textview.setEnabled(true);
+//                            holder.summary_textview.setActivated(true);
+//                            holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
+//                            holder.cardview.setEnabled(true);
+//                            holder.cardview.setActivated(true);
+//                            holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
+//                            holder.ivEdit.setVisibility(View.VISIBLE);
+//
+////                            Log.v("timeline", "minutes enc time: " + time);
+////                            Log.v("timeline", "minutes enc time: " + encounterTimeCalendar.getTime().toString());
+////                            long diff = Calendar.getInstance().getTimeInMillis() - encounterTimeCalendar.getTimeInMillis();//as given
+////
+////                            long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+////                            long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+////                            Log.v("timeline", "minutes : " + minutes);
+////                            int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
+////                            if (minutes <= limit) {
+////                                holder.ivEdit.setVisibility(View.VISIBLE);
+////                            } else {
+////                                holder.ivEdit.setVisibility(View.GONE);
+////                            }
+//                        }
+//                    }
+//
+//                    encounterTimeAmPmFormat = DateTimeUtils.formatIsdDate(timeDateType, DateTimeUtils.TIME_FORMAT);
+//                    Log.v("timeline", "AM Format: " + encounterTimeAmPmFormat);
+//                    //
+//                }
 
                 if (submitted == EncounterDTO.Status.SUBMITTED) { // This so that once submitted it should be closed and not allowed to edit again.
                     holder.cardview.setClickable(false); // added by Mithun
