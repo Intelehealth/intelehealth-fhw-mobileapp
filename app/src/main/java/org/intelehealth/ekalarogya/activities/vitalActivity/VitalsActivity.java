@@ -2024,18 +2024,7 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
     private String ConvertFtoC(String temperature) {
-
         if (temperature != null && temperature.length() > 0) {
-            /*String result = "";
-            double fTemp = Double.parseDouble(temperature);
-            double cTemp = ((fTemp - 32) * 5 / 9);
-            Log.i(TAG, "uploadTemperatureInC: " + cTemp);
-            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ENGLISH);
-            DecimalFormat dtime = new DecimalFormat("#.##",symbols);
-            cTemp = Double.parseDouble(dtime.format(cTemp));
-            result = String.valueOf(cTemp);
-
-            return result;*/
             String resultVal;
             NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
             double a = Double.parseDouble(temperature);
@@ -2044,11 +2033,9 @@ public class VitalsActivity extends AppCompatActivity {
             return resultVal;
         }
         return "";
-
     }
 
     private String convertCtoF(String temperature) {
-
         String resultVal;
         NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
         double a = Double.parseDouble(temperature);
@@ -2057,16 +2044,6 @@ public class VitalsActivity extends AppCompatActivity {
         double roundOff = Math.round(b * 100.0) / 100.0;
         resultVal = nf.format(roundOff);
         return resultVal;
-        /*String result = "";
-        double a = Double.parseDouble(String.valueOf(temperature));
-        Double b = (a * 9 / 5) + 32;
-
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ENGLISH);
-        DecimalFormat dtime = new DecimalFormat("#.##",symbols);
-        b = Double.parseDouble(dtime.format(b));
-        result = String.valueOf(b);
-        return result;*/
-
     }
 
     @Override
@@ -2078,20 +2055,11 @@ public class VitalsActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.vitalnuberpickerdialog);
-
         NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.number_picker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(data.length - 1);
         numberPicker.setDisplayedValues(data);
-        if (selectedValue != null && !selectedValue.isEmpty() && selectedValue.length() > 0) {
-            /*int val=Integer.parseInt(selectedValue);
-            if(data.length>20){
-                numberPicker.setValue(val-10);
-            }else{
-                numberPicker.setValue(val-1);
-            }*/
-        }
-
+        if (selectedValue != null && !selectedValue.isEmpty() && selectedValue.length() > 0) {}
         TextView okButton = (TextView) dialog.findViewById(R.id.choose_number_btn);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
