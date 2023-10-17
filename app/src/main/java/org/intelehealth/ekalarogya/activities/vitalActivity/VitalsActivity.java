@@ -1837,9 +1837,18 @@ public class VitalsActivity extends AppCompatActivity {
                 startDoctorAdvice();
             } else {
                 String alertMsg = "";
-                if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(mBMI.getText().toString().substring(0,5).trim()) < 18.5) {
+                String bmiValue = mBMI.getText().toString().trim();
+
+                if(bmiValue.length() == 3)
+                    bmiValue = bmiValue.substring(0,3);
+                else if(bmiValue.length() == 4)
+                    bmiValue = bmiValue.substring(0,4);
+                else if (bmiValue.length() >= 5)
+                    bmiValue = bmiValue.substring(0,5);
+
+                if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(bmiValue) < 18.5) {
                     alertMsg = alertMsg + getResources().getString(R.string.weight_loss_alert_msg) + "\n";
-                } else if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(mBMI.getText().toString().substring(0,5).trim()) > 25.0) {
+                } else if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(bmiValue) > 25.0) {
                     alertMsg = alertMsg + getResources().getString(R.string.weight_gain_alert_msg) + "\n";
                 }
 
