@@ -1,7 +1,7 @@
 package org.intelehealth.ekalarogya.webrtc.receiver
 
 import android.content.Context
-import com.codeglo.fcm.FcmBroadcastReceiver
+import org.intelehealth.fcm.FcmBroadcastReceiver
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity

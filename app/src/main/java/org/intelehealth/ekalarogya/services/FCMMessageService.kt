@@ -1,7 +1,6 @@
 package org.intelehealth.ekalarogya.services
 
-import android.annotation.SuppressLint
-import com.codeglo.fcm.FBMessageService
+import org.intelehealth.fcm.FBMessageService
 import com.google.firebase.messaging.RemoteMessage
 import org.intelehealth.ekalarogya.webrtc.receiver.FCMNotificationReceiver
 import timber.log.Timber

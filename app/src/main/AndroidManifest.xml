@@ -232,7 +232,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".webrtc.activity.CallNotificationTestActivity"
+            android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:exported="true"
             android:screenOrientation="portrait"

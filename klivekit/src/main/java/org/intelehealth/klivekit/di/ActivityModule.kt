@@ -1,8 +1,7 @@
-package org.intelehealth.klivekit.di
+package com.intelehealth.coyamore.di
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

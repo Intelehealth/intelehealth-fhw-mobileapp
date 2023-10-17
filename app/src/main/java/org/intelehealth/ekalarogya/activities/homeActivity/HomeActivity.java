@@ -1,6 +1,5 @@
 package org.intelehealth.ekalarogya.activities.homeActivity;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -19,7 +18,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,10 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -1093,13 +1089,6 @@ public class HomeActivity extends BaseActivity {
 //            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
 //            ContextCompat.startForegroundService(this, serviceIntent);
 //        }
-    }
-
-    private void showAppInfo() {
-        TextView tvSetupLocation = findViewById(R.id.tvAppUserLocation);
-        tvSetupLocation.setText(getString(R.string.location_setup, sessionManager.getLocationName()));
-        TextView tvUserAppInfo = findViewById(R.id.tvAppVersionName);
-        tvUserAppInfo.setText(getString(R.string.app_version_string, sessionManager.getChwname(), BuildConfig.VERSION_NAME));
     }
 
     private void showAppInfo() {

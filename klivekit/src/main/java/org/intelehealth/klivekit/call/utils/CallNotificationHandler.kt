@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
+
 /**
  * Created by Vaghela Mithun R. on 8/28/2021.
  * vaghela@codeglo.com
@@ -158,7 +159,7 @@ object CallNotificationHandler {
 
         return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setContentTitle("Pavo")
+            .setContentTitle(getApplicationName(context))
             .setContentText("Incoming call from ${messageBody.doctorName ?: "unknown"}")
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
             .setSmallIcon(messageBody.notificationIcon)
@@ -190,7 +191,8 @@ object CallNotificationHandler {
 
         return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setContentTitle("Ongoing call")
+            .setContentTitle(getApplicationName(context))
+            .setContentText("Ongoing call with ${messageBody.doctorName ?: "unknown"}")
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
             .setSmallIcon(messageBody.notificationIcon)
             .setCategory(NotificationCompat.CATEGORY_CALL)
@@ -241,7 +243,8 @@ object CallNotificationHandler {
         messageBody.callStatus = CallStatus.MISSED
         return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setContentTitle("Missed call from ${messageBody.doctorName}")
+            .setContentTitle(getApplicationName(context))
+            .setContentText("Missed call from ${messageBody.doctorName}")
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
             .setSmallIcon(messageBody.notificationIcon)
             .setCategory(NotificationCompat.CATEGORY_CALL)
@@ -292,4 +295,11 @@ object CallNotificationHandler {
         context.applicationContext.packageName.apply {
             "${this}.$NOTIFICATION_CHANNEL_NAME"
         }
+
+    private fun getApplicationName(context: Context): String {
+        val applicationInfo = context.applicationInfo
+        val stringId = applicationInfo.labelRes
+        return if (stringId == 0) applicationInfo.nonLocalizedLabel.toString()
+        else context.getString(stringId)
+    }
 }
