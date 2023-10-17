@@ -1,12 +1,16 @@
 package org.intelehealth.ekalarogya.webrtc.receiver
 
 import android.content.Context
-import org.intelehealth.fcm.FcmBroadcastReceiver
+import android.util.Log
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import org.intelehealth.ekalarogya.firebase.RealTimeDataChangedObserver
+import org.intelehealth.ekalarogya.utilities.SessionManager
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity
+import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.model.RtcArgs
+import org.intelehealth.klivekit.utils.Constants
 import org.intelehealth.klivekit.utils.extensions.fromJson
 
 /**
@@ -21,8 +25,16 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         data: HashMap<String, String>
     ) {
         context?.let {
-            val rtcArg: RtcArgs = Gson().fromJson(Gson().toJson(data))
-            CallHandlerUtils.operateIncomingCall(it, rtcArg, EkalVideoActivity::class.java)
+            if (data.containsKey("type") && data["type"].equals("video_call")) {
+                val sessionManager = SessionManager(context)
+                val rtcArg: RtcArgs = Gson().fromJson(Gson().toJson(data))
+                rtcArg.nurseName = sessionManager.chwname
+                rtcArg.url = "wss://" + sessionManager.getServerUrl() + ":9090"
+                rtcArg.socketUrl =
+                    Constants.BASE_URL + "?userId=" + rtcArg.nurseId + "&name=" + rtcArg.nurseName
+                CallHandlerUtils.operateIncomingCall(it, rtcArg, EkalVideoActivity::class.java)
+            }
         }
     }
+
 }

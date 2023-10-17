@@ -11,6 +11,7 @@ import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.call.utils.CallType
 import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.utils.RemoteActionType
+import org.json.JSONObject
 
 /**
  * Created by Vaghela Mithun R. on 07-06-2023 - 17:42.
@@ -75,6 +76,17 @@ data class RtcArgs(
     fun isMissedCall() = callStatus == CallStatus.MISSED
 
     fun isBusyCall() = callStatus == CallStatus.BUSY
+
+    fun toJsonArg() = JSONObject().apply {
+        put("patientId", patientId)
+        put("connectToDrId", doctorUuid)
+        put("visitId", visitId)
+        put("nurseName", nurseName)
+        put("patientName", patientName)
+        put("patientPersonUuid", patientPersonUuid)
+        put("patientOpenMrsId", patientOpenMrsId)
+        put("token", token)
+    }
 
     companion object {
 

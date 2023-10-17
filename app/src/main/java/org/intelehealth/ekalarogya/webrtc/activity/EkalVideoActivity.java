@@ -103,7 +103,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
             binding.incomingCallView.tvCallerIdentity.setText(String.valueOf(args.getDoctorName().toCharArray()[0]));
             binding.videoCallView.tvVideoCallDoctorName.setText(doctorName);
             binding.videoCallView.remoteUserTextIcon.setText(String.valueOf(args.getDoctorName().toUpperCase().toCharArray()[0]));
-            binding.videoCallView.localUserTextIcon.setText(String.valueOf(args.getNurseName().toUpperCase().toCharArray()[0]));
+//            binding.videoCallView.localUserTextIcon.setText(String.valueOf(args.getNurseName().toUpperCase().toCharArray()[0]));
         }
     }
 

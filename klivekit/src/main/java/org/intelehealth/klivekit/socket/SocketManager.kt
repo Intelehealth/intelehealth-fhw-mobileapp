@@ -22,7 +22,13 @@ import javax.inject.Singleton
  **/
 open class SocketManager @Inject constructor() {
     var socket: Socket? = null
+    private var emitterListeners: MutableList<((event: String) -> Emitter.Listener)> = arrayListOf()
     var emitterListener: ((event: String) -> Emitter.Listener)? = null
+        set(value) {
+            field = value
+            value?.let { emitterListeners.add(it) }
+        }
+
     var activeUsers = HashMap<String, ActiveUser>()
     var activeRoomId: String? = null
     var notificationListener: NotificationListener? = null
@@ -79,14 +85,20 @@ open class SocketManager @Inject constructor() {
             json?.let { array ->
                 notifyIfNotActiveRoom(JSONArray(array)) { message ->
                     notificationListener?.saveTheDoctor(message)
-                    emitterListener?.invoke(event)?.call(it)
+//                    emitterListener?.invoke(event)?.call(it)
+                    invokeListeners(event, it)
                 };
             }
         } else {
             if (isCallTimeUp && event == EVENT_CALL_CANCEL_BY_DR) return@Listener
-            emitterListener?.invoke(event)?.call(it)
+            invokeListeners(event, it)
+//            emitterListener?.invoke(event)?.call(it)
         }
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
+    }
+
+    private fun invokeListeners(event: String, it: Array<Any>?) {
+        emitterListeners.forEach { it.invoke(event).call(it) }
     }
 
     private fun notifyIfNotActiveRoom(jsonArray: JSONArray, block: (ChatMessage) -> Unit) {

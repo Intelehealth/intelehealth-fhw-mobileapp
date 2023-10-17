@@ -21,6 +21,8 @@ import android.os.Vibrator
 import androidx.annotation.RequiresApi
 import androidx.core.content.IntentCompat
 import com.github.ajalt.timberkt.Timber
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
 import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallConstants
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
@@ -28,6 +30,7 @@ import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.call.utils.CallNotificationHandler
 import org.intelehealth.klivekit.model.RtcArgs
+import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -95,7 +98,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     override fun onCreate() {
         super.onCreate()
         Timber.d { "Service is created ***** " }
-
+        SocketManager.instance.emitterListener = this::emitter
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrationEffect = VibrationEffect.createWaveform(
                 vibratePattern, vibrationAmplitude, -1
@@ -103,6 +106,15 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         }
     }
 
+
+    private fun emitter(event: String) = Emitter.Listener {
+        when (event) {
+            SocketManager.EVENT_CALL_TIME_UP,
+            SocketManager.EVENT_NO_ANSWER,
+            SocketManager.EVENT_CALL_REJECT_BY_DR,
+            SocketManager.EVENT_CALL_CANCEL_BY_DR -> stopSelf()
+        }
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Timber.d { "OnstartCommand is created ***** " }

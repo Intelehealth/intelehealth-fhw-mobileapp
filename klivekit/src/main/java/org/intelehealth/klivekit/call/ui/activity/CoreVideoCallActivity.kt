@@ -1,6 +1,7 @@
 package org.intelehealth.klivekit.call.ui.activity
 
 import android.Manifest
+import android.content.Intent
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.os.Bundle
@@ -24,6 +25,7 @@ import kotlinx.coroutines.launch
 import org.intelehealth.app.registry.PermissionRegistry
 import org.intelehealth.app.registry.allGranted
 import org.intelehealth.klivekit.R
+import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.call.ui.viewmodel.CallViewModel
@@ -228,8 +230,15 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
                 Timber.d { "Args => ${Gson().toJson(args)}" }
                 Timber.e { "Room Token : ${args.appToken}" }
                 preventDuplicationData(args)
-                if (args.isIncomingCall()) onIncomingCall()
-                else onGoingCall()
+                if (args.isIncomingCall()) {
+                    onIncomingCall()
+                    stopService(
+                        Intent(
+                            this@CoreVideoCallActivity,
+                            HeadsUpNotificationService::class.java
+                        )
+                    )
+                } else onGoingCall()
             }
 
             intent.data = null
@@ -339,10 +348,11 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         isDeclined = true
         showToast(getString(R.string.you_declined_call))
         if (args.isIncomingCall().not()) {
-            socketViewModel.emit(
-                SocketManager.EVENT_CALL_CANCEL_BY_HW,
-                socketViewModel.buildOutGoingCallParams(args)
-            )
+//            socketViewModel.emit(
+//                SocketManager.EVENT_CALL_CANCEL_BY_HW,
+//                socketViewModel.buildOutGoingCallParams(args)
+//            )
+            socketViewModel.emit(SocketManager.EVENT_CALL_CANCEL_BY_HW, args.toJsonArg())
         } else {
             socketViewModel.emit(SocketManager.EVENT_CALL_REJECT_BY_HW, args.doctorId)
         }

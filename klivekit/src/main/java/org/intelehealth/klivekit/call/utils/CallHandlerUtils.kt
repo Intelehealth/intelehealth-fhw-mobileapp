@@ -33,8 +33,7 @@ object CallHandlerUtils {
         Timber.d { "notifyCallNotification : ${callArgs.toJson()}" }
         context.stopService(Intent(context, HeadsUpNotificationService::class.java))
         if (callArgs.isCallDeclined()) {
-            SocketManager.instance.emit(SocketManager.EVENT_CALL_REJECT_BY_HW)
-            context.stopService(Intent(context, HeadsUpNotificationService::class.java))
+            SocketManager.instance.emit(SocketManager.EVENT_CALL_REJECT_BY_HW, callArgs.doctorId)
         } else if (callArgs.isCallHangUp()) {
             SocketManager.instance.emitLocalEvent(SocketManager.EVENT_CALL_HANG_UP)
         } else if (callArgs.isIncomingCall() or callArgs.isAcceptCall() or callArgs.isOutGoingCall()) {

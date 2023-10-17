@@ -171,7 +171,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void markMessageAsRead(Object obj) {
         try {
-            int id = new JSONArray(obj)
+            int id = new JSONArray(obj).getJSONArray(0)
                     .getJSONArray(0).getJSONObject(0).getInt("id");
             runOnUiThread(() -> mChatListingAdapter.markMessageAsRead(id));
         } catch (JSONException e) {
