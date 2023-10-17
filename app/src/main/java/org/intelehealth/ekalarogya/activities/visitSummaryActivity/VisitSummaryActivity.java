@@ -11,6 +11,7 @@ import static org.intelehealth.ekalarogya.app.AppConstants.BMI_YELLOW_MAX;
 import static org.intelehealth.ekalarogya.app.AppConstants.BMI_YELLOW_MIN;
 import static org.intelehealth.ekalarogya.app.AppConstants.DIA_GREEN_MIN;
 import static org.intelehealth.ekalarogya.app.AppConstants.DIA_RED_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.DIA_RED_MIN;
 import static org.intelehealth.ekalarogya.app.AppConstants.DIA_YELLOW_MAX;
 import static org.intelehealth.ekalarogya.app.AppConstants.DIA_YELLOW_MIN;
 import static org.intelehealth.ekalarogya.app.AppConstants.SYS_GREEN_MAX;
@@ -2622,15 +2623,17 @@ public class VisitSummaryActivity extends BaseActivity {
     private String bpDiaColorCode(String bpDiaValue) {
         if (bpDiaValue!=null && !bpDiaValue.isEmpty()) {
             Double bpDia = Double.valueOf(bpDiaValue);
-
-            if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
+            if (bpDia < Double.valueOf(DIA_RED_MIN)) {  // red
+                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpDiaValue +"</font>";
+            }
+            else if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
                 return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpDiaValue +"</font>";
             }
             else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
                 if (bpDia < Double.valueOf(DIA_YELLOW_MAX))
                     return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpDiaValue +"</font>";
             }
-            else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
+            else if (bpDia >= Double.valueOf(DIA_RED_MIN) && bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
                 return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpDiaValue +"</font>";
             }
             else

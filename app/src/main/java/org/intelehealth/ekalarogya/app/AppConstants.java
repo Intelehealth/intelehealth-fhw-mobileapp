@@ -89,6 +89,7 @@ public class AppConstants {
     public static final String DIA_YELLOW_MAX = "100";
  //   public static final String DIA_RED_MIN = "90";
     public static final String DIA_RED_MAX = "99";
+    public static final String DIA_RED_MIN = "50";
     // SYS - DIA -- Color codes - end
 
 

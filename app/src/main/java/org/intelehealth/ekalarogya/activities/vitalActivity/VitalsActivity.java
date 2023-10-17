@@ -858,13 +858,14 @@ public class VitalsActivity extends AppCompatActivity {
     private void bpDiaColorCode(String bpDiaValue) {
         if (bpDiaValue != null && !bpDiaValue.isEmpty()) {
             Double bpDia = Double.valueOf(bpDiaValue);
-
-            if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
+            if(bpDia < Double.valueOf(DIA_RED_MIN))
+                mBpDia.setTextColor(getResources().getColor(R.color.scale_1));
+            else if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
                 mBpDia.setTextColor(getResources().getColor(R.color.scale_1));
             } else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
                 if (bpDia < Double.valueOf(DIA_YELLOW_MAX))
                     mBpDia.setTextColor(getResources().getColor(R.color.dark_yellow));
-            } else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
+            } else if (bpDia >= Double.valueOf(DIA_RED_MIN) && bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
                 mBpDia.setTextColor(getResources().getColor(R.color.green));
             } else
                 mBpDia.setTextColor(null);
@@ -1837,9 +1838,16 @@ public class VitalsActivity extends AppCompatActivity {
                 startDoctorAdvice();
             } else {
                 String alertMsg = "";
-                if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(mBMI.getText().toString().substring(0,5).trim()) < 18.5) {
+                String bmiValue = mBMI.getText().toString().trim();
+                if(bmiValue.length() == 3)
+                    bmiValue = bmiValue.substring(0,3);
+                else if(bmiValue.length() == 4)
+                    bmiValue = bmiValue.substring(0,4);
+                else if (bmiValue.length() >= 5)
+                    bmiValue = bmiValue.substring(0,5);
+                if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(bmiValue) < 18.5) {
                     alertMsg = alertMsg + getResources().getString(R.string.weight_loss_alert_msg) + "\n";
-                } else if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(mBMI.getText().toString().substring(0,5).trim()) > 25.0) {
+                } else if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(bmiValue) > 25.0) {
                     alertMsg = alertMsg + getResources().getString(R.string.weight_gain_alert_msg) + "\n";
                 }
 
