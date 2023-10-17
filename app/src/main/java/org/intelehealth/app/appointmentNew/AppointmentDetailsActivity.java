@@ -5,6 +5,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidF
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
+import static org.intelehealth.app.database.dao.VisitsDAO.isVisitEnded;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
@@ -302,7 +303,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 Log.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
                 chief_complaint_value = chief_complaint_value.substring(first, last + 4);
                 tvChiefComplaintTxt.setText(Html.fromHtml(chief_complaint_value));
-            }else{
+            } else {
                 chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
                 System.out.println(chief_complaint_value);
                 Log.v(TAG, chief_complaint_value);
@@ -342,11 +343,14 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
         tvDrSpeciality.setText(visit_speciality);
 
+        boolean isVisitEnded = isVisitEnded(visitID);
+
+        // checking to see if the visit has ended or not - if the visit has ended, we don't need to show the buttons
         //appointment started state - make "state AppointmentStarted" visible
         String timeText = getAppointmentStartsInTime(app_start_date, app_start_time);
         tvVisitStartDate.setText(DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date));
         tvVisitStartTime.setText(app_start_time);
-        if (isVisitStartsIn) { //that means appointment scheduled
+        if (isVisitStartsIn && !isVisitEnded) { //that means appointment scheduled
             stateAppointmentStarted.setVisibility(View.VISIBLE);
             layoutContactAction.setVisibility(View.GONE);
             tvRescheduleOnTitle.setVisibility(View.GONE);
@@ -396,7 +400,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             tvPrevAppTime.setText(appointmentInfo.getPrev_slot_time());
 
         }
-
 
         if (hasPrescription) {
             //prescription received  state - make "stateAppointmentStarted" visible,
@@ -521,7 +524,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             stateAppointmentPrescription.setVisibility(View.GONE);
 
             mScheduleAppointmentTextView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btnCancelAppointment.setVisibility(View.VISIBLE);
             btnRescheduleAppointment.setVisibility(View.VISIBLE);
             mScheduleAppointmentTextView.setVisibility(View.GONE);
@@ -672,11 +675,11 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
                         timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + "," + getResources().getString(R.string.at) + " " + slotTime;
                     } else {
-                        timeText =  getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
+                        timeText = getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
 
                     }
                 } else {
-                    timeText =  getResources().getString(R.string.in) + " " + minutes + " " +  getResources().getString(R.string.minutes_txt);
+                    timeText = getResources().getString(R.string.in) + " " + minutes + " " + getResources().getString(R.string.minutes_txt);
                 }
             } else {
                 isVisitStartsIn = false;
