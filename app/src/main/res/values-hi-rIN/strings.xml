@@ -387,6 +387,8 @@
     <string name="spo2_error">SpO2 %1$s और %2$s के बीच होना चाहिए</string>
     <string name="pulse_error">पल्स %1$s और %2$s के बीच होना चाहिए</string>
     <string name="bpsys_error">सिस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="bpsys_not_less_error">सिस्टोलिक दबाव डायस्टोलिक दबाव से कम या बराबर नहीं होना चाहिए।</string>
+    <string name="bpdia_not_more_error">डायस्टोलिक दबाव सिस्टोलिक दबाव से अधिक या उसके बराबर नहीं होना चाहिए।</string>
     <string name="bpdia_error">डायस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
     <string name="resp_error">श्वसन दर %1$s और %2$s के बीच होनी चाहिए</string>
     <string name="temp_error">तापमान %1$s और %2$s के बीच होना चाहिए</string>
@@ -691,12 +693,14 @@
     <string name="per_Week">प्रति सप्ताह</string>
     <string name="per_Month">प्रति माह</string>
     <string name="per_Year">प्रति वर्ष</string>
+    <string name="failed_initial_synced">रीफ्रेश विफल रहा, अपना इंटरनेट कनेक्शन जांचें। कृपया ऐप पुनः प्रारंभ करें.</string>
     <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
     <string name="have_you_taken_a_covid_vaccine">क्या आपको कोविड का टिका लगा है?*</string>
     <string name="select_option_vaccination_dialog">टीकाकरण के लिए विकल्प चुनें</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"हैलो, इंटेलीहेल्थ का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें "</string>
     <string name="and_enter_your_patient_id">" और अपनी रोगी आईडी दर्ज करें - "</string>
 
+    <string name="warning_app_update">कृपया ऐप को नवीनतम संस्करण में अपडेट करें।</string>
     <string name="identification_screen_prompt_village">गांव *</string>
 
     //-------vital updated fields-------------
@@ -738,6 +742,8 @@
     <string name="hw_qualification_hint">योग्यता</string>
     <string name="hw_aboutme_hint">मेरे बारे में</string>
     //-------setup Location string-----
+    <string name="choose_lang_title">अपनी भाषा का चयन करें</string>
+    <string name="save_button">सहजे</string>
     <string name="setup_select_state_str">राज्य चुनें</string>
     <string name="setup_select_dropdown_state_msg">ड्रॉपडाउन से राज्य का चयन करें</string>
     <string name="setup_select_district_str">जिला चुनें</string>
@@ -773,6 +779,7 @@
     <string name="booked_txt">बुक</string>
     <string name="cancelled_txt">रद्द</string>
     <string name="please_upload_visit">कृपया अपॉइंटमेंट बुक करने से पहले विज़िट को पहले अपलोड करें।</string>
+    <string name="appointment_booking_not_available">प्राथमिकता वाली विजिट के लिए अपॉइंटमेंट बुकिंग उपलब्ध नहीं है।</string>
     <string name="appointment_booked_successfully">अपॉइंटमेंट सफलतापूर्वक बुक किया गया!</string>
     <string name="appointment_booked_failed">अपॉइंटमेंट बुक हो गया विफल!</string>
     <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करने में विफल!</string>
@@ -852,6 +859,7 @@
     <string name="more_than_two_lakh_fifty_thousand">2,50,000 से अधिक</string>
     <string name="average_expenditure_on_health">स्वास्थ्य पर वार्षिक व्यय</string>
     <string name="zero_three_thousand">0 – 3,000</string>
+    <string name="one_three_thousand">1 – 3,000</string>
     <string name="three_five_thousand">3,000 – 5,000</string>
     <string name="five_ten_thousand">5,000 – 10,000</string>
     <string name="ten_twenty_five_thousand">10,000 – 25,000</string>
@@ -1166,5 +1174,22 @@
     <string name="fetching_details_please_wait">विवरण लाया जा रहा है. कृपया प्रतीक्षा करें...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">डॉक्टर द्वारा प्रिस्क्रिप्शन अभी तक उपलब्ध नहीं कराया गया है।</string>
     <string name="download_prescription_first">सबसे पहले प्रिस्क्रिप्शन डाउनलोड करें.</string>
+    <string name="location_setup">लोकेशन सेटअप %1$s</string>
+    <string name="app_version_string">उपयोगकर्ता: %1$s, ऐप संस्करण: %2$s</string>
+    <string name="height_ft">ऊंचाई(फीट)</string>
+    <string name="ft">फीट</string>
+    <string name="in">इंच</string>
+    <string name="please_select_patient_height">कृपया रोगी की ऊंचाई चुनें!</string>
+    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">सिस्टोलिक दबाव डायस्टोलिक दबाव से कम नहीं हो सकता।</string>
+    <string name="enter_field">फ़ील्ड दर्ज करें</string>
+    <string name="following_fields_are_not_filled">निम्नलिखित फ़ील्ड भरे नहीं गए हैं:</string>
+    <string name="do_you_still_want_to_continue">क्या आप अब भी जारी रखना चाहते हैं?</string>
+    <string name="enter_valid_phone_number">मान्य फ़ोन नंबर दर्ज करें.</string>
+    <string name="enter_patient_phone_number">मरीज़ का फ़ोन नंबर दर्ज करें.</string>
+    <string name="overweight">अधिक वजन</string>
+    <string name="underweight">कम वजन</string>
+    <string name="normal">सामान्य</string>
+    <string name="moderate_obesity">मध्यम मोटापा</string>
+    <string name="severe_obesity">गंभीर मोटापा</string>
 
 </resources>

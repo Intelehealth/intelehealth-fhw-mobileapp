@@ -30,4 +30,23 @@
         app:srcCompat="@drawable/ic_camera"
         app:useCompatPadding="true" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/flip_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        app:srcCompat="@drawable/baseline_flip_camera_ios_24"
+        app:useCompatPadding="true" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/flash_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="20dp"
+        app:srcCompat="@drawable/ic_flash_auto"
+        app:useCompatPadding="true" />
+
 </RelativeLayout>

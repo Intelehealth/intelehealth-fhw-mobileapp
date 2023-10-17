@@ -1,0 +1,17 @@
+29 Sep, 2023
+=============
+Version Code - 52,
+Version Name - v2.1.1
+
+Note:
+- Mobile / Removed display over the app permission - Not use in app
+- Mobile / Removed Realtime sync on service - Battery optimization
+- Web / Video and Chat icon only visible after start visit
+- Mobile / Download protocal dialog UI issue resolved
+- Mobile / Web / Message character limit increased by 1000
+- Mobile / Socket connection issue resolved (crashed)
+- Mobile / Cancel appointment issue resolved (crashed)
+
+
+Note: Please kindly reinstall the app and logout from the Dr. profile after active on play store and push on server,
+ if in case of latest changes not reflect.

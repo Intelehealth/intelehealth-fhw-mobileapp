@@ -44,7 +44,11 @@
     <color name="font_black_5">#bdbdbd</color>
     <color name="font_black_6">#e0e0e0</color>
 
-    <color name="lite_red">#F3665C</color>
+    <color name="lite_red">#F48880</color>
+    <color name="dark_red">#940E06</color>
+    <color name="orange">#FF5722</color>
+    <color name="lite_yellow">#F8F3C6</color>
+    <color name="dark_yellow">#FBE626</color>
     <!--Home Screen Changes-->
     <color name="txt_sub_header_color">#333333</color>
 
@@ -55,7 +59,7 @@
     <color name="dot_dark_screen4">#a854d4</color>
 
     <!-- dots active colors -->
-    <color name="dot_light_screen1">#f98da5</color>
+    <color name="dot_light_screen1">#C03E5B</color>
     <color name="dot_light_screen2">#8cf9eb</color>
     <color name="dot_light_screen3">#93c6fd</color>
     <color name="dot_light_screen4">#e4b5fc</color>

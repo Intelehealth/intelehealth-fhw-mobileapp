@@ -146,7 +146,7 @@
     <string name="table_hw" translatable="false">શારીરિક માપ</string>
     <string name="table_height" translatable="false">ઊંચાઈ (સે.મી.)</string>
     <string name="table_weight" translatable="false">વજન (કિલો)</string>
-    <string name="table_bmi" translatable="false">BMI </string>
+    <string name="table_bmi" translatable="false">બીએમઆઈ</string>
     <string name="table_pulse" translatable="false">પલ્સ (bpm)</string>
     <string name="table_bp" translatable="false">મહત્વપૂર્ણ સંકેતો</string>
     <string name="table_bpsys" translatable="false">બીપી Sys</string>
@@ -205,7 +205,7 @@
     <string name="visit_summary_tests_prescribed" translatable="false">ટેસ્ટ/રેફરલ્સ</string>
     <string name="visit_summary_additional_comments" translatable="false">વધારાની ટિપ્પણીઓ</string>
     <string name="visit_summary_heading_name" translatable="false">નામ</string>
-    <string name="visit_summary_heading_id" translatable="false">ID</string>
+    <string name="visit_summary_heading_id" translatable="false">" આઈડી"</string>
     <string name="visit_summary_button_download" translatable="false">ડાઉનલોડ કરો</string>
     <string name="visit_summary_button_upload" translatable="false">અપલોડ કરો</string>
     <string name="name_button_download" translatable="false">button_download</string>
@@ -378,6 +378,8 @@
     <string name="spo2_error" translatable="false">SpO2 %1$s અને %2$s ની વચ્ચે હોવું જોઈએ</string>
     <string name="pulse_error" translatable="false">પલ્સ %1$s અને %2$s ની વચ્ચે હોવી જોઈએ</string>
     <string name="bpsys_error" translatable="false">સિસ્ટોલિક દબાણ %1$s અને %2$s ની વચ્ચે હોવું જોઈએ</string>
+    <string name="bpsys_not_less_error">સિસ્ટોલિક દબાણ ડાયસ્ટોલિક દબાણ કરતા ઓછું અથવા બરાબર હોવું જોઈએ નહીં.</string>
+    <string name="bpdia_not_more_error">ડાયાસ્ટોલિક દબાણ સિસ્ટોલિક દબાણ કરતા વધારે અથવા બરાબર હોવું જોઈએ નહીં.</string>
     <string name="bpdia_error" translatable="false">ડાયસ્ટોલિક દબાણ %1$s અને %2$s ની વચ્ચે હોવું જોઈએ</string>
     <string name="resp_error" translatable="false">શ્વસન દર %1$s અને %2$s ની વચ્ચે હોવો જોઈએ</string>
     <string name="temp_error" translatable="false">તાપમાન %1$s અને %2$s ની વચ્ચે હોવું જોઈએ</string>
@@ -766,6 +768,7 @@
     <string name="booked_txt">બુક કરેલ</string>
     <string name="cancelled_txt">રદ કરેલ</string>
     <string name="please_upload_visit">મહેરબાની કરીને એપોઇન્ટમેન્ટ બુક કરતા પહેલા પહેલા મુલાકાત અપલોડ કરો.</string>
+    <string name="appointment_booking_not_available">પ્રાથમિકતા મુલાકાતો માટે એપોઇન્ટમેન્ટ બુકિંગ ઉપલબ્ધ નથી.</string>
     <string name="appointment_booked_successfully">એપોઈન્ટમેન્ટ સફળતાપૂર્વક બુક થઈ!</string>
     <string name="appointment_booked_failed">એપોઇન્ટમેન્ટ બુક કરવામાં નિષ્ફળ ગઈ!</string>
     <string name="failed_to_cancel_appointment">એપોઇન્ટમેન્ટ રદ કરવામાં નિષ્ફળ!</string>
@@ -844,6 +847,7 @@
     <string name="more_than_two_lakh_fifty_thousand">2,50,000 થી વધુ </string>
     <string name="average_expenditure_on_health">સ્વાસ્થ્ય પર વાર્ષિક ખર્ચ</string>
     <string name="zero_three_thousand">0 – 3,000</string>
+    <string name="one_three_thousand">1 – 3,000</string>
     <string name="three_five_thousand">3,000 – 5,000</string>
     <string name="five_ten_thousand">5,000 – 10,000</string>
     <string name="ten_twenty_five_thousand">10,000 – 25,000</string>
@@ -1159,5 +1163,22 @@
     <string name="fetching_details_please_wait">વિગતો મેળવી રહ્યાં છીએ. મહેરબાની કરી રાહ જુવો...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">ડૉક્ટર દ્વારા હજુ સુધી પ્રિસ્ક્રિપ્શન આપવામાં આવ્યું નથી.</string>
     <string name="download_prescription_first">પહેલા પ્રિસ્ક્રિપ્શન ડાઉનલોડ કરો.</string>
+    <string name="location_setup">લોકેશન સેટપ %1$s</string>
+    <string name="app_version_string">વપરાશકર્તા: %1$s, એપ વર્ઝન: %2$s</string>
+    <string name="height_ft">ઊંચાઈ(ફૂટ)</string>
+    <string name="ft">ફૂટ</string>
+    <string name="in">ઇંચ</string>
+    <string name="please_select_patient_height">કૃપા કરીને દર્દીની ઊંચાઈ પસંદ કરો.</string>
+    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">સિસ્ટોલિક પ્રેશર એ ડાયસ્ટોલિક પ્રેશર કરતા ઓછું હોઇ શકે નહી.</string>
+    <string name="enter_field">માહિતી ભરો.</string>
+    <string name="following_fields_are_not_filled">નીચેની માહિતી ભરાઈ નથી:</string>
+    <string name="do_you_still_want_to_continue">શું તમે હજુ પણ ચાલુ રાખવા માંગો છો?</string>
+    <string name="enter_valid_phone_number">માન્ય ફોન નંબર દાખલ કરો.</string>
+    <string name="enter_patient_phone_number">દર્દીનો ફોન નંબર દાખલ કરો.</string>
+    <string name="overweight">વધારે વજન</string>
+    <string name="underweight">ઓછું વજન</string>
+    <string name="normal">સામાન્ય</string>
+    <string name="moderate_obesity">મધ્યમ સ્થૂળતા</string>
+    <string name="severe_obesity">ગંભીર સ્થૂળતા</string>
 
 </resources>

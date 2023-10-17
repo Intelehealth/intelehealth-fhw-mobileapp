@@ -98,6 +98,8 @@ public class CameraActivity extends AppCompatActivity {
     private ProcessCameraProvider cameraProvider;
     private ImageCapture imageCapture = null;
 
+    int lensFacing = CameraSelector.LENS_FACING_BACK;
+
     void compressImageAndSave(Bitmap bitmap) {
         getBackgroundHandler().post(() -> {
             if (mImageName == null) {
@@ -116,17 +118,11 @@ public class CameraActivity extends AppCompatActivity {
             OutputStream os = null;
             try {
                 os = new FileOutputStream(file);
-                //Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                //  Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 600, 800, false);
-                //  bitmap.recycle();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
                 os.flush();
                 os.close();
                 bitmap.recycle();
-
-
                 Bitmap scaledBitmap = null;
-
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
                 Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
@@ -283,10 +279,19 @@ public class CameraActivity extends AppCompatActivity {
         if (isCameraPermissionGranted()) {
             startCamera();
             binding.takePicture.setOnClickListener(view -> takePhoto());
+            binding.flipCamera.setOnClickListener(view -> flipCamera());
+            binding.flashCamera.setOnClickListener(view -> flashCamera());
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, AppConstants.CAMERA_PERMISSIONS);
         }
     }
+
+    private void flashCamera(){
+        mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
+        binding.flashCamera.setImageDrawable(getResources().getDrawable(FLASH_ICONS[mCurrentFlash]));
+        imageCapture.setFlashMode(FLASH_OPTIONS[mCurrentFlash]);
+    }
+
 
     private void takePhoto() {
         if (imageCapture == null) return;
@@ -357,17 +362,24 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
+        CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(lensFacing).build();
         Preview preview = new Preview.Builder().build();
         preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
-
         imageCapture = new ImageCapture.Builder().setFlashMode(FLASH_OPTIONS[mCurrentFlash]).build();
-
         try {
             cameraProvider.unbindAll();
-            cameraProvider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture);
+            cameraProvider.bindToLifecycle(this, cameraSelector , preview, imageCapture);
         } catch (Exception ignored) {
 
         }
+    }
+
+    private void flipCamera() {
+        if (CameraSelector.LENS_FACING_FRONT == lensFacing)
+            lensFacing =  CameraSelector.LENS_FACING_BACK;
+        else
+            lensFacing =  CameraSelector.LENS_FACING_FRONT;
+        startCamera();
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)

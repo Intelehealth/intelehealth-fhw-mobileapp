@@ -84,7 +84,7 @@
     <string name="identification_screen_prompt_address">ঠিকানা লাইন 1</string>
     <string name="identification_screen_prompt_address2">ঠিকানা লাইন ২</string>
     <string name="identification_screen_prompt_phone_number">ফোন নম্বর *</string>
-    <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
+    <string name="admin_password_dialog_heading" translatable="false">প্ৰশাসক পাছৱৰ্ড দিয়ক</string>
     <string name="identification_screen_prompt_gender" translatable="false">লিঙ্গ *</string>
     <string name="identification_screen_checkbox_male">পুরুষ</string>
     <string name="identification_screen_checkbox_female">মহিলা</string>
@@ -100,8 +100,8 @@
     <string name="identification_screen_prompt_postal_code" translatable="false">পোস্ট অফিসের নাম্বার</string>
     <string name="identification_screen_prompt_relationship" translatable="false">এর পুত্র/কন্যা/স্ত্রী</string>
     <string name="identification_screen_prompt_occupation" translatable="false">পেশা</string>
-    <string name="identification_screen_snack_patient_created" translatable="false">Patient created! Uploading to server.</string>
-    <string name="identification_screen_error_data_fields" translatable="false">Error: data fields are not formatted correctly</string>
+    <string name="identification_screen_snack_patient_created" translatable="false">ৰোগী সৃষ্টি কৰা হৈছে! চাৰ্ভাৰলৈ আপলোড কৰা হৈছে।</string>
+    <string name="identification_screen_error_data_fields" translatable="false">ত্ৰুটি: তথ্য ক্ষেত্ৰসমূহ সঠিকভাৱে ফৰ্মেট কৰা হোৱা নাই</string>
     <string name="identification_screen_dialog_age" translatable="false">অনুগ্রহ করে বছরগুলিতে বয়স লিখুন৷</string>
     <string name="identification_screen_dialog_error_dob" translatable="false">জন্ম তারিখ নির্ধারণ করা হয়েছে আজকের পরের তারিখ</string>
     <string name="identification_screen_dialog_error_gender" translatable="false">লিঙ্গ নির্বাচন করা হয় না</string>
@@ -250,17 +250,15 @@
     <!-- Example General settings -->
     <string name="pref_header_general" translatable="false">সাধারণ</string>
 
-    <string name="pref_title_social_recommendations" translatable="false">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations" translatable="false">Recommendations for people to contact based on your message
-        history
-    </string>
+    <string name="pref_title_social_recommendations" translatable="false">সামাজিক পৰামৰ্শসমূহ সক্ষম কৰক</string>
+    <string name="pref_description_social_recommendations" translatable="false">আপোনাৰ বাৰ্তাৰ ওপৰত ভিত্তি কৰি মানুহে যোগাযোগ কৰিব পৰা পৰামৰ্শ। ইতিহাস</string>
 
     <string name="pref_title_display_name" translatable="false">প্রদর্শনের নাম</string>
     <string name="pref_default_display_name" translatable="false">John Smith</string>
 
 
     <!-- Example settings for Data & syncBackground -->
-    <string name="pref_header_data_sync" translatable="false">Data &amp; Refresh</string>
+    <string name="pref_header_data_sync" translatable="false">ডেটা এবং রিফ্রেশ</string>
 
     <string name="pref_title_server_url" translatable="false">সার্ভার URL</string>
     <string name="pref_title_id_prefix" translatable="false">Location Prefix</string>
@@ -388,6 +386,8 @@
     <string name="spo2_error" translatable="false">SpO2 %1$s এবং %2$s এর মধ্যে হওয়া উচিত</string>
     <string name="pulse_error" translatable="false">পালস %1$s এবং %2$s এর মধ্যে থাকা উচিত</string>
     <string name="bpsys_error" translatable="false">সিস্টোলিক চাপ %1$s এবং %2$s এর মধ্যে হওয়া উচিত</string>
+    <string name="bpsys_not_less_error">সিস্টোলিক চাপ ডায়াস্টোলিক চাপের চেয়ে কম বা সমান হওয়া উচিত নয়।</string>
+    <string name="bpdia_not_more_error">ডায়াস্টোলিক চাপ সিস্টোলিক চাপের চেয়ে বেশি বা সমান হওয়া উচিত নয়।</string>
     <string name="bpdia_error" translatable="false">ডায়াস্টোলিক চাপ %1$s এবং %2$s এর মধ্যে হওয়া উচিত</string>
     <string name="resp_error" translatable="false">শ্বাস-প্রশ্বাসের হার %1$s এবং %2$s এর মধ্যে হওয়া উচিত</string>
     <string name="temp_error" translatable="false">তাপমাত্রা %1$s এবং %2$s এর মধ্যে হওয়া উচিত</string>
@@ -780,6 +780,7 @@
     <string name="booked_txt">বুক করা</string>
     <string name="cancelled_txt">বাতিল</string>
     <string name="please_upload_visit">অ্যাপয়েন্টমেন্ট বুক করার আগে আগে ভিজিট আপলোড করুন.</string>
+    <string name="appointment_booking_not_available">অগ্রাধিকার পরিদর্শনের জন্য অ্যাপয়েন্টমেন্ট বুকিং উপলব্ধ নয়।</string>
     <string name="appointment_booked_successfully">অ্যাপয়েন্টমেন্ট সফলভাবে বুক করা হয়েছে!</string>
     <string name="appointment_booked_failed">অ্যাপয়েন্টমেন্ট বুক করা ব্যর্থ!</string>
     <string name="failed_to_cancel_appointment">অ্যাপয়েন্টমেন্ট বাতিল করতে ব্যর্থ!</string>
@@ -1159,5 +1160,22 @@
     <string name="fetching_details_please_wait">বিস্তারিত আনা হচ্ছে। অনুগ্রহপূর্বক অপেক্ষা করুন...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">প্রেসক্রিপশন এখনও ডাক্তার দ্বারা প্রদান করা হয় না.</string>
     <string name="download_prescription_first">প্রথমে প্রেসক্রিপশন ডাউনলোড করুন।</string>
+    <string name="location_setup">অবস্থান সেটআপ %1$s</string>
+    <string name="app_version_string">ব্যবহারকারী: %1$s, অ্যাপ সংস্করণ: %2$s</string>
+    <string name="height_ft">উচ্চতা (ফুট)</string>
+    <string name="ft">ফুট</string>
+    <string name="in">ভিতরে</string>
+    <string name="please_select_patient_height">রোগীর উচ্চতা নির্বাচন করুন!</string>
+    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">সিস্টোলিক চাপ ডায়াস্টোলিক চাপের চেয়ে কম হতে পারে না।</string>
+    <string name="enter_field">ক্ষেত্র লিখুন</string>
+    <string name="following_fields_are_not_filled">নিম্নলিখিত ক্ষেত্রগুলি পূরণ করা হয় না:</string>
+    <string name="do_you_still_want_to_continue">আপনি কি এখনও চালিয়ে যেতে চান?</string>
+    <string name="enter_valid_phone_number">বৈধ ফোন নম্বর লিখুন।</string>
+    <string name="enter_patient_phone_number">রোগীর ফোন নম্বর লিখুন।</string>
+    <string name="overweight">অতিরিক্ত ওজন</string>
+    <string name="underweight">কম ওজন</string>
+    <string name="normal">স্বাভাবিক</string>
+    <string name="moderate_obesity">মাঝারি স্থূলতা</string>
+    <string name="severe_obesity">গুরুতর স্থূলতা</string>
 
 </resources>

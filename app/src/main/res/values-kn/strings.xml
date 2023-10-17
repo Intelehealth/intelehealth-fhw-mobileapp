@@ -386,6 +386,8 @@
     <string name="spo2_error" translatable="false">ಎಸ್ ಪಿ O2 %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="pulse_error" translatable="false">ಪಲ್ಸ್ %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="bpsys_error" translatable="false">ಸಂಕೋಚನದ ಒತ್ತಡವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
+    <string name="bpsys_not_less_error">ಸಿಸ್ಟೊಲಿಕ್ ಒತ್ತಡವು ಡಯಾಸ್ಟೊಲಿಕ್ ಒತ್ತಡಕ್ಕಿಂತ ಕಡಿಮೆ ಅಥವಾ ಸಮಾನವಾಗಿರಬಾರದು.</string>
+    <string name="bpdia_not_more_error">ಡಯಾಸ್ಟೊಲಿಕ್ ಒತ್ತಡವು ಸಂಕೋಚನದ ಒತ್ತಡಕ್ಕಿಂತ ಹೆಚ್ಚಿರಬಾರದು ಅಥವಾ ಸಮಾನವಾಗಿರಬಾರದು.</string>
     <string name="bpdia_error" translatable="false">ಡಯಾಸ್ಟೊಲಿಕ್ ಒತ್ತಡವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="resp_error" translatable="false">ಉಸಿರಾಟದ ದರವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="temp_error" translatable="false">ತಾಪಮಾನವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
@@ -778,6 +780,7 @@
     <string name="booked_txt">ಬುಕ್ ಮಾಡಿದೆ</string>
     <string name="cancelled_txt">ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
     <string name="please_upload_visit">ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಕಾಯ್ದಿರಿಸುವ ಮೊದಲು ದಯವಿಟ್ಟು ಭೇಟಿಯನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.</string>
+    <string name="appointment_booking_not_available">ಆದ್ಯತೆಯ ಭೇಟಿಗಾಗಿ ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಬುಕಿಂಗ್ ಲಭ್ಯವಿಲ್ಲ</string>
     <string name="appointment_booked_successfully">ನೇಮಕಾತಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ!</string>
     <string name="appointment_booked_failed">ಗೊತ್ತುಪಡಿಸಿದ ನೇಮಕಾತಿ ವಿಫಲವಾಗಿದೆ!</string>
     <string name="failed_to_cancel_appointment">ನೇಮಕಾತಿ ರದ್ದುಗೊಳಿಸಲು ವಿಫಲವಾಗಿದೆ!</string>
@@ -1157,4 +1160,21 @@
     <string name="fetching_details_please_wait">ವಿವರಗಳನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ. ದಯಮಾಡಿ ನಿರೀಕ್ಷಿಸಿ...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">ವೈದ್ಯರಿಂದ ಇನ್ನೂ ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ನೀಡಲಾಗಿಲ್ಲ.</string>
     <string name="download_prescription_first">ಮೊದಲು ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.</string>
+    <string name="location_setup">ಸ್ಥಳ ಸೆಟಪ್ %1$s</string>
+    <string name="app_version_string">ಬಳಕೆದಾರ: %1$s, ಅಪ್ಲಿಕೇಶನ್ ಆವೃತ್ತಿ: %2$s</string>
+    <string name="height_ft">ಎತ್ತರ (ಅಡಿ)</string>
+    <string name="ft">ಅಡಿ</string>
+    <string name="in">ಒಳಗೆ</string>
+    <string name="please_select_patient_height">"ದಯವಿಟ್ಟು ರೋಗಿಯ ಎತ್ತರವನ್ನು ಆಯ್ಕೆಮಾಡಿ "</string>
+    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">"ಸಿಸ್ಟ್ರೋಲಿಕ್  ಒತ್ತಡವು ಡಯಾಸ್ಟೊಲಿಕ್ ಒತ್ತಡಕ್ಕಿಂತ ಕಡಿಮೆ ಇರುವಂತಿಲ್ಲ "</string>
+    <string name="enter_field">ಕ್ಷೇತ್ರವನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="following_fields_are_not_filled">"ಕೆಳಗಿನ ಕ್ಷೇತ್ರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಲಾಗಿಲ್ಲ "</string>
+    <string name="do_you_still_want_to_continue">ನೀವು ಇನ್ನೂ ಮುಂದುವರಿಯಲು ಬಯಸುತ್ತೀರಾ</string>
+    <string name="enter_valid_phone_number">ಮಾನ್ಯವಾದ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="enter_patient_phone_number">"ರೋಗಿಗಳ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ "</string>
+    <string name="overweight">"ಅಧಿಕ ತೂಕ "</string>
+    <string name="underweight">"ಕಡಿಮೆ ತೂಕ "</string>
+    <string name="normal">"ಸಾಮಾನ್ಯ "</string>
+    <string name="moderate_obesity">"ಮಧ್ಯಮ ಸ್ಥೂಲಕಾಯತೆ "</string>
+    <string name="severe_obesity">"ತೀವ್ರ ಸ್ಥೂಲಕಾಯತೆ "</string>
 </resources>

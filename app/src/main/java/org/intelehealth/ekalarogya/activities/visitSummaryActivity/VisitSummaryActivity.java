@@ -1,6 +1,24 @@
 package org.intelehealth.ekalarogya.activities.visitSummaryActivity;
 
 
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_DARK_RED_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_GREEN_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_GREEN_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_LIGHT_RED_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_LIGHT_RED_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_ORANGE_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_YELLOW_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_YELLOW_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.DIA_GREEN_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.DIA_RED_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.DIA_YELLOW_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.DIA_YELLOW_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_GREEN_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_GREEN_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_RED_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_RED_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_YELLOW_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_YELLOW_MIN;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.fetchObsValue_REG;
 
 import android.annotation.SuppressLint;
@@ -63,6 +81,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,6 +118,7 @@ import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMed
 import org.intelehealth.ekalarogya.activities.patientSurveyActivity.PatientSurveyActivity;
 import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.ekalarogya.activities.vitalActivity.VitalsActivity;
+import org.intelehealth.ekalarogya.activities.vitalActivity.VitalsUtils;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.appointment.ScheduleListingActivity;
@@ -236,6 +256,8 @@ public class VisitSummaryActivity extends BaseActivity {
     TextView tempView;
     TextView spO2View, hemoglobinView, bloodView, sugarRandomView, sugarFastAndMealView;
     TextView bmiView;
+
+    TableRow bmiTR;
     TextView complaintView;
     TextView famHistView;
     TextView patHistView;
@@ -266,7 +288,7 @@ public class VisitSummaryActivity extends BaseActivity {
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
     CardView followUpDateCard;
-    CardView card_print, card_share;
+    CardView card_print, card_share, speciality_card, flaggedDetails;
 
 
     TextView diagnosisTextView;
@@ -322,6 +344,8 @@ public class VisitSummaryActivity extends BaseActivity {
     private String hasPrescription = "";
     private boolean isRespiratory = false;
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
+
+    int patientAge = 0;
 
     private void collectChatConnectionInfoFromFirebase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
@@ -632,16 +656,17 @@ public class VisitSummaryActivity extends BaseActivity {
         mDoctorName = findViewById(R.id.doctor_details);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
         frameLayout_doctor.setVisibility(View.GONE);
-
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
-
+        speciality_card = findViewById(R.id.speciality_card);
+        flaggedDetails = findViewById(R.id.flageddetails);
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
+
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -817,31 +842,7 @@ public class VisitSummaryActivity extends BaseActivity {
 
         downloadButton.setEnabled(false);
         downloadButton.setVisibility(View.GONE);
-        if (isPastVisit) {
-            editVitals.setVisibility(View.GONE);
-            editComplaint.setVisibility(View.GONE);
-            editPhysical.setVisibility(View.GONE);
-            editFamHist.setVisibility(View.GONE);
-            editMedHist.setVisibility(View.GONE);
-            editAddDocs.setVisibility(View.GONE);
-            uploadButton.setVisibility(View.GONE);
-            invalidateOptionsMenu();
-        } else {
-            String visitIDorderBy = "startdate";
-            String visitIDSelection = "uuid = ?";
-            String[] visitIDArgs = {visitUuid};
-            final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
-                visitIDCursor.moveToFirst();
-                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
-            }
-            if (visitIDCursor != null) visitIDCursor.close();
-            if (visitUUID != null && !visitUUID.isEmpty()) {
-                addDownloadButton();
 
-            }
-
-        }
         flag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1234,6 +1235,13 @@ public class VisitSummaryActivity extends BaseActivity {
         respiratory = findViewById(R.id.textView_respiratory_value);
         respiratoryText = findViewById(R.id.textView_respiratory);
         bmiView = findViewById(R.id.textView_bmi_value);
+        bmiTR = findViewById(R.id.bmi_tableRow);
+        if(patient!=null)
+            patientAge = DateAndTimeUtils.getAgeInYear(patient.getDate_of_birth(), context);
+        if(patientAge<=2)
+            bmiTR.setVisibility(View.GONE);
+        else
+            bmiTR.setVisibility(View.VISIBLE);
         complaintView = findViewById(R.id.textView_content_complaint);
         famHistView = findViewById(R.id.textView_content_famhist);
         patHistView = findViewById(R.id.textView_content_pathist);
@@ -1251,7 +1259,8 @@ public class VisitSummaryActivity extends BaseActivity {
             if (height.getValue().trim().equals("0")) {
                 heightView.setText("-");
             } else {
-                heightView.setText(height.getValue());
+                if (height != null)
+                    heightView.setText(VitalsUtils.convertHeightIntoFeets(height.getValue(), VisitSummaryActivity.this));
             }
         }
 
@@ -1264,8 +1273,10 @@ public class VisitSummaryActivity extends BaseActivity {
         } else if (bpText.equalsIgnoreCase("null/null")) {
             //when we setup app and get data from other users, we get null/null from server...
             bpView.setText("");
-        } else {
-            bpView.setText(bpText);
+        }
+        else {
+            bpText = bpSysColorCode(bpSys.getValue()) + "/" + bpDiaColorCode(bpDias.getValue());
+            bpView.setText(Html.fromHtml(bpText));
         }
 
         Log.d(TAG, "onCreate: " + weight.getValue());
@@ -1283,6 +1294,8 @@ public class VisitSummaryActivity extends BaseActivity {
         //   patHistory_REG.setValue(medHistory_REG.replace("?<b>", Node.bullet_arrow));
 
         bmiView.setText(mBMI);
+        if(patientAge >= 19)
+            bmiColorCode(mBMI);
 
 //        tempView.setText(temperature.getValue());
         //    Respiratory added by mahiti dev team
@@ -1305,10 +1318,11 @@ public class VisitSummaryActivity extends BaseActivity {
         }
 
         sugarRandomView.setText(sugarrandom.getValue());
-        if (sugarfasting.getValue() != null || sugaraftermeal.getValue() != null
-                && !sugarfasting.getValue().equalsIgnoreCase("null") && !sugaraftermeal.getValue().equalsIgnoreCase("null")) {
-            if (sugarfasting.getValue().trim().length() != 0 && sugaraftermeal.getValue().trim().length() != 0) {
-                sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
+        if (sugarfasting.getValue() != null /*|| sugaraftermeal.getValue() != null*/
+                && !sugarfasting.getValue().equalsIgnoreCase("null")/* && !sugaraftermeal.getValue().equalsIgnoreCase("null")*/) {
+            if (sugarfasting.getValue().trim().length() != 0/* && sugaraftermeal.getValue().trim().length() != 0*/) {
+                //   sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
+                sugarFastAndMealView.setText(sugarfasting.getValue() /*+ " | " + sugaraftermeal.getValue()*/);
             } else {
                 sugarFastAndMealView.setText("");
             }
@@ -1325,7 +1339,39 @@ public class VisitSummaryActivity extends BaseActivity {
         patHistView.setText(Html.fromHtml(fetchObsValue_REG(patHistory_REG, patHistory, sessionManager)));
         famHistView.setText(Html.fromHtml(fetchObsValue_REG(famHistory_REG, famHistory, sessionManager)));
         physFindingsView.setText(Html.fromHtml(fetchObsValue_REG(phyExam_REG, phyExam, sessionManager)));
+        if (isPastVisit) {
+            editVitals.setVisibility(View.GONE);
+            editComplaint.setVisibility(View.GONE);
+            editPhysical.setVisibility(View.GONE);
+            editFamHist.setVisibility(View.GONE);
+            editMedHist.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
+            uploadButton.setVisibility(View.GONE);
+            invalidateOptionsMenu();
+            if(complaintView==null || complaintView.getText().toString().isEmpty() || complaintView.getText().toString().trim().equalsIgnoreCase(""))
+            {
+                speciality_card.setVisibility(View.GONE);
+                flaggedDetails.setVisibility(View.GONE);
+                card_share.setVisibility(View.GONE);
+                card_print.setVisibility(View.GONE);
+            }
 
+        } else {
+            String visitIDorderBy = "startdate";
+            String visitIDSelection = "uuid = ?";
+            String[] visitIDArgs = {visitUuid};
+            final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                visitIDCursor.moveToFirst();
+                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+            }
+            if (visitIDCursor != null) visitIDCursor.close();
+            if (visitUUID != null && !visitUUID.isEmpty()) {
+                addDownloadButton();
+
+            }
+
+        }
 /*
         if (patHistory_REG.getValue() != null) {
             try {
@@ -1389,6 +1435,7 @@ public class VisitSummaryActivity extends BaseActivity {
                     intent1.putExtra("encounterUuidVitals", encounterVitals);
                     intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                     intent1.putExtra("name", patientName);
+                    intent1.putExtra("age", patientAge);
                     intent1.putExtra("tag", "edit");
                     intent1.putExtra("advicefrom", "");
                     intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
@@ -1948,14 +1995,10 @@ public class VisitSummaryActivity extends BaseActivity {
             public void onClick(View v) {
                 doQuery();
                 speciality_selected = "General Physician"; // default one
-                /*if (speciality_selected == null
-                        || speciality_selected.isEmpty()
-                        || "Select Specialization".equalsIgnoreCase(speciality_selected)
-                        || "Выберите специализацию".equalsIgnoreCase(speciality_selected)
-                ) {
-                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
+                if (flag.isChecked()) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_booking_not_available), Toast.LENGTH_SHORT).show();
                     return;
-                }*/
+                }
                 if (isSynedFlag.equalsIgnoreCase("0")) {
                     Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
                     return;
@@ -1974,6 +2017,30 @@ public class VisitSummaryActivity extends BaseActivity {
         });
         getAppointmentDetails(visitUuid);
     }
+
+    private void bmiColorCode(String bmiValue) {
+        if (!bmiValue.isEmpty()) {
+            Double bmi = Double.valueOf(bmiValue);
+            if (bmi < Double.valueOf(BMI_ORANGE_MAX)) {   // red
+                bmiView.setTextColor(getResources().getColor(R.color.orange));
+            }
+            else if (bmi < Double.valueOf(BMI_YELLOW_MAX) && bmi >= Double.valueOf(BMI_YELLOW_MIN)) {   // red
+                bmiView.setTextColor(getResources().getColor(R.color.dark_yellow));
+            }
+            else if (bmi >= Double.valueOf(BMI_LIGHT_RED_MIN) && (bmi < Double.valueOf(BMI_LIGHT_RED_MAX))){
+                bmiView.setTextColor(getResources().getColor(R.color.lite_red));
+            }
+            else if (bmi >= Double.valueOf(BMI_GREEN_MIN) && (bmi < Double.valueOf(BMI_GREEN_MAX))){
+                bmiView.setTextColor(getResources().getColor(R.color.green));
+            }
+            else if (bmi >= Double.valueOf(BMI_DARK_RED_MIN)) {   // red
+                bmiView.setTextColor(getResources().getColor(R.color.scale_1));
+            }
+            else
+                bmiView.setTextColor(null);
+        }
+    }
+
 
 
 /*
@@ -2270,13 +2337,9 @@ public class VisitSummaryActivity extends BaseActivity {
 
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
-
-                    mTemp = /*getString(R.string.temperature_C)*/ "Temperature(C):" + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
-
+                    mTemp = "Temperature(C):" + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
                 } else if (obj.getBoolean("mFahrenheit")) {
-
-//                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = /*getString(R.string.temperature_F)*/ "Temperature(F):" + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = "Temperature(F):" + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
@@ -2289,7 +2352,7 @@ public class VisitSummaryActivity extends BaseActivity {
         mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "");
         mSugarRandom = "Sugar Level (Random): " + (!TextUtils.isEmpty(sugarrandom.getValue()) ? sugarrandom.getValue() : "");
         mSugarFasting = "Sugar Level (Fasting): " + (!TextUtils.isEmpty(sugarfasting.getValue()) ? sugarfasting.getValue() : "");
-        mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "");
+        mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "NA");
 
         String mComplaint = complaint.getValue();
 
@@ -2454,7 +2517,7 @@ public class VisitSummaryActivity extends BaseActivity {
                                     "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s " +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(ft): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s " +
                                     "| %s | %s | %s | %s | %s</p><br>" +
                                    /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
@@ -2477,7 +2540,7 @@ public class VisitSummaryActivity extends BaseActivity {
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
                             (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
@@ -2494,7 +2557,7 @@ public class VisitSummaryActivity extends BaseActivity {
                                     "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s | " +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(ft): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s | " +
                                     "%s | %s | %s | %s | %s</p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
@@ -2517,7 +2580,7 @@ public class VisitSummaryActivity extends BaseActivity {
                                     doctorDetailStr +
                                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
                             (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
@@ -2534,6 +2597,46 @@ public class VisitSummaryActivity extends BaseActivity {
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
         // to the PrintManager
         mWebView = webView;
+    }
+
+    private String bpSysColorCode(String bpSysValue) {
+        if (bpSysValue!=null && !bpSysValue.isEmpty()) {
+            Double bpSys = Double.valueOf(bpSysValue);
+            if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {   // red
+                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpSysValue +"</font>";
+            }
+            else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {  // yellow
+                if (bpSys < Double.valueOf(SYS_YELLOW_MAX))
+                    return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpSysValue +"</font>";
+            }
+            else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {   //green
+                if (bpSys < Double.valueOf(SYS_GREEN_MAX))
+                    return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpSysValue +"</font>";
+            }
+            else
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpSysValue +"</font>";
+        }
+        return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + "" +"</font>";
+    }
+
+    private String bpDiaColorCode(String bpDiaValue) {
+        if (bpDiaValue!=null && !bpDiaValue.isEmpty()) {
+            Double bpDia = Double.valueOf(bpDiaValue);
+
+            if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
+                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpDiaValue +"</font>";
+            }
+            else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
+                if (bpDia < Double.valueOf(DIA_YELLOW_MAX))
+                    return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpDiaValue +"</font>";
+            }
+            else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
+                return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpDiaValue +"</font>";
+            }
+            else
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpDiaValue +"</font>";
+        }
+        return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + "" +"</font>";
     }
 
     //print button end
@@ -2628,7 +2731,7 @@ public class VisitSummaryActivity extends BaseActivity {
         mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "");
         mSugarRandom = "Sugar Level (Random): " + (!TextUtils.isEmpty(sugarrandom.getValue()) ? sugarrandom.getValue() : "");
         mSugarFasting = "Sugar Level (Fasting): " + (!TextUtils.isEmpty(sugarfasting.getValue()) ? sugarfasting.getValue() : "");
-        mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "");
+        mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "NA");
 
         String mComplaint = complaint.getValue();
 
@@ -2788,7 +2891,7 @@ public class VisitSummaryActivity extends BaseActivity {
                                     "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s " +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(ft): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s " +
                                     "| %s | %s | %s | %s | %s</p><br>" +
                                    /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
@@ -2811,7 +2914,7 @@ public class VisitSummaryActivity extends BaseActivity {
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
                             (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
@@ -2828,7 +2931,7 @@ public class VisitSummaryActivity extends BaseActivity {
                                     "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s " +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(ft): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s " +
                                     " | %s | %s | %s | %s | %s</p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
@@ -2851,7 +2954,7 @@ public class VisitSummaryActivity extends BaseActivity {
                                     doctorDetailStr +
                                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
                             (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
@@ -3176,6 +3279,16 @@ public class VisitSummaryActivity extends BaseActivity {
         }
     }
 
+    public String ConvertHeightIntoFeets(String height) {
+        int val = Integer.parseInt(height);
+        double centemeters = val / 2.54;
+        int inche = (int) centemeters % 12;
+        int feet = (int) centemeters / 12;
+        String heightVal = feet + "ft " + inche + "in"; //keeping strings static as the prescription is available only in english language.
+        System.out.println("value of height=" + val);
+        return heightVal;
+    }
+
     private void endVisit() {
         Log.d(TAG, "endVisit: ");
         if (visitUUID == null || visitUUID.isEmpty()) {
@@ -3467,6 +3580,7 @@ public class VisitSummaryActivity extends BaseActivity {
             }
             case UuidDictionary.HEIGHT: //Height
             {
+                Log.d(TAG, "parseData:value ::  " + value);
                 height.setValue(value);
                 break;
             }
@@ -3665,6 +3779,12 @@ public class VisitSummaryActivity extends BaseActivity {
         if (objClsDoctorDetails != null) {
 
             frameLayout_doctor.setVisibility(View.VISIBLE);
+            editVitals.setVisibility(View.GONE);
+            editComplaint.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
+            editPhysical.setVisibility(View.GONE);
+            editFamHist.setVisibility(View.GONE);
+            editMedHist.setVisibility(View.GONE);
 
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
@@ -4314,14 +4434,14 @@ public class VisitSummaryActivity extends BaseActivity {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setMessage(getString(R.string.appointment_booking_cancel_confirmation_txt))
                 //set positive button
-                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.survey_yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         askReason();
                     }
                 })
                 //set negative button
-                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.survey_no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -4399,6 +4519,8 @@ public class VisitSummaryActivity extends BaseActivity {
         });
 
         final TextView textView = dialog.findViewById(R.id.submitTV);
+        final TextView cancelTextView = dialog.findViewById(R.id.cancelTV);
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -4409,6 +4531,13 @@ public class VisitSummaryActivity extends BaseActivity {
                     return;
                 }
                 cancelAppointmentRequest(mEngReason.isEmpty() ? reason : mEngReason);
+            }
+        });
+
+        cancelTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
 

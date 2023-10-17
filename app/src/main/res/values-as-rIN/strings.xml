@@ -367,6 +367,8 @@
     <string name="spo2_error" translatable="false">SpO2 %1$s আৰু %2$s ৰ মাজত থাকিব লাগে</string>
     <string name="pulse_error" translatable="false">পালছ %1$s আৰু %2$s ৰ মাজত থাকিব লাগে</string>
     <string name="bpsys_error" translatable="false">চিষ্টোলিক চাপ %1$s আৰু %2$s ৰ ভিতৰত হ’ব লাগে</string>
+    <string name="bpsys_not_less_error">চিষ্টোলিক চাপ ডায়েষ্টোলিক চাপতকৈ কম বা সমান হ’ব নালাগে।</string>
+    <string name="bpdia_not_more_error">ডায়েষ্টোলিক চাপ চিষ্টোলিক চাপতকৈ বেছি বা সমান হ’ব নালাগে।</string>
     <string name="bpdia_error" translatable="false">ডায়েষ্টোলিক চাপ %1$s আৰু %2$s ৰ ভিতৰত থাকিব লাগে</string>
     <string name="resp_error" translatable="false">শ্বাস-প্ৰশ্বাসৰ হাৰ %1$s আৰু %2$s ৰ ভিতৰত হ’ব লাগে</string>
     <string name="temp_error" translatable="false">উষ্ণতা %1$s আৰু %2$s ৰ মাজত হব লাগে</string>
@@ -759,6 +761,7 @@
     <string name="booked_txt">বুকিং কৰা হৈছে</string>
     <string name="cancelled_txt">বাতিল কৰা হৈছে</string>
     <string name="please_upload_visit">এপইণ্টমেণ্ট বুকিং কৰাৰ আগতে প্ৰথমে ভ্ৰমণটো আপলোড কৰক।</string>
+    <string name="appointment_booking_not_available">অগ্ৰাধিকাৰ ভ্ৰমণৰ বাবে এপইণ্টমেণ্ট বুকিং উপলব্ধ নহয়।</string>
     <string name="appointment_booked_successfully">এপইণ্টমেণ্ট সফলতাৰে বুকিং কৰা হৈছে!</string>
     <string name="appointment_booked_failed">এপইণ্টমেণ্ট বুকিং কৰা ব্যৰ্থ!</string>
     <string name="failed_to_cancel_appointment">এপইণ্টমেণ্ট বাতিল কৰাত ব্যৰ্থ!</string>
@@ -1138,5 +1141,22 @@
     <string name="fetching_details_please_wait">সবিশেষ আনিছে। অনুগ্ৰহ কৰি অপেক্ষা কৰক...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">প্ৰেছক্ৰিপচন এতিয়াও চিকিৎসকৰ দ্বাৰা দিয়া হোৱা নাই।</string>
     <string name="download_prescription_first">প্ৰথমে প্ৰেছক্ৰিপচন ডাউনলোড কৰক।</string>
+    <string name="location_setup">অবস্থান সেটআপ %1$s</string>
+    <string name="app_version_string">ব্যৱহাৰকাৰী: %1$s, অ্যাপ সংস্করণ: %2$s</string>
+    <string name="height_ft">উচ্চতা(ফুট)</string>
+    <string name="ft">ফুট</string>
+    <string name="in">ভিতৰত</string>
+    <string name="please_select_patient_height">অনুগ্ৰহ কৰি ৰোগীৰ উচ্চতা নিৰ্বাচন কৰক!</string>
+    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">চিষ্টোলিক চাপ ডায়েষ্টোলিক চাপতকৈ কম হ’ব নোৱাৰে।</string>
+    <string name="enter_field">ফিল্ড প্ৰৱেশ কৰক</string>
+    <string name="following_fields_are_not_filled">তলত দিয়া ক্ষেত্ৰসমূহ পূৰণ কৰা হোৱা নাই:</string>
+    <string name="do_you_still_want_to_continue">এতিয়াও আগবাঢ়ি যাব বিচাৰেনে?</string>
+    <string name="enter_valid_phone_number">বৈধ ফোন নম্বৰ দিয়ক।</string>
+    <string name="enter_patient_phone_number">ৰোগীৰ ফোন নম্বৰ দিয়ক।</string>
+    <string name="overweight">অতিৰিক্ত ওজন</string>
+    <string name="underweight">কম ওজন</string>
+    <string name="normal">স্বাভাৱিক</string>
+    <string name="moderate_obesity">মধ্যমীয়া মেদবহুলতা</string>
+    <string name="severe_obesity">অতিগম্ভীৰ মেদবহুলতা</string>
 
 </resources>

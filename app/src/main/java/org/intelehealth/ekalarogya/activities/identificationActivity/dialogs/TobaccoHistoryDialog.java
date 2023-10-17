@@ -184,7 +184,7 @@ public class TobaccoHistoryDialog extends DialogFragment {
         position = bundle.getInt("position");
 
         String tobaccoStatus = bundle.getString("TobaccoStatus");
-        if (tobaccoStatus.equalsIgnoreCase(updatedContext.getString(R.string.yes)))
+        if (tobaccoStatus.equalsIgnoreCase(updatedContext.getString(R.string.survey_yes)))
             binding.yesTobaccoRadioButton.setChecked(true);
         else
             binding.noTobaccoRadioButton.setChecked(true);

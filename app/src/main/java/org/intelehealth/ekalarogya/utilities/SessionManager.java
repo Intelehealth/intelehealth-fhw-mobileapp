@@ -25,6 +25,11 @@ public class SessionManager {
     private static final String CREATOR_ID = "creatorid";
     private static final String PROVIDER_ID = "providerid";
     private static final String HWORKER_ID = "healthworkerid";
+
+    private static final String HWORKER_PHONE = "healthworkerphonenum";
+
+    private static final String HWORKER_WHATSAPP = "healthworkeriwhatsappnum";
+
     private static final String CHWNAME = "chwname";
     private static final String KEY_PREF_SERVER_URL_REST = "serverurl";
     private static final String KEY_PREF_SERVER_URL = "url";
@@ -181,12 +186,32 @@ public class SessionManager {
         editor.commit();
     }
 
+
+
     public String getHwID() {
         return pref.getString(HWORKER_ID, "");
     }
 
     public void setHwID(String hwID) {
         editor.putString(HWORKER_ID, hwID);
+        editor.commit();
+    }
+
+    public String getHwPhone() {
+        return pref.getString(HWORKER_PHONE, "");
+    }
+
+    public void setHwPhone(String hwPhone) {
+        editor.putString(HWORKER_PHONE, hwPhone);
+        editor.commit();
+    }
+
+    public String getHwWhatsApp() {
+        return pref.getString(HWORKER_WHATSAPP, "");
+    }
+
+    public void setHwWhatsApp(String hwWhatsApp) {
+        editor.putString(HWORKER_WHATSAPP, hwWhatsApp);
         editor.commit();
     }
 

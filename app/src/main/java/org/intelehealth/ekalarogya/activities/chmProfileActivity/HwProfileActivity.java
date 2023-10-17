@@ -319,6 +319,8 @@ public class HwProfileActivity extends AppCompatActivity {
             hw_mobile_value.setText(personalInformationModel.getMobile());
             hw_whatsapp_value.setText(personalInformationModel.getWhatsApp());
             hw_email_value.setText(personalInformationModel.getEmail());
+            sessionManager.setHwPhone(personalInformationModel.getMobile());
+            sessionManager.setHwWhatsApp(personalInformationModel.getWhatsApp());
 
             profilePicDownloaded();
         } else {
@@ -580,10 +582,12 @@ public class HwProfileActivity extends AppCompatActivity {
 
                         if (!hw_mobile_value.getText().toString().equalsIgnoreCase(personalInformationModel.getMobile())){
                             userAttributeModel.setPhoneNumber(hw_mobile_value.getText().toString().trim());
+                            sessionManager.setHwPhone(hw_mobile_value.getText().toString().trim());
                         }
 
                         if (!hw_whatsapp_value.getText().toString().equalsIgnoreCase(personalInformationModel.getWhatsApp())){
                             userAttributeModel.setWhatsapp(hw_whatsapp_value.getText().toString().trim());
+                            sessionManager.setHwWhatsApp(hw_whatsapp_value.getText().toString().trim());
                         }
 
                         if (!hw_email_value.getText().toString().equalsIgnoreCase(personalInformationModel.getEmail())){
@@ -592,7 +596,7 @@ public class HwProfileActivity extends AppCompatActivity {
 
                     }
                     if(userAttributeModel!=null)
-                        updateOnSever(userAttributeModel);
+                        updateOnServer(userAttributeModel);
                 }
             }
         }catch (Exception e){
@@ -600,7 +604,7 @@ public class HwProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void updateOnSever(UserAttributeModel obj){
+    public void updateOnServer(UserAttributeModel obj){
         //https://afitraining.ekalarogya.org:3004/api/user/profile/a4ac4fee-538f-11e6-9cfe-86f436325720
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getCreatorID();
         String encoded = sessionManager.getEncoded();

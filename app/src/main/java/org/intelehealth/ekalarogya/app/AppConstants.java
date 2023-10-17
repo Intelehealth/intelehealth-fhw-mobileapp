@@ -38,27 +38,60 @@ public class AppConstants {
 
 
     //App vitals constants
-    public static final String MAXIMUM_BP_SYS = "250";
+
     public static final String MAXIMUM_HEIGHT = "272";
-    public static final String MAXIMUM_WEIGHT = "150";
+    public static final String MAXIMUM_WEIGHT = "500";
+
+    public static final String MINIMUM_WEIGHT = "0.8";
     public static int APP_VERSION_CODE = 26;
-    public static final String MINIMUM_BP_SYS = "50";
-    public static final String MAXIMUM_BP_DSYS = "150";
-    public static final String MINIMUM_BP_DSYS = "30";
+    public static final String MINIMUM_BP_SYS = "70";
+    public static final String MAXIMUM_BP_SYS = "220";
+    public static final String MINIMUM_BP_DSYS = "50";
+    public static final String MAXIMUM_BP_DSYS = "120";
     public static final String MAXIMUM_PULSE = "200";
     public static final String MINIMUM_PULSE = "30";
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
     public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";
-    public static final String MINIMUM_TEMPERATURE_FARHENIT = "77";
-    public static final String MAXIMUM_TEMPERATURE_FARHENIT = "109";
+    public static final String MINIMUM_TEMPERATURE_FARHENIT = "95";
+    public static final String MAXIMUM_TEMPERATURE_FARHENIT = "104";
     public static final String MAXIMUM_SPO2 = "100";
-    public static final String MINIMUM_SPO2 = "1";
-    public static final String MAXIMUM_RESPIRATORY = "80";
+    public static final String MINIMUM_SPO2 = "85";
+    public static final String MAXIMUM_RESPIRATORY = "30";
     public static final String MINIMUM_RESPIRATORY = "10";
-    public static final String MAXIMUM_HEMOGLOBIN = "20";
-    public static final String MINIMUM_HEMOGLOBIN = "1";
-    public static final String MAXIMUM_SUGAR = "600";
-    public static final String MINIMUM_SUGAR = "10";
+    public static final String MAXIMUM_HEMOGLOBIN = "17";
+    public static final String MINIMUM_HEMOGLOBIN = "5";
+    public static final String MAXIMUM_SUGAR = "500";
+    public static final String MINIMUM_SUGAR = "60";
+
+    // BMI -- Color codes - start - ticket AEAT - 679
+
+    public static final String BMI_ORANGE_MAX = "18.5";
+    public static final String BMI_GREEN_MIN = "18.5";
+    public static final String BMI_GREEN_MAX = "23.0";
+    public static final String BMI_YELLOW_MIN = "23.0";
+    public static final String BMI_YELLOW_MAX = "25.0";
+    public static final String BMI_LIGHT_RED_MIN = "25.0";
+    public static final String BMI_LIGHT_RED_MAX = "30.0";
+    public static final String BMI_DARK_RED_MIN = "30.0";
+
+    // SYS - DIA -- Color codes - start
+    public static final String SYS_GREEN_MIN = "89";
+    public static final String SYS_GREEN_MAX = "120";
+    public static final String SYS_YELLOW_MIN = "119";
+    public static final String SYS_YELLOW_MAX = "140";
+    public static final String SYS_RED_MIN = "90";
+    public static final String SYS_RED_MAX = "139";
+
+    // Diastolic color code.
+    public static final String DIA_GREEN_MIN = "80";
+  //  public static final String DIA_GREEN_MAX = "120";
+    public static final String DIA_YELLOW_MIN = "79";
+    public static final String DIA_YELLOW_MAX = "100";
+ //   public static final String DIA_RED_MIN = "90";
+    public static final String DIA_RED_MAX = "99";
+    // SYS - DIA -- Color codes - end
+
+
 
     //functions constants
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());

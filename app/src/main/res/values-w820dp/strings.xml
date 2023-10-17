@@ -383,7 +383,7 @@
 
     <!-- Vitals Screen Error-->
 
-    <string name="weight_error" translatable="false">Weight should be less than %1$s kg</string>
+    <string name="weight_error" translatable="false">Weight should be in between %1$s and %2$s kg</string>
     <string name="height_error" translatable="false">Height should be between 0 and %1$s cm</string>
     <string name="spo2_error" translatable="false">SpO2 should be in between %1$s and %2$s</string>
     <string name="pulse_error" translatable="false">Pulse should be in between %1$s and %2$s</string>
@@ -1154,4 +1154,13 @@
     <string name="wash_before_cooking">Wash before cooking</string>
     <string name="wash_before_after_eating">Wash before and after eating</string>
     <string name="is_the_source_drinking_water_within_30_minutes">Is the source of drinking water within 30 minutes of round trip from the household?</string>
+    <string name="height_ft">Height (ft)</string>
+    <string name="ft">ft</string>
+    <string name="in">in</string>
+    <string name="please_select_patient_height">Please select patient height!</string>
+    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">Systolic pressure cannot be lower than Diastolic pressure.</string>
+    <string name="enter_field">Enter field</string>
+    <string name="following_fields_are_not_filled">Following fields are not filled:</string>
+    <string name="do_you_still_want_to_continue">Do you still want to continue?</string>
+    <string name="enter_valid_phone_number">Enter valid phone number.</string>
 </resources>

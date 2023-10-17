@@ -310,7 +310,9 @@
 <string name="spo2_error" translatable="false">एसपीओ2 %1$s आणि %2$s मध्‍ये असले पाहिजे</string>
 <string name="pulse_error" translatable="false">नाडी %1$s आणि %2$s दरम्यानची असावी</string>
 <string name="bpsys_error" translatable="false">सिस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
-<string name="bpdia_error" translatable="false">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
+    <string name="bpsys_not_less_error">सिस्टोलिक दाब डायस्टोलिक दाबापेक्षा कमी किंवा समान नसावा.</string>
+    <string name="bpdia_not_more_error">डायस्टोलिक प्रेशर सिस्टोलिक प्रेशरपेक्षा जास्त किंवा बरोबर नसावा.</string>
+    <string name="bpdia_error" translatable="false">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
 <string name="resp_error" translatable="false">श्वसन दर %1$s आणि %2$s दरम्यान असावा</string>
 <string name="temp_error" translatable="false">तापमान %1$s आणि %2$s दरम्यान असले पाहिजे</string>
 <string name="not_provided">दिले नाही</string>
@@ -652,7 +654,8 @@
 <string name="booked_txt">बुक केले</string>
 <string name="cancelled_txt">रद्द केले</string>
 <string name="please_upload_visit">कृपया भेटीची बुकिंग करण्यापूर्वी प्रथम भेट अपलोड करा.</string>
-<string name="appointment_booked_successfully">नियोजित भेट यशस्वीरित्या बुक झाली!</string>
+    <string name="appointment_booking_not_available">प्राधान्य भेटीसाठी अपॉइंटमेंट बुकिंग उपलब्ध नाही.</string>
+    <string name="appointment_booked_successfully">नियोजित भेट यशस्वीरित्या बुक झाली!</string>
 <string name="appointment_booked_failed">अपॉइंटमेंट बुक करण्यात अयशस्वी!</string>
 <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करण्यात अयशस्वी!</string>
 <string name="appointment_cancelled_success_txt">अपॉइंटमेंट यशस्वीरित्या रद्द करण्यात आली!</string>
@@ -1010,4 +1013,21 @@
     <string name="fetching_details_please_wait">तपशील आणत आहे. कृपया थांबा...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">डॉक्टरांनी अद्याप प्रिस्क्रिप्शन दिलेले नाही.</string>
     <string name="download_prescription_first">प्रथम प्रिस्क्रिप्शन डाउनलोड करा.</string>
+    <string name="location_setup">स्थान सेटअप %1$s</string>
+    <string name="app_version_string">वापरकर्ता: %1$s, ऐप संस्करण: %2$s</string>
+    <string name="height_ft">उंची(फूट)</string>
+    <string name="ft">फूट</string>
+    <string name="in">मध्ये</string>
+    <string name="please_select_patient_height">कृपया रुग्णाची उंची निवडा!</string>
+    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">सिस्टोलिक दाब डायस्टोलिक दाबापेक्षा कमी असू शकत नाही</string>
+    <string name="enter_field">फील्ड प्रविष्ट करा</string>
+    <string name="following_fields_are_not_filled">खालील फील्ड भरलेले नाहीत:</string>
+    <string name="do_you_still_want_to_continue">तुम्ही अजूनही सुरू ठेवू इच्छिता?</string>
+    <string name="enter_valid_phone_number">तुम्ही अजूनही सुरू ठेवू इच्छिता?</string>
+    <string name="enter_patient_phone_number">रुग्णाचा फोन नंबर प्रविष्ट करा.</string>
+    <string name="overweight">जास्त वजन</string>
+    <string name="underweight">कमी वजन</string>
+    <string name="normal">सामान्य</string>
+    <string name="moderate_obesity">मध्यम लठ्ठपणा</string>
+    <string name="severe_obesity">तीव्र लठ्ठपणा</string>
 </resources>
