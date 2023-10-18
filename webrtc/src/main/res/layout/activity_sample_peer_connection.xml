@@ -88,7 +88,7 @@
                         android:background="@drawable/round_corner_16_gray_light"
                         android:padding="8dip"
                         android:text="00.00"
-                        android:textColor="#2E1E91"
+                        android:textColor="#D1484C"
                         android:visibility="visible" />
 
                     <ImageView

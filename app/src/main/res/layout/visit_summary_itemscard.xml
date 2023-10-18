@@ -103,6 +103,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="@color/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -112,7 +113,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -566,6 +567,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="@color/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -575,7 +577,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -659,7 +661,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -729,7 +731,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -915,6 +917,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="@color/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -924,7 +927,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -1081,6 +1084,7 @@
                             <ImageView
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
+                                app:tint="@color/colorPrimary"
                                 android:layout_margin="5dp"
                                 android:src="@drawable/edit" />
 
@@ -1091,7 +1095,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -1151,6 +1155,7 @@
                             <ImageView
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
+                                app:tint="@color/colorPrimary"
                                 android:layout_margin="5dp"
                                 android:src="@drawable/edit" />
 
@@ -1161,7 +1166,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>

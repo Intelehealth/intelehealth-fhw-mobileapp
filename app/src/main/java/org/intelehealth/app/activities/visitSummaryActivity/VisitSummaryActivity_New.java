@@ -150,6 +150,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -617,13 +618,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 Log.d(TAG, "fetchingIntent: visitType : "+visitType);
                 if (visitType.trim().equals(UuidDictionary.VIDEO_CONSULTATION)) {
                     spinnerVisitType.setSelection(1);
-                    Log.d(TAG, "fetchingIntent: 0");
+                    managerBtnAppointmentAsPerSelectVisitType(true);
+
                 } else if (visitType.trim().equals(UuidDictionary.ROUTINE_CHECK_UP)) {
                     spinnerVisitType.setSelection(2);
-                    Log.d(TAG, "fetchingIntent: 1");
+                    managerBtnAppointmentAsPerSelectVisitType(false);
+
                 } else if (visitType.trim().equals(UuidDictionary.URGENT_CARE)) {
                     spinnerVisitType.setSelection(3);
-                    Log.d(TAG, "fetchingIntent: 2");
+                    managerBtnAppointmentAsPerSelectVisitType(false);
 
                 }
                 spinnerVisitType.setEnabled(false);
@@ -1907,10 +1910,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     // vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
                     if (visitType1.equalsIgnoreCase("Video consultation")) {
                         visitType = UuidDictionary.VIDEO_CONSULTATION;
+                        managerBtnAppointmentAsPerSelectVisitType(true);
+
                     } else if (visitType1.equalsIgnoreCase("Routine check up")) {
                         visitType = UuidDictionary.ROUTINE_CHECK_UP;
+                        managerBtnAppointmentAsPerSelectVisitType(false);
+
                     } else if (visitType1.equalsIgnoreCase("Urgent care")) {
                         visitType = UuidDictionary.URGENT_CARE;
+                        managerBtnAppointmentAsPerSelectVisitType(false);
 
                     }
                 } else {
@@ -1924,6 +1932,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             }
         });
+    }
+
+    private void managerBtnAppointmentAsPerSelectVisitType(boolean value) {
+        if(value){
+            btnAppointment.setEnabled(true);
+            btnAppointment.setBackground(getDrawable(R.drawable.ui2_common_primary_bg));
+
+        }else{
+            btnAppointment.setEnabled(false);
+            btnAppointment.setBackground(getDrawable(R.drawable.ui2_bg_disabled_time_slot));
+
+        }
     }
 
     private void showEndVisitConfirmationDialog() {

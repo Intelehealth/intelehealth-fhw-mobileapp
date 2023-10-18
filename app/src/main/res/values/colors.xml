@@ -61,8 +61,10 @@
     <color name="transparent_tab">#75000000</color>
 
     <!--UI2.0-->
-    <color name="colorPrimary">#2E1E91</color>
-    <color name="colorPrimaryDark">#201560</color>
+ <!--   <color name="colorPrimary">#2E1E91</color>
+    <color name="colorPrimaryDark">#201560</color>-->
+    <color name="colorPrimary">#D1484C</color>
+    <color name="colorPrimaryDark">#9f282c</color>
     <color name="colorAccent">#E6FFF3</color>
 
     <color name="colorPrimary1">#0FD197</color>
@@ -136,6 +138,11 @@
     <color name="ui2_black_text_color">#1B163A</color>
     <color name="error_red">#FF475D</color>
     <color name="ui2_transparent">#221B163A</color>
+    <color name="lightBgPrimary">#d65c60</color>
+    <color name="darkIconsPrimary">#D1484C</color>
+    <color name="lightBgPrimary1">#edb6b7</color>
+    <color name="lightBgPrimary2">#e28c8e</color>
+    <color name="iconsBgPrimaryLight">#fbf0f1</color>
 
 
     <!--END-->

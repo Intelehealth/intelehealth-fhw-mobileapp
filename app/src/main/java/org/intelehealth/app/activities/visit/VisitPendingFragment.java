@@ -45,6 +45,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -443,7 +444,7 @@ public class VisitPendingFragment extends Fragment {
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
+                        " v.startdate > DATETIME('now', '-4 day') and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
 
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
@@ -513,7 +514,7 @@ public class VisitPendingFragment extends Fragment {
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
+                        " v.startdate > DATETIME('now', '-4 day') and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -582,7 +583,7 @@ public class VisitPendingFragment extends Fragment {
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate < DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
+                        " v.startdate < DATETIME('now', '-4 day') and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
 
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
@@ -650,7 +651,7 @@ public class VisitPendingFragment extends Fragment {
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate < DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC",
+                        " v.startdate < DATETIME('now', '-4 day') and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC",
 
                 new String[]{});
 

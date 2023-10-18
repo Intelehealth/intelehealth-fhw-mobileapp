@@ -239,7 +239,7 @@
                                 android:fontFamily="@font/dm_sans"
                                 android:text="@string/reset"
                                 android:textAlignment="center"
-                                android:textColor="#2e1e91"
+                                android:textColor="#D1484C"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
@@ -359,7 +359,7 @@
                             android:fontFamily="@font/dm_sans"
                             android:text="@string/update_button"
                             android:textAlignment="center"
-                            android:textColor="#2e1e91"
+                            android:textColor="#D1484C"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 

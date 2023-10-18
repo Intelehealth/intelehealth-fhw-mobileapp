@@ -25,6 +25,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 public class VisitsDAO {
@@ -903,8 +904,7 @@ public class VisitsDAO {
                 " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                 " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                 " v.enddate is null and" +
-                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0" +
-                " group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
+                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {

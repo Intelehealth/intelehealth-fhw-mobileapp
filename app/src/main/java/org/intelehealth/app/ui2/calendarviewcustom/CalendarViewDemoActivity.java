@@ -421,7 +421,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedMonthModel = adapter.getItem(position);
-                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
+                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#D1484C"));
                 spinnerMonths.setBackground(getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
                 ((TextView)adapterView.getChildAt(0)).setTypeface( ((TextView)adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
 
@@ -514,7 +514,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedYearModel = adapter.getItem(position);
                 //spinnerYear.setBackground(getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
-                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
+                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#D1484C"));
                 ((TextView)adapterView.getChildAt(0)).setTypeface( ((TextView)adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
 
                 fillDatesMonthsWise("fromSpinnerYear");

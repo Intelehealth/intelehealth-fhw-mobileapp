@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_parent"
+    android:background="#f8f8fa"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context=".activities.chooseLanguageActivity.SplashScreenActivity">
 
@@ -20,6 +20,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
+        <ImageView
+            android:id="@+id/iv_artist_for_her_logo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/iv_intele_logo_height"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/iv_intele_logo_margin_end"
+            android:src="@drawable/artist_for_her_logo"
+            android:layout_marginStart="@dimen/iv_intele_logo_margin_start"
+            android:layout_marginTop="@dimen/iv_intele_logo_margin_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <ImageView
             android:id="@+id/iv_logo"
             android:layout_width="match_parent"
@@ -27,12 +42,13 @@
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/iv_intele_logo_margin_start"
             android:layout_marginTop="@dimen/iv_intele_logo_margin_top"
+            android:padding="5dp"
+            android:layout_below="@+id/iv_artist_for_her_logo"
             android:layout_marginEnd="@dimen/iv_intele_logo_margin_end"
-            android:src="@drawable/ui2_ic_intelehealth_logo"
+            android:src="@drawable/namma_aarogya_logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintTop_toBottomOf="@+id/iv_artist_for_her_logo"/>
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
@@ -40,6 +56,7 @@
             android:layout_below="@+id/iv_logo"
             android:gravity="center"
             android:lineHeight="@dimen/tv_desc_line_height"
+            android:visibility="gone"
             android:lineSpacingExtra="@dimen/tv_desc_line_spacing"
             android:text="@string/splash_desc"
             android:textColor="@color/textColorGray1"
@@ -69,7 +86,7 @@
             android:layout_height="@dimen/view_splash_height"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/view_splash_margin_top"
-            android:background="@color/solidViewLightGray"
+            android:background="@color/lightBgPrimary1"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -121,11 +138,11 @@
             android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
             android:drawableTint="@color/iconTintWhite"
             android:foreground="?android:attr/selectableItemBackground"
-            android:text="@string/next_new"
             android:paddingStart="@dimen/common_button_padding_left"
             android:paddingTop="@dimen/common_button_padding_top"
             android:paddingEnd="@dimen/common_button_padding_right"
             android:paddingBottom="@dimen/common_button_padding_bottom"
+            android:text="@string/next_new"
             android:textSize="@dimen/common_button_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

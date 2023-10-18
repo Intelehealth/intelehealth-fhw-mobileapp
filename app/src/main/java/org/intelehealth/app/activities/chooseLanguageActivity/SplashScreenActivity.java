@@ -542,7 +542,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     break;
                 }
             }
-            if(permissionsCheck) {
+            if (permissionsCheck) {
                 if (allGranted) {
                     checkPerm();
                 } else {

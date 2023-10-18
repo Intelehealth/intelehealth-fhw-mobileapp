@@ -54,6 +54,7 @@ public class IntroScreensActivity_New extends AppCompatActivity {
             handler.postDelayed(this, delay);
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +87,7 @@ public class IntroScreensActivity_New extends AppCompatActivity {
                 finish();
             }
         });
-        layouts = new int[]{
-                R.layout.layout_first_intro_screen_ui2,
-                R.layout.layout_second_intro_screen_ui2,
-                R.layout.layout_third_intro_screen_ui2
+        layouts = new int[]{R.layout.layout_first_intro_screen_ui2, R.layout.layout_second_intro_screen_ui2, R.layout.layout_third_intro_screen_ui2
 
         };
 
@@ -140,6 +138,7 @@ public class IntroScreensActivity_New extends AppCompatActivity {
         super.onPause();
         handler.removeCallbacks(runnable);
     }
+
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override

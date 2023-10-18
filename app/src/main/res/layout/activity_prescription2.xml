@@ -440,7 +440,7 @@
                                     android:fontFamily="@font/lato_bold"
                                     android:text="@string/change"
                                     android:textAlignment="center"
-                                    android:textColor="#2E1E91"
+                                    android:textColor="#D1484C"
                                     android:textSize="12sp" />
 
                             </LinearLayout>
