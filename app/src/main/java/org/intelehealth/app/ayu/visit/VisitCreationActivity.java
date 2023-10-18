@@ -498,9 +498,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
             Node node = mChiefComplainRootNodeList.get(i);
             Log.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
-            String val = formatComplainRecord(node, i == mChiefComplainRootNodeList.size() - 1);
+            boolean isAssociateSymptomsType = i == mChiefComplainRootNodeList.size() - 1;
+            String val = formatComplainRecord(node,isAssociateSymptomsType );
             Log.v(TAG, "val- " + val);
-            String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0);
+            String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
             Log.v(TAG, "answerInLocale- " + answerInLocale);
 
             stringBuilder.append(answerInLocale);
@@ -1013,9 +1014,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
         //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
-        patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0);
-        if (mPastMedicalHistoryNode.getEngineVersion() != null && mPastMedicalHistoryNode.getEngineVersion().equals("4.0"))
-            patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswerV2(0);
+        patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0 , false);
         while (patientHistory.contains("[Describe"))
             patientHistory = patientHistory.replace("[Describe]", "");
 
@@ -1087,7 +1086,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         if (mFamilyHistoryNode.anySubSelected()) {
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
-                    String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0);
+                    String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0, false);
                     String toInsert = (!isLocale ? node.getText() : node.findDisplay()) + " : " + familyString;
                     //toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");

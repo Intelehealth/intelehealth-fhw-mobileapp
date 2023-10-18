@@ -356,7 +356,7 @@ public class PhysicalExam extends Node {
                 Log.i(TAG, "stringsList: " + stringsList);
                 if (!node.isTerminal()) {
                     //String lang = node.formLanguage();
-                    String lang = node.formQuestionAnswer(0);
+                    String lang = node.formQuestionAnswer(0, false);
                     Log.i(TAG, "generateFindings: " + lang);
                     stringsList.add(lang);
                     Log.i(TAG, "Not isTerminal - stringsList: " + stringsList);
