@@ -142,6 +142,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         aid_list = new ArrayList<>();
 
         if (medData != null && !medData.trim().isEmpty()) {
+            medData = medData.replaceAll("<br>", "");
             fl_med.setVisibility(View.VISIBLE);
             ArrayList<String> list = new ArrayList<>(Arrays.asList(medData.split("\n")));
             ArrayList<MedicationAidModel> mm = new ArrayList<>();
@@ -159,6 +160,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         else fl_med.setVisibility(View.GONE);
 
         if (aidData != null && !aidData.trim().isEmpty()) {
+            aidData = aidData.replaceAll("<br>", "");
             fl_aid.setVisibility(View.VISIBLE);
             ArrayList<String> list = new ArrayList<>(Arrays.asList(aidData.split("\n")));
             ArrayList<MedicationAidModel> aa = new ArrayList<>();
