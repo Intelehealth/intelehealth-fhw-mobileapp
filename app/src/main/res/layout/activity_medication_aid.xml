@@ -97,7 +97,7 @@
         android:layout_height="wrap_content"
         android:gravity="top"
         android:lineSpacingExtra="3sp"
-        android:text="Medication"
+        android:text="@string/medication"
         android:paddingStart="15dp"
         android:textSize="@dimen/card_content_sub_text_size"
         android:textStyle="bold" />
@@ -137,7 +137,7 @@
         android:layout_marginTop="20dp"
         android:gravity="top"
         android:lineSpacingExtra="3sp"
-        android:text="Aid"
+        android:text="@string/aid"
      android:paddingStart="15dp"
      android:textSize="@dimen/card_content_sub_text_size"
         android:textStyle="bold" />

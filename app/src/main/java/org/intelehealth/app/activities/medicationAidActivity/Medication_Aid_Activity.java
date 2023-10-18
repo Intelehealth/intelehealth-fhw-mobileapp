@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
+import org.intelehealth.app.utilities.LocaleHelper;
+import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,6 +37,9 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     private String tag = "", medData = "", aidData = "";
     private FrameLayout fl_med, fl_aid;
     private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials;
+    private SessionManager sessionManager;
+    private String appLanguage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,10 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_medication_aid);
 
         initUI();
+//        appLanguage = sessionManager.getAppLanguage();
+        /*if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }*/
 
         tvDispenseAdminister.setOnClickListener(v -> {
 
@@ -216,4 +225,8 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 }

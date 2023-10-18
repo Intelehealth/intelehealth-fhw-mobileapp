@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
+import static org.intelehealth.app.utilities.UuidDictionary.OBS_ADMINISTER_MEDICATION;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_DISPENSE_AID;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_DISPENSE_MEDICATION;
 
@@ -44,6 +45,7 @@ import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -407,7 +409,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             EncounterDAO encounterDAO = new EncounterDAO();
             EncounterDTO encounterDTO = new EncounterDTO();
             encounterDTO.setUuid(UUID.randomUUID().toString());
-            encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_DISPENSE);
+            encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_DISPENSE);   // Dispense Encounter
             encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
             encounterDTO.setVisituuid(visitUuid);
             encounterDTO.setSyncd(false);
@@ -420,12 +422,12 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
                     // Dispense - medication push
                     if (obsDTOList_Medication != null && obsDTOList_Medication.size() > 0) {
-                        insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_DISPENSE_MEDICATION);
+                        insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_DISPENSE_MEDICATION); // Dispense Med Obs.
                     }
 
                     if (obsDTOList_Aid != null && obsDTOList_Aid.size() > 0) {
                         insertAidObs(aidValue, aidNotesValue, encounterDTO.getUuid(),
-                                totalCostValue, vendorDiscountValue, coveredCostValue, outOfPocketValue, otherAids, OBS_DISPENSE_AID);
+                                totalCostValue, vendorDiscountValue, coveredCostValue, outOfPocketValue, otherAids, OBS_DISPENSE_AID);  // Dispense Aid Obs.
                     }
 
                     // Create OBS and push - END
@@ -443,7 +445,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             EncounterDAO encounterDAO = new EncounterDAO();
             EncounterDTO encounterDTO = new EncounterDTO();
             encounterDTO.setUuid(UUID.randomUUID().toString());
-            encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_ADMINISTER);
+            encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_ADMINISTER); // Administer Encounter
             encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
             encounterDTO.setVisituuid(visitUuid);
             encounterDTO.setSyncd(false);
@@ -456,7 +458,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
                     // Administer - medication push
                     if (obsDTOList_Medication != null && obsDTOList_Medication.size() > 0) {
-                        insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_DISPENSE_MEDICATION);
+                        insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_ADMINISTER_MEDICATION);   // Administer Med Obs.
                     }
                 }
 
@@ -484,9 +486,14 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         for (ObsDTO dto : obsDTOList_Aid) {
             String tvAid = aidValue.replaceAll("<br>", "");
             PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(dto.getValue());
-            String enValue = patientAttributeLanguageModel.getEn().replaceAll("\n", "");
 
-            if (tvAid.contains(enValue)) {
+            String value = "";
+            if (LocaleHelper.isArabic(context))
+                value = patientAttributeLanguageModel.getAr().replaceAll("\n", "");
+            else
+                value = patientAttributeLanguageModel.getEn().replaceAll("\n", "");
+
+            if (tvAid.contains(value)) {
                 aidUuidList.add(dto.getUuid());
                 aidModel.setAidUuidList(aidUuidList);   // 1. medicines uuid
             }
@@ -532,9 +539,14 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         for (ObsDTO dto : obsDTOList_Medication) {
             String tvMed = medicineValue.replaceAll("<br>", "");
             PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(dto.getValue());
-            String enValue = patientAttributeLanguageModel.getEn().replaceAll("\n", "");
 
-            if (tvMed.contains(enValue)) {
+            String value = "";
+            if (LocaleHelper.isArabic(context))
+                value = patientAttributeLanguageModel.getAr().replaceAll("\n", "");
+            else
+                value = patientAttributeLanguageModel.getEn().replaceAll("\n", "");
+
+            if (tvMed.contains(value)) {
                 medUuidList.add(dto.getUuid());
                 medModel.setMedicationUuidList(medUuidList);   // 1. medicines uuid
             }
@@ -557,14 +569,6 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         try {
             boolean isInserted = obsDAO.insertObs(obsDTO);
-/*
-            if (isInserted) {
-                if (NetworkConnection.isOnline(getApplication())) {
-                    SyncUtils syncUtils = new SyncUtils();
-                    syncUtils.syncForeground("dispense_administer");
-                }
-            }
-*/
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -618,4 +622,9 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         return gson.fromJson(jsonString, PatientAttributeLanguageModel.class);
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+
+    }
 }
