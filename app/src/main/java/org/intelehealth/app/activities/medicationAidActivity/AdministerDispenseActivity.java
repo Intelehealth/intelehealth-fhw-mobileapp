@@ -71,7 +71,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials,
             encounterDispense = "", encounterAdminister = "";
     private ObsDTO obsDTOMedication, obsDTOAid;
-    private List<ObsDTO> obsDTOList_Medication, obsDTOList_Aid;
+//    private List<ObsDTO> obsDTOList_Medication, obsDTOList_Aid;
 
     private SessionManager sessionManager;
     private MedicationModel medModel = new MedicationModel();
@@ -175,35 +175,35 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         aidList = (List<MedicationAidModel>) intent.getSerializableExtra("aid");    // null on empty.
 
         // fetched medication values from local db.
-        try {
+       /* try {
             obsDTOList_Medication = ObsDAO.getObsDispenseAdministerData(encounterVisitNote, UuidDictionary.JSV_MEDICATIONS);
 
             obsDTOList_Aid = new ArrayList<>();
             String value = "";
 
-            obsDTOAid = ObsDAO.getObsAid(encounterVisitNote, UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN);
+            obsDTOAid = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN);
             if (obsDTOAid != null)
-                obsDTOList_Aid.add(ObsDAO.getObsAid(encounterVisitNote, UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN));
+                obsDTOList_Aid.add(ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN));
 
-            obsDTOAid = ObsDAO.getObsAid(encounterVisitNote, UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP);
+            obsDTOAid = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP);
             if (obsDTOAid != null)
-                obsDTOList_Aid.add(ObsDAO.getObsAid(encounterVisitNote, UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP));
+                obsDTOList_Aid.add(ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP));
 
-            obsDTOAid = ObsDAO.getObsAid(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE);
+            obsDTOAid = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE);
             if (obsDTOAid != null)
-                obsDTOList_Aid.add(ObsDAO.getObsAid(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE));
+                obsDTOList_Aid.add(ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE));
 
-            obsDTOAid = ObsDAO.getObsAid(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE);
+            obsDTOAid = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE);
             if (obsDTOAid != null)
-                obsDTOList_Aid.add(ObsDAO.getObsAid(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE));
+                obsDTOList_Aid.add(ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE));
 
-            obsDTOAid = ObsDAO.getObsAid(encounterVisitNote, UuidDictionary.AID_ORDER_CASH_ASSISTANCE);
+            obsDTOAid = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_CASH_ASSISTANCE);
             if (obsDTOAid != null)
-                obsDTOList_Aid.add(ObsDAO.getObsAid(encounterVisitNote, UuidDictionary.AID_ORDER_CASH_ASSISTANCE));
+                obsDTOList_Aid.add(ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_CASH_ASSISTANCE));
 
         } catch (DAOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
         setImagesToRV();    // TODO: handle this later with new concept id for UPLOAD_DOCS obs.
         // TODO: here max 4 images will only come.
@@ -212,8 +212,16 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             fl_med.setVisibility(View.VISIBLE);
             String medData = "";
             for (MedicationAidModel med : medList) {
-                medData = medData + (Node.bullet + " " + med.getValue()) + "\n\n";
+                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(med.getValue());
+                String value = "";
+                if (LocaleHelper.isArabic(context))
+                    value = patientAttributeLanguageModel.getAr().replaceAll("\n", "");
+                else
+                    value = patientAttributeLanguageModel.getEn().replaceAll("\n", "");
+
+                medData = medData + (Node.bullet + " " + value) + "\n\n";
             }
+
             tv_medData.setText(medData.substring(0, medData.length() - 2));
 
         }
@@ -230,7 +238,15 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 fl_aid.setVisibility(View.VISIBLE);
                 String aidData = "";
                 for (MedicationAidModel aid : aidList) {
-                    aidData = aidData + (Node.bullet + " " + aid.getValue()) + "\n\n";
+;
+                    PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(aid.getValue());
+                    String value = "";
+                    if (LocaleHelper.isArabic(context))
+                        value = patientAttributeLanguageModel.getAr().replaceAll("\n", "");
+                    else
+                        value = patientAttributeLanguageModel.getEn().replaceAll("\n", "");
+
+                    aidData = aidData + (Node.bullet + " " + value) + "\n\n";
                 }
                 tv_aidData.setText(aidData.substring(0, aidData.length() - 2));
             }
@@ -433,11 +449,11 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 if (isEncounterCreated) {
 
                     // Dispense - medication push
-                    if (obsDTOList_Medication != null && obsDTOList_Medication.size() > 0) {
+                    if (medList != null && medList.size() > 0) {
                         insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_DISPENSE_MEDICATION); // Dispense Med Obs.
                     }
 
-                    if (obsDTOList_Aid != null && obsDTOList_Aid.size() > 0) {
+                    if (aidList != null && aidList.size() > 0) {
                         insertAidObs(aidValue, aidNotesValue, encounterDTO.getUuid(),
                                 totalCostValue, vendorDiscountValue, coveredCostValue, outOfPocketValue, otherAids, OBS_DISPENSE_AID);  // Dispense Aid Obs.
                     }
@@ -470,7 +486,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 if (isEncounterCreated) {
 
                     // Administer - medication push
-                    if (obsDTOList_Medication != null && obsDTOList_Medication.size() > 0) {
+                    if (medList != null && medList.size() > 0) {
                         insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_ADMINISTER_MEDICATION);   // Administer Med Obs.
                     }
                 }
@@ -496,8 +512,11 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         ObsDTO obsDTO;
         List<String> aidUuidList = new ArrayList<>();
 
-        for (ObsDTO dto : obsDTOList_Aid) {
-            String tvAid = aidValue.replaceAll("<br>", "");
+        for (MedicationAidModel dto : aidList) {
+            aidUuidList.add(dto.getUuid());
+            aidModel.setAidUuidList(aidUuidList);   // 1. medicines uuid
+
+           /* String tvAid = aidValue.replaceAll("<br>", "");
             PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(dto.getValue());
 
             String value = "";
@@ -509,7 +528,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             if (tvAid.contains(value)) {
                 aidUuidList.add(dto.getUuid());
                 aidModel.setAidUuidList(aidUuidList);   // 1. medicines uuid
-            }
+            }*/
         }
 
         List<String> notesList = new ArrayList<>();
@@ -549,8 +568,11 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         ObsDTO obsDTO;
         List<String> medUuidList = new ArrayList<>();
 
-        for (ObsDTO dto : obsDTOList_Medication) {
-            String tvMed = medicineValue.replaceAll("<br>", "");
+        for (MedicationAidModel dto : medList) {
+            medUuidList.add(dto.getUuid());
+            medModel.setMedicationUuidList(medUuidList);   // 1. medicines uuid
+
+           /* String tvMed = medicineValue.replaceAll("<br>", "");
             PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(dto.getValue());
 
             String value = "";
@@ -562,7 +584,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             if (tvMed.contains(value)) {
                 medUuidList.add(dto.getUuid());
                 medModel.setMedicationUuidList(medUuidList);   // 1. medicines uuid
-            }
+            }*/
         }
 
         List<String> notesList = new ArrayList<>();
@@ -570,6 +592,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         medModel.setMedicationNotesList(notesList);    // 2. notes
         medModel.setHwName(sessionManager.getProviderID());    // 3. hw name
         medModel.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.
+       // medModel.setDocumentsList(fileList());
 
         // Create OBS and push - START
         Gson gson = new Gson();

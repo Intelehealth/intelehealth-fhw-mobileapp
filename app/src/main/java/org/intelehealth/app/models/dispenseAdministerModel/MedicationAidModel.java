@@ -3,10 +3,12 @@ package org.intelehealth.app.models.dispenseAdministerModel;
 import java.io.Serializable;
 
 public class MedicationAidModel implements Serializable {
+    private String uuid;
     private String value;
     private boolean isChecked;
 
-    public MedicationAidModel(String value, boolean isChecked) {
+    public MedicationAidModel(String uuid, String value, boolean isChecked) {
+        this.uuid = uuid;
         this.value = value;
         this.isChecked = isChecked;
     }
@@ -28,5 +30,13 @@ public class MedicationAidModel implements Serializable {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

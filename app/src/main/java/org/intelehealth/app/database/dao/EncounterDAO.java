@@ -356,6 +356,26 @@ public class EncounterDAO {
         return encounterUuid;
     }
 
+    public static String getEncounterByVisitUUID(String visitUUID, String encounterTypeUuid) {
+        String encounterUuid = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ?  and voided='0' " +
+                        "AND (sync = ? or ? or ?)",
+                new String[]{visitUUID, encounterTypeUuid, "true", "TRUE", "1"});
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                encounterUuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return encounterUuid;
+    }
+
     public void insertStartVisitNoteEncounterToDb(String encounter, String visitUuid) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();

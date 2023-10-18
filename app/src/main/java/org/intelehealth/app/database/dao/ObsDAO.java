@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.intelehealth.app.activities.prescription.PrescDataModel;
+import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -312,8 +313,8 @@ public class ObsDAO {
 
     // select * from tbl_obs where encounteruuid = '795d291f-3f70-4086-8847-1972f797d8e6' and
     // conceptuuid = 'c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca' and comment is null
-    public static List<ObsDTO> getObsDispenseAdministerData(String encounterUuid, String conceptUuid) throws DAOException {
-        List<ObsDTO> list = new ArrayList<>();
+    public static List<MedicationAidModel> getObsDispenseAdministerData(String encounterUuid, String conceptUuid) throws DAOException {
+        List<MedicationAidModel> list = new ArrayList<>();
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -323,10 +324,10 @@ public class ObsDAO {
         try {
             if (obsCursoursor.getCount() > 0) {
                 while (obsCursoursor.moveToNext()) {
-                    ObsDTO obsDTO = new ObsDTO();
-                    obsDTO.setUuid(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")));
-                    obsDTO.setValue(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")));
-                    list.add(obsDTO);
+                    MedicationAidModel model = new MedicationAidModel();
+                    model.setUuid(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")));
+                    model.setValue(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")));
+                    list.add(model);
                 }
                 db.setTransactionSuccessful();
             }
@@ -341,8 +342,8 @@ public class ObsDAO {
         return list;
     }
 
-    public static ObsDTO getObsAid(String encounterUuid, String conceptUuid) throws DAOException {
-        ObsDTO obsDTO = new ObsDTO();
+    public static MedicationAidModel getObsValue(String encounterUuid, String conceptUuid) throws DAOException {
+        MedicationAidModel medicationAidModel = new MedicationAidModel();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
@@ -351,8 +352,8 @@ public class ObsDAO {
         try {
             if (obsCursoursor.getCount() > 0) {
                 while (obsCursoursor.moveToNext()) {
-                    obsDTO.setUuid(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")));
-                    obsDTO.setValue(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")));
+                    medicationAidModel.setUuid(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")));
+                    medicationAidModel.setValue(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")));
                 }
                 db.setTransactionSuccessful();
             }
@@ -364,7 +365,7 @@ public class ObsDAO {
             db.endTransaction();
         }
 
-        return obsDTO;
+        return medicationAidModel;
     }
 
 

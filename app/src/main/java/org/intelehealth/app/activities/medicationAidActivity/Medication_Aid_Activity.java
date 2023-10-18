@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
+import static org.intelehealth.app.database.dao.EncounterDAO.getEncounterByVisitUUID;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,10 +20,22 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.models.PatientAttributeLanguageModel;
+import org.intelehealth.app.models.dispenseAdministerModel.AidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
+import org.intelehealth.app.models.dispenseAdministerModel.MedicationModel;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,9 +50,12 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     private TextView tvDispense, tvAdminister, tvDispenseAdminister;
     private String tag = "", medData = "", aidData = "";
     private FrameLayout fl_med, fl_aid;
-    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials;
+    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials,
+            encounterDispense, encounterAdminister;
     private SessionManager sessionManager;
     private String appLanguage;
+    private List<MedicationAidModel> update_medUuidList = new ArrayList<>();
+    private List<MedicationAidModel> update_aidUuidList = new ArrayList<>();
 
 
     @Override
@@ -71,11 +88,12 @@ public class Medication_Aid_Activity extends AppCompatActivity {
 
             List<MedicationAidModel> medCheckedList = new ArrayList<>();
             List<MedicationAidModel> aidCheckedList = new ArrayList<>();
+
             if (med_adapter != null)
-                medCheckedList = med_adapter.getFinalList();
+                medCheckedList.addAll(med_adapter.getFinalList());
 
             if (aid_adapter != null)
-                aidCheckedList = aid_adapter.getFinalList();
+                aidCheckedList.addAll(aid_adapter.getFinalList());
 
             Intent intent = new Intent(context, AdministerDispenseActivity.class);
             intent.putExtra("tag", tag);
@@ -126,27 +144,162 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         encounterVitals = intent.getStringExtra("encounterUuidVitals");
         encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
 
-        if (tag.equalsIgnoreCase("administer")) {
+        if (tag.equalsIgnoreCase("administer")) {   // Administer
             getSupportActionBar().setTitle(getString(R.string.administer_medication));
             fl_aid.setVisibility(View.GONE);
             tvDispenseAdminister.setText(getString(R.string.administer));
         }
-        else {
+        else {  // Dispense
             getSupportActionBar().setTitle(getString(R.string.dispense_medication_and_aid));
             fl_aid.setVisibility(View.VISIBLE);
             tvDispenseAdminister.setText(getString(R.string.dispense));
         }
 
+        Log.d("TAG", "d/a initUI: enc dispense: " + encounterDispense + ", enc admin: " + encounterAdminister);
+
 
         med_list = new ArrayList<>();
         aid_list = new ArrayList<>();
 
-        if (medData != null && !medData.trim().isEmpty()) {
-            medData = medData.replaceAll("<br>", "");
+        // medication
+        try {
+            med_list = ObsDAO.getObsDispenseAdministerData(encounterVisitNote, UuidDictionary.JSV_MEDICATIONS);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (med_list != null && med_list.size() > 0)
+            fl_med.setVisibility(View.VISIBLE);
+        else fl_med.setVisibility(View.GONE);
+
+
+        // aid
+        try {
+            MedicationAidModel model = new MedicationAidModel();
+
+            model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN);
+            if (model != null) {
+                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
+                patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type1) + " " +
+                            patientAttributeLanguageModel.getAr());
+                patientAttributeLanguageModel.setEn(getResources().getString(R.string.aid_order_type1) + " " +
+                            patientAttributeLanguageModel.getEn());
+
+                Gson gson = new Gson();
+                model.setValue(gson.toJson(patientAttributeLanguageModel));
+                aid_list.add(model);
+            }
+
+            model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP);
+            if (model != null)
+            {
+                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
+                patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type2) + " " +
+                        patientAttributeLanguageModel.getAr());
+                patientAttributeLanguageModel.setEn(getResources().getString(R.string.aid_order_type2) + " " +
+                        patientAttributeLanguageModel.getEn());
+
+                Gson gson = new Gson();
+                model.setValue(gson.toJson(patientAttributeLanguageModel));
+                aid_list.add(model);
+            }
+
+            model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE);
+            if (model != null)
+            {
+                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
+                patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type3) + " " +
+                        patientAttributeLanguageModel.getAr());
+                patientAttributeLanguageModel.setEn(getResources().getString(R.string.aid_order_type3) + " " +
+                        patientAttributeLanguageModel.getEn());
+
+                Gson gson = new Gson();
+                model.setValue(gson.toJson(patientAttributeLanguageModel));
+                aid_list.add(model);
+            }
+
+            model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE);
+            if (model != null)
+            {
+                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
+                patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type4) + " " +
+                        patientAttributeLanguageModel.getAr());
+                patientAttributeLanguageModel.setEn(getResources().getString(R.string.aid_order_type4) + " " +
+                        patientAttributeLanguageModel.getEn());
+
+                Gson gson = new Gson();
+                model.setValue(gson.toJson(patientAttributeLanguageModel));
+                aid_list.add(model);
+            }
+
+            model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_CASH_ASSISTANCE);
+            if (model != null)
+            {
+                PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
+                patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type5) + " " +
+                        patientAttributeLanguageModel.getAr());
+                patientAttributeLanguageModel.setEn(getResources().getString(R.string.aid_order_type5) + " " +
+                        patientAttributeLanguageModel.getEn());
+
+                Gson gson = new Gson();
+                model.setValue(gson.toJson(patientAttributeLanguageModel));
+                aid_list.add(model);
+            }
+        }
+        catch (Exception e) {
+
+        }
+
+        if (aid_list != null && aid_list.size() > 0)
+            fl_aid.setVisibility(View.VISIBLE);
+        else
+            fl_aid.setVisibility(View.GONE);
+
+
+        // Administer
+        if (tag.equalsIgnoreCase("administer")) {
+            // fetch encounter administer uuid
+            encounterAdminister = getEncounterByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_ADMINISTER);
+            if (!encounterAdminister.isEmpty()) {
+                // ie. value is already present so set those values to checked for hte checkbox.
+                try {
+                    MedicationAidModel model = ObsDAO.getObsValue(encounterAdminister, UuidDictionary.OBS_ADMINISTER_MEDICATION);
+                    update_medUuidList.add(model);
+
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        // Dispense
+        else {
+            // fetch encounter dispense uuid
+            encounterDispense = getEncounterByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_DISPENSE);
+            if (!encounterDispense.isEmpty()) {
+                try {
+
+                    MedicationAidModel medModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION);
+                    update_medUuidList.add(medModel);
+
+                    MedicationAidModel aidModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_AID);
+                    update_aidUuidList.add(aidModel);
+
+
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+
+       /* if (medData != null && !medData.trim().isEmpty()) {
+           // medData = medData.replaceAll("<br>", "");
             fl_med.setVisibility(View.VISIBLE);
             ArrayList<String> list = new ArrayList<>(Arrays.asList(medData.split("\n")));
             ArrayList<MedicationAidModel> mm = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
+                // here code to fetch uuid of medicine.
+                Log.d("tag", "med split data: " + i + "\n");
                 MedicationAidModel a = new MedicationAidModel();
                 a.setValue(list.get(i));
                 mm.add(a);
@@ -157,9 +310,9 @@ public class Medication_Aid_Activity extends AppCompatActivity {
                     med_list.add(med);
             }
         }
-        else fl_med.setVisibility(View.GONE);
+        else fl_med.setVisibility(View.GONE);*/
 
-        if (aidData != null && !aidData.trim().isEmpty()) {
+      /*  if (aidData != null && !aidData.trim().isEmpty()) {
             aidData = aidData.replaceAll("<br>", "");
             fl_aid.setVisibility(View.VISIBLE);
             ArrayList<String> list = new ArrayList<>(Arrays.asList(aidData.split("\n")));
@@ -176,7 +329,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
 
         }
-        else fl_aid.setVisibility(View.GONE);
+        else fl_aid.setVisibility(View.GONE);*/
 
        /* med_list.add("Crocin");
         med_list.add("Albendazol");
@@ -192,18 +345,26 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         aid_list.add("Type 4: Cover Surgical Expenses.");
         aid_list.add("Type 5: Cash Assitance given.");*/
 
-        RecyclerView.LayoutManager med_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        rv_medication.setLayoutManager(med_LayoutManager);
-        rv_medication.setNestedScrollingEnabled(false);
-        med_adapter = new MedicationAidAdapter(context, med_list);
-        rv_medication.setAdapter(med_adapter);
 
         if (tag.equalsIgnoreCase("dispense")) {
+            RecyclerView.LayoutManager med_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+            rv_medication.setLayoutManager(med_LayoutManager);
+            rv_medication.setNestedScrollingEnabled(false);
+            med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList/*, update_aidUuidList*/, "dispense");
+            rv_medication.setAdapter(med_adapter);
+
             RecyclerView.LayoutManager aid_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             rv_aid.setLayoutManager(aid_LayoutManager);
             rv_aid.setNestedScrollingEnabled(false);
-            aid_adapter = new MedicationAidAdapter(context, aid_list);
+            aid_adapter = new MedicationAidAdapter(context, aid_list, LocaleHelper.isArabic(context), /*update_medUuidList,*/ update_aidUuidList, "dispense");
             rv_aid.setAdapter(aid_adapter);
+        }
+        else if (tag.equalsIgnoreCase("administer")) {
+            RecyclerView.LayoutManager med_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+            rv_medication.setLayoutManager(med_LayoutManager);
+            rv_medication.setNestedScrollingEnabled(false);
+            med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList, "administer"/*, update_aidUuidList*/);
+            rv_medication.setAdapter(med_adapter);
         }
     }
 
@@ -231,4 +392,10 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
+
+    private PatientAttributeLanguageModel getPatientAttributeFromJSON(String jsonString) {
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        return gson.fromJson(jsonString, PatientAttributeLanguageModel.class);
+    }
+
 }

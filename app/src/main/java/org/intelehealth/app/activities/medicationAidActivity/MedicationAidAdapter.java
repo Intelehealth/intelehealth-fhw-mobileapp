@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +12,49 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.models.PatientAttributeLanguageModel;
+import org.intelehealth.app.models.dispenseAdministerModel.AidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
+import org.intelehealth.app.models.dispenseAdministerModel.MedicationModel;
+import org.intelehealth.app.utilities.LocaleHelper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdapter.MyViewHolder> {
     private Context context;
     private List<MedicationAidModel> list, checkedList;
+    private HashSet<MedicationAidModel> hash_checkedList = new HashSet<>();
     private OnSelectedItems onSelectedItems;
+    private boolean isArabic;
+  //  private List<MedicationAidModel> update_medUuidList, update_aidUuidList, updateUUID_List;
+    private List<MedicationAidModel> updateUUID_List;
+  //  private List<AidModel> update_aidUuidList;
+    private String tag;
 
-    public MedicationAidAdapter(Context context, List<MedicationAidModel> list/*, OnSelectedItems onSelectedItems*/) {
+    public MedicationAidAdapter(Context context, List<MedicationAidModel> list, boolean isArabic, List<MedicationAidModel> updateUUID_List, String tag
+                                /*List<MedicationAidModel> update_medUuidList, List<MedicationAidModel> update_aidUuidList*/ /*, List<AidModel> update_aidUuidList*/ /*, OnSelectedItems onSelectedItems*/) {
         this.context = context;
         this.list = list;
+        this.isArabic = isArabic;
+        this.updateUUID_List = updateUUID_List;
+        this.tag = tag;
+
+        /*this.update_medUuidList = update_medUuidList;
+        this.update_aidUuidList = update_aidUuidList;*/
+
         checkedList = new ArrayList<>();
+
+//        if (update_aidUuidList != null && update_aidUuidList.size() > 0) {
+//            checkedList.addAll(update_aidUuidList);
+//        }
+
+
       //  this.onSelectedItems = onSelectedItems;
     }
 
@@ -41,7 +69,53 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         MedicationAidModel model = list.get(position);
-        holder.tvMedAidName.setText(model.getValue());
+
+        PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
+        String value = "";
+        if (isArabic)
+            value = patientAttributeLanguageModel.getAr().replaceAll("\n", "");
+        else
+            value = patientAttributeLanguageModel.getEn().replaceAll("\n", "");
+
+        Log.d("TAG", "medication adapter: " + value + "\n");
+        holder.tvMedAidName.setText(value);
+
+        // med - start
+        if (updateUUID_List != null && updateUUID_List.size() > 0) {
+            for (int i = 0; i < updateUUID_List.size(); i++) {
+                MedicationModel medicationModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), MedicationModel.class);
+                if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(list.get(position).getUuid())) {
+                    holder.cb_value.setChecked(true);
+                    holder.cb_value.setEnabled(false);
+                    checkedList.add(model);
+                }
+                else {
+                   // holder.cb_value.setChecked(false);
+                  //  checkedList.remove(model);
+                }
+            }
+        }
+        // med - start
+
+        // aid - start
+        if (updateUUID_List != null && updateUUID_List.size() > 0) {
+            for (int i = 0; i < updateUUID_List.size(); i++) {
+                AidModel aidModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), AidModel.class);
+                if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(list.get(position).getUuid())) {
+                    holder.cb_value.setChecked(true);
+                    holder.cb_value.setEnabled(false);
+                    checkedList.add(model);
+                }
+                else {
+                   // holder.cb_value.setChecked(false);
+                  //  checkedList.remove(model);
+                }
+            }
+        }
+        // aid - start
+
+
+
 
        /* if (model.contains("Type")) {
             holder.cb_administer.setVisibility(View.GONE);
@@ -83,8 +157,11 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
         }
     }
 
-    public List<MedicationAidModel> getFinalList() {
-        return checkedList;
+    public HashSet<MedicationAidModel> getFinalList() {
+        hash_checkedList.addAll(checkedList);
+        return hash_checkedList;
+
+      //  return checkedList;
     }
 
     public interface OnSelectedItems {
@@ -95,4 +172,10 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
       /*  public void getCheckedMedData();
         public void getCheckedAidData();*/
     }
+
+    private PatientAttributeLanguageModel getPatientAttributeFromJSON(String jsonString) {
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        return gson.fromJson(jsonString, PatientAttributeLanguageModel.class);
+    }
+
 }
