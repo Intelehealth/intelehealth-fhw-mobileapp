@@ -592,8 +592,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 if (!addnotes_value.equalsIgnoreCase("")) {
                     if (addnotes_value.equalsIgnoreCase("No notes added for Doctor.")) {
                         tvAddNotesValueVS.setText(getString(R.string.no_notes_added_for_doctor));
-                    }
-                    else
+                    } else
                         tvAddNotesValueVS.setText(addnotes_value);
                 } else {
                     addnotes_value = getString(R.string.no_notes_added_for_doctor);  // "No notes added for Doctor."
@@ -2059,6 +2058,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // Permission - end
     private AlertDialog mImagePickerAlertDialog;
+
     /**
      * Open dialog to Select douments from Image and Camera as Per the Choices
      */
@@ -3878,7 +3878,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             String val = mChiefComplainList.get(i).trim();
             val = val.replaceAll("<.*?>", "");
-            Log.v("mChiefComplainList", "CC - "+val);
+            Log.v("mChiefComplainList", "CC - " + val);
             if (!val.toLowerCase().contains("h/o specific illness")) {
                 if (!stringBuilder.toString().isEmpty()) {
                     stringBuilder.append(",");
@@ -4977,7 +4977,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        recreate();
+//                        recreate();
+                        fetchingIntent();
+                        setViewsData();
                     }
                 }
             });
@@ -5091,7 +5093,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         String reports[] = valueArray[1].replace("• Patient reports -<br>", "• Patient reports -<br/>")
                                 .split("• Patient reports -<br/>");
                         patientReports = reports[1];
-                    }else if (valueArray[1].contains("• Patient denies")) {
+                    } else if (valueArray[1].contains("• Patient denies")) {
                         // todo: handle later -> comment added on 14 nov 2022
                         String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
                                 .split("• Patient denies -<br/>");
