@@ -52,7 +52,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private String patientUuid;
     private String visitUuid;
     private String encounterVitals;
-    private String encounterAdultIntials;
+    private String encounterAdultIntials, encounterDispenseAdminister;
     private List<DocumentObject> rowListItem;
     private AdditionalDocumentAdapter recyclerViewAdapter;
     SessionManager sessionManager = null;
@@ -97,12 +97,17 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            encounterDispenseAdminister = intent.getStringExtra("encounterDispenseAdminister");
 
             ImagesDAO imagesDAO = new ImagesDAO();
             ArrayList<String> fileuuidList = new ArrayList<String>();
             ArrayList<File> fileList = new ArrayList<File>();
             try {
-                fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+                if (encounterDispenseAdminister != null)
+                    fileuuidList = imagesDAO.getImageUuid(encounterDispenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);    // Encounter Dispense OR Administer.
+                else
+                    fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);  // Encounter Adultinitial.
+
                 for (String fileuuid : fileuuidList) {
                     String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
                     if (new File(filename).exists()) {
@@ -112,18 +117,21 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             } catch (DAOException e) {
                 e.printStackTrace();
             }
-            rowListItem = new ArrayList<>();
 
+            rowListItem = new ArrayList<>();
             for (File file : fileList)
                 rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
 
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
             RecyclerView recyclerView = findViewById(R.id.document_RecyclerView);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this,encounterAdultIntials, rowListItem, AppConstants.IMAGE_PATH);
+            if (encounterDispenseAdminister != null)
+                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterDispenseAdminister, rowListItem, AppConstants.IMAGE_PATH);
+            else
+                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials, rowListItem, AppConstants.IMAGE_PATH);
+
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
@@ -201,7 +209,11 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertObsImageDatabase(imageuuid, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+            if (encounterDispenseAdminister != null)
+                imagesDAO.insertObsImageDatabase(imageuuid, encounterDispenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);
+            else
+                imagesDAO.insertObsImageDatabase(imageuuid, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

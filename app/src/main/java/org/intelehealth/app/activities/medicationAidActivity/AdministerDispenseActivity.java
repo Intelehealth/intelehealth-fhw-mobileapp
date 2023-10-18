@@ -68,7 +68,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private Context context;
     private RecyclerView rv_docs;
     private RecyclerView.LayoutManager docsLayoutManager;
-    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials;
+    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials,
+            encounterDispense = "", encounterAdminister = "";
     private ObsDTO obsDTOMedication, obsDTOAid;
     private List<ObsDTO> obsDTOList_Medication, obsDTOList_Aid;
 
@@ -317,6 +318,12 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 docIntent.putExtra("visitUuid", visitUuid);
                 docIntent.putExtra("encounterUuidVitals", encounterVitals);
                 docIntent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+
+                if (tag.equalsIgnoreCase("dispense"))
+                    docIntent.putExtra("encounterDispenseAdminister", encounterDispense);
+                else if (tag.equalsIgnoreCase("administer"))
+                    docIntent.putExtra("encounterDispenseAdminister", encounterAdminister);
+
                 startActivity(docIntent);
             }
         });
@@ -331,7 +338,11 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         ArrayList<String> fileuuidList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
         try {
-            fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);  // Todo: here uploads docs new concept Id will come.
+            if (tag.equalsIgnoreCase("dispense"))
+                fileuuidList = imagesDAO.getImageUuid(encounterDispense, UuidDictionary.COMPLEX_IMAGE_AD);  // Todo: here uploads docs new concept Id will come.
+            else if (tag.equalsIgnoreCase("administer"))
+                fileuuidList = imagesDAO.getImageUuid(encounterAdminister, UuidDictionary.COMPLEX_IMAGE_AD);  // Todo: here uploads docs new concept Id will come.
+
             for (String fileuuid : fileuuidList) {
                 String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
                 if (new File(filename).exists()) {
@@ -409,6 +420,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             EncounterDAO encounterDAO = new EncounterDAO();
             EncounterDTO encounterDTO = new EncounterDTO();
             encounterDTO.setUuid(UUID.randomUUID().toString());
+            encounterDispense = encounterDTO.getUuid();
             encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_DISPENSE);   // Dispense Encounter
             encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
             encounterDTO.setVisituuid(visitUuid);
@@ -445,6 +457,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             EncounterDAO encounterDAO = new EncounterDAO();
             EncounterDTO encounterDTO = new EncounterDTO();
             encounterDTO.setUuid(UUID.randomUUID().toString());
+            encounterAdminister = encounterDTO.getUuid();
             encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_ADMINISTER); // Administer Encounter
             encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
             encounterDTO.setVisituuid(visitUuid);
