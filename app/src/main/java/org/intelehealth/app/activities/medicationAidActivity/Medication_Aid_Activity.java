@@ -102,6 +102,8 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             intent.putExtra("encounterVisitNote", encounterVisitNote);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("encounterDispense", encounterDispense);
+            intent.putExtra("encounterAdminister", encounterAdminister);
 
             if (medCheckedList.size() > 0)
                 intent.putExtra("med", (Serializable) medCheckedList);

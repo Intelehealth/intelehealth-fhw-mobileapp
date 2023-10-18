@@ -33,6 +33,7 @@ import com.google.gson.GsonBuilder;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.HorizontalAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -72,6 +73,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             encounterDispense = "", encounterAdminister = "";
     private ObsDTO obsDTOMedication, obsDTOAid;
 //    private List<ObsDTO> obsDTOList_Medication, obsDTOList_Aid;
+    private ArrayList<String> fileuuidList;
+    ArrayList<File> fileList;
 
     private SessionManager sessionManager;
     private MedicationModel medModel = new MedicationModel();
@@ -83,7 +86,11 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_administer_dispense);
 
         context = AdministerDispenseActivity.this;
-        initUI();
+        try {
+            initUI();
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
 
         tie_medNotes.setHint(getString(R.string.enter_details_here));
         tie_aidNotes.setHint(getString(R.string.enter_details_here));
@@ -131,7 +138,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
     }
 
-    private void initUI() {
+    private void initUI() throws DAOException {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -170,9 +177,22 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         encounterVisitNote = intent.getStringExtra("encounterVisitNote");
         encounterVitals = intent.getStringExtra("encounterUuidVitals");
         encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+        encounterDispense = intent.getStringExtra("encounterDispense");
+        encounterAdminister = intent.getStringExtra("encounterAdminister");
 
         medList = (List<MedicationAidModel>) intent.getSerializableExtra("med");
         aidList = (List<MedicationAidModel>) intent.getSerializableExtra("aid");    // null on empty.
+
+        if (tag.equalsIgnoreCase("dispense")) {
+            setMedicationValues();
+            setAidValues();
+        }
+        else if (tag.equalsIgnoreCase("administer")) {
+            setAidValues();
+        }
+
+
+
 
         // fetched medication values from local db.
        /* try {
@@ -349,15 +369,77 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         });
     }
 
+    private void setAidValues() throws DAOException {
+        // Notes
+        List<String> aidNotes = new ArrayList<>();
+        AidModel model = new Gson().fromJson(ObsDAO.getObsValue(encounterDispense,
+                OBS_DISPENSE_AID).getValue(), AidModel.class);
+        if (model != null) {
+            if (model.getAidNotesList() != null)
+                aidNotes.addAll(model.getAidNotesList());
+
+            if (model.getTotalCost() != null)
+                tie_totalCost.setText(model.getTotalCost());    // total cost
+
+            if (model.getVendorDiscount() != null)
+                tie_vendorDiscount.setText(model.getVendorDiscount());    // vendor discount
+
+            if (model.getCoveredCost() != null)
+                tie_coveredCost.setText(model.getCoveredCost());    // covered cost
+
+            if (model.getOutOfPocket() != null)
+                tie_outOfPocket.setText(model.getOutOfPocket());    // out of pocket
+
+            if (model.getOtherAids() != null)
+                tie_others.setText(model.getOtherAids());    // other aids
+
+            if (fileuuidList == null && model.getDocumentsList() != null && model.getDocumentsList().size() > 0)   // docs images
+                fileuuidList.addAll(model.getDocumentsList());
+        }
+
+        if (aidNotes != null) {
+            aidModel.setAidNotesList(aidNotes);
+            if (aidModel.getAidNotesList() != null) {
+                for (int i = 0; i < aidModel.getAidNotesList().size(); i++) {
+                    tie_aidNotes.setText(aidModel.getAidNotesList().get(i));
+                }
+            }
+        }
+
+    }
+
+    private void setMedicationValues() throws DAOException {
+        List<String> medNotes = new ArrayList<>();
+        MedicationModel medicationModel = new Gson().fromJson(ObsDAO.getObsValue(encounterDispense, OBS_DISPENSE_MEDICATION).getValue(),
+                MedicationModel.class);
+
+        if (medicationModel != null && medicationModel.getMedicationNotesList() != null) {
+            medNotes.addAll(medicationModel.getMedicationNotesList());
+
+            if (fileuuidList == null && medicationModel.getDocumentsList() != null && medicationModel.getDocumentsList().size() > 0)
+                fileuuidList.addAll(medicationModel.getDocumentsList());
+        }
+
+        if (medNotes != null) {
+            medModel.setMedicationNotesList(medNotes);
+            if (medModel.getMedicationNotesList() != null) {
+                for (int i = 0; i < medModel.getMedicationNotesList().size(); i++) {
+                    tie_medNotes.setText(medModel.getMedicationNotesList().get(i));
+                }
+            }
+        }
+
+    }
+
     private void setImagesToRV() {
         ImagesDAO imagesDAO = new ImagesDAO();
-        ArrayList<String> fileuuidList = new ArrayList<String>();
-        ArrayList<File> fileList = new ArrayList<File>();
+        fileuuidList = new ArrayList<String>();
+        fileList = new ArrayList<File>();
         try {
             if (tag.equalsIgnoreCase("dispense"))
-                fileuuidList = imagesDAO.getImageUuid(encounterDispense, UuidDictionary.COMPLEX_IMAGE_AD);  // Todo: here uploads docs new concept Id will come.
+                fileuuidList = imagesDAO.getImageUuid(encounterDispense, UuidDictionary.COMPLEX_IMAGE_AD);
             else if (tag.equalsIgnoreCase("administer"))
-                fileuuidList = imagesDAO.getImageUuid(encounterAdminister, UuidDictionary.COMPLEX_IMAGE_AD);  // Todo: here uploads docs new concept Id will come.
+                fileuuidList = imagesDAO.getImageUuid(encounterAdminister, UuidDictionary.COMPLEX_IMAGE_AD);
 
             for (String fileuuid : fileuuidList) {
                 String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
@@ -503,6 +585,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             syncUtils.syncForeground("dispense_administer");
         }
 
+       /* Intent intent = new Intent(context, VisitSummaryActivity.class);
+        startActivity(intent);*/
     }
 
     private void insertAidObs(String aidValue, String aidNotesValue, String encounteruuid,
@@ -544,6 +628,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         aidModel.setCoveredCost(coveredCostValue);
         aidModel.setOutOfPocket(outOfPocketValue);
         aidModel.setOtherAids(otherAids);
+        aidModel.setDocumentsList(fileuuidList);
 
         // Create OBS and push - START
         Gson gson = new Gson();
@@ -592,7 +677,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         medModel.setMedicationNotesList(notesList);    // 2. notes
         medModel.setHwName(sessionManager.getProviderID());    // 3. hw name
         medModel.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.
-       // medModel.setDocumentsList(fileList());
+        medModel.setDocumentsList(fileuuidList);
 
         // Create OBS and push - START
         Gson gson = new Gson();
@@ -661,6 +746,11 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setImagesToRV();
     }
 }
