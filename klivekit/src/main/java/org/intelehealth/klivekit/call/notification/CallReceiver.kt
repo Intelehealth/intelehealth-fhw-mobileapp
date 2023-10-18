@@ -26,7 +26,6 @@ class CallReceiver : BroadcastReceiver() {
 
     private fun handleReceivedIntentData(context: Context, intent: Intent) {
         intent.printExtra()
-        Timber.d { "handleReceivedIntentData executed ${intent.hasExtra("Temp")}" }
         if (intent.hasExtra(RTC_ARGS)) {
             Timber.d { "handleReceivedIntentData executed" }
             val args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)

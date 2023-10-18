@@ -9,6 +9,7 @@ import org.intelehealth.ekalarogya.utilities.SessionManager
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity
 import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
+import org.intelehealth.klivekit.call.utils.CallType
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.Constants
 import org.intelehealth.klivekit.utils.extensions.fromJson
@@ -27,12 +28,14 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         context?.let {
             if (data.containsKey("type") && data["type"].equals("video_call")) {
                 val sessionManager = SessionManager(context)
-                val rtcArg: RtcArgs = Gson().fromJson(Gson().toJson(data))
-                rtcArg.nurseName = sessionManager.chwname
-                rtcArg.url = "wss://" + sessionManager.getServerUrl() + ":9090"
-                rtcArg.socketUrl =
-                    Constants.BASE_URL + "?userId=" + rtcArg.nurseId + "&name=" + rtcArg.nurseName
-                CallHandlerUtils.operateIncomingCall(it, rtcArg, EkalVideoActivity::class.java)
+                Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
+                    nurseName = sessionManager.chwname
+                    callType = CallType.VIDEO
+                    url = "wss://" + sessionManager.serverUrl + ":9090"
+                    socketUrl = Constants.BASE_URL + "?userId=" + nurseId + "&name=" + nurseName
+                }.also { arg ->
+                    CallHandlerUtils.operateIncomingCall(it, arg, EkalVideoActivity::class.java)
+                }
             }
         }
     }

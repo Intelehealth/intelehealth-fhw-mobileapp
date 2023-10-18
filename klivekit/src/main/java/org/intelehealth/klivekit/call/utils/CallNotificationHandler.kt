@@ -153,9 +153,10 @@ object CallNotificationHandler {
         context: Context,
         messageBody: RtcArgs
     ): NotificationCompat.Builder {
+        com.github.ajalt.timberkt.Timber.d { "getIncomingNotificationBuilder -> url = ${messageBody.url}" }
         val lockScreenIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
 
-//        val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
+        val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
 
         return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_MAX)

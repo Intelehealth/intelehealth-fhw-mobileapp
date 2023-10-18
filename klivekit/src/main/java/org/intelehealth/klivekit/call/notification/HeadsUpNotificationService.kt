@@ -21,7 +21,6 @@ import android.os.Vibrator
 import androidx.annotation.RequiresApi
 import androidx.core.content.IntentCompat
 import com.github.ajalt.timberkt.Timber
-import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallConstants
@@ -29,6 +28,7 @@ import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.call.utils.CallNotificationHandler
+import org.intelehealth.klivekit.call.utils.IntentUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
@@ -117,9 +117,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Timber.d { "OnstartCommand is created ***** " }
         intent?.let {
-
             setVibrateorNormalRinger()
             val messageBody = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
             messageBody?.let {
@@ -128,7 +126,8 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
                 Timber.d { "Message call mode **** ${messageBody.callMode}" }
                 Timber.d { "Message call status **** ${messageBody.callStatus}" }
                 Timber.d { "Message call action **** ${messageBody.callAction}" }
-                if (messageBody.isAcceptCall()) {
+                Timber.d { "Message call ->Url = ${messageBody.url}" }
+                if (messageBody.isCallAccepted()) {
                     showAcceptedCallNotification(messageBody)
                 } else if (messageBody.isIncomingCall()) {
                     showIncomingCallNotification(messageBody)
@@ -220,6 +219,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         destroySetting()
 
         messageBody.notificationId = notificationId
+        messageBody.callStatus = CallStatus.ON_GOING
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(
@@ -236,10 +236,13 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         if (messageBody.isVideoCall().not()) {
             sensor = CallHandlerUtils.initSensor(sensorManager, this)
         }
+
+        Timber.d { "CallArg => ${messageBody.toJson()}" }
+        startActivity(IntentUtils.getCallActivityIntent(messageBody, this))
     }
 
-
     private fun showIncomingCallNotification(messageBody: RtcArgs) {
+        Timber.d { "showIncomingCallNotification -> url = ${messageBody.url}" }
         messageBody.notificationId = notificationId
         messageBody.callMode = CallMode.INCOMING
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

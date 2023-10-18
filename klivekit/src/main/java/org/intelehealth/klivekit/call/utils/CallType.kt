@@ -6,5 +6,9 @@ package org.intelehealth.klivekit.call.utils
  * Mob   : +919727206702
  **/
 enum class CallType {
-    AUDIO, VIDEO, NONE
+    AUDIO, VIDEO, NONE;
+
+    fun isAudioCall() = this == AUDIO
+
+    fun isVideoCall() = this == VIDEO
 }

@@ -21,7 +21,7 @@ import kotlin.random.Random
 object IntentUtils {
 
     private const val REQUEST_CODE = 10001
-    const val CALL_RECEIVER_ACTION = "CALL_RECEIVER_ACTION"
+    private const val CALL_RECEIVER_ACTION = "CALL_RECEIVER_ACTION"
 
     /**
      * @param context Context of current scope
@@ -33,6 +33,7 @@ object IntentUtils {
             val callClass: Class<*> = Class.forName(it)
             return@let Intent(context, callClass).apply {
                 putExtra(RTC_ARGS, messageBody)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
         }
     }
@@ -53,7 +54,7 @@ object IntentUtils {
      * @param messageBody an instance of RtcArgs to send with intent
      * @return Intent ChatViewActivity intent to start
      */
-    fun getChatViewActivityIntent(
+    private fun getChatViewActivityIntent(
         messageBody: RtcArgs,
         context: Context
     ): Intent {
@@ -79,7 +80,6 @@ object IntentUtils {
         Timber.d { "getCallBroadcastIntent: ${messageBody.toJson()}" }
         return Intent(context, CallReceiver::class.java).apply {
             this.putExtra(RTC_ARGS, messageBody)
-            this.putExtra("Temp", "Temp")
             this.action = getCallReceiverAction(context)
         }
     }
@@ -157,9 +157,11 @@ object IntentUtils {
         context: Context,
         messageBody: RtcArgs
     ): PendingIntent {
-        return getCallActivityIntent(messageBody, context)?.let {
-            return@let getPendingIntentWithParentStack(context, it)
-        } ?: PendingIntent.getActivity(
+        Timber.d { "getPendingActivityIntent -> url = ${messageBody.url}" }
+//        return getCallActivityIntent(messageBody, context)?.let {
+//            return@let getPendingIntentWithParentStack(context, it)
+//        } ?:
+        return PendingIntent.getActivity(
             context, Random.nextInt(0, MAX_INT),
             getCallActivityIntent(messageBody, context),
             getPendingIntentFlag()
@@ -216,7 +218,7 @@ object IntentUtils {
 //        searchScreen = false
 //    )
 
-    fun getPendingIntentWithParentStack(context: Context, intent: Intent): PendingIntent {
+    private fun getPendingIntentWithParentStack(context: Context, intent: Intent): PendingIntent {
         val taskStackBuilder = TaskStackBuilder.create(context)
         taskStackBuilder.addNextIntentWithParentStack(intent)
 

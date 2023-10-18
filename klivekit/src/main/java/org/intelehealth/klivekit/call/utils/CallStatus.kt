@@ -6,5 +6,11 @@ package org.intelehealth.klivekit.call.utils
  * Mob   : +919727206702
  **/
 enum class CallStatus {
-    MISSED, BUSY, ON_GOING, NONE
+    MISSED, BUSY, ON_GOING, NONE;
+
+    fun isMissed() = this == MISSED
+
+    fun isBusy() = this == BUSY
+
+    fun isOnGoing() = this == ON_GOING
 }

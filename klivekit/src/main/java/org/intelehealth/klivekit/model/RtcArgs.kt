@@ -1,6 +1,5 @@
 package org.intelehealth.klivekit.model
 
-import android.content.Intent
 import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -10,7 +9,6 @@ import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.call.utils.CallType
 import org.intelehealth.klivekit.call.utils.CallMode
-import org.intelehealth.klivekit.utils.RemoteActionType
 import org.json.JSONObject
 
 /**
@@ -36,11 +34,8 @@ data class RtcArgs(
     @SerializedName("connectToDrId")
     var doctorId: String? = null,
     var appToken: String? = null,
-//    var isIncomingCall: Boolean = false,
     @SerializedName("device_token")
     var deviceToken: String? = "",
-    var actionType: String = RemoteActionType.TEXT_CHAT.name,
-    var callEnded: Boolean = false,
     var timestamp: Long = 0,
 
     // call arguments
@@ -57,25 +52,25 @@ data class RtcArgs(
 ) : Parcelable {
     fun toJson(): String = Gson().toJson(this)
 
-    fun isVideoCall() = callType == CallType.VIDEO
+    fun isVideoCall() = callType.isVideoCall()
 
-    fun isAudioCall() = callType == CallType.AUDIO
+    fun isAudioCall() = callType.isAudioCall()
 
-    fun isIncomingCall() = callMode == CallMode.INCOMING
+    fun isIncomingCall() = callMode.isIncomingCall()
 
-    fun isOutGoingCall() = callMode == CallMode.OUTGOING
+    fun isOutGoingCall() = callMode.isOutGoingCall()
 
-    fun isAcceptCall() = callAction == CallAction.ACCEPT
+    fun isCallAccepted() = callAction.isAccepted()
 
-    fun isCallDeclined() = callAction == CallAction.DECLINE
+    fun isCallDeclined() = callAction.isDeclined()
 
-    fun isCallHangUp() = callAction == CallAction.HANG_UP
+    fun isCallHangUp() = callAction.isHangUp()
 
-    fun isCallOnGoing() = callStatus == CallStatus.ON_GOING
+    fun isCallOnGoing() = callStatus.isOnGoing()
 
-    fun isMissedCall() = callStatus == CallStatus.MISSED
+    fun isMissedCall() = callStatus.isMissed()
 
-    fun isBusyCall() = callStatus == CallStatus.BUSY
+    fun isBusyCall() = callStatus.isBusy()
 
     fun toJsonArg() = JSONObject().apply {
         put("patientId", patientId)

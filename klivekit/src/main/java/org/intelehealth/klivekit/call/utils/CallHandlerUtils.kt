@@ -30,13 +30,13 @@ object CallHandlerUtils {
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
     fun notifyCallNotification(callArgs: RtcArgs, context: Context) {
-        Timber.d { "notifyCallNotification : ${callArgs.toJson()}" }
+        Timber.d { "notifyCallNotification Url: ${callArgs.url}" }
         context.stopService(Intent(context, HeadsUpNotificationService::class.java))
         if (callArgs.isCallDeclined()) {
             SocketManager.instance.emit(SocketManager.EVENT_CALL_REJECT_BY_HW, callArgs.doctorId)
         } else if (callArgs.isCallHangUp()) {
             SocketManager.instance.emitLocalEvent(SocketManager.EVENT_CALL_HANG_UP)
-        } else if (callArgs.isIncomingCall() or callArgs.isAcceptCall() or callArgs.isOutGoingCall()) {
+        } else if (callArgs.isIncomingCall() or callArgs.isCallAccepted() or callArgs.isOutGoingCall()) {
             IntentUtils.getHeadsUpNotificationServiceIntent(callArgs, context).also {
                 ContextCompat.startForegroundService(context, it)
             }
@@ -59,6 +59,7 @@ object CallHandlerUtils {
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
     fun operateIncomingCall(context: Context, callArgs: RtcArgs, clazz: Class<*>) {
+        Timber.d { "operateIncomingCall ->Url = ${callArgs.url}" }
         callArgs.callMode = CallMode.INCOMING
         callArgs.callCallName = clazz.name
         notifyCallNotification(callArgs, context)

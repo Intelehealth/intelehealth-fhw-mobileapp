@@ -33,6 +33,7 @@ import org.intelehealth.klivekit.socket.SocketViewModel
 import org.intelehealth.klivekit.call.ui.viewmodel.VideoCallViewModel
 import org.intelehealth.klivekit.utils.AudioType
 import org.intelehealth.klivekit.utils.RTC_ARGS
+import org.intelehealth.klivekit.utils.extensions.printExtra
 import org.intelehealth.klivekit.utils.extensions.showToast
 import org.intelehealth.klivekit.utils.extensions.viewModelByFactory
 import java.util.Calendar
@@ -230,19 +231,33 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
                 Timber.d { "Args => ${Gson().toJson(args)}" }
                 Timber.e { "Room Token : ${args.appToken}" }
                 preventDuplicationData(args)
-                if (args.isIncomingCall()) {
-                    onIncomingCall()
-                    stopService(
-                        Intent(
-                            this@CoreVideoCallActivity,
-                            HeadsUpNotificationService::class.java
-                        )
-                    )
-                } else onGoingCall()
+                handleCallByStatus()
+//                if (args.isIncomingCall()) {
+//                    onIncomingCall()
+//                    stopService(
+//                        Intent(
+//                            this@CoreVideoCallActivity,
+//                            HeadsUpNotificationService::class.java
+//                        )
+//                    )
+//                } else onGoingCall()
             }
 
             intent.data = null
         }
+    }
+
+    private fun handleCallByStatus() {
+        if (args.isIncomingCall() && args.isCallOnGoing()) acceptCall()
+        else if (args.isIncomingCall()) {
+            onIncomingCall()
+            stopService(
+                Intent(
+                    this@CoreVideoCallActivity,
+                    HeadsUpNotificationService::class.java
+                )
+            )
+        } else onGoingCall()
     }
 
     private fun startConnecting() {
@@ -348,10 +363,6 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         isDeclined = true
         showToast(getString(R.string.you_declined_call))
         if (args.isIncomingCall().not()) {
-//            socketViewModel.emit(
-//                SocketManager.EVENT_CALL_CANCEL_BY_HW,
-//                socketViewModel.buildOutGoingCallParams(args)
-//            )
             socketViewModel.emit(SocketManager.EVENT_CALL_CANCEL_BY_HW, args.toJsonArg())
         } else {
             socketViewModel.emit(SocketManager.EVENT_CALL_REJECT_BY_HW, args.doctorId)

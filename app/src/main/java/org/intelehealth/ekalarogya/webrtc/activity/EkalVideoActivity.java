@@ -22,10 +22,10 @@ import com.google.gson.Gson;
 import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.databinding.ActivityVideoCallBinding;
+import org.intelehealth.klivekit.call.utils.CallType;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.call.ui.activity.CoreVideoCallActivity;
 import org.intelehealth.klivekit.call.utils.CallMode;
-import org.intelehealth.klivekit.utils.RemoteActionType;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
 
 import io.livekit.android.renderer.SurfaceViewRenderer;
@@ -45,7 +45,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
 
         Log.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
         args.setUrl(BuildConfig.LIVE_KIT_URL);
-        args.setActionType(RemoteActionType.VIDEO_CALL.name());
+        args.setCallType(CallType.VIDEO);
         args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
 
         Intent intent = new Intent(context, EkalVideoActivity.class);

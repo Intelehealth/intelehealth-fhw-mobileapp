@@ -6,5 +6,9 @@ package org.intelehealth.klivekit.call.utils
  * Mob   : +919727206702
  **/
 enum class CallMode(val value: String) {
-    INCOMING("Incoming Call"), OUTGOING("Ongoing Call"), NONE("None")
+    INCOMING("Incoming Call"), OUTGOING("Ongoing Call"), NONE("None");
+
+    fun isIncomingCall() = this == INCOMING
+
+    fun isOutGoingCall() = this == OUTGOING
 }
