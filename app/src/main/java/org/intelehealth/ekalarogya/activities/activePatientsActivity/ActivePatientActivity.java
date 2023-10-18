@@ -1,13 +1,16 @@
 package org.intelehealth.ekalarogya.activities.activePatientsActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.LocaleList;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -65,54 +70,24 @@ public class ActivePatientActivity extends BaseActivity {
     TextView textView;
     RecyclerView recyclerView;
     MaterialAlertDialogBuilder dialogBuilder;
-
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
     private ActivePatientAdapter mActivePatientAdapter;
 
-    public static long getActiveVisitsCount(SQLiteDatabase db) {
-        int count =0;
-        String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
-                "FROM tbl_visit a, tbl_patient b " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ";
-        Logger.logD(TAG, query);
-        final Cursor cursor = db.rawQuery(query, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    count++;
-                } while (cursor.moveToNext());
-            }
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
-        return count;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);
+        setLocale(ActivePatientActivity.this);
         setContentView(R.layout.activity_active_patient);
         setTitle(getString(R.string.title_activity_active_patient));
         mToolbar = findViewById(R.id.toolbar);
-
-
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
-                R.drawable.ic_sort_white_24dp);
-//        mToolbar.setOverflowIcon(drawable);
-
         mActivePatientList = findViewById(R.id.today_patient_recycler_view);
-
         setSupportActionBar(mToolbar);
         mToolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         mToolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-
         textView = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.today_patient_recycler_view);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -128,25 +103,14 @@ public class ActivePatientActivity extends BaseActivity {
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
                     }
-
                     mActivePatientAdapter.activePatientModels.addAll(allPatientsFromDB);
                     mActivePatientAdapter.notifyDataSetChanged();
                 }
             }
         });
-
+        setLocale(ActivePatientActivity.this);
         sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
-        //In case of crash still the app should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
             textView.setVisibility(View.GONE);
@@ -189,7 +153,6 @@ public class ActivePatientActivity extends BaseActivity {
                     Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
                     if (visitCursor.moveToFirst()) {
                         do {
-//                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                             String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                             followupdate = dbValue;
                         } while (visitCursor.moveToNext());
@@ -222,16 +185,10 @@ public class ActivePatientActivity extends BaseActivity {
                                         String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()),
                                         ""
                                 );
-
-
-//                                AppointmentDAO appointmentDAO = new AppointmentDAO();
-//                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
                             }
                         });
                         AlertDialog alertDialog = alertDialogBuilder.show();
-                        //alertDialog.show();
                         IntelehealthApplication.setAlertDialogCustomTheme(ActivePatientActivity.this, alertDialog);
-
                     } else {
                         alertDialogBuilder.setMessage(ActivePatientActivity.this.getResources().getString(R.string.error_no_data));
                         alertDialogBuilder.setNeutralButton(ActivePatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
@@ -241,13 +198,11 @@ public class ActivePatientActivity extends BaseActivity {
                             }
                         });
                         AlertDialog alertDialog = alertDialogBuilder.show();
-                        //alertDialog.show();
                         IntelehealthApplication.setAlertDialogCustomTheme(ActivePatientActivity.this, alertDialog);
                     }
                 }
             });
         }
-
         getVisits();
     }
 
@@ -258,7 +213,6 @@ public class ActivePatientActivity extends BaseActivity {
     }
 
     private void getVisits() {
-
         ArrayList<String> encounterVisitUUID = new ArrayList<String>();
         HashSet<String> hsPatientUUID = new HashSet<String>();
 
@@ -281,9 +235,7 @@ public class ActivePatientActivity extends BaseActivity {
 
         //Get patientUUID from visitList
         for (int i = 0; i < encounterVisitUUID.size(); i++) {
-
             for (int j = 0; j < visitsDTOList.size(); j++) {
-
                 if (encounterVisitUUID.get(i).equalsIgnoreCase(visitsDTOList.get(j).getUuid())) {
                     listPatientUUID.add(visitsDTOList.get(j).getUuid());    // AEAT-456: get visitUUID instead of patientUUID.
                 }
@@ -291,11 +243,9 @@ public class ActivePatientActivity extends BaseActivity {
         }
 
         if (listPatientUUID.size() > 0) {
-
             hsPatientUUID.addAll(listPatientUUID);
             listPatientUUID.clear();
             listPatientUUID.addAll(hsPatientUUID);
-
         }
     }
 
@@ -311,7 +261,7 @@ public class ActivePatientActivity extends BaseActivity {
                 "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
-                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
+                "AND a.voided = 0 AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
@@ -341,109 +291,7 @@ public class ActivePatientActivity extends BaseActivity {
         if (cursor != null) {
             cursor.close();
         }
-
         return activePatientList;
-
-//        if (!activePatientList.isEmpty()) {
-//            for (ActivePatientModel activePatientModel : activePatientList)
-//                Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
-//
-//            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
-//            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
-//            recyclerView.setLayoutManager(linearLayoutManager);
-//           /* recyclerView.addItemDecoration(new
-//                    DividerItemDecoration(this,
-//                    DividerItemDecoration.VERTICAL));*/
-//            recyclerView.setAdapter(mActivePatientAdapter);
-//            mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
-//                @Override
-//                public void onEndVisitClicked(ActivePatientModel activePatientModel, boolean hasPrescription) {
-//                    String encounterAdultIntialslocal = "";
-//                    String encounterVitalslocal = null;
-//                    String encounterIDSelection = "visituuid = ?";
-//
-//                    String visitUuid = activePatientModel.getUuid();
-//                    String visitnote = "", followupdate = "";
-//                    String[] encounterIDArgs = {visitUuid};
-//                    EncounterDAO encounterDAO = new EncounterDAO();
-//                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-//                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
-//                        do {
-//                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-//                                encounterVitalslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-//                            }
-//                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-//                                encounterAdultIntialslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-//                            }
-//
-//                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-//                                visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-//                            }
-//
-//                        } while (encounterCursor.moveToNext());
-//                    }
-//                    encounterCursor.close();
-//
-//                    String[] visitArgs = {visitnote, UuidDictionary.FOLLOW_UP_VISIT};
-//                    String[] columns = {"value", " conceptuuid"};
-//                    String visitSelection = "encounteruuid = ? AND conceptuuid = ? and voided!='1' ";
-//                    Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-//                    if (visitCursor.moveToFirst()) {
-//                        do {
-////                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-//                            String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-//                            followupdate = dbValue;
-//                        } while (visitCursor.moveToNext());
-//                    }
-//                    visitCursor.close();
-//
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(ActivePatientActivity.this);
-//                    if (hasPrescription) {
-//                        alertDialogBuilder.setMessage(ActivePatientActivity.this.getResources().getString(R.string.end_visit_msg));
-//                        alertDialogBuilder.setNegativeButton(ActivePatientActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                dialogInterface.dismiss();
-//                            }
-//                        });
-//                        String finalFollowupdate = followupdate;
-//                        String finalEncounterVitalslocal = encounterVitalslocal;
-//                        String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
-//                        alertDialogBuilder.setPositiveButton(ActivePatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                                VisitUtils.endVisit(ActivePatientActivity.this,
-//                                        visitUuid,
-//                                        activePatientModel.getPatientuuid(),
-//                                        finalFollowupdate,
-//                                        finalEncounterVitalslocal,
-//                                        finalEncounterAdultIntialslocal,
-//                                        null,
-//                                        String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()),
-//                                        ""
-//                                );
-//                            }
-//                        });
-//                        AlertDialog alertDialog = alertDialogBuilder.show();
-//                        //alertDialog.show();
-//                        IntelehealthApplication.setAlertDialogCustomTheme(ActivePatientActivity.this, alertDialog);
-//
-//                    } else {
-//                        alertDialogBuilder.setMessage(ActivePatientActivity.this.getResources().getString(R.string.error_no_data));
-//                        alertDialogBuilder.setNeutralButton(ActivePatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                        AlertDialog alertDialog = alertDialogBuilder.show();
-//                        //alertDialog.show();
-//                        IntelehealthApplication.setAlertDialogCustomTheme(ActivePatientActivity.this, alertDialog);
-//                    }
-//                }
-//            });
-//        }
     }
 
     @Override
@@ -462,9 +310,7 @@ public class ActivePatientActivity extends BaseActivity {
                 return true;
             case R.id.summary_endAllVisit:
                 endAllVisit();
-
             case R.id.action_filter:
-                //function call
                 displaySingleSelectionDialog();
             default:
                 return super.onOptionsItemSelected(item);
@@ -473,7 +319,6 @@ public class ActivePatientActivity extends BaseActivity {
 
 
     private void displaySingleSelectionDialog() {
-
         ProviderDAO providerDAO = new ProviderDAO();
         ArrayList selectedItems = new ArrayList<>();
         String[] creator_names = null;
@@ -487,12 +332,9 @@ public class ActivePatientActivity extends BaseActivity {
         }
         dialogBuilder = new MaterialAlertDialogBuilder(ActivePatientActivity.this);
         dialogBuilder.setTitle(getString(R.string.filter_by_creator));
-
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;
         dialogBuilder.setMultiChoiceItems(creator_names, null, new DialogInterface.OnMultiChoiceClickListener() {
-
-
             @Override
             public void onClick(DialogInterface dialogInterface, int which, boolean isChecked) {
                 Logger.logD(TAG, "multichoice" + which + isChecked);
@@ -518,13 +360,10 @@ public class ActivePatientActivity extends BaseActivity {
         });
 
         dialogBuilder.setNegativeButton(getString(R.string.cancel), null);
-        //dialogBuilder.show();
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
-
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
@@ -533,15 +372,11 @@ public class ActivePatientActivity extends BaseActivity {
 
 
     private void endAllVisit() {
-
         int failedUploads = 0;
-
         String query = "SELECT tbl_visit.patientuuid, tbl_visit.enddate, tbl_visit.uuid," +
                 "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name FROM tbl_visit, tbl_patient WHERE" +
                 " tbl_visit.patientuid = tbl_patient.uuid AND tbl_visit.enddate IS NULL OR tbl_visit.enddate = ''";
-
         final Cursor cursor = db.rawQuery(query, null);
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -556,7 +391,6 @@ public class ActivePatientActivity extends BaseActivity {
             }
         }
         cursor.close();
-
         if (failedUploads == 0) {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
@@ -575,13 +409,10 @@ public class ActivePatientActivity extends BaseActivity {
             alertDialog.show();
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
-
     }
 
     private boolean endVisit(String patientUuid, String patientName, String visitUUID) {
-
         return visitUUID != null;
-
     }
 
     private void doQueryWithProviders(List<String> providersuuids) {
@@ -592,7 +423,6 @@ public class ActivePatientActivity extends BaseActivity {
                 "and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -616,9 +446,6 @@ public class ActivePatientActivity extends BaseActivity {
                     }
                 } while (cursor.moveToNext());
             }
-        } else {
-            // activePatientList.clear();
-            //Toast.makeText(this, "No patients where looked by this health worker!", Toast.LENGTH_SHORT).show();
         }
         if (cursor != null) {
             cursor.close();
@@ -627,14 +454,8 @@ public class ActivePatientActivity extends BaseActivity {
         if (!activePatientList.isEmpty()) {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
-
-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
             recyclerView.setLayoutManager(linearLayoutManager);
-            /*recyclerView.addItemDecoration(new
-                    DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));
-            recyclerView.setAdapter(mActivePatientAdapter);*/
             recyclerView.setVisibility(View.VISIBLE);
             TextView t = findViewById(R.id.ttt);
             t.setVisibility(View.GONE);
@@ -643,10 +464,6 @@ public class ActivePatientActivity extends BaseActivity {
             t.setVisibility(View.VISIBLE);
             t.setHint(getString(R.string.no_data_active_patients));
             recyclerView.setVisibility(View.GONE);
-            //recyclerView.addView(t);
-            // Intent i = new Intent(this, HomeActivity.class);
-            //startActivity(i);
-            //recyclerView.setVisibility(View.GONE);
         }
 
     }
@@ -657,17 +474,38 @@ public class ActivePatientActivity extends BaseActivity {
         try {
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
-
                     phone = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
-
                 }
             }
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
         }
         idCursor.close();
-
         return phone;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
 }

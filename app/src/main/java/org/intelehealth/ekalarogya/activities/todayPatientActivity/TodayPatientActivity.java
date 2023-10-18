@@ -153,7 +153,7 @@ public class TodayPatientActivity extends BaseActivity {
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
-                "AND a.startdate LIKE '" + currentDate + "T%'   " +
+                "AND a.voided = 0 AND a.startdate LIKE '" + currentDate + "T%'   " +
                 "GROUP BY a.uuid ORDER BY a.patientuuid ASC";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);

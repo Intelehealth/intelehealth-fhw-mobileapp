@@ -805,13 +805,52 @@ public class VitalsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == android.R.id.home) {
-            finish();
+            if(intentTag!=null && intentTag.equalsIgnoreCase("new")) {
+                showConfirmationDialog();
+            }
+            else
+                finish();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showConfirmationDialog() {
+        VisitsDAO visitsDAO = new VisitsDAO();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        final boolean[] isVisitVoid = {false};
+        final boolean[] isEncounterVoid = {false};
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+        alertDialog.setTitle(getResources().getString(R.string.generic_warning));
+        alertDialog.setMessage(getResources().getString(R.string.exit_vitals_warning_dialog));
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.vital_alert_continue_button), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            isVisitVoid[0] = visitsDAO.voidVisit(visitUuid);
+                            isEncounterVoid[0] = encounterDAO.voidEncounter(encounterVitals);
+                        } catch (DAOException e) {
+                            dialog.dismiss();
+                            throw new RuntimeException(e);
+                        }
+                        dialog.dismiss();
+                        if(isVisitVoid[0] == true && isEncounterVoid[0] == true)
+                        {
+                            onBackPressed();
+                        }
+
+                    }
+                });
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.survey_no), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog dialog = alertDialog.show();
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     private void bmiColorCode(String finalBmiValue) {
@@ -1063,21 +1102,6 @@ public class VitalsActivity extends AppCompatActivity {
             }
         }
 
-
-        //Sugar Level vaidations
-      /*  if (mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
-                !mSugarFasting.getText().toString().isEmpty() && mSugarAfterMeal.getText().toString().isEmpty()) {
-            if (mSugarFasting.getText().toString().isEmpty()) {
-                mSugarFasting.requestFocus();
-                mSugarFasting.setError(getString(R.string.enter_field));
-                return;
-            } else if (mSugarAfterMeal.getText().toString().isEmpty()) {
-                mSugarAfterMeal.requestFocus();
-                mSugarAfterMeal.setError(getString(R.string.enter_field));
-                return;
-            }
-        }
-*/
         if (mSugarFasting.getText().toString().isEmpty()) {
             mSugarFasting.requestFocus();
             mSugarFasting.setError(getString(R.string.enter_field));
@@ -1246,170 +1270,6 @@ public class VitalsActivity extends AppCompatActivity {
                 return;
             }
         }
-
-
-        // Validations - END
-
-
-        //     }
-
-
-/*
-            for (int i = 0; i < values.size(); i++) {
- else if (i == 2) {
-                    EditText et = values.get(i);
-                    String abc2 = et.getText().toString().trim();
-                    if (abc2 != null && !abc2.isEmpty() && (!abc2.equals("0.0"))) {
-                        if ((Double.parseDouble(abc2) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
-                                (Double.parseDouble(abc2) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
-                            et.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
-                            focusView = et;
-                            cancel = true;
-                            break;
-                        } else {
-                            cancel = false;
-                        }
-//       }
-                    } else {
-                        cancel = false;
-                    }
-
-                } else if (i == 3) {
-                    EditText et = values.get(i);
-                    String abc1 = et.getText().toString().trim();
-                    if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS)) ||
-                                (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS))) {
-                            et.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
-                            focusView = et;
-                            cancel = true;
-                            break;
-                        } else {
-                            cancel = false;
-                        }
-//       }
-                    } else {
-                        cancel = false;
-                    }
-
-                } else if (i == 4) {
-                    EditText et = values.get(i);
-                    String abc1 = et.getText().toString().trim();
-                    if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS)) ||
-                                (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS))) {
-                            et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                            focusView = et;
-                            cancel = true;
-                            break;
-                        } else {
-                            cancel = false;
-                        }
-//       }
-                    } else {
-                        cancel = false;
-                    }
-
-                } else if (i == 5) {
-                    EditText et = values.get(i);
-                    String abc1 = et.getText().toString().trim();
-                    if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                        if (configUtils.celsius()) {
-                            if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
-                                    (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS))) {
-                                et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-                                focusView = et;
-                                cancel = true;
-                                break;
-                            } else {
-                                cancel = false;
-                            }
-                        } else if (configUtils.fahrenheit()) {
-                            if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
-                                    (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
-                                et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
-                                focusView = et;
-                                cancel = true;
-                                break;
-                            } else {
-                                cancel = false;
-                            }
-                        }
-                    } else {
-                        cancel = false;
-                    }
-                } else if (i == 6) {
-                    EditText et = values.get(i);
-                    String abc1 = et.getText().toString().trim();
-                    if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_RESPIRATORY)) ||
-                                (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_RESPIRATORY))) {
-                            et.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
-                            focusView = et;
-                            cancel = true;
-                            break;
-                        } else {
-                            cancel = false;
-                        }
-//       }
-                    } else {
-                        cancel = false;
-                    }
-                } else if (i == 7) {
-                    EditText et = values.get(i);
-                    String abc1 = et.getText().toString().trim();
-                    if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
-                                (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
-                            et.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
-                            focusView = et;
-                            cancel = true;
-                            break;
-                        } else {
-                            cancel = false;
-                        }
-//       }
-                    } else {
-                        cancel = false;
-                    }
-                } else if (i == 8) {
-                    EditText et = values.get(i);
-                    String abc1 = et.getText().toString().trim();
-                    if (abc1 != null && !abc1.isEmpty()) {
-                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_HEMOGLOBIN)) ||
-                                (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_HEMOGLOBIN))) {
-                            et.setError(getString(R.string.hemoglobin_error, AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
-                            focusView = et;
-                            cancel = true;
-                            break;
-                        } else {
-                            cancel = false;
-                        }
-                    } else {
-                        cancel = false;
-                    }
-                } else if (i == 9 || i == 10 || i == 11) {
-                    EditText et = values.get(i);
-                    String abc1 = et.getText().toString().trim();
-                    if (abc1 != null && !abc1.isEmpty()) {
-                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_SUGAR)) ||
-                                (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_SUGAR))) {
-                            et.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
-                            focusView = et;
-                            cancel = true;
-                            break;
-                        } else {
-                            cancel = false;
-                        }
-                    } else {
-                        cancel = false;
-                    }
-                } else {
-                    cancel = false;
-                }
-            }
-*/
-        //   }
 
         // AEAT- 646 (Temp, BP, Pulse validaton) - START
         if (mBpSys.getText().toString().trim().isEmpty() || mBpDia.getText().toString().trim().isEmpty() ||
@@ -2004,15 +1864,11 @@ public class VitalsActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endTime);
-            //Toast.makeText(this, R.string.text_advice_created, Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-
         new SyncUtils().syncForeground(""); //Sync function will work in foreground of app and
         sessionManager.removeVisitSummary(patientUuid, visitUuid);
-        /*setResult(RESULT_OK);
-        finish();*/
         Intent intent = new Intent(VitalsActivity.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -2057,43 +1913,12 @@ public class VitalsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-    }
-
-    public void setVitalInfoForHemoAndSugar(String[] data, TextView textView, String selectedValue) {
-        final Dialog dialog = new Dialog(VitalsActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.vitalnuberpickerdialog);
-        NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.number_picker);
-        numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(data.length - 1);
-        numberPicker.setDisplayedValues(data);
-        if (selectedValue != null && !selectedValue.isEmpty() && selectedValue.length() > 0) {}
-        TextView okButton = (TextView) dialog.findViewById(R.id.choose_number_btn);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index = numberPicker.getValue();
-                String val = data[index];
-                textView.setText(val);
-                /*if(data.length>20){
-                    textView.setText((numberPicker.getValue()+10)+"");
-                }else{
-                    textView.setText((numberPicker.getValue()+1)+"");
-                }*/
-                dialog.dismiss();
-            }
-        });
-
-        TextView closeButton = (TextView) dialog.findViewById(R.id.close_number_btn);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
+        if(intentTag!=null && intentTag.equalsIgnoreCase("new")) {
+            Intent intent = new Intent(VitalsActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        finish();
     }
 
     public String ConvertHeightIntoFeets(String height) {

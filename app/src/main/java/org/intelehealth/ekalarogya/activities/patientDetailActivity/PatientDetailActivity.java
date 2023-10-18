@@ -372,9 +372,7 @@ public class PatientDetailActivity extends BaseActivity {
         int age = DateAndTimeUtils.getAgeInYear(patient_new.getDate_of_birth(), context);
         String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         intent2.putExtra("patientUuid", patientUuid);
-
         VisitDTO visitDTO = new VisitDTO();
-
         visitDTO.setUuid(uuid);
         visitDTO.setPatientuuid(patient_new.getUuid());
         visitDTO.setStartdate(thisDate);
@@ -383,15 +381,12 @@ public class PatientDetailActivity extends BaseActivity {
         visitDTO.setSyncd(false);
         visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
         VisitsDAO visitsDAO = new VisitsDAO();
-
         try {
             visitsDAO.insertPatientToDB(visitDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        // visitUuid = String.valueOf(visitLong);
-//                localdb.close();
         intent2.putExtra("patientUuid", patientUuid);
         intent2.putExtra("visitUuid", uuid);
         intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
@@ -1144,6 +1139,22 @@ public class PatientDetailActivity extends BaseActivity {
             }
             past_visit = false;
 
+            if (button_sevika_advice.isEnabled()) {
+                button_sevika_advice.setEnabled(false);
+            }
+            if (button_sevika_advice.isClickable()) {
+                button_sevika_advice.setClickable(false);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    button_sevika_advice.setBackgroundColor
+                            (getColor(R.color.divider));
+                    button_sevika_advice.setTextColor(getColor(R.color.white));
+                } else {
+                    button_sevika_advice.setBackgroundColor(getResources().getColor(R.color.divider));
+                    button_sevika_advice.setTextColor(getResources().getColor(R.color.white));
+                }
+            }
+
             if (newVisit.isEnabled()) {
                 newVisit.setEnabled(false);
             }
@@ -1450,7 +1461,7 @@ public class PatientDetailActivity extends BaseActivity {
     }
 
     public void pastVisits(String patientuuid) {
-        String visitSelection = "patientuuid = ?";
+        String visitSelection = "patientuuid = ? AND voided = 0";
         String[] visitArgs = {patientuuid};
         String[] visitColumns = {"uuid, startdate", "enddate"};
         String visitOrderBy = "startdate";
