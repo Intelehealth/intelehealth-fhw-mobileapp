@@ -178,36 +178,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class VisitSummaryActivity extends BaseActivity {
-
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private static final int SCHEDULE_LISTING_INTENT = 2001;
     private WebView mWebView;
     private LinearLayout mLayout;
-
-    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp, mBlood, mSugarRandom, mHemoglobin,
-            mSugarFasting, mSugarAfterMeal;
-    String speciality_selected = "";
-
-    boolean uploaded = false;
-    boolean downloaded = false;
-
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp, mBlood, mSugarRandom, mHemoglobin, mSugarFasting, mSugarAfterMeal, speciality_selected = "";
+    boolean uploaded = false, downloaded = false;
     Context context;
-
-    String patientUuid;
-    String visitUuid;
-    String state;
-    String patientName;
-    String intentTag;
-    String visitUUID;
-    String medicalAdvice_string = "";
-    String medicalAdvice_HyperLink = "";
-    String isSynedFlag = "";
+    String patientUuid, visitUuid, state, patientName, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
     private float float_ageYear_Month;
-
-//    Spinner speciality_spinner;
-
     SQLiteDatabase db;
-
     Patient patient = new Patient();
     ObsDTO complaint = new ObsDTO();
     ObsDTO complaint_REG = new ObsDTO();
@@ -230,122 +210,39 @@ public class VisitSummaryActivity extends BaseActivity {
     ObsDTO sugaraftermeal = new ObsDTO();
     ObsDTO blood = new ObsDTO();
     ObsDTO resp = new ObsDTO();
-
-    String diagnosisReturned = "";
-    String rxReturned = "";
-    String testsReturned = "";
-    String adviceReturned = "";
-    String doctorName = "";
-    String additionalReturned = "";
-    String followUpDate = "";
-
-    ImageButton editVitals;
-    ImageButton editComplaint;
-    ImageButton editPhysical;
-    ImageButton editFamHist;
-    ImageButton editMedHist;
-    ImageButton editAddDocs;
-
+    String diagnosisReturned = "", rxReturned = "", testsReturned = "", adviceReturned = "", doctorName = "", additionalReturned = "", followUpDate = "";
+    ImageButton editVitals, editComplaint, editPhysical, editFamHist, editMedHist, editAddDocs;
     FrameLayout frameLayout_doctor;
-    TextView nameView;
-    TextView idView;
-    TextView visitView;
-    TextView heightView;
-    TextView weightView;
-    TextView pulseView;
-    TextView bpView;
-    TextView tempView;
-    TextView spO2View, hemoglobinView, bloodView, sugarRandomView, sugarFastAndMealView;
-    TextView bmiView;
-
+    TextView nameView,idView, visitView, heightView, weightView, pulseView, bpView,tempView,spO2View, hemoglobinView, bloodView, sugarRandomView, sugarFastAndMealView, bmiView;
     TableRow bmiTR;
-    TextView complaintView;
-    TextView famHistView;
-    TextView patHistView;
-    TextView physFindingsView;
-    TextView mDoctorTitle;
-    TextView mDoctorName;
-    TextView mCHWname;
-    //    //    Respiratory added by mahiti dev team
-    TextView respiratory;
-    TextView respiratoryText;
-    TextView tempfaren;
-    TextView tempcel;
-    String medHistory, medHistory_REG;
-    String baseDir;
-    String filePathPhyExam;
+    TextView complaintView,famHistView,patHistView,physFindingsView, mDoctorTitle,mDoctorName, mCHWname,respiratory, respiratoryText, tempfaren, tempcel;
+    String medHistory, medHistory_REG, baseDir;
     File obsImgdir;
-
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
-
-    RelativeLayout uploadButton;
-    RelativeLayout downloadButton;
+    RelativeLayout uploadButton, downloadButton;
     ArrayList<String> physicalExams;
-
-    CardView diagnosisCard;
-    CardView prescriptionCard;
-    CardView medicalAdviceCard;
-    CardView requestedTestsCard;
-    CardView additionalCommentsCard;
-    CardView followUpDateCard;
-    CardView card_print, card_share, speciality_card, flaggedDetails;
-
-
-    TextView diagnosisTextView;
-    TextView prescriptionTextView;
-    TextView medicalAdviceTextView;
-    TextView requestedTestsTextView;
-    TextView additionalCommentsTextView;
-    TextView followUpDateTextView;
-    //added checkbox flag .m
+    CardView diagnosisCard, prescriptionCard, medicalAdviceCard, requestedTestsCard, additionalCommentsCard, followUpDateCard, card_print, card_share, speciality_card, flaggedDetails;
+    TextView diagnosisTextView,prescriptionTextView, medicalAdviceTextView, requestedTestsTextView, additionalCommentsTextView, followUpDateTextView;
     CheckBox flag;
-
-    Boolean isPastVisit = false, isVisitSpecialityExists = false;
-    Boolean isReceiverRegistered = false;
-
+    Boolean isPastVisit = false, isVisitSpecialityExists = false, isReceiverRegistered = false;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
-
     NetworkChangeReceiver receiver;
     private boolean isConnected = false;
-    private Menu mymenu;
     MenuItem internetCheck = null;
-    MenuItem endVisit_click = null;
-
-    private RecyclerView mAdditionalDocsRecyclerView;
-    private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
-
-    private RecyclerView mPhysicalExamsRecyclerView;
-    private RecyclerView.LayoutManager mPhysicalExamsLayoutManager;
-
-    public static String prescriptionHeader1;
-    public static String prescriptionHeader2;
+    private RecyclerView mAdditionalDocsRecyclerView,mPhysicalExamsRecyclerView;
+    private RecyclerView.LayoutManager mAdditionalDocsLayoutManager,mPhysicalExamsLayoutManager;
     SharedPreferences mSharedPreference;
     boolean hasLicense = false;
-    String mFileName = "config.json";
-    public static String prescription1;
-    public static String prescription2;
+    public static String prescription1, prescription2, prescriptionHeader1, prescriptionHeader2;
     SessionManager sessionManager;
-    String encounterUuid;
-    String encounterVitals;
-    //  Boolean isreturningWhatsapp = true;
-    String encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
-
-    ProgressBar mProgressBar;
-    TextView mProgressText;
-
-    ImageButton additionalDocumentsDownlaod;
+    String encounterUuid, encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit, hasPrescription = "", mFileName = "config.json";
     ImageButton onExaminationDownload;
-
     DownloadPrescriptionService downloadPrescriptionService;
-    private TextView additionalImageDownloadText;
-    private TextView physcialExaminationDownloadText;
-
+    private TextView additionalImageDownloadText, physcialExaminationDownloadText;
     ImageView ivPrescription;
-    private String hasPrescription = "";
     private boolean isRespiratory = false;
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
-
     int patientAge = 0;
 
     private void collectChatConnectionInfoFromFirebase() {
@@ -366,16 +263,13 @@ public class VisitSummaryActivity extends BaseActivity {
                         connectionInfoObject.put("fromUUID", fromUUId);
                         connectionInfoObject.put("toUUID", toUUId);
                         connectionInfoObject.put("patientUUID", patientUUid);
-
                         PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                         String packageName = pInfo.packageName;
-
                         Intent intent = new Intent(ACTION_NAME);
                         intent.putExtra("visit_uuid", visitUUID);
                         intent.putExtra("connection_info", connectionInfoObject.toString());
                         intent.setComponent(new ComponentName(packageName, "org.intelehealth.ekalarogya.services.firebase_services.RTCMessageReceiver"));
                         getApplicationContext().sendBroadcast(intent);
-
                         Log.v(TAG, "collectChatConnectionInfoFromFirebase, onDataChange : " + connectionInfoObject.toString());
                     } catch (JSONException | PackageManager.NameNotFoundException e) {
                         e.printStackTrace();

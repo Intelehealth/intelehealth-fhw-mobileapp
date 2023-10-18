@@ -24,20 +24,24 @@ import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.provider.MediaStore;
 import android.service.autofill.UserData;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -73,51 +77,34 @@ public class HwProfileActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     SessionManager sessionManager = null;
     String mCurrentPhotoPath;
-
-    EditText hw_designation_value, hw_aboutme_value, hw_gender_value, hw_mobile_value, hw_whatsapp_value,
-            hw_email_value;
-    TextView hw_name_value, total_patregistered_value, total_visitprogress_value,
-            total_consultaion_value, hw_state_value, save_hw_detail;
+    EditText hw_designation_value, hw_aboutme_value, hw_gender_value, hw_mobile_value, hw_whatsapp_value, hw_email_value;
+    TextView hw_name_value, total_patregistered_value, total_visitprogress_value, total_consultaion_value, hw_state_value, save_hw_detail;
     CircularImageView hw_profile_image;
     MainProfileModel mainProfileModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(HwProfileActivity.this);
         setContentView(R.layout.activity_hw_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        // Get the intent, verify the action and get the query
         sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
-        //In case of crash still the app should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-
         hw_profile_image = (CircularImageView) findViewById(R.id.hw_profile_image);
-
         hw_name_value = (TextView) findViewById(R.id.hw_name_value);
         hw_designation_value = (EditText) findViewById(R.id.hw_designation_value);
         hw_aboutme_value = (EditText) findViewById(R.id.hw_aboutme_value);
-
         total_patregistered_value = (TextView) findViewById(R.id.total_patregistered_value);
         total_visitprogress_value = (TextView) findViewById(R.id.total_visitprogress_value);
         total_consultaion_value = (TextView) findViewById(R.id.total_consultaion_value);
-
         hw_gender_value = (EditText) findViewById(R.id.hw_gender_value);
         hw_state_value = (TextView) findViewById(R.id.hw_state_value);
         hw_mobile_value = (EditText) findViewById(R.id.hw_mobile_value);
         hw_whatsapp_value = (EditText) findViewById(R.id.hw_whatsapp_value);
         hw_email_value = (EditText) findViewById(R.id.hw_email_value);
-
         save_hw_detail = (TextView) findViewById(R.id.save_hw_detail);
-
+        setLocale(HwProfileActivity.this);
     }
 
     @Override
@@ -137,17 +124,13 @@ public class HwProfileActivity extends AppCompatActivity {
 
     public void getHw_Information() {
         Dialog progressDialog = new Dialog(this, android.R.style.Theme_Black);
-        View view = LayoutInflater.from(HwProfileActivity.this).inflate(
-                R.layout.custom_progress_dialog, null);
+        View view = LayoutInflater.from(HwProfileActivity.this).inflate(R.layout.custom_progress_dialog, null);
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progressDialog.getWindow().setBackgroundDrawableResource(
-                R.color.transparent);
+        progressDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
         progressDialog.setContentView(view);
         progressDialog.show();
-
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/" + sessionManager.getCreatorID() + "?type=hw";
         Logger.logD("Profile", "get profile Info url" + url);
-
         Observable<MainProfileModel> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_INFO(url, "Basic " + sessionManager.getEncoded());
         profilePicDownload.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -163,13 +146,11 @@ public class HwProfileActivity extends AppCompatActivity {
                         }
                         progressDialog.dismiss();
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Logger.logD("ProfileInfo", e.getMessage());
                         progressDialog.dismiss();
                     }
-
                     @Override
                     public void onComplete() {
                         Logger.logD("ProfileInfo", "complete");
@@ -192,43 +173,25 @@ public class HwProfileActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-
             case R.id.hw_profile_image_edit:
-
                 hw_designation_value.setClickable(true);
                 hw_designation_value.setFocusable(true);
                 hw_designation_value.setCursorVisible(true);
                 hw_designation_value.setFocusableInTouchMode(true);
                 hw_designation_value.requestFocus();
                 hw_designation_value.setSelection(hw_designation_value.getText().length());
-
-//                hw_aboutme_value.setClickable(true);
-//                hw_aboutme_value.setFocusable(true);
-//                hw_aboutme_value.setCursorVisible(true);
-//                hw_aboutme_value.setFocusableInTouchMode(true);
-//                hw_aboutme_value.setVisibility(View.VISIBLE);
-
-              /* This is not needed to edit as per: https://intelehealthwiki.atlassian.net/browse/AEAT-473
-                hw_gender_value.setClickable(true);
-                hw_gender_value.setFocusable(true);
-                hw_gender_value.setCursorVisible(true);
-                hw_gender_value.setFocusableInTouchMode(true);*/
-
                 hw_mobile_value.setClickable(true);
                 hw_mobile_value.setFocusable(true);
                 hw_mobile_value.setCursorVisible(true);
                 hw_mobile_value.setFocusableInTouchMode(true);
-
                 hw_whatsapp_value.setClickable(true);
                 hw_whatsapp_value.setFocusable(true);
                 hw_whatsapp_value.setCursorVisible(true);
                 hw_whatsapp_value.setFocusableInTouchMode(true);
-
                 hw_email_value.setClickable(true);
                 hw_email_value.setFocusable(true);
                 hw_email_value.setCursorVisible(true);
                 hw_email_value.setFocusableInTouchMode(true);
-
                 save_hw_detail.setVisibility(View.VISIBLE);
                 save_hw_detail.setClickable(true);
                 save_hw_detail.setEnabled(true);
@@ -242,7 +205,6 @@ public class HwProfileActivity extends AppCompatActivity {
                         }
                     }
                 });
-
                 hw_profile_image.setClickable(true);
                 hw_profile_image.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -250,9 +212,7 @@ public class HwProfileActivity extends AppCompatActivity {
                         selectImage();
                     }
                 });
-
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -288,7 +248,6 @@ public class HwProfileActivity extends AppCompatActivity {
         if (userDetail != null && !userDetail.isEmpty()) {
             mainProfileModel = gson.fromJson(userDetail, MainProfileModel.class);
             String profile_image_url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/personimage/" + sessionManager.getHwID();
-
             HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
             hw_name_value.setText(hwProfileModel.getUserName());
             hw_designation_value.setText(hwProfileModel.getDesignation());
@@ -297,14 +256,11 @@ public class HwProfileActivity extends AppCompatActivity {
             } else {
                 hw_aboutme_value.setVisibility(View.GONE);
             }
-
             total_patregistered_value.setText(hwProfileModel.getPatientRegistered() + "");
             total_visitprogress_value.setText(hwProfileModel.getVisitInProgress() + "");
             total_consultaion_value.setText(hwProfileModel.getCompletedConsultation() + "");
-
             HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
             Log.v("lang", "langModel: " + personalInformationModel.getGender());
-
             if (personalInformationModel.getGender().equalsIgnoreCase("F") ||
                     personalInformationModel.getGender().equalsIgnoreCase("Female")) {
                 hw_gender_value.setText(getResources().getString(R.string.identification_screen_checkbox_female));
@@ -321,7 +277,6 @@ public class HwProfileActivity extends AppCompatActivity {
             hw_email_value.setText(personalInformationModel.getEmail());
             sessionManager.setHwPhone(personalInformationModel.getMobile());
             sessionManager.setHwWhatsApp(personalInformationModel.getWhatsApp());
-
             profilePicDownloaded();
         } else {
             Toast.makeText(HwProfileActivity.this, HwProfileActivity.this.getString(R.string.please_connect_to_internet), Toast.LENGTH_LONG).show();
@@ -342,7 +297,6 @@ public class HwProfileActivity extends AppCompatActivity {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(hw_profile_image);
-
                 UploadHW_ProfileImage();
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY && null != data) {
@@ -353,10 +307,8 @@ public class HwProfileActivity extends AppCompatActivity {
                     Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
+                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 mCurrentPhotoPath = cursor.getString(columnIndex);
@@ -369,7 +321,6 @@ public class HwProfileActivity extends AppCompatActivity {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(hw_profile_image);
-                // String picturePath contains the path of selected Image
                 UploadHW_ProfileImage();
             }
             else if (resultCode == RESULT_CANCELED) {
@@ -394,20 +345,14 @@ public class HwProfileActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(ResponseBody responseBody) {
                         Logger.logD("HwProfileImage", "success" + responseBody);
-//                      AppConstants.notificationUtils.DownloadDone("Patient Profile", "Uploaded Patient Profile", 4, IntelehealthApplication.getAppContext());
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Logger.logD("HwProfileImage", "Onerror " + e.getMessage());
-//                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
                     }
                 });
-
         sessionManager.setPullSyncFinished(true);
-        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
-//        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
+        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION).putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
         return true;
     }
 
@@ -424,15 +369,9 @@ public class HwProfileActivity extends AppCompatActivity {
                         DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
                         downloadFilesUtils.saveToDisk(file, sessionManager.getHwID());
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Logger.logD("Error", e.getMessage());
-                        // AEAT-552: You cannot start a load for a destroyed activity
-                        // This crash will happen in cases if the activity is destroyed and since below we are using Glide.with(activity) it will crash
-                        // instead either use applciationContenxt or check before loading if the context is still alive.
-
-                     //   Glide.with(HwProfileActivity.this)
                         Glide.with(getApplicationContext())
                                 .load("")
                                 .error(R.drawable.ic_person_black_24dp)
@@ -442,7 +381,6 @@ public class HwProfileActivity extends AppCompatActivity {
                                 .skipMemoryCache(true)
                                 .into(hw_profile_image);
                     }
-
                     @Override
                     public void onComplete() {
                         Glide.with(HwProfileActivity.this)
@@ -453,7 +391,6 @@ public class HwProfileActivity extends AppCompatActivity {
                                 .skipMemoryCache(true)
                                 .into(hw_profile_image);
                     }
-
                 });
     }
 
@@ -465,7 +402,6 @@ public class HwProfileActivity extends AppCompatActivity {
         } else {
             errorColor = getResources().getColor(R.color.white);
         }
-
         ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(errorColor);
         String name = hw_gender_value.getText().toString().trim();
         Log.v("lang", "langModel: " + name);
@@ -487,7 +423,6 @@ public class HwProfileActivity extends AppCompatActivity {
             name = "Female";
         else if(name.equalsIgnoreCase("মহিলা"))
             name = "Female";
-
 
         if(name.length()>0){
             if(!name.equalsIgnoreCase("Male") &&
@@ -529,7 +464,6 @@ public class HwProfileActivity extends AppCompatActivity {
                 return;
             }
         }
-
         updateHwDetail();
     }
 
@@ -544,22 +478,6 @@ public class HwProfileActivity extends AppCompatActivity {
     }
 
     public void updateHwDetail(){
-
-        /*{
-            "phoneNumber": "7867",
-                "qualification": "MBBS, MD",
-                "fontOfSign": "almondita",
-                "whatsapp": "7972269174",
-                "registrationNumber": "MAR1208632",
-                "emailId": "hiren@elxrsmarthealth.com",
-                "address": "14, Shreeji Arcade, Opp Nitin Company, 400601",
-                "textOfSign": "DrGenPhy",
-                "specialization": "Allopathy",
-                "visitState": "All",
-                "aboutMe": "test",
-                "timings": "12:00 AM - 3:00 AM"
-                "gender":"female"
-        }*/
         try{
             if(mainProfileModel!=null){
                 HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
@@ -568,32 +486,25 @@ public class HwProfileActivity extends AppCompatActivity {
                     if (!hw_designation_value.getText().toString().equalsIgnoreCase(hwProfileModel.getDesignation())){
                         userAttributeModel.setQualification(hw_designation_value.getText().toString().trim());
                     }
-
                     if (!hw_aboutme_value.getText().toString().equalsIgnoreCase(hwProfileModel.getAboutMe())){
                         userAttributeModel.setAboutMe(hw_aboutme_value.getText().toString());
                     }
-
                     HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
-
                     if(personalInformationModel!=null) {
                         if (!hw_gender_value.getText().toString().equalsIgnoreCase(personalInformationModel.getGender())){
                             userAttributeModel.setGender(hw_gender_value.getText().toString().trim());
                         }
-
                         if (!hw_mobile_value.getText().toString().equalsIgnoreCase(personalInformationModel.getMobile())){
                             userAttributeModel.setPhoneNumber(hw_mobile_value.getText().toString().trim());
                             sessionManager.setHwPhone(hw_mobile_value.getText().toString().trim());
                         }
-
                         if (!hw_whatsapp_value.getText().toString().equalsIgnoreCase(personalInformationModel.getWhatsApp())){
                             userAttributeModel.setWhatsapp(hw_whatsapp_value.getText().toString().trim());
                             sessionManager.setHwWhatsApp(hw_whatsapp_value.getText().toString().trim());
                         }
-
                         if (!hw_email_value.getText().toString().equalsIgnoreCase(personalInformationModel.getEmail())){
                             userAttributeModel.setEmailId(hw_email_value.getText().toString().trim());
                         }
-
                     }
                     if(userAttributeModel!=null)
                         updateOnServer(userAttributeModel);
@@ -605,10 +516,8 @@ public class HwProfileActivity extends AppCompatActivity {
     }
 
     public void updateOnServer(UserAttributeModel obj){
-        //https://afitraining.ekalarogya.org:3004/api/user/profile/a4ac4fee-538f-11e6-9cfe-86f436325720
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getCreatorID();
         String encoded = sessionManager.getEncoded();
-
         Single<UserInfoUpdateModel> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, obj);
         hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -621,7 +530,6 @@ public class HwProfileActivity extends AppCompatActivity {
                         Toast.makeText(HwProfileActivity.this,getString(R.string.update_hw_profile),Toast.LENGTH_SHORT).show();
                         setEnabledProfile();
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Logger.logD(TAG, "Onerror " + e.getMessage());
@@ -655,5 +563,29 @@ public class HwProfileActivity extends AppCompatActivity {
         save_hw_detail.setEnabled(false);
 
         hw_profile_image.setClickable(false);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 }

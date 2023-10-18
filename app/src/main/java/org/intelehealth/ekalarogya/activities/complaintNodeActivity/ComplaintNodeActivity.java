@@ -59,25 +59,16 @@ import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";
-
-    String patientUuid;
-    String visitUuid;
-    String state;
-    String patientName;
-    String intentTag;
+    String patientUuid, visitUuid, state, patientName, intentTag, encounterVitals, encounterAdultIntials, EncounterAdultInitial_LatestVisit, mgender;
     SearchView searchView;
     List<Node> complaints;
-    // CustomArrayAdapter listAdapter;
     ComplaintNodeListAdapter listAdapter;
-    String encounterVitals;
-    String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
     EncounterDTO encounterDTO;
     SessionManager sessionManager = null;
     ImageView img_question;
     TextView tv_selectComplaint;
     RecyclerView list_recyclerView;
     private float float_ageYear_Month;
-    String mgender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

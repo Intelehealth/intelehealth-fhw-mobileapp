@@ -1,9 +1,13 @@
 package org.intelehealth.ekalarogya.activities.chooseLanguageActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,27 +33,16 @@ public class ChooseLanguageActivity extends AppCompatActivity {
 
     Button SaveButton;
     ImageView BackImage;
-
     SessionManager sessionManager = null;
-
-    String LOG_TAG = "ChooseLanguageActivity";
-    String systemLanguage = Resources.getSystem().getConfiguration().locale.getLanguage();
-
-    String appLanguage;
+    String LOG_TAG = "ChooseLanguageActivity", appLanguage;
     private RecyclerView mRecyclerView;
-    private List<JSONObject> mItemList = new ArrayList<JSONObject>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(ChooseLanguageActivity.this);
         setContentView(R.layout.activity_choose_language);
         initViews();
-
-        appLanguage = sessionManager.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            setLocale(appLanguage);
-        }
         if (!sessionManager.isFirstTimeLaunch()) {
             BackImage.setVisibility(View.VISIBLE);
             BackImage.setOnClickListener(new View.OnClickListener() {
@@ -58,16 +51,13 @@ public class ChooseLanguageActivity extends AppCompatActivity {
                     onBackPressed();
                 }
             });
-
         }
-
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setLocale(sessionManager.getAppLanguage());
+                setLocale(ChooseLanguageActivity.this);
                 if (sessionManager.isFirstTimeLaunch()) {
                     Logger.logD(LOG_TAG, "Starting setup");
-//                    Intent intent = new Intent(ChooseLanguageActivity.this, IntroActivity.class);
                     Intent intent = new Intent(ChooseLanguageActivity.this, IntroActivity.class);
                     startActivity(intent);
                     sessionManager.setFirstTimeLaunch(false);
@@ -90,7 +80,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         SaveButton = findViewById(R.id.save_button);
         BackImage = findViewById(R.id.backButton);
-
+        setLocale(ChooseLanguageActivity.this);
     }
 
     public void populatingLanguages() {
@@ -146,55 +136,6 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             jsonObject.put("code", "as");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("as"));
             itemList.add(jsonObject);
-
-           /* jsonObject = new JSONObject();
-            jsonObject.put("name", "తెలుగు");
-            jsonObject.put("code", "te");
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("te"));
-            itemList.add(jsonObject);
-
-            jsonObject = new JSONObject();
-            jsonObject.put("name", "Marathi");
-            jsonObject.put("code", "mr");
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("mr"));
-            itemList.add(jsonObject);
-
-            jsonObject = new JSONObject();
-            jsonObject.put("name", "Kannada");
-            jsonObject.put("code", "kn");
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("kn"));
-            itemList.add(jsonObject);
-
-            jsonObject = new JSONObject();
-            jsonObject.put("name", "Assamese");
-            jsonObject.put("code", "as");
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("as"));
-            itemList.add(jsonObject);
-
-            jsonObject = new JSONObject();
-            jsonObject.put("name", "Malyalam");
-            jsonObject.put("code", "ml");
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ml"));
-            itemList.add(jsonObject);
-
-            jsonObject = new JSONObject();
-            jsonObject.put("name", "русский");
-            jsonObject.put("code", "ru");
-            jsonObject.put("selected", sessionManager.getAppLanguage().equalsIgnoreCase("ru"));
-            itemList.add(jsonObject);
-
-            jsonObject = new JSONObject();
-            jsonObject.put("name", "বাংলা");
-            jsonObject.put("code", "bn");
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("bn"));
-            itemList.add(jsonObject);
-
-            jsonObject = new JSONObject();
-            jsonObject.put("name", "தமிழ்");
-            jsonObject.put("code", "ta");
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ta"));
-            itemList.add(jsonObject);*/
-
             LanguageListAdapter languageListAdapter = new LanguageListAdapter(ChooseLanguageActivity.this, itemList, new ItemSelectionListener() {
                 @Override
                 public void onSelect(JSONObject jsonObject, int index) {
@@ -211,12 +152,28 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         }
     }
 
-    public void setLocale(String appLanguage) {
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     public interface ItemSelectionListener {

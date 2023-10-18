@@ -38,23 +38,19 @@ public class EncounterDAO {
                 createEncounters(encounter, db);
             }
             db.setTransactionSuccessful();
-
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-
         }
         return isInserted;
     }
 
     private boolean createEncounters(EncounterDTO encounter, SQLiteDatabase db) throws DAOException {
         boolean isCreated = false;
-
         ContentValues values = new ContentValues();
         try {
-
             values.put("uuid", encounter.getUuid());
             values.put("visituuid", encounter.getVisituuid());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
@@ -68,7 +64,6 @@ public class EncounterDAO {
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
-        } finally {
         }
         return isCreated;
     }
@@ -80,7 +75,6 @@ public class EncounterDAO {
         db.beginTransaction();
         ContentValues values = new ContentValues();
         try {
-
             values.put("uuid", encounter.getUuid());
             values.put("visituuid", encounter.getVisituuid());
             values.put("encounter_time", encounter.getEncounterTime());
@@ -113,7 +107,6 @@ public class EncounterDAO {
             }
         }
         cursor.close();
-
         return encounterTypeUuid;
     }
 
@@ -143,7 +136,6 @@ public class EncounterDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-
         Gson gson = new Gson();
         Log.d("ENC_GSON: ","ENC_GSON: "+gson.toJson(encounterDTOList));
         return encounterDTOList;
@@ -171,13 +163,11 @@ public class EncounterDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-
         return encounterDTOList;
     }
 
     public boolean updateEncounterSync(String synced, String uuid) throws DAOException {
         boolean isUpdated = true;
-
         Logger.logD("encounterdao", "updatesynv encounter " + uuid + "" + synced);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -186,9 +176,7 @@ public class EncounterDAO {
         String[] whereargs = {uuid};
         try {
             values.put("sync", synced);
-
             values.put("uuid", uuid);
-
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
             Logger.logD(tag, "updated" + i);
             db.setTransactionSuccessful();
@@ -199,6 +187,26 @@ public class EncounterDAO {
             db.endTransaction();
         }
 
+        return isUpdated;
+    }
+
+    public boolean voidEncounter(String uuid) throws DAOException {
+        boolean isUpdated = true;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] whereargs = {uuid};
+        try {
+            values.put("voided", "1");
+            values.put("uuid", uuid);
+            db.update("tbl_encounter", values, whereclause, whereargs);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+        }
         return isUpdated;
     }
 
