@@ -75,6 +75,7 @@ public class Node implements Serializable {
     //    public static String bullet_hollow = "\u25CB";
     public static String bullet_hollow = "\u2022";
     public static String bullet_arrow = "\u25BA";
+    public static String right_pointing = "\u25BB";
     public static String next_line = "<br/>";
     String space = "\t";
     private String engineVersion;
@@ -1897,7 +1898,6 @@ public class Node implements Serializable {
         List<Node> mOptions = optionsList;
         if (optionsList != null && !optionsList.isEmpty()) {
             for (Node node_opt : mOptions) {
-                String r1 = generateAssociatedSymptomsOrHistory(node_opt, false);
                 if (node_opt.isSelected()) {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
@@ -1908,6 +1908,7 @@ public class Node implements Serializable {
                             || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
                             || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
                             || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                        String r1 = generateAssociatedSymptomsOrHistory(node_opt, false);
 
                         if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") ||
                                 (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
@@ -1951,6 +1952,8 @@ public class Node implements Serializable {
                             || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
                             || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
                             || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                        String r1 = generateAssociatedSymptomsOrHistory(node_opt, false);
+
                         if (!r1.isEmpty()) {
                             //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                             //raw = raw.substring(6);
@@ -1984,7 +1987,7 @@ public class Node implements Serializable {
     public String generateLanguageSingleNode() {
 
         String raw = "";
-        String r1 = generateAssociatedSymptomsOrHistory(this, true);
+
         if (isSelected()) {
             String associatedTest = getText();
             if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
@@ -1995,7 +1998,7 @@ public class Node implements Serializable {
                     || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
                     || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
                     || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
-
+                String r1 = generateAssociatedSymptomsOrHistory(this, true);
                 if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") ||
                         (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
                         (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) ||
@@ -2039,6 +2042,7 @@ public class Node implements Serializable {
                     || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
                     || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
                     || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                String r1 = generateAssociatedSymptomsOrHistory(this, true);
                 if (!r1.isEmpty()) {
                     //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                     //raw = raw.substring(6);
@@ -2698,7 +2702,7 @@ public class Node implements Serializable {
 
     }
 
-    public String formQuestionAnswer(int level) {
+    public String formQuestionAnswer(int level, boolean isAssociateSymptomsType) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
         List<Node> mOptions = optionsList;
@@ -2718,7 +2722,11 @@ public class Node implements Serializable {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
-                    question = bullet + " " + mOptions.get(i).findDisplay();
+                    if(isAssociateSymptomsType){
+                        question = right_pointing + " " + mOptions.get(i).findDisplay();
+                    }else {
+                        question = bullet + " " + mOptions.get(i).findDisplay();
+                    }
                 }
                 String answer = mOptions.get(i).getLanguage();
                 Log.i(TAG, "ipt: +++++++++++++++++++++++++++ isTerminal - " + mOptions.get(i).isTerminal());
@@ -2749,7 +2757,7 @@ public class Node implements Serializable {
                 } else {
 
                     stringsList.add(question + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
                     Log.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
@@ -2762,7 +2770,7 @@ public class Node implements Serializable {
 
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
                 }
 
                 if (mOptions.get(i).getOptionsList().size() > 0) {
@@ -2774,7 +2782,7 @@ public class Node implements Serializable {
 
                             if (!mOptions.get(i).isTerminal()) {
                                 stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
                             }
                         }
                     }
@@ -3388,7 +3396,7 @@ public class Node implements Serializable {
         return result;
     }
 
-    public String formQuestionAnswerV2(int level) {
+    /*public String formQuestionAnswerV2(int level) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
         List<Node> mOptions = optionsList;
@@ -3487,9 +3495,9 @@ public class Node implements Serializable {
 
 
         return mLanguage;
-    }
+    }*/
 
-    public String formQuestionAnswerForAssociateSymptomsV2(int level) {
+    /*public String formQuestionAnswerForAssociateSymptomsV2(int level) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
         List<Node> mOptions = optionsList;
@@ -3593,7 +3601,7 @@ public class Node implements Serializable {
 
 
         return mLanguage;
-    }
+    }*/
 
     public boolean isSkipped() {
         return isSkipped;
