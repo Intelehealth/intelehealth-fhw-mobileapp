@@ -10,8 +10,8 @@
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -24,194 +24,188 @@
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_main"
-        android:layout_below="@id/appbar_layout"
-        android:layout_above="@id/tvDispenseAdminister"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/tvDispenseAdminister"
+        android:layout_below="@id/appbar_layout"
         android:fillViewport="true"
         android:scrollIndicators="none"
         android:scrollbars="none">
 
-    <!-- Frame 2608676 -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <TableLayout
-        android:id="@+id/table_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
-        android:paddingStart="15dp"
-        android:visibility="gone"
-        >
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:weightSum="10"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="7"
-                android:layout_height="match_parent"
-                android:textSize="@dimen/card_content_sub_text_size"
-                android:text="Medication and Aid List" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1.5"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textSize="@dimen/card_content_sub_text_size"
-                android:text="D" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1.5"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textSize="@dimen/card_content_sub_text_size"
-                android:text="A" />
-        </TableRow>
-    </TableLayout>
-
-        <FrameLayout
-            android:id="@+id/fl_med"
-            android:visibility="visible"
-            tools:visibility="visible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="12dp"
-            >
-
+        <!-- Frame 2608676 -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_medication"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:lineSpacingExtra="3sp"
-        android:text="@string/medication"
-        android:paddingStart="15dp"
-        android:textSize="@dimen/card_content_sub_text_size"
-        android:textStyle="bold" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_medication"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:paddingHorizontal="15dp"
-        android:layout_below="@id/tv_medication"
-        tools:listitem="@layout/item_medication_aid"
-        tools:itemCount="6"
-        />
-        </RelativeLayout>
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/fl_aid"
-            android:visibility="visible"
-            tools:visibility="visible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/fl_med"
-            android:layout_marginBottom="10dp"
-            >
-
-            <RelativeLayout
+            <TableLayout
+                android:id="@+id/table_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:paddingStart="15dp"
+                android:visibility="gone">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7"
+                        android:text="Medication and Aid List"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center"
+                        android:text="D"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center"
+                        android:text="A"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+                </TableRow>
+            </TableLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_med"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="visible"
+                tools:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_medication"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:lineSpacingExtra="3sp"
+                        android:paddingStart="15dp"
+                        android:text="@string/medication"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_medication"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_medication"
+                        android:layout_marginVertical="10dp"
+                        android:paddingHorizontal="15dp"
+                        tools:itemCount="6"
+                        tools:listitem="@layout/item_medication_aid" />
+                </RelativeLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_aid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fl_med"
+                android:layout_marginBottom="10dp"
+                android:visibility="visible"
+                tools:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
 
- <TextView
-        android:id="@+id/tv_aid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="top"
-        android:lineSpacingExtra="3sp"
-        android:text="@string/aid"
-     android:paddingStart="15dp"
-     android:textSize="@dimen/card_content_sub_text_size"
-        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_aid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="top"
+                        android:lineSpacingExtra="3sp"
+                        android:paddingStart="15dp"
+                        android:text="@string/aid"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        android:textStyle="bold" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_aid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingHorizontal="15dp"
-        android:layout_below="@id/tv_aid"
-        tools:listitem="@layout/item_medication_aid"
-        tools:itemCount="5"
-        />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_aid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_aid"
+                        android:layout_marginTop="10dp"
+                        android:paddingHorizontal="15dp"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/item_medication_aid" />
 
-            </RelativeLayout>
-        </FrameLayout>
+                </RelativeLayout>
+            </FrameLayout>
 
-<!--
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_buttons_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:padding="16dp">
+            <!--
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_buttons_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvDispense"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/primary_bg_rounded_corners"
-            android:fontFamily="@font/lato_bold"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="Dispense"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            />
+                    <TextView
+                        android:id="@+id/tvDispense"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:background="@drawable/primary_bg_rounded_corners"
+                        android:fontFamily="@font/lato_bold"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:text="Dispense"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:layout_marginEnd="10dp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline"
+                        />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
 
-        <TextView
-            android:id="@+id/tvAdminister"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/primary_bg_rounded_corners"
-            android:fontFamily="@font/lato_bold"
-            android:padding="12dp"
-            android:layout_marginStart="10dp"
-            android:text="Administer"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/guideline"
-            />
+                    <TextView
+                        android:id="@+id/tvAdminister"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:background="@drawable/primary_bg_rounded_corners"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="12dp"
+                        android:layout_marginStart="10dp"
+                        android:text="Administer"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toEndOf="@+id/guideline"
+                        />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
--->
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            -->
 
-    </RelativeLayout>
+        </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 
     <TextView
@@ -219,15 +213,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="12dp"
         android:background="@drawable/primary_bg_rounded_corners"
         android:fontFamily="@font/lato_bold"
         android:gravity="center"
+        android:padding="16dp"
         android:text="@string/dispense"
         android:textColor="@color/white"
-        android:textSize="20sp"
-        android:padding="16dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginVertical="12dp"
-        />
+        android:textSize="20sp" />
 
 </RelativeLayout>

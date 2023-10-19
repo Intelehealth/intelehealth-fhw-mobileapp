@@ -125,10 +125,10 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         rv_medication = findViewById(R.id.rv_medication);
-      //  rv_medication.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        //  rv_medication.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         rv_aid = findViewById(R.id.rv_aid);
-      //  rv_aid.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        //  rv_aid.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         fl_med = findViewById(R.id.fl_med);
         fl_aid = findViewById(R.id.fl_aid);
@@ -150,8 +150,8 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             getSupportActionBar().setTitle(getString(R.string.administer_medication));
             fl_aid.setVisibility(View.GONE);
             tvDispenseAdminister.setText(getString(R.string.administer));
-        }
-        else {  // Dispense
+            findViewById(R.id.tv_aid).setVisibility(View.GONE);
+        } else {  // Dispense
             getSupportActionBar().setTitle(getString(R.string.dispense_medication_and_aid));
             fl_aid.setVisibility(View.VISIBLE);
             tvDispenseAdminister.setText(getString(R.string.dispense));
@@ -183,9 +183,9 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             if (model != null) {
                 PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
                 patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type1) + " " +
-                            patientAttributeLanguageModel.getAr());
+                        patientAttributeLanguageModel.getAr());
                 patientAttributeLanguageModel.setEn(getResources().getString(R.string.aid_order_type1) + " " +
-                            patientAttributeLanguageModel.getEn());
+                        patientAttributeLanguageModel.getEn());
 
                 Gson gson = new Gson();
                 model.setValue(gson.toJson(patientAttributeLanguageModel));
@@ -193,8 +193,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
 
             model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP);
-            if (model != null)
-            {
+            if (model != null) {
                 PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
                 patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type2) + " " +
                         patientAttributeLanguageModel.getAr());
@@ -207,8 +206,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
 
             model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE);
-            if (model != null)
-            {
+            if (model != null) {
                 PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
                 patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type3) + " " +
                         patientAttributeLanguageModel.getAr());
@@ -221,8 +219,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
 
             model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE);
-            if (model != null)
-            {
+            if (model != null) {
                 PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
                 patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type4) + " " +
                         patientAttributeLanguageModel.getAr());
@@ -235,8 +232,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
 
             model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_CASH_ASSISTANCE);
-            if (model != null)
-            {
+            if (model != null) {
                 PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
                 patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type5) + " " +
                         patientAttributeLanguageModel.getAr());
@@ -247,8 +243,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
                 model.setValue(gson.toJson(patientAttributeLanguageModel));
                 aid_list.add(model);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
 
         }
 
@@ -360,8 +355,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             rv_aid.setNestedScrollingEnabled(false);
             aid_adapter = new MedicationAidAdapter(context, aid_list, LocaleHelper.isArabic(context), /*update_medUuidList,*/ update_aidUuidList, "dispense");
             rv_aid.setAdapter(aid_adapter);
-        }
-        else if (tag.equalsIgnoreCase("administer")) {
+        } else if (tag.equalsIgnoreCase("administer")) {
             RecyclerView.LayoutManager med_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             rv_medication.setLayoutManager(med_LayoutManager);
             rv_medication.setNestedScrollingEnabled(false);

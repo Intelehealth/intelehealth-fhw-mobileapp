@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
+import static org.intelehealth.app.utilities.UuidDictionary.OBS_ADMINISTER_AID;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_ADMINISTER_MEDICATION;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_DISPENSE_AID;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_DISPENSE_MEDICATION;
@@ -72,7 +73,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials,
             encounterDispense = "", encounterAdminister = "";
     private ObsDTO obsDTOMedication, obsDTOAid;
-//    private List<ObsDTO> obsDTOList_Medication, obsDTOList_Aid;
+    //    private List<ObsDTO> obsDTOList_Medication, obsDTOList_Aid;
     private ArrayList<String> fileuuidList;
     ArrayList<File> fileList;
 
@@ -186,12 +187,9 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         if (tag.equalsIgnoreCase("dispense")) {
             setMedicationValues();
             setAidValues();
+        } else if (tag.equalsIgnoreCase("administer")) {
+            setMedicationValues();
         }
-        else if (tag.equalsIgnoreCase("administer")) {
-            setAidValues();
-        }
-
-
 
 
         // fetched medication values from local db.
@@ -244,21 +242,19 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
             tv_medData.setText(medData.substring(0, medData.length() - 2));
 
-        }
-        else fl_med.setVisibility(View.GONE);
+        } else fl_med.setVisibility(View.GONE);
 
         if (tag.equalsIgnoreCase("administer")) {
             getSupportActionBar().setTitle(getString(R.string.administer_medication));
             fl_aid.setVisibility(View.GONE);
-        }
-        else {  // ie. dispense
+        } else {  // ie. dispense
             getSupportActionBar().setTitle(getString(R.string.dispense_medication_and_aid));
 
             if (aidList != null && aidList.size() > 0) {
                 fl_aid.setVisibility(View.VISIBLE);
                 String aidData = "";
                 for (MedicationAidModel aid : aidList) {
-;
+                    ;
                     PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(aid.getValue());
                     String value = "";
                     if (LocaleHelper.isArabic(context))
@@ -269,8 +265,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                     aidData = aidData + (Node.bullet + " " + value) + "\n\n";
                 }
                 tv_aidData.setText(aidData.substring(0, aidData.length() - 2));
-            }
-            else fl_aid.setVisibility(View.GONE);
+            } else fl_aid.setVisibility(View.GONE);
 
         }
 
@@ -370,10 +365,15 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     }
 
     private void setAidValues() throws DAOException {
+        String encounterId = encounterDispense;
+        String conceptId = OBS_DISPENSE_AID;
+        if (tag.equalsIgnoreCase("administer")) {
+            encounterId = encounterAdminister;
+            conceptId = OBS_ADMINISTER_AID;
+        }
         // Notes
         List<String> aidNotes = new ArrayList<>();
-        AidModel model = new Gson().fromJson(ObsDAO.getObsValue(encounterDispense,
-                OBS_DISPENSE_AID).getValue(), AidModel.class);
+        AidModel model = new Gson().fromJson(ObsDAO.getObsValue(encounterId, conceptId).getValue(), AidModel.class);
         if (model != null) {
             if (model.getAidNotesList() != null)
                 aidNotes.addAll(model.getAidNotesList());
@@ -409,8 +409,14 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     }
 
     private void setMedicationValues() throws DAOException {
+        String encounterId = encounterDispense;
+        String conceptId = OBS_DISPENSE_MEDICATION;
+        if (tag.equalsIgnoreCase("administer")) {
+            encounterId = encounterAdminister;
+            conceptId = OBS_ADMINISTER_MEDICATION;
+        }
         List<String> medNotes = new ArrayList<>();
-        MedicationModel medicationModel = new Gson().fromJson(ObsDAO.getObsValue(encounterDispense, OBS_DISPENSE_MEDICATION).getValue(),
+        MedicationModel medicationModel = new Gson().fromJson(ObsDAO.getObsValue(encounterId, conceptId).getValue(),
                 MedicationModel.class);
 
         if (medicationModel != null && medicationModel.getMedicationNotesList() != null) {
@@ -447,8 +453,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                     fileList.add(new File(filename));
                 }
             }
-        }
-        catch (DAOException e) {
+        } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {
             Logger.logD("TAG", file.getMessage());
@@ -548,8 +553,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             }
 
             Toast.makeText(this, getString(R.string.dispense_data_saved), Toast.LENGTH_SHORT).show();
-        }
-        else if (tag.equalsIgnoreCase("administer")) {
+        } else if (tag.equalsIgnoreCase("administer")) {
 
             isEncounterCreated = false;
             EncounterDAO encounterDAO = new EncounterDAO();
@@ -585,8 +589,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             syncUtils.syncForeground("dispense_administer");
         }
 
-       /* Intent intent = new Intent(context, VisitSummaryActivity.class);
-        startActivity(intent);*/
+        Intent intent = new Intent(context, VisitSummaryActivity.class);
+        startActivity(intent);
     }
 
     private void insertAidObs(String aidValue, String aidNotesValue, String encounteruuid,
