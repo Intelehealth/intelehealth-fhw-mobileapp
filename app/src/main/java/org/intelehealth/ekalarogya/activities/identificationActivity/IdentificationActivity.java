@@ -2911,13 +2911,11 @@ public class IdentificationActivity extends AppCompatActivity implements
             String hwPhoneNum = sessionManager.getHwPhone();
             String hwWhatsApp = sessionManager.getHwWhatsApp();
             String phoneNo = mPhoneNum.getText().toString().trim();
-            if((!hwPhoneNum.isEmpty() && phoneNo.equalsIgnoreCase(hwPhoneNum)) || (!hwWhatsApp.isEmpty() && phoneNo.equalsIgnoreCase(hwWhatsApp)))
-            {
+            if ((!hwPhoneNum.isEmpty() && phoneNo.equalsIgnoreCase(hwPhoneNum)) || (!hwWhatsApp.isEmpty() && phoneNo.equalsIgnoreCase(hwWhatsApp))) {
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError(getString(R.string.enter_patient_phone_number));
                 return;
-            }
-            else if (phoneNo.equalsIgnoreCase("0000000000") || phoneNo.equalsIgnoreCase("1111111111") ||
+            } else if (phoneNo.equalsIgnoreCase("0000000000") || phoneNo.equalsIgnoreCase("1111111111") ||
                     phoneNo.equalsIgnoreCase("2222222222") || phoneNo.equalsIgnoreCase("3333333333") ||
                     phoneNo.equalsIgnoreCase("4444444444") || phoneNo.equalsIgnoreCase("5555555555") ||
                     phoneNo.equalsIgnoreCase("6666666666") || phoneNo.equalsIgnoreCase("7777777777") ||
@@ -4507,13 +4505,11 @@ public class IdentificationActivity extends AppCompatActivity implements
             String hwPhoneNum = sessionManager.getHwPhone();
             String hwWhatsApp = sessionManager.getHwWhatsApp();
             String phoneNo = mPhoneNum.getText().toString().trim();
-            if((!hwPhoneNum.isEmpty() && phoneNo.equalsIgnoreCase(hwPhoneNum)) || (!hwWhatsApp.isEmpty() && phoneNo.equalsIgnoreCase(hwWhatsApp)))
-            {
+            if ((!hwPhoneNum.isEmpty() && phoneNo.equalsIgnoreCase(hwPhoneNum)) || (!hwWhatsApp.isEmpty() && phoneNo.equalsIgnoreCase(hwWhatsApp))) {
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError(getString(R.string.enter_patient_phone_number));
                 return;
-            }
-            else if (phoneNo.equalsIgnoreCase("0000000000") || phoneNo.equalsIgnoreCase("1111111111") ||
+            } else if (phoneNo.equalsIgnoreCase("0000000000") || phoneNo.equalsIgnoreCase("1111111111") ||
                     phoneNo.equalsIgnoreCase("2222222222") || phoneNo.equalsIgnoreCase("3333333333") ||
                     phoneNo.equalsIgnoreCase("4444444444") || phoneNo.equalsIgnoreCase("5555555555") ||
                     phoneNo.equalsIgnoreCase("6666666666") || phoneNo.equalsIgnoreCase("7777777777") ||
@@ -6065,6 +6061,9 @@ public class IdentificationActivity extends AppCompatActivity implements
         medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(medicalHistoryViewPager);
         binding.cardViewMedicalHistory.requestFocus();
+        if(medicalHistoryList.size()==1)
+            addMedicalHistoryButton.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -6076,6 +6075,8 @@ public class IdentificationActivity extends AppCompatActivity implements
         medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(medicalHistoryViewPager);
         binding.cardViewMedicalHistory.requestFocus();
+        if (position == 0)
+            addMedicalHistoryButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -6086,6 +6087,8 @@ public class IdentificationActivity extends AppCompatActivity implements
         smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
         smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(smokingHistoryViewPager);
+        if(smokingHistoryList.size()==1)
+            addSmokingStatusButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -6096,6 +6099,8 @@ public class IdentificationActivity extends AppCompatActivity implements
         smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
         smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(smokingHistoryViewPager);
+        if (position == 0)
+            addSmokingStatusButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -6106,6 +6111,8 @@ public class IdentificationActivity extends AppCompatActivity implements
         alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
         alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(alcoholViewPager);
+        if(alcoholConsumptionHistoryList.size()==1)
+            addAlcoholConsumptionButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -6116,6 +6123,8 @@ public class IdentificationActivity extends AppCompatActivity implements
         alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
         alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(alcoholViewPager);
+        if (position == 0)
+            addAlcoholConsumptionButton.setVisibility(View.GONE);
     }
 
     private void setViewPagerOffset(ViewPager2 viewPager2) {
@@ -6256,6 +6265,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                 medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
                 setViewPagerOffset(medicalHistoryViewPager);
             }
+            if (position == 0)
+                addMedicalHistoryButton.setVisibility(View.VISIBLE);
         }
 
         if (object instanceof SmokingHistory) {
@@ -6269,6 +6280,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                 smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
                 setViewPagerOffset(smokingHistoryViewPager);
             }
+            if (position == 0)
+                addSmokingStatusButton.setVisibility(View.VISIBLE);
         }
         // Tobacco Consumption
         if (object instanceof TobaccoHistory) {
@@ -6283,6 +6296,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                 tobaccoHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
                 setViewPagerOffset(tobaccoHistoryViewPager);
             }
+            if (position == 0)
+                addTobaccoStatusButton.setVisibility(View.VISIBLE);
         }
 
         if (object instanceof AlcoholConsumptionHistory) {
@@ -6296,6 +6311,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                 alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
                 setViewPagerOffset(alcoholViewPager);
             }
+            if (position == 0)
+                addAlcoholConsumptionButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -6330,6 +6347,8 @@ public class IdentificationActivity extends AppCompatActivity implements
         tobaccoHistoryViewPager.setCurrentItem(tobaccoHistoryList.size() - 1);
         tobaccoHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(tobaccoHistoryViewPager);
+        if(tobaccoHistoryList.size()==1)
+            addTobaccoStatusButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -6341,6 +6360,8 @@ public class IdentificationActivity extends AppCompatActivity implements
         tobaccoHistoryViewPager.setCurrentItem(tobaccoHistoryList.size() - 1);
         tobaccoHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(tobaccoHistoryViewPager);
+        if(position == 0)
+            addTobaccoStatusButton.setVisibility(View.GONE);
     }
 
     private void checkIfPatientIsHoHOrNot(String householduuid) throws DAOException {
