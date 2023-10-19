@@ -5,54 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/rlSearchBarTodaysAppointment"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/et_search_patient_height"
-        android:layout_marginVertical="15dp"
-        android:layout_marginTop="@dimen/ma_icon_margin_top"
-        android:background="@drawable/ui2_background_input_field_new"
-        android:contentDescription="Today Appointment Search Bar Relative Layout">
-
-        <EditText
-            android:id="@+id/et_search_today"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/iv_clear_all"
-            android:background="@null"
-            android:drawableStart="@drawable/ui2_ic_search_icon_home"
-            android:drawablePadding="@dimen/find_patient_icon_padding"
-            android:drawableTint="@color/iconTintGrayBottomNav"
-            android:hint="@string/search_patient"
-            android:imeOptions="actionSearch"
-            android:importantForAutofill="no"
-            android:maxLines="1"
-            android:paddingStart="@dimen/common_edittext_padding_left"
-            android:paddingTop="@dimen/common_edittext_padding_top"
-            android:paddingEnd="@dimen/common_edittext_padding_right"
-            android:paddingBottom="@dimen/common_edittext_padding_bottom1"
-            android:singleLine="true"
-            android:textSize="@dimen/common_hint_text_size" />
-
-        <ImageView
-            android:id="@+id/iv_clear_today"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/ui2_ic_close_drawer"
-            android:visibility="gone"
-            app:tint="@color/colorPrimary" />
-
-
-    </RelativeLayout>
-
-
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_today"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rlSearchBarTodaysAppointment">
+        android:fillViewport="true"
+        android:scrollIndicators="none"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,6 +19,47 @@
             android:layout_marginTop="@dimen/today_apps_parent_margin_top"
             android:orientation="vertical"
             android:paddingBottom="40dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/et_search_patient_height"
+                android:layout_marginTop="@dimen/ma_icon_margin_top"
+                android:background="@drawable/ui2_background_input_field_new">
+
+                <EditText
+                    android:id="@+id/et_search_today"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/iv_clear_all"
+                    android:background="@null"
+                    android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                    android:drawablePadding="@dimen/find_patient_icon_padding"
+                    android:drawableTint="@color/iconTintGrayBottomNav"
+                    android:hint="@string/search_patient"
+                    android:imeOptions="actionSearch"
+                    android:importantForAutofill="no"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/common_edittext_padding_left"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom1"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size" />
+
+                <ImageView
+                    android:id="@+id/iv_clear_today"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ui2_ic_close_drawer"
+                    android:visibility="gone"
+                    app:tint="@color/colorPrimary"
+                    tools:visibility="visible" />
+
+
+            </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -93,6 +93,7 @@
                 android:id="@+id/layout_main_app_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/today_apps_options_margin_top"
                 android:background="@drawable/ui2_ic_bg_options_appointment"
                 android:orientation="horizontal"
                 android:weightSum="3">
@@ -355,6 +356,6 @@
             </LinearLayout>
         </LinearLayout>
 
+    </androidx.core.widget.NestedScrollView>
 
-    </ScrollView>
 </RelativeLayout>

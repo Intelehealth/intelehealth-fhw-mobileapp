@@ -5,85 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/layout_all_appoints_filter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin_5">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/et_search_patient_height"
-            android:layout_marginTop="@dimen/ma_icon_margin_top"
-            android:layout_toStartOf="@+id/iv_calendar_all_app"
-            android:background="@drawable/ui2_background_input_field_new">
-
-            <EditText
-                android:id="@+id/et_search_all"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/iv_clear_all"
-                android:background="@null"
-                android:drawableStart="@drawable/ui2_ic_search_icon_home"
-                android:drawablePadding="@dimen/find_patient_icon_padding"
-                android:drawableTint="@color/iconTintGrayBottomNav"
-                android:hint="@string/search_patient"
-                android:imeOptions="actionSearch"
-                android:importantForAutofill="no"
-                android:maxLines="1"
-                android:paddingStart="@dimen/common_edittext_padding_left"
-                android:paddingTop="@dimen/common_edittext_padding_top"
-                android:paddingEnd="@dimen/common_edittext_padding_right"
-                android:paddingBottom="@dimen/common_edittext_padding_bottom1"
-                android:singleLine="true"
-                android:textSize="@dimen/common_hint_text_size" />
-
-            <ImageView
-                android:id="@+id/iv_clear_all"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ui2_ic_close_drawer"
-                android:visibility="gone"
-                app:tint="@color/colorPrimary" />
-
-
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/iv_calendar_all_app"
-            android:layout_width="@dimen/icon_filters_width"
-            android:layout_height="@dimen/icon_filters_height"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="@dimen/ma_icon_margin_start"
-            android:layout_marginTop="@dimen/ma_icon_margin_top"
-            android:layout_marginEnd="@dimen/ma_icon_margin_end"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/ui2_ic_filter_bg"
-            android:padding="@dimen/my_appointment_padding"
-            android:src="@drawable/ui2_ic_calendar" />
-
-        <ImageView
-            android:id="@+id/iv_filter_all_app"
-            android:layout_width="@dimen/icon_filters_width"
-            android:layout_height="@dimen/icon_filters_height"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/ma_icon_margin_top"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/ui2_ic_filter_bg"
-            android:padding="@dimen/my_appointment_padding"
-            android:src="@drawable/ui2_ic_filter"
-            android:visibility="gone" />
-
-    </RelativeLayout>
-
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsvAllAppointments"
-        android:layout_below="@+id/layout_all_appoints_filter"
+        android:id="@+id/nsv_today"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollIndicators="none"
+        android:scrollbars="none">
 
         <RelativeLayout
             android:id="@+id/layout_parent_all_appointments"
@@ -92,10 +20,85 @@
             android:layout_marginTop="@dimen/today_apps_parent_margin_top"
             android:paddingBottom="60dp">
 
+            <RelativeLayout
+                android:id="@+id/layout_all_appoints_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/et_search_patient_height"
+                    android:layout_marginTop="@dimen/ma_icon_margin_top"
+                    android:layout_toStartOf="@+id/iv_calendar_all_app"
+                    android:background="@drawable/ui2_background_input_field_new">
+
+                    <EditText
+                        android:id="@+id/et_search_all"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/iv_clear_all"
+                        android:background="@null"
+                        android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                        android:drawablePadding="@dimen/find_patient_icon_padding"
+                        android:drawableTint="@color/iconTintGrayBottomNav"
+                        android:hint="@string/search_patient"
+                        android:imeOptions="actionSearch"
+                        android:importantForAutofill="no"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/common_edittext_padding_left"
+                        android:paddingTop="@dimen/common_edittext_padding_top"
+                        android:paddingEnd="@dimen/common_edittext_padding_right"
+                        android:paddingBottom="@dimen/common_edittext_padding_bottom1"
+                        android:singleLine="true"
+                        android:textSize="@dimen/common_hint_text_size" />
+
+                    <ImageView
+                        android:id="@+id/iv_clear_all"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ui2_ic_close_drawer"
+                        android:visibility="gone"
+                        app:tint="@color/colorPrimary" />
+
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_calendar_all_app"
+                    android:layout_width="@dimen/icon_filters_width"
+                    android:layout_height="@dimen/icon_filters_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/ma_icon_margin_start"
+                    android:layout_marginTop="@dimen/ma_icon_margin_top"
+                    android:layout_marginEnd="@dimen/ma_icon_margin_end"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ui2_ic_filter_bg"
+                    android:padding="@dimen/my_appointment_padding"
+                    android:src="@drawable/ui2_ic_calendar" />
+
+                <ImageView
+                    android:id="@+id/iv_filter_all_app"
+                    android:layout_width="@dimen/icon_filters_width"
+                    android:layout_height="@dimen/icon_filters_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/ma_icon_margin_top"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ui2_ic_filter_bg"
+                    android:padding="@dimen/my_appointment_padding"
+                    android:src="@drawable/ui2_ic_filter"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/layout_all_appoints_filter"
+                android:layout_marginTop="@dimen/all1_apps_options_margin_top"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -471,6 +474,6 @@
 
         </RelativeLayout>
 
-
     </androidx.core.widget.NestedScrollView>
+
 </RelativeLayout>

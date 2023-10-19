@@ -151,6 +151,11 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                         timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
                                                 + context.getString(R.string.in) + " , " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                                 }
+                                if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                    timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
+                                else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                    timeText = minutes + " " + context.getString(R.string.minutes_txt) + " " + context.getString(R.string.in) ;
+//                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                                 holder.tvDate.setText(timeText);
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
@@ -163,6 +168,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
                             else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                                 timeText = minutes + " " + context.getString(R.string.minutes_txt) + " " + context.getString(R.string.in) ;
+//                            holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
                             holder.tvDate.setText(timeText);
