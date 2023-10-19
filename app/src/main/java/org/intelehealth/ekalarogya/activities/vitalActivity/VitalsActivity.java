@@ -880,34 +880,33 @@ public class VitalsActivity extends AppCompatActivity {
     private void bpSysColorCode(String bpSysValue) {
         if (bpSysValue != null && !bpSysValue.isEmpty()) {
             Double bpSys = Double.valueOf(bpSysValue);
-
-            if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {   // red
+            if (bpSys < Double.valueOf(MINIMUM_BP_SYS) || bpSys > Double.valueOf(MAXIMUM_BP_SYS)) {   // red
+                mBpSys.setTextColor(getResources().getColor(R.color.font_black_0));
+            } else if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys >= Double.valueOf(SYS_RED_MAX)) {   // red
                 mBpSys.setTextColor(getResources().getColor(R.color.scale_1));
-            } else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {  // yellow
-                if (bpSys < Double.valueOf(SYS_YELLOW_MAX))
+            } else if (bpSys >= Double.valueOf(SYS_YELLOW_MIN) && (bpSys <= Double.valueOf(SYS_YELLOW_MAX))){
                     mBpSys.setTextColor(getResources().getColor(R.color.dark_yellow));
-            } else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {   //green
-                if (bpSys < Double.valueOf(SYS_GREEN_MAX))
+            } else if (bpSys >= Double.valueOf(SYS_GREEN_MIN) && (bpSys < Double.valueOf(SYS_GREEN_MAX))){
                     mBpSys.setTextColor(getResources().getColor(R.color.green));
             } else
-                mBpSys.setTextColor(null);
+                mBpSys.setTextColor(getResources().getColor(R.color.font_black_0));
+
         }
     }
 
     private void bpDiaColorCode(String bpDiaValue) {
         if (bpDiaValue != null && !bpDiaValue.isEmpty()) {
             Double bpDia = Double.valueOf(bpDiaValue);
-            if(bpDia < Double.valueOf(DIA_RED_MIN))
+            if(bpDia < Double.valueOf(MINIMUM_BP_DSYS) || bpDia > Double.valueOf(MAXIMUM_BP_DSYS))
+                mBpDia.setTextColor(getResources().getColor(R.color.font_black_0));
+            else if (bpDia > Double.valueOf(DIA_RED_MAX))  {  // red
                 mBpDia.setTextColor(getResources().getColor(R.color.scale_1));
-            else if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
-                mBpDia.setTextColor(getResources().getColor(R.color.scale_1));
-            } else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
-                if (bpDia < Double.valueOf(DIA_YELLOW_MAX))
+            } else if (bpDia >= Double.valueOf(DIA_YELLOW_MIN) && (bpDia < Double.valueOf(DIA_YELLOW_MAX))){
                     mBpDia.setTextColor(getResources().getColor(R.color.dark_yellow));
-            } else if (bpDia >= Double.valueOf(DIA_RED_MIN) && bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
+            } else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
                 mBpDia.setTextColor(getResources().getColor(R.color.green));
             } else
-                mBpDia.setTextColor(null);
+                mBpDia.setTextColor(getResources().getColor(R.color.font_black_0));
         }
     }
 

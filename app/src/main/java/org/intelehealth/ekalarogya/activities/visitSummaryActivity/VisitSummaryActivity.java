@@ -11,9 +11,13 @@ import static org.intelehealth.ekalarogya.app.AppConstants.BMI_YELLOW_MAX;
 import static org.intelehealth.ekalarogya.app.AppConstants.BMI_YELLOW_MIN;
 import static org.intelehealth.ekalarogya.app.AppConstants.DIA_GREEN_MIN;
 import static org.intelehealth.ekalarogya.app.AppConstants.DIA_RED_MAX;
-import static org.intelehealth.ekalarogya.app.AppConstants.DIA_RED_MIN;
+
 import static org.intelehealth.ekalarogya.app.AppConstants.DIA_YELLOW_MAX;
 import static org.intelehealth.ekalarogya.app.AppConstants.DIA_YELLOW_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.MAXIMUM_BP_DSYS;
+import static org.intelehealth.ekalarogya.app.AppConstants.MAXIMUM_BP_SYS;
+import static org.intelehealth.ekalarogya.app.AppConstants.MINIMUM_BP_DSYS;
+import static org.intelehealth.ekalarogya.app.AppConstants.MINIMUM_BP_SYS;
 import static org.intelehealth.ekalarogya.app.AppConstants.SYS_GREEN_MAX;
 import static org.intelehealth.ekalarogya.app.AppConstants.SYS_GREEN_MIN;
 import static org.intelehealth.ekalarogya.app.AppConstants.SYS_RED_MAX;
@@ -2497,15 +2501,16 @@ public class VisitSummaryActivity extends BaseActivity {
     private String bpSysColorCode(String bpSysValue) {
         if (bpSysValue!=null && !bpSysValue.isEmpty()) {
             Double bpSys = Double.valueOf(bpSysValue);
-            if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {   // red
+            if (bpSys < Double.valueOf(MINIMUM_BP_SYS) || bpSys > Double.valueOf(MAXIMUM_BP_SYS)) {   // red
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpSysValue +"</font>";
+            }
+            else if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys >= Double.valueOf(SYS_RED_MAX)) {   // red
                 return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpSysValue +"</font>";
             }
-            else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {  // yellow
-                if (bpSys < Double.valueOf(SYS_YELLOW_MAX))
+            else if (bpSys >= Double.valueOf(SYS_YELLOW_MIN) && (bpSys <= Double.valueOf(SYS_YELLOW_MAX))){
                     return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpSysValue +"</font>";
             }
-            else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {   //green
-                if (bpSys < Double.valueOf(SYS_GREEN_MAX))
+            else if (bpSys >= Double.valueOf(SYS_GREEN_MIN) && (bpSys < Double.valueOf(SYS_GREEN_MAX))){
                     return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpSysValue +"</font>";
             }
             else
@@ -2517,17 +2522,16 @@ public class VisitSummaryActivity extends BaseActivity {
     private String bpDiaColorCode(String bpDiaValue) {
         if (bpDiaValue!=null && !bpDiaValue.isEmpty()) {
             Double bpDia = Double.valueOf(bpDiaValue);
-            if (bpDia < Double.valueOf(DIA_RED_MIN)) {  // red
-                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpDiaValue +"</font>";
+            if (bpDia < Double.valueOf(MINIMUM_BP_DSYS) || bpDia > Double.valueOf(MAXIMUM_BP_DSYS)) {  // black
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpDiaValue +"</font>";
             }
             else if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
                 return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpDiaValue +"</font>";
             }
-            else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
-                if (bpDia < Double.valueOf(DIA_YELLOW_MAX))
+            else if (bpDia >= Double.valueOf(DIA_YELLOW_MIN) && (bpDia < Double.valueOf(DIA_YELLOW_MAX))){
                     return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpDiaValue +"</font>";
             }
-            else if (bpDia >= Double.valueOf(DIA_RED_MIN) && bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
+            else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
                 return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpDiaValue +"</font>";
             }
             else
