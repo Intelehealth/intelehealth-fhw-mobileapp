@@ -1593,11 +1593,11 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="unable_to_pick_data">Unable to pick the gallery data!</string>
     <string name="max_doc_size_toast_mb">Max doc size is 1 MB</string>
     <string name="disconnected">Disconnected!</string>
-    <string name="how_intelehealth_work">How intelehealth works?</string>
-    <string name="how_intelehealth_work_ans">Intelehealth has developed a comprehensive technology platform that Governments, NGO’s and Hospitals can use to deliver telemedicine-based care to their beneficiaries. Built with powerful features like a digital assistant with 80+ care protocols makes it easy for any organization to use and adapt it to meet their needs!</string>
-    <string name="why_intelehealth_exist">Why Intelehealth exists?</string>
-    <string name="why_intelehealth_exist_ans">Team at Intelehealth has a vision of \"Health for all\". Thus, Intelehealth exists to keep this vision of universal health coverage alive. It strive to achieve that every single citizen in this world should be able to receive the health services they need, when and where they need them, without facing any financial hardship.</string>
-    <string name="how_intelehealth_help">How intelehealth help patients?</string>
+    <string name="how_intelehealth_work">How Namma Aarogya works?</string>
+    <string name="how_intelehealth_work_ans">Namma Aarogya has developed a comprehensive technology platform that Governments, NGO’s and Hospitals can use to deliver telemedicine-based care to their beneficiaries. Built with powerful features like a digital assistant with 80+ care protocols makes it easy for any organization to use and adapt it to meet their needs!</string>
+    <string name="why_intelehealth_exist">Why Namma Aarogya exists?</string>
+    <string name="why_intelehealth_exist_ans">Team at Namma Aarogya has a vision of \"Health for all\". Thus, Namma Aarogya exists to keep this vision of universal health coverage alive. It strive to achieve that every single citizen in this world should be able to receive the health services they need, when and where they need them, without facing any financial hardship.</string>
+    <string name="how_intelehealth_help">How Namma Aarogya help patients?</string>
     <string name="how_intelehealth_help_ans">Our Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare. Using app, the HWs are able to capture details of patient\'s medication history, diagnostics, prescriptions and treatment. All these details our then shared with the remote doctors to provide consultation. It helps in saving patients from traveling miles for healthcare.</string>
     <string name="how_to_register">How to register new patient?</string>
     <string name="how_to_register_ans">To register a patient, click on the \"Add Patient\" tab on the home scree. Read out the privacy policy to the patient. If they accept, fill out all the details to successfully register a patient.</string>
