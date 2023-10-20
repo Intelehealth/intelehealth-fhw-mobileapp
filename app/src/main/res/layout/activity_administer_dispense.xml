@@ -372,7 +372,7 @@
                         android:id="@+id/additional_documents_download"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/recy_additional_documents"
+                        android:layout_below="@id/rv_docs"
                         android:backgroundTint="@color/cardview_dark_background"
                         android:fontFamily="@font/lato_medium"
                         android:padding="@dimen/padding_card"

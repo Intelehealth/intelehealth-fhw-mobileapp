@@ -95,6 +95,13 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             if (aid_adapter != null)
                 aidCheckedList.addAll(aid_adapter.getFinalList());
 
+            String encounterDisenseAdminister = "";
+            if (tag.equalsIgnoreCase("dispense"))
+                encounterDisenseAdminister = encounterDispense;
+            else if (tag.equalsIgnoreCase("administer"))
+                encounterDisenseAdminister = encounterAdminister;
+
+
             Intent intent = new Intent(context, AdministerDispenseActivity.class);
             intent.putExtra("tag", tag);
             intent.putExtra("patientUuid", patientUuid);
@@ -102,8 +109,9 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             intent.putExtra("encounterVisitNote", encounterVisitNote);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            intent.putExtra("encounterDispense", encounterDispense);
-            intent.putExtra("encounterAdminister", encounterAdminister);
+            /*intent.putExtra("encounterDispense", encounterDispense);
+            intent.putExtra("encounterAdminister", encounterAdminister);*/
+            intent.putExtra("encounterDisenseAdminister", encounterDisenseAdminister);
 
             if (medCheckedList.size() > 0)
                 intent.putExtra("med", (Serializable) medCheckedList);

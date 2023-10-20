@@ -7,12 +7,16 @@ import static org.intelehealth.app.utilities.UuidDictionary.OBS_DISPENSE_MEDICAT
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -46,6 +50,7 @@ import org.intelehealth.app.models.dispenseAdministerModel.MedicationModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
@@ -70,16 +75,18 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private Context context;
     private RecyclerView rv_docs;
     private RecyclerView.LayoutManager docsLayoutManager;
-    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials,
-            encounterDispense = "", encounterAdminister = "";
+    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials, encounterDisenseAdminister
+            /*encounterDispense = "", encounterAdminister = ""*/;
     private ObsDTO obsDTOMedication, obsDTOAid;
     //    private List<ObsDTO> obsDTOList_Medication, obsDTOList_Aid;
-    private ArrayList<String> fileuuidList;
+    private ArrayList<String> fileuuidList = new ArrayList<>();
     ArrayList<File> fileList;
 
     private SessionManager sessionManager;
     private MedicationModel medModel = new MedicationModel();
     private AidModel aidModel = new AidModel();
+    private TextView additionalImageDownloadText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +102,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         tie_medNotes.setHint(getString(R.string.enter_details_here));
         tie_aidNotes.setHint(getString(R.string.enter_details_here));
+        registerBroadcastReceiverDynamically();
 
         tie_medNotes.addTextChangedListener(new TextWatcher() {
             @Override
@@ -164,6 +172,12 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         fl_med = findViewById(R.id.fl_med);
 
         imgbtn_uploadDocs = findViewById(R.id.imgbtn_uploadDocs);
+        //image download for additional documents
+        additionalImageDownloadText = findViewById(R.id.additional_documents_download);
+        Paint p = new Paint();
+        p.setColor(Color.BLUE);
+        additionalImageDownloadText.setPaintFlags(p.getColor());
+        additionalImageDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         rv_docs = findViewById(R.id.rv_docs);
         tvSave = findViewById(R.id.tvSave);
@@ -178,8 +192,10 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         encounterVisitNote = intent.getStringExtra("encounterVisitNote");
         encounterVitals = intent.getStringExtra("encounterUuidVitals");
         encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-        encounterDispense = intent.getStringExtra("encounterDispense");
-        encounterAdminister = intent.getStringExtra("encounterAdminister");
+        encounterDisenseAdminister = intent.getStringExtra("encounterDisenseAdminister");
+
+       /* encounterDispense = intent.getStringExtra("encounterDispense");
+        encounterAdminister = intent.getStringExtra("encounterAdminister");*/
 
         medList = (List<MedicationAidModel>) intent.getSerializableExtra("med");
         aidList = (List<MedicationAidModel>) intent.getSerializableExtra("aid");    // null on empty.
@@ -223,7 +239,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }*/
 
-        setImagesToRV();    // TODO: handle this later with new concept id for UPLOAD_DOCS obs.
+        additionalDocumentImagesDownload();
+     //   setImagesToRV();
         // TODO: here max 4 images will only come.
 
         if (medList != null && medList.size() > 0) {
@@ -350,10 +367,12 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 docIntent.putExtra("encounterUuidVitals", encounterVitals);
                 docIntent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
 
-                if (tag.equalsIgnoreCase("dispense"))
+               /* if (tag.equalsIgnoreCase("dispense"))
                     docIntent.putExtra("encounterDispenseAdminister", encounterDispense);
                 else if (tag.equalsIgnoreCase("administer"))
                     docIntent.putExtra("encounterDispenseAdminister", encounterAdminister);
+                */
+                    docIntent.putExtra("encounterDispenseAdminister", encounterDisenseAdminister);
 
                 startActivity(docIntent);
             }
@@ -365,12 +384,18 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     }
 
     private void setAidValues() throws DAOException {
-        String encounterId = encounterDispense;
+       /* String encounterId = encounterDispense;
         String conceptId = OBS_DISPENSE_AID;
         if (tag.equalsIgnoreCase("administer")) {
             encounterId = encounterAdminister;
             conceptId = OBS_ADMINISTER_AID;
-        }
+        }*/
+
+        String encounterId = encounterDisenseAdminister;
+        String conceptId = OBS_DISPENSE_AID;
+        if (tag.equalsIgnoreCase("administer"))
+            conceptId = OBS_ADMINISTER_AID;
+
         // Notes
         List<String> aidNotes = new ArrayList<>();
         AidModel model = new Gson().fromJson(ObsDAO.getObsValue(encounterId, conceptId).getValue(), AidModel.class);
@@ -378,7 +403,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             if (model.getAidNotesList() != null)
                 aidNotes.addAll(model.getAidNotesList());
 
-            if (model.getTotalCost() != null)
+          /*  if (model.getTotalCost() != null)
                 tie_totalCost.setText(model.getTotalCost());    // total cost
 
             if (model.getVendorDiscount() != null)
@@ -392,8 +417,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
             if (model.getOtherAids() != null)
                 tie_others.setText(model.getOtherAids());    // other aids
-
-            if (fileuuidList == null && model.getDocumentsList() != null && model.getDocumentsList().size() > 0)   // docs images
+*/
+            if (fileuuidList.size() == 0 && model.getDocumentsList() != null && model.getDocumentsList().size() > 0)   // docs images
                 fileuuidList.addAll(model.getDocumentsList());
         }
 
@@ -409,12 +434,18 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     }
 
     private void setMedicationValues() throws DAOException {
-        String encounterId = encounterDispense;
+       /* String encounterId = encounterDispense;
         String conceptId = OBS_DISPENSE_MEDICATION;
         if (tag.equalsIgnoreCase("administer")) {
             encounterId = encounterAdminister;
             conceptId = OBS_ADMINISTER_MEDICATION;
-        }
+        }*/
+
+        String encounterId = encounterDisenseAdminister;
+        String conceptId = OBS_DISPENSE_MEDICATION;
+        if (tag.equalsIgnoreCase("administer"))
+            conceptId = OBS_ADMINISTER_MEDICATION;
+
         List<String> medNotes = new ArrayList<>();
         MedicationModel medicationModel = new Gson().fromJson(ObsDAO.getObsValue(encounterId, conceptId).getValue(),
                 MedicationModel.class);
@@ -422,7 +453,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         if (medicationModel != null && medicationModel.getMedicationNotesList() != null) {
             medNotes.addAll(medicationModel.getMedicationNotesList());
 
-            if (fileuuidList == null && medicationModel.getDocumentsList() != null && medicationModel.getDocumentsList().size() > 0)
+            if (fileuuidList.size() == 0 && medicationModel.getDocumentsList() != null && medicationModel.getDocumentsList().size() > 0)
                 fileuuidList.addAll(medicationModel.getDocumentsList());
         }
 
@@ -442,10 +473,9 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         fileuuidList = new ArrayList<String>();
         fileList = new ArrayList<File>();
         try {
-            if (tag.equalsIgnoreCase("dispense"))
-                fileuuidList = imagesDAO.getImageUuid(encounterDispense, UuidDictionary.COMPLEX_IMAGE_AD);
-            else if (tag.equalsIgnoreCase("administer"))
-                fileuuidList = imagesDAO.getImageUuid(encounterAdminister, UuidDictionary.COMPLEX_IMAGE_AD);
+
+            fileuuidList = imagesDAO.getImageUuid(encounterDisenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);
+            Log.d("TAG", "setImagesToRV: count: " + String.valueOf(fileuuidList.size()));
 
             for (String fileuuid : fileuuidList) {
                 String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
@@ -453,15 +483,15 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                     fileList.add(new File(filename));
                 }
             }
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            docsLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            rv_docs.setLayoutManager(docsLayoutManager);
+            rv_docs.setAdapter(horizontalAdapter);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {
             Logger.logD("TAG", file.getMessage());
         }
-        HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
-        docsLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        rv_docs.setLayoutManager(docsLayoutManager);
-        rv_docs.setAdapter(horizontalAdapter);
     }
 
     private void checkValidation() {
@@ -519,66 +549,88 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         boolean isEncounterCreated = false;
         if (tag.equalsIgnoreCase("dispense")) {
 
-            isEncounterCreated = false;
-            EncounterDAO encounterDAO = new EncounterDAO();
-            EncounterDTO encounterDTO = new EncounterDTO();
-            encounterDTO.setUuid(UUID.randomUUID().toString());
-            encounterDispense = encounterDTO.getUuid();
-            encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_DISPENSE);   // Dispense Encounter
-            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-            encounterDTO.setVisituuid(visitUuid);
-            encounterDTO.setSyncd(false);
-            encounterDTO.setProvideruuid(sessionManager.getProviderID());
-            Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
-            encounterDTO.setVoided(0);
-            try {
-                isEncounterCreated = encounterDAO.createEncountersToDB(encounterDTO);
-                if (isEncounterCreated) {
+            if (encounterDisenseAdminister.isEmpty()) {
+                isEncounterCreated = false;
+                EncounterDAO encounterDAO = new EncounterDAO();
+                EncounterDTO encounterDTO = new EncounterDTO();
+                encounterDTO.setUuid(UUID.randomUUID().toString());
+                encounterDisenseAdminister = encounterDTO.getUuid();
+                encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_DISPENSE);   // Dispense Encounter
+                encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+                encounterDTO.setVisituuid(visitUuid);
+                encounterDTO.setSyncd(false);
+                encounterDTO.setProvideruuid(sessionManager.getProviderID());
+                Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
+                encounterDTO.setVoided(0);
 
-                    // Dispense - medication push
-                    if (medList != null && medList.size() > 0) {
-                        insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_DISPENSE_MEDICATION); // Dispense Med Obs.
+                try {
+                    isEncounterCreated = encounterDAO.createEncountersToDB(encounterDTO);
+                    if (isEncounterCreated) {
+
+                        // Dispense - medication push
+                        if (medList != null && medList.size() > 0) {
+                            insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_DISPENSE_MEDICATION); // Dispense Med Obs.
+                        }
+
+                        if (aidList != null && aidList.size() > 0) {
+                            insertAidObs(aidValue, aidNotesValue, encounterDTO.getUuid(),
+                                    totalCostValue, vendorDiscountValue, coveredCostValue, outOfPocketValue, otherAids, OBS_DISPENSE_AID);  // Dispense Aid Obs.
+                        }
+
+                        // Create OBS and push - END
+
                     }
-
-                    if (aidList != null && aidList.size() > 0) {
-                        insertAidObs(aidValue, aidNotesValue, encounterDTO.getUuid(),
-                                totalCostValue, vendorDiscountValue, coveredCostValue, outOfPocketValue, otherAids, OBS_DISPENSE_AID);  // Dispense Aid Obs.
-                    }
-
-                    // Create OBS and push - END
-
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            else {  // update record.
+
+                // Dispense - medication push
+                if (medList != null && medList.size() > 0)
+                    insertMedicationObs(medicineValue, medNotesValue, encounterDisenseAdminister, OBS_DISPENSE_MEDICATION); // Dispense Med Obs.
+
+                if (aidList != null && aidList.size() > 0)
+                    insertAidObs(aidValue, aidNotesValue, encounterDisenseAdminister,
+                            totalCostValue, vendorDiscountValue, coveredCostValue, outOfPocketValue, otherAids, OBS_DISPENSE_AID);  // Dispense Aid Obs.
             }
 
             Toast.makeText(this, getString(R.string.dispense_data_saved), Toast.LENGTH_SHORT).show();
         } else if (tag.equalsIgnoreCase("administer")) {
 
-            isEncounterCreated = false;
-            EncounterDAO encounterDAO = new EncounterDAO();
-            EncounterDTO encounterDTO = new EncounterDTO();
-            encounterDTO.setUuid(UUID.randomUUID().toString());
-            encounterAdminister = encounterDTO.getUuid();
-            encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_ADMINISTER); // Administer Encounter
-            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-            encounterDTO.setVisituuid(visitUuid);
-            encounterDTO.setSyncd(false);
-            encounterDTO.setProvideruuid(sessionManager.getProviderID());
-            Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
-            encounterDTO.setVoided(0);
-            try {
-                isEncounterCreated = encounterDAO.createEncountersToDB(encounterDTO);
-                if (isEncounterCreated) {
+            if (encounterDisenseAdminister.isEmpty()) {
+                isEncounterCreated = false;
+                EncounterDAO encounterDAO = new EncounterDAO();
+                EncounterDTO encounterDTO = new EncounterDTO();
+                encounterDTO.setUuid(UUID.randomUUID().toString());
+                encounterDisenseAdminister = encounterDTO.getUuid();
+                encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_ADMINISTER); // Administer Encounter
+                encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+                encounterDTO.setVisituuid(visitUuid);
+                encounterDTO.setSyncd(false);
+                encounterDTO.setProvideruuid(sessionManager.getProviderID());
+                Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
+                encounterDTO.setVoided(0);
+                try {
+                    isEncounterCreated = encounterDAO.createEncountersToDB(encounterDTO);
+                    if (isEncounterCreated) {
 
-                    // Administer - medication push
-                    if (medList != null && medList.size() > 0) {
-                        insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_ADMINISTER_MEDICATION);   // Administer Med Obs.
+                        // Administer - medication push
+                        if (medList != null && medList.size() > 0) {
+                            insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_ADMINISTER_MEDICATION);   // Administer Med Obs.
+                        }
                     }
-                }
 
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+            else {  // update
+
+                // Administer - medication push
+                if (medList != null && medList.size() > 0) {
+                    insertMedicationObs(medicineValue, medNotesValue, encounterDisenseAdminister, OBS_ADMINISTER_MEDICATION);   // Administer Med Obs.
+                }
             }
 
             Toast.makeText(this, getString(R.string.administer_data_saved), Toast.LENGTH_SHORT).show();
@@ -757,4 +809,67 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         super.onResume();
         setImagesToRV();
     }
+
+    private void additionalDocumentImagesDownload() {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        try {
+
+           /* if (tag.equalsIgnoreCase("dispense"))
+                fileuuidList = (ArrayList<String>) imagesDAO.isImageListObsExists(encounterDispense, UuidDictionary.COMPLEX_IMAGE_AD);
+            else if (tag.equalsIgnoreCase("administer"))
+                fileuuidList = (ArrayList<String>) imagesDAO.isImageListObsExists(encounterAdminister, UuidDictionary.COMPLEX_IMAGE_AD);*/
+
+            List<String> imageList = imagesDAO.isImageListObsExists(encounterDisenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);
+
+            for (String images : imageList) {
+                if (imagesDAO.isLocalImageUuidExists(images))
+                    additionalImageDownloadText.setVisibility(View.GONE);
+                else additionalImageDownloadText.setVisibility(View.VISIBLE);
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        additionalImageDownloadText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDownload(UuidDictionary.COMPLEX_IMAGE_AD);
+                additionalImageDownloadText.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    private void startDownload(String imageType) {  // todo: handle this.
+        Intent intent = new Intent(this, DownloadService.class);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("encounterUuidVitals", encounterVitals);
+       // intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+        intent.putExtra("encounterUuidAdultIntial", encounterDisenseAdminister);
+        intent.putExtra("ImageType", imageType);
+        startService(intent);
+    }
+
+    public void registerBroadcastReceiverDynamically() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
+        registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
+    }
+
+    private BroadcastReceiver broadcastReceiverForIamgeDownlaod = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onResume();
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(broadcastReceiverForIamgeDownlaod);
+        super.onDestroy();
+
+    }
+
+
+
 }
