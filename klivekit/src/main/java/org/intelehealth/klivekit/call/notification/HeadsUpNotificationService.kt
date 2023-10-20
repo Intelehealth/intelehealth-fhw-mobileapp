@@ -51,6 +51,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     private lateinit var countDownTimer: CountDownTimer
     private var isTimerRunning = false
     private var sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    private var rtcArgs: RtcArgs? = null
 
     //[0] initial delay then subsequent vibrate & pause
     private var vibratePattern: LongArray = longArrayOf(0, 100, 800, 100, 800, 100, 800, 100)
@@ -109,30 +110,37 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
     private fun emitter(event: String) = Emitter.Listener {
         when (event) {
-            SocketManager.EVENT_CALL_TIME_UP,
+
             SocketManager.EVENT_NO_ANSWER,
-            SocketManager.EVENT_CALL_REJECT_BY_DR,
-            SocketManager.EVENT_CALL_CANCEL_BY_DR -> stopSelf()
+            SocketManager.EVENT_CALL_REJECT_BY_DR -> stopSelf()
+
+            SocketManager.EVENT_CALL_TIME_UP,
+            SocketManager.EVENT_CALL_CANCEL_BY_DR -> {
+                rtcArgs?.let {
+                    it.callStatus = CallStatus.MISSED
+                    CallHandlerUtils.notifyCallNotification(it, this)
+                }
+            }
         }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
             setVibrateorNormalRinger()
-            val messageBody = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-            messageBody?.let {
-                messageBody.notificationId = notificationId
-                Timber.d { "Message call type **** ${messageBody.callType}" }
-                Timber.d { "Message call mode **** ${messageBody.callMode}" }
-                Timber.d { "Message call status **** ${messageBody.callStatus}" }
-                Timber.d { "Message call action **** ${messageBody.callAction}" }
-                Timber.d { "Message call ->Url = ${messageBody.url}" }
-                if (messageBody.isCallAccepted()) {
-                    showAcceptedCallNotification(messageBody)
-                } else if (messageBody.isIncomingCall()) {
-                    showIncomingCallNotification(messageBody)
-                } else if (messageBody.isOutGoingCall()) {
-                    showOutGoingNotification(this, messageBody)
+            rtcArgs = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+            rtcArgs?.let {
+                it.notificationId = notificationId
+                Timber.d { "Message call type **** ${it.callType}" }
+                Timber.d { "Message call mode **** ${it.callMode}" }
+                Timber.d { "Message call status **** ${it.callStatus}" }
+                Timber.d { "Message call action **** ${it.callAction}" }
+                Timber.d { "Message call ->Url = ${it.url}" }
+                if (it.isCallAccepted()) {
+                    showAcceptedCallNotification(it)
+                } else if (it.isIncomingCall()) {
+                    showIncomingCallNotification(it)
+                } else if (it.isOutGoingCall()) {
+                    showOutGoingNotification(this, it)
                 }
 
 
@@ -219,7 +227,6 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         destroySetting()
 
         messageBody.notificationId = notificationId
-        messageBody.callStatus = CallStatus.ON_GOING
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(
@@ -227,18 +234,20 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
             )
         }
 
+        if (messageBody.isCallOnGoing().not()) {
+            Timber.d { "CallArg => ${messageBody.toJson()}" }
+            messageBody.callStatus = CallStatus.ON_GOING
+            startActivity(IntentUtils.getCallActivityIntent(messageBody, this))
+        }
 
-        val notificationCompatBuilder =
-            CallNotificationHandler.getAttendedCallNotificationBuilder(this, messageBody)
+        CallNotificationHandler.getAttendedCallNotificationBuilder(this, messageBody).apply {
+            notificationManager.notify(notificationId, build())
+            startForeground(notificationId, build())
+        }
 
-        notificationManager.notify(notificationId, notificationCompatBuilder.build())
-        startForeground(notificationId, notificationCompatBuilder.build())
         if (messageBody.isVideoCall().not()) {
             sensor = CallHandlerUtils.initSensor(sensorManager, this)
         }
-
-        Timber.d { "CallArg => ${messageBody.toJson()}" }
-        startActivity(IntentUtils.getCallActivityIntent(messageBody, this))
     }
 
     private fun showIncomingCallNotification(messageBody: RtcArgs) {
@@ -259,7 +268,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
         notificationManager.notify(notificationId, notification)
         startForeground(notificationId, notification)
-
+        if (ringtone.isPlaying) ringtone.stop()
         if (normalStatus) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 ringtone.isLooping = true
@@ -295,7 +304,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         super.onDestroy()
         Timber.d { "Call service is destroyed ***** " }
         destroySetting()
-
+        SocketManager.instance.removeListener(this::emitter)
         wakeLock.let {
             if (it.isHeld) {
                 it.release()

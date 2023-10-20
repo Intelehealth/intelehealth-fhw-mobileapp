@@ -13,7 +13,7 @@ import org.intelehealth.klivekit.call.utils.CallStatus
 @Entity(tableName = "call_log")
 data class RtcCallLog(
     @PrimaryKey(autoGenerate = true)
-    val callLogId: Int,
+    val callLogId: Int = 0,
     // Doctor Name
     var callerName: String = "",
     // Doctor Id

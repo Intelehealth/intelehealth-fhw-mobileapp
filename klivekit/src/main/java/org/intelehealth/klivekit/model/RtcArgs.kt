@@ -43,7 +43,7 @@ data class RtcArgs(
     var callStatus: CallStatus = CallStatus.NONE,
     var callAction: CallAction = CallAction.NONE,
     var callMode: CallMode = CallMode.NONE,
-    var callCallName: String? = null,
+    var className: String? = null,
     var notificationChannelName: String? = null,
     var notificationChannelId: String? = null,
     var notificationId: Int = 0,

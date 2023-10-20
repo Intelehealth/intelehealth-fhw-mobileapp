@@ -127,6 +127,8 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree());
         }
+
+//        WebRtcDatabase.getInstance(this);
     }
 
     private void configureCrashReporting() {

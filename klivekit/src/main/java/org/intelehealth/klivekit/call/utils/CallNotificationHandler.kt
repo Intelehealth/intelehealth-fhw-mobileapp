@@ -19,6 +19,7 @@ import org.intelehealth.klivekit.call.utils.CallConstants.ACTION_HANG_UP
 import org.intelehealth.klivekit.call.utils.CallConstants.MAX_INT
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.extensions.span
+import org.intelehealth.klivekit.utils.getApplicationName
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -159,7 +160,7 @@ object CallNotificationHandler {
         val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
 
         return NotificationCompat.Builder(context, getChannelId(context))
-            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentTitle(getApplicationName(context))
             .setContentText("Incoming call from ${messageBody.doctorName ?: "unknown"}")
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
@@ -185,15 +186,16 @@ object CallNotificationHandler {
     ): NotificationCompat.Builder {
 
         messageBody.notificationTime = SystemClock.elapsedRealtime().toString()
-        messageBody.callStatus = CallStatus.ON_GOING
-        val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
+//        messageBody.callStatus = CallStatus.ON_GOING
+        val notificationIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
+//        val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
 
         Timber.d("Local time date ***** ${messageBody.notificationTime}")
 
         return NotificationCompat.Builder(context, getChannelId(context))
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setContentTitle(getApplicationName(context))
-            .setContentText("Ongoing call with ${messageBody.doctorName ?: "unknown"}")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentTitle("Ongoing call with ${messageBody.doctorName ?: "unknown"}")
+//            .setContentText("Ongoing call with ${messageBody.doctorName ?: "unknown"}")
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
             .setSmallIcon(messageBody.notificationIcon)
             .setCategory(NotificationCompat.CATEGORY_CALL)
@@ -235,24 +237,24 @@ object CallNotificationHandler {
      * @param messageBody an instance of CallNotificationMessageBody to send with intent
      * @return NotificationCompat.Builder
      */
-    fun buildMissedCallNotification(
+    private fun buildMissedCallNotification(
         context: Context,
         messageBody: RtcArgs
     ): NotificationCompat.Builder {
         val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         messageBody.notificationTime = sdf.format(Date())
         messageBody.callStatus = CallStatus.MISSED
-        return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+        return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setContentTitle(getApplicationName(context))
+//            .setContentTitle(getApplicationName(context))
             .setContentText("Missed call from ${messageBody.doctorName}")
-            .setColor(ContextCompat.getColor(context, R.color.blue_1))
+            .setColor(ContextCompat.getColor(context, R.color.red))
             .setSmallIcon(messageBody.notificationIcon)
-            .setCategory(NotificationCompat.CATEGORY_CALL)
+            .setCategory(NotificationCompat.CATEGORY_MISSED_CALL)
             .setAutoCancel(true)
             .setContentIntent(IntentUtils.getChatViewPendingActivityIntent(context, messageBody))
             .setSilent(true)
-            .addAction(getCallAction(context, messageBody))
+//            .addAction(getCallAction(context, messageBody))
     }
 
     fun notifyMissedCall(context: Context, messageBody: RtcArgs) {
@@ -296,11 +298,4 @@ object CallNotificationHandler {
         context.applicationContext.packageName.apply {
             "${this}.$NOTIFICATION_CHANNEL_NAME"
         }
-
-    private fun getApplicationName(context: Context): String {
-        val applicationInfo = context.applicationInfo
-        val stringId = applicationInfo.labelRes
-        return if (stringId == 0) applicationInfo.nonLocalizedLabel.toString()
-        else context.getString(stringId)
-    }
 }

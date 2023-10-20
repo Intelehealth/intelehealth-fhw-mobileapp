@@ -76,7 +76,7 @@ class SocketViewModel @Inject constructor(private val socketManager: SocketManag
     val eventCallTimeUp = mutableCallTimeUp.hide()
 
     private val mutableCallHangUp = MutableLiveData(false)
-    val eventCallHangUp = mutableCallTimeUp.hide()
+    val eventCallHangUp = mutableCallHangUp.hide()
 
     private fun emitter(event: String) = Emitter.Listener {
         when (event) {

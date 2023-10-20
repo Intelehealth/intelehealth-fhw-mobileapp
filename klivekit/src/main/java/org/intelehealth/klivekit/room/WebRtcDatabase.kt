@@ -8,11 +8,8 @@ import org.intelehealth.klivekit.room.dao.ChatDao
 import com.codeglo.billingclient.room.dao.ChatDao
 import com.codeglo.billingclient.room.dao.RtcCallLogDao
 import org.intelehealth.klivekit.chat.model.ChatMessage
-import org.intelehealth.klivekit.chat.model.ChatRoom
-import org.intelehealth.klivekit.room.dao.ChatRoomDao
-import org.webrtc.EglBase10
 
-@Database(entities = [ChatMessage::class, RtcCallLogDao::class, ChatRoom::class], version = 1)
+@Database(entities = [ChatMessage::class, RtcCallLog::class, ChatRoom::class], version = 1)
 abstract class WebRtcDatabase : RoomDatabase() {
     abstract fun chatDao(): ChatDao
 
@@ -27,6 +24,7 @@ abstract class WebRtcDatabase : RoomDatabase() {
 
         const val DATABASE_NAME = "webrtc-db"
 
+        @JvmStatic
         fun getInstance(context: Context): WebRtcDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context.applicationContext).also {
@@ -39,10 +37,14 @@ abstract class WebRtcDatabase : RoomDatabase() {
          * The SQLite database is only created when it's accessed for the first time.
          */
         private fun buildDatabase(appContext: Context): WebRtcDatabase {
-            val databaseName = "${appContext.packageName}.$DATABASE_NAME"
+            val databaseName = "${getAppName(appContext)}.$DATABASE_NAME"
             return Room.databaseBuilder(appContext, WebRtcDatabase::class.java, databaseName)
                 .fallbackToDestructiveMigration()
                 .build()
+        }
+
+        private fun getAppName(context: Context) = getApplicationName(context).let {
+            return@let it.replace(" ", "-").lowercase(Locale.getDefault())
         }
     }
 }

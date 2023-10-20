@@ -1,5 +1,7 @@
 package org.intelehealth.klivekit.utils
 
+import android.content.Context
+
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 11:57.
  * Email : mithun@intelehealth.org
@@ -8,8 +10,11 @@ package org.intelehealth.klivekit.utils
 
 const val RTC_ARGS: String = "rtc_args"
 
-const val FROM_APP = "app"
-
-enum class RemoteActionType {
-    VIDEO_CALL, TEXT_CHAT
+fun getApplicationName(context: Context): String {
+    val applicationInfo = context.applicationInfo
+    val stringId = applicationInfo.labelRes
+    return if (stringId == 0) applicationInfo.nonLocalizedLabel.toString()
+    else context.getString(stringId)
 }
+
+const val FROM_APP = "app"

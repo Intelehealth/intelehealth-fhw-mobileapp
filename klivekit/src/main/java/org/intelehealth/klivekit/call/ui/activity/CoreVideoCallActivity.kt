@@ -31,6 +31,9 @@ import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.call.ui.viewmodel.CallViewModel
 import org.intelehealth.klivekit.socket.SocketViewModel
 import org.intelehealth.klivekit.call.ui.viewmodel.VideoCallViewModel
+import org.intelehealth.klivekit.call.utils.CallAction
+import org.intelehealth.klivekit.call.utils.CallHandlerUtils
+import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.utils.AudioType
 import org.intelehealth.klivekit.utils.RTC_ARGS
 import org.intelehealth.klivekit.utils.extensions.printExtra
@@ -159,7 +162,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
         videoCallViewModel.callTimeUpStatus.observe(this) { callTimeUp(it) }
         socketViewModel.eventCallTimeUp.observe(this) { callTimeUp(it) }
-        socketViewModel.eventCallHangUp.observe(this) { if (it) endCall() }
+        socketViewModel.eventCallHangUp.observe(this) {
+            Timber.d { "Call hangup => $it" }
+            if (it) endCall()
+        }
     }
 
     private fun callTimeUp(it: Boolean) {
@@ -296,6 +302,14 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     open fun onCallAccept() {
         Timber.d { "Call accepted by you" }
         videoCallViewModel.stopCallTimeoutTimer()
+        // when user tap on incoming notification and full screen will visible
+        // from full screen user accept the call
+        // for this scenario we need to show ongoing call notification
+        if (args.isIncomingCall() && args.isCallAccepted().not()) {
+            args.callAction = CallAction.ACCEPT
+            args.callStatus = CallStatus.ON_GOING
+            CallHandlerUtils.notifyCallNotification(args, this@CoreVideoCallActivity)
+        }
     }
 
     open fun onCallDecline() {
@@ -361,7 +375,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     open fun declineCall() {
         isDeclined = true
-        showToast(getString(R.string.you_declined_call))
+//        showToast(getString(R.string.you_declined_call))
         if (args.isIncomingCall().not()) {
             socketViewModel.emit(SocketManager.EVENT_CALL_CANCEL_BY_HW, args.toJsonArg())
         } else {
@@ -381,9 +395,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         Timber.e { message }
         showToast(message)
         arg?.let {
-            socketViewModel.emit(SocketManager.EVENT_BYE, args)
+            socketViewModel.emit(SocketManager.EVENT_BYE, it)
         }
         stopRingtone()
+        stopService(Intent(this@CoreVideoCallActivity, HeadsUpNotificationService::class.java))
         finish()
     }
 

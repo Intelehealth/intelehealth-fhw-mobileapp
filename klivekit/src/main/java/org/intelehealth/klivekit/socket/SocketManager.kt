@@ -39,6 +39,10 @@ open class SocketManager @Inject constructor() {
         fun saveTheDoctor(chatMessage: ChatMessage)
     }
 
+    fun removeListener(listener: (event: String) -> Emitter.Listener) {
+        emitterListeners.removeAt(emitterListeners.indexOf(listener))
+    }
+
     fun connect(url: String?) {
         try {
             url?.let {
@@ -73,7 +77,7 @@ open class SocketManager @Inject constructor() {
 
     private fun emitter(event: String) = Emitter.Listener {
         val json: String? = Gson().toJson(it)
-//        Timber.e { "$TAG => $event => $json" }
+        Timber.e { "$TAG => $event" }
         if (event == EVENT_CALL_TIME_UP) {
             isCallTimeUp = true
         }
@@ -97,8 +101,9 @@ open class SocketManager @Inject constructor() {
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
     }
 
-    private fun invokeListeners(event: String, it: Array<Any>?) {
-        emitterListeners.forEach { it.invoke(event).call(it) }
+    private fun invokeListeners(event: String, args: Any?) {
+        Timber.d { "No of listener => ${emitterListeners.size}" }
+        emitterListeners.forEach { it.invoke(event).call(args) }
     }
 
     private fun notifyIfNotActiveRoom(jsonArray: JSONArray, block: (ChatMessage) -> Unit) {
@@ -189,7 +194,7 @@ open class SocketManager @Inject constructor() {
 
     fun emitLocalEvent(event: String, args: Any? = null) {
         Timber.e { "emitLocalEvent $event args $args" }
-        emitterListener?.invoke(event)?.call(args)
+        invokeListeners(event, args)
     }
 
     fun disconnect() {
@@ -228,9 +233,13 @@ open class SocketManager @Inject constructor() {
 
     companion object {
         const val TAG = "SocketManager"
+        private var socketManager: SocketManager? = null
 
         @JvmStatic
-        var instance = SocketManager()
+        var instance = socketManager ?: synchronized(this) {
+            socketManager ?: SocketManager()
+        }
+
         const val EVENT_IP_ADDRESS = "ipaddr"
         const val EVENT_BYE = "bye"
         const val EVENT_NO_ANSWER = "no_answer"

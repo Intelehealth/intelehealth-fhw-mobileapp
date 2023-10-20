@@ -8,9 +8,14 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import androidx.core.content.ContextCompat
 import com.github.ajalt.timberkt.Timber
+import org.intelehealth.klivekit.room.WebRtcDatabase
 import org.intelehealth.klivekit.R
+import org.intelehealth.klivekit.call.CallLogHandler
+import org.intelehealth.klivekit.call.data.CallLogRepository
+import org.intelehealth.klivekit.call.model.RtcCallLog
 import org.intelehealth.klivekit.call.notification.CallReceiver
 import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
+import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
@@ -30,40 +35,58 @@ object CallHandlerUtils {
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
     fun notifyCallNotification(callArgs: RtcArgs, context: Context) {
-        Timber.d { "notifyCallNotification Url: ${callArgs.url}" }
+        Timber.d { "notifyCallNotification Url: ${callArgs.toJson()}" }
         context.stopService(Intent(context, HeadsUpNotificationService::class.java))
-        if (callArgs.isCallDeclined()) {
+        if (callArgs.isIncomingCall() && callArgs.isMissedCall()) {
+            getCallLogHandler(context).saveLog(generateCallLog(callArgs))
+            CallNotificationHandler.notifyMissedCall(context, callArgs)
+        } else if (callArgs.isCallDeclined()) {
             SocketManager.instance.emit(SocketManager.EVENT_CALL_REJECT_BY_HW, callArgs.doctorId)
         } else if (callArgs.isCallHangUp()) {
             SocketManager.instance.emitLocalEvent(SocketManager.EVENT_CALL_HANG_UP)
+        } else if (callArgs.isIncomingCall() && callArgs.isMissedCall()) {
+            CallNotificationHandler.notifyMissedCall(context, callArgs)
+        } else if (callArgs.isBusyCall()) {
+            // cancel notification with busy message
         } else if (callArgs.isIncomingCall() or callArgs.isCallAccepted() or callArgs.isOutGoingCall()) {
             IntentUtils.getHeadsUpNotificationServiceIntent(callArgs, context).also {
                 ContextCompat.startForegroundService(context, it)
             }
-        } else if (callArgs.isMissedCall()) {
-            context.stopService(Intent(context, HeadsUpNotificationService::class.java))
-            CallNotificationHandler.notifyMissedCall(context, callArgs)
-        } else if (callArgs.isBusyCall()) {
-            // cancel notification with busy message
-        } else if (callArgs.isCallOnGoing()) {
-
-        } else {
-            // do nothing here
         }
     }
 
     /**
      * Operate all incoming, outgoing and ongoing call action
      * @param context Context of current scope
-     * @param messageBody an instance of RtcArgs to send with intent
+     * @param callArgs an instance of RtcArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
     fun operateIncomingCall(context: Context, callArgs: RtcArgs, clazz: Class<*>) {
         Timber.d { "operateIncomingCall ->Url = ${callArgs.url}" }
         callArgs.callMode = CallMode.INCOMING
-        callArgs.callCallName = clazz.name
+        callArgs.className = clazz.name
+        getCallLogHandler(context).saveLog(generateCallLog(callArgs))
         notifyCallNotification(callArgs, context)
     }
+
+    private fun getCallLogHandler(context: Context) = CallLogHandler(
+        CallLogRepository(WebRtcDatabase.getInstance(context).rtcCallLogDao()),
+        PreferenceHelper(context)
+    )
+
+    private fun generateCallLog(callArgs: RtcArgs) = RtcCallLog(
+        callerName = callArgs.doctorName!!,
+        callerId = callArgs.doctorId!!,
+        calleeId = callArgs.nurseId!!,
+        calleeName = callArgs.nurseName!!,
+        roomId = callArgs.roomId!!,
+//        roomName = callArgs.patientName!!,
+        callMode = callArgs.callMode,
+        callStatus = callArgs.callStatus,
+        callTime = System.currentTimeMillis().toString(),
+        callUrl = callArgs.url!!,
+        callAction = callArgs.className!!
+    )
 
     /**
      * Operate all incoming, outgoing and ongoing call action
