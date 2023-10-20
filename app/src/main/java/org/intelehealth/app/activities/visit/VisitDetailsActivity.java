@@ -55,6 +55,7 @@ import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -68,6 +69,7 @@ import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -165,7 +167,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
         try {
             pat_phoneno = StringUtils.mobileNumberEmpty(phoneNumber(patientUuid));
-            if(pat_phoneno.equalsIgnoreCase("N/A"))
+            if (pat_phoneno.equalsIgnoreCase("N/A"))
                 pat_phoneno = "";
         } catch (DAOException e) {
             e.printStackTrace();
@@ -451,8 +453,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         if (pres.getVisitUuid() != null) {
             endvisit_relative_block.setVisibility(View.VISIBLE);
             btn_end_visit.setOnClickListener(v -> {
-                VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate,
-                        vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
+                checkIfAppointmentExistsForVisit(visitID);
             });
         } else {
             endvisit_relative_block.setVisibility(View.GONE);
@@ -717,7 +718,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
      * @param phoneno
      */
     private void calling_feature(String phoneno) {
-        if (phoneno!= null && !phoneno.equalsIgnoreCase("")) {
+        if (phoneno != null && !phoneno.equalsIgnoreCase("")) {
             Intent i1 = new Intent(Intent.ACTION_DIAL);
             i1.setData(Uri.parse("tel:" + phoneno));
             startActivity(i1);
@@ -916,5 +917,25 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             new SyncUtils().syncBackground();
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void checkIfAppointmentExistsForVisit(String visitUUID) {
+        if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
+            new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    cancelAppointment();
+                    triggerEndVisit();
+                }
+            });
+        } else {
+            triggerEndVisit();
+        }
+    }
+
+    private void triggerEndVisit() {
+        VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
+    }
+
+    private void cancelAppointment() {
     }
 }
