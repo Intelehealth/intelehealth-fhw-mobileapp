@@ -2728,6 +2728,7 @@ public class Node implements Serializable {
                         question = bullet + " " + mOptions.get(i).findDisplay();
                     }
                 }
+                question = question.replaceAll("\\[(.*?)\\]","");
                 String answer = mOptions.get(i).getLanguage();
                 Log.i(TAG, "ipt: +++++++++++++++++++++++++++ isTerminal - " + mOptions.get(i).isTerminal());
                 Log.i(TAG, "ipt: level - " + level);
@@ -2741,18 +2742,34 @@ public class Node implements Serializable {
                         if (mOptions.get(i).getInputType().equals("camera")) {
                         } else {
                             if (!answer.isEmpty()) {
-                                if (answer.equals("%")) {
-                                } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
-                                    stringsList.add(bullet_hollow + answer + next_line);
-                                } else if (answer.substring(0, 1).equals("%")) {
-                                    stringsList.add(bullet_hollow + answer.substring(1) + next_line);
-                                } else {
-                                    stringsList.add(bullet_hollow + answer + next_line);
+                                if(isAssociateSymptomsType) {
+                                    if (answer.equals("%")) {
+                                    } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                        stringsList.add(question+" "+right_pointing + answer + next_line);
+                                    } else if (answer.substring(0, 1).equals("%")) {
+                                        stringsList.add(question+" "+ right_pointing + answer.substring(1) + next_line);
+                                    } else {
+                                        stringsList.add(question+" "+ right_pointing + answer + next_line);
+                                    }
+                                }else{
+                                    if (answer.equals("%")) {
+                                    } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                        stringsList.add(bullet_hollow + answer + next_line);
+                                    } else if (answer.substring(0, 1).equals("%")) {
+                                        stringsList.add(bullet_hollow + answer.substring(1) + next_line);
+                                    } else {
+                                        stringsList.add(bullet_hollow + answer + next_line);
+                                    }
                                 }
                             }
                         }
                     } else {
-                        stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                        if(isAssociateSymptomsType){
+                            stringsList.add(right_pointing + mOptions.get(i).findDisplay() + next_line);
+                        }else {
+                            stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                        }
+
                     }
                 } else {
 
