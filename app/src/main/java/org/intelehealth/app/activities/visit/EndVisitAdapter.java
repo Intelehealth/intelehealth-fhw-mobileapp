@@ -33,6 +33,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
@@ -150,7 +151,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 holder.fu_date_txtview.setText(startDate);
             }
 
-        //    holder.fu_date_txtview.setText(model.getVisit_start_date());
+            //    holder.fu_date_txtview.setText(model.getVisit_start_date());
 
             holder.end_visit_btn.setOnClickListener(v -> {
                 showConfirmDialog(model);
@@ -158,7 +159,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
             holder.fu_cardview_item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, VisitDetailsActivity.class);
-                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
+                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1));
                 intent.putExtra("patientUuid", model.getPatientUuid());
                 intent.putExtra("gender", model.getGender());
                 String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
@@ -184,19 +185,53 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
     private void showConfirmDialog(final PrescriptionModel model) {
         DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
-            @Override
-            public void onDialogActionDone(int action) {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUuid());
-                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUuid());
+        dialogUtils.showCommonDialog(
+                context,
+                R.drawable.dialog_close_visit_icon,
+                context.getResources().getString(R.string.confirm_end_visit_reason),
+                context.getResources().getString(R.string.confirm_end_visit_reason_message),
+                false,
+                context.getResources().getString(R.string.confirm),
+                context.getResources().getString(R.string.cancel),
+                action -> {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        checkIfAppointmentExistsForVisit(model);
+                    }
+                });
+    }
 
-                    VisitUtils.endVisit(context, model.getVisitUuid(), model.getPatientUuid(), model.getFollowup_date(),
-                            vitalsUUID, adultInitialUUID, "state",
-                            model.getFirst_name() + " " + model.getLast_name().substring(0, 1), "VisitDetailsActivity");
+    private void checkIfAppointmentExistsForVisit(PrescriptionModel model) {
+        if (new AppointmentDAO().doesAppointmentExistForVisit(model.getVisitUuid())) {
+            new DialogUtils().triggerEndAppointmentConfirmationDialog(context, action -> {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    cancelAppointment();
+                    triggerEndVisit(model);
                 }
-            }
-        });
+            });
+        } else {
+            triggerEndVisit(model);
+        }
+    }
+
+    private void triggerEndVisit(PrescriptionModel model) {
+        String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUuid());
+        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUuid());
+
+        VisitUtils.endVisit(
+                context,
+                model.getVisitUuid(),
+                model.getPatientUuid(),
+                model.getFollowup_date(),
+                vitalsUUID,
+                adultInitialUUID,
+                "state",
+                model.getFirst_name() + " " + model.getLast_name().substring(0, 1),
+                "VisitDetailsActivity"
+        );
+    }
+
+    private void cancelAppointment() {
+
     }
 
     private void sharePresc(final PrescriptionModel model) {
@@ -208,8 +243,8 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         Button sharebtn = convertView.findViewById(R.id.sharebtn);
         String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
         String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
-        if(model.getPhone_number()!=null)
-        editText.setText(model.getPhone_number());
+        if (model.getPhone_number() != null)
+            editText.setText(model.getPhone_number());
         sharebtn.setOnClickListener(v -> {
             if (!editText.getText().toString().equalsIgnoreCase("")) {
                 String phoneNumber = /*"+91" +*/ editText.getText().toString();
@@ -243,7 +278,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     public class Myholder extends RecyclerView.ViewHolder {
         Button end_visit_btn;
         private CardView fu_cardview_item;
-        private TextView name, fu_date_txtview,search_gender;
+        private TextView name, fu_date_txtview, search_gender;
         private ImageView profile_image;
         private LinearLayout shareicon;
 
