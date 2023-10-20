@@ -417,7 +417,7 @@ public class AppointmentDAO {
     }
 
     public List<AppointmentInfo> getAppointmentsWithFiltersForToday(String searchPatientText, String currentDate) {
-        Log.v(TAG, "getAppointmentsWithFiltersForToday - "+currentDate);
+        Log.v(TAG, "getAppointmentsWithFiltersForToday - " + currentDate);
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -435,7 +435,7 @@ public class AppointmentDAO {
 
         }
         EncounterDAO encounterDAO = new EncounterDAO();
-        Log.v(TAG, "getAppointmentsWithFiltersForToday idCursor.getCount()  - "+idCursor.getCount() );
+        Log.v(TAG, "getAppointmentsWithFiltersForToday idCursor.getCount()  - " + idCursor.getCount());
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 AppointmentInfo appointmentInfo = new AppointmentInfo();
@@ -755,5 +755,25 @@ public class AppointmentDAO {
         }
 
         return requestList;
+    }
+
+    public boolean doesAppointmentExistForVisit(String visitUUID) {
+        boolean doesAppointmentExist = false;
+        String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ?";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String appointmentId = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            if (appointmentId != null) {
+                doesAppointmentExist = true;
+            }
+            cursor.close();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return doesAppointmentExist;
     }
 }

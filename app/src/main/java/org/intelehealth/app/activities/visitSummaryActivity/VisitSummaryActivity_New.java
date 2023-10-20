@@ -104,6 +104,7 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -1806,7 +1807,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private void showEndVisitConfirmationDialog() {
         if (hasPrescription.equalsIgnoreCase("true")) {
-            triggerEndVisit();
+            checkIfAppointmentExistsForVisit(visitUUID);
         } else {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showCommonDialog(this,
@@ -1818,10 +1819,40 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     context.getResources().getString(R.string.cancel),
                     action -> {
                         if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                            triggerEndVisit();
+                            checkIfAppointmentExistsForVisit(visitUUID);
                         }
                     });
         }
+    }
+
+    private void checkIfAppointmentExistsForVisit(String visitUUID) {
+        if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
+            triggerEndAppointmentConfirmationDialog();
+        } else {
+            triggerEndVisit();
+        }
+    }
+
+    private void triggerEndAppointmentConfirmationDialog() {
+        new DialogUtils()
+                .showCommonDialog(this,
+                        R.drawable.dialog_close_visit_icon,
+                        context.getResources().getString(R.string.confirm_cancel_appointment),
+                        context.getResources().getString(R.string.confirm_cancel_appointment_message),
+                        false,
+                        context.getResources().getString(R.string.confirm),
+                        context.getResources().getString(R.string.cancel),
+                        action -> {
+                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                cancelAppointment();
+                                triggerEndVisit();
+                            }
+                        }
+                );
+    }
+
+    private void cancelAppointment() {
+
     }
 
     private void triggerEndVisit() {

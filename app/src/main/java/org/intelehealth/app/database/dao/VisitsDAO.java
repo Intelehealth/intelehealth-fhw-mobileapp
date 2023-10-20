@@ -497,11 +497,11 @@ public class VisitsDAO {
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name,p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id," +
                         " v.startdate " +
-                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                "v.voided = 0 AND " +
+                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                        "v.voided = 0 AND " +
 //                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
-                " v.startdate > DATETIME('now', '-4 day') " +
-                " AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+                        " v.startdate > DATETIME('now', '-4 day') " +
+                        " AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -515,7 +515,7 @@ public class VisitsDAO {
                 model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-            //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
+                //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
                 model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
@@ -544,11 +544,11 @@ public class VisitsDAO {
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
-                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                "v.voided = 0 AND " +
-              //  " v.startdate > DATETIME('now', '-4 day') " +
-               // " AND v.enddate IS NULL ORDER BY v.startdate DESC",
-                "v.enddate IS NULL ORDER BY v.startdate DESC",
+                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                        "v.voided = 0 AND " +
+                        //  " v.startdate > DATETIME('now', '-4 day') " +
+                        // " AND v.enddate IS NULL ORDER BY v.startdate DESC",
+                        "v.enddate IS NULL ORDER BY v.startdate DESC",
                 new String[]{});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -562,7 +562,7 @@ public class VisitsDAO {
                 model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-            //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
+                //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
                 model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
 
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
@@ -585,17 +585,18 @@ public class VisitsDAO {
 
         return arrayList;
     }
+
     public static List<PrescriptionModel> recentNotEndedVisits() {
         List<PrescriptionModel> arrayList = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 //        db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
-                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                "v.voided = 0 AND" +
+                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                        "v.voided = 0 AND" +
 //                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
-                " v.startdate > DATETIME('now', '-4 day')" +
-                " AND v.enddate IS NULL ORDER BY v.startdate DESC",
+                        " v.startdate > DATETIME('now', '-4 day')" +
+                        " AND v.enddate IS NULL ORDER BY v.startdate DESC",
                 new String[]{});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -609,7 +610,7 @@ public class VisitsDAO {
                 model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-             //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
+                //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
                 model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                 arrayList.add(model);
             }
@@ -632,12 +633,12 @@ public class VisitsDAO {
 //        db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
-                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                "v.voided = 0 AND " +
+                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                        "v.voided = 0 AND " +
 //                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
 //                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
-                " v.startdate < DATETIME('now', '-4 day') AND " +
-                "v.enddate IS NULL ORDER BY v.startdate DESC",
+                        " v.startdate < DATETIME('now', '-4 day') AND " +
+                        "v.enddate IS NULL ORDER BY v.startdate DESC",
                 new String[]{});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -651,7 +652,7 @@ public class VisitsDAO {
                 model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-             //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
+                //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
                 model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                 arrayList.add(model);
             }
@@ -664,6 +665,7 @@ public class VisitsDAO {
 
         return arrayList;
     }
+
     public static List<PrescriptionModel> olderNotEndedVisits(int limit, int offset) {
         List<PrescriptionModel> arrayList = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -671,12 +673,12 @@ public class VisitsDAO {
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id," +
                         " v.startdate " +
-                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                "v.voided = 0 AND " +
+                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                        "v.voided = 0 AND " +
 //                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
 //                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
-                " v.startdate < DATETIME('now', '-4 day') AND " +
-                "v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+                        " v.startdate < DATETIME('now', '-4 day') AND " +
+                        "v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -690,7 +692,7 @@ public class VisitsDAO {
                 model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-             //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
+                //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
                 model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
 
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
@@ -861,13 +863,15 @@ public class VisitsDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
         Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
-        cursor.moveToFirst();
 
-        String endVisitValue = cursor.getString(cursor.getColumnIndexOrThrow("enddate"));
-        if (endVisitValue != null)
-            isVisitEnded = true;
+        if (cursor != null && cursor.moveToFirst()) {
+            String endVisitValue = cursor.getString(cursor.getColumnIndexOrThrow("enddate"));
+            if (endVisitValue != null) {
+                isVisitEnded = true;
+            }
+            cursor.close();
+        }
 
-        cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
         return isVisitEnded;
