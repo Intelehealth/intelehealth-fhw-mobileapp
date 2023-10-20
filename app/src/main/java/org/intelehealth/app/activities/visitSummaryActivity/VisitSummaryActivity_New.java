@@ -1805,26 +1805,38 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     }
 
     private void showEndVisitConfirmationDialog() {
-        DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
-            @Override
-            public void onDialogActionDone(int action) {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
-                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
+        if (hasPrescription.equalsIgnoreCase("true")) {
+            triggerEndVisit();
+        } else {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showCommonDialog(this,
+                    R.drawable.dialog_close_visit_icon,
+                    context.getResources().getString(R.string.confirm_end_visit_reason),
+                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
+                    false,
+                    context.getResources().getString(R.string.confirm),
+                    context.getResources().getString(R.string.cancel),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            triggerEndVisit();
+                        }
+                    });
+        }
+    }
 
-                    endVisit(
-                            context,
-                            visitUUID,
-                            patient.getUuid(),
-                            followUpDate,
-                            vitalsUUID, adultInitialUUID,
-                            "state",
-                            patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1),
-                            "VisitDetailsActivity");
-                }
-            }
-        });
+    private void triggerEndVisit() {
+        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
+        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
+
+        endVisit(
+                context,
+                visitUUID,
+                patient.getUuid(),
+                followUpDate,
+                vitalsUUID, adultInitialUUID,
+                "state",
+                patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1),
+                "VisitDetailsActivity");
     }
 
     // permission code - start
