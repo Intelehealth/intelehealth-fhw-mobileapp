@@ -133,19 +133,11 @@ public class SyncDAO {
                         context.sendBroadcast(broadcast);
                         Log.d(TAG, "onResponse: sync : " + sync);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
-
-//                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-//                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
-//                            CalculateAgoTime(context);
-//                        }
-
                     }
-                    //   AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
                     else {
                         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
                     }
-                    //AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
                         if (response.body().getData() != null) {
@@ -231,12 +223,6 @@ public class SyncDAO {
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
                         context.sendBroadcast(broadcast);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
-//                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-//                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
-//                            CalculateAgoTime(context);
-//                        }
-//                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced), 1, IntelehealthApplication.getAppContext());
-
                         if (fromActivity.equalsIgnoreCase("home")) {
                             //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
@@ -394,8 +380,6 @@ public class SyncDAO {
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
         Logger.logD(TAG, "push request url - " + url);
         Logger.logD(TAG, "push request encoded - " + encoded);
-//        String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
-//        push only happen if any one data exists.
         if (!pushRequestApiCall.getVisits().isEmpty()
                 || !pushRequestApiCall.getPersons().isEmpty()
                 || !pushRequestApiCall.getPatients().isEmpty()
@@ -446,8 +430,6 @@ public class SyncDAO {
                                         FirebaseCrashlytics.getInstance().recordException(exception);
                                     }
                                 }
-
-                                //providerDAO.updateProviderProfileSync(sessionManager.getProviderID(), "true");
 
                                 //ui2.0 for provider profile details
                                 if(pushResponseApiCall.getData().getProviderlist()!=null) {

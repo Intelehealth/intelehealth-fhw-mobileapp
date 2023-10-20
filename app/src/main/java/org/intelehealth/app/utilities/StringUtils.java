@@ -21,6 +21,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.File;
 import java.math.RoundingMode;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.Patient;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
@@ -1680,6 +1682,25 @@ public final class StringUtils {
         return mdob_text;
     }
 
+    public static String en_hi_dob_three(String dob) { //English dob is replaced to Hindi text.
+        String mdob_text = dob
+                .replace("Jan", "जनवरी")
+                .replace("Feb", "फ़रवरी")
+                .replace("Mar", "मार्च")
+                .replace("Apr", "अप्रैल")
+                .replace("May", "मई")
+                .replace("Jun", "जून")
+                .replace("Jul", "जुलाई")
+                .replace("Aug", "अगस्त")
+                .replace("Sep", "सितंबर")
+                .replace("Oct", "अक्टूबर")
+                .replace("Nov", "नवंबर")
+                .replace("Dec", "दिसंबर");
+
+        return mdob_text;
+    }
+
+
     public static String en__gu_dob(String dob) { //English dob is replaced to Hindi text.
         String mdob_text = dob
                 .replace("January", "જાન્યુઆરી")
@@ -2265,8 +2286,7 @@ public final class StringUtils {
         return val;
     }
 
-    public static String switch_hi_en_country(String val, String locale)
-    {
+    public static String switch_hi_en_country(String val, String locale) {
         if (locale.equalsIgnoreCase("hi")) {
             switch (val) {
                 case "India":
@@ -2404,7 +2424,7 @@ public final class StringUtils {
                     val = "पश्चिम बंगाल";
                     break;
 
-                    //us states
+                //us states
 
                 case "Alabama":
                     val = "अलाबामा";
@@ -2898,8 +2918,7 @@ public final class StringUtils {
                     break;
             }
 
-        }
-        else {
+        } else {
             return val;
         }
         return val;
@@ -3431,7 +3450,6 @@ public final class StringUtils {
                 case "Wednesday":
                     val = "বুধবাৰ";
                     break;
-
                 case "Thursday":
                     val = "বৃহস্পতিবাৰ";
                     break;
@@ -3445,7 +3463,8 @@ public final class StringUtils {
                     return val;
             }
 
-        } else if (locale.equalsIgnoreCase("bn")) {
+        }
+        else if (locale.equalsIgnoreCase("bn")) {
             switch (val) {
                 case "Sunday":
                     val = "রবিবার";
@@ -3459,7 +3478,6 @@ public final class StringUtils {
                 case "Wednesday":
                     val = "বুধবার";
                     break;
-
                 case "Thursday":
                     val = "বৃহস্পতিবার";
                     break;
@@ -3473,7 +3491,8 @@ public final class StringUtils {
                     return val;
             }
 
-        } else if (locale.equalsIgnoreCase("gu")) {
+        }
+        else if (locale.equalsIgnoreCase("gu")) {
             switch (val) {
                 case "Sunday":
                     val = "રવિવાર";
@@ -3501,7 +3520,8 @@ public final class StringUtils {
                     return val;
             }
 
-        } else if (locale.equalsIgnoreCase("hi")) {
+        }
+        else if (locale.equalsIgnoreCase("hi")) {
             switch (val) {
                 case "Sunday":
                     val = "रविवार";
@@ -3515,7 +3535,6 @@ public final class StringUtils {
                 case "Wednesday":
                     val = "बुधवार";
                     break;
-
                 case "Thursday":
                     val = "गुरूवार";
                     break;
@@ -3996,4 +4015,121 @@ public final class StringUtils {
         df.setRoundingMode(RoundingMode.HALF_UP);
         return String.valueOf(df.format(value));
     }
+
+    /**
+     * Setting local language for Gender data.
+     * @param context
+     * @param genderView
+     * @param patient
+     * @param sessionManager
+     */
+    public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
+        //  1. Age
+        String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else {
+            genderView.setText(gender + " " + age);
+        }
+    }
+
 }

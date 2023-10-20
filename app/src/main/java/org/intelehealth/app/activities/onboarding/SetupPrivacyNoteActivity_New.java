@@ -58,13 +58,6 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         termsAndPrivacyPolicy();
         Button btnSetup = findViewById(R.id.btn_setup);
         cardNoteSnack = findViewById(R.id.card_note_snack_policy);
-
-        /*TextView tcTextView = (TextView) findViewById(R.id.tv_privacy_notice_link_2);
-        tcTextView.setPaintFlags(tcTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-        TextView ppTextView = (TextView) findViewById(R.id.tv_privacy_notice_link_4);
-        ppTextView.setPaintFlags(ppTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);*/
-
         ImageView ivBack = findViewById(R.id.iv_setup_privacy_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +66,6 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
         btnSetup.getBackground().setAlpha(60);
         CheckBox chkBoxPrivacyPolicy = findViewById(R.id.checkbox_privacy_policy);
         btnSetup.setEnabled(false);
@@ -94,36 +85,22 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
             }
         });
 
-
         if (chkBoxPrivacyPolicy.isChecked()) {
             btnSetup.getBackground().setAlpha(0);
-
         } else {
             btnSetup.getBackground().setAlpha(60);
-
         }
-
-       /* tvTermsAndPrivacy
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        termsAndPrivacyPolicy();
-
-                    }
-                });*/
 
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (chkBoxPrivacyPolicy.isChecked()) {
-
                     btnSetup.setBackgroundDrawable(ContextCompat.getDrawable(SetupPrivacyNoteActivity_New.this, R.drawable.ui2_common_primary_bg));
                     customDialog = new CustomDialog(SetupPrivacyNoteActivity_New.this);
                     customDialog.showDialog1();
                 } else {
                     showSnackBarAndRemoveLater();
                 }
-
             }
         });
 
@@ -134,13 +111,9 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         ClickableSpan termsAndCondition = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-
                 Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, TermsAndConditionsActivity_New.class);
                 mIntent.putExtra("isTermsAndCondition", true);
                 startActivity(mIntent);
-                //overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
-
-
             }
         };
         ClickableSpan privacy = new ClickableSpan() {
@@ -159,29 +132,10 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         int endingPositionPP = startingPositionPP + getResources().getString(R.string.privacy_policy).length();
         SpanString.setSpan(termsAndCondition, startingPositionTC, endingPositionTC, 0);
         SpanString.setSpan(privacy, startingPositionPP, endingPositionPP, 0);
-        /*SpanString.setSpan(new ForegroundColorSpan(Color.BLUE), 9, 27, 0);
-        SpanString.setSpan(new ForegroundColorSpan(Color.BLUE), 32, 46, 0);
-        SpanString.setSpan(new UnderlineSpan(), 9, 27, 0);
-        SpanString.setSpan(new UnderlineSpan(), 32, 46, 0);*/
-
         tvTermsAndPrivacy.setMovementMethod(LinkMovementMethod.getInstance());
         tvTermsAndPrivacy.setText(SpanString, TextView.BufferType.SPANNABLE);
         tvTermsAndPrivacy.setSelected(true);
         tvTermsAndPrivacy.setClickable(true);
-    }
-
-    public void openPrivacyPolicy(View view) {
-        Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, PrivacyPolicyActivity_New.class);
-        mIntent.putExtra("isPrivacyPolicy", true);
-        mIntent.putExtra("IntentFrom", AppConstants.INTENT_FROM_AYU_FOR_SETUP);
-        mStartForResultTCPP.launch(mIntent);
-    }
-
-    public void openTermsConditions(View view) {
-        Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, TermsAndConditionsActivity_New.class);
-        mIntent.putExtra("isTermsAndCondition", true);
-        mIntent.putExtra("IntentFrom", AppConstants.INTENT_FROM_AYU_FOR_SETUP);
-        mStartForResultTCPP.launch(mIntent);
     }
 
     ActivityResultLauncher<Intent> mStartForResultTCPP = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -194,8 +148,6 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
                         customDialog = new CustomDialog(SetupPrivacyNoteActivity_New.this);
                         customDialog.showDialog1();
                     } else if (result.getResultCode() == AppConstants.TERMS_CONDITIONS_DECLINE || result.getResultCode() == AppConstants.PRIVACY_POLICY_DECLINE) {
-                        //Intent intent = result.getData();
-                        // Handle the Intent
                         finish();
                     } else {
 
@@ -212,30 +164,6 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         }
 
         public void showDialog1() {
-            /*AlertDialog.Builder builder
-                    = new AlertDialog.Builder(context);
-            builder.setCancelable(false);
-            LayoutInflater inflater = LayoutInflater.from(context);
-            View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_internet_warning, null);
-            builder.setView(customLayout);
-
-            AlertDialog dialog = builder.create();
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-            dialog.show();
-            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
-
-            dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-            Button btnOkay = customLayout.findViewById(R.id.btn_okay);
-            btnOkay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    Intent intent = new Intent(SetupPrivacyNoteActivity_New.this, SetupActivityNew.class);
-                    context.startActivity(intent);
-                    finish();
-                }
-            });*/
             Intent intent = new Intent(SetupPrivacyNoteActivity_New.this, SetupActivityNew.class);
             context.startActivity(intent);
             finish();

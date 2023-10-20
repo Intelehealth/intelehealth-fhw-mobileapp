@@ -33,6 +33,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "appointment_id Integer," +
             "slot_day TEXT," +
             "slot_date TEXT," +
+            "slot_js_date TEXT," +
             "slot_duration Integer," +
             "slot_duration_unit TEXT," +
             "slot_time TEXT," +

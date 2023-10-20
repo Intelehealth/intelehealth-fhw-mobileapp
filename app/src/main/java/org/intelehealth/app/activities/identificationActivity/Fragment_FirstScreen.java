@@ -710,7 +710,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 break;
             case R.id.gender_other:
                 if (checked)
-                    mGender = "Other";
+                    mGender = "O";
                 Log.v(TAG, "gender: " + mGender);
                 break;
         }
@@ -728,25 +728,12 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     private void onPatientCreateClicked() {
         uuid = UUID.randomUUID().toString();
-
         Log.v(TAG, "reltion: " + patientID_edit);
-        /*if (patientID_edit != null) {
-            patientdto.setUuid(patientID_edit);
-        } else if (patientdto.getUuid() != null){
-          //  patientdto.setUuid(uuid);
-        }
-        else {
-            patientdto.setUuid(uuid);
-        }*/
-
         if (patient_detail) {
-            //   patientdto.setUuid(patientID_edit);
         } else {
             patientdto.setUuid(uuid);
         }
 
-
-        //frag1_nxt_btn_main.setBackground(getResources().getDrawable(R.drawable.disabled_patient_reg_btn));
         if (mFirstNameEditText.getText().toString().equals("")) {
             mFirstNameErrorTextView.setVisibility(View.VISIBLE);
             mFirstNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -757,17 +744,6 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             mFirstNameErrorTextView.setVisibility(View.GONE);
             mFirstNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
-
-       /* if (mMiddleNameEditText.getText().toString().equals("")) {
-            mMiddleNameErrorTextView.setVisibility(View.VISIBLE);
-            mMiddleNameErrorTextView.setText(getString(R.string.error_field_required));
-            mMiddleNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mMiddleNameEditText.requestFocus();
-            return;
-        } else {
-            mMiddleNameErrorTextView.setVisibility(View.GONE);
-            mMiddleNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }*/
 
         if (mLastNameEditText.getText().toString().equals("")) {
             mLastNameErrorTextView.setVisibility(View.VISIBLE);
@@ -786,10 +762,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         } else {
             mGenderErrorTextView.setVisibility(View.GONE);
         }
-        // gender valid - end
 
         if (mDOBEditText.getText().toString().equals("")) {
-            //  dob_edittext.setError(getString(R.string.error_field_required));
             mDOBErrorTextView.setVisibility(View.VISIBLE);
             mDOBErrorTextView.setText(getString(R.string.error_field_required));
             mDOBEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -801,7 +775,6 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
 
         if (mAgeEditText.getText().toString().equals("")) {
-            //   age_edittext.setError(getString(R.string.error_field_required));
             mAgeErrorTextView.setVisibility(View.VISIBLE);
             mAgeErrorTextView.setText(getString(R.string.error_field_required));
             mAgeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -844,12 +817,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 mPhoneNumberErrorTextView.setVisibility(View.GONE);
                 mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
-            // Indian mobile number max
         }
-
-        // mobile no - start
-
-        // mobile no - end
 
         if (mCurrentPhotoPath != null)
             patientdto.setPatientPhoto(mCurrentPhotoPath);
@@ -860,9 +828,6 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         patientdto.setMiddlename(mMiddleNameEditText.getText().toString());
         patientdto.setLastname(mLastNameEditText.getText().toString());
         patientdto.setGender(StringUtils.getValue(mGender));
-
-        //get unformatted number with prefix "+" i.e "+14696641766"
-        //   patientdto.setPhonenumber(StringUtils.getValue(countryCodePicker.getFullNumberWithPlus()));
         if (!mPhoneNumberEditText.getText().toString().trim().equals(""))
             patientdto.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
         else
@@ -877,6 +842,20 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             PatientsDAO patientsDAO = new PatientsDAO();
             PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
             List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+
+            if (patientdto.getPhonenumber() != null) {
+                // mobile no adding in patient attributes.
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientdto.getUuid());
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+                patientAttributesDTO.setValue(StringUtils.getValue(patientdto.getPhonenumber()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+            patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
+            patientdto.setSyncd(false);
+
+
             ImagesDAO imagesDAO = new ImagesDAO();
 
             if (patient_detail) {

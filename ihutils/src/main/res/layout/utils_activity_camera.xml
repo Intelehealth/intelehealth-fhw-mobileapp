@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dip"
-            android:text="PHOTO"
+            android:text="@string/util_photo"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:textStyle="normal" />

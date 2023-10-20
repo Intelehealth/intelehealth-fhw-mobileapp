@@ -108,6 +108,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -334,13 +335,15 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         tvEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-
-               /* tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_profile));
-                Fragment fragment = new MyProfileFragment_New();
-                loadFragment(fragment);*/
-                Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
-                startActivity(intent);
+                if (isNetworkConnected()) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                    Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                    showSnackBarAndRemoveLater(getString(R.string.this_feature_is_not_available_in_offline_mode));
+                }
             }
         });
 
@@ -558,10 +561,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
-
                 if (isNetworkConnected()) {
-//                    Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
                     imageViewIsInternet.clearAnimation();
                     syncAnimator.start();
                     syncUtils.syncForeground("home");
@@ -595,7 +595,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private void showSnackBarAndRemoveLater(String text) {
         survey_snackbar_cv.setVisibility(View.VISIBLE);
         TextView textView = findViewById(R.id.snackbar_text);
+        ImageView snackbar_icon = findViewById(R.id.snackbar_icon);
+
         textView.setText(text);
+        snackbar_icon.setImageDrawable(getDrawable(R.drawable.ui2_ic_exit_app));
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
@@ -924,6 +927,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         loadLastSelectedFragment();
         //toolbarHome.setVisibility(View.VISIBLE);
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            lastSync = StringUtils.en__hi_dob(lastSync);
         tvAppLastSync.setText(lastSync);
 
         //ui2.0 update user details in  nav header
@@ -1038,6 +1043,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
             String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
             String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                lastSync = StringUtils.en__hi_dob(lastSync);
             tvAppLastSync.setText(lastSync);
 
             //ui2.0 update user details in  nav header
@@ -1146,8 +1153,11 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private void requestPermission() {
         Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
         if (!CallListenerBackgroundService.isInstanceCreated()) {
-            //CallListenerBackgroundService.getInstance().stopForegroundService();
-            context.startService(serviceIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent);
+            } else {
+                context.startService(serviceIntent);
+            }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
@@ -1165,7 +1175,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 

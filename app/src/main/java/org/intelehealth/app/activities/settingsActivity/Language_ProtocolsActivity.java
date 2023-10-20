@@ -85,6 +85,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(Language_ProtocolsActivity.this);
         setContentView(R.layout.activity_language_protocols);
 
         // changing status bar color
@@ -168,7 +169,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                 }
                 selected_language = data.getTitle();
                 Log.v("Langauge", "selection: " + selected_language);
-                String message = getResources().getString(R.string.sure_change_language) + " " + selected_language + "?";
+                String message = getResources().getString(R.string.sure_change_language, selected_language);
                 dialog(context, getResources().getDrawable(R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
                         message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
             }

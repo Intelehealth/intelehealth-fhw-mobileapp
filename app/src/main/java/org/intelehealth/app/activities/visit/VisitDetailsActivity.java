@@ -10,6 +10,7 @@ import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpeci
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -35,6 +36,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -94,12 +96,13 @@ import java.util.Locale;
  */
 
 public class VisitDetailsActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
-    private String patientName, patientUuid, gender, age, openmrsID,
+    private String patientName, patientUuid, gender, age, dob, openmrsID,
             visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text;
-    private ImageView priorityTag, profile_image, icon_presc_details;
+    private ImageView profile_image, icon_presc_details;
+    LinearLayout priorityTag;
     public static final String TAG = "VisitDetailsActivity";
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative,
@@ -114,10 +117,12 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     private NetworkUtils networkUtils;
 
     private RecyclerView mPastVisitsRecyclerView;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(VisitDetailsActivity.this);
         setContentView(R.layout.activity_visit_details);
 
         // changing status bar color
@@ -127,12 +132,14 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         }
 
         networkUtils = new NetworkUtils(this, this);
+        context = VisitDetailsActivity.this;
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientName = intent.getStringExtra("patientname");
             patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
+            dob = intent.getStringExtra("dob");
             age = intent.getStringExtra("age");
             Log.d("TAG", "getAge_FollowUp: s : " + age);
 
@@ -165,7 +172,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
         try {
             pat_phoneno = StringUtils.mobileNumberEmpty(phoneNumber(patientUuid));
-            if(pat_phoneno.equalsIgnoreCase("N/A"))
+            if (pat_phoneno.equalsIgnoreCase("N/A"))
                 pat_phoneno = "";
         } catch (DAOException e) {
             e.printStackTrace();
@@ -331,7 +338,10 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 //presc_remind_block.setVisibility(View.VISIBLE); // show remind btn for presc to be given as its more than days.
                 presc_remind_block.setVisibility(View.GONE); // For now
             }
-            presc_time.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
+            String timeText = getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", "");
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                timeText = modifiedDate.replace("पहले", "") + "से पेंडिंग है";
+            presc_time.setText(timeText);
             presc_time.setTextColor(getResources().getColor(R.color.red));
             icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_red_icon));
         }
@@ -341,13 +351,14 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         patName_txt.setText(patientName);
 
         gender_age_txt = findViewById(R.id.gender_age_txt);
-        gender_age_txt.setText(gender + " " + age);
+//        gender_age_txt.setText(gender + " " + age);
+        setGenderAgeLocal(context, gender_age_txt, dob, gender, sessionManager);
 
         openmrsID_txt = findViewById(R.id.openmrsID_txt);
         openmrsID_txt.setText(openmrsID);
 
         // priority - start
-        priorityTag = findViewById(R.id.priority_tag);
+        priorityTag = findViewById(R.id.llPriorityTagVisitDetails);
         if (isEmergency)
             priorityTag.setVisibility(View.VISIBLE);
         else
@@ -395,6 +406,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             // Time - end
 
             visit_startDate = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                visit_startDate = StringUtils.en__hi_dob(visit_startDate);
             Log.v("Followup", "foramted date: " + visit_startDate);
             visit_startDate_txt.setText(visit_startDate);
         }
@@ -424,15 +437,25 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         followup_accept_text = findViewById(R.id.followup_accept_text);
 
         if (followupDate != null) {
+            String originalFollowUpDate = followupDate;
             followUpDate_format = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM,yyyy");
             followup_relative_block.setVisibility(View.VISIBLE);
             yes_no_followup_relative.setVisibility(View.VISIBLE);
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM");
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                followupDate = StringUtils.en__hi_dob(followupDate);
             followupDate_txt.setText(getResources().getString(R.string.follow_up_on) + " " + followupDate);
             followup_info.setText(getResources().getString(R.string.please_take) + " " + patientName + getResources().getString(R.string.s_follow_up_visit));
 
-            followup_accept_text.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) + " " +
-                    followUpDate_format + ".");
+            if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(originalFollowUpDate, "yyyy-MM-dd")) {
+                String followUpAcceptText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    followUpAcceptText = StringUtils.en__hi_dob(followUpAcceptText);
+                followup_accept_text.setText(followUpAcceptText);
+            } else {
+                followup_accept_text.setText(getResources().getString(R.string.follow_up_date_arrived));
+            }
+
             Log.v("vd", "vd: " + followup_info);
         } else {
             followup_relative_block.setVisibility(View.GONE);
@@ -717,7 +740,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
      * @param phoneno
      */
     private void calling_feature(String phoneno) {
-        if (phoneno!= null && !phoneno.equalsIgnoreCase("")) {
+        if (phoneno != null && !phoneno.equalsIgnoreCase("")) {
             Intent i1 = new Intent(Intent.ACTION_DIAL);
             i1.setData(Uri.parse("tel:" + phoneno));
             startActivity(i1);

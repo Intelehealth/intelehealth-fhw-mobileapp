@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/fu_margin_start"
             android:layout_marginTop="@dimen/fu_margin_start"
-            android:layout_marginEnd="@dimen/fu_margin_start"
+
             android:layout_marginBottom="@dimen/fu_margin_start"
             android:layout_toStartOf="@+id/linear_icon">
 
@@ -74,18 +74,37 @@
                         android:layout_height="@dimen/btn_prioirty_h_20dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="@dimen/cal_margnin_start"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
-                        <ImageView
-                            android:id="@+id/fu_priority_tag"
-                            android:layout_width="@dimen/btn_prioirty_w_60dp"
-                            android:layout_height="@dimen/btn_prioirty_h_20dp"
+                        <LinearLayout
+                            android:id="@+id/llPriorityTagFollowUpListItem"
+                            android:contentDescription="Follow Up List Item Priority Tag Linear Layout"
+                            android:layout_marginEnd="@dimen/cp_margin_start"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/ui2_frame_priority"
                             android:layout_gravity="top"
                             android:gravity="center"
-                            android:lineSpacingExtra="0sp"
-                            android:src="@drawable/ui2_frame_priority"
                             android:visibility="gone"
-                            tools:visibility="visible" />
+                            tools:visibility="visible">
+
+                            <TextView
+                                android:id="@+id/fu_priority_tag"
+                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="0sp"
+                                android:text="@string/priority"
+                                android:textColor="@color/white"
+                                android:textAlignment="center"
+                                android:textAllCaps="true"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                     </FrameLayout>
                 </RelativeLayout>

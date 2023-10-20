@@ -1,12 +1,16 @@
 package org.intelehealth.app.activities.searchPatientActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +32,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -57,6 +62,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     public SearchPatientAdapter_New(Context context, List<PatientDTO> patientDTOS) {
         this.context = context;
         this.patientDTOS.addAll(patientDTOS);
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -72,18 +78,20 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         final PatientDTO model = patientDTOS.get(position);
         holder.patientDTO = model;
         if (model != null) {
+
             //  1. Age
-            String age = DateAndTimeUtils.getAge_FollowUp(model.getDateofbirth(), context);
-            holder.search_gender.setText(model.getGender() + " " + age);
+            /*String age = DateAndTimeUtils.getAge_FollowUp(model.getDateofbirth(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, model.getDateofbirth(), model.getGender(), sessionManager);
 
             //  2. Name
             holder.search_name.setText(model.getFirstname() + " " + model.getLastname());
 
             //  3. Priority Tag
             if (model.isEmergency())
-                holder.priority_tag_imgview.setVisibility(View.VISIBLE);
+                holder.fl_priority.setVisibility(View.VISIBLE);
             else
-                holder.priority_tag_imgview.setVisibility(View.GONE);
+                holder.fl_priority.setVisibility(View.GONE);
 
             //  4. Visit Start Date else No visit created text display.
             if (model.getVisit_startdate() != null) {
@@ -108,7 +116,10 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 // checking visit uploaded or not - end
 
                 holder.fu_item_calendar.setVisibility(View.VISIBLE);
-                holder.search_date_relative.setText(model.getVisit_startdate());
+                String visitDate = model.getVisit_startdate();
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    visitDate = StringUtils.en_hi_dob_three(visitDate);
+                holder.search_date_relative.setText(visitDate);
             } else {
                 holder.presc_pendingCV.setVisibility(View.GONE);
                 holder.presc_receivingCV.setVisibility(View.GONE);
@@ -159,16 +170,19 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
     public class SearchHolderView extends RecyclerView.ViewHolder {
         TextView search_gender, search_name, search_date_relative;
-        ImageView priority_tag_imgview, fu_item_calendar, profile_imgview;
+        ImageView  fu_item_calendar, profile_imgview;
+        LinearLayout priority_tag_imgview;
         PatientDTO patientDTO;
         CardView presc_pendingCV, presc_receivingCV, visitNotUploadCV;
+        FrameLayout fl_priority;
 
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
 
             search_gender = itemView.findViewById(R.id.search_gender);
             search_name = itemView.findViewById(R.id.search_name);
-            priority_tag_imgview = itemView.findViewById(R.id.priority_tag_imgview);
+            priority_tag_imgview = itemView.findViewById(R.id.llPriorityTagSearchPatientListItem);
+            fl_priority = itemView.findViewById(R.id.fl_priority);
             fu_item_calendar = itemView.findViewById(R.id.fu_item_calendar);
             search_date_relative = itemView.findViewById(R.id.search_date_relative);
             profile_imgview = itemView.findViewById(R.id.profile_imgview);
@@ -199,7 +213,6 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     }
 
     public void profilePicDownloaded(PatientDTO model, SearchPatientAdapter_New.SearchHolderView holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getUuid());
         Logger.logD("TAG", "profileimage url" + url);

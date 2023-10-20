@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -39,6 +41,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -62,6 +65,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     public FollowUpPatientAdapter_New(List<FollowUpModel> patients, Context context) {
         this.patients = patients;
         this.context = context;
+        sessionManager = new SessionManager(context);
     }
 
     public FollowUpPatientAdapter_New(Context context) {
@@ -120,7 +124,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 // Patient Name section
                 Log.v("Followup", new Gson().toJson(model));
                 String fullName = model.getFirst_name() + " " + model.getLast_name();
-                String displayName = fullName.length()>10 ? fullName.substring(0, 10) : fullName;
+                String displayName = fullName.length() > 10 ? fullName.substring(0, 10) : fullName;
                 if (model.getOpenmrs_id() != null) {
                     holder.fu_patname_txtview.setText(String.format("%s, %s", displayName, model.getOpenmrs_id()));
                 } else {
@@ -131,20 +135,29 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 if (!model.getFollowup_date().equalsIgnoreCase("null") && !model.getFollowup_date().isEmpty()) {
                     try {
                         Log.v("getFollowup_date", model.getFollowup_date());
-                        String followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
-                        Log.v("getFollowup_date", followupDateTimeRaw+"OK");
-                        String followupDateTime = followupDateTimeRaw.replace(", Time:", "");
-                        Log.v("getFollowup_date", followupDateTime);
 
-                        Date fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(followupDateTime);
+                        String followupDateTimeRaw = "";
+                        try {
+                            followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
+                        } catch (Exception e) {
+                            followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                        }
+
+                        Log.v("getFollowup_date", followupDateTimeRaw + "OK");
+                        String followupDateTime = followupDateTimeRaw.trim().replace(", Time:", "");
+                        Log.v("getFollowup_date", "final followupDate " + followupDateTime);
+
+                        Date fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(followupDateTime);
                         Date nowDate = new Date();
                         if (fDate.getTime() >= nowDate.getTime()) {
                             holder.fu_date_txtview.setTextColor(context.getColor(R.color.gray_3));
-                        }else{
+                        } else {
                             holder.fu_date_txtview.setTextColor(context.getColor(R.color.red));
                         }
-                        String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "dd MMMM,hh:mm a");
-                        holder.fu_date_txtview.setText(context.getString(R.string.follow_up_on) + " " + followupDate);
+                        String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "dd MMMM, hh:mm a");
+                        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                            followupDate = StringUtils.en__hi_dob(followupDate);
+                        holder.fu_date_txtview.setText(context.getString(R.string.follow_up_on) + "\n" + followupDate);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -187,7 +200,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
                 //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
                 //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                
+
                 context.startActivity(intent);
             });
         }
@@ -203,7 +216,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         CardView cardView;
         private View rootView;
         TextView fu_patname_txtview, fu_date_txtview;
-        ImageView fu_priority_tag, profile_image;
+        ImageView profile_image;
+        LinearLayout fu_priority_tag;
 
         public Myholder(View itemView) {
             super(itemView);
@@ -211,11 +225,11 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             cardView = itemView.findViewById(R.id.fu_cardview_item);
             fu_patname_txtview = itemView.findViewById(R.id.fu_patname_txtview);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
-            fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
+            fu_priority_tag = itemView.findViewById(R.id.llPriorityTagFollowUpListItem1);
             profile_image = itemView.findViewById(R.id.profile_image);
             rootView = itemView;
 
-            fu_date_txtview.setText("22 June"); // todo: testing.
+         //   fu_date_txtview.setText("22 June"); // todo: testing.
         }
 
         public View getRootView() {
@@ -224,7 +238,6 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     }
 
     public void profilePicDownloaded(FollowUpModel model, Myholder holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientuuid());
         Logger.logD("TAG", "profileimage url" + url);

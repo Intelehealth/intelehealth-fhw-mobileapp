@@ -77,11 +77,11 @@ public class CustomCalendarViewUI2 extends DialogFragment {
     @NonNull
     @Override
     public AlertDialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog alertDialog = showDatePicker(context, "");
         Bundle mArgs = getArguments();
         assert mArgs != null;
         whichDate = mArgs.getString("whichDate");
         Log.d(TAG, "onCreateDialog:whichDate :  " + whichDate);
+        AlertDialog alertDialog = showDatePicker(context, "");
         return alertDialog;
     }
 
@@ -112,20 +112,13 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                     spinnerSelectedMonthModel = new CalendarViewMonthModel("", Integer.parseInt(monthToCompare), true);
                     setValuesToTheYearSpinnerForDefault(Integer.parseInt(yearToCompare));
                     setValuesToTheMonthSpinnerForDefault(Integer.parseInt(monthToCompare));
-
-                    // getAllDatesOfSelectedMonth(calendarInstanceDefault, true, monthToCompare, selectedPrevMonthYear, monthToCompare);
                     fillDatesMonthsWise("prevButton");
                 } else {
                     spinnerSelectedYearModel = new CalendarviewYearModel(Integer.parseInt(yearToCompare), true);
                     spinnerSelectedMonthModel = new CalendarViewMonthModel("", Integer.parseInt(monthToCompare), true);
                     setValuesToTheYearSpinnerForDefault(Integer.parseInt(yearToCompare));
                     setValuesToTheMonthSpinnerForDefault(Integer.parseInt(monthToCompare));
-
-                    //enableDisablePreviousButton(true);
                     fillDatesMonthsWise("prevButton");
-
-                    // getAllDatesOfSelectedMonth(calendarInstanceDefault, false, monthToCompare, selectedPrevMonthYear,monthToCompare);
-
                 }
 
             }
@@ -188,19 +181,6 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                 break;
             }
         }
-       /* switch (currentYear) {
-            case 2022:
-                spinnerYear.setSelection(0, true);
-                break;
-            case 2023:
-                spinnerYear.setSelection(1, true);
-                break;
-            case 2024:
-                spinnerYear.setSelection(2, true);
-                break;
-
-        }*/
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -368,23 +348,12 @@ public class CustomCalendarViewUI2 extends DialogFragment {
             for (int i = 1; i <= monthTotalDays; i++) {
 
                 if ((selectedMonth == currentMonth && selectedYear == currentYear && i < currentDay) || (selectedYear == currentYear && selectedMonth < currentMonth)) {
-                    //i.e. selected month is current month and check for date is less than current date i.e. upcoming or completed
                     calendarviewModel = new CalendarviewModel(i, headerDayPosition, headerDayPositionForLastDay, false, false, false, true, spinnerSelectedMonthModel.getMonthNo(), spinnerSelectedYearModel.getYear());
 
                 } else {
-                    //i.e. selected month is other than current month
-
                     calendarviewModel = new CalendarviewModel(i, headerDayPosition, headerDayPositionForLastDay, false, false, false, false, spinnerSelectedMonthModel.getMonthNo(), spinnerSelectedYearModel.getYear());
 
                 }
-
-               /* if (i == 1) {
-                    calendarviewModel = new CalendarviewModel(i, headerDayPosition, headerDayPositionForLastDay, false, false, false);
-
-                } else {
-                    calendarviewModel = new CalendarviewModel(i, 111, headerDayPositionForLastDay, false, false, false);
-
-                }*/
                 listOfDates.add(calendarviewModel);
             }
 
@@ -418,22 +387,15 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                 int month = calendarModel1.getSelectedMonth();
                 int year = calendarModel1.getSelectedYear();
 
-                //  if (calendarModel1.isPrevMonth || calendarModel1.isNextMonth || calendarModel1.isCurrentMonthCompletedDate()) {
-
                 if (calendarModel1.isPrevMonth || calendarModel1.isNextMonth || calendarModel1.isCurrentMonthCompletedDate()) {
                     //for previous dates
                     selectedDate = date + "/" + month + "/" + year;
                 } else {
                     //for upcoming dates
                     selectedDate = date + "/" + month + "/" + year;
-
                 }
-
                 Log.d(TAG, "selected from adapter fillDatesMonthsWise: selectedDate : " + selectedDate);
-                //String year = calendarModel1.getSelectedYear();
-                // Log.d(TAG, "Selected date adapter: " + date + "-" + month + "-" + year);
-                // Toast.makeText(this, "Selected date : " + date + "-" + month + "-" + year, Toast.LENGTH_SHORT).show();
-            }));
+            }, whichDate));
 
 
         } else {
@@ -738,28 +700,20 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         });
 
         btnOkCalendar.setOnClickListener(v -> {
-
             //for get the selected date - if calendar view called from activity
             if (listener != null) {
                 listener.getSelectedDate(selectedDate, "");
             }
-
-
             //for get the selected date - if calendar view called from fragment
             if (getTargetFragment() != null) {
                 Intent intent = new Intent()
                         .putExtra("selectedDate", selectedDate)
                         .putExtra("whichDate", whichDate);
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-
             }
-
-
             alertDialog.dismiss();
         });
-
         alertDialog.show();
-
         return alertDialog;
     }
 

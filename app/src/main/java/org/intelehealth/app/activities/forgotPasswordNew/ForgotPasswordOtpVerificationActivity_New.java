@@ -41,6 +41,7 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
+import org.intelehealth.app.utilities.StringUtils;
 
 import java.util.Locale;
 
@@ -59,6 +60,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     LinearLayout layoutParent, rvHelpInfo;
     SnackbarUtils snackbarUtils;
     Button buttonVerifyOtp;
+    SessionManager sessionManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         }
         buttonVerifyOtp = findViewById(R.id.button_verify_otp);
         LinearLayout layoutPinView = findViewById(R.id.pinview_otp);
-
+        sessionManager = new SessionManager(ForgotPasswordOtpVerificationActivity_New.this);
         etPin1 = layoutPinView.findViewById(R.id.et_pin_1);
         etPin2 = layoutPinView.findViewById(R.id.et_pin_2);
         etPin3 = layoutPinView.findViewById(R.id.et_pin_3);
@@ -107,6 +109,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         ivBack.setOnClickListener(v -> {
             Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, SetupActivityNew.class);
             startActivity(intent);
+            finish();
         });
 
         rvHelpInfo.setOnClickListener(v -> {
@@ -166,7 +169,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, forgotPasswordApiResponseModel_new.getMessage());
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, forgotPasswordApiResponseModel_new.getMessage(), true);
                     Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ResetPasswordActivity_New.class);
                     intent.putExtra("otp", otp);
                     intent.putExtra("userUuid", userUuid);
@@ -183,7 +186,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.otp_verification_failed));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.otp_verification_failed), false);
                 etPin6.requestFocus();
                 buttonVerifyOtp.setEnabled(true);
 
@@ -215,10 +218,10 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, forgotPasswordApiResponseModel_new.getMessage());
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), true);
                     etPin1.requestFocus();
                 } else {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp));
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
                 }
                 tvResendOtp.setEnabled(true);
             }
@@ -226,7 +229,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
                 tvResendOtp.setEnabled(true);
             }
 

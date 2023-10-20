@@ -7,19 +7,24 @@ import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUU
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +75,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -99,9 +105,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     View layoutSummaryBtns;
     FloatingActionButton fabHelp;
     int appointment_id = 0;
-    private ImageView priorityTag;
+    private LinearLayout priorityTag;
     private boolean isEmergency, hasPrescription;
-    private String patientName, patientUuid, gender, age, openmrsID,
+    private String patientName, patientUuid, gender, age, openmrsID, dob,
             visitID, visit_speciality, followupDate, patient_photo_path, app_start_date,
             app_start_time, app_start_day, prescription_received_time, appointmentStatus;
     SQLiteDatabase db;
@@ -120,13 +126,16 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     private PatientDTO patientDTO;
     String patientPhoneNo = "";
     private TextView mScheduleAppointmentTextView;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(AppointmentDetailsActivity.this);
         setContentView(R.layout.activity_appointment_details_ui2);
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         sessionManager = new SessionManager(this);
+        context = AppointmentDetailsActivity.this;
         appointmentDAO = new AppointmentDAO();
         networkUtils = new NetworkUtils(AppointmentDetailsActivity.this, this);
 
@@ -188,7 +197,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         layoutEndVisit = findViewById(R.id.layout_end_visit);
         layoutVisitSummary = findViewById(R.id.layout_visit_summary);
         ivProfileImage = findViewById(R.id.profile_image_app_details);
-        priorityTag = findViewById(R.id.priority_tag_app_details);
+        priorityTag = findViewById(R.id.llPriorityTagAppointmentDetails);
         tvPatientName = findViewById(R.id.patname_txt);
         tvOpenMrsID = findViewById(R.id.openmrsID_txt);
         tvGenderAgeText = findViewById(R.id.gender_age_txt);
@@ -213,6 +222,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             patientName = intent.getStringExtra("patientname");
             patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
+            dob = intent.getStringExtra("dob");
             age = intent.getStringExtra("age");
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
@@ -239,9 +249,12 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             String[] DobAndGender = PatientsDAO.getPatientDobAgeGender(patientUuid);
             if (DobAndGender.length > 0) {
                 String age1 = DateAndTimeUtils.getAge_FollowUp(DobAndGender[1], this);
-                tvGenderAgeText.setText(DobAndGender[0] + " " + age1);
+//                tvGenderAgeText.setText(DobAndGender[0] + " " + age1);
+
                 gender = DobAndGender[0];
                 age = DobAndGender[1];
+
+                setGenderAgeLocal(context, tvGenderAgeText, dob, gender, sessionManager);
             }
 
             //get patient phone number from local db
@@ -302,7 +315,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 Log.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
                 chief_complaint_value = chief_complaint_value.substring(first, last + 4);
                 tvChiefComplaintTxt.setText(Html.fromHtml(chief_complaint_value));
-            }else{
+            } else {
                 chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
                 System.out.println(chief_complaint_value);
                 Log.v(TAG, chief_complaint_value);
@@ -355,12 +368,12 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
 
             btnRescheduleAppointment.setOnClickListener(v -> {
-                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment) + " <b>" + patientName + "?</b>";
+                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment, patientName);
                 rescheduleAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.reschedule_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
             });
             btnCancelAppointment.setOnClickListener(v -> {
-                String subtitle = getResources().getString(R.string.sure_to_cancel_appointment) + " <b>" + patientName + "?</b>";
+                String subtitle = getResources().getString(R.string.sure_to_cancel_appointment, patientName);
                 cancelAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.cancel_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
             });
@@ -455,7 +468,10 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 // here show remind block as its pending from more than 1 day.
                 layoutPrescButtons.setVisibility(View.GONE); // show remind btn for presc to be given as its more than days.
             }
-            tvPrescStatus.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
+            String timeText1 = getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", "");
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                timeText1 = modifiedDate.replace("पहले", "") + "से पेंडिंग है";
+            tvPrescStatus.setText(timeText1);
             tvPrescStatus.setTextColor(getResources().getColor(R.color.red));
         }
         // presc block - end
@@ -521,7 +537,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             stateAppointmentPrescription.setVisibility(View.GONE);
 
             mScheduleAppointmentTextView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btnCancelAppointment.setVisibility(View.VISIBLE);
             btnRescheduleAppointment.setVisibility(View.VISIBLE);
             mScheduleAppointmentTextView.setVisibility(View.GONE);
@@ -666,29 +682,42 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             //check for appointment but presc not given and visit not completed
             if (minutes > 0) {
                 isVisitStartsIn = true;
+                long hours = minutes / 60;
+                long mins = minutes % 60;
                 if (minutes >= 60) {
-                    long hours = minutes / 60;
                     if (hours > 12) {
-
-                        timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + "," + getResources().getString(R.string.at) + " " + slotTime;
+                        timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + ", " + getResources().getString(R.string.at) + " " + slotTime;
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                            timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate)) + ", " + slotTime + " " + getResources().getString(R.string.at);
                     } else {
-                        timeText =  getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
-
+                        if (hours >= 1) {
+                            if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
+                                        mins + " " + context.getString(R.string.minutes_txt) + ", " +
+                                        context.getString(R.string.at) + " " + slotTime;
+                            else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
+                                        + context.getString(R.string.in) + " , " + slotTime + " " + context.getString(R.string.at);
+                        }
                     }
                 } else {
-                    timeText =  getResources().getString(R.string.in) + " " + minutes + " " +  getResources().getString(R.string.minutes_txt);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                        timeText = getResources().getString(R.string.in) + " " + mins + " " + getResources().getString(R.string.minutes_txt);
+                    else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        timeText = mins + " " + getResources().getString(R.string.minutes_txt) + " " + getResources().getString(R.string.in);
                 }
-            } else {
-                isVisitStartsIn = false;
+
             }
-
-
-        } catch (ParseException e) {
-            Log.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            else {
+            isVisitStartsIn = false;
         }
-        return timeText;
+    } catch(ParseException e)
+    {
+        Log.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
+        e.printStackTrace();
     }
+        return timeText;
+}
 
 
     public void cancelAppointment(Context context, String title, String subTitle,
@@ -1155,5 +1184,24 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         args.putSerializable("patientDTO", (Serializable) patientDTO);
         intent2.putExtra("BUNDLE", args);
         startActivity(intent2);
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 }

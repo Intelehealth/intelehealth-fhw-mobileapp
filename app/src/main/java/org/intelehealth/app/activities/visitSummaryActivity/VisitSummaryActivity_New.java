@@ -10,6 +10,7 @@ import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
@@ -49,8 +50,10 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,6 +104,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -127,7 +131,6 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
-import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
@@ -141,6 +144,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -321,6 +325,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private View hl_2;
     private boolean priorityVisit = false;
     private ObjectAnimator syncAnimator;
+    TooltipWindow tipWindow;
+
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -426,6 +432,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         fetchingIntent();
         setViewsData();
         expandableCardVisibilityHandling();
+        tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
 
     }
 
@@ -893,7 +900,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         nameView.setText(patientName);
 
         gender_tv = patientGender;
-        setgender(genderView);
+        setGenderAgeLocal(context, genderView, patient.getDate_of_birth(), patient.getGender(), sessionManager);
 
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_id());
@@ -1125,6 +1132,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 if (i != 0) {
                     Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
                     speciality_selected = adapterView.getItemAtPosition(i).toString();
+                    vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
                     Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
                 } else {
                     speciality_selected = "";
@@ -2130,6 +2138,28 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         tilAdditionalNotesVS = findViewById(R.id.tilAdditionalNotesVS);
         etAdditionalNotesVS = findViewById(R.id.etAdditionalNotesVS);
+
+//        android:hint="@string/leave_a_note_for_doctor"
+        etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
+        etAdditionalNotesVS.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                etAdditionalNotesVS.setHint("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().equalsIgnoreCase(""))
+                    etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
+                else
+                    etAdditionalNotesVS.setHint("");
+            }
+        });
         // textview - end
 
         // up-down btn - start
@@ -2174,7 +2204,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         priority_hint = findViewById(R.id.priority_hint);
 
         priority_hint.setOnClickListener(v -> {
-            Toast.makeText(context, R.string.priority_hint, Toast.LENGTH_SHORT).show();
+            if (!tipWindow.isTooltipShown())
+                tipWindow.showToolTip(priority_hint, getResources().getString(R.string.priority_hint));
+
+            //  Toast.makeText(context, R.string.priority_hint, Toast.LENGTH_SHORT).show();
 //            Snackbar.make(parentLayout, R.string.priority_hint, Snackbar.LENGTH_SHORT).show();
         });
 
@@ -2277,22 +2310,27 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         btnAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!priorityVisit) {
-                    if (isVisitSpecialityExists) {
-                        Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
-                        in.putExtra("visitUuid", visitUuid);
-                        in.putExtra("patientUuid", patientUuid);
-                        in.putExtra("patientName", patientName);
-                        in.putExtra("appointmentId", 0);
-                        in.putExtra("actionTag", "new_schedule");
-                        in.putExtra("openMrsId", patient.getOpenmrs_id());
-                        in.putExtra("speciality", speciality_selected);
-                        mStartForScheduleAppointment.launch(in);
-                    } else
-                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
 
+                if (NetworkConnection.isOnline(context)) {
+                    if (!priorityVisit) {
+                        if (isVisitSpecialityExists) {
+                            Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
+                            in.putExtra("visitUuid", visitUuid);
+                            in.putExtra("patientUuid", patientUuid);
+                            in.putExtra("patientName", patientName);
+                            in.putExtra("appointmentId", 0);
+                            in.putExtra("actionTag", "new_schedule");
+                            in.putExtra("openMrsId", patient.getOpenmrs_id());
+                            in.putExtra("speciality", speciality_selected);
+                            mStartForScheduleAppointment.launch(in);
+                        } else
+                            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -2426,91 +2464,117 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
     }
 
-    private void setgender(TextView genderView) {
+/*
+    private void setGenderAgeLocal(Context context, TextView genderView, Patient patient, SessionManager sessionManager) {
+        //  1. Age
+        String age = DateAndTimeUtils.getAge_FollowUp(patient.getDate_of_birth(), this.context);
+        String gender = patient.getGender();
+
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else {
-            genderView.setText(gender_tv);
+            genderView.setText(gender + " " + age);
         }
     }
+*/
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle,
                                  String positiveBtnTxt, String negativeBtnTxt) {
@@ -2559,6 +2623,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
+            vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
             boolean isUpdateVisitDone = false;
             try {
@@ -4233,8 +4298,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            btnAppointment.setBackground(getDrawable(R.drawable.ui2_common_primary_bg));
         } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            btnAppointment.setBackground(getDrawable(R.drawable.ui2_bg_disabled_time_slot));
         }
     }
 

@@ -160,7 +160,7 @@ public class PatientsDAO {
             values.put("dead", false);
             values.put("sync", false);
 
-            insertPatientAttributes(patientAttributesDTOS, db);
+            insertPatientAttributes(patientDTO.getPatientAttributesDTOList(), db);
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.update("tbl_patient", values, whereclause, new String[]{uuid});
             db.setTransactionSuccessful();
@@ -378,27 +378,26 @@ public class PatientsDAO {
         boolean isInserted = true;
         ContentValues values = new ContentValues();
         db.beginTransaction();
-        try {
-            for (int i = 0; i < patientAttributesDTOS.size(); i++) {
-                values.put("uuid", patientAttributesDTOS.get(i).getUuid());
-                values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
-                values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
-                values.put("value", patientAttributesDTOS.get(i).getValue());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("sync", false);
-                db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            try {
+                for (int i = 0; i < patientAttributesDTOS.size(); i++) {
+                    values.put("uuid", patientAttributesDTOS.get(i).getUuid());
+                    values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
+                    values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
+                    values.put("value", patientAttributesDTOS.get(i).getValue());
+                    values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                    values.put("sync", false);
+                    db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                }
+                db.setTransactionSuccessful();
+            } catch (SQLException e) {
+                isInserted = false;
+                FirebaseCrashlytics.getInstance().recordException(e);
+                throw new DAOException(e.getMessage(), e);
+            } finally {
+                db.endTransaction();
             }
-            db.setTransactionSuccessful();
-        } catch (SQLException e) {
-            isInserted = false;
-            FirebaseCrashlytics.getInstance().recordException(e);
-            throw new DAOException(e.getMessage(), e);
-        } finally {
-            db.endTransaction();
-        }
 
-
-        return isInserted;
+            return isInserted;
 
     }
 
@@ -709,7 +708,7 @@ public class PatientsDAO {
 
     public static String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND " +
                 "person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7'", new String[]{patientuuid});
         try {

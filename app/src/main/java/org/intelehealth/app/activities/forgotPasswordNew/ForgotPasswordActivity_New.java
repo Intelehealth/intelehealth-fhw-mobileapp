@@ -234,10 +234,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             }
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
-                cpd.dismiss();
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
-                   snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()));
-                    //Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show();
+                   snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), true);
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -269,13 +267,14 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
                 cpd.dismiss();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
                 buttonContinue.setEnabled(true);
 
             }
 
             @Override
             public void onComplete() {
+                cpd.dismiss();
                 Logger.logD(TAG, "completed");
             }
         });

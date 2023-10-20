@@ -1,5 +1,7 @@
 package org.intelehealth.app.appointmentNew;
 
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -30,6 +33,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -50,12 +54,13 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
     Context context;
     List<AppointmentInfo> appointmentInfoList;
     String whichAppointments;
+    SessionManager sessionManager;
 
     public TodaysMyAppointmentsAdapter(Context context, List<AppointmentInfo> appointmentInfoList, String whichAppointments) {
         this.context = context;
         this.appointmentInfoList = appointmentInfoList;
         this.whichAppointments = whichAppointments;
-
+        sessionManager = new SessionManager(context);
     }
 
     @Override
@@ -79,6 +84,12 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 }
             }
 
+            // Set Age and Gender - start
+            /*String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.getPatientDob(), context);
+            holder.search_gender.setText(appointmentInfoModel.getPatientGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, appointmentInfoModel.getPatientDob(),
+                    appointmentInfoModel.getPatientGender(), sessionManager);
+            // Set Age and Gender - end
 
             if (appointmentInfoModel.getPatientProfilePhoto() != null && !appointmentInfoModel.getPatientProfilePhoto().isEmpty()) {
                 Glide.with(context)
@@ -110,31 +121,54 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                     if (minutes > 0) {
                         if (minutes >= 60) {
                             long hours = minutes / 60;
+                            long mins = minutes % 60;
                             if (hours > 24) {
-
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                                holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
-                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.iconTintGray), PorterDuff.Mode.SRC_IN);
-
-                                timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + ", " + context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                              if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                    timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) +" " + appointmentInfoModel.getSlotTime();
+                                else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                    timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate())) + ","  + " " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                                 holder.tvDate.setText(timeText);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                                 }
                             } else {
-                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at) + " " + appointmentInfoModel.getSlotTime();
-                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
+                                if (hours > 1) {
+                                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                        timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
+                                            mins + " " + context.getString(R.string.minutes_txt) + ", " +
+                                            context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                                    else  if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                        timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
+                                                + context.getString(R.string.in) + " , " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
+                                }
+                                else {
+                                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                        timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hour) + " " +
+                                            mins + " " + context.getString(R.string.minutes_txt) + ", " +
+                                            context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                                     else  if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                        timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
+                                                + context.getString(R.string.in) + " , " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
+                                }
+                                if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                    timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
+                                else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                    timeText = minutes + " " + context.getString(R.string.minutes_txt) + " " + context.getString(R.string.in) ;
+//                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-
-
                                 holder.tvDate.setText(timeText);
+                                holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                                 }
                             }
                         } else {
-                            timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minute);
-                            holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
+                            if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
+                            else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                timeText = minutes + " " + context.getString(R.string.minutes_txt) + " " + context.getString(R.string.in) ;
+//                            holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
                             holder.tvDate.setText(timeText);
@@ -157,26 +191,25 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 //hide  : ivTime, tvDate, tvPatientId
                 //show :  tvPrescRecStatus
 
-                holder.ivTime.setVisibility(View.GONE);
                 holder.tvDate.setVisibility(View.GONE);
                 holder.tvPatientId.setVisibility(View.GONE);
-                holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
+                holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time(), context));
                 Log.d(TAG, "onBindViewHolder:time :  " + appointmentInfoModel.getPresc_received_time());
                 if (appointmentInfoModel.isPrescription_exists()) {
-                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));
+                    holder.cvPrescRx.setVisibility(View.VISIBLE);
+                    holder.cvPrescPending.setVisibility(View.GONE);
                 } else {
-                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_pending));
-
+                    holder.cvPrescPending.setVisibility(View.VISIBLE);
+                    holder.cvPrescRx.setVisibility(View.GONE);
                 }
             }
 
             if (whichAppointments.equalsIgnoreCase("cancelled")) {
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                holder.ivTime.setVisibility(View.VISIBLE);
                 holder.tvDate.setVisibility(View.VISIBLE);
-                holder.tvPrescRecStatus.setVisibility(View.GONE);
+                holder.cvPrescRx.setVisibility(View.GONE);
+                holder.cvPrescPending.setVisibility(View.GONE);
                 holder.tvPatientId.setVisibility(View.GONE);
 
                 holder.tvDate.setText(appointmentInfoModel.getSlotTime());
@@ -196,6 +229,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                     intent.putExtra("patientname", appointmentInfoModel.getPatientName());
                     intent.putExtra("patientUuid", appointmentInfoModel.getPatientId());
                     intent.putExtra("gender", "");
+                    intent.putExtra("dob", appointmentInfoModel.getPatientDob());
                     //String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.get(), context);
                     intent.putExtra("age", "");
                     intent.putExtra("priority_tag", "");
@@ -209,7 +243,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                     intent.putExtra("visit_speciality", appointmentInfoModel.getSpeciality());
                     intent.putExtra("appointment_id", appointmentInfoModel.getId());
                     intent.putExtra("app_start_day", appointmentInfoModel.getSlotDay());
-                    intent.putExtra("prescription_received_time", DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
+                    intent.putExtra("prescription_received_time", DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time(), context));
                     intent.putExtra("status", appointmentInfoModel.getStatus());
 
                     context.startActivity(intent);
@@ -232,10 +266,10 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        CardView cardParent;
-        TextView tvPatientName, tvDate, tvPatientId, tvPrescRecStatus, doctNameTextView;
-        ImageView ivProfileImage, ivTime, IvPriorityTag;
-
+        CardView cardParent, cvPrescPending, cvPrescRx;
+        TextView tvPatientName, tvDate, tvPatientId, tvPrescRecStatus, doctNameTextView, search_gender;
+        ImageView ivProfileImage;
+        LinearLayout IvPriorityTag;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -243,18 +277,16 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
             tvPatientName = itemView.findViewById(R.id.tv_patient_name_todays);
             ivProfileImage = itemView.findViewById(R.id.profile_image_todays);
             tvDate = itemView.findViewById(R.id.tv_date_appointment_todays);
-            ivTime = itemView.findViewById(R.id.iv_time_todays);
-            IvPriorityTag = itemView.findViewById(R.id.iv_priority_tag1_todays);
+            IvPriorityTag = itemView.findViewById(R.id.llPriorityTagTodayAppointmentItem);
             tvPatientId = itemView.findViewById(R.id.tv_patient_id_todays);
-            tvPrescRecStatus = itemView.findViewById(R.id.tv_presc_rec_status);
+            cvPrescPending = itemView.findViewById(R.id.cvPrescPendingTodayAppointment);
+            cvPrescRx = itemView.findViewById(R.id.cvPrescRxTodayAppointment);
             doctNameTextView = itemView.findViewById(R.id.tv_dr_name_todays);
-
-
+            search_gender = itemView.findViewById(R.id.search_gender);
         }
     }
 
     public void profilePicDownloaded(AppointmentInfo model, MyViewHolder holder) {
-        SessionManager sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getUuid());
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD

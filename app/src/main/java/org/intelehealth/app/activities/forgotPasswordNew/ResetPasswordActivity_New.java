@@ -31,6 +31,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.help.activities.ChatSupportHelpActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -44,6 +45,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.security.SecureRandom;
@@ -67,7 +69,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
     TextView tvErrorNewPassword, tvErrorConfirmPassword, tvGeneratePassword;
     TextInputEditText etNewPassword, etConfirmPassword;
     Button btnSavePassword;
-
+    TooltipWindow tipWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         etNewPassword = findViewById(R.id.et_new_password);
         etConfirmPassword = findViewById(R.id.et_confirm_password);
         btnSavePassword = findViewById(R.id.btn_save_password);
+        tipWindow = new TooltipWindow(ResetPasswordActivity_New.this);
         ImageView ivBack = findViewById(R.id.imageview_back_reset);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +104,12 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
             randomString(8);
         });
 
+        ImageView ivQuestionResetPassword = findViewById(R.id.ivQuestionResetPasswordScreen);
+        ivQuestionResetPassword.setOnClickListener(v -> {
+            if (!tipWindow.isTooltipShown())
+                tipWindow.showToolTip(ivQuestionResetPassword, getResources().getString(R.string.generate_password_tooltip_text));
+        });
+
 
         btnSavePassword.setOnClickListener(v -> {
             if (areInputFieldsValid()) {
@@ -111,9 +120,6 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         });
 
         rvHelpInfo.setOnClickListener(v -> {
-            /*Intent intent = new Intent(ResetPasswordActivity_New.this, ChatSupportHelpActivity_New.class);
-            startActivity(intent);*/
-
             //As socket implementation is pending thus adding this flow temporarily: JIRA Ticket IDA4-1130
             String phoneNumber = getString(R.string.support_mobile_no_1);
             String message = getString(R.string.help_whatsapp_string_2);
@@ -180,7 +186,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
             @Override
             public void onNext(ResetPasswordResModel_New resetPasswordResModel_new) {
                 cpd.dismiss();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(resetPasswordResModel_new.getMessage(), sessionManager.getAppLanguage()));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(resetPasswordResModel_new.getMessage(), sessionManager.getAppLanguage()), true);
                 if (resetPasswordResModel_new.getSuccess()) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -202,7 +208,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
                 cpd.dismiss();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_change_password));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_change_password), false);
 
             }
 

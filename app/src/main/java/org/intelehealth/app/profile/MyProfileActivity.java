@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.LocaleList;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -32,6 +33,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -51,6 +53,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -79,7 +82,6 @@ import org.intelehealth.app.models.hwprofile.ProfileUpdateAge;
 import org.intelehealth.app.models.hwprofile.ProfileUpdateAttribute;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -109,9 +111,10 @@ import okhttp3.ResponseBody;
 
 public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
-    TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
-    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob;
-    LinearLayout layoutParent;
+    TextInputEditText etEmail, etMobileNo;
+    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob,
+    etUsername, etFirstName, etMiddleName, etLastName;
+    LinearLayout layoutParent, ll_middlename;
     String selectedGender, profileImagePAth = "", errorMsg = "", mSelectedCountryCode = "", dobToDb;
     ImageView ivProfileImage, ivIsInternet, refresh;
     SessionManager sessionManager;
@@ -134,11 +137,15 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     RelativeLayout layoutChangePassword;
     RadioGroup rgGroupGender;
     ImageView ivBack;
+    private Context context;
+    private CardView snackbar_cv;
+    private TextView snackbar_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile_ui2);
+        context = MyProfileActivity.this;
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -170,6 +177,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
         fingerprintSwitch = findViewById(R.id.fingerprint_enable_Switch);
+        snackbar_cv = findViewById(R.id.snackbar_cv);
+        snackbar_text = findViewById(R.id.snackbar_text);
 
         if (sessionManager.isEnableAppLock())
             fingerprintSwitch.setChecked(true);
@@ -180,10 +189,11 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         tvTitle.setText(getResources().getString(R.string.my_profile));
 
         //initialize all input fields
-        etUsername = findViewById(R.id.et_username_profile);
-        etFirstName = findViewById(R.id.et_first_name_profile);
-        etMiddleName = findViewById(R.id.et_middle_name_profile);
-        etLastName = findViewById(R.id.et_last_name_profile);
+        etUsername = findViewById(R.id.tv_username_profile);
+        etFirstName = findViewById(R.id.tv_first_name_profile);
+        etMiddleName = findViewById(R.id.tv_middle_name_profile);
+        ll_middlename = findViewById(R.id.ll_middlename);
+        etLastName = findViewById(R.id.tv_last_name_profile);
         etEmail = findViewById(R.id.et_email_profile);
         etMobileNo = findViewById(R.id.et_mobile_no_profile);
         tvDob = findViewById(R.id.tv_date_of_birth_profile);
@@ -210,7 +220,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void manageListeners() {
-        Context context = MyProfileActivity.this;
 
         refresh.setOnClickListener(v -> {
             isSynced = syncNow(MyProfileActivity.this, refresh, syncAnimator);
@@ -254,6 +263,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
         });
 
+/*
         rgGroupGender.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton checkedRadioButton = group.findViewById(checkedId);
             boolean isChecked = checkedRadioButton.isChecked();
@@ -285,6 +295,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
             }
         });
+*/
 
         layoutChangePassword.setOnClickListener(v -> {
             Intent intent = new Intent(this, ChangePasswordActivity_New.class);
@@ -297,14 +308,19 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             checkInternetAndUpdateProfile();
         });
 
+/*
         tvDob.setOnClickListener(v -> {
             CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(MyProfileActivity.this, MyProfileActivity.this);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 customCalendarViewUI2.showDatePicker(MyProfileActivity.this, "");
             }
         });
+*/
 
         tvChangePhoto.setOnClickListener(v -> checkPerm());
+
+        userFeedbackMsg();
+
 
         etFirstName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -429,6 +445,53 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         });
 
         fetchUserDetails();
+    }
+
+    private void showSnackBarAndRemoveLater(String appLanguage) {
+        snackbar_cv.setVisibility(View.VISIBLE);
+        snackbar_text.setText(appLanguage);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                snackbar_cv.setVisibility(View.GONE);
+            }
+        }, 4000);
+    }
+
+
+    private void userFeedbackMsg() {
+        etUsername.setOnClickListener(v -> {
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+        });
+        etFirstName.setOnClickListener(v -> {
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+        });
+        etMiddleName.setOnClickListener(v -> {
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+        });
+        etLastName.setOnClickListener(v -> {
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+        });
+        rgGroupGender.setOnClickListener(v -> {
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+        });
+        rbMale.setOnClickListener(v -> {
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+        });
+        rbFemale.setOnClickListener(v -> {
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+        });
+        rbOther.setOnClickListener(v -> {
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+        });
+        tvDob.setOnClickListener(v -> {
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+        });
+        tvAge.setOnClickListener(v -> {
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+        });
+
     }
 
     private void checkInternetAndUpdateProfile() {
@@ -783,9 +846,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                 try {
                     boolean isUpdated = providerDAO.updateProfileDetails(inputDTO);
                     if (isUpdated)
-
-                        snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
-
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new), true);
                     SyncDAO syncDAO = new SyncDAO();
                     syncDAO.pushDataApi();
 
@@ -867,7 +928,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         try {
             boolean isUpdated = providerProfileDao.updateLoggedInUserProfileImage(imagePath, sessionManager.getProviderID());
             if (isUpdated) {
-                snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_photo_updated_new));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_photo_updated_new), true);
 
             }
         } catch (DAOException e) {
@@ -1038,11 +1099,18 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             @Override
             public void onNext(Profile profile) {
                 if (profile != null) {
+                    Log.d(TAG, "fetchUserDetails: " + profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
+
                     personUuid = profile.getResults().get(0).getPerson().getUuid();
                     if (profile.getResults().get(0).getPerson().getPreferredName().getGivenName() != null)
                         etFirstName.setText(profile.getResults().get(0).getPerson().getPreferredName().getGivenName());
-                    if (profile.getResults().get(0).getPerson().getPreferredName().getMiddleName() != null)
+                    if (profile.getResults().get(0).getPerson().getPreferredName().getMiddleName() != null) {
+                        ll_middlename.setVisibility(View.VISIBLE);
                         etMiddleName.setText(profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
+                    }
+                    else {
+                        ll_middlename.setVisibility(View.GONE);
+                    }
                     if (profile.getResults().get(0).getPerson().getPreferredName().getFamilyName() != null)
                         etLastName.setText(profile.getResults().get(0).getPerson().getPreferredName().getFamilyName());
                     if (sessionManager.getChwname() != null)

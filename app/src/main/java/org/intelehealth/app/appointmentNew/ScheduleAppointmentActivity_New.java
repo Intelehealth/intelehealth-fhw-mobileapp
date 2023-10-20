@@ -9,11 +9,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +53,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -71,10 +76,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     RecyclerView rvHorizontalCal;
     int currentMonth;
     int currentYear;
-    // Calendar calendar;
     ImageView ivPrevMonth, ivNextMonth;
-    int monthNumber;
-    String monthNAmeFromNo;
     TextView tvSelectedMonthYear, tvPrevSelectedAppDetails, tvTitleReschedule;
     Calendar calendarInstance;
     String yearToCompare = "";
@@ -98,21 +100,17 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     String rescheduleReason;
     NetworkUtils networkUtils;
     ImageView ivIsInternet, ivBackArrow;
-
     private ObjectAnimator syncAnimator;
-
     private SessionManager sessionManager;
-    String patientAge, patientGender, patientPic;
-    String hwName, hwAge, hwGender;
     private BroadcastReceiver mBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(ScheduleAppointmentActivity_New.this);
         setContentView(R.layout.activity_schedule_appointment_new);
         networkUtils = new NetworkUtils(ScheduleAppointmentActivity_New.this, this);
         sessionManager = new SessionManager(this);
-
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
@@ -171,8 +169,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             Toast.makeText(this, getResources().getString(R.string.speciality_must_not_null), Toast.LENGTH_SHORT).show();
         }
 
-//        fetchDataFromDB();
-
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -190,7 +186,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
                 } else {
                     Log.v(TAG, "Sync Done!");
-//                    recreate();
+                    if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing())
+                        mSyncAlertDialog.dismiss();
                     Intent newIntent = getIntent();
                     newIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -216,46 +213,25 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         unregisterReceiver(mBroadcastReceiver);
     }
 
-//    private void fetchDataFromDB() {
-//        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-//
-//        String patientSelection = "uuid = ?";
-//        String[] patientArgs = {patientUuid};
-//        String table = "tbl_patient";
-//
-//        String[] columnsToReturn = {"date_of_birth", "gender", "patient_photo"};
-//        final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
-//
-//        if (idCursor.moveToFirst()) {
-//            do {
-//                patientAge = DateAndTimeUtils.getAgeInYearMonth(idCursor.getString(idCursor.getColumnIndex("date_of_birth")), this);
-//                patientGender = idCursor.getString(idCursor.getColumnIndex("gender"));
-//                patientPic = idCursor.getString(idCursor.getColumnIndex("patient_photo"));
-//            } while (idCursor.moveToNext());
-//        }
-//
-//        idCursor.close();
-//
-//        String hwSelection = "uuid = ?";
-//        String[] hwArgs = {sessionManager.getProviderID()};
-//        String hwTable = "tbl_provider";
-//
-//        String[] hwColumnsToReturn = {"dateofbirth", "gender", "given_name", "middle_name", "family_name"};
-//        final Cursor providerCursor = db.query(hwTable, hwColumnsToReturn, hwSelection, hwArgs, null, null, null);
-//        if (providerCursor.moveToFirst()) {
-//            do {
-//                hwAge = DateAndTimeUtils.getAgeInYearMonth(providerCursor.getString(providerCursor.getColumnIndex("dateofbirth")), this);
-//                hwGender = providerCursor.getString(providerCursor.getColumnIndex("gender"));
-//
-//                String firstName = providerCursor.getString(providerCursor.getColumnIndex("given_name"));
-//                String middleName = providerCursor.getString(providerCursor.getColumnIndex("middle_name"));
-//                String lastName = providerCursor.getString(providerCursor.getColumnIndex("family_name"));
-//                hwName = firstName + " " + ((!TextUtils.isEmpty(middleName)) ? middleName : "") + " " + lastName;
-//            } while (providerCursor.moveToNext());
-//        }
-//
-//        providerCursor.close();
-//    }
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
+    }
+
 
     private void initUI() {
 
@@ -277,14 +253,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
         ivBackArrow = findViewById(R.id.iv_back_arrow_common);
         ivBackArrow.setOnClickListener(v -> finish());
-
-        //rvMorningSlots.setHasFixedSize(true);
         rvMorningSlots.setLayoutManager(new GridLayoutManager(this, 3));
-
-        //rvAfternoonSlots.setHasFixedSize(true);
         rvAfternoonSlots.setLayoutManager(new GridLayoutManager(this, 3));
-
-        //rvEveningSlots.setHasFixedSize(true);
         rvEveningSlots.setLayoutManager(new GridLayoutManager(this, 3));
 
         rvHorizontalCal = findViewById(R.id.rv_horizontal_cal);
@@ -302,8 +272,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         currentYear = calendarInstance.get(Calendar.YEAR);
         monthToCompare = String.valueOf(currentMonth);
         yearToCompare = String.valueOf(currentYear);
-        SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
+        SimpleDateFormat month_date = new SimpleDateFormat("MMMM", Locale.ENGLISH);
         String month_name = month_date.format(calendarInstance.getTime());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            month_name = StringUtils.en__hi_dob(month_name);
         tvSelectedMonthYear.setText(month_name + ", " + currentYear);
         currentMonth = calendarInstance.get(Calendar.MONTH) + 1;
         monthToCompare = String.valueOf(currentMonth);
@@ -494,10 +466,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             @Override
             public void onSelect(SlotInfo slotInfo) {
                 slotInfoForBookApp = slotInfo;
-
                 String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
                 selectedDateTime = result + " " + getResources().getString(R.string.at) + " " + slotInfo.getSlotTime();
-
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
                 setDataForEveningAppointments(slotInfoEveningList);
 
@@ -575,10 +545,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         }
         Date monthNameNEw = calendarInstance.getTime();
         Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
         try {
             date = formatter.parse(monthNameNEw.toString());
-            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
 
             String[] dateSplit = formateDate.split("/");
             yearToCompare = dateSplit[2];
@@ -588,6 +558,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             if (monthYear.length > 0) {
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    selectedPrevMonth = StringUtils.en__hi_dob(selectedPrevMonth);
                 tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear) {
                     enableDisablePreviousButton(false);
@@ -615,11 +587,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         calendarInstance.add(Calendar.MONTH, 1);
         Date monthNameNEw = calendarInstance.getTime();
         Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
         try {
             date = formatter.parse(monthNameNEw.toString());
-            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
-
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
             String[] monthYear = DateAndTimeUtils.getMonthAndYearFromGivenDate(formateDate);
             String selectedNextMonth;
             String selectedMonthYear;
@@ -628,7 +599,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 selectedNextMonth = monthYear[0];
                 selectedMonthYear = monthYear[1];
                 String[] dateSplit = formateDate.split("/");
-
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    selectedNextMonth = StringUtils.en__hi_dob(selectedNextMonth);
                 tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
                 getAllDatesOfSelectedMonth(calendarInstance, calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear, selectedNextMonth, selectedMonthYear, dateSplit[1]);
             }
@@ -664,7 +636,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
-        String infoText = getResources().getString(R.string.sure_to_book_appointment) + " <b>" + selectedDateTime + "?</b>";
+        String infoText = getResources().getString(R.string.sure_to_book_appointment, selectedDateTime);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            infoText = StringUtils.en__hi_dob(infoText);
         tvInfo.setText(Html.fromHtml(infoText));
 
         alertDialog = alertdialogBuilder.create();
@@ -686,24 +660,18 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     }
 
     private void bookAppointment() {
-        //reason - as per old flow
-
-
         BookAppointmentRequest request = new BookAppointmentRequest();
         if (appointmentId != 0) {
             request.setAppointmentId(appointmentId);
             request.setReason(rescheduleReason);
         }
-
         request.setUuid(new UuidGenerator().UuidGenerator());
         request.setSlotDay(slotInfoForBookApp.getSlotDay());
         request.setSlotDate(slotInfoForBookApp.getSlotDate());
         request.setSlotDuration(slotInfoForBookApp.getSlotDuration());
         request.setSlotDurationUnit(slotInfoForBookApp.getSlotDurationUnit());
         request.setSlotTime(slotInfoForBookApp.getSlotTime());
-
         request.setSpeciality(slotInfoForBookApp.getSpeciality());
-
         request.setUserUuid(slotInfoForBookApp.getUserUuid());
         request.setDrName(slotInfoForBookApp.getDrName());
         request.setVisitUuid(visitUuid);
@@ -712,23 +680,19 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         request.setOpenMrsId(openMrsId);
         request.setLocationUuid(new SessionManager(ScheduleAppointmentActivity_New.this).getLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleAppointmentActivity_New.this).getProviderID()); // user id / healthworker id
-
         Gson gson = new Gson();
         AppointmentDAO appointmentDAO = new AppointmentDAO();
-
         try {
             appointmentDAO.insertAppointmentToDb(request);
         } catch (DAOException e) {
             e.printStackTrace();
         }
-
         if (NetworkConnection.isOnline(getApplication())) {
             mSyncAlertDialog = new DialogUtils().showCommonLoadingDialog(this, getResources().getString(R.string.booking_appointment), getResources().getString(R.string.please_wait));
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
                 SyncUtils syncUtils = new SyncUtils();
                 boolean isSynced = syncUtils.syncForeground("scheduleAppointment");
-
                 mIsPendingForAppointmentSave = true;
             }, 100);
         } else {
@@ -739,50 +703,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
     private AlertDialog mSyncAlertDialog;
     private boolean mIsPendingForAppointmentSave = false;
-
-//        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
-//        String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
-//        ApiClientAppointment.getInstance(baseurl).getApi().bookAppointment(url, request).enqueue(new Callback<AppointmentDetailsResponse>() {
-//            @Override
-//            public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
-//                AppointmentDetailsResponse appointmentDetailsResponse = response.body();
-//
-//                if (appointmentDetailsResponse == null || !appointmentDetailsResponse.isStatus()) {
-//                    if (alertDialog != null) {
-//                        alertDialog.dismiss();
-//                    }
-//                    Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
-//                    getSlots();
-//                } else {
-//                    if (!actionTag.isEmpty() && appointmentId != 0) {
-//                        //reschedule appointment - update local db with prev appointment details
-//                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-//                        try {
-//                            appointmentDAO.updatePreviousAppointmentDetails(String.valueOf(appointmentId), visitUuid, app_start_day, app_start_date, app_start_time);
-//                        } catch (DAOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
-//                                /*setResult(RESULT_OK);
-//                                finish();*/
-//                    AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
-//
-//                    Intent intent = new Intent(ScheduleAppointmentActivity_New.this, MyAppointmentActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
-//                Log.v("onFailure", t.getMessage());
-//                Toast.makeText(ScheduleAppointmentActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
-
 
     String getDayOfMonthSuffix(String date) {
         String result = "";

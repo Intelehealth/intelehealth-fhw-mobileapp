@@ -4,6 +4,7 @@ import static org.intelehealth.app.database.dao.VisitsDAO.getPendingPrescCount;
 import static org.intelehealth.app.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -67,19 +68,20 @@ public class VisitReceivedFragment extends Fragment {
     private CardView filter_menu;
     private RelativeLayout filter_relative, no_patient_found_block, main_block;
     private List<PrescriptionModel> recentList, olderList, monthsList;
-    private VisitAdapter recent_adapter, older_adapter /*, months_adapter*/;
+    private VisitAdapter recent_adapter, older_adapter;
     TextView recent_nodata, older_nodata, month_nodata;
     private androidx.appcompat.widget.SearchView searchview_received;
     private ImageView closeButton;
     private ProgressBar progress;
     private VisitCountInterface mlistener;
-    private final int recentLimit = 15, olderLimit = 15;
+    private int recentLimit = 15, olderLimit = 15;
     private int recentStart = 0, recentEnd = recentStart + recentLimit;
     private boolean isRecentFullyLoaded = false;
-
     private int olderStart = 0, olderEnd = olderStart + olderLimit;
     private boolean isolderFullyLoaded = false;
     NestedScrollView nestedscrollview;
+    List<PrescriptionModel> recent = new ArrayList<>();
+    List<PrescriptionModel> older = new ArrayList<>();
 
     @Nullable
     @Override
@@ -128,7 +130,6 @@ public class VisitReceivedFragment extends Fragment {
         progress.setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
         LinearLayout addPatientTV = view.findViewById(R.id.add_new_patientTV);
-
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,20 +146,17 @@ public class VisitReceivedFragment extends Fragment {
         visit_received_card_header = view.findViewById(R.id.visit_received_card_header);
         searchview_received = view.findViewById(R.id.searchview_received);
         closeButton = searchview_received.findViewById(R.id.search_close_btn);
-
         recent_nodata = view.findViewById(R.id.recent_nodata);
         older_nodata = view.findViewById(R.id.older_nodata);
         month_nodata = view.findViewById(R.id.month_nodata);
-
         recycler_recent = view.findViewById(R.id.recycler_recent);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler_recent.setLayoutManager(reLayoutManager);
-
         recycler_older = view.findViewById(R.id.rv_older);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler_older.setLayoutManager(layoutManager);
-
         nestedscrollview = view.findViewById(R.id.rece_nestedscroll);
+
         nestedscrollview.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (v.getChildAt(v.getChildCount() - 1) != null) {
                 // Scroll Down
@@ -178,31 +176,26 @@ public class VisitReceivedFragment extends Fragment {
                             return;
                         }
                         if (!isolderFullyLoaded) {
-                            Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
-                            setOlderMoreDataIntoRecyclerView();
+                            if (recent != null && older != null) {
+                                if (recent.size() > 0 || older.size() > 0) {
+
+                                } else {
+                                    Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
+                                    setOlderMoreDataIntoRecyclerView();
+                                }
+                            }
                         }
                     }
                 }
             }
         });
-
-
-
-        //recycler_month = view.findViewById(R.id.rv_thismonth);
         received_endvisit_no = view.findViewById(R.id.received_endvisit_no);
-
         filter_icon = view.findViewById(R.id.filter_icon);
         filter_menu = view.findViewById(R.id.filter_menu);
         allvisits_txt = view.findViewById(R.id.allvisits_txt);
         priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
         filter_relative = view.findViewById(R.id.filter_relative);
         priority_cancel = view.findViewById(R.id.priority_cancel);
-     //   olderList = new ArrayList<>();
-
-//        visit_received_card_header.setOnClickListener(v -> {
-//            Intent intent = new Intent(getActivity(), EndVisitActivity.class);
-//            startActivity(intent);
-//        });
     }
 
     private void defaultData() {
@@ -256,21 +249,20 @@ public class VisitReceivedFragment extends Fragment {
     }
 
     private void visitData() {
-
-        // Total no. of End visits.
-     //   int total = getTotalCounts_EndVisit();
-
         new Thread(new Runnable() {
             @Override
             public void run() {
                 int total = getPendingPrescCount();
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription) ;
-                        received_endvisit_no.setText(Html.fromHtml(htmlvalue));
-                    }
-                });
+                Activity activity = getActivity();
+                if (activity != null && isAdded()) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription);
+                            received_endvisit_no.setText(Html.fromHtml(htmlvalue));
+                        }
+                    });
+                }
             }
         }).start();
 
@@ -338,7 +330,31 @@ public class VisitReceivedFragment extends Fragment {
         else
             older_nodata.setVisibility(View.GONE);
     }
+
+    private void initLimits() {
+        recentLimit = 15;
+        olderLimit = 15;
+        recentStart = 0;
+        recentEnd = recentStart + recentLimit;
+        olderStart = 0;
+        olderEnd = olderStart + olderLimit;
+    }
+
+
     private void resetData() {
+        initLimits();
+        recent.clear();
+        older.clear();
+
+        recentList = recentVisits(recentLimit, recentStart);
+        olderList = olderVisits(olderLimit, olderStart);
+
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
+
+        //
         recent_older_visibility(recentList, olderList);
         Log.d("TAG", "resetData: " + recentList.size() + ", " + olderList.size());
 
@@ -361,8 +377,8 @@ public class VisitReceivedFragment extends Fragment {
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
 
-        List<PrescriptionModel> recent = new ArrayList<>();
-        List<PrescriptionModel> older = new ArrayList<>();
+//        List<PrescriptionModel> recent = new ArrayList<>();
+//        List<PrescriptionModel> older = new ArrayList<>();
 
         String finalQuery = query;
 
@@ -379,7 +395,7 @@ public class VisitReceivedFragment extends Fragment {
 
                     // recent - start
                     if (allRecentList.size() > 0) {
-                        for (PrescriptionModel model : recentList) {
+                        for (PrescriptionModel model : allRecentList) {
                             if (model.getMiddle_name() != null) {
                                 String firstName = model.getFirst_name().toLowerCase();
                                 String middleName = model.getMiddle_name().toLowerCase();
@@ -410,7 +426,7 @@ public class VisitReceivedFragment extends Fragment {
 
                     // older - start
                     if (allOlderList.size() > 0) {
-                        for (PrescriptionModel model : olderList) {
+                        for (PrescriptionModel model : allOlderList) {
                             if (model.getMiddle_name() != null) {
                                 String firstName = model.getFirst_name().toLowerCase();
                                 String middleName = model.getMiddle_name().toLowerCase();
@@ -531,35 +547,53 @@ public class VisitReceivedFragment extends Fragment {
 
     // This method will be accessed every time the person scrolls the recyclerView further.
     private void setRecentMoreDataIntoRecyclerView() {
-        if (recentList != null && recentList.size() == 0) {
-            isRecentFullyLoaded = true;
-            return;
-        }
+        if (recent.size() > 0 || older.size() > 0) {    // on scroll, new data loads issue fix.
 
-        recentList = recentVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-        Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentList.size());
-        recent_adapter.list.addAll(recentList);
-        recent_adapter.notifyDataSetChanged();
-        recentStart = recentEnd;
-        recentEnd += recentLimit;
+        }
+        else {
+            if (recentList != null && recentList.size() == 0) {
+                isRecentFullyLoaded = true;
+                return;
+            }
+
+          //  recentList = recentVisits(recentLimit, recentStart);
+            List<PrescriptionModel> tempList = recentVisits(recentLimit, recentStart);  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            if (tempList.size() > 0) {
+                recentList.addAll(tempList);
+                Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentList.size());
+                recent_adapter.list.addAll(tempList);
+                recent_adapter.notifyDataSetChanged();
+                recentStart = recentEnd;
+                recentEnd += recentLimit;
+            }
+        }
     }
 
     private void setOlderMoreDataIntoRecyclerView() {
-        if (olderList != null && olderList.size() == 0) {
-            isolderFullyLoaded = true;
-            return;
-        }
+        if (recent.size() > 0 || older.size() > 0) {
 
-        olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-        Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderList.size());
-        older_adapter.list.addAll(olderList);
-        older_adapter.notifyDataSetChanged();
-        olderStart = olderEnd;
-        olderEnd += olderLimit;
+        }
+        else {
+            if (olderList != null && olderList.size() == 0) {
+                isolderFullyLoaded = true;
+                return;
+            }
+
+          //  olderList = olderVisits(olderLimit, olderStart);
+            List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            if (tempList.size() > 0) {
+                olderList.addAll(tempList);
+                Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderList.size());
+                older_adapter.list.addAll(tempList);
+                older_adapter.notifyDataSetChanged();
+                olderStart = olderEnd;
+                olderEnd += olderLimit;
+            }
+        }
     }
 
     private List<PrescriptionModel> recentVisits(int limit, int offset) {
-        recentList = new ArrayList<>();
+        List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
 
         // ie. visit is active and presc is given.
@@ -685,7 +719,7 @@ public class VisitReceivedFragment extends Fragment {
 
 
     private List<PrescriptionModel> olderVisits(int limit, int offset) {
-        olderList = new ArrayList<>();
+        List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
 
         // ie. visit is active and presc is given.
