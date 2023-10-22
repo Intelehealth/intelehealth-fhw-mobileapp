@@ -1853,4 +1853,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="no_notes_added_for_doctor">No notes added for Doctor.</string>
     <string name="confirm_cancel_appointment">Cancel Appointment?</string>
     <string name="confirm_cancel_appointment_message">This visit has an associated appointment and ending the visit will also cancel the appointment. Are you sure that you want to proceed?</string>
+    <string name="prescription_not_received_because_the_visit_has_been_ended">The prescription hasn\'t been received as the visit has been ended.</string>
 </resources>

@@ -81,7 +81,8 @@
                             android:layout_gravity="center"
                             android:gravity="center_horizontal|center_vertical"
                             android:lineSpacingExtra="-3sp"
-                            android:maxLines="1" android:maxLength="15"
+                            android:maxLength="15"
+                            android:maxLines="1"
                             android:text="@string/fu_visit_name"
                             android:textAppearance="@style/label_16sp"
                             android:textColor="@null"
@@ -671,7 +672,8 @@
                 android:layout_marginStart="@dimen/cp_margin_start"
                 android:layout_marginEnd="@dimen/cp_margin_start"
                 android:layout_marginBottom="@dimen/state_presc_margin_bottom"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <ImageView
                     android:id="@+id/iv_prescription111"
