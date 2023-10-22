@@ -105,6 +105,7 @@ import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -128,10 +129,10 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
-import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -1783,7 +1784,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
             new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    cancelAppointment();
+                    cancelAppointment(visitUUID);
                     triggerEndVisit();
                 }
             });
@@ -1792,8 +1793,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
     }
 
-    private void cancelAppointment() {
+    private void cancelAppointment(String visitUUID) {
+        AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(visitUUID);
 
+        int appointmentID = appointmentInfo.getId();
+        String reason = "Visit was ended";
+        String providerID = sessionManager.getProviderID();
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }
 
     private void triggerEndVisit() {

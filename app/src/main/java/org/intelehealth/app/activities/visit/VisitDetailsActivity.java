@@ -56,6 +56,7 @@ import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -68,6 +69,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -923,7 +925,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
             new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    cancelAppointment();
+                    cancelAppointment(visitUUID);
                     triggerEndVisit();
                 }
             });
@@ -936,6 +938,14 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
     }
 
-    private void cancelAppointment() {
+    private void cancelAppointment(String visitUUID) {
+        AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(visitUUID);
+
+        int appointmentID = appointmentInfo.getId();
+        String reason = "Visit was ended";
+        String providerID = sessionManager.getProviderID();
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }
 }

@@ -31,13 +31,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -204,7 +207,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         if (new AppointmentDAO().doesAppointmentExistForVisit(model.getVisitUuid())) {
             new DialogUtils().triggerEndAppointmentConfirmationDialog(context, action -> {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    cancelAppointment();
+                    cancelAppointment(model);
                     triggerEndVisit(model);
                 }
             });
@@ -230,8 +233,16 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         );
     }
 
-    private void cancelAppointment() {
+    private void cancelAppointment(PrescriptionModel model) {
+        AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(model.getVisitUuid());
 
+        String visitID = model.getVisitUuid();
+        int appointmentID = appointmentInfo.getId();
+        String reason = "Visit was ended";
+        String providerID = sessionManager.getProviderID();
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitID, appointmentID, reason, providerID, baseurl);
     }
 
     private void sharePresc(final PrescriptionModel model) {
