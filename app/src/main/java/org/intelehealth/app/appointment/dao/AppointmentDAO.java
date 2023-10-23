@@ -453,9 +453,13 @@ public class AppointmentDAO {
                 appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
                 appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
                 appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+
+                String status = idCursor.getString(idCursor.getColumnIndexOrThrow("status"));
                 try {
                     if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
-                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                        appointmentInfo.setStatus(status);
+                    } else if (status.equalsIgnoreCase("cancelled")) {
+                        appointmentInfo.setStatus(status);
                     } else {
                         appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
                     }
