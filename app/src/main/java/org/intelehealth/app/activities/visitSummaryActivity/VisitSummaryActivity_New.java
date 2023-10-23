@@ -1768,29 +1768,49 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     }
 
     private void showEndVisitConfirmationDialog() {
-        if (hasPrescription.equalsIgnoreCase("true")) {
-            checkIfAppointmentExistsForVisit(visitUUID);
-        } else {
+        if (!hasPrescription.equalsIgnoreCase("true")) {
             DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), action -> {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    checkIfAppointmentExistsForVisit(visitUUID);
-                }
-            });
+            dialogUtils.showCommonDialog(
+                    this, R.drawable.dialog_close_visit_icon,
+                    context.getResources().getString(R.string.confirm_end_visit_reason),
+                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
+                    false,
+                    context.getResources().getString(R.string.confirm),
+                    context.getResources().getString(R.string.cancel),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            checkIfAppointmentExistsForVisit(visitUUID);
+                        }
+                    });
+        } else {
+            triggerEndVisit();
         }
     }
 
     private void checkIfAppointmentExistsForVisit(String visitUUID) {
-        if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
-            new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    cancelAppointment(visitUUID);
-                    triggerEndVisit();
-                }
-            });
-        } else {
+        // First check if there is an appointment or not
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        if (!appointmentDAO.doesAppointmentExistForVisit(visitUUID)) {
             triggerEndVisit();
+            return;
         }
+
+        String appointmentDateTime = appointmentDAO.getTimeAndDateForAppointment(visitUUID);
+        boolean isCurrentTimeAfterAppointmentTime = DateAndTimeUtils.isCurrentDateTimeAfterAppointmentTime(appointmentDateTime);
+
+        // Next, check if the time for appointment is passed. In case the time has passed, we don't need to cancel the appointment as it is automatically completed.
+        if (isCurrentTimeAfterAppointmentTime) {
+            triggerEndVisit();
+            return;
+        }
+
+        // In case the appointment time is not passed, only in that case, we will display the dialog for ending the appointment.
+        new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
+            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                cancelAppointment(visitUUID);
+                triggerEndVisit();
+            }
+        });
     }
 
     private void cancelAppointment(String visitUUID) {

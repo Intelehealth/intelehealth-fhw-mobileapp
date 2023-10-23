@@ -187,33 +187,50 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     }
 
     private void showConfirmDialog(final PrescriptionModel model) {
-        DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(
-                context,
-                R.drawable.dialog_close_visit_icon,
-                context.getResources().getString(R.string.confirm_end_visit_reason),
-                context.getResources().getString(R.string.confirm_end_visit_reason_message),
-                false,
-                context.getResources().getString(R.string.confirm),
-                context.getResources().getString(R.string.cancel),
-                action -> {
-                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                        checkIfAppointmentExistsForVisit(model);
-                    }
-                });
+        if (model.isHasPrescription()) {
+            triggerEndVisit(model);
+        } else {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showCommonDialog(
+                    context,
+                    R.drawable.dialog_close_visit_icon,
+                    context.getResources().getString(R.string.confirm_end_visit_reason),
+                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
+                    false,
+                    context.getResources().getString(R.string.confirm),
+                    context.getResources().getString(R.string.cancel),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            checkIfAppointmentExistsForVisit(model);
+                        }
+                    });
+        }
     }
 
     private void checkIfAppointmentExistsForVisit(PrescriptionModel model) {
-        if (new AppointmentDAO().doesAppointmentExistForVisit(model.getVisitUuid())) {
-            new DialogUtils().triggerEndAppointmentConfirmationDialog(context, action -> {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    cancelAppointment(model);
-                    triggerEndVisit(model);
-                }
-            });
-        } else {
+        // First check if there is an appointment or not
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        if (!appointmentDAO.doesAppointmentExistForVisit(model.getVisitUuid())) {
             triggerEndVisit(model);
+            return;
         }
+
+        String appointmentDateTime = appointmentDAO.getTimeAndDateForAppointment(model.getVisitUuid());
+        boolean isCurrentTimeAfterAppointmentTime = DateAndTimeUtils.isCurrentDateTimeAfterAppointmentTime(appointmentDateTime);
+
+        // Next, check if the time for appointment is passed. In case the time has passed, we don't need to cancel the appointment as it is automatically completed.
+        if (isCurrentTimeAfterAppointmentTime) {
+            triggerEndVisit(model);
+            return;
+        }
+
+        // In case the appointment time is not passed, only in that case, we will display the dialog for ending the appointment.
+        new DialogUtils().triggerEndAppointmentConfirmationDialog(context, action -> {
+            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                cancelAppointment(model);
+                triggerEndVisit(model);
+            }
+        });
     }
 
     private void triggerEndVisit(PrescriptionModel model) {

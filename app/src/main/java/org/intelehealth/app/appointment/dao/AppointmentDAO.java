@@ -776,4 +776,23 @@ public class AppointmentDAO {
         db.endTransaction();
         return doesAppointmentExist;
     }
+
+    public String getTimeAndDateForAppointment(String visitUUID) {
+        String appointmentDateTime = "";
+        String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ?";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String appointmentDate = cursor.getString(cursor.getColumnIndexOrThrow("slot_date"));
+            String appointmentTime = cursor.getString(cursor.getColumnIndexOrThrow("slot_time"));
+            appointmentDateTime = appointmentDate + " " + appointmentTime;
+            cursor.close();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return appointmentDateTime;
+    }
 }

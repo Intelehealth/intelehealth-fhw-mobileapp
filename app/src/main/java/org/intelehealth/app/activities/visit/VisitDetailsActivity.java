@@ -455,7 +455,11 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         if (pres.getVisitUuid() != null) {
             endvisit_relative_block.setVisibility(View.VISIBLE);
             btn_end_visit.setOnClickListener(v -> {
-                checkIfAppointmentExistsForVisit(visitID);
+                if (!hasPrescription) {
+                    checkIfAppointmentExistsForVisit(visitID);
+                } else {
+                    triggerEndVisit();
+                }
             });
         } else {
             endvisit_relative_block.setVisibility(View.GONE);
@@ -922,16 +926,29 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     }
 
     private void checkIfAppointmentExistsForVisit(String visitUUID) {
-        if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
-            new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    cancelAppointment(visitUUID);
-                    triggerEndVisit();
-                }
-            });
-        } else {
+        // First check if there is an appointment or not
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        if (!appointmentDAO.doesAppointmentExistForVisit(visitUUID)) {
             triggerEndVisit();
+            return;
         }
+
+        String appointmentDateTime = appointmentDAO.getTimeAndDateForAppointment(visitUUID);
+        boolean isCurrentTimeAfterAppointmentTime = DateAndTimeUtils.isCurrentDateTimeAfterAppointmentTime(appointmentDateTime);
+
+        // Next, check if the time for appointment is passed. In case the time has passed, we don't need to cancel the appointment as it is automatically completed.
+        if (isCurrentTimeAfterAppointmentTime) {
+            triggerEndVisit();
+            return;
+        }
+
+        // In case the appointment time is not passed, only in that case, we will display the dialog for ending the appointment.
+        new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
+            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                cancelAppointment(visitUUID);
+                triggerEndVisit();
+            }
+        });
     }
 
     private void triggerEndVisit() {
