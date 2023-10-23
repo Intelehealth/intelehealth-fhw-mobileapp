@@ -960,6 +960,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             //if (holder.nestedRecyclerView.getAdapter() != null && mItemList.get(index).isMultiChoice()) {
             //   nestedQuestionsListingAdapter = (NestedQuestionsListingAdapter) holder.nestedRecyclerView.getAdapter();
             //}else {
+
+            if(holder.nestedQuestionsListingAdapter!=null){
+
+            }
             holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {

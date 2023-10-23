@@ -336,6 +336,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         commit();
                 break;
             case STEP_2_VISIT_REASON:
+                getSupportFragmentManager().popBackStack();
                 mStep2ProgressBar.setProgress(20);
                 ((TextView) findViewById(R.id.tv_sub_title)).setText(getResources().getString(R.string.visit_reason));
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
@@ -395,6 +396,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 break;
 
             case STEP_3_PHYSICAL_EXAMINATION:
+                getSupportFragmentManager().popBackStack();
                 mStep3ProgressBar.setProgress(10);
                 setTitle(getResources().getString(R.string._phy_examination));
                 mSummaryFrameLayout.setVisibility(View.GONE);
@@ -1302,6 +1304,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private AlertDialog mImagePickerAlertDialog;
 
     private void selectImage() {
+        if(mImagePickerAlertDialog!=null && mImagePickerAlertDialog.isShowing()){
+            mImagePickerAlertDialog.dismiss();
+        }
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.add_image_by), new DialogUtils.ImagePickerDialogListener() {
             @Override
             public void onActionDone(int action) {

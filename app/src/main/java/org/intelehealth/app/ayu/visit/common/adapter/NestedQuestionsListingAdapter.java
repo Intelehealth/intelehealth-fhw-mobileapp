@@ -145,6 +145,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         mIsEditMode = editMode;
         //mRootComplainBasicInfoHashMap = complainBasicInfoHashMap;
         //mAnimator = new RecyclerViewAnimator(recyclerView);
+        Log.v(TAG, "new NestedQuestionsListingAdapter created!");
     }
 
     public void setRootNodeIndex(int rootIndex) {
@@ -763,15 +764,27 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         node.unselectAllNestedNode();
                         if (type.equalsIgnoreCase("camera"))
                             mItemList.get(index).removeImagesAllNestedNode();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!isLoadingForNestedEditData) {
 
-                                    notifyItemChanged(index);
-                                }
+                        if(!mItemList.get(index).isMultiChoice()) {
+
+                            if(mItemList.size()>1){
+                                mItemList.remove(1);
+                                notifyItemRemoved(1);
                             }
-                        }, 100);
+                        }else {
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (!isLoadingForNestedEditData) {
+
+                                        notifyItemChanged(index);
+                                    }
+                                }
+                            }, 100);
+                        }
+
+                        return;
                     } else if (!type.isEmpty() && node.isSelected()) {
                         if(node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
                             for (int i = 0; i < options.size(); i++) {
@@ -779,9 +792,14 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                     options.get(i).unselectAllNestedNode();
                                 }
                             }
+                            if(mItemList.size()>1){
+                                mItemList.remove(1);
+                                notifyItemRemoved(1);
+                            }
                         }
                         //holder.singleComponentContainer.removeAllViews();
                         //holder.singleComponentContainer.setVisibility(View.VISIBLE);
+
                     } else {
                         holder.singleComponentContainer.removeAllViews();
                         //holder.superNestedContainerLinearLayout.removeAllViews();
