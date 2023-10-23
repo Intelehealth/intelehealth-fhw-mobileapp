@@ -1013,8 +1013,8 @@ public class DateAndTimeUtils {
         Date currentDate = new Date();
 
         try {
-            Date givenDate = new SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.ENGLISH).parse(givenDateTime);
-            isGivenDateTimeGreater = givenDate != null && currentDate.after(givenDate);
+            Date givenDate = new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.ENGLISH).parse(givenDateTime);
+            isGivenDateTimeGreater = currentDate.after(givenDate);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
