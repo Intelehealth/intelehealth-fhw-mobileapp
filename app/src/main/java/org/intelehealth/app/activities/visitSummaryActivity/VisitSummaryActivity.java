@@ -1028,6 +1028,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             String med = getMedicationData();
             String aid = getAidData();
 
+            if (med.trim().isEmpty() && aid.trim().isEmpty()) {
+                Toast.makeText(context, getString(R.string.no_medication_and_aid_data_present_to_dispense), Toast.LENGTH_LONG).show();
+                return;
+            }
+
             Intent i = new Intent(context, Medication_Aid_Activity.class);
             i.putExtra("tag", "dispense");
             i.putExtra("medicineData", med);
@@ -1043,7 +1048,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         tvAdminister.setOnClickListener(v -> {
             String med = getMedicationData();
             if (med.trim().isEmpty()) {
-                Toast.makeText(context, "No medication data present to administer.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.no_medication_data_present_to_administer), Toast.LENGTH_LONG).show();
                 return;
             }
 

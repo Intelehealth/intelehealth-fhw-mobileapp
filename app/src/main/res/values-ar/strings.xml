@@ -1648,6 +1648,8 @@
     <string name="other_aids">مساعدات اخرى</string>
     <string name="dispense_data_saved">Dispense Data Saved.</string>
     <string name="administer_data_saved">Administer Data Saved.</string>
+    <string name="no_medication_data_present_to_administer">No medication data present to administer.</string>
+    <string name="no_medication_and_aid_data_present_to_dispense">No medication and aid data present to dispense.</string>
 
 
 </resources>
