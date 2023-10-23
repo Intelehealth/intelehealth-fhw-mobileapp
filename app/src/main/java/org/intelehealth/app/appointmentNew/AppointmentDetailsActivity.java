@@ -5,6 +5,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidF
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
+import static org.intelehealth.app.database.dao.VisitsDAO.isVisitEnded;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
@@ -355,11 +356,14 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
         tvDrSpeciality.setText(visit_speciality);
 
+        boolean isVisitEnded = isVisitEnded(visitID);
+
+        // checking to see if the visit has ended or not - if the visit has ended, we don't need to show the buttons
         //appointment started state - make "state AppointmentStarted" visible
         String timeText = getAppointmentStartsInTime(app_start_date, app_start_time);
         tvVisitStartDate.setText(DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date));
         tvVisitStartTime.setText(app_start_time);
-        if (isVisitStartsIn) { //that means appointment scheduled
+        if (isVisitStartsIn && !isVisitEnded) { //that means appointment scheduled
             stateAppointmentStarted.setVisibility(View.VISIBLE);
             layoutContactAction.setVisibility(View.GONE);
             tvRescheduleOnTitle.setVisibility(View.GONE);
@@ -409,7 +413,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             tvPrevAppTime.setText(appointmentInfo.getPrev_slot_time());
 
         }
-
 
         if (hasPrescription) {
             //prescription received  state - make "stateAppointmentStarted" visible,
@@ -690,21 +693,11 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate)) + ", " + slotTime + " " + getResources().getString(R.string.at);
                     } else {
-                        if (hours >= 1) {
-                            if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
-                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
-                                        mins + " " + context.getString(R.string.minutes_txt) + ", " +
-                                        context.getString(R.string.at) + " " + slotTime;
-                            else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                                timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
-                                        + context.getString(R.string.in) + " , " + slotTime + " " + context.getString(R.string.at);
-                        }
+                        timeText = getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
+
                     }
                 } else {
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
-                        timeText = getResources().getString(R.string.in) + " " + mins + " " + getResources().getString(R.string.minutes_txt);
-                    else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                        timeText = mins + " " + getResources().getString(R.string.minutes_txt) + " " + getResources().getString(R.string.in);
+                    timeText = getResources().getString(R.string.in) + " " + minutes + " " + getResources().getString(R.string.minutes_txt);
                 }
 
             }

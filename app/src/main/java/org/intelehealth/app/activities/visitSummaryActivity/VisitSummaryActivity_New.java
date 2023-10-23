@@ -5042,7 +5042,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        recreate();
+//                        recreate();
+                        fetchingIntent();
+                        setViewsData();
                     }
                 }
             });
