@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
@@ -87,7 +88,7 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
                 if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(list.get(position).getUuid())) {
                     holder.cb_value.setChecked(true);
                     holder.cb_value.setEnabled(false);
-                    checkedList.add(model);
+                  //  checkedList.add(model);
                 }
                 else {
                    // holder.cb_value.setChecked(false);
@@ -104,7 +105,7 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
                 if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(list.get(position).getUuid())) {
                     holder.cb_value.setChecked(true);
                     holder.cb_value.setEnabled(false);
-                    checkedList.add(model);
+                  //  checkedList.add(model);
                 }
                 else {
                    // holder.cb_value.setChecked(false);
@@ -140,6 +141,18 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
             cb_value = itemView.findViewById(R.id.cb_value);
           //  cb_administer = itemView.findViewById(R.id.cb_administer);
 
+            cb_value.setOnClickListener(v -> {
+                if (((CheckBox) v).isChecked()) {
+                    list.get(getAdapterPosition()).setChecked(true);
+                    checkedList.add(list.get(getAdapterPosition()));
+                }
+                else {
+                    list.get(getAdapterPosition()).setChecked(false);
+                    checkedList.remove(list.get(getAdapterPosition()));
+                }
+            });
+
+/*
             cb_value.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -154,6 +167,7 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
 
                 }
             });
+*/
         }
     }
 

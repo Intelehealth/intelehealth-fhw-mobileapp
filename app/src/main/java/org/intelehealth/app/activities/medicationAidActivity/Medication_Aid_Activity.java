@@ -44,6 +44,7 @@ import java.util.List;
 
 public class Medication_Aid_Activity extends AppCompatActivity {
     private RecyclerView rv_medication, rv_aid;
+    public final String TAG = Medication_Aid_Activity.this.getClass().getName();
     private MedicationAidAdapter med_adapter, aid_adapter;
     private Context context = Medication_Aid_Activity.this;
     private List<MedicationAidModel> med_list, aid_list;
@@ -268,8 +269,9 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             if (!encounterAdminister.isEmpty()) {
                 // ie. value is already present so set those values to checked for hte checkbox.
                 try {
-                    MedicationAidModel model = ObsDAO.getObsValue(encounterAdminister, UuidDictionary.OBS_ADMINISTER_MEDICATION);
-                    update_medUuidList.add(model);
+                 //   MedicationAidModel model = ObsDAO.getObsValue(encounterAdminister, UuidDictionary.OBS_ADMINISTER_MEDICATION);
+                    update_medUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterAdminister, UuidDictionary.OBS_ADMINISTER_MEDICATION));
+                  //  update_medUuidList.add(model);
 
                 } catch (DAOException e) {
                     throw new RuntimeException(e);
@@ -280,14 +282,17 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         else {
             // fetch encounter dispense uuid
             encounterDispense = getEncounterByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_DISPENSE);
+            Log.d(TAG, "encounterDispense: " + encounterDispense);  // a9c40957-66bd-450b-b0b6-da9a9a5287f2
             if (!encounterDispense.isEmpty()) {
                 try {
 
-                    MedicationAidModel medModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION);
-                    update_medUuidList.add(medModel);
+                  //  MedicationAidModel medModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION);    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+                    update_medUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION));    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+                   // update_medUuidList.add(medModel);
 
-                    MedicationAidModel aidModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_AID);
-                    update_aidUuidList.add(aidModel);
+                  //  MedicationAidModel aidModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_AID);
+                    update_aidUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_AID));
+                 //   update_aidUuidList.add(aidModel);
 
 
                 } catch (DAOException e) {
@@ -296,78 +301,24 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
         }
 
-
-       /* if (medData != null && !medData.trim().isEmpty()) {
-           // medData = medData.replaceAll("<br>", "");
-            fl_med.setVisibility(View.VISIBLE);
-            ArrayList<String> list = new ArrayList<>(Arrays.asList(medData.split("\n")));
-            ArrayList<MedicationAidModel> mm = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                // here code to fetch uuid of medicine.
-                Log.d("tag", "med split data: " + i + "\n");
-                MedicationAidModel a = new MedicationAidModel();
-                a.setValue(list.get(i));
-                mm.add(a);
-            }
-
-            for (MedicationAidModel med: mm) {
-                if (!med.getValue().isEmpty())
-                    med_list.add(med);
-            }
-        }
-        else fl_med.setVisibility(View.GONE);*/
-
-      /*  if (aidData != null && !aidData.trim().isEmpty()) {
-            aidData = aidData.replaceAll("<br>", "");
-            fl_aid.setVisibility(View.VISIBLE);
-            ArrayList<String> list = new ArrayList<>(Arrays.asList(aidData.split("\n")));
-            ArrayList<MedicationAidModel> aa = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                MedicationAidModel a = new MedicationAidModel();
-                a.setValue(list.get(i));
-                aa.add(a);
-            }
-
-                for (MedicationAidModel aid: aa) {
-                    if (!aid.getValue().isEmpty())
-                        aid_list.add(aid);
-            }
-
-        }
-        else fl_aid.setVisibility(View.GONE);*/
-
-       /* med_list.add("Crocin");
-        med_list.add("Albendazol");
-        med_list.add("Vicks");
-        med_list.add("ABC");
-        med_list.add("Cloptin");
-        med_list.add("Mediocrin");
-*/
-
-        /*aid_list.add("Type 1: Give 10,000 rs loan");
-        aid_list.add("Type 2: Give medicines for free");
-        aid_list.add("Type 3: Cost of amount given.");
-        aid_list.add("Type 4: Cover Surgical Expenses.");
-        aid_list.add("Type 5: Cash Assitance given.");*/
-
-
         if (tag.equalsIgnoreCase("dispense")) {
             RecyclerView.LayoutManager med_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             rv_medication.setLayoutManager(med_LayoutManager);
             rv_medication.setNestedScrollingEnabled(false);
-            med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList/*, update_aidUuidList*/, "dispense");
+            med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList, "dispense");
             rv_medication.setAdapter(med_adapter);
 
             RecyclerView.LayoutManager aid_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             rv_aid.setLayoutManager(aid_LayoutManager);
             rv_aid.setNestedScrollingEnabled(false);
-            aid_adapter = new MedicationAidAdapter(context, aid_list, LocaleHelper.isArabic(context), /*update_medUuidList,*/ update_aidUuidList, "dispense");
+            aid_adapter = new MedicationAidAdapter(context, aid_list, LocaleHelper.isArabic(context), update_aidUuidList, "dispense");
             rv_aid.setAdapter(aid_adapter);
-        } else if (tag.equalsIgnoreCase("administer")) {
+        }
+        else if (tag.equalsIgnoreCase("administer")) {
             RecyclerView.LayoutManager med_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             rv_medication.setLayoutManager(med_LayoutManager);
             rv_medication.setNestedScrollingEnabled(false);
-            med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList, "administer"/*, update_aidUuidList*/);
+            med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList, "administer");
             rv_medication.setAdapter(med_adapter);
         }
     }

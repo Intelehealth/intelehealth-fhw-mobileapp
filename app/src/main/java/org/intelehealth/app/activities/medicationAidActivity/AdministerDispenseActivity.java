@@ -102,7 +102,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         tie_medNotes.setHint(getString(R.string.enter_details_here));
         tie_aidNotes.setHint(getString(R.string.enter_details_here));
-        registerBroadcastReceiverDynamically();
+     //   registerBroadcastReceiverDynamically();
 
         tie_medNotes.addTextChangedListener(new TextWatcher() {
             @Override
@@ -239,7 +239,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }*/
 
-        additionalDocumentImagesDownload();
+     //   additionalDocumentImagesDownload();
      //   setImagesToRV();
         // TODO: here max 4 images will only come.
 
@@ -400,8 +400,10 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         List<String> aidNotes = new ArrayList<>();
         AidModel model = new Gson().fromJson(ObsDAO.getObsValue(encounterId, conceptId).getValue(), AidModel.class);
         if (model != null) {
+/*
             if (model.getAidNotesList() != null)
                 aidNotes.addAll(model.getAidNotesList());
+*/
 
           /*  if (model.getTotalCost() != null)
                 tie_totalCost.setText(model.getTotalCost());    // total cost
@@ -418,10 +420,13 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             if (model.getOtherAids() != null)
                 tie_others.setText(model.getOtherAids());    // other aids
 */
+/*
             if (fileuuidList.size() == 0 && model.getDocumentsList() != null && model.getDocumentsList().size() > 0)   // docs images
                 fileuuidList.addAll(model.getDocumentsList());
+*/
         }
 
+/*
         if (aidNotes != null) {
             aidModel.setAidNotesList(aidNotes);
             if (aidModel.getAidNotesList() != null) {
@@ -430,6 +435,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 }
             }
         }
+*/
 
     }
 
@@ -450,13 +456,17 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         MedicationModel medicationModel = new Gson().fromJson(ObsDAO.getObsValue(encounterId, conceptId).getValue(),
                 MedicationModel.class);
 
-        if (medicationModel != null && medicationModel.getMedicationNotesList() != null) {
+/*
+        if (medicationModel != null && medicationModel.getMedicationNotesList() != null)
             medNotes.addAll(medicationModel.getMedicationNotesList());
+*/
 
+/*
             if (fileuuidList.size() == 0 && medicationModel.getDocumentsList() != null && medicationModel.getDocumentsList().size() > 0)
                 fileuuidList.addAll(medicationModel.getDocumentsList());
-        }
+*/
 
+/*
         if (medNotes != null) {
             medModel.setMedicationNotesList(medNotes);
             if (medModel.getMedicationNotesList() != null) {
@@ -465,6 +475,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 }
             }
         }
+*/
 
     }
 
@@ -549,12 +560,13 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         boolean isEncounterCreated = false;
         if (tag.equalsIgnoreCase("dispense")) {
 
-            if (encounterDisenseAdminister.isEmpty()) {
+            if (encounterDisenseAdminister.equalsIgnoreCase("") || encounterDisenseAdminister == null)
+                encounterDisenseAdminister = UUID.randomUUID().toString();
+
                 isEncounterCreated = false;
                 EncounterDAO encounterDAO = new EncounterDAO();
                 EncounterDTO encounterDTO = new EncounterDTO();
-                encounterDTO.setUuid(UUID.randomUUID().toString());
-                encounterDisenseAdminister = encounterDTO.getUuid();
+                encounterDTO.setUuid(encounterDisenseAdminister);
                 encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_DISPENSE);   // Dispense Encounter
                 encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
                 encounterDTO.setVisituuid(visitUuid);
@@ -569,7 +581,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
                         // Dispense - medication push
                         if (medList != null && medList.size() > 0) {
-                            insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_DISPENSE_MEDICATION); // Dispense Med Obs.
+                            insertMedicationObs(medicineValue, medNotesValue, encounterDisenseAdminister, OBS_DISPENSE_MEDICATION); // Dispense Med Obs.
                         }
 
                         if (aidList != null && aidList.size() > 0) {
@@ -583,27 +595,18 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
-            }
-            else {  // update record.
-
-                // Dispense - medication push
-                if (medList != null && medList.size() > 0)
-                    insertMedicationObs(medicineValue, medNotesValue, encounterDisenseAdminister, OBS_DISPENSE_MEDICATION); // Dispense Med Obs.
-
-                if (aidList != null && aidList.size() > 0)
-                    insertAidObs(aidValue, aidNotesValue, encounterDisenseAdminister,
-                            totalCostValue, vendorDiscountValue, coveredCostValue, outOfPocketValue, otherAids, OBS_DISPENSE_AID);  // Dispense Aid Obs.
-            }
 
             Toast.makeText(this, getString(R.string.dispense_data_saved), Toast.LENGTH_SHORT).show();
-        } else if (tag.equalsIgnoreCase("administer")) {
+        }
+        else if (tag.equalsIgnoreCase("administer")) {
 
-            if (encounterDisenseAdminister.isEmpty()) {
-                isEncounterCreated = false;
+            if (encounterDisenseAdminister.equalsIgnoreCase("") || encounterDisenseAdminister == null)
+                encounterDisenseAdminister = UUID.randomUUID().toString();
+
+            isEncounterCreated = false;
                 EncounterDAO encounterDAO = new EncounterDAO();
                 EncounterDTO encounterDTO = new EncounterDTO();
-                encounterDTO.setUuid(UUID.randomUUID().toString());
-                encounterDisenseAdminister = encounterDTO.getUuid();
+                encounterDTO.setUuid(encounterDisenseAdminister);
                 encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_ADMINISTER); // Administer Encounter
                 encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
                 encounterDTO.setVisituuid(visitUuid);
@@ -617,21 +620,13 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
                         // Administer - medication push
                         if (medList != null && medList.size() > 0) {
-                            insertMedicationObs(medicineValue, medNotesValue, encounterDTO.getUuid(), OBS_ADMINISTER_MEDICATION);   // Administer Med Obs.
+                            insertMedicationObs(medicineValue, medNotesValue, encounterDisenseAdminister, OBS_ADMINISTER_MEDICATION);   // Administer Med Obs.
                         }
                     }
 
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
-            }
-            else {  // update
-
-                // Administer - medication push
-                if (medList != null && medList.size() > 0) {
-                    insertMedicationObs(medicineValue, medNotesValue, encounterDisenseAdminister, OBS_ADMINISTER_MEDICATION);   // Administer Med Obs.
-                }
-            }
 
             Toast.makeText(this, getString(R.string.administer_data_saved), Toast.LENGTH_SHORT).show();
         }
@@ -865,7 +860,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        unregisterReceiver(broadcastReceiverForIamgeDownlaod);
+      //  unregisterReceiver(broadcastReceiverForIamgeDownlaod);
         super.onDestroy();
 
     }
