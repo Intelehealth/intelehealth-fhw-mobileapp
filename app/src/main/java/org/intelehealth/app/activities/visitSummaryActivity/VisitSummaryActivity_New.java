@@ -104,7 +104,6 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
-import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -599,8 +598,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 if (!addnotes_value.equalsIgnoreCase("")) {
                     if (addnotes_value.equalsIgnoreCase("No notes added for Doctor.")) {
                         tvAddNotesValueVS.setText(getString(R.string.no_notes_added_for_doctor));
-                    }
-                    else
+                    } else
                         tvAddNotesValueVS.setText(addnotes_value);
                 } else {
                     addnotes_value = getString(R.string.no_notes_added_for_doctor);  // "No notes added for Doctor."
@@ -2067,6 +2065,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // Permission - end
     private AlertDialog mImagePickerAlertDialog;
+
     /**
      * Open dialog to Select douments from Image and Camera as Per the Choices
      */
@@ -2327,8 +2326,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
                     } else
                         Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
                 }
 
@@ -3943,7 +3941,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             String val = mChiefComplainList.get(i).trim();
             val = val.replaceAll("<.*?>", "");
-            Log.v("mChiefComplainList", "CC - "+val);
+            Log.v("mChiefComplainList", "CC - " + val);
             if (!val.toLowerCase().contains("h/o specific illness")) {
                 if (!stringBuilder.toString().isEmpty()) {
                     stringBuilder.append(",");
@@ -5158,7 +5156,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         String reports[] = valueArray[1].replace("• Patient reports -<br>", "• Patient reports -<br/>")
                                 .split("• Patient reports -<br/>");
                         patientReports = reports[1];
-                    }else if (valueArray[1].contains("• Patient denies")) {
+                    } else if (valueArray[1].contains("• Patient denies")) {
                         // todo: handle later -> comment added on 14 nov 2022
                         String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
                                 .split("• Patient denies -<br/>");
@@ -5218,7 +5216,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 physFindingsView.setVisibility(View.VISIBLE);
                 String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
                         .split("<b>General exams: </b><br/>");
-                physFindingsView.setText(Html.fromHtml(valueArray[1]));//.replaceFirst("<b>", "<br/><b>")));
+                if (valueArray.length > 1)
+                    physFindingsView.setText(Html.fromHtml(valueArray[1]));//.replaceFirst("<b>", "<br/><b>")));
             } else {
                 //physFindingsView.setText(Html.fromHtml(value.replaceFirst("<b>", "<br/><b>")));
                 setDataForPhysicalExamSummary(physicalExamLocaleString);

@@ -997,6 +997,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         } else {
             questionsMissing();
+            return false;
         }
         return insertDbPhysicalExam(physicalStringWithLocaleJsonString);
     }

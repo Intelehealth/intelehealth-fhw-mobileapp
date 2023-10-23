@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -758,7 +759,27 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         type = "options";
                     }
                     Log.v(TAG, "Type - " + type);
-                    if (!type.isEmpty() && node.isSelected()) {
+                    if (!node.isSelected()) {
+                        node.unselectAllNestedNode();
+                        if (type.equalsIgnoreCase("camera"))
+                            mItemList.get(index).removeImagesAllNestedNode();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!isLoadingForNestedEditData) {
+
+                                    notifyItemChanged(index);
+                                }
+                            }
+                        }, 100);
+                    } else if (!type.isEmpty() && node.isSelected()) {
+                        if(node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
+                            for (int i = 0; i < options.size(); i++) {
+                                if (!options.get(i).getText().equals(node.getText())) {
+                                    options.get(i).unselectAllNestedNode();
+                                }
+                            }
+                        }
                         //holder.singleComponentContainer.removeAllViews();
                         //holder.singleComponentContainer.setVisibility(View.VISIBLE);
                     } else {

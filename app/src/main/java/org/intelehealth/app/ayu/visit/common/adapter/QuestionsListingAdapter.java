@@ -1140,6 +1140,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                     @Override
                     public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+
                         if (!isLoadingForNestedEditData)
                             VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
                         ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
@@ -1147,14 +1148,21 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             mItemList.get(index).setSelected(false);
                             mItemList.get(index).setDataCaptured(false);
                         }
+                        //holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, selectedNode.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+                        //holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+
                         boolean isRequiredToShowParentActionButtons = false;
                         for (int i = 0; i < options.size(); i++) {
+
                             if (options.get(i).isSelected()) {
                                 mItemList.get(index).setSelected(true);
-                                //mItemList.get(index).setDataCaptured(true);
-                                //break;
-                                if (!isRequiredToShowParentActionButtons)
-                                    isRequiredToShowParentActionButtons = !isAnySubChildOpenedWithAction(options.get(i));
+                                if (!options.get(i).isTerminal()) {
+
+                                    //mItemList.get(index).setDataCaptured(true);
+                                    //break;
+                                    if (!isRequiredToShowParentActionButtons)
+                                        isRequiredToShowParentActionButtons = !isAnySubChildOpenedWithAction(options.get(i));
+                                }
                             }
                         }
                         //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
@@ -1166,8 +1174,27 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         Log.v(TAG, "optionsChipsGridAdapter - Type - " + type);
                         Log.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
                         Log.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
-                        if (!type.isEmpty() && node.isSelected()) {
+                        if (!node.isSelected()) {
+                            node.unselectAllNestedNode();
+                            if (type.equalsIgnoreCase("camera"))
+                                mItemList.get(index).removeImagesAllNestedNode();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (!isLoadingForNestedEditData) {
 
+                                        notifyItemChanged(index);
+                                    }
+                                }
+                            }, 100);
+                        } else if (!type.isEmpty() && node.isSelected()) {
+                            if(node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
+                                for (int i = 0; i < options.size(); i++) {
+                                    if (!options.get(i).getText().equals(node.getText())) {
+                                        options.get(i).unselectAllNestedNode();
+                                    }
+                                }
+                            }
                             holder.singleComponentContainer.removeAllViews();
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
 
@@ -1208,6 +1235,24 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
                                 if (!isAnyOtherOptionSelected || isRequiredToShowParentActionButtons)
                                     holder.submitButton.setVisibility(View.VISIBLE);
+
+                                if(node.isExcludedFromMultiChoice()){
+                                    /*for (int i = 0; i < options.size(); i++) {
+                                        if(!options.get(i).getText().equals(node.getText())){
+                                            options.get(i).unselectAllNestedNode();
+                                        }
+                                    }*/
+                                    mItemList.get(index).removeImagesAllNestedNode();
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (!isLoadingForNestedEditData) {
+
+                                                notifyItemChanged(index);
+                                            }
+                                        }
+                                    }, 100);
+                                }
                             } else {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                                 holder.submitButton.setVisibility(View.GONE);
@@ -1243,7 +1288,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             }
                             return;
                         }
-
 
 
                         switch (type) {
@@ -2125,7 +2169,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     AdapterUtils.setToDisable(submitButton);
                 }
             }
-        },1000);
+        }, 1000);
 
         holder.singleComponentContainer.addView(view);
         Log.v(TAG, "addDurationView holder.singleComponentContainer count child - " + holder.singleComponentContainer.getChildCount());

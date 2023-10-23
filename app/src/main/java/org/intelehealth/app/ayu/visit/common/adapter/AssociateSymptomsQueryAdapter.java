@@ -294,7 +294,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 @Override
                 public void onClick(View view) {
                     //mItemList.get(index).setSelected(true);
-
+                    unselectNested(mItemList.get(index));
                     mItemList.get(index).setNoSelected(!mItemList.get(index).isNoSelected());
                     mItemList.get(index).setUnselected();
 
@@ -312,6 +312,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         }
 
 
+    }
+    private void unselectNested(Node node){
+        node.unselectAllNestedNode();
     }
 
     private void addTextEnterView(Node node, GenericViewHolder holder, int index) {

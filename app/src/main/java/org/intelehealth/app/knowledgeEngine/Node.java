@@ -2617,7 +2617,7 @@ public class Node implements Serializable {
                             positiveAssociations.add(tempString);
                         }
                     } else if (isForAssociatedSymptoms && isUserInputsTypeNode(mOptions.get(i))) {
-                        positiveAssociations.add(mOptions.get(i).getText().replaceAll("\\[(.*?)\\]","") + bullet_arrow + mOptions.get(i).getLanguage());
+                        positiveAssociations.add(mOptions.get(i).getText().replaceAll("\\[(.*?)\\]", "") + bullet_arrow + mOptions.get(i).getLanguage());
                     } else {
                         if (mOptions.get(i).getLanguage().equals("%")) {
                         } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
@@ -2722,13 +2722,13 @@ public class Node implements Serializable {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
-                    if(isAssociateSymptomsType){
+                    if (isAssociateSymptomsType) {
                         question = right_pointing + " " + mOptions.get(i).findDisplay();
-                    }else {
+                    } else {
                         question = bullet + " " + mOptions.get(i).findDisplay();
                     }
                 }
-                question = question.replaceAll("\\[(.*?)\\]","");
+                question = question.replaceAll("\\[(.*?)\\]", "");
                 String answer = mOptions.get(i).getLanguage();
                 Log.i(TAG, "ipt: +++++++++++++++++++++++++++ isTerminal - " + mOptions.get(i).isTerminal());
                 Log.i(TAG, "ipt: level - " + level);
@@ -2742,16 +2742,16 @@ public class Node implements Serializable {
                         if (mOptions.get(i).getInputType().equals("camera")) {
                         } else {
                             if (!answer.isEmpty()) {
-                                if(isAssociateSymptomsType) {
+                                if (isAssociateSymptomsType) {
                                     if (answer.equals("%")) {
                                     } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
-                                        stringsList.add(question+" "+right_pointing + answer + next_line);
+                                        stringsList.add(question + " " + right_pointing + answer + next_line);
                                     } else if (answer.substring(0, 1).equals("%")) {
-                                        stringsList.add(question+" "+ right_pointing + answer.substring(1) + next_line);
+                                        stringsList.add(question + " " + right_pointing + answer.substring(1) + next_line);
                                     } else {
-                                        stringsList.add(question+" "+ right_pointing + answer + next_line);
+                                        stringsList.add(question + " " + right_pointing + answer + next_line);
                                     }
-                                }else{
+                                } else {
                                     if (answer.equals("%")) {
                                     } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
                                         stringsList.add(bullet_hollow + answer + next_line);
@@ -2764,9 +2764,9 @@ public class Node implements Serializable {
                             }
                         }
                     } else {
-                        if(isAssociateSymptomsType){
+                        if (isAssociateSymptomsType) {
                             stringsList.add(right_pointing + mOptions.get(i).findDisplay() + next_line);
-                        }else {
+                        } else {
                             stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                         }
 
@@ -3308,12 +3308,30 @@ public class Node implements Serializable {
      * unselect all nested Node recursively
      */
     public void unselectAllNestedNode() {
+        Log.v(TAG, "unselectAllNestedNode - "+getText());
         if (optionsList != null) {
             for (int i = 0; i < optionsList.size(); i++) {
                 optionsList.get(i).setSelected(false);
                 optionsList.get(i).setDataCaptured(false);
                 if (optionsList.get(i).optionsList != null) {
                     optionsList.get(i).unselectAllNestedNode();
+                }
+            }
+        }
+    }
+
+    public void removeImagesAllNestedNode() {
+        Log.v(TAG, "removeImagesAllNestedNode - "+getText());
+        setImageUploaded(false);
+        setImagePath("");
+        setImagePathList(new ArrayList<String>());
+        if (optionsList != null) {
+            for (int i = 0; i < optionsList.size(); i++) {
+                optionsList.get(i).setImageUploaded(false);
+                optionsList.get(i).setImagePath("");
+                optionsList.get(i).setImagePathList(new ArrayList<String>());
+                if (optionsList.get(i).optionsList != null) {
+                    optionsList.get(i).removeImagesAllNestedNode();
                 }
             }
         }
@@ -3405,11 +3423,11 @@ public class Node implements Serializable {
     public boolean isUserInputsTypeNode(Node node) {
         boolean result = false;
         String type = node.getInputType();
-        Log.v(TAG, "isUserInputsTypeNode - type : "+type);
+        Log.v(TAG, "isUserInputsTypeNode - type : " + type);
         if (type.equals("text") || type.equals("date") || type.equals("location") || type.equals("number") || type.equals("area") || type.equals("duration") || type.equals("range") || type.equals("frequency")) {
             result = true;
         }
-        Log.v(TAG, "isUserInputsTypeNode - result : "+result);
+        Log.v(TAG, "isUserInputsTypeNode - result : " + result);
         return result;
     }
 
