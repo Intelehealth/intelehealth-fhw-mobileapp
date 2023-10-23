@@ -27,7 +27,7 @@ fun String.toLocalDateFormat(format: String): String {
     val date = this.toDate(DateTimeUtils.DB_FORMAT)
     return if (DateTimeUtils.isToday(date)) "Today"
     else if (DateTimeUtils.isYesterday(date)) "Yesterday"
-    else DateTimeUtils.formatIsdDate(this.toDate(DateTimeUtils.DB_FORMAT), format)
+    else DateTimeUtils.formatToLocalDate(this.toDate(DateTimeUtils.DB_FORMAT), format)
 }
 
 fun String.span(@ColorRes colorRes: Int, context: Context) = SpannableString(this).apply {

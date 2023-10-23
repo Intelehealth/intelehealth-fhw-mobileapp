@@ -4,7 +4,6 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent.ACTION_CALL
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.os.Build
@@ -104,20 +103,6 @@ object CallNotificationHandler {
         })
     ).build()
 
-    /**
-     * hangup the call
-     * @param [context] service context
-     *
-     * */
-    private fun getCallAction(
-        context: Context,
-        messageBody: RtcArgs
-    ): NotificationCompat.Action = NotificationCompat.Action.Builder(
-        android.R.drawable.ic_menu_call,
-        ACTION_CALL,
-        IntentUtils.getOutGoingCallIntent(context, messageBody)
-    ).build()
-
 
     /**
      * Build call notification while user trying to connect
@@ -157,7 +142,7 @@ object CallNotificationHandler {
         com.github.ajalt.timberkt.Timber.d { "getIncomingNotificationBuilder -> url = ${messageBody.url}" }
         val lockScreenIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
 
-        val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
+//        val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
 
         return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -252,7 +237,7 @@ object CallNotificationHandler {
             .setSmallIcon(messageBody.notificationIcon)
             .setCategory(NotificationCompat.CATEGORY_MISSED_CALL)
             .setAutoCancel(true)
-            .setContentIntent(IntentUtils.getChatViewPendingActivityIntent(context, messageBody))
+            .setContentIntent(IntentUtils.getCallLogPendingIntent(context, messageBody))
             .setSilent(true)
 //            .addAction(getCallAction(context, messageBody))
     }

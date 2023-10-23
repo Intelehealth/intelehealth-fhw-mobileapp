@@ -11,13 +11,16 @@ import org.intelehealth.klivekit.call.ui.viewmodel.CallLogViewModel
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class CallLogActivity : CoreCallLogActivity() {
+abstract class CoreCallLogActivity : AppCompatActivity() {
+    private val callLogViewModel by viewModels<CallLogViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        callLogViewModel.getCallLogs().observe(this) { onLogs(it) }
     }
 
-    override fun onLogs(logs: List<RtcCallLog>) {
+    abstract fun onLogs(logs: List<RtcCallLog>)
 
-    }
+    fun clearLog() = callLogViewModel.clearLogs()
+
 }

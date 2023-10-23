@@ -31,6 +31,10 @@ import org.intelehealth.ekalarogya.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalarogya.firebase.RealTimeDataChangedObserver;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.klivekit.RtcApp;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalCoreCallLogActivity;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
+import org.intelehealth.klivekit.RtcConfig;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.klivekit.utils.Constants;
@@ -212,7 +216,7 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
     }
 
     public void startRealTimeObserverAndSocket() {
-        startRealTimeObserver();
+//        startRealTimeObserver();
         initSocketConnection();
     }
 
@@ -235,7 +239,20 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
                     + sessionManager.getProviderID()
                     + "&name=" + sessionManager.getChwname();
             if (!socketManager.isConnected()) socketManager.connect(socketUrl);
+            initRtcConfig();
         }
+    }
+
+    private void initRtcConfig() {
+        new RtcConfig.Builder()
+                .callUrl("wss://" + sessionManager.getServerUrl() + ":9090")
+                .socketUrl("https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
+                        + sessionManager.getProviderID()
+                        + "&name=" + sessionManager.getChwname())
+                .callIntentClass(EkalVideoActivity.class)
+                .chatIntentClass(EkalChatActivity.class)
+                .callLogIntentClass(EkalCoreCallLogActivity.class)
+                .build().saveConfig(this);
     }
 
     @Override

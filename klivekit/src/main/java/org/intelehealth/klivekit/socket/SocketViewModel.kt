@@ -133,7 +133,6 @@ class SocketViewModel @Inject constructor(private val socketManager: SocketManag
 
     fun connectWithDoctor(args: RtcArgs) {
         executeInUIThread {
-            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, buildOutGoingCallParams(args))
             emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, args.toJsonArg())
         }
     }

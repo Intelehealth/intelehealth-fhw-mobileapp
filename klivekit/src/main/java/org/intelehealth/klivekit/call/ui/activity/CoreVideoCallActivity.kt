@@ -10,8 +10,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
-import org.intelehealth.klivekit.data.PreferenceHelper
-import org.intelehealth.klivekit.data.PreferenceHelper.Companion.RTC_DATA
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.livekit.android.events.DisconnectReason
@@ -26,17 +24,18 @@ import org.intelehealth.app.registry.PermissionRegistry
 import org.intelehealth.app.registry.allGranted
 import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
-import org.intelehealth.klivekit.model.RtcArgs
-import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.call.ui.viewmodel.CallViewModel
-import org.intelehealth.klivekit.socket.SocketViewModel
 import org.intelehealth.klivekit.call.ui.viewmodel.VideoCallViewModel
 import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.call.utils.CallStatus
+import org.intelehealth.klivekit.data.PreferenceHelper
+import org.intelehealth.klivekit.data.PreferenceHelper.Companion.RTC_DATA
+import org.intelehealth.klivekit.model.RtcArgs
+import org.intelehealth.klivekit.socket.SocketManager
+import org.intelehealth.klivekit.socket.SocketViewModel
 import org.intelehealth.klivekit.utils.AudioType
 import org.intelehealth.klivekit.utils.RTC_ARGS
-import org.intelehealth.klivekit.utils.extensions.printExtra
 import org.intelehealth.klivekit.utils.extensions.showToast
 import org.intelehealth.klivekit.utils.extensions.viewModelByFactory
 import java.util.Calendar
@@ -96,7 +95,11 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
         super.onCreate(savedInstanceState)
         videoCallViewModel.room.initVideoRenderer(getLocalVideoRender())
         videoCallViewModel.room.initVideoRenderer(getRemoteVideoRender())

@@ -4,6 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallStatus
+import org.intelehealth.klivekit.utils.DateTimeUtils
+import org.intelehealth.klivekit.utils.DateTimeUtils.DB_FORMAT
+import java.util.Calendar
 
 /**
  * Created by Vaghela Mithun R. on 16-10-2023 - 11:51.
@@ -33,4 +36,13 @@ data class RtcCallLog(
     var callMode: CallMode = CallMode.NONE,
     var callAction: String = "",
     var chatAction: String = ""
-)
+) {
+    fun callLogTime(): String {
+        return if (callTime.isNotEmpty()) DateTimeUtils.formatToLocalDate(
+            Calendar.getInstance().let {
+                it.timeInMillis = callTime.toLong()
+                return@let it.time
+            }, DB_FORMAT
+        ) else ""
+    }
+}

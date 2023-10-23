@@ -268,19 +268,19 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
         notificationManager.notify(notificationId, notification)
         startForeground(notificationId, notification)
-        if (ringtone.isPlaying) ringtone.stop()
-        if (normalStatus) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                ringtone.isLooping = true
-            }
-            ringtone.play()
-        } else if (vibrateStatus) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibratorService.vibrate(vibrationEffect)
-            } else {
-                vibratorService.vibrate(vibratePattern, 0)
-            }
-        }
+//        if (ringtone.isPlaying) ringtone.stop()
+//        if (normalStatus) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//                ringtone.isLooping = true
+//            }
+//            ringtone.play()
+//        } else if (vibrateStatus) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                vibratorService.vibrate(vibrationEffect)
+//            } else {
+//                vibratorService.vibrate(vibratePattern, 0)
+//            }
+//        }
     }
 
 

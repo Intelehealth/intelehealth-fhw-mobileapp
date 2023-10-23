@@ -6,11 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import com.github.ajalt.timberkt.Timber
+import org.intelehealth.klivekit.RtcConfig
 import org.intelehealth.klivekit.call.notification.CallReceiver
 import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
+import org.intelehealth.klivekit.call.ui.activity.CoreCallLogActivity
 import org.intelehealth.klivekit.call.utils.CallConstants.MAX_INT
 import org.intelehealth.klivekit.model.RtcArgs
-import org.intelehealth.klivekit.call.ui.activity.VideoCallActivity
 import org.intelehealth.klivekit.utils.RTC_ARGS
 import kotlin.random.Random
 
@@ -54,16 +55,16 @@ object IntentUtils {
      * @param messageBody an instance of RtcArgs to send with intent
      * @return Intent ChatViewActivity intent to start
      */
-    private fun getChatViewActivityIntent(
+    private fun getCallLogIntent(
         messageBody: RtcArgs,
         context: Context
     ): Intent {
-        return messageBody.className?.let {
-            val callClass: Class<*> = Class.forName(it)
+        return RtcConfig.getConfig(context)?.let {
+            val callClass: Class<*> = Class.forName(it.callLogIntentClass)
             return@let Intent(context, callClass).apply {
                 putExtra(RTC_ARGS, messageBody)
             }
-        } ?: Intent(context, VideoCallActivity::class.java).apply {
+        } ?: Intent(context, CoreCallLogActivity::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
         }
     }
@@ -168,12 +169,12 @@ object IntentUtils {
         )
     }
 
-    fun getChatViewPendingActivityIntent(
+    fun getCallLogPendingIntent(
         context: Context,
         messageBody: RtcArgs
     ): PendingIntent = PendingIntent.getActivity(
         context, Random.nextInt(0, MAX_INT),
-        getChatViewActivityIntent(messageBody, context),
+        getCallLogIntent(messageBody, context),
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.FLAG_IMMUTABLE
         } else {

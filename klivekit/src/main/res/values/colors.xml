@@ -137,4 +137,5 @@
     <color name="colorIncomingCall">#18A700</color>
     <color name="colorOutgoingCallBg">#443A81FD</color>
     <color name="colorOutgoingCall">#3A81FD</color>
+    <color name="rippleMaskColor">#000000</color>
 </resources>

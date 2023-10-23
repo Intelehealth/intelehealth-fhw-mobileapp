@@ -55,12 +55,12 @@ data class ChatMessage(
 
     fun getMessageTime(): String? {
         val date = DateTimeUtils.parseUTCDate(createdDate(), DateTimeUtils.DB_FORMAT)
-        return DateTimeUtils.formatIsdDate(date, DateTimeUtils.MESSAGE_TIME_FORMAT)
+        return DateTimeUtils.formatToLocalDate(date, DateTimeUtils.MESSAGE_TIME_FORMAT)
     }
 
     fun getMessageDay(): String {
         val date = DateTimeUtils.parseUTCDate(createdDate(), DateTimeUtils.DB_FORMAT)
-        return DateTimeUtils.formatIsdDate(date, DateTimeUtils.MESSAGE_DAY_FORMAT)
+        return DateTimeUtils.formatToLocalDate(date, DateTimeUtils.MESSAGE_DAY_FORMAT)
     }
 
     fun isAttachment(): Boolean {

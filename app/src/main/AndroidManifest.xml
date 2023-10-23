@@ -254,7 +254,9 @@
         <activity
             android:name=".webrtc.activity.EkalVideoActivity"
             android:configChanges="uiMode"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
@@ -267,6 +269,12 @@
 
         <activity
             android:name=".webrtc.activity.EkalChatActivity"
+            android:configChanges="uiMode"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".webrtc.activity.EkalCoreCallLogActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
