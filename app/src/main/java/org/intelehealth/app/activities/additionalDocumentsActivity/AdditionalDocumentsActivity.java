@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.additionalDocumentsActivity;
 
+import static org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity.IMAGE_LIST_INTENT;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -88,24 +91,39 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty()) {
+                    Intent intent = new Intent();
+                    intent.putExtra("rowListItem", (Serializable) rowListItem);
+                    setResult(IMAGE_LIST_INTENT, intent);
+                    finish();
+                }
+                else {
+                    onBackPressed();
+                }
+
             }
         });
+
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
+            ImagesDAO imagesDAO = new ImagesDAO();
+            ArrayList<String> fileuuidList = new ArrayList<String>();
+            ArrayList<File> fileList = new ArrayList<File>();
+
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             encounterDispenseAdminister = intent.getStringExtra("encounterDispenseAdminister");
+            fileuuidList = (ArrayList<String>) intent.getSerializableExtra("fileuuidList");
 
-            ImagesDAO imagesDAO = new ImagesDAO();
-            ArrayList<String> fileuuidList = new ArrayList<String>();
-            ArrayList<File> fileList = new ArrayList<File>();
             try {
-                if (encounterDispenseAdminister != null)
+               /* if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty())
                     fileuuidList = imagesDAO.getImageUuid(encounterDispenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);    // Encounter Dispense OR Administer.
                 else
+                    fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);  // Encounter Adultinitial.
+*/
+                if (encounterDispenseAdminister == null || encounterDispenseAdminister.isEmpty())
                     fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);  // Encounter Adultinitial.
 
                 for (String fileuuid : fileuuidList) {
@@ -127,7 +145,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            if (encounterDispenseAdminister != null)
+            if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty())
                 recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterDispenseAdminister, rowListItem, AppConstants.IMAGE_PATH);
             else
                 recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials, rowListItem, AppConstants.IMAGE_PATH);
@@ -209,7 +227,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            if (encounterDispenseAdminister != null)
+            if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty())
                 imagesDAO.insertObsImageDatabase(imageuuid, encounterDispenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);
             else
                 imagesDAO.insertObsImageDatabase(imageuuid, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);

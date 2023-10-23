@@ -1,7 +1,9 @@
 package org.intelehealth.app.models;
 
 
-public class DocumentObject {
+import java.io.Serializable;
+
+public class DocumentObject implements Serializable {
 
     private String documentName;
     private String documentPhoto;

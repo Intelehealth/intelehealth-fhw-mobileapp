@@ -31,32 +31,20 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
     private Context context;
     private List<MedicationAidModel> list, checkedList;
     private HashSet<MedicationAidModel> hash_checkedList = new HashSet<>();
-    private OnSelectedItems onSelectedItems;
     private boolean isArabic;
   //  private List<MedicationAidModel> update_medUuidList, update_aidUuidList, updateUUID_List;
     private List<MedicationAidModel> updateUUID_List;
   //  private List<AidModel> update_aidUuidList;
     private String tag;
 
-    public MedicationAidAdapter(Context context, List<MedicationAidModel> list, boolean isArabic, List<MedicationAidModel> updateUUID_List, String tag
-                                /*List<MedicationAidModel> update_medUuidList, List<MedicationAidModel> update_aidUuidList*/ /*, List<AidModel> update_aidUuidList*/ /*, OnSelectedItems onSelectedItems*/) {
+    public MedicationAidAdapter(Context context, List<MedicationAidModel> list, boolean isArabic, List<MedicationAidModel> updateUUID_List, String tag) {
         this.context = context;
         this.list = list;
         this.isArabic = isArabic;
         this.updateUUID_List = updateUUID_List;
         this.tag = tag;
 
-        /*this.update_medUuidList = update_medUuidList;
-        this.update_aidUuidList = update_aidUuidList;*/
-
         checkedList = new ArrayList<>();
-
-//        if (update_aidUuidList != null && update_aidUuidList.size() > 0) {
-//            checkedList.addAll(update_aidUuidList);
-//        }
-
-
-      //  this.onSelectedItems = onSelectedItems;
     }
 
     @NonNull
@@ -114,15 +102,6 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
             }
         }
         // aid - start
-
-
-
-
-       /* if (model.contains("Type")) {
-            holder.cb_administer.setVisibility(View.GONE);
-        }
-        else
-            holder.cb_administer.setVisibility(View.VISIBLE);*/
     }
 
     @Override
@@ -139,7 +118,6 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
 
             tvMedAidName = itemView.findViewById(R.id.tvMedAidName);
             cb_value = itemView.findViewById(R.id.cb_value);
-          //  cb_administer = itemView.findViewById(R.id.cb_administer);
 
             cb_value.setOnClickListener(v -> {
                 if (((CheckBox) v).isChecked()) {
@@ -176,15 +154,6 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
         return hash_checkedList;
 
       //  return checkedList;
-    }
-
-    public interface OnSelectedItems {
-
-        public void getCheckedValues(ArrayList<MedicationAidModel> model);
-
-
-      /*  public void getCheckedMedData();
-        public void getCheckedAidData();*/
     }
 
     private PatientAttributeLanguageModel getPatientAttributeFromJSON(String jsonString) {
