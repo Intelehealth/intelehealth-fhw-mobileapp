@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.additionalDocumentsActivity;
 
+import static org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity.IMAGE_LIMIT;
 import static org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity.IMAGE_LIST_INTENT;
 
 import android.content.Context;
@@ -52,6 +53,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 public class AdditionalDocumentsActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
+    private Context context;
     private String patientUuid;
     private String visitUuid;
     private String encounterVitals;
@@ -64,6 +66,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
+        context = AdditionalDocumentsActivity.this;
 
         //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
 
@@ -267,6 +270,13 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
      *   Open dialog to Select douments from Image and Camera as Per the Choices
      */
     private void selectImage() {
+        if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty()) {
+            if (rowListItem != null && rowListItem.size() >= IMAGE_LIMIT) {
+                Toast.makeText(context, getString(R.string.max_4_images_is_allowed), Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(AdditionalDocumentsActivity.this);
         builder.setTitle(R.string.additional_doc_image_picker_title);

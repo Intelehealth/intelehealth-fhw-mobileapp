@@ -73,6 +73,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             tie_totalCost, tie_vendorDiscount, tie_coveredCost, tie_outOfPocket, tie_others;
 
     public static final int IMAGE_LIST_INTENT = 700;
+    public static final int IMAGE_LIMIT = 4;
     private TextView tv_medData, tv_aidData, tvSave;
     private String tag = "";
     private FrameLayout fl_med, fl_aid;
@@ -367,6 +368,13 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         imgbtn_uploadDocs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+/*
+                if (fileuuidList != null && fileuuidList.size() >= IMAGE_LIMIT) {
+                    Toast.makeText(context, getString(R.string.max_4_images_is_allowed), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+*/
+
                 Intent docIntent = new Intent(context, AdditionalDocumentsActivity.class);
                 docIntent.putExtra("patientUuid", patientUuid);
                 docIntent.putExtra("visitUuid", visitUuid);
