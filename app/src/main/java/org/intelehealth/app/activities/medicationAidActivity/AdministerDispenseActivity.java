@@ -72,7 +72,9 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private TextInputEditText tie_medNotes, tie_aidNotes,
             tie_totalCost, tie_vendorDiscount, tie_coveredCost, tie_outOfPocket, tie_others;
 
+    public static final String TAG = "AdministerActivity";
     public static final int IMAGE_LIST_INTENT = 700;
+
     public static final int IMAGE_LIMIT = 4;
     private TextView tv_medData, tv_aidData, tvSave;
     private String tag = "";
@@ -93,6 +95,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private MedicationModel medModel = new MedicationModel();
     private AidModel aidModel = new AidModel();
     private TextView additionalImageDownloadText;
+    private boolean isEncounterCreated = false;
 
 
     @Override
@@ -375,6 +378,14 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 }
 */
 
+                if (tag.equalsIgnoreCase("dispense")) {
+                    createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_DISPENSE);
+                }
+
+                if (tag.equalsIgnoreCase("administer")) {
+                    createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_ADMINISTER);
+                }
+
                 Intent docIntent = new Intent(context, AdditionalDocumentsActivity.class);
                 docIntent.putExtra("patientUuid", patientUuid);
                 docIntent.putExtra("visitUuid", visitUuid);
@@ -382,12 +393,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 docIntent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                 docIntent.putExtra("fileuuidList", fileuuidList);
 
-               /* if (tag.equalsIgnoreCase("dispense"))
-                    docIntent.putExtra("encounterDispenseAdminister", encounterDispense);
-                else if (tag.equalsIgnoreCase("administer"))
-                    docIntent.putExtra("encounterDispenseAdminister", encounterAdminister);
-                */
-                    docIntent.putExtra("encounterDispenseAdminister", encounterDisenseAdminister);
+                Log.d(TAG, "img btn onClick: " + encounterDisenseAdminister);
+                docIntent.putExtra("encounterDispenseAdminister", encounterDisenseAdminister);
 
                // startActivity(docIntent);
                 startActivityForResult(docIntent, IMAGE_LIST_INTENT);
@@ -573,76 +580,35 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         String outOfPocketValue = tie_outOfPocket.getText().toString().trim();
         String otherAids = tie_others.getText().toString().trim();
 
-        boolean isEncounterCreated = false;
         if (tag.equalsIgnoreCase("dispense")) {
 
-            if (encounterDisenseAdminister.equalsIgnoreCase("") || encounterDisenseAdminister == null)
-                encounterDisenseAdminister = UUID.randomUUID().toString();
+            createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_DISPENSE);
 
-                isEncounterCreated = false;
-                EncounterDAO encounterDAO = new EncounterDAO();
-                EncounterDTO encounterDTO = new EncounterDTO();
-                encounterDTO.setUuid(encounterDisenseAdminister);
-                encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_DISPENSE);   // Dispense Encounter
-                encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-                encounterDTO.setVisituuid(visitUuid);
-                encounterDTO.setSyncd(false);
-                encounterDTO.setProvideruuid(sessionManager.getProviderID());
-                Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
-                encounterDTO.setVoided(0);
-
-                try {
-                    isEncounterCreated = encounterDAO.createEncountersToDB(encounterDTO);
-                    if (isEncounterCreated) {
-
-                        // Dispense - medication push
-                        if (medList != null && medList.size() > 0) {
-                            insertMedicationObs(medicineValue, medNotesValue, encounterDisenseAdminister, OBS_DISPENSE_MEDICATION); // Dispense Med Obs.
-                        }
-
-                        if (aidList != null && aidList.size() > 0) {
-                            insertAidObs(aidValue, aidNotesValue, encounterDTO.getUuid(),
-                                    totalCostValue, vendorDiscountValue, coveredCostValue, outOfPocketValue, otherAids, OBS_DISPENSE_AID);  // Dispense Aid Obs.
-                        }
-
-                        // Create OBS and push - END
-
-                    }
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+            if (isEncounterCreated) {
+                // Dispense - medication push
+                if (medList != null && medList.size() > 0) {
+                    insertMedicationObs(medicineValue, medNotesValue, encounterDisenseAdminister, OBS_DISPENSE_MEDICATION); // Dispense Med Obs.
                 }
+
+                if (aidList != null && aidList.size() > 0) {
+                    insertAidObs(aidValue, aidNotesValue, encounterDisenseAdminister,
+                            totalCostValue, vendorDiscountValue, coveredCostValue, outOfPocketValue, otherAids, OBS_DISPENSE_AID);  // Dispense Aid Obs.
+                }
+                // Create OBS and push - END
+            }
 
             Toast.makeText(this, getString(R.string.dispense_data_saved), Toast.LENGTH_SHORT).show();
         }
         else if (tag.equalsIgnoreCase("administer")) {
 
-            if (encounterDisenseAdminister.equalsIgnoreCase("") || encounterDisenseAdminister == null)
-                encounterDisenseAdminister = UUID.randomUUID().toString();
+            createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_ADMINISTER);
 
-            isEncounterCreated = false;
-                EncounterDAO encounterDAO = new EncounterDAO();
-                EncounterDTO encounterDTO = new EncounterDTO();
-                encounterDTO.setUuid(encounterDisenseAdminister);
-                encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_ADMINISTER); // Administer Encounter
-                encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-                encounterDTO.setVisituuid(visitUuid);
-                encounterDTO.setSyncd(false);
-                encounterDTO.setProvideruuid(sessionManager.getProviderID());
-                Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
-                encounterDTO.setVoided(0);
-                try {
-                    isEncounterCreated = encounterDAO.createEncountersToDB(encounterDTO);
-                    if (isEncounterCreated) {
-
-                        // Administer - medication push
-                        if (medList != null && medList.size() > 0) {
-                            insertMedicationObs(medicineValue, medNotesValue, encounterDisenseAdminister, OBS_ADMINISTER_MEDICATION);   // Administer Med Obs.
-                        }
-                    }
-
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+            if (isEncounterCreated) {
+                // Administer - medication push
+                if (medList != null && medList.size() > 0) {
+                    insertMedicationObs(medicineValue, medNotesValue, encounterDisenseAdminister, OBS_ADMINISTER_MEDICATION);   // Administer Med Obs.
                 }
+            }
 
             Toast.makeText(this, getString(R.string.administer_data_saved), Toast.LENGTH_SHORT).show();
         }
@@ -654,6 +620,29 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         Intent intent = new Intent(context, VisitSummaryActivity.class);
         startActivity(intent);
+    }
+
+    private void createEncounterDispense_Administer(String encounterTypeUUID) {
+        if (encounterDisenseAdminister.equalsIgnoreCase("") || encounterDisenseAdminister == null)
+            encounterDisenseAdminister = UUID.randomUUID().toString();
+
+        isEncounterCreated = false;
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(encounterDisenseAdminister);
+        encounterDTO.setEncounterTypeUuid(encounterTypeUUID);   // Dispense Encounter
+        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        encounterDTO.setVisituuid(visitUuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+
+        try {
+            isEncounterCreated = encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 
     private void insertAidObs(String aidValue, String aidNotesValue, String encounteruuid,
