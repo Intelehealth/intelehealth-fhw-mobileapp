@@ -4,12 +4,17 @@ import android.content.Context
 import android.util.Log
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import org.intelehealth.ekalarogya.database.dao.PatientsDAO
 import org.intelehealth.ekalarogya.firebase.RealTimeDataChangedObserver
+import org.intelehealth.ekalarogya.utilities.NotificationUtils
 import org.intelehealth.ekalarogya.utilities.SessionManager
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity
 import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
+import org.intelehealth.klivekit.call.utils.CallMode
+import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.call.utils.CallType
+import org.intelehealth.klivekit.call.utils.IntentUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.Constants
 import org.intelehealth.klivekit.utils.extensions.fromJson
@@ -33,8 +38,17 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     callType = CallType.VIDEO
                     url = "wss://" + sessionManager.serverUrl + ":9090"
                     socketUrl = Constants.BASE_URL + "?userId=" + nurseId + "&name=" + nurseName
+                    PatientsDAO().getPatientName(roomId).apply {
+                        patientName = get(0).name
+                    }
                 }.also { arg ->
-                    CallHandlerUtils.operateIncomingCall(it, arg, EkalVideoActivity::class.java)
+                    if (isAppInForeground()) {
+                        arg.callMode = CallMode.INCOMING
+                        arg.className = EkalVideoActivity::class.java.name
+                        context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
+                    } else {
+                        CallHandlerUtils.operateIncomingCall(it, arg, EkalVideoActivity::class.java)
+                    }
                 }
             }
         }

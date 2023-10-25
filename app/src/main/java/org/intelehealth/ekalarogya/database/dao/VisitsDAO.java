@@ -397,6 +397,20 @@ public class VisitsDAO {
         return patientUuidByViistUuid;
     }
 
+    public String getVisitIdByPatientId(String patientId) {
+        String visitId = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ? ", new String[]{patientId});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                visitId = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        cursor.close();
+
+        return visitId;
+    }
+
     public boolean isUpdatedDownloadColumn(String visitUuid, boolean isupdated) throws DAOException {
         boolean isUpdated = false;
         int updatedcount = 0;

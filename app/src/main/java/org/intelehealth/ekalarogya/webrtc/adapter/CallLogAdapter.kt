@@ -7,6 +7,7 @@ import org.intelehealth.ekalarogya.databinding.RowItemEkalCallLogBinding
 import org.intelehealth.ekalarogya.webrtc.viewholder.EkalCallLogViewHolder
 import org.intelehealth.klivekit.call.model.RtcCallLog
 import org.intelehealth.klivekit.chat.ui.adapter.BaseRecyclerViewAdapter
+import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
 import org.intelehealth.klivekit.databinding.RowItemCallLogBinding
 
 /**
@@ -16,6 +17,8 @@ import org.intelehealth.klivekit.databinding.RowItemCallLogBinding
  **/
 class CallLogAdapter(context: Context, list: List<RtcCallLog>) :
     BaseRecyclerViewAdapter<RtcCallLog>(context, list.toMutableList()) {
+    lateinit var clickListener : BaseViewHolder.ViewHolderClickListener
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = RowItemEkalCallLogBinding.inflate(inflater, parent, false)
         return EkalCallLogViewHolder(binding)
@@ -23,6 +26,7 @@ class CallLogAdapter(context: Context, list: List<RtcCallLog>) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is EkalCallLogViewHolder) {
+            if(::clickListener.isInitialized) holder.setViewClickListener(clickListener)
             holder.bind(getItem(position))
         }
     }

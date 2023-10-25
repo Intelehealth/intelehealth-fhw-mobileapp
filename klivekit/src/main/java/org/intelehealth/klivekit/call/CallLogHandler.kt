@@ -6,6 +6,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.intelehealth.klivekit.call.data.CallLogRepository
 import org.intelehealth.klivekit.call.model.RtcCallLog
+import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.data.PreferenceHelper
 import javax.inject.Inject
 
@@ -23,6 +24,13 @@ class CallLogHandler @Inject constructor(
     fun saveLog(callLog: RtcCallLog) {
         scope.launch {
             callLogRepository.saveLog(callLog)
+        }
+    }
+
+    fun changCallStatus(status: CallStatus) {
+        scope.launch {
+            val lastRecordId = callLogRepository.getLastRecordId()
+            callLogRepository.changeCallLogStatus(lastRecordId, status)
         }
     }
 }

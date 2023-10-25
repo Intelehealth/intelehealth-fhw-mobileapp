@@ -106,6 +106,10 @@ public class ChatActivity extends AppCompatActivity {
     private String mPatientUUid = "";
     private String mVisitUUID = "";
     private String mPatientName = "";
+
+    private String hwName;
+    private String openMrsId;
+
     protected LinearLayout mEmptyLinearLayout, mLoadingLinearLayout;
     protected EditText mMessageEditText;
     protected TextView mEmptyTextView;
@@ -283,6 +287,14 @@ public class ChatActivity extends AppCompatActivity {
         if (getIntent().hasExtra("patientName")) {
             mPatientName = getIntent().getStringExtra("patientName");
         }
+
+        if (getIntent().hasExtra("hwName")) {
+            hwName = getIntent().getStringExtra("hwName");
+        }
+        if (getIntent().hasExtra("openMrsId")) {
+            openMrsId = getIntent().getStringExtra("openMrsId");
+        }
+
         SocketManager.getInstance().setActiveRoomId(getRoomId());
         Log.v("mPatientUUid", String.valueOf(mPatientUUid));
         Log.v("mFromUUId", String.valueOf(mFromUUId));
@@ -482,6 +494,8 @@ public class ChatActivity extends AppCompatActivity {
         chatMessage.setToUser(toUUId);
         chatMessage.setVisitId(mVisitUUID);
         chatMessage.setPatientName(mPatientName);
+        chatMessage.setHwName(hwName);
+        chatMessage.setOpenMrsId(openMrsId);
         chatMessage.setType(type);
         chatMessage.setMessageStatus(MessageStatus.SENDING.getValue());
         addNewMessage(chatMessage);

@@ -1179,4 +1179,5 @@
     <string name="normal">Normal</string>
     <string name="moderate_obesity">Moderate Obesity</string>
     <string name="severe_obesity">Severe Obesity</string>
+    <string name="call_logs">Call Logs</string>
 </resources>

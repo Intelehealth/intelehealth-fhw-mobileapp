@@ -276,6 +276,7 @@
         <activity
             android:name=".webrtc.activity.EkalCoreCallLogActivity"
             android:configChanges="uiMode"
+            android:label="@string/call_logs"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 

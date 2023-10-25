@@ -15,8 +15,10 @@ class CallLogRepository(private val callLogDao: RtcCallLogDao) {
 
     fun getCallLogs() = callLogDao.getAll().asLiveData()
 
-    suspend fun changeCallLogStatus(callLogId: Int, status: CallStatus) =
-        callLogDao.changeCallStatus(callLogId, status)
+    suspend fun changeCallLogStatus(callLogId: Long, status: CallStatus) =
+        callLogDao.changeCallStatus(callLogId = callLogId, status = status)
 
     suspend fun clearLogs() = callLogDao.deleteAll()
+
+    suspend fun getLastRecordId() = callLogDao.getLastRecordId()
 }

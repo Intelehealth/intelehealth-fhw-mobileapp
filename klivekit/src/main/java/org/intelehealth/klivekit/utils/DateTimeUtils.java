@@ -30,6 +30,8 @@ public class DateTimeUtils {
 
     public static final String YYYY_MM_DD_HYPHEN = "yyyy-MM-dd";
     public static final String YYYY_MM_DD_WITH_SPLASH = "dd/MM/yyyy";
+
+    public static final String CALL_LOG_TIME_FORMAT = "EEE, dd MMM yyyy HH:mm:ss";
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat getSimpleDateFormat(String format, TimeZone timeZone) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);

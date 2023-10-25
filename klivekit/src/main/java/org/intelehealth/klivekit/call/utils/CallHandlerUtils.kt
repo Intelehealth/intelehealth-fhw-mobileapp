@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.room.WebRtcDatabase
 import org.intelehealth.klivekit.R
+import org.intelehealth.klivekit.RtcConfig
 import org.intelehealth.klivekit.call.CallLogHandler
 import org.intelehealth.klivekit.call.data.CallLogRepository
 import org.intelehealth.klivekit.call.model.RtcCallLog
@@ -38,7 +39,7 @@ object CallHandlerUtils {
         Timber.d { "notifyCallNotification Url: ${callArgs.toJson()}" }
         context.stopService(Intent(context, HeadsUpNotificationService::class.java))
         if (callArgs.isIncomingCall() && callArgs.isMissedCall()) {
-            getCallLogHandler(context).saveLog(generateCallLog(callArgs))
+            getCallLogHandler(context).changCallStatus(CallStatus.MISSED)
             CallNotificationHandler.notifyMissedCall(context, callArgs)
         } else if (callArgs.isCallDeclined()) {
             SocketManager.instance.emit(SocketManager.EVENT_CALL_REJECT_BY_HW, callArgs.doctorId)
@@ -65,7 +66,7 @@ object CallHandlerUtils {
         Timber.d { "operateIncomingCall ->Url = ${callArgs.url}" }
         callArgs.callMode = CallMode.INCOMING
         callArgs.className = clazz.name
-        getCallLogHandler(context).saveLog(generateCallLog(callArgs))
+        getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
         notifyCallNotification(callArgs, context)
     }
 
@@ -74,18 +75,21 @@ object CallHandlerUtils {
         PreferenceHelper(context)
     )
 
-    private fun generateCallLog(callArgs: RtcArgs) = RtcCallLog(
+    private fun generateCallLog(callArgs: RtcArgs, context: Context) = RtcCallLog(
         callerName = callArgs.doctorName!!,
         callerId = callArgs.doctorId!!,
         calleeId = callArgs.nurseId!!,
         calleeName = callArgs.nurseName!!,
         roomId = callArgs.roomId!!,
-//        roomName = callArgs.patientName!!,
+        roomName = callArgs.patientName!!,
         callMode = callArgs.callMode,
         callStatus = callArgs.callStatus,
         callTime = System.currentTimeMillis().toString(),
         callUrl = callArgs.url!!,
-        callAction = callArgs.className!!
+        chatAction = RtcConfig.getConfig(context)!!.chatIntentClass,
+        callAction = RtcConfig.getConfig(context)!!.callIntentClass,
+        hasCallAction = false,
+        hasChatAction = true
     )
 
     /**

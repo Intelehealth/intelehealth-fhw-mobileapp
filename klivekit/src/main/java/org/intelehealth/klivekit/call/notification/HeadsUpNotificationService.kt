@@ -52,6 +52,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     private var isTimerRunning = false
     private var sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
     private var rtcArgs: RtcArgs? = null
+    private var isDuplicateCancelEvent = false
 
     //[0] initial delay then subsequent vibrate & pause
     private var vibratePattern: LongArray = longArrayOf(0, 100, 800, 100, 800, 100, 800, 100)
@@ -116,9 +117,12 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
             SocketManager.EVENT_CALL_TIME_UP,
             SocketManager.EVENT_CALL_CANCEL_BY_DR -> {
-                rtcArgs?.let {
-                    it.callStatus = CallStatus.MISSED
-                    CallHandlerUtils.notifyCallNotification(it, this)
+                if (!isDuplicateCancelEvent) {
+                    isDuplicateCancelEvent = true
+                    rtcArgs?.let {
+                        it.callStatus = CallStatus.MISSED
+                        CallHandlerUtils.notifyCallNotification(it, this)
+                    }
                 }
             }
         }
@@ -304,6 +308,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         super.onDestroy()
         Timber.d { "Call service is destroyed ***** " }
         destroySetting()
+        isDuplicateCancelEvent = false
         SocketManager.instance.removeListener(this::emitter)
         wakeLock.let {
             if (it.isHeld) {

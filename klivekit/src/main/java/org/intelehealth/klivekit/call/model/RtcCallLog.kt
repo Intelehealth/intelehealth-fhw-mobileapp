@@ -4,9 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallStatus
-import org.intelehealth.klivekit.utils.DateTimeUtils
-import org.intelehealth.klivekit.utils.DateTimeUtils.DB_FORMAT
-import java.util.Calendar
+import org.intelehealth.klivekit.utils.DateTimeUtils.CALL_LOG_TIME_FORMAT
+import org.intelehealth.klivekit.utils.extensions.milliToLogTime
 
 /**
  * Created by Vaghela Mithun R. on 16-10-2023 - 11:51.
@@ -16,7 +15,7 @@ import java.util.Calendar
 @Entity(tableName = "call_log")
 data class RtcCallLog(
     @PrimaryKey(autoGenerate = true)
-    val callLogId: Int = 0,
+    val callLogId: Long = 0,
     // Doctor Name
     var callerName: String = "",
     // Doctor Id
@@ -35,14 +34,9 @@ data class RtcCallLog(
     var callStatus: CallStatus = CallStatus.NONE,
     var callMode: CallMode = CallMode.NONE,
     var callAction: String = "",
-    var chatAction: String = ""
+    var chatAction: String = "",
+    var hasChatAction: Boolean = false,
+    var hasCallAction: Boolean = false
 ) {
-    fun callLogTime(): String {
-        return if (callTime.isNotEmpty()) DateTimeUtils.formatToLocalDate(
-            Calendar.getInstance().let {
-                it.timeInMillis = callTime.toLong()
-                return@let it.time
-            }, DB_FORMAT
-        ) else ""
-    }
+    fun callLogTime(): String = callTime.milliToLogTime(CALL_LOG_TIME_FORMAT)
 }

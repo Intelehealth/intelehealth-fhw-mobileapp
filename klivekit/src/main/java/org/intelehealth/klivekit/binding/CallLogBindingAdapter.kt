@@ -1,5 +1,6 @@
 package org.intelehealth.klivekit.binding
 
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -26,4 +27,16 @@ fun setCallStatus(view: AppCompatImageView, callLog: RtcCallLog) {
 
     view.setBackgroundDrawable(ContextCompat.getDrawable(view.context, bg))
     view.setImageDrawable(ContextCompat.getDrawable(view.context, statusIcon))
+}
+
+@BindingAdapter("android:callStatusColor")
+fun setCallStatusColor(view: TextView, callLog: RtcCallLog) {
+    var statusIcon = R.color.colorOutgoingCall
+    if (callLog.callMode.isIncomingCall() && callLog.callStatus.isMissed()) {
+        statusIcon = R.color.colorMissedCall
+    } else if (callLog.callMode.isIncomingCall()) {
+        statusIcon = R.color.colorIncomingCall
+    }
+
+    view.setTextColor(ContextCompat.getColor(view.context, statusIcon))
 }

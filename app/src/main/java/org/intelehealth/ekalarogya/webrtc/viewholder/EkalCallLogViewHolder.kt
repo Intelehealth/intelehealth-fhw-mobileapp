@@ -13,5 +13,7 @@ class EkalCallLogViewHolder(private val binding: RowItemEkalCallLogBinding) :
     BaseViewHolder(binding.root) {
     fun bind(callLog: RtcCallLog) {
         binding.callLog = callLog
+        binding.btnCallLogCallback.setOnClickListener(this)
+        binding.btnCallLogChat.setOnClickListener(this)
     }
 }

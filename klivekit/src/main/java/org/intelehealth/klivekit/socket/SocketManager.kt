@@ -45,6 +45,7 @@ open class SocketManager @Inject constructor() {
 
     fun connect(url: String?) {
         Timber.d { "Connect => $url" }
+        if (isConnected()) return
         try {
             url?.let {
                 socket = IO.socket(url)

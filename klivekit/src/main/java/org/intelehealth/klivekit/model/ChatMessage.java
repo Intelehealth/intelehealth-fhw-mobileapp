@@ -48,6 +48,8 @@ public class ChatMessage implements ItemHeader {
     @SerializedName("type")
     private String type;
 
+    private String openMrsId;
+
     private int layoutType;
 
     private boolean loading;
@@ -210,5 +212,13 @@ public class ChatMessage implements ItemHeader {
 
     public String getRoomId() {
         return mFromUser + "_" + mPatientId + "_" + mToUser;
+    }
+
+    public String getOpenMrsId() {
+        return openMrsId;
+    }
+
+    public void setOpenMrsId(String openMrsId) {
+        this.openMrsId = openMrsId;
     }
 }

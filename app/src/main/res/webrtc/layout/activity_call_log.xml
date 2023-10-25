@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/simple_appbar" />
+        <include layout="@layout/simple_appbar" android:id="@+id/callLogAppBar" />
 
         <include
             android:id="@+id/callLogContent"

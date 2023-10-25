@@ -16,15 +16,22 @@ import org.intelehealth.klivekit.call.utils.CallStatus
  **/
 @Dao
 interface RtcCallLogDao {
-    @Query("SELECT * FROM call_log")
+    @Query("SELECT * FROM call_log ORDER BY callTime DESC")
     fun getAll(): Flow<List<RtcCallLog>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCallLog(callLog: RtcCallLog)
 
-    @Query("UPDATE call_log SET callStatus = :status where callLogId = :callLogId")
-    suspend fun changeCallStatus(callLogId: Int, status: CallStatus)
+    @Query("UPDATE call_log SET callStatus = :status, callTime = :updatedOn where callLogId = :callLogId")
+    suspend fun changeCallStatus(
+        callLogId: Long,
+        status: CallStatus,
+        updatedOn: String = System.currentTimeMillis().toString()
+    )
 
     @Query("DELETE FROM call_log")
     suspend fun deleteAll()
+
+    @Query("SELECT callLogId FROM call_log ORDER BY callLogId  DESC LIMIT 1")
+    suspend fun getLastRecordId(): Long
 }
