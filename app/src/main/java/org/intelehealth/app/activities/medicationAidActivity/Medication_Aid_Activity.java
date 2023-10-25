@@ -189,7 +189,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             MedicationAidModel model = new MedicationAidModel();
 
             model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN);
-            if (model != null) {
+            if (model.getUuid() != null || model.getValue() != null) {
                 PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
                 patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type1) + " " +
                         patientAttributeLanguageModel.getAr());
@@ -202,7 +202,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
 
             model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP);
-            if (model != null) {
+            if (model.getUuid() != null || model.getValue() != null) {
                 PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
                 patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type2) + " " +
                         patientAttributeLanguageModel.getAr());
@@ -215,7 +215,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
 
             model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE);
-            if (model != null) {
+            if (model.getUuid() != null || model.getValue() != null) {
                 PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
                 patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type3) + " " +
                         patientAttributeLanguageModel.getAr());
@@ -228,7 +228,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
 
             model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE);
-            if (model != null) {
+            if (model.getUuid() != null || model.getValue() != null) {
                 PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
                 patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type4) + " " +
                         patientAttributeLanguageModel.getAr());
@@ -241,7 +241,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             }
 
             model = ObsDAO.getObsValue(encounterVisitNote, UuidDictionary.AID_ORDER_CASH_ASSISTANCE);
-            if (model != null) {
+            if (model.getUuid() != null || model.getValue() != null) {
                 PatientAttributeLanguageModel patientAttributeLanguageModel = getPatientAttributeFromJSON(model.getValue());
                 patientAttributeLanguageModel.setAr(getResources().getString(R.string.aid_order_type5) + " " +
                         patientAttributeLanguageModel.getAr());
@@ -253,6 +253,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
                 aid_list.add(model);
             }
         } catch (Exception e) {
+            Toast.makeText(context, "something wrong.", Toast.LENGTH_SHORT).show();
 
         }
 
