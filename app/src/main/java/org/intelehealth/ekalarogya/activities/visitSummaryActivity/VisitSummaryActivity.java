@@ -3181,13 +3181,16 @@ public class VisitSummaryActivity extends BaseActivity {
     }
 
     public String ConvertHeightIntoFeets(String height) {
-        int val = Integer.parseInt(height);
-        double centemeters = val / 2.54;
-        int inche = (int) centemeters % 12;
-        int feet = (int) centemeters / 12;
-        String heightVal = feet + "ft " + inche + "in"; //keeping strings static as the prescription is available only in english language.
-        System.out.println("value of height=" + val);
-        return heightVal;
+        if(height!=null && !height.isEmpty()) { //validation added for crash fix.
+            int val = Integer.parseInt(height);
+            double centemeters = val / 2.54;
+            int inche = (int) centemeters % 12;
+            int feet = (int) centemeters / 12;
+            String heightVal = feet + "ft " + inche + "in"; //keeping strings static as the prescription is available only in english language.
+            System.out.println("value of height=" + val);
+            return heightVal;
+        }
+        else return "";
     }
 
     private void endVisit() {

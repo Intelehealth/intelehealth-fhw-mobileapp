@@ -13,14 +13,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +31,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -62,23 +66,72 @@ public class SearchPatientActivity extends BaseActivity {
     MaterialAlertDialogBuilder dialogBuilder;
     private String TAG = SearchPatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
+    int limit = 10, offset = 0;
+    boolean fullyLoaded = false;
+    EditText toolbarET;
+    ImageView toolbarClear, toolbarSearch;
+    LinearLayoutManager reLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
-                R.drawable.ic_sort_white_24dp);
-//        toolbar.setOverflowIcon(drawable);
-
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        // Get the intent, verify the action and get the query
+
+        toolbarET = findViewById(R.id.toolbar_ET);
+        toolbarClear = findViewById(R.id.toolbar_clear);
+        toolbarSearch = findViewById(R.id.toolbar_search);
+        toolbarET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                toolbarClear.setVisibility(View.VISIBLE);
+                toolbarSearch.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (toolbarET.getText().toString().isEmpty()) {
+                    toolbarET.clearFocus();
+                    toolbarClear.setVisibility(View.GONE);
+                    toolbarSearch.setVisibility(View.GONE);
+                    firstQuery();
+                }
+            }
+        });
+        toolbarClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolbarET.setText(null);
+                toolbarET.clearFocus();
+                toolbarClear.setVisibility(View.GONE);
+                toolbarSearch.setVisibility(View.GONE);
+                firstQuery();
+            }
+        });
+        toolbarSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolbarET.clearFocus();
+                String text = toolbarET.getText().toString();
+                if (text != null || !text.isEmpty() || text.equalsIgnoreCase(" ")) {
+                    SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
+                            SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+                    suggestions.clearHistory();
+                    query = text;
+                    doQuery(text);
+                }
+            }
+        });
+
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
@@ -94,6 +147,30 @@ public class SearchPatientActivity extends BaseActivity {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
+        reLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(reLayoutManager);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (recycler.patients != null && recycler.patients.size() < limit) {
+                    return;
+                }
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() ==
+                        recycler.getItemCount() - 1) {
+                    Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                    offset += limit;
+                    List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
+                    if (allPatientsFromDB.size() < limit) {
+                        fullyLoaded = true;
+                    }
+                    recycler.patients.addAll(allPatientsFromDB);
+                    recycler.notifyDataSetChanged();
+                }
+            }
+        });
+
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
@@ -120,16 +197,17 @@ public class SearchPatientActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        recyclerView.clearOnScrollListeners();
+    }
+
     private void doQuery(String query) {
         try {
             recycler = new SearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
-            RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
-            recyclerView.setLayoutManager(reLayoutManager);
-           /* recyclerView.addItemDecoration(new
-                    DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));*/
+            fullyLoaded = true;
             recyclerView.setAdapter(recycler);
-
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE("doquery", "doquery", e);
@@ -138,19 +216,30 @@ public class SearchPatientActivity extends BaseActivity {
 
     private void firstQuery() {
         try {
-            getAllPatientsFromDB();
-
-            recycler = new SearchPatientAdapter(getAllPatientsFromDB(), SearchPatientActivity.this);
-
-
-//            Log.i("db data", "" + getAllPatientsFromDB());
+            offset = 0;
+            fullyLoaded = false;
+            recycler = new SearchPatientAdapter(getAllPatientsFromDB(offset), SearchPatientActivity.this);
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
-            recyclerView.setLayoutManager(reLayoutManager);
-         /*   recyclerView.addItemDecoration(new
-                    DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(recycler);
-
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (recycler.patients != null && recycler.patients.size() < limit) {
+                        return;
+                    }
+                    if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && ((LinearLayoutManager) reLayoutManager).findLastVisibleItemPosition() == recycler.getItemCount() - 1) {
+                        Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                        offset += limit;
+                        List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
+                        if (allPatientsFromDB.size() < limit) {
+                            fullyLoaded = true;
+                        }
+                        recycler.patients.addAll(allPatientsFromDB);
+                        recycler.notifyDataSetChanged();
+                    }
+                }
+            });
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE("firstquery", "exception", e);
@@ -159,17 +248,12 @@ public class SearchPatientActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the options menu from XMLz
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
         inflater.inflate(R.menu.today_filter, menu);
-//        inflater.inflate(R.menu.today_filter, menu);
-        // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -197,13 +281,10 @@ public class SearchPatientActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.summary_endAllVisit:
                 endAllVisit();
-
             case R.id.action_filter:
                 //alert box.
                 displaySingleSelectionDialog();    //function call
             case R.id.action_search:
-
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -224,10 +305,10 @@ public class SearchPatientActivity extends BaseActivity {
         lvItems.setAdapter(searchAdapter);
     }
 
-    public List<PatientDTO> getAllPatientsFromDB() {
+    public List<PatientDTO> getAllPatientsFromDB(int offset) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         String table = "tbl_patient";
-        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC", null);
+        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC limit ? offset ?", new String[]{String.valueOf(limit), String.valueOf(offset)});
         try {
             if (searchCursor.moveToFirst()) {
                 do {
@@ -239,7 +320,6 @@ public class SearchPatientActivity extends BaseActivity {
                     model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                     model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
-
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
             }
@@ -252,15 +332,11 @@ public class SearchPatientActivity extends BaseActivity {
     }
 
     private void endAllVisit() {
-
         int failedUploads = 0;
-
         String query = "SELECT tbl_visit.patientuuid, tbl_visit.enddate, tbl_visit.uuid," +
                 "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name FROM tbl_visit, tbl_patient WHERE" +
                 " tbl_visit.patientuid = tbl_patient.uuid AND tbl_visit.enddate IS NULL OR tbl_visit.enddate = ''";
-
         final Cursor cursor = db.rawQuery(query, null);
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {

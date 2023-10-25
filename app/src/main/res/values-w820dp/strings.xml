@@ -1163,4 +1163,5 @@
     <string name="following_fields_are_not_filled">Following fields are not filled:</string>
     <string name="do_you_still_want_to_continue">Do you still want to continue?</string>
     <string name="enter_valid_phone_number">Enter valid phone number.</string>
+    <string name="type_to_search">Type to Search..</string>
 </resources>
