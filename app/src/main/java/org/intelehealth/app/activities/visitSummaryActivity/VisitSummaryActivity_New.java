@@ -292,7 +292,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     String gender_tv;
     String mFileName = "config.json";
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp, mHemoglobin, mBloodSugar;
-    String speciality_selected ="";
+    String speciality_selected = "";
     private TextView physcialExaminationDownloadText, vd_special_value;
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -601,9 +601,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 //add for visit type
                 List<String> itemList = new ArrayList<>();
                 itemList.add(0, getString(R.string.select_visit_type));
-                itemList.add(1,"Video consultation");
-                itemList.add(2,"Routine check up");
-                itemList.add(3,"Urgent care");
+                itemList.add(1, "Video consultation");
+                itemList.add(2, "Routine check up");
+                itemList.add(3, "Urgent care");
                 ArrayAdapter stringArrayAdapter =
                         new ArrayAdapter<String>
                                 (this, android.R.layout.simple_spinner_dropdown_item, itemList);
@@ -615,7 +615,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 } catch (DAOException e) {
                     throw new RuntimeException(e);
                 }
-                Log.d(TAG, "fetchingIntent: visitType : "+visitType);
+                Log.d(TAG, "fetchingIntent: visitType : " + visitType);
                 if (visitType.trim().equals(UuidDictionary.VIDEO_CONSULTATION)) {
                     spinnerVisitType.setSelection(1);
                     managerBtnAppointmentAsPerSelectVisitType(true);
@@ -1215,7 +1215,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // speciality data - end
 
         //for visit type
-       /// selectVisitType();
+        /// selectVisitType();
 
 
         if (visitUuid != null) {
@@ -1935,11 +1935,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     }
 
     private void managerBtnAppointmentAsPerSelectVisitType(boolean value) {
-        if(value){
+        if (value) {
             btnAppointment.setEnabled(true);
             btnAppointment.setBackground(getDrawable(R.drawable.ui2_common_primary_bg));
 
-        }else{
+        } else {
             btnAppointment.setEnabled(false);
             btnAppointment.setBackground(getDrawable(R.drawable.ui2_bg_disabled_time_slot));
 
@@ -2169,6 +2169,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         t.setTextColor(Color.RED);
         showSpecialisationDialog();
     }
+
     private void showSelectVisitTypeErrorDialog() {
         TextView t = (TextView) spinnerVisitType.getSelectedView();
         t.setError(getString(R.string.please_select_visit_type));
@@ -2185,6 +2186,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
         });
     }
+
     private void showVisitDialog() {
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.please_select_visit_type), "", true, getResources().getString(R.string.okay), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
@@ -2194,6 +2196,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
         });
     }
+
     // Permission - start
     private void checkPerm(int item) {
         if (item == 0) {
@@ -2961,6 +2964,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         alertDialog.show();
     }
+
     private BroadcastReceiver broadcastReceiverForIamgeDownlaod = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
