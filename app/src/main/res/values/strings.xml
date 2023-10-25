@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name" translatable="false">Intelehealth</string>
-    <string name="notification_title">Intelehealth</string>
+    <string name="app_name" translatable="false">Namma Aarogya</string>
+    <string name="notification_title">Namma Aarogya</string>
     <string name="notification_title_1">Application is active!</string>
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -40,7 +40,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">Intelehealth</string>
+    <string name="title_activity_login">Namma Aarogya</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
@@ -563,7 +563,7 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To download your prescription click here  "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Namma Aarogya. To download your prescription click here  "</string>
     <string name="and_enter_your_patient_id">" . To view the prescription, enter your registered mobile number or enter your Patient ID - "</string>
 
 
@@ -601,8 +601,8 @@
     <string name="please_help">\" and I am not able to login, please help.</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">Intelehealth</string>
+    <string name="intelehealth_a_telemedicine_platform">Namma Aarogya is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">Namma Aarogya</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
     <string name="active_tag_patientDetail">" Active"</string>
@@ -862,10 +862,10 @@
     <string name="forgot_password_instruction">Follow the instructions below to \naccess your account again</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="enter_username2">Enter username</string>
-    <string name="enter_username_given">Please enter your username provided by \nIntelehealth</string>
+    <string name="enter_username_given">Please enter your username provided by \nNamma Aarogya</string>
     <string name="login">Login</string>
     <string name="enter_mobile_no">Enter mobile number</string>
-    <string name="enter_mobile_no_given">Please enter the mobile number registered with \nIntelehealth</string>
+    <string name="enter_mobile_no_given">Please enter the mobile number registered with \nNamma Aarogya</string>
     <string name="enter_verification_code">Enter verification code</string>
     <string name="otp_sent">6-digit OTP sent on your registered number and email.\nPlease check and enter the OTP.</string>
     <string name="no_otp_received">Didn\'t receive OTP?</string>
@@ -887,7 +887,7 @@
     <string name="close_visits">Close Visits</string>
     <string name="close_visit">Close visit</string>
     <string name="skip_new">Skip</string>
-    <string name="who_we_are_intro">Intelehealth is an innovative telemedicine platform designed to bridge healthcare access gap in remote regions by connecting frontline health worker and patient with a virtual doctor to provide high-quality health services</string>
+    <string name="who_we_are_intro">Namma Aarogya is an innovative telemedicine platform designed to bridge healthcare access gap in remote regions by connecting frontline health worker and patient with a virtual doctor to provide high-quality health services</string>
     <string name="who_we_are">Who are we?</string>
     <string name="take_patient_visits">Take patient visits</string>
     <string name="collect_patient_info">Collect Patient information using AYU</string>
@@ -917,7 +917,7 @@
     <string name="my_achievements">My Achievements</string>
     <string name="achievements">Achievements</string>
     <string name="my_profile">My profile</string>
-    <string name="setup_tooltip_text">Enter the credentials given \nby Intelehealth team.</string>
+    <string name="setup_tooltip_text">Enter the credentials given \nby Namma Aarogya team.</string>
     <string name="generate_password_tooltip_text">This will automatically \ngenerate new password.</string>
     <string name="no_network_tooltip">No network!</string>
     <string name="educational_videos">Educational videos</string>
@@ -944,11 +944,12 @@
     <string name="daily_avg_time_spent">Daily average time\nspent by you</string>
     <string name="your_time_spent_today">Your time spent\ntoday</string>
     <string name="total_time_spent">Total time spent</string>
-    <string name="privacy_policy_content_old"><b><font color='#D1484C'>Personal Information</font></b>\nHealth Worker will collect personal information and health information from you for your medical records.\n\n<b><font color='#D1484C'>Use</font></b>\nYour information is\n- used for diagnosing and treating you.\n- used to send you reminders, prescription information, and other related communication.\n\nYour personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. We may disclose your personal information in certain specific circumstances given here <a href="https://www.intelehealth.org/privacy-policy">https://www.intelehealth.org/privacy-policy</a>.\n\n<b><font color='#D1484C'>Protection Measures</font></b>\nWe provide physical, electronic, and procedural safeguards to protect information we process and maintain.\n\n<b><font color='#D1484C'>Access and Correction</font></b>\nYou have the right to ask for a copy of any personal information we hold about you, as well as to ask for it to be corrected if you think it is wrong.\nIf you’d like us to delete or modify your personal data that you have provided to us, please contact the Data Privacy Officer at support@intelehealth.io and we will respond in a reasonable time.\n\nOn clicking “Accept”, I consent to the collection and use of my personal data, including health information, and to give access to the above-mentioned entities.</string>    <string name="privacy_policy_content">Your privacy is important to us. Intelehealth’s Enterprise
+    <string name="privacy_policy_content_old"><b><font color='#D1484C'>Personal Information</font></b>\nHealth Worker will collect personal information and health information from you for your medical records.\n\n<b><font color='#D1484C'>Use</font></b>\nYour information is\n- used for diagnosing and treating you.\n- used to send you reminders, prescription information, and other related communication.\n\nYour personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. We may disclose your personal information in certain specific circumstances given here <a href="https://www.intelehealth.org/privacy-policy">https://www.intelehealth.org/privacy-policy</a>.\n\n<b><font color='#D1484C'>Protection Measures</font></b>\nWe provide physical, electronic, and procedural safeguards to protect information we process and maintain.\n\n<b><font color='#D1484C'>Access and Correction</font></b>\nYou have the right to ask for a copy of any personal information we hold about you, as well as to ask for it to be corrected if you think it is wrong.\nIf you’d like us to delete or modify your personal data that you have provided to us, please contact the Data Privacy Officer at support@intelehealth.io and we will respond in a reasonable time.\n\nOn clicking “Accept”, I consent to the collection and use of my personal data, including health information, and to give access to the above-mentioned entities.</string>
+    <string name="privacy_policy_content">Your privacy is important to us. Namma Aarogya’s Enterprise
         Privacy Policy aligns with Generally Accepted
         Privacy Principles (GAPP). The GAPP are founded on key concepts from significant
         national and international privacy laws, regulations and good business practices.\n\nIn case of any privacy related complaints/grievances, please fill and submit this Privacy
-        Complaint Form to privacy@intelehealth.io\n\n<font color='#201560' size='16'><b>Introduction</b></font>\n\nIntelehealth endeavours to meet leading standards for data protection and privacy.
+        Complaint Form to privacy@intelehealth.io\n\n<font color='#201560' size='16'><b>Introduction</b></font>\n\nNamma Aarogya endeavours to meet leading standards for data protection and privacy.
         While our reasons are founded in ethical and corporate responsibility,
         our privacy practices as outlined in this policy enable the following:
 
@@ -962,7 +963,7 @@
 <li>Good Corporate Citizenship: A sound privacy policy is emblematic of reliable corporate citizens that
     respect individuals’ privacy.</li>\n
 
-<li>Business Enablement: Since Intelehealth uses significant volumes of personal information,
+<li>Business Enablement: Since Namma Aarogya uses significant volumes of personal information,
     privacy notices are a prerequisite to building enduring business relationships.</li>\n
 
 <li>Legal Protection: Appropriate privacy notices offer an opportunity to eliminate allegations of
@@ -1290,7 +1291,7 @@ The disclosure of personal information to third parties shall be only for identi
     \n\n
     <li>A record shall be maintained of non-compliances identified in the annual privacy reviews.
         Corrective and disciplinary
-        measures shall be initiated and tracked to closure, guided by Intelehealth’s management.
+        measures shall be initiated and tracked to closure, guided by Namma Aarogya’s management.
     </li>
 
     \n\n
@@ -1445,7 +1446,7 @@ The disclosure of personal information to third parties shall be only for identi
 
     <string name="aboutus_termscondition">Check out our <a href="https://intelehealth.org/terms-of-use">terms and conditions</a></string>
     <string name="visit_intelehealth_for_more">For more visit our website intelehealth.org</string>
-    <string name="aboutus_text">Intelehealth is a non-profit delivering high-quality healthcare where there is no doctor via telemedicine. Using our open-source technology platform that\'s driven by an innovative digital health assistant, we connect patients and frontline health workers at the last mile with doctors, diagnostics &amp; medications.\n\nIntelehealth has reached millions of patients, connecting thousands of health workers and doctors to deliver health services for communicable and non communicable diseases. We have worked in partnership with Ministries of Health in India &amp; Kyrgyzstan as well as organizations like UNICEF, Jhpiego, MSF, Ekal Arogya and many more. Intelehealth has been recognized by the World Economic Forum and Niti Aayog India as an impactful Digital Public Good.</string>
+    <string name="aboutus_text">Namma Aarogya is a non-profit delivering high-quality healthcare where there is no doctor via telemedicine. Using our open-source technology platform that\'s driven by an innovative digital health assistant, we connect patients and frontline health workers at the last mile with doctors, diagnostics &amp; medications.\n\nNamma Aarogya has reached millions of patients, connecting thousands of health workers and doctors to deliver health services for communicable and non communicable diseases. We have worked in partnership with Ministries of Health in India &amp; Kyrgyzstan as well as organizations like UNICEF, Jhpiego, MSF, Ekal Arogya and many more. Namma Aarogya has been recognized by the World Economic Forum and Niti Aayog India as an impactful Digital Public Good.</string>
     <string name="add_patient">Add Patients</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -1513,7 +1514,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="fingerprint_lock">Fingerprint Lock</string>
     <string name="fingerprint_lock_enabled">Fingerprint lock enabled!</string>
     <string name="fingerprint_lock_disabled">Fingerprint lock disabled!</string>
-    <string name="intelehealth_login">Intelehealth Login</string>
+    <string name="intelehealth_login">Namma Aarogya Login</string>
     <string name="touch_fingerprint">Touch fingerprint sensor to login</string>
     <string name="login_failed">Log in failed, please try again later.</string>
     <string name="login_successfully">Successfully logged in!</string>
@@ -1780,7 +1781,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="document">Document</string>
-    <string name="enter_the_credentials">Enter the credentials given \nby Intelehealth team.</string>
+    <string name="enter_the_credentials">Enter the credentials given \nby Namma Aarogya team.</string>
     <string name="answer_information">Answer information....</string>
     <string name="question">Question....</string>
     <string name="upload_image_from_gallery">Upload an image from gallery or take a picture</string>
@@ -1878,5 +1879,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="visit_type">Visit Type</string>
     <string name="select_visit_type">Select Visit Type</string>
     <string name="please_select_visit_type">Please select visit type</string>
+    <string name="obgyn">Obstetrician and Gynecologist</string>
 
 </resources>

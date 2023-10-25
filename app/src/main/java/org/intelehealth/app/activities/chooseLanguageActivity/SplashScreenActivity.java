@@ -347,11 +347,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             List<JSONObject> itemList = new ArrayList<JSONObject>();
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("name", "हिंदी");
-            jsonObject.put("code", "hi");
+            //jsonObject.put("name", "हिंदी");
+            //jsonObject.put("code", "hi");
 
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("hi"));
-            itemList.add(jsonObject);
+           // jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("hi"));
+          //  itemList.add(jsonObject);
 
             jsonObject = new JSONObject();
             jsonObject.put("name", "English");

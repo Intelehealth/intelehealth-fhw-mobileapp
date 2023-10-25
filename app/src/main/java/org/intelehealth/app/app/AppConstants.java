@@ -194,6 +194,7 @@ public class AppConstants {
     public static final int EVENT_FLAG_SUCCESS = 1;
     public static final int EVENT_FLAG_FAILED = 2;
 
+    public static final String NAMMA_AAROGYA_DOCTOR_SPECIALITY = "Obstetrician & Gynecologist";
 
 }
 

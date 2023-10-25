@@ -292,7 +292,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     String gender_tv;
     String mFileName = "config.json";
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp, mHemoglobin, mBloodSugar;
-    String speciality_selected = "Gynecologist";
+    String speciality_selected ="";
     private TextView physcialExaminationDownloadText, vd_special_value;
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -424,7 +424,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary_new);
         context = VisitSummaryActivity_New.this;
-
+        speciality_selected = getString(R.string.obgyn);
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1204,7 +1204,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         });
 
         //NAK speciality - by default - Gynac
-        String[] specialityArray = {"Gynecologist"};
+        String[] specialityArray = {getString(R.string.obgyn)};
         stringArrayAdapter =
                 new ArrayAdapter<String>
                         (this, android.R.layout.simple_spinner_dropdown_item, specialityArray);
@@ -2732,7 +2732,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle,
                                  String positiveBtnTxt, String negativeBtnTxt) {
-        speciality_selected = "Gynecologist";
+        speciality_selected = getString(R.string.obgyn);
         if (speciality_selected == null || speciality_selected.isEmpty()) {
             showSelectSpeciliatyErrorDialog();
             return;
@@ -2780,7 +2780,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Log.d("visitUUID", "upload_click: " + visitUUID);
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-        speciality_selected = "Gynecologist";
+        speciality_selected = getString(R.string.obgyn);
         if (visitType != null && !visitType.isEmpty()) {
             VisitsDAO visitsDAO = new VisitsDAO();
             try {
@@ -2961,7 +2961,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         alertDialog.show();
     }
-
     private BroadcastReceiver broadcastReceiverForIamgeDownlaod = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -3621,7 +3620,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     @Override
     protected void onResume() {
         super.onResume();
-
+        speciality_selected = getString(R.string.obgyn);
         //get from encountertbl from the encounter
        /* if (visitnoteencounteruuid.equalsIgnoreCase("")) {
             visitnoteencounteruuid = getStartVisitNoteEncounterByVisitUUID(visitUuid);
