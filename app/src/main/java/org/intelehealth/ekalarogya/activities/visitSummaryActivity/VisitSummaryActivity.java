@@ -1121,6 +1121,7 @@ public class VisitSummaryActivity extends BaseActivity {
                     tempView.setText(convertCtoF(temperature.getValue()));
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
                 }
+                else tempView.setText(getResources().getString(R.string.na));
             }
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -1135,9 +1136,9 @@ public class VisitSummaryActivity extends BaseActivity {
         respiratoryText = findViewById(R.id.textView_respiratory);
         bmiView = findViewById(R.id.textView_bmi_value);
         bmiTR = findViewById(R.id.bmi_tableRow);
-        if(patient!=null)
+        if (patient != null)
             patientAge = DateAndTimeUtils.getAgeInYear(patient.getDate_of_birth(), context);
-        if(patientAge<=2)
+        if (patientAge <= 2)
             bmiTR.setVisibility(View.GONE);
         else
             bmiTR.setVisibility(View.VISIBLE);
@@ -1155,25 +1156,24 @@ public class VisitSummaryActivity extends BaseActivity {
         }
 
         if (height.getValue() != null) {
-            if (height.getValue().trim().equals("0")) {
-                heightView.setText("-");
+            if (height.getValue().trim().equals("0") || height.getValue().trim().equals("")) {
+                heightView.setText(getResources().getString(R.string.na));
             } else {
                 if (height != null)
                     heightView.setText(VitalsUtils.convertHeightIntoFeets(height.getValue(), VisitSummaryActivity.this));
             }
         }
 
-        weightView.setText(weight.getValue());
-        pulseView.setText(pulse.getValue());
+        weightView.setText((!TextUtils.isEmpty(weight.getValue())) ? weight.getValue() : getResources().getString(R.string.na));
+        pulseView.setText((!TextUtils.isEmpty(pulse.getValue())) ? pulse.getValue() : getResources().getString(R.string.na));
 
         String bpText = bpSys.getValue() + "/" + bpDias.getValue();
         if (bpText.equals("/")) {  //when new patient is being registered we get / for BP
-            bpView.setText("");
+            bpView.setText(getResources().getString(R.string.na));
         } else if (bpText.equalsIgnoreCase("null/null")) {
             //when we setup app and get data from other users, we get null/null from server...
-            bpView.setText("");
-        }
-        else {
+            bpView.setText(getResources().getString(R.string.na));
+        } else {
             bpText = bpSysColorCode(bpSys.getValue()) + "/" + bpDiaColorCode(bpDias.getValue());
             bpView.setText(Html.fromHtml(bpText));
         }
@@ -1187,21 +1187,21 @@ public class VisitSummaryActivity extends BaseActivity {
             double bmi_value = numerator / denominator;
             mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
         } else {
-            mBMI = "";
+            mBMI = getResources().getString(R.string.na);
         }
         patHistory.setValue(medHistory);
         //   patHistory_REG.setValue(medHistory_REG.replace("?<b>", Node.bullet_arrow));
 
         bmiView.setText(mBMI);
-        if(patientAge >= 19)
+        if (patientAge >= 19)
             bmiColorCode(mBMI);
 
 //        tempView.setText(temperature.getValue());
         //    Respiratory added by mahiti dev team
-        respiratory.setText(resp.getValue());
-        spO2View.setText(spO2.getValue());
+        respiratory.setText((!TextUtils.isEmpty(resp.getValue())) ? resp.getValue() : getResources().getString(R.string.na));
+        spO2View.setText((!TextUtils.isEmpty(spO2.getValue())) ? spO2.getValue() : getResources().getString(R.string.na));
 
-        hemoglobinView.setText(hemoglobin.getValue());
+        hemoglobinView.setText((!TextUtils.isEmpty(hemoglobin.getValue())) ? hemoglobin.getValue() : getResources().getString(R.string.na));
         String bloodStr = "blood_group_" + sessionManager.getAppLanguage();
         int bloodGrpArray = getResources().getIdentifier(bloodStr, "array", getApplicationContext().getPackageName());
         String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
@@ -1214,20 +1214,19 @@ public class VisitSummaryActivity extends BaseActivity {
         }
         if (pos != 0) {
             bloodView.setText(getResources().getStringArray(bloodGrpArray)[pos]);
-        }
+        } else
+            bloodView.setText(getResources().getString(R.string.na));
 
-        sugarRandomView.setText(sugarrandom.getValue());
-        if (sugarfasting.getValue() != null /*|| sugaraftermeal.getValue() != null*/
-                && !sugarfasting.getValue().equalsIgnoreCase("null")/* && !sugaraftermeal.getValue().equalsIgnoreCase("null")*/) {
-            if (sugarfasting.getValue().trim().length() != 0/* && sugaraftermeal.getValue().trim().length() != 0*/) {
-                //   sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
-                sugarFastAndMealView.setText(sugarfasting.getValue() /*+ " | " + sugaraftermeal.getValue()*/);
+        sugarRandomView.setText((!TextUtils.isEmpty(sugarrandom.getValue())) ? sugarrandom.getValue() : getResources().getString(R.string.na));
+        if (sugarfasting.getValue() != null && !sugarfasting.getValue().equalsIgnoreCase("null")) {
+            if (sugarfasting.getValue().trim().length() != 0) {
+                sugarFastAndMealView.setText(sugarfasting.getValue());
             } else {
-                sugarFastAndMealView.setText("");
+                sugarFastAndMealView.setText(getResources().getString(R.string.na));
             }
         } else {
             System.out.println("error=====" + "");
-            sugarFastAndMealView.setText("");
+            sugarFastAndMealView.setText(getResources().getString(R.string.na));
         }
 
       /*  if (complaint.getValue() != null)
@@ -1247,8 +1246,7 @@ public class VisitSummaryActivity extends BaseActivity {
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             invalidateOptionsMenu();
-            if(complaintView==null || complaintView.getText().toString().isEmpty() || complaintView.getText().toString().trim().equalsIgnoreCase(""))
-            {
+            if (complaintView == null || complaintView.getText().toString().isEmpty() || complaintView.getText().toString().trim().equalsIgnoreCase("")) {
                 speciality_card.setVisibility(View.GONE);
                 flaggedDetails.setVisibility(View.GONE);
                 card_share.setVisibility(View.GONE);
@@ -1918,7 +1916,7 @@ public class VisitSummaryActivity extends BaseActivity {
     }
 
     private void bmiColorCode(String bmiValue) {
-        if (!bmiValue.isEmpty()) {
+        if (!bmiValue.isEmpty() && !bmiValue.equalsIgnoreCase(getResources().getString(R.string.na))) {
             Double bmi = Double.valueOf(bmiValue);
             if (bmi < Double.valueOf(BMI_ORANGE_MAX)) {   // red
                 bmiView.setTextColor(getResources().getColor(R.color.orange));
@@ -2245,12 +2243,12 @@ public class VisitSummaryActivity extends BaseActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         mresp = resp.getValue();
-        mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
+        mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "NA");
 
-        mHemoglobin = "HGB: " + (!TextUtils.isEmpty(hemoglobin.getValue()) ? hemoglobin.getValue() : "");
-        mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "");
-        mSugarRandom = "Sugar Level (Random): " + (!TextUtils.isEmpty(sugarrandom.getValue()) ? sugarrandom.getValue() : "");
-        mSugarFasting = "Sugar Level (Fasting): " + (!TextUtils.isEmpty(sugarfasting.getValue()) ? sugarfasting.getValue() : "");
+        mHemoglobin = "HGB: " + (!TextUtils.isEmpty(hemoglobin.getValue()) ? hemoglobin.getValue() : "NA");
+        mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "NA");
+        mSugarRandom = "Sugar Level (Random): " + (!TextUtils.isEmpty(sugarrandom.getValue()) ? sugarrandom.getValue() : "NA");
+        mSugarFasting = "Sugar Level (Fasting): " + (!TextUtils.isEmpty(sugarfasting.getValue()) ? sugarfasting.getValue() : "NA");
         mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "NA");
 
         String mComplaint = complaint.getValue();
@@ -2439,10 +2437,10 @@ public class VisitSummaryActivity extends BaseActivity {
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
-                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "",
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "NA", (!TextUtils.isEmpty(mWeight)) ? mWeight : "NA",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "NA", (!TextUtils.isEmpty(bp)) ? bp : "NA", (!TextUtils.isEmpty(mPulse)) ? mPulse : "NA", (!TextUtils.isEmpty(mTemp)) ? mTemp : "NA", (!TextUtils.isEmpty(mresp)) ? mresp : "NA", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "NA",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "NA", (!TextUtils.isEmpty(mBlood)) ? mBlood : "NA", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "NA",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "NA",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -2499,7 +2497,7 @@ public class VisitSummaryActivity extends BaseActivity {
     }
 
     private String bpSysColorCode(String bpSysValue) {
-        if (bpSysValue!=null && !bpSysValue.isEmpty()) {
+        if (bpSysValue!=null && !bpSysValue.isEmpty() && !bpSysValue.equalsIgnoreCase(getResources().getString(R.string.na))) {
             Double bpSys = Double.valueOf(bpSysValue);
             if (bpSys < Double.valueOf(MINIMUM_BP_SYS) || bpSys > Double.valueOf(MAXIMUM_BP_SYS)) {   // red
                 return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpSysValue +"</font>";
@@ -2520,7 +2518,7 @@ public class VisitSummaryActivity extends BaseActivity {
     }
 
     private String bpDiaColorCode(String bpDiaValue) {
-        if (bpDiaValue!=null && !bpDiaValue.isEmpty()) {
+        if (bpDiaValue!=null && !bpDiaValue.isEmpty() && !bpDiaValue.equalsIgnoreCase(getResources().getString(R.string.na))) {
             Double bpDia = Double.valueOf(bpDiaValue);
             if (bpDia < Double.valueOf(MINIMUM_BP_DSYS) || bpDia > Double.valueOf(MAXIMUM_BP_DSYS)) {  // black
                 return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpDiaValue +"</font>";
@@ -2614,24 +2612,24 @@ public class VisitSummaryActivity extends BaseActivity {
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "NA");
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "NA");
                 }
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         mresp = resp.getValue();
-        mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
+        mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "NA");
 
-        mHemoglobin = "HGB: " + (!TextUtils.isEmpty(hemoglobin.getValue()) ? hemoglobin.getValue() : "");
-        mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "");
-        mSugarRandom = "Sugar Level (Random): " + (!TextUtils.isEmpty(sugarrandom.getValue()) ? sugarrandom.getValue() : "");
-        mSugarFasting = "Sugar Level (Fasting): " + (!TextUtils.isEmpty(sugarfasting.getValue()) ? sugarfasting.getValue() : "");
+        mHemoglobin = "HGB: " + (!TextUtils.isEmpty(hemoglobin.getValue()) ? hemoglobin.getValue() : "NA");
+        mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "NA");
+        mSugarRandom = "Sugar Level (Random): " + (!TextUtils.isEmpty(sugarrandom.getValue()) ? sugarrandom.getValue() : "NA");
+        mSugarFasting = "Sugar Level (Fasting): " + (!TextUtils.isEmpty(sugarfasting.getValue()) ? sugarfasting.getValue() : "NA");
         mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "NA");
 
         String mComplaint = complaint.getValue();
@@ -2815,10 +2813,10 @@ public class VisitSummaryActivity extends BaseActivity {
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
-                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "NA", (!TextUtils.isEmpty(mWeight)) ? mWeight : "NA",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "NA", (!TextUtils.isEmpty(bp)) ? bp : "NA", (!TextUtils.isEmpty(mPulse)) ? mPulse : "NA", (!TextUtils.isEmpty(mTemp)) ? mTemp : "NA", (!TextUtils.isEmpty(mresp)) ? mresp : "NA", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "NA",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "NA", (!TextUtils.isEmpty(mBlood)) ? mBlood : "NA", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "NA",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "NA", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "NA",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -2855,10 +2853,10 @@ public class VisitSummaryActivity extends BaseActivity {
                                     doctorDetailStr +
                                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
-                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "NA", (!TextUtils.isEmpty(mWeight)) ? mWeight : "NA",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "NA", (!TextUtils.isEmpty(bp)) ? bp : "NA", (!TextUtils.isEmpty(mPulse)) ? mPulse : "NA", (!TextUtils.isEmpty(mTemp)) ? mTemp : "NA", (!TextUtils.isEmpty(mresp)) ? mresp : "NA", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "NA",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "NA", (!TextUtils.isEmpty(mBlood)) ? mBlood : "NA", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "NA",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "NA", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "NA",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }

@@ -117,61 +117,24 @@ public class IdentificationActivity extends AppCompatActivity implements
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
-    private ArrayAdapter<CharSequence> educationAdapter;
-    private ArrayAdapter<CharSequence> casteAdapter;
-    private ArrayAdapter<CharSequence> economicStatusAdapter;
-    private ArrayAdapter<CharSequence> hohRelationshipAdapter, maritalAdapter;
+    private ArrayAdapter<CharSequence> educationAdapter, casteAdapter,economicStatusAdapter, hohRelationshipAdapter, maritalAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
     Patient patient1 = new Patient();
     private String patientUuid = "";
-    private String mGender, mVaccination;
-    String patientID_edit;
-    private int mDOBYear;
-    private int mDOBMonth;
-    private int mDOBDay;
+    private String mGender, patientID_edit;
+    private int mDOBYear, mDOBMonth, mDOBDay;
     private DatePickerDialog mDOBPicker;
-    private int mAgeYears = 0;
-    private int mAgeMonths = 0;
-    private int mTimeHours = 0;
-    private int mTimeMins = 0;
-    private int mAgeDays = 0;
+    private int mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     private String country1, state;
     PatientsDAO patientsDAO = new PatientsDAO();
-    EditText mFirstName;
-    EditText mMiddleName;
-    EditText mLastName;
-    EditText mDOB;
-    EditText mPhoneNum;
-    EditText mAge;
+    EditText mFirstName, mMiddleName, mLastName, mDOB, mPhoneNum, mAge, mAddress1, mAddress2, mPostal, mRelationship, countryText, stateText, villageText, casteText, economicText, educationText;
     MaterialAlertDialogBuilder mAgePicker;
-    MaterialAlertDialogBuilder mTimePicker;
-    EditText mAddress1;
-    EditText mAddress2;
-    //AutoCompleteTextView mCity;
-    EditText mPostal;
-    RadioButton mGenderM;
-    RadioButton mGenderF;
-    RadioButton mGenderO;
-    RadioButton radioYes;
-    RadioButton radioNo;
-    EditText mRelationship;
-    //  EditText mOccupation;
-    EditText countryText;
-    EditText stateText, villageText;
-    EditText casteText;
-    Spinner mCountry;
-    Spinner mState, mVillage;
-    EditText economicText;
-    EditText educationText;
-    TextInputLayout casteLayout;
-    TextInputLayout economicLayout;
-    TextInputLayout educationLayout;
+    RadioButton mGenderM, mGenderF, mGenderO, radioYes, radioNo;
+    Spinner mCountry, mState, mVillage, mCaste, mEducation, mEconomicStatus, spinner_vaccination;
+    TextInputLayout casteLayout, economicLayout, educationLayout;
     LinearLayout countryStateLayout;
-    Spinner mCaste;
-    Spinner mEducation;
-    Spinner mEconomicStatus;
     ImageView mImageView;
     String uuid = "";
     PatientDTO patientdto = new PatientDTO();
@@ -181,54 +144,27 @@ public class IdentificationActivity extends AppCompatActivity implements
     private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
     FrameLayout framelayout_vaccination, framelayout_vaccine_question;
-    Spinner spinner_vaccination;
     private LinearLayoutCompat ll18;
-    private AppCompatImageButton addMedicalHistoryButton, addSmokingStatusButton,
-            addTobaccoStatusButton, addAlcoholConsumptionButton;
-
+    private AppCompatImageButton addMedicalHistoryButton, addSmokingStatusButton, addTobaccoStatusButton, addAlcoholConsumptionButton;
     private Context updatedContext;
     private ActivityIdentificationBinding binding;
-
-    // History Lists
     private List<AlcoholConsumptionHistory> alcoholConsumptionHistoryList = new ArrayList<>();
     private List<MedicalHistory> medicalHistoryList = new ArrayList<>();
     private List<SmokingHistory> smokingHistoryList = new ArrayList<>();
     private List<TobaccoHistory> tobaccoHistoryList = new ArrayList<>();
-
-    // Adapters
     private AlcoholConsumptionHistoryAdapter alcoholConsumptionHistoryAdapter;
     private MedicalHistoryAdapter medicalHistoryAdapter;
     private SmokingHistoryAdapter smokingHistoryAdapter;
     private TobaccoHistoryAdapter tobaccoHistoryAdapter;
-
-    // ViewPager2
-    private ViewPager2 alcoholViewPager;
-    private ViewPager2 medicalHistoryViewPager;
-    private ViewPager2 smokingHistoryViewPager;
-    private ViewPager2 tobaccoHistoryViewPager;
-
-    // RadioButtons
+    private ViewPager2 alcoholViewPager, medicalHistoryViewPager, smokingHistoryViewPager, tobaccoHistoryViewPager;
     private MaterialRadioButton hohYes, hohNo;
-
-    // RadioGroup
     private RadioGroup hohRadioGroup, ekalProcessRadioGroup, waterSourceWithin30minutesRadioGroup;
-
     Intent i_privacy;
     String privacy_value;
-    private int retainPickerYear;
-    private int retainPickerMonth;
-    private int retainPickerDate;
-    Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner, water_availability_spinner,
-            toilet_facility_spinner, structure_of_house_spinner, hohRelationshipSpinner, maritalStatusSpinner,
-            bpSpinner, sugarLevelSpinner, hbLevelSpinner, bmiLevelSpinner, unitsSpinner;
-    //  MaterialCheckBox time_water_checkbox;
-    EditText time_water_editText, no_of_member_edittext, no_of_staying_members_edittext, landOwnedEditText, occupation_edittext,
-            toiletfacility_edittext, otherHohRelationshipEditText;
+    Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner, toilet_facility_spinner, structure_of_house_spinner, hohRelationshipSpinner, maritalStatusSpinner, bpSpinner, sugarLevelSpinner, hbLevelSpinner, bmiLevelSpinner, unitsSpinner;
+    EditText no_of_member_edittext, no_of_staying_members_edittext, landOwnedEditText, occupation_edittext, toiletfacility_edittext, otherHohRelationshipEditText;
     CardView cardview_household, hohRelationshipCardView;
-    ArrayAdapter<CharSequence> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt, vaccination_adapt,
-            sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt,
-            bp_adapt, sugar_adapt, hbLevel_adapt, bmi_adapt, unitsAdapter, religionAdapter;
-    String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
+    ArrayAdapter<CharSequence> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt, vaccination_adapt, toiletfacility_adapt, structure_adapt, bp_adapt, sugar_adapt, hbLevel_adapt, bmi_adapt, unitsAdapter, religionAdapter;
     int dob_indexValue = 15;
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
@@ -248,7 +184,6 @@ public class IdentificationActivity extends AppCompatActivity implements
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
         setUpTranslationTools();
-
         super.onCreate(savedInstanceState);
         binding = ActivityIdentificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -256,18 +191,15 @@ public class IdentificationActivity extends AppCompatActivity implements
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         i_privacy = getIntent();
         context = IdentificationActivity.this;
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        // sessionManager = new SessionManager(this);
         mFirstName = findViewById(R.id.identification_first_name);
         mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
@@ -280,18 +212,6 @@ public class IdentificationActivity extends AppCompatActivity implements
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
 
-     /*   mPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    if(mPhoneNum.getText().toString().trim().length() < 10)
-                        mPhoneNum.setError("Enter 10 digits");
-                    else
-                        mPhoneNum.setError(null);
-                }
-            }
-        });*/
-
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
@@ -299,15 +219,10 @@ public class IdentificationActivity extends AppCompatActivity implements
         mAddress2 = findViewById(R.id.identification_address2);
         mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
-        // mCity = findViewById(R.id.identification_city);
-        //  mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
-
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
-
         villageText = findViewById(R.id.identification_village);
         mVillage = findViewById(R.id.spinner_village);
-
         mPostal = findViewById(R.id.identification_postal_code);
         countryText = findViewById(R.id.identification_country);
         mCountry = findViewById(R.id.spinner_country);
@@ -321,30 +236,22 @@ public class IdentificationActivity extends AppCompatActivity implements
         spinner_vaccination = findViewById(R.id.spinner_vaccination);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
-
-        // mOccupation = findViewById(R.id.identification_occupation);
-        // mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
-
         mCaste = findViewById(R.id.spinner_caste);
         mEducation = findViewById(R.id.spinner_education);
         mEconomicStatus = findViewById(R.id.spinner_economic_status);
         casteText = findViewById(R.id.identification_caste);
         educationText = findViewById(R.id.identification_education);
         economicText = findViewById(R.id.identification_econiomic_status);
-
         casteLayout = findViewById(R.id.identification_txtlcaste);
         economicLayout = findViewById(R.id.identification_txtleconomic);
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
         mImageView = findViewById(R.id.imageview_id_picture);
-
-        //Spinner
         occupation_spinner = findViewById(R.id.occupation_spinner);
         occupation_edittext = findViewById(R.id.occupation_edittext);
         bankaccount_spinner = findViewById(R.id.bankaccount_spinner);
         mobilephone_spinner = findViewById(R.id.mobilephone_spinner);
         whatsapp_spinner = findViewById(R.id.whatsapp_spinner);
-        //  water_availability_spinner = findViewById(R.id.water_availability_spinner);
         toilet_facility_spinner = findViewById(R.id.toilet_facility_spinner);
         toiletfacility_edittext = findViewById(R.id.toiletfacility_edittext);
         structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);
@@ -354,47 +261,26 @@ public class IdentificationActivity extends AppCompatActivity implements
         bpSpinner = findViewById(R.id.bp_spinner);
         sugarLevelSpinner = findViewById(R.id.sugar_level_spinner);
         hbLevelSpinner = findViewById(R.id.hb_level_spinner);
-        //    bmiLevelSpinner = findViewById(R.id.bmi_level_spinner);
-
-        //HOH - Checkbox
-        //    time_water_checkbox = findViewById(R.id.time_water_checkbox);
-
-        // LinearLayout
         ll18 = findViewById(R.id.ll_18);
-
-        //EditText
-        //     time_water_editText = findViewById(R.id.time_water_editText);
         no_of_member_edittext = findViewById(R.id.no_of_member_edittext);
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);
         otherHohRelationshipEditText = findViewById(R.id.other_hoh_relationship_editText);
         landOwnedEditText = findViewById(R.id.land_owned_edit_text);
-
-        //Cardview
         cardview_household = findViewById(R.id.cardview_household);
         hohRelationshipCardView = findViewById(R.id.cardview_hoh_relationship);
-
-        // Button
         addMedicalHistoryButton = findViewById(R.id.add_medical_history_button);
         addSmokingStatusButton = findViewById(R.id.add_smoking_status_button);
         addTobaccoStatusButton = findViewById(R.id.add_tobacco_status_button);
         addAlcoholConsumptionButton = findViewById(R.id.add_alcohol_consumption_button);
-
-        // ViewPager2
         alcoholViewPager = findViewById(R.id.alcohol_consumption_view_pager);
         medicalHistoryViewPager = findViewById(R.id.medical_history_view_pager);
         smokingHistoryViewPager = findViewById(R.id.smoking_history_view_pager);
         tobaccoHistoryViewPager = findViewById(R.id.tobacco_history_view_pager);
-
-        // RadioButton
         hohYes = findViewById(R.id.hoh_yes);
         hohNo = findViewById(R.id.hoh_no);
-
-        // RadioGroup
         hohRadioGroup = findViewById(R.id.hoh_radio_group);
         ekalProcessRadioGroup = findViewById(R.id.ekal_process_radio_group);
         waterSourceWithin30minutesRadioGroup = findViewById(R.id.water_source_30minutes_radio_group);
-
-        //Initialize the local database to store patient information
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -2749,6 +2635,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     medicalHistoryList = new Gson().fromJson(value, new TypeToken<List<MedicalHistory>>() {
                     }.getType());
+                    if(medicalHistoryList.size()>0)
+                        addMedicalHistoryButton.setVisibility(View.GONE);
                     medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
                     medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
                     medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
@@ -2760,6 +2648,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     smokingHistoryList = new Gson().fromJson(value, new TypeToken<List<SmokingHistory>>() {
                     }.getType());
+                    if(smokingHistoryList.size()>0)
+                        addSmokingStatusButton.setVisibility(View.GONE);
                     smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(),
                             this, updatedContext, this);
                     smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
@@ -2771,6 +2661,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     tobaccoHistoryList = new Gson().fromJson(value, new TypeToken<List<TobaccoHistory>>() {
                     }.getType());
+                    if(tobaccoHistoryList.size()>0)
+                        addTobaccoStatusButton.setVisibility(View.GONE);
                     tobaccoHistoryAdapter = new TobaccoHistoryAdapter(tobaccoHistoryList, sessionManager.getAppLanguage(),
                             this, updatedContext, this);
                     tobaccoHistoryViewPager.setAdapter(tobaccoHistoryAdapter);
@@ -2783,6 +2675,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     alcoholConsumptionHistoryList = new Gson().fromJson(value, new TypeToken<List<AlcoholConsumptionHistory>>() {
                     }.getType());
+                    if(alcoholConsumptionHistoryList.size()>0)
+                        addAlcoholConsumptionButton.setVisibility(View.GONE);
                     alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
                     alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
                     alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);

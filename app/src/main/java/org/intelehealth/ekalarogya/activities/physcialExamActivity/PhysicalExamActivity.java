@@ -25,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import org.intelehealth.ekalarogya.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
@@ -80,32 +82,20 @@ import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 
 public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
-    // private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    // private ViewPager mViewPager;
-
+    AlertDialog confirmationAlertDialog = null;
     static String patientUuid;
     static String visitUuid;
     String state;
     String patientName;
     String intentTag;
     private float float_ageYear_Month;
-
     ArrayList<String> selectedExamsList;
-
     SQLiteDatabase localdb;
-
-
     static String imageName;
     static String baseDir;
     static File filePath;
-
-
     String mFileName = "physExam.json";
-
-
     PhysicalExam physicalExamMap;
-
     String physicalString, physicalString_REG = "";
     Boolean complaintConfirmed = false;
     String encounterVitals;
@@ -115,7 +105,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
     QuestionsAdapter adapter;
     String mgender;
     ScrollingPagerIndicator recyclerViewIndicator;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,9 +119,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
@@ -223,47 +210,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(physExam_recyclerView);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-       /* mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), physicalExamMap);
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById(R.id.container);
-        if (mViewPager != null) {
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-        }*/
-        /*TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setSelectedTabIndicatorHeight(15);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            tabLayout.setSelectedTabIndicatorColor(getColor(R.color.amber));
-            tabLayout.setTabTextColors(getColor(R.color.white), getColor(R.color.amber));
-        } else {
-            tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.amber));
-            tabLayout.setTabTextColors(getResources().getColor(R.color.white), getResources().getColor(R.color.amber));
-        }
-        if (tabLayout != null) {
-            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            tabLayout.setupWithViewPager(mViewPager);
-        }
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        assert fab != null;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-            }
-        });
-
-         */
-      /*
-      Commented to avoid crash...
-        Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
-
         mgender = PatientsDAO.fetch_gender(patientUuid);
-
         if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");
         } else if (mgender.equalsIgnoreCase("F")) {
@@ -302,7 +249,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
 
     @Override
     public void fabClickedAtEnd() {
-
         AnswerResult answerResult = physicalExamMap.checkAllRequiredAnsweredPhy(PhysicalExamActivity.this);
         if (!answerResult.result) {
             // show alert dialog
@@ -320,31 +266,40 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             return;
         } else {
             complaintConfirmed = physicalExamMap.areRequiredAnswered();
-
             if (complaintConfirmed) {
-
                 physicalString = physicalExamMap.generateFindings();
                 physicalString_REG = physicalExamMap.generateFindings_REG(sessionManager.getAppLanguage()); // Regional langauge physical exam string for HW.
-
                 List<String> imagePathList = physicalExamMap.getImagePathList();
                 if (imagePathList != null) {
                     for (String imagePath : imagePathList) {
                         updateImageDatabase();
                     }
                 }
+                ConfirmationDialog(physicalString, physicalString_REG);
+            } else {
+                questionsMissing();
+            }
+        }
+    }
 
+
+    public void ConfirmationDialog(String confirmationStr, String displayStr) {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(Html.fromHtml(displayStr));
+        alertDialogBuilder.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 if (intentTag != null && intentTag.equals("edit")) {
-                    updateDatabase(physicalString, UuidDictionary.PHYSICAL_EXAMINATION);
+                    updateDatabase(confirmationStr, UuidDictionary.PHYSICAL_EXAMINATION);
                     //regional - start
                     JSONObject object = new JSONObject();
                     try {
-                        object.put("text_" + sessionManager.getAppLanguage(), physicalString_REG);
+                        object.put("text_" + sessionManager.getAppLanguage(), displayStr);
                         updateDatabase(object.toString(), UuidDictionary.PHYEXAM_REG_LANG_VALUE);    // updating regional data.
                         Log.v("insertion_tag", "insertion_update_regional_physexam: " + object.toString());
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-                    // regional - end
 
                     Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
@@ -361,21 +316,18 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                     for (String exams : selectedExamsList) {
                         Log.i(TAG, "onClick:++ " + exams);
                     }
-                    // intent.putStringArrayListExtra("exams", selectedExamsList);
                     startActivity(intent);
-                } else {
-                    boolean obsId = insertDb(physicalString, UuidDictionary.PHYSICAL_EXAMINATION);
-                    //regional - start
+                }
+                else {
+                    boolean obsId = insertDb(confirmationStr, UuidDictionary.PHYSICAL_EXAMINATION);
                     JSONObject object = new JSONObject();
                     try {
-                        object.put("text_" + sessionManager.getAppLanguage(), physicalString_REG);
+                        object.put("text_" + sessionManager.getAppLanguage(), displayStr);
                         insertDb(object.toString(), UuidDictionary.PHYEXAM_REG_LANG_VALUE);    // updating regional data.
                         Log.v("insertion_tag", "insertion_insert_regional_physexam: " + object.toString());
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-                    // regional - end
-
                     Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
                     intent1.putExtra("patientUuid", patientUuid);
                     intent1.putExtra("visitUuid", visitUuid);
@@ -390,10 +342,21 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                     // intent1.putStringArrayListExtra("exams", selectedExamsList);
                     startActivity(intent1);
                 }
-
-            } else {
-                questionsMissing();
             }
+        });
+        alertDialogBuilder.setNegativeButton(getString(R.string.generic_back), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        confirmationAlertDialog = alertDialogBuilder.create();
+        // alertDialog.show();
+        if (!confirmationAlertDialog.isShowing()) {
+            confirmationAlertDialog.show();
+            confirmationAlertDialog.setCancelable(false);
+            IntelehealthApplication.setAlertDialogCustomTheme(this, confirmationAlertDialog);
         }
     }
 

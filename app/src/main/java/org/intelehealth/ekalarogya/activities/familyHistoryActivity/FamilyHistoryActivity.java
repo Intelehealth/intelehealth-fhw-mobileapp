@@ -443,22 +443,6 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
             if (familyHistoryMap.anySubSelected()) {
                 for (Node node : familyHistoryMap.getOptionsList()) {
                     if (node.isSelected()) {
-                    /*String familyString = node.generateLanguage();
-
-                    String toInsert = node.getText() + " : " + familyString;
-                    toInsert = toInsert.replaceAll(Node.bullet, "");
-                    //toInsert = toInsert.replaceAll(" - ", ", ");
-                    toInsert = toInsert.replaceAll("<br/>", "");
-                    toInsert = toInsert.replaceAll(" : ", " <br/> ");
-                    toInsert = toInsert.replaceAll(" - ", " : ");
-                    if (StringUtils.right(toInsert, 2).equals(", ")) {
-                        toInsert = toInsert.substring(0, toInsert.length() - 2);
-                    }
-                    toInsert = toInsert+ ".<br/>";
-                    toInsert = toInsert.replaceAll("\\. ","<br/>");
-                    toInsert = toInsert.replaceAll(": \\.",":");
-                    insertionList.add(toInsert);*/
-
                         if (node.getOptionsList() != null) {
                             for (Node node1 : node.getOptionsList()) {
                                 if (node1.isSelected()) {
@@ -472,13 +456,8 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
                                                     val = val + node2.findDisplay() + " - ";
                                                     val_insert = val_insert + node2.getLanguage() + " - ";
                                                 } else {
-                                                    //if(node2.getLanguage().length()!=0){
                                                     val = val + node2.getLanguage() + " - ";
                                                     val_insert = val_insert + node2.getLanguage() + " - ";
-                                               /*}else{
-                                                   val = val + node2.getLanguage() + " - ";
-                                                   val_insert=val_insert + node2.getLanguage() + " - ";
-                                               }*/
                                                 }
                                             }
                                         }
