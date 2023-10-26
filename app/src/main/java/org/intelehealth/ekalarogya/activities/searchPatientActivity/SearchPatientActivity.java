@@ -42,6 +42,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.AppConstants;
@@ -69,8 +71,10 @@ public class SearchPatientActivity extends BaseActivity {
     int limit = 10, offset = 0;
     boolean fullyLoaded = false;
     EditText toolbarET;
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
     ImageView toolbarClear, toolbarSearch;
     LinearLayoutManager reLayoutManager;
+    private boolean shouldAllowBack = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +153,6 @@ public class SearchPatientActivity extends BaseActivity {
         recyclerView = findViewById(R.id.recycle);
         reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -170,7 +173,6 @@ public class SearchPatientActivity extends BaseActivity {
                 }
             }
         });
-
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
@@ -181,7 +183,6 @@ public class SearchPatientActivity extends BaseActivity {
                 recyclerView.setVisibility(View.VISIBLE);
                 doQuery(query);
             }
-
         } else {
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
@@ -191,59 +192,75 @@ public class SearchPatientActivity extends BaseActivity {
                 recyclerView.setVisibility(View.VISIBLE);
                 firstQuery();
             }
-
         }
-
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         recyclerView.clearOnScrollListeners();
+        executorService.shutdownNow();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (shouldAllowBack)
+            super.onBackPressed();
     }
 
     private void doQuery(String query) {
+        shouldAllowBack = false;
+        executorService.execute(() -> {
+            List<PatientDTO> patientDTOList = getQueryPatients(query);
+            runOnUiThread(() -> {
         try {
-            recycler = new SearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
+            recycler = new SearchPatientAdapter(patientDTOList, SearchPatientActivity.this);
             fullyLoaded = true;
             recyclerView.setAdapter(recycler);
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE("doquery", "doquery", e);
         }
+            });
+        });
     }
 
     private void firstQuery() {
-        try {
-            offset = 0;
-            fullyLoaded = false;
-            recycler = new SearchPatientAdapter(getAllPatientsFromDB(offset), SearchPatientActivity.this);
-            RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
-            recyclerView.setAdapter(recycler);
-            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                    if (recycler.patients != null && recycler.patients.size() < limit) {
-                        return;
-                    }
-                    if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && ((LinearLayoutManager) reLayoutManager).findLastVisibleItemPosition() == recycler.getItemCount() - 1) {
-                        Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
-                        offset += limit;
-                        List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
-                        if (allPatientsFromDB.size() < limit) {
-                            fullyLoaded = true;
+        shouldAllowBack = false;
+        executorService.execute(() -> {
+            List<PatientDTO> patientDTOList = getAllPatientsFromDB(offset);
+            runOnUiThread(() -> {
+                try {
+                    offset = 0;
+                    fullyLoaded = false;
+                    recycler = new SearchPatientAdapter(patientDTOList, SearchPatientActivity.this);
+                    RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    recyclerView.setAdapter(recycler);
+                    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
+                            if (recycler.patients != null && recycler.patients.size() < limit) {
+                                return;
+                            }
+                            if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && ((LinearLayoutManager) reLayoutManager).findLastVisibleItemPosition() == recycler.getItemCount() - 1) {
+                                Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                                offset += limit;
+                                if (patientDTOList.size() < limit) {
+                                    fullyLoaded = true;
+                                }
+                                recycler.patients.addAll(patientDTOList);
+                                recycler.notifyDataSetChanged();
+                            }
                         }
-                        recycler.patients.addAll(allPatientsFromDB);
-                        recycler.notifyDataSetChanged();
-                    }
+                    });
+                } catch (Exception e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    Logger.logE("firstquery", "exception", e);
                 }
             });
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE("firstquery", "exception", e);
-        }
+            shouldAllowBack = true;
+        });
     }
 
     @Override
