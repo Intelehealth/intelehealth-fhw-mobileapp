@@ -13,8 +13,9 @@
             android:layout_width="0dp"
             android:layout_weight="3.6"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
+            android:layout_gravity="start|center_vertical"
+            android:textAlignment="viewStart"
+            android:gravity="start|center_vertical"
             android:text="Medicines/Aid List"
             android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -26,6 +27,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cb_value"
+            android:textAlignment="viewStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         </LinearLayout>

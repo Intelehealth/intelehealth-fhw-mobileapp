@@ -92,7 +92,7 @@
                         android:id="@+id/tv_medication"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="top"
+                        android:textAlignment="viewStart"
                         android:lineSpacingExtra="3sp"
                         android:paddingStart="15dp"
                         android:text="@string/medication"
@@ -107,6 +107,7 @@
                         android:layout_marginVertical="10dp"
                         android:paddingHorizontal="15dp"
                         tools:itemCount="6"
+                        android:textAlignment="viewStart"
                         tools:listitem="@layout/item_medication_aid" />
                 </RelativeLayout>
             </FrameLayout>
@@ -130,7 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:gravity="top"
+                        android:textAlignment="viewStart"
                         android:lineSpacingExtra="3sp"
                         android:paddingStart="15dp"
                         android:text="@string/aid"
@@ -145,6 +146,7 @@
                         android:layout_marginTop="10dp"
                         android:paddingHorizontal="15dp"
                         tools:itemCount="5"
+                        android:textAlignment="viewStart"
                         tools:listitem="@layout/item_medication_aid" />
 
                 </RelativeLayout>
