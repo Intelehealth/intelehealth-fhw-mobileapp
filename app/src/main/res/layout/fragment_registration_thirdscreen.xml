@@ -52,7 +52,7 @@
                     android:gravity="center_vertical"
                     android:hint="@string/enter_abha_no"
                     android:inputType="text"
-                    android:maxLength="18"
+                    android:maxLength="14"
                     android:maxLines="1"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
