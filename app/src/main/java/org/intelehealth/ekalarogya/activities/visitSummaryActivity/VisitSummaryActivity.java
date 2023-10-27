@@ -1181,7 +1181,7 @@ public class VisitSummaryActivity extends BaseActivity {
         Log.d(TAG, "onCreate: " + weight.getValue());
         String mWeight = weight.getValue();
         String mHeight = height.getValue();
-        if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty()) {
+        if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty() && !mHeight.equalsIgnoreCase("0")) {
             double numerator = Double.parseDouble(mWeight) * 10000;
             double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
             double bmi_value = numerator / denominator;
@@ -2234,9 +2234,9 @@ public class VisitSummaryActivity extends BaseActivity {
 
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
-                    mTemp = "Temperature(C):" + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = "Temperature(C):" + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "NA");
                 } else if (obj.getBoolean("mFahrenheit")) {
-                    mTemp = "Temperature(F):" + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = "Temperature(F):" + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "NA");
                 }
             }
         } catch (Exception e) {
@@ -2477,10 +2477,10 @@ public class VisitSummaryActivity extends BaseActivity {
                                     doctorDetailStr +
                                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
-                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "",
+                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(ConvertHeightIntoFeets(mHeight))) ? ConvertHeightIntoFeets(mHeight) : "NA", (!TextUtils.isEmpty(mWeight)) ? mWeight : "NA",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "NA", (!TextUtils.isEmpty(bp)) ? bp : "NA", (!TextUtils.isEmpty(mPulse)) ? mPulse : "NA", (!TextUtils.isEmpty(mTemp)) ? mTemp : "NA", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "NA",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "NA", (!TextUtils.isEmpty(mBlood)) ? mBlood : "NA", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "NA",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "NA",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
@@ -3186,6 +3186,8 @@ public class VisitSummaryActivity extends BaseActivity {
             int feet = (int) centemeters / 12;
             String heightVal = feet + "ft " + inche + "in"; //keeping strings static as the prescription is available only in english language.
             System.out.println("value of height=" + val);
+            if(heightVal.equalsIgnoreCase("0ft 0in"))
+                heightVal = "NA"; //making this change for prescription
             return heightVal;
         }
         else return "";

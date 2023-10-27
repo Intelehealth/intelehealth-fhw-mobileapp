@@ -96,7 +96,7 @@ public class VitalsActivity extends AppCompatActivity {
     private String encounterVitals;
     private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0, patientAge = 0;
-    String heightvalue;
+    String heightvalue = "0";
     String weightvalue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
 
@@ -161,11 +161,7 @@ public class VitalsActivity extends AppCompatActivity {
             bmiTIL.setVisibility(View.GONE);
         else
             bmiTIL.setVisibility(View.VISIBLE);
-
-//    Respiratory added by mahiti dev team
-
         mResp = findViewById(R.id.table_respiratory);
-
         mBMI.setEnabled(true);
         mBMI.setClickable(false);
         String heightStr = "height_" + sessionManager.getAppLanguage();
@@ -174,8 +170,6 @@ public class VitalsActivity extends AppCompatActivity {
             heightAdapter = ArrayAdapter.createFromResource(this, heightArray, android.R.layout.simple_spinner_dropdown_item);
         }
         mheightSpinner.setAdapter(heightAdapter);
-        //  mheightSpinner.setHint(R.string.height_ft);
-
         mHemoglobin = findViewById(R.id.table_hemoglobin);
         mSugarRandom = findViewById(R.id.table_sugar_level);
         mSugarFasting = findViewById(R.id.table_sugar_fasting);
@@ -194,10 +188,8 @@ public class VitalsActivity extends AppCompatActivity {
                         textView.setTextColor(getResources().getColor(R.color.medium_gray));
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -321,6 +313,9 @@ public class VitalsActivity extends AppCompatActivity {
                     calculateBMI();
                 } else {
                     flag_height = 0;
+                    heightvalue = "0";
+                    mBMI.setText("");
+                    calculateBMI();
                 }
             }
 
@@ -911,7 +906,7 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
     public void calculateBMI() {
-        if (mWeight != null && heightvalue != null) {
+        if (mWeight != null && heightvalue != null && !heightvalue.equalsIgnoreCase("0")) {
             if (flag_height == 1 && flag_weight == 1 ||
                     /*(mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".")*/
                     (heightvalue.trim().length() > 0 && (mWeight.getText().toString().trim().length() > 0 &&
@@ -1079,14 +1074,15 @@ public class VitalsActivity extends AppCompatActivity {
             return;
         }
 
-        if (mheightSpinner.getSelectedItemPosition() == 0) {
+        //removing validation as asked under ticket AEAT-729
+        /*if (mheightSpinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) mheightSpinner.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = mheightSpinner;
             cancel = true;
             return;
-        }
+        }*/
 
         //BP vaidations added by Prajwal.
         if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
@@ -1301,6 +1297,24 @@ public class VitalsActivity extends AppCompatActivity {
                 emptyList = emptyList + tempEmpty + "\n";
                 mTemperature.requestFocus();
                 mTemperature.setError(getString(R.string.enter_field));
+            }
+
+            if (mBpSys.getText().toString().trim().isEmpty() && mBpDia.getText().toString().trim().isEmpty() &&
+                    mPulse.getText().toString().trim().isEmpty() && mTemperature.getText().toString().trim().isEmpty()) {
+                MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+                alertDialog.setTitle("At least one of the following fields is mandatory to fill - ");
+                alertDialog.setMessage(emptyList);
+                alertDialog.setPositiveButton(context.getResources().getString(R.string.ok),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog dialog = alertDialog.show();
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+                return;
             }
 
             Log.d(TAG, "emptyList: " + emptyList);

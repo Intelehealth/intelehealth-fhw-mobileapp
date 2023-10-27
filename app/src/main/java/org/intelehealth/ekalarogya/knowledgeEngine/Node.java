@@ -3434,6 +3434,14 @@ public class Node implements Serializable {
         return imagePathList;
     }
 
+    public boolean deleteImagePath(String imagePath) {
+        if (imagePath != null && imagePathList.contains(imagePath)) {
+            imagePathList.remove(imagePath);
+            return true;
+        } else
+            return false;
+    }
+    
     public void setImagePathList(List<String> imagePathList) {
         this.imagePathList = imagePathList;
     }
@@ -4144,8 +4152,7 @@ public class Node implements Serializable {
                     .replaceAll("अक्टू", "Oct")
                     .replaceAll("नव", "Nov")
                     .replaceAll("दिस", "Dec");
-        }
-        else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
             displayStr = displayStr.replaceAll("ମିନିଟ୍ \\|", "Minutes")
                     .replaceAll("ଘଣ୍ଟା", "Hours")
                     .replaceAll("ଦିନଗୁଡିକ", "Days")
@@ -4205,8 +4212,7 @@ public class Node implements Serializable {
                     .replaceAll("ಅಕ್ಟೋಬರ್", "Oct")
                     .replaceAll("ನವೆಂಬರ್", "Nov")
                     .replaceAll("ಡಿಸೆಂಬರ್", "Dec");
-        }
-        else if (sessionManager.getCurrentLang().equalsIgnoreCase("mr")) {
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("mr")) {
             displayStr = displayStr.replaceAll("मिनिट", "Minutes")
                     .replaceAll("तास", "Hours")
                     .replaceAll("दिवस", "Days")
@@ -4226,8 +4232,7 @@ public class Node implements Serializable {
                     .replaceAll("ऑक्टोबर", "Oct")
                     .replaceAll("नोव्हेंबर", "Nov")
                     .replaceAll("डिसेंबर", "Dec");
-        }
-        else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
             displayStr = displayStr.replaceAll("મિનિટ", "Minutes")
                     .replaceAll("કલાકો", "Hours")
                     .replaceAll("દિવસ", "Days")
