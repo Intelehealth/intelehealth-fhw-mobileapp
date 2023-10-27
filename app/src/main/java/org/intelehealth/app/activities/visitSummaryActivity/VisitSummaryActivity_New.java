@@ -4840,6 +4840,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 String[] headerchips = valueArray[0].split("►");
                 List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
 
+                // Emptying this list so that when the user comes back from the chief complaint screen - they see only 1 instance of values.
+                if (!mChiefComplainList.isEmpty()) {
+                    mChiefComplainList.clear();
+                }
 
                 for (int i = 0; i < cc_tempvalues.size(); i++) {
                     if (!cc_tempvalues.get(i).equalsIgnoreCase(""))
