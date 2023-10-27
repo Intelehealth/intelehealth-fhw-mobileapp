@@ -12,6 +12,7 @@ import android.util.Log;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.EncounterDTO;
@@ -374,6 +375,27 @@ public class EncounterDAO {
         db.close();
 
         return encounterUuid;
+    }
+
+    public static List<String> getEncounterListByVisitUUID(String visitUUID, String encounterTypeUuid) {
+        List<String> encounterUuidList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ?  and voided='0' " +
+                        "AND (sync = ? or ? or ?)",
+                new String[]{visitUUID, encounterTypeUuid, "true", "TRUE", "1"});
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                String encounterUuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+                encounterUuidList.add(encounterUuid);
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return encounterUuidList;
     }
 
     public void insertStartVisitNoteEncounterToDb(String encounter, String visitUuid) throws DAOException {

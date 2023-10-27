@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.getEncounterByVisitUUID;
+import static org.intelehealth.app.database.dao.EncounterDAO.getEncounterListByVisitUUID;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -266,39 +267,55 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         // Administer
         if (tag.equalsIgnoreCase("administer")) {
             // fetch encounter administer uuid
-            encounterAdminister = getEncounterByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_ADMINISTER);
-            if (!encounterAdminister.isEmpty()) {
-                // ie. value is already present so set those values to checked for hte checkbox.
-                try {
-                 //   MedicationAidModel model = ObsDAO.getObsValue(encounterAdminister, UuidDictionary.OBS_ADMINISTER_MEDICATION);
-                    update_medUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterAdminister, UuidDictionary.OBS_ADMINISTER_MEDICATION));
-                  //  update_medUuidList.add(model);
+          //  encounterAdminister = getEncounterByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_ADMINISTER);
+            List<String> encounterListByVisitUUID = getEncounterListByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_ADMINISTER);
+            if (encounterListByVisitUUID != null && encounterListByVisitUUID.size() > 0) {
+                for (int i = 0; i < encounterListByVisitUUID.size(); i++) {
+                    encounterAdminister = encounterListByVisitUUID.get(i);
+                    Log.d(TAG, "encounterAdminister: " + encounterAdminister);  //
+                    if (!encounterAdminister.isEmpty()) {
+                        // ie. value is already present so set those values to checked for hte checkbox.
+                        try {
+                            //   MedicationAidModel model = ObsDAO.getObsValue(encounterAdminister, UuidDictionary.OBS_ADMINISTER_MEDICATION);
+                            update_medUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterAdminister, UuidDictionary.OBS_ADMINISTER_MEDICATION));
+                            //  update_medUuidList.add(model);
 
-                } catch (DAOException e) {
-                    throw new RuntimeException(e);
+                        } catch (DAOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
             }
+
         }
         // Dispense
         else {
             // fetch encounter dispense uuid
-            encounterDispense = getEncounterByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_DISPENSE);
-            Log.d(TAG, "encounterDispense: " + encounterDispense);  // a9c40957-66bd-450b-b0b6-da9a9a5287f2
-            if (!encounterDispense.isEmpty()) {
-                try {
+//            encounterDispense = getEncounterByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_DISPENSE);
+            List<String> encounterListByVisitUUID = getEncounterListByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_DISPENSE);
+            if (encounterListByVisitUUID != null && encounterListByVisitUUID.size() > 0) {
+                for (int i = 0; i < encounterListByVisitUUID.size(); i++) {
+                    encounterDispense = encounterListByVisitUUID.get(i);
+                    Log.d(TAG, "encounterDispense: " + encounterDispense);  //
+                    if (!encounterDispense.isEmpty()) {
+                        try {
 
-                  //  MedicationAidModel medModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION);    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
-                    update_medUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION));    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
-                   // update_medUuidList.add(medModel);
+                            //  MedicationAidModel medModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION);    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+                            update_medUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION));    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+                            // update_medUuidList.add(medModel);
 
-                  //  MedicationAidModel aidModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_AID);
-                    update_aidUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_AID));
-                 //   update_aidUuidList.add(aidModel);
+                            //  MedicationAidModel aidModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_AID);
+                            update_aidUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_AID));
+                            //   update_aidUuidList.add(aidModel);
 
 
-                } catch (DAOException e) {
-                    throw new RuntimeException(e);
+                        } catch (DAOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
                 }
+
             }
         }
 

@@ -84,7 +84,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private Context context;
     private RecyclerView rv_docs;
     private RecyclerView.LayoutManager docsLayoutManager;
-    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials, encounterDisenseAdminister
+    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials, encounterDisenseAdminister = ""
             /*encounterDispense = "", encounterAdminister = ""*/;
     private ObsDTO obsDTOMedication, obsDTOAid;
     //    private List<ObsDTO> obsDTOList_Medication, obsDTOList_Aid;
@@ -202,7 +202,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         encounterVisitNote = intent.getStringExtra("encounterVisitNote");
         encounterVitals = intent.getStringExtra("encounterUuidVitals");
         encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-        encounterDisenseAdminister = intent.getStringExtra("encounterDisenseAdminister");
+      //  encounterDisenseAdminister = intent.getStringExtra("encounterDisenseAdminister");
 
        /* encounterDispense = intent.getStringExtra("encounterDispense");
         encounterAdminister = intent.getStringExtra("encounterAdminister");*/
@@ -210,11 +210,13 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         medList = (List<MedicationAidModel>) intent.getSerializableExtra("med");
         aidList = (List<MedicationAidModel>) intent.getSerializableExtra("aid");    // null on empty.
 
-        if (tag.equalsIgnoreCase("dispense")) {
-            setMedicationValues();
-            setAidValues();
-        } else if (tag.equalsIgnoreCase("administer")) {
-            setMedicationValues();
+        if (!encounterDisenseAdminister.isEmpty() && encounterDisenseAdminister != null) {
+            if (tag.equalsIgnoreCase("dispense")) {
+                setMedicationValues();
+                setAidValues();
+            } else if (tag.equalsIgnoreCase("administer")) {
+                setMedicationValues();
+            }
         }
 
 
@@ -626,6 +628,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         if (encounterDisenseAdminister.equalsIgnoreCase("") || encounterDisenseAdminister == null)
             encounterDisenseAdminister = UUID.randomUUID().toString();
 
+      //  encounterDisenseAdminister = UUID.randomUUID().toString();
         isEncounterCreated = false;
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
