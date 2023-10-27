@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -321,6 +322,9 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             profile_image = itemView.findViewById(R.id.profile_image);
             shareicon = itemView.findViewById(R.id.shareiconLL);
             end_visit_btn.setVisibility(View.VISIBLE);
+
+            // Setting the priority FrameLayout as Gone since we are not showing it here.
+            itemView.findViewById(R.id.fl_priority).setVisibility(View.GONE);
         }
     }
 

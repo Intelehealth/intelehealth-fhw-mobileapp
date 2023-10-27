@@ -638,7 +638,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
                                     }
                                     StringBuilder stringBuilder = new StringBuilder();
-                                    for (int i = 0; i < list.size(); i++) {
+                                    int size = list.size() == 1 ? list.size() : list.size() - 1;
+                                    for (int i = 0; i < size; i++) {
                                         String complainName = "";
                                         List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                                         String[] spt1 = list.get(i).split("●");
