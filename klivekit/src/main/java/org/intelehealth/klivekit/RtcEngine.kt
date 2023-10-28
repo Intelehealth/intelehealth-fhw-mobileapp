@@ -1,19 +1,24 @@
 package org.intelehealth.klivekit
 
+import android.annotation.SuppressLint
 import android.content.Context
+import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import io.livekit.android.ConnectOptions
+import io.livekit.android.room.Room
 import org.intelehealth.klivekit.call.ui.activity.CallLogActivity
 import org.intelehealth.klivekit.call.ui.activity.VideoCallActivity
 import org.intelehealth.klivekit.chat.ui.activity.ChatActivity
 import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.data.PreferenceHelper.Companion.RTC_CONFIG
+import org.intelehealth.klivekit.provider.LiveKitProvider
 
 /**
  * Created by Vaghela Mithun R. on 20-10-2023 - 15:54.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class RtcConfig private constructor(
+class RtcEngine private constructor(
     val callUrl: String,
     val socketUrl: String,
     val callIntentClass: String,
@@ -52,8 +57,8 @@ class RtcConfig private constructor(
             return this@Builder
         }
 
-        fun build(): RtcConfig {
-            return RtcConfig(
+        fun build(): RtcEngine {
+            return RtcEngine(
                 callUrl = this@Builder.callUrl,
                 socketUrl = this@Builder.socketUrl,
                 callIntentClass = (this@Builder.callIntentClass
@@ -72,15 +77,38 @@ class RtcConfig private constructor(
 
     fun toJson(): String = Gson().toJson(this)
 
-    fun fromJson(json: String): RtcConfig = Gson().fromJson(json, RtcConfig::class.java)
+    fun fromJson(json: String): RtcEngine = Gson().fromJson(json, RtcEngine::class.java)
 
     companion object {
-        fun getConfig(context: Context): RtcConfig? {
+
+        @SuppressLint("StaticFieldLeak")
+        @Volatile
+        private var room: Room? = null
+
+        fun getConfig(context: Context): RtcEngine? {
             val preferenceHelper = PreferenceHelper(context)
             val config = preferenceHelper.get(RTC_CONFIG, "")
             return if (config.isNotEmpty()) {
-                Gson().fromJson(config, RtcConfig::class.java)
+                Gson().fromJson(config, RtcEngine::class.java)
             } else null
         }
+
+        @JvmStatic
+        fun create(context: Context): Room = LiveKitProvider.createRoom(context).also {
+            room = it
+        }
+
+        suspend fun connectInRoom(url: String, token: String) {
+//            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+//            scope.launch {
+            room?.connect(
+                url = url, token = token, options = ConnectOptions(
+                    audio = true, video = true, autoSubscribe = true
+                )
+            )
+//            }
+        }
+
+        fun leaveRoom() = room?.disconnect() ?: Timber.e { "Room not disconnect" }
     }
 }

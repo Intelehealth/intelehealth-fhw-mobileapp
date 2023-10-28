@@ -201,7 +201,6 @@ open class SocketManager @Inject constructor() {
         invokeListeners(event, args)
         if (CallNotificationHandler.isAppInBackground() && event == EVENT_CALL_HANG_UP) {
             emit(EVENT_BYE, "app")
-            exitProcess(0)
         }
     }
 

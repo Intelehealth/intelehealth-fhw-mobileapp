@@ -4,7 +4,6 @@ import android.os.Bundle
 import com.google.android.material.button.MaterialButton
 import org.intelehealth.ekalarogya.R
 import org.intelehealth.ekalarogya.shared.BaseActivity
-import org.intelehealth.klivekit.RtcConfig
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.model.RtcArgs
 

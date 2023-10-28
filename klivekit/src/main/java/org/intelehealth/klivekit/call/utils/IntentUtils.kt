@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import com.github.ajalt.timberkt.Timber
-import org.intelehealth.klivekit.RtcConfig
+import org.intelehealth.klivekit.RtcEngine
 import org.intelehealth.klivekit.call.notification.CallReceiver
 import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
 import org.intelehealth.klivekit.call.ui.activity.CoreCallLogActivity
@@ -59,7 +59,7 @@ object IntentUtils {
         messageBody: RtcArgs,
         context: Context
     ): Intent {
-        return RtcConfig.getConfig(context)?.let {
+        return RtcEngine.getConfig(context)?.let {
             val callClass: Class<*> = Class.forName(it.callLogIntentClass)
             return@let Intent(context, callClass).apply {
                 putExtra(RTC_ARGS, messageBody)

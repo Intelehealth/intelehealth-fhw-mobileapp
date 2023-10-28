@@ -398,13 +398,14 @@ open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHa
                 Timber.e { "Token => $token" }
                 launch { collectEvents() }
 
-                room.connect(
-                    url = url,
-                    token = token,
-                    options = ConnectOptions(
-                        audio = true, video = true, autoSubscribe = true
-                    )
-                )
+                RtcEngine.connectInRoom(url, token)
+//                room.connect(
+//                    url = url,
+//                    token = token,
+//                    options = ConnectOptions(
+//                        audio = true, video = true, autoSubscribe = true
+//                    )
+//                )
 
 //                room.audioHandler.start()
 

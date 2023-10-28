@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.room.WebRtcDatabase
 import org.intelehealth.klivekit.R
-import org.intelehealth.klivekit.RtcConfig
+import org.intelehealth.klivekit.RtcEngine
 import org.intelehealth.klivekit.call.CallLogHandler
 import org.intelehealth.klivekit.call.data.CallLogRepository
 import org.intelehealth.klivekit.call.model.RtcCallLog
@@ -20,7 +20,6 @@ import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
-import kotlin.system.exitProcess
 
 /**
  * Created by Vaghela Mithun R. on 8/28/2021.
@@ -46,6 +45,7 @@ object CallHandlerUtils {
             SocketManager.instance.emit(SocketManager.EVENT_CALL_REJECT_BY_HW, callArgs.doctorId)
         } else if (callArgs.isCallHangUp()) {
             SocketManager.instance.emitLocalEvent(SocketManager.EVENT_CALL_HANG_UP)
+            if (CallNotificationHandler.isAppInBackground()) RtcEngine.leaveRoom()
         } else if (callArgs.isBusyCall()) {
             // cancel notification with busy message
         } else if (callArgs.isIncomingCall() or callArgs.isCallAccepted() or callArgs.isOutGoingCall()) {
@@ -85,8 +85,8 @@ object CallHandlerUtils {
         callStatus = callArgs.callStatus,
         callTime = System.currentTimeMillis().toString(),
         callUrl = callArgs.url!!,
-        chatAction = RtcConfig.getConfig(context)!!.chatIntentClass,
-        callAction = RtcConfig.getConfig(context)!!.callIntentClass,
+        chatAction = RtcEngine.getConfig(context)!!.chatIntentClass,
+        callAction = RtcEngine.getConfig(context)!!.callIntentClass,
         hasCallAction = false,
         hasChatAction = true
     )

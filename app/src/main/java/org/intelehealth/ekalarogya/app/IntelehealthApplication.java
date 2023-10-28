@@ -34,7 +34,7 @@ import org.intelehealth.klivekit.RtcApp;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalCoreCallLogActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
-import org.intelehealth.klivekit.RtcConfig;
+import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.klivekit.utils.Constants;
@@ -244,7 +244,7 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
     }
 
     private void initRtcConfig() {
-        new RtcConfig.Builder()
+        new RtcEngine.Builder()
                 .callUrl("wss://" + sessionManager.getServerUrl() + ":9090")
                 .socketUrl("https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
                         + sessionManager.getProviderID()
