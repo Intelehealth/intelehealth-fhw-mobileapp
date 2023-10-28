@@ -4,13 +4,17 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.graphics.Color
 import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.SystemClock
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ProcessLifecycleOwner
 import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.call.utils.CallConstants.ACTION_ACCEPT
 import org.intelehealth.klivekit.call.utils.CallConstants.ACTION_DECLINE
@@ -31,8 +35,8 @@ import kotlin.random.Random
  */
 object CallNotificationHandler {
 
-    private const val NOTIFICATION_CHANNEL_ID = "call_channel_id"
-    private const val NOTIFICATION_CHANNEL_NAME = "call_channel"
+    private const val NOTIFICATION_CHANNEL_ID = "CHANNEL_ID"
+    private const val NOTIFICATION_CHANNEL_NAME = "CHANNEL_NAME"
 
     /**
      * Retrieve NotificationManager instance
@@ -81,7 +85,7 @@ object CallNotificationHandler {
     ) = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_ACCEPT.span(android.R.color.holo_green_dark, context),
-        IntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
+        IntentUtils.getPendingActivityIntent(context, messageBody.apply {
             callAction = CallAction.ACCEPT
         })
     ).build()
@@ -150,7 +154,8 @@ object CallNotificationHandler {
             .setContentText("Incoming call from ${messageBody.doctorName ?: "unknown"}")
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
             .setSmallIcon(messageBody.notificationIcon)
-            .setSound(getDefaultRingtoneUrl())
+//            .setSound(getDefaultRingtoneUrl(), AudioManager.STREAM_RING)
+//            .setDefaults(Notification.DEFAULT_ALL)
             .setCategory(NotificationCompat.CATEGORY_CALL)
             .setContentIntent(lockScreenIntent)
             .setFullScreenIntent(lockScreenIntent, true)
@@ -165,7 +170,7 @@ object CallNotificationHandler {
      * @param messageBody an instance of CallNotificationMessageBody to send with intent
      * @return NotificationCompat.Builder
      */
-    fun getAttendedCallNotificationBuilder(
+    fun getOnGoingCallNotificationBuilder(
         context: Context,
         messageBody: RtcArgs
     ): NotificationCompat.Builder {
@@ -206,13 +211,16 @@ object CallNotificationHandler {
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
             enableLights(true)
+            lightColor = Color.GRAY
             enableVibration(false)
             setShowBadge(true)
+            description = getApplicationName(context)
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             setBypassDnd(true)
-            if (priority == 1) {
-                setSound(getDefaultRingtoneUrl(), CallNotificationHandler.getAudioAttributes())
-            }
+            importance = NotificationManager.IMPORTANCE_HIGH
+//            if (priority == 1) {
+//                setSound(getDefaultRingtoneUrl(), CallNotificationHandler.getAudioAttributes())
+//            }
         }
     }
 
@@ -283,4 +291,10 @@ object CallNotificationHandler {
         context.applicationContext.packageName.apply {
             "${this}.$NOTIFICATION_CHANNEL_NAME"
         }
+
+    private fun isAppInForeground() = ProcessLifecycleOwner.get().lifecycle.currentState.isAtLeast(
+        Lifecycle.State.RESUMED
+    )
+
+    fun isAppInBackground() = !isAppInForeground()
 }

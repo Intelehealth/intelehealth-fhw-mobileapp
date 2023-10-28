@@ -91,8 +91,6 @@ open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHa
     private val mutableRemoteVideoTrack = MutableLiveData<VideoTrack?>(null)
     val remoteVideoTrack = mutableRemoteVideoTrack.hide()
 
-    private var remoteParticipant: RemoteParticipant? = null
-
     private val mutableRemoteParticipantDisconnected = MutableLiveData(false)
     val remoteParticipantDisconnected = mutableRemoteParticipantDisconnected.hide()
 
@@ -104,6 +102,8 @@ open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHa
 
     private val mutableCameraPosition = MutableLiveData<CameraPosition>()
     val cameraPosition = mutableCameraPosition.hide()
+
+    var remoteParticipant: RemoteParticipant? = null
 
     init {
         LiveKit.loggingLevel = LoggingLevel.DEBUG
@@ -177,6 +177,7 @@ open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHa
     }
 
     private fun onRemoteParticipantTrackPublished(it: RoomEvent.TrackPublished) {
+        remoteParticipant = it.participant as RemoteParticipant
         getVideoTrack(it.participant)?.let {
             updateParticipantVideoTrack(it)
         }
@@ -226,6 +227,11 @@ open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHa
 
     private fun onParticipantReconnected(it: RoomEvent.Reconnected) {
         Timber.e { "onParticipantReconnected =>" + it.room.name }
+        remoteParticipant?.let { remote ->
+            getVideoTrack(remote)?.let { track ->
+                updateParticipantVideoTrack(track)
+            }
+        }
     }
 
     private fun onParticipantReconnecting(it: RoomEvent.Reconnecting) {

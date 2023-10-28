@@ -88,7 +88,7 @@ class VideoCallActivity : CoreVideoCallActivity() {
     }
 
     override fun getLocalVideoRender(): TextureViewRenderer = binding.selfSurfaceView
-    override fun getRemoteVideoRender(): SurfaceViewRenderer = binding.incomingSurfaceView
+    override fun getRemoteVideoRender(): TextureViewRenderer = binding.incomingSurfaceView
 
     override fun onCameraStatusChanged(enabled: Boolean) {
         super.onCameraStatusChanged(enabled)

@@ -34,7 +34,7 @@ object IntentUtils {
             val callClass: Class<*> = Class.forName(it)
             return@let Intent(context, callClass).apply {
                 putExtra(RTC_ARGS, messageBody)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
         }
     }
@@ -156,16 +156,16 @@ object IntentUtils {
 
     fun getPendingActivityIntent(
         context: Context,
-        messageBody: RtcArgs
+        messageBody: RtcArgs,
+        flag: Int = getPendingIntentFlag()
     ): PendingIntent {
         Timber.d { "getPendingActivityIntent -> url = ${messageBody.url}" }
-//        return getCallActivityIntent(messageBody, context)?.let {
-//            return@let getPendingIntentWithParentStack(context, it)
-//        } ?:
-        return PendingIntent.getActivity(
+        return getCallActivityIntent(messageBody, context)?.let {
+            return@let getPendingIntentWithParentStack(context, it)
+        } ?: PendingIntent.getActivity(
             context, Random.nextInt(0, MAX_INT),
             getCallActivityIntent(messageBody, context),
-            getPendingIntentFlag()
+            flag
         )
     }
 
@@ -176,7 +176,7 @@ object IntentUtils {
         context, Random.nextInt(0, MAX_INT),
         getCallLogIntent(messageBody, context),
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         } else {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
@@ -195,7 +195,7 @@ object IntentUtils {
 
         }, context),
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         } else {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
@@ -222,18 +222,19 @@ object IntentUtils {
     private fun getPendingIntentWithParentStack(context: Context, intent: Intent): PendingIntent {
         val taskStackBuilder = TaskStackBuilder.create(context)
         taskStackBuilder.addNextIntentWithParentStack(intent)
-
         return taskStackBuilder.getPendingIntent(
-            REQUEST_CODE,
+            Random.nextInt(0, MAX_INT),
             getPendingIntentFlag()
         )
     }
 
     private fun getPendingIntentFlag() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        PendingIntent.FLAG_IMMUTABLE
+        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     } else {
         PendingIntent.FLAG_UPDATE_CURRENT
     }
+
+    fun getFlagUpdateCurrent() = getPendingIntentFlag().or(PendingIntent.FLAG_UPDATE_CURRENT)
 
     fun getCallReceiverAction(context: Context) =
         "${context.applicationContext.packageName}.$CALL_RECEIVER_ACTION"

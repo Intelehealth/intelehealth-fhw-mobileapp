@@ -27,6 +27,7 @@ import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.call.ui.activity.CoreVideoCallActivity;
 import org.intelehealth.klivekit.call.utils.CallMode;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
+import org.webrtc.VideoEncoderFactory;
 
 import io.livekit.android.renderer.SurfaceViewRenderer;
 import io.livekit.android.renderer.TextureViewRenderer;
@@ -59,7 +60,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
         }
     }
 
-    public static final String TAG = "LiveVideoCallActivity";
+    public static final String TAG = "EkalVideoCallActivity";
 
     private ActivityVideoCallBinding binding;
 
@@ -102,8 +103,9 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
             binding.incomingCallView.callerNameTv.setText(doctorName);
             binding.incomingCallView.tvCallerIdentity.setText(String.valueOf(args.getDoctorName().toCharArray()[0]));
             binding.videoCallView.tvVideoCallDoctorName.setText(doctorName);
+            binding.videoCallView.tvVideoCallPatientName.setText(args.getPatientName());
             binding.videoCallView.remoteUserTextIcon.setText(String.valueOf(args.getDoctorName().toUpperCase().toCharArray()[0]));
-//            binding.videoCallView.localUserTextIcon.setText(String.valueOf(args.getNurseName().toUpperCase().toCharArray()[0]));
+            binding.videoCallView.localUserTextIcon.setText(String.valueOf(args.getNurseName().toUpperCase().toCharArray()[0]));
         }
     }
 
@@ -130,6 +132,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
     @Override
     public void attachRemoteVideo(@NonNull VideoTrack videoTrack) {
         Timber.tag(TAG).e("attachRemoteVideo: %s", videoTrack.getEnabled());
+        videoTrack.removeRenderer(binding.videoCallView.incomingSurfaceView);
         videoTrack.addRenderer(binding.videoCallView.incomingSurfaceView);
     }
 
@@ -153,7 +156,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
 
     @NonNull
     @Override
-    public SurfaceViewRenderer getRemoteVideoRender() {
+    public TextureViewRenderer getRemoteVideoRender() {
         binding.videoCallView.selfSurfaceView.setVisibility(View.VISIBLE);
         return binding.videoCallView.incomingSurfaceView;
     }

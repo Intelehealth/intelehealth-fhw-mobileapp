@@ -17,6 +17,7 @@ import io.livekit.android.renderer.SurfaceViewRenderer
 import io.livekit.android.renderer.TextureViewRenderer
 import io.livekit.android.room.participant.ConnectionQuality
 import io.livekit.android.room.track.CameraPosition
+import io.livekit.android.room.track.Track
 import io.livekit.android.room.track.VideoTrack
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -104,9 +105,16 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.room.initVideoRenderer(getLocalVideoRender())
         videoCallViewModel.room.initVideoRenderer(getRemoteVideoRender())
         extractRtcParams()
+        initView()
+//        observeLiveData()
+//        observerSocketEvent()
+    }
+
+    private fun initView() {
         observeLiveData()
         observerSocketEvent()
     }
+
 
     private fun preventDuplicationData(newRtcData: RtcArgs) {
         val oldRtcData: String? = preferenceHelper.get(RTC_DATA, null)
@@ -257,8 +265,11 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     private fun handleCallByStatus() {
-        if (args.isIncomingCall() && args.isCallOnGoing()) acceptCall()
-        else if (args.isIncomingCall()) {
+        if (args.isIncomingCall() && args.isCallAccepted()) {
+            acceptCall()
+            args.callStatus = CallStatus.ON_GOING
+            CallHandlerUtils.notifyCallNotification(args, this)
+        } else if (args.isIncomingCall()) {
             onIncomingCall()
             stopService(
                 Intent(
@@ -290,12 +301,36 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        Timber.d { "onResume" }
         videoCallViewModel.registerReceivers(this)
+        onRemoteParticipantCameraChange(false)
+//        videoCallViewModel.remoteParticipant?.let {
+//            it.getTrackPublication(Track.Source.CAMERA)?.let { pub ->
+//                Timber.d { "Remote ${pub.track?.rtcTrack?.enabled()}" }
+//                pub.track?.let { track -> attachRemoteVideo(track as VideoTrack) }
+//            }
+//        }
+//        onRemoteParticipantCameraChange(false)
+//        videoCallViewModel.remoteParticipant?.let {
+//            if (it.signalClient.isConnected) {
+//                val track = it.getTrackPublication(Track.Source.CAMERA)
+//                attachRemoteVideo(track?.track as VideoTrack)
+//            }
+//        }
+//        videoCallViewModel.remoteVideoTrack.observe(this) { it?.let { it1 -> attachRemoteVideo(it1) } }
     }
 
     override fun onPause() {
         super.onPause()
+        Timber.d { "onPause" }
         videoCallViewModel.unregisterBroadcast(this)
+//        videoCallViewModel.remoteParticipant?.let {
+//            it.getTrackPublication(Track.Source.CAMERA)?.let { pub ->
+//                pub.track?.rtcTrack?.setEnabled(false)
+//                Timber.d { "Remote ${pub.track?.rtcTrack?.enabled()}" }
+//                pub.track?.let { track -> (track as VideoTrack).removeRenderer(getRemoteVideoRender()) }
+//            }
+//        }
     }
 
     open fun onCallEnd() {
@@ -391,12 +426,12 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     open fun endCall() {
-        sayBye(getString(R.string.left_the_call, "You"), "app")
+        sayBye(arg = "app")
     }
 
-    open fun sayBye(message: String, arg: String? = null) {
-        Timber.e { message }
-        showToast(message)
+    open fun sayBye(message: String? = null, arg: String? = null) {
+        message?.let { showToast(it) }
+        Timber.e { "message $message $arg" }
         arg?.let {
             socketViewModel.emit(SocketManager.EVENT_BYE, it)
         }
@@ -415,7 +450,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     abstract fun getLocalVideoRender(): TextureViewRenderer
 
-    abstract fun getRemoteVideoRender(): SurfaceViewRenderer
+    abstract fun getRemoteVideoRender(): TextureViewRenderer
 
     open fun startCallTimer() = videoCallViewModel.startCallDurationTimer()
 
@@ -440,5 +475,6 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         SocketManager.instance.resetCallTimeUpFlag()
         super.onDestroy()
         stopRingtone()
+        videoCallViewModel.disconnect()
     }
 }

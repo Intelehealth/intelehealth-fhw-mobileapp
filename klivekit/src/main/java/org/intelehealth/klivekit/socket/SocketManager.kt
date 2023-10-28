@@ -8,12 +8,14 @@ import io.socket.client.Socket.EVENT_CONNECT
 import io.socket.client.Socket.EVENT_DISCONNECT
 import io.socket.client.SocketIOException
 import io.socket.emitter.Emitter
+import org.intelehealth.klivekit.call.utils.CallNotificationHandler
 import org.intelehealth.klivekit.model.ActiveUser
 import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.system.exitProcess
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
@@ -191,12 +193,16 @@ open class SocketManager @Inject constructor() {
         Timber.e { "Socket $event args $args" }
         if (isConnected()) {
             socket?.emit(event, args) ?: Timber.e { "$event fail due to socket not connected " }
-        }
+        } else Timber.e { "$event fail due to socket not connected " }
     }
 
     fun emitLocalEvent(event: String, args: Any? = null) {
         Timber.e { "emitLocalEvent $event args $args" }
         invokeListeners(event, args)
+        if (CallNotificationHandler.isAppInBackground() && event == EVENT_CALL_HANG_UP) {
+            emit(EVENT_BYE, "app")
+            exitProcess(0)
+        }
     }
 
     fun disconnect() {

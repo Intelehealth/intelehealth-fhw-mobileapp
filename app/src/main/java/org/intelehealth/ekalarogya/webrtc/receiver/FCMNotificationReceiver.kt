@@ -30,9 +30,11 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         notification: RemoteMessage.Notification?,
         data: HashMap<String, String>
     ) {
+        val sessionManager = SessionManager(context)
+        if (sessionManager.isLogout) return
         context?.let {
             if (data.containsKey("type") && data["type"].equals("video_call")) {
-                val sessionManager = SessionManager(context)
+
                 Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
                     nurseName = sessionManager.chwname
                     callType = CallType.VIDEO

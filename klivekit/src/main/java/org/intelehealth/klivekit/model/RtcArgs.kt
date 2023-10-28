@@ -83,6 +83,37 @@ data class RtcArgs(
         put("token", token)
     }
 
+    fun clone(): RtcArgs = RtcArgs(
+        patientId = this.patientId,
+        patientPersonUuid = this.patientPersonUuid,
+        patientOpenMrsId = this.patientOpenMrsId,
+        id = this.id,
+        url = this.url,
+        socketUrl = this.socketUrl,
+        token = this.token,
+        roomId = this.roomId,
+        doctorName = this.doctorName,
+        nurseName = this.nurseName,
+        patientName = this.patientName,
+        nurseId = this.nurseId,
+        doctorUuid = this.doctorUuid,
+        visitId = this.visitId,
+        doctorId = this.doctorId,
+        appToken = this.appToken,
+        deviceToken = this.deviceToken,
+        timestamp = this.timestamp,
+        callType = this.callType,
+        callStatus = this.callStatus,
+        callAction = this.callAction,
+        callMode = this.callMode,
+        className = this.className,
+        notificationChannelName = this.notificationChannelName,
+        notificationChannelId = this.notificationChannelId,
+        notificationId = this.notificationId,
+        notificationIcon = this.notificationIcon,
+        notificationTime = this.notificationTime
+    )
+
     companion object {
 
         fun dummy(): RtcArgs {

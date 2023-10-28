@@ -3,8 +3,14 @@
 3 - Cancel notification on call cancel by dr. - DONE
 4 - Star video calling on accept - DONE
 5 - 1 min timer for incoming notification - DONE
-6 - Tap on on going call notification open the video view - PENDING
-7 - Put calling view in background and reopen, video should be display both end - PENDING
-6 - Missed call notification - Pending
-7 - Lock screen notification - Pending
-8 - Hangup call from UI ongoing notification should be remove - PENDING
+6 - Missed call notification - DONE
+7 - Lock screen notification - DONE
+8 - Hangup call from UI ongoing notification should be remove - DONE
+
+PENDING
+9 - Remove toast for left by you, no require
+10 - Same as other toasts
+11 - Notification default ringtone
+12 - Latest notification implementing
+13 - End on hangup action when call in background
+

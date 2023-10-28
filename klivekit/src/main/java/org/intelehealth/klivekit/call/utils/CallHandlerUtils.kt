@@ -20,6 +20,7 @@ import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
+import kotlin.system.exitProcess
 
 /**
  * Created by Vaghela Mithun R. on 8/28/2021.
@@ -45,8 +46,6 @@ object CallHandlerUtils {
             SocketManager.instance.emit(SocketManager.EVENT_CALL_REJECT_BY_HW, callArgs.doctorId)
         } else if (callArgs.isCallHangUp()) {
             SocketManager.instance.emitLocalEvent(SocketManager.EVENT_CALL_HANG_UP)
-        } else if (callArgs.isIncomingCall() && callArgs.isMissedCall()) {
-            CallNotificationHandler.notifyMissedCall(context, callArgs)
         } else if (callArgs.isBusyCall()) {
             // cancel notification with busy message
         } else if (callArgs.isIncomingCall() or callArgs.isCallAccepted() or callArgs.isOutGoingCall()) {

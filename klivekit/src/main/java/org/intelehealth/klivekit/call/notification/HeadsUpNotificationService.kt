@@ -120,6 +120,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
                 if (!isDuplicateCancelEvent) {
                     isDuplicateCancelEvent = true
                     rtcArgs?.let {
+                        if (it.callStatus.isOnGoing()) return@Listener
                         it.callStatus = CallStatus.MISSED
                         CallHandlerUtils.notifyCallNotification(it, this)
                     }
@@ -139,8 +140,8 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
                 Timber.d { "Message call status **** ${it.callStatus}" }
                 Timber.d { "Message call action **** ${it.callAction}" }
                 Timber.d { "Message call ->Url = ${it.url}" }
-                if (it.isCallAccepted()) {
-                    showAcceptedCallNotification(it)
+                if (it.isCallAccepted() && it.isCallOnGoing()) {
+                    showOnGoingCallNotification(it)
                 } else if (it.isIncomingCall()) {
                     showIncomingCallNotification(it)
                 } else if (it.isOutGoingCall()) {
@@ -176,7 +177,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
 
     private fun setVibrateorNormalRinger() {
-
+//
         Timber.d { "Audio manager mode ***** ${audioManager.ringerMode}" }
 
         when (audioManager.ringerMode) {
@@ -226,11 +227,16 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     }
 
 
-    private fun showAcceptedCallNotification(messageBody: RtcArgs) {
+    private fun showOnGoingCallNotification(messageBody: RtcArgs) {
         Timber.d { "showAcceptedCallNotification" }
         destroySetting()
 
         messageBody.notificationId = notificationId
+
+        if (messageBody.isCallOnGoing().not()) {
+            messageBody.callStatus = CallStatus.ON_GOING
+            IntentUtils.getPendingActivityIntent(applicationContext, messageBody).send()
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(
@@ -238,13 +244,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
             )
         }
 
-        if (messageBody.isCallOnGoing().not()) {
-            Timber.d { "CallArg => ${messageBody.toJson()}" }
-            messageBody.callStatus = CallStatus.ON_GOING
-            startActivity(IntentUtils.getCallActivityIntent(messageBody, this))
-        }
-
-        CallNotificationHandler.getAttendedCallNotificationBuilder(this, messageBody).apply {
+        CallNotificationHandler.getOnGoingCallNotificationBuilder(this, messageBody).apply {
             notificationManager.notify(notificationId, build())
             startForeground(notificationId, build())
         }
@@ -272,19 +272,19 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
         notificationManager.notify(notificationId, notification)
         startForeground(notificationId, notification)
-//        if (ringtone.isPlaying) ringtone.stop()
-//        if (normalStatus) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-//                ringtone.isLooping = true
-//            }
-//            ringtone.play()
-//        } else if (vibrateStatus) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                vibratorService.vibrate(vibrationEffect)
-//            } else {
-//                vibratorService.vibrate(vibratePattern, 0)
-//            }
-//        }
+        if (ringtone.isPlaying) ringtone.stop()
+        if (normalStatus) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                ringtone.isLooping = true
+            }
+            ringtone.play()
+        } else if (vibrateStatus) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibratorService.vibrate(vibrationEffect)
+            } else {
+                vibratorService.vibrate(vibratePattern, 0)
+            }
+        }
     }
 
 
