@@ -143,6 +143,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
                 if (it.isCallAccepted() && it.isCallOnGoing()) {
                     showOnGoingCallNotification(it)
                 } else if (it.isIncomingCall()) {
+                    countDownTimer(it)
                     showIncomingCallNotification(it)
                 } else if (it.isOutGoingCall()) {
                     showOutGoingNotification(this, it)
@@ -233,10 +234,10 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
         messageBody.notificationId = notificationId
 
-        if (messageBody.isCallOnGoing().not()) {
-            messageBody.callStatus = CallStatus.ON_GOING
-            IntentUtils.getPendingActivityIntent(applicationContext, messageBody).send()
-        }
+//        if (messageBody.isCallOnGoing().not()) {
+//            messageBody.callStatus = CallStatus.ON_GOING
+//            IntentUtils.getPendingActivityIntent(applicationContext, messageBody).send()
+//        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(
@@ -285,6 +286,9 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
                 vibratorService.vibrate(vibratePattern, 0)
             }
         }
+
+        countDownTimer.start()
+        isTimerRunning = true
     }
 
 
@@ -377,10 +381,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
         Timber.d { "Counterdown ***** " }
 
-        countDownTimer = object : CountDownTimer(
-            Companion.MAX_TIMEOUT,
-            Companion.COUNT_DOWN_INTERVAL
-        ) {
+        countDownTimer = object : CountDownTimer(MAX_TIMEOUT, COUNT_DOWN_INTERVAL) {
 
             override fun onTick(millisUntilFinished: Long) {
                 Timber.d { "Remaining time **** $millisUntilFinished" }
@@ -396,14 +397,15 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
     //timeout
     private fun sendCallTimedOutToBackend(messageBody: RtcArgs) {
-        messageBody.callMode = CallMode.OUTGOING
-        messageBody.callStatus = CallStatus.MISSED
-        messageBody.callAction = CallAction.HANG_UP
-        CallHandlerUtils.operateCallAction(messageBody, this)
+        stopSelf()
+//        messageBody.callMode = CallMode.OUTGOING
+//        messageBody.callStatus = CallStatus.MISSED
+//        messageBody.callAction = CallAction.HANG_UP
+//        CallHandlerUtils.operateCallAction(messageBody, this)
     }
 
     companion object {
-        private const val MAX_TIMEOUT: Long = 30000
+        private const val MAX_TIMEOUT: Long = 60000
         private const val COUNT_DOWN_INTERVAL: Long = 1000
     }
 }

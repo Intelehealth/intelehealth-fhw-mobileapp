@@ -29,6 +29,7 @@ import org.intelehealth.klivekit.call.ui.viewmodel.CallViewModel
 import org.intelehealth.klivekit.call.ui.viewmodel.VideoCallViewModel
 import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
+import org.intelehealth.klivekit.call.utils.CallNotificationHandler
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.data.PreferenceHelper.Companion.RTC_DATA
@@ -162,10 +163,19 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             )
         }
         socketViewModel.eventCallCancelByDoctor.observe(this) {
-            if (it && isDeclined.not()) {
-                Timber.e { "Remain time up mil ${videoCallViewModel.remainTimeupMilliseconds}" }
-                sayBye(getString(R.string.call_canceled_by, args.doctorName))
+            Timber.e { "args ${args.toJson()}" }
+            if (it && args.isIncomingCall() && isDeclined.not()
+                && args.isCallAccepted().not() && args.isMissedCall().not()
+            ) {
+                args.callStatus = CallStatus.MISSED
+                CallHandlerUtils.notifyCallNotification(args, this)
+                sayBye(arg = args.doctorName)
             }
+
+//            if (it && isDeclined.not()) {
+//                Timber.e { "Remain time up mil ${videoCallViewModel.remainTimeupMilliseconds}" }
+//                sayBye(getString(R.string.call_canceled_by, args.doctorName))
+//            }
         }
         videoCallViewModel.remoteCallDisconnectedReason.observe(this) {
             it?.let { checkCallDisconnectReason(it) }
@@ -265,7 +275,9 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     private fun handleCallByStatus() {
-        if (args.isIncomingCall() && args.isCallAccepted()) {
+        if (args.isCallOnGoing()) {
+
+        } else if (args.isIncomingCall() && args.isCallAccepted()) {
             acceptCall()
             args.callStatus = CallStatus.ON_GOING
             CallHandlerUtils.notifyCallNotification(args, this)
@@ -457,16 +469,16 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     fun isArgsInitiate() = ::args.isInitialized
 
     private fun checkCallDisconnectReason(reason: DisconnectReason) {
-        when (reason) {
-            DisconnectReason.CLIENT_INITIATED -> showToast(getString(R.string.reason_not_initiated))
-            DisconnectReason.DUPLICATE_IDENTITY -> showToast(getString(R.string.reason_duplicated_identity))
-            DisconnectReason.SERVER_SHUTDOWN -> showToast(getString(R.string.reason_server_shutdown))
-            DisconnectReason.PARTICIPANT_REMOVED -> showToast(getString(R.string.reason_participant_removed))
-            DisconnectReason.ROOM_DELETED -> showToast(getString(R.string.reason_room_deleted))
-            DisconnectReason.STATE_MISMATCH -> showToast(getString(R.string.reason_state_mismatch))
-            DisconnectReason.JOIN_FAILURE -> showToast(getString(R.string.reason_join_failure))
-            DisconnectReason.UNKNOWN_REASON -> showToast(getString(R.string.reason_unknown))
-        }
+//        when (reason) {
+//            DisconnectReason.CLIENT_INITIATED -> showToast(getString(R.string.reason_not_initiated))
+//            DisconnectReason.DUPLICATE_IDENTITY -> showToast(getString(R.string.reason_duplicated_identity))
+//            DisconnectReason.SERVER_SHUTDOWN -> showToast(getString(R.string.reason_server_shutdown))
+//            DisconnectReason.PARTICIPANT_REMOVED -> showToast(getString(R.string.reason_participant_removed))
+//            DisconnectReason.ROOM_DELETED -> showToast(getString(R.string.reason_room_deleted))
+//            DisconnectReason.STATE_MISMATCH -> showToast(getString(R.string.reason_state_mismatch))
+//            DisconnectReason.JOIN_FAILURE -> showToast(getString(R.string.reason_join_failure))
+//            DisconnectReason.UNKNOWN_REASON -> showToast(getString(R.string.reason_unknown))
+//        }
 
         finish()
     }

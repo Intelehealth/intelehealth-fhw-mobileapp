@@ -225,6 +225,7 @@ open class SocketManager @Inject constructor() {
         socket?.off(EVENT_MSG_DELIVERED)
         socket?.off(EVENT_CALL_TIME_UP)
         socket?.disconnect()
+        Timber.e { "Socket disconnected => ${socket?.connected()}" }
     }
 
     fun reconnect() = socket?.connect()

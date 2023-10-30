@@ -8,9 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
@@ -30,8 +34,7 @@ import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalarogya.firebase.RealTimeDataChangedObserver;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
-import org.intelehealth.klivekit.RtcApp;
-import org.intelehealth.ekalarogya.webrtc.activity.EkalCoreCallLogActivity;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalCallLogActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
 import org.intelehealth.klivekit.RtcEngine;
@@ -123,7 +126,6 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
             SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
             mDbHelper.onCreate(localdb);
         }
-        registerActivityLifecycleCallbacks(this);
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         startRealTimeObserverAndSocket();
@@ -145,46 +147,6 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
 
     }
 
-    @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public void onActivityStarted(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityResumed(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityPaused(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityStopped(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-    }
-
-    @Override
-    public void onActivityDestroyed(Activity activity) {
-
-    }
-
-    public Activity getCurrentActivity() {
-        return currentActivity;
-    }
-
-
     /**
      * for setting the Alert Dialog Custom Font.
      *
@@ -203,16 +165,23 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    public void onMoveToForeground() {
-        // app moved to foreground
+    @Override
+    public void onResume(@NonNull LifecycleOwner owner) {
+        DefaultLifecycleObserver.super.onResume(owner);
         isInBackground = false;
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    public void onMoveToBackground() {
-        // app moved to background
+    @Override
+    public void onPause(@NonNull LifecycleOwner owner) {
+        DefaultLifecycleObserver.super.onPause(owner);
         isInBackground = true;
+    }
+
+    @Override
+    public void onDestroy(@NonNull LifecycleOwner owner) {
+        DefaultLifecycleObserver.super.onDestroy(owner);
+        Timber.tag("APP").d("DefaultLifecycleObserver.super.onDestroy");
+        stopRealTimeObserverAndSocket();
     }
 
     public void startRealTimeObserverAndSocket() {
@@ -251,18 +220,19 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
                         + "&name=" + sessionManager.getChwname())
                 .callIntentClass(EkalVideoActivity.class)
                 .chatIntentClass(EkalChatActivity.class)
-                .callLogIntentClass(EkalCoreCallLogActivity.class)
+                .callLogIntentClass(EkalCallLogActivity.class)
                 .build().saveConfig(this);
     }
 
     @Override
     public void onTerminate() {
-        super.onTerminate();
+        Timber.tag("APP").d("onTerminate");
         stopRealTimeObserverAndSocket();
+        super.onTerminate();
     }
 
     public void stopRealTimeObserverAndSocket() {
         if (dataChangedObserver != null) dataChangedObserver.stopObserver();
-        if (socketManager.isConnected()) socketManager.disconnect();
+        socketManager.disconnect();
     }
 }

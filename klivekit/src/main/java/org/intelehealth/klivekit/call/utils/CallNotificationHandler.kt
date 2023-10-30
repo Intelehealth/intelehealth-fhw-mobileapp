@@ -3,6 +3,7 @@ package org.intelehealth.klivekit.call.utils
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Color
 import android.media.AudioAttributes
@@ -63,8 +64,7 @@ object CallNotificationHandler {
      * @return PendingIntent type of ChatCallBroadCastReceiver intent
      */
     private fun getDeclineAction(
-        context: Context,
-        messageBody: RtcArgs
+        context: Context, messageBody: RtcArgs
     ) = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_DECLINE.span(android.R.color.holo_red_light, context),
@@ -80,8 +80,7 @@ object CallNotificationHandler {
      * @return PendingIntent type of ChatCallBroadCastReceiver intent
      */
     private fun getAcceptAction(
-        context: Context,
-        messageBody: RtcArgs
+        context: Context, messageBody: RtcArgs
     ) = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_ACCEPT.span(android.R.color.holo_green_dark, context),
@@ -96,8 +95,7 @@ object CallNotificationHandler {
      *
      * */
     private fun getHangUpAction(
-        context: Context,
-        messageBody: RtcArgs
+        context: Context, messageBody: RtcArgs
     ): NotificationCompat.Action = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_HANG_UP,
@@ -115,15 +113,12 @@ object CallNotificationHandler {
      * @return NotificationCompat.Builder
      */
     fun outGoingCallNotificationBuilder(
-        messageBody: RtcArgs,
-        context: Context
+        messageBody: RtcArgs, context: Context
     ): NotificationCompat.Builder {
 
         return NotificationCompat.Builder(context, getChannelId(context))
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setContentTitle(messageBody.doctorName)
-            .setContentText("Calling")
-            .setSilent(true)
+            .setPriority(NotificationCompat.PRIORITY_LOW).setContentTitle(messageBody.doctorName)
+            .setContentText("Calling").setSilent(true)
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
             .setSmallIcon(messageBody.notificationIcon)
             .setCategory(NotificationCompat.CATEGORY_CALL)
@@ -140,8 +135,7 @@ object CallNotificationHandler {
      * @return NotificationCompat.Builder
      */
     fun getIncomingNotificationBuilder(
-        context: Context,
-        messageBody: RtcArgs
+        context: Context, messageBody: RtcArgs
     ): NotificationCompat.Builder {
         com.github.ajalt.timberkt.Timber.d { "getIncomingNotificationBuilder -> url = ${messageBody.url}" }
         val lockScreenIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
@@ -156,8 +150,7 @@ object CallNotificationHandler {
             .setSmallIcon(messageBody.notificationIcon)
 //            .setSound(getDefaultRingtoneUrl(), AudioManager.STREAM_RING)
 //            .setDefaults(Notification.DEFAULT_ALL)
-            .setCategory(NotificationCompat.CATEGORY_CALL)
-            .setContentIntent(lockScreenIntent)
+            .setCategory(NotificationCompat.CATEGORY_CALL).setContentIntent(lockScreenIntent)
             .setFullScreenIntent(lockScreenIntent, true)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .addAction(getAcceptAction(context, messageBody))
@@ -171,13 +164,12 @@ object CallNotificationHandler {
      * @return NotificationCompat.Builder
      */
     fun getOnGoingCallNotificationBuilder(
-        context: Context,
-        messageBody: RtcArgs
+        context: Context, messageBody: RtcArgs
     ): NotificationCompat.Builder {
 
         messageBody.notificationTime = SystemClock.elapsedRealtime().toString()
-//        messageBody.callStatus = CallStatus.ON_GOING
-        val notificationIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
+        messageBody.callStatus = CallStatus.ON_GOING
+        val notificationIntent = IntentUtils.getOnGoingPendingActivityIntent(context, messageBody)
 //        val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
 
         Timber.d("Local time date ***** ${messageBody.notificationTime}")
@@ -188,10 +180,8 @@ object CallNotificationHandler {
 //            .setContentText("Ongoing call with ${messageBody.doctorName ?: "unknown"}")
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
             .setSmallIcon(messageBody.notificationIcon)
-            .setCategory(NotificationCompat.CATEGORY_CALL)
-            .setContentIntent(notificationIntent)
-            .setUsesChronometer(true)
-            .setSilent(true)
+            .setCategory(NotificationCompat.CATEGORY_CALL).setContentIntent(notificationIntent)
+            .setUsesChronometer(true).setSilent(true)
             .addAction(getHangUpAction(context, messageBody.apply {
                 callAction = CallAction.HANG_UP
             }))
@@ -206,9 +196,7 @@ object CallNotificationHandler {
     fun getNotificationChannel(context: Context, priority: Int): NotificationChannel {
 
         return NotificationChannel(
-            getChannelId(context),
-            getChannelName(context),
-            NotificationManager.IMPORTANCE_HIGH
+            getChannelId(context), getChannelName(context), NotificationManager.IMPORTANCE_HIGH
         ).apply {
             enableLights(true)
             lightColor = Color.GRAY
@@ -231,8 +219,7 @@ object CallNotificationHandler {
      * @return NotificationCompat.Builder
      */
     private fun buildMissedCallNotification(
-        context: Context,
-        messageBody: RtcArgs
+        context: Context, messageBody: RtcArgs
     ): NotificationCompat.Builder {
         val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         messageBody.notificationTime = sdf.format(Date())
@@ -243,8 +230,7 @@ object CallNotificationHandler {
             .setContentText("Missed call from ${messageBody.doctorName}")
             .setColor(ContextCompat.getColor(context, R.color.red))
             .setSmallIcon(messageBody.notificationIcon)
-            .setCategory(NotificationCompat.CATEGORY_MISSED_CALL)
-            .setAutoCancel(true)
+            .setCategory(NotificationCompat.CATEGORY_MISSED_CALL).setAutoCancel(true)
             .setContentIntent(IntentUtils.getCallLogPendingIntent(context, messageBody))
             .setSilent(true)
 //            .addAction(getCallAction(context, messageBody))
@@ -259,8 +245,7 @@ object CallNotificationHandler {
         }
 
         notificationManager.notify(
-            messageBody.notificationId,
-            buildMissedCallNotification(context, messageBody).build()
+            messageBody.notificationId, buildMissedCallNotification(context, messageBody).build()
         )
     }
 
@@ -271,8 +256,7 @@ object CallNotificationHandler {
      */
     private fun getAudioAttributes(): AudioAttributes {
         return AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-            .build()
+            .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build()
     }
 
     /**

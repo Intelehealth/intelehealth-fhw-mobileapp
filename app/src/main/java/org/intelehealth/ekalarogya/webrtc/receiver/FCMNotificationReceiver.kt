@@ -47,6 +47,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     if (isAppInForeground()) {
                         arg.callMode = CallMode.INCOMING
                         arg.className = EkalVideoActivity::class.java.name
+                        CallHandlerUtils.saveIncomingCall(context, arg)
                         context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
                     } else {
                         CallHandlerUtils.operateIncomingCall(it, arg, EkalVideoActivity::class.java)

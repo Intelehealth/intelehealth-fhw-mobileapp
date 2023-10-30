@@ -20,6 +20,7 @@ import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
+import kotlin.system.exitProcess
 
 /**
  * Created by Vaghela Mithun R. on 8/28/2021.
@@ -67,6 +68,10 @@ object CallHandlerUtils {
         callArgs.className = clazz.name
         getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
         notifyCallNotification(callArgs, context)
+    }
+
+    fun saveIncomingCall(context: Context, callArgs: RtcArgs) {
+        getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
     }
 
     private fun getCallLogHandler(context: Context) = CallLogHandler(

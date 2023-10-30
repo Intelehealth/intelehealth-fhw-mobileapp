@@ -259,7 +259,6 @@
             android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait"
             android:showOnLockScreen="true"
-            android:taskAffinity=""
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -281,20 +280,20 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".webrtc.activity.EkalCoreCallLogActivity"
+            android:name=".webrtc.activity.EkalCallLogActivity"
             android:configChanges="uiMode"
             android:label="@string/call_logs"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver
-            android:name=".services.firebase_services.RTCMessageReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" />
-            </intent-filter>
-        </receiver>
+        <!--        <receiver-->
+        <!--            android:name=".services.firebase_services.RTCMessageReceiver"-->
+        <!--            android:enabled="true"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
 
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"

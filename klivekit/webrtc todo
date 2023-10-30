@@ -8,9 +8,9 @@
 8 - Hangup call from UI ongoing notification should be remove - DONE
 
 PENDING
-9 - Remove toast for left by you, no require
-10 - Same as other toasts
+9 - Remove toast for left by you, no require - DONE
+10 - Same as other toasts - DONE
 11 - Notification default ringtone
 12 - Latest notification implementing
-13 - End on hangup action when call in background
+13 - End on hangup action when call in background - DONE
 

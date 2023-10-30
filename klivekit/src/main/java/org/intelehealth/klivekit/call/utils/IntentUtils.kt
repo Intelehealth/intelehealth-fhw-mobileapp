@@ -34,7 +34,7 @@ object IntentUtils {
             val callClass: Class<*> = Class.forName(it)
             return@let Intent(context, callClass).apply {
                 putExtra(RTC_ARGS, messageBody)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             }
         }
     }
@@ -169,6 +169,19 @@ object IntentUtils {
         )
     }
 
+    fun getOnGoingPendingActivityIntent(
+        context: Context,
+        messageBody: RtcArgs,
+        flag: Int = getPendingIntentFlag()
+    ): PendingIntent {
+        Timber.d { "getPendingActivityIntent -> url = ${messageBody.url}" }
+        return PendingIntent.getActivity(
+            context, Random.nextInt(0, MAX_INT),
+            getCallActivityIntent(messageBody, context),
+            flag
+        )
+    }
+
     fun getCallLogPendingIntent(
         context: Context,
         messageBody: RtcArgs
@@ -201,24 +214,6 @@ object IntentUtils {
         }
     )
 
-
-    /**
-     * To get the value of chat view model
-     * @return [ChatActivityIntent] model
-     *
-     **/
-
-//    fun getChatActivityModel(messageBody: RtcArgs) = ChatActivityIntent(
-//        receiverId = messageBody.msgFrom ?: "",
-//        name1 = "${messageBody.receiverId}-${messageBody.msgFrom}",
-//        name2 = "${messageBody.msgFrom}-${messageBody.receiverId}",
-//        receiverName = messageBody.username ?: "",
-//        age = messageBody.age.toString(),
-//        profilePicture = messageBody.profilePicture ?: "",
-//        matchScreen = false,
-//        searchScreen = false
-//    )
-
     private fun getPendingIntentWithParentStack(context: Context, intent: Intent): PendingIntent {
         val taskStackBuilder = TaskStackBuilder.create(context)
         taskStackBuilder.addNextIntentWithParentStack(intent)
@@ -229,7 +224,7 @@ object IntentUtils {
     }
 
     private fun getPendingIntentFlag() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     } else {
         PendingIntent.FLAG_UPDATE_CURRENT
     }
