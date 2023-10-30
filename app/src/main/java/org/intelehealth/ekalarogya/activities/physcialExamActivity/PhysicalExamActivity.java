@@ -25,7 +25,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +41,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import org.intelehealth.ekalarogya.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
@@ -83,7 +81,6 @@ import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 
 public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
-    AlertDialog confirmationAlertDialog = null;
     static String patientUuid;
     static String visitUuid;
     String state;
@@ -270,26 +267,20 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             if (complaintConfirmed) {
                 physicalString = physicalExamMap.generateFindings();
                 physicalString_REG = physicalExamMap.generateFindings_REG(sessionManager.getAppLanguage()); // Regional langauge physical exam string for HW.
-                ConfirmationDialog(physicalString, physicalString_REG);
-            } else {
-                questionsMissing();
-            }
-        }
-    }
 
+                List<String> imagePathList = physicalExamMap.getImagePathList();
+                if (imagePathList != null) {
+                    for (String imagePath : imagePathList) {
+                        updateImageDatabase();
+                    }
+                }
 
-    public void ConfirmationDialog(String confirmationStr, String displayStr) {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        alertDialogBuilder.setMessage(Html.fromHtml(displayStr));
-        alertDialogBuilder.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
                 if (intentTag != null && intentTag.equals("edit")) {
-                    updateDatabase(confirmationStr, UuidDictionary.PHYSICAL_EXAMINATION);
+                    updateDatabase(physicalString, UuidDictionary.PHYSICAL_EXAMINATION);
                     //regional - start
                     JSONObject object = new JSONObject();
                     try {
-                        object.put("text_" + sessionManager.getAppLanguage(), displayStr);
+                        object.put("text_" + sessionManager.getAppLanguage(), physicalString_REG);
                         updateDatabase(object.toString(), UuidDictionary.PHYEXAM_REG_LANG_VALUE);    // updating regional data.
                         Log.v("insertion_tag", "insertion_update_regional_physexam: " + object.toString());
                     } catch (JSONException e) {
@@ -312,12 +303,11 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                         Log.i(TAG, "onClick:++ " + exams);
                     }
                     startActivity(intent);
-                }
-                else {
-                    boolean obsId = insertDb(confirmationStr, UuidDictionary.PHYSICAL_EXAMINATION);
+                } else {
+                    boolean obsId = insertDb(physicalString, UuidDictionary.PHYSICAL_EXAMINATION);
                     JSONObject object = new JSONObject();
                     try {
-                        object.put("text_" + sessionManager.getAppLanguage(), displayStr);
+                        object.put("text_" + sessionManager.getAppLanguage(), physicalString_REG);
                         insertDb(object.toString(), UuidDictionary.PHYEXAM_REG_LANG_VALUE);    // updating regional data.
                         Log.v("insertion_tag", "insertion_insert_regional_physexam: " + object.toString());
                     } catch (JSONException e) {
@@ -337,29 +327,9 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                     // intent1.putStringArrayListExtra("exams", selectedExamsList);
                     startActivity(intent1);
                 }
-
-                List<String> imagePathList = physicalExamMap.getImagePathList();
-                if (imagePathList != null) {
-                    for (String imagePath : imagePathList) {
-                        updateImageDatabase();
-                    }
-                }
-
+            } else {
+                questionsMissing();
             }
-        });
-        alertDialogBuilder.setNegativeButton(getString(R.string.generic_back), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        confirmationAlertDialog = alertDialogBuilder.create();
-        // alertDialog.show();
-        if (!confirmationAlertDialog.isShowing()) {
-            confirmationAlertDialog.show();
-            confirmationAlertDialog.setCancelable(false);
-            IntelehealthApplication.setAlertDialogCustomTheme(this, confirmationAlertDialog);
         }
     }
 
@@ -439,7 +409,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                     for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
                         Node childNode = rootNode.getOptionsList().get(i);
                         if (!childNode.getId().equals(question.getId())) {
-//                            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
                             // here it will check if take picture was selected previously; if yes than the imagepath against it, it will
                             // delete it and than set the button to unselected.
                             Node currNode = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i);
@@ -458,8 +427,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                                 physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
                                 //
 
-                            }
-                        }
+                            }                        }
                     }
                 }
             }
@@ -485,7 +453,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         adapter.notifyDataSetChanged();
     }
 
-
     private void deleteExisitingAnyImageIfSkipSelected(String path) throws DAOException {
         ImagesDAO imagesDAO = new ImagesDAO();
         boolean isDeletedFromList = physicalExamMap.deleteImagePath(path);   // 1. delete the item from the arraylist itself.
@@ -500,6 +467,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             //  imagesDAO.deleteConceptImages(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);  // 3. we also need to void this image from local db so that on sync we dont get this image.
         }
     }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -590,7 +558,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                 physicalExamMap.setImagePath(mCurrentPhotoPath);
                 Log.i(TAG, mCurrentPhotoPath);
                 physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
-//                updateImageDatabase();
+                updateImageDatabase();
 
             }
 
@@ -717,44 +685,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
     public void onBackPressed() {
 
     }
-
-    public void AnimateView(View v) {
-
-        int fadeInDuration = 500; // Configure time values here
-        int timeBetween = 3000;
-        int fadeOutDuration = 1000;
-
-        Animation fadeIn = new AlphaAnimation(0, 1);
-        fadeIn.setInterpolator(new DecelerateInterpolator()); // add this
-        fadeIn.setDuration(fadeInDuration);
-
-        Animation fadeOut = new AlphaAnimation(1, 0);
-        fadeOut.setInterpolator(new AccelerateInterpolator()); // and this
-        fadeOut.setStartOffset(fadeInDuration + timeBetween);
-        fadeOut.setDuration(fadeOutDuration);
-
-        AnimationSet animation = new AnimationSet(false); // change to false
-        animation.addAnimation(fadeIn);
-        animation.addAnimation(fadeOut);
-        animation.setRepeatCount(1);
-        if (v != null) {
-            v.setAnimation(animation);
-        }
-
-
-    }
-
-    public void bottomUpAnimation(View v) {
-
-        if (v != null) {
-            v.setVisibility(View.VISIBLE);
-            Animation bottomUp = AnimationUtils.loadAnimation(this,
-                    R.anim.bottom_up);
-            v.startAnimation(bottomUp);
-        }
-
-    }
-
 }
 
 
