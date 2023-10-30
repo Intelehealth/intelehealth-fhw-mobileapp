@@ -304,17 +304,22 @@ public class ActivePatientActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.summary_endAllVisit:
-                endAllVisit();
-            case R.id.action_filter:
-                displaySingleSelectionDialog();
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        } else if (itemId == R.id.summary_endAllVisit) {
+            endAllVisit();
+
+            displaySingleSelectionDialog();
+
+            return super.onOptionsItemSelected(item);
+        } else if (itemId == R.id.action_filter) {
+            displaySingleSelectionDialog();
+
+            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
 

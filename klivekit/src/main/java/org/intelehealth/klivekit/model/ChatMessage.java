@@ -48,6 +48,8 @@ public class ChatMessage implements ItemHeader {
     @SerializedName("type")
     private String type;
 
+    private String openMrsId;
+
     private int layoutType;
 
     private boolean loading;
@@ -62,12 +64,12 @@ public class ChatMessage implements ItemHeader {
 
     public String getMessageTime() {
         Date date = DateTimeUtils.parseUTCDate(createdDate(), DateTimeUtils.DB_FORMAT);
-        return DateTimeUtils.formatIsdDate(date, DateTimeUtils.MESSAGE_TIME_FORMAT);
+        return DateTimeUtils.formatToLocalDate(date, DateTimeUtils.MESSAGE_TIME_FORMAT);
     }
 
     public String getMessageDay() {
         Date date = DateTimeUtils.parseUTCDate(createdDate(), DateTimeUtils.DB_FORMAT);
-        return DateTimeUtils.formatIsdDate(date, DateTimeUtils.MESSAGE_DAY_FORMAT);
+        return DateTimeUtils.formatToLocalDate(date, DateTimeUtils.MESSAGE_DAY_FORMAT);
     }
 
     public void setCreatedAt(String createdAt) {
@@ -210,5 +212,13 @@ public class ChatMessage implements ItemHeader {
 
     public String getRoomId() {
         return mFromUser + "_" + mPatientId + "_" + mToUser;
+    }
+
+    public String getOpenMrsId() {
+        return openMrsId;
+    }
+
+    public void setOpenMrsId(String openMrsId) {
+        this.openMrsId = openMrsId;
     }
 }

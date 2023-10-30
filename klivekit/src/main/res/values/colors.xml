@@ -129,4 +129,13 @@
     <color name="colorYellow_2_trans">#EEf2aa00</color>
     <color name="colorAccent_1">#34a7e1</color>
     <color name="gray_4_1">#adb7c0</color>
+
+    <!--   Call log status color    -->
+    <color name="colorMissedCallBg">#44FA3131</color>
+    <color name="colorMissedCall">#FA3131</color>
+    <color name="colorReceivedCallBg">#4418A700</color>
+    <color name="colorIncomingCall">#18A700</color>
+    <color name="colorOutgoingCallBg">#443A81FD</color>
+    <color name="colorOutgoingCall">#3A81FD</color>
+    <color name="rippleMaskColor">#000000</color>
 </resources>

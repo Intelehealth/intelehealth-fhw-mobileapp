@@ -355,71 +355,50 @@ public class VisitSummaryActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.summary_home: {
-//                NavUtils.navigateUpFromSameTask(this);
-                Intent i = new Intent(this, HomeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.summary_home) {//                NavUtils.navigateUpFromSameTask(this);
+            Intent i = new Intent(this, HomeActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            return true;
+        } else if (itemId == R.id.summary_print) {
+            try {
+                doWebViewPrint_Button();
+            } catch (ParseException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
-            case R.id.summary_print: {
-                try {
-                    doWebViewPrint_Button();
-                } catch (ParseException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-                return true;
-            }
-            case R.id.summary_sms: {
-                //     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
-                return true;
-            }
-
-            case R.id.summary_endVisit: {
-                //meera
-                if (hasPrescription.equalsIgnoreCase("true")) {
-                    if (downloaded) {
-                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            return true;
+        } else if (itemId == R.id.summary_sms) {//     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
+            return true;
+        } else if (itemId == R.id.summary_endVisit) {//meera
+            if (hasPrescription.equalsIgnoreCase("true")) {
+                if (downloaded) {
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                        alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
-                        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
-                        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                endVisit();
-                            }
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.show();
-                        //alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+                    alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
+                    alertDialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            endVisit();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.show();
+                    //alertDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-                    } else {
-                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                        alertDialogBuilder.setMessage(R.string.error_no_data);
-                        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.show();
-                        //alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-                    }
                 } else {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                    alertDialogBuilder.setMessage(R.string.prescription_notprovided_msg);
-                    alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setMessage(R.string.error_no_data);
+                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -429,11 +408,23 @@ public class VisitSummaryActivity extends BaseActivity {
                     //alertDialog.show();
                     IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
                 }
-                return true;
+            } else {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+                alertDialogBuilder.setMessage(R.string.prescription_notprovided_msg);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.show();
+                //alertDialog.show();
+                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
             }
-            default:
-                return super.onOptionsItemSelected(item);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 

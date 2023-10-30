@@ -1,6 +1,6 @@
 package org.intelehealth.klivekit.chat.data
 
-import com.codeglo.billingclient.room.dao.ChatDao
+import org.intelehealth.klivekit.room.dao.ChatDao
 import org.intelehealth.klivekit.chat.model.ChatMessage
 import org.intelehealth.klivekit.chat.model.MessageStatus
 import javax.inject.Inject

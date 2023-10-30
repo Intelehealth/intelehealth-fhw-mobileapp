@@ -295,16 +295,16 @@ public class SearchPatientActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.summary_endAllVisit:
-                endAllVisit();
-            case R.id.action_filter:
-                //alert box.
-                displaySingleSelectionDialog();    //function call
-            case R.id.action_search:
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == R.id.summary_endAllVisit) {
+            endAllVisit();
+
+            //alert box.
+            displaySingleSelectionDialog();    //function call
+        } else if (itemId == R.id.action_filter) {//alert box.
+            displaySingleSelectionDialog();    //function call
         }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

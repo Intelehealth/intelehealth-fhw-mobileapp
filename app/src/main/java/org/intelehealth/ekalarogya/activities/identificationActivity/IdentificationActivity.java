@@ -2354,30 +2354,25 @@ public class IdentificationActivity extends AppCompatActivity implements
 
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
-        switch (view.getId()) {
-            case R.id.identification_gender_male:
-                if (checked)
-                    mGender = "M";
-                Log.v(TAG, "gender:" + mGender);
-                break;
-            case R.id.identification_gender_female:
-                if (checked)
-                    mGender = "F";
-                Log.v(TAG, "gender:" + mGender);
-                break;
-            case R.id.identification_gender_other:
-                if (checked)
-                    mGender = "O";
-                Log.v(TAG, "gender: " + mGender);
-                break;
-            case R.id.identification_yes:
-                if (checked)
-                    framelayout_vaccination.setVisibility(View.VISIBLE);
-                break;
-            case R.id.identification_no:
-                if (checked)
-                    framelayout_vaccination.setVisibility(View.GONE);
-                break;
+        int id = view.getId();
+        if (id == R.id.identification_gender_male) {
+            if (checked)
+                mGender = "M";
+            Log.v(TAG, "gender:" + mGender);
+        } else if (id == R.id.identification_gender_female) {
+            if (checked)
+                mGender = "F";
+            Log.v(TAG, "gender:" + mGender);
+        } else if (id == R.id.identification_gender_other) {
+            if (checked)
+                mGender = "O";
+            Log.v(TAG, "gender: " + mGender);
+        } else if (id == R.id.identification_yes) {
+            if (checked)
+                framelayout_vaccination.setVisibility(View.VISIBLE);
+        } else if (id == R.id.identification_no) {
+            if (checked)
+                framelayout_vaccination.setVisibility(View.GONE);
         }
     }
 

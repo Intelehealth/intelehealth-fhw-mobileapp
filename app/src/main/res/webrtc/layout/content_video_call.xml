@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <io.livekit.android.renderer.SurfaceViewRenderer
+        <io.livekit.android.renderer.TextureViewRenderer
             android:id="@+id/incoming_surface_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -48,36 +48,56 @@
             android:text=""
             android:textColor="#fff" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivRemoteSpeakerStatus"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top|start"
-            android:layout_margin="@dimen/std_16dp"
-            android:background="@drawable/rounded_icon_white_bg"
-            app:srcCompat="@drawable/selector_active_speaker" />
+            android:background="@color/transparent">
 
-        <TextView
-            android:id="@+id/tvCallDuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="@dimen/std_16dp"
-            android:layout_marginBottom="@dimen/std_16dp"
-            android:textColor="@color/font_black_0"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="00:00" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivRemoteSpeakerStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="@dimen/std_16dp"
+                android:background="@drawable/rounded_icon_white_bg"
+                app:srcCompat="@drawable/selector_active_speaker" />
 
-        <TextView
-            android:id="@+id/tvVideoCallDoctorName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/std_16dp"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            tools:text="@string/patient" />
+            <TextView
+                android:id="@+id/tvCallDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/std_16dp"
+                android:layout_marginBottom="@dimen/std_16dp"
+                android:textColor="@color/font_black_0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="00:00" />
+
+            <TextView
+                android:id="@+id/tvVideoCallPatientName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/std_8dp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                tools:text="@string/patient" />
+
+            <TextView
+                android:id="@+id/tvVideoCallDoctorName"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvVideoCallPatientName"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/std_8dp"
+                android:textColor="@android:color/black"
+                tools:text="@string/doctor" />
+        </RelativeLayout>
     </FrameLayout>
 
     <androidx.cardview.widget.CardView

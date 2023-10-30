@@ -1,4 +1,4 @@
-package com.codeglo.billingclient.room.dao
+package org.intelehealth.klivekit.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

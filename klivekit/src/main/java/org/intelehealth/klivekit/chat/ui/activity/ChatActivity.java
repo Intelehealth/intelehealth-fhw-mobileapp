@@ -14,10 +14,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -66,7 +67,7 @@ import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.ChatResponse;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
-import org.intelehealth.klivekit.ui.activity.VideoCallActivity;
+import org.intelehealth.klivekit.call.ui.activity.VideoCallActivity;
 import org.intelehealth.klivekit.utils.AwsS3Utils;
 import org.intelehealth.klivekit.utils.BitmapUtils;
 import org.intelehealth.klivekit.utils.Constants;
@@ -107,6 +108,10 @@ public class ChatActivity extends AppCompatActivity {
     private String mPatientUUid = "";
     private String mVisitUUID = "";
     private String mPatientName = "";
+
+    private String hwName;
+    private String openMrsId;
+
     protected LinearLayout mEmptyLinearLayout, mLoadingLinearLayout;
     protected EditText mMessageEditText;
     protected TextView mEmptyTextView;
@@ -284,6 +289,14 @@ public class ChatActivity extends AppCompatActivity {
         if (getIntent().hasExtra("patientName")) {
             mPatientName = getIntent().getStringExtra("patientName");
         }
+
+        if (getIntent().hasExtra("hwName")) {
+            hwName = getIntent().getStringExtra("hwName");
+        }
+        if (getIntent().hasExtra("openMrsId")) {
+            openMrsId = getIntent().getStringExtra("openMrsId");
+        }
+
         SocketManager.getInstance().setActiveRoomId(getRoomId());
         Log.v("mPatientUUid", String.valueOf(mPatientUUid));
         Log.v("mFromUUId", String.valueOf(mFromUUId));
@@ -336,6 +349,8 @@ public class ChatActivity extends AppCompatActivity {
             return false;
         });
 
+        showCharLimitToast();
+
         if (getIntent().getBooleanExtra("isForVideo", false)) {
 
         }
@@ -350,6 +365,27 @@ public class ChatActivity extends AppCompatActivity {
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
         registerReceiver(mBroadcastReceiver, filterSend);
+    }
+
+    private void showCharLimitToast() {
+        mMessageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > 0 && charSequence.length() >= 1000) {
+                    Toast.makeText(ChatActivity.this, "You reach to max limit of 1000 chars", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private BroadcastReceiver mBroadcastReceiver;
@@ -483,6 +519,8 @@ public class ChatActivity extends AppCompatActivity {
         chatMessage.setToUser(toUUId);
         chatMessage.setVisitId(mVisitUUID);
         chatMessage.setPatientName(mPatientName);
+        chatMessage.setHwName(hwName);
+        chatMessage.setOpenMrsId(openMrsId);
         chatMessage.setType(type);
         chatMessage.setMessageStatus(MessageStatus.SENDING.getValue());
         addNewMessage(chatMessage);
@@ -906,7 +944,7 @@ public class ChatActivity extends AppCompatActivity {
         args.setPatientName(mPatientName);
         args.setPatientPersonUuid(mPatientUUid);
         args.setDoctorUuid(mToUUId);
-        args.setIncomingCall(false);
+//        args.setIncomingCall(false);
         args.setNurseId(mFromUUId);
         args.setRoomId(mPatientUUid);
         return args;

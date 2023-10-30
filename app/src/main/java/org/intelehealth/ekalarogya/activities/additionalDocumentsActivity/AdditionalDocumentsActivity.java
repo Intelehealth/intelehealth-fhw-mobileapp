@@ -141,17 +141,15 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_docs:
-                Intent cameraIntent = new Intent(this, CameraActivity.class);
-                String imageName = UUID.randomUUID().toString();
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_add_docs) {
+            Intent cameraIntent = new Intent(this, CameraActivity.class);
+            String imageName = UUID.randomUUID().toString();
+            cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+            cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
+            startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

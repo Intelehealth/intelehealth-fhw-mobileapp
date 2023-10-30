@@ -1,4 +1,4 @@
-package com.codeglo.coyamore.di
+package org.intelehealth.klivekit.di
 
 import org.intelehealth.klivekit.restapi.AuthInterceptor
 import com.google.gson.Gson
@@ -6,9 +6,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.livekit.android.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.intelehealth.klivekit.BuildConfig
 import org.intelehealth.klivekit.restapi.WebRtcApiClient
 import org.intelehealth.klivekit.utils.Constants
 import retrofit2.Retrofit

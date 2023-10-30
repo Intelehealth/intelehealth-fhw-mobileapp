@@ -4,5 +4,5 @@ pluginManagement {
     }
 }
 include ':app'
-//include ':webrtc'
+include ':fcm'
 include ':klivekit'

@@ -169,53 +169,52 @@ public class HwProfileActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.hw_profile_image_edit:
-                hw_designation_value.setClickable(true);
-                hw_designation_value.setFocusable(true);
-                hw_designation_value.setCursorVisible(true);
-                hw_designation_value.setFocusableInTouchMode(true);
-                hw_designation_value.requestFocus();
-                hw_designation_value.setSelection(hw_designation_value.getText().length());
-                hw_mobile_value.setClickable(true);
-                hw_mobile_value.setFocusable(true);
-                hw_mobile_value.setCursorVisible(true);
-                hw_mobile_value.setFocusableInTouchMode(true);
-                hw_whatsapp_value.setClickable(true);
-                hw_whatsapp_value.setFocusable(true);
-                hw_whatsapp_value.setCursorVisible(true);
-                hw_whatsapp_value.setFocusableInTouchMode(true);
-                hw_email_value.setClickable(true);
-                hw_email_value.setFocusable(true);
-                hw_email_value.setCursorVisible(true);
-                hw_email_value.setFocusableInTouchMode(true);
-                save_hw_detail.setVisibility(View.VISIBLE);
-                save_hw_detail.setClickable(true);
-                save_hw_detail.setEnabled(true);
-                save_hw_detail.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (NetworkConnection.isOnline(HwProfileActivity.this)) {
-                            CheckValidation();
-                        } else {
-                            Toast.makeText(HwProfileActivity.this, getString(R.string.no_network), Toast.LENGTH_SHORT).show();
-                        }
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        } else if (itemId == R.id.hw_profile_image_edit) {
+            hw_designation_value.setClickable(true);
+            hw_designation_value.setFocusable(true);
+            hw_designation_value.setCursorVisible(true);
+            hw_designation_value.setFocusableInTouchMode(true);
+            hw_designation_value.requestFocus();
+            hw_designation_value.setSelection(hw_designation_value.getText().length());
+            hw_mobile_value.setClickable(true);
+            hw_mobile_value.setFocusable(true);
+            hw_mobile_value.setCursorVisible(true);
+            hw_mobile_value.setFocusableInTouchMode(true);
+            hw_whatsapp_value.setClickable(true);
+            hw_whatsapp_value.setFocusable(true);
+            hw_whatsapp_value.setCursorVisible(true);
+            hw_whatsapp_value.setFocusableInTouchMode(true);
+            hw_email_value.setClickable(true);
+            hw_email_value.setFocusable(true);
+            hw_email_value.setCursorVisible(true);
+            hw_email_value.setFocusableInTouchMode(true);
+            save_hw_detail.setVisibility(View.VISIBLE);
+            save_hw_detail.setClickable(true);
+            save_hw_detail.setEnabled(true);
+            save_hw_detail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (NetworkConnection.isOnline(HwProfileActivity.this)) {
+                        CheckValidation();
+                    } else {
+                        Toast.makeText(HwProfileActivity.this, getString(R.string.no_network), Toast.LENGTH_SHORT).show();
                     }
-                });
-                hw_profile_image.setClickable(true);
-                hw_profile_image.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        selectImage();
-                    }
-                });
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                }
+            });
+            hw_profile_image.setClickable(true);
+            hw_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectImage();
+                }
+            });
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     public void selectImage() {
