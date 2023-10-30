@@ -1646,11 +1646,11 @@
     <string name="vendor_discount">دعم من مقدم الخدمة </string>
     <string name="out_of_pocket">الكلفة المترتبة على المريض</string>
     <string name="other_aids">مساعدات اخرى</string>
-    <string name="dispense_data_saved">Dispense Data Saved.</string>
-    <string name="administer_data_saved">Administer Data Saved.</string>
-    <string name="no_medication_data_present_to_administer">No medication data present to administer.</string>
-    <string name="no_medication_and_aid_data_present_to_dispense">No medication and aid data present to dispense.</string>
-    <string name="max_4_images_is_allowed">Max 4 images is allowed.</string>
+    <string name="dispense_data_saved">تم حفظ بيانات صرف الدواء/الدعم</string>
+    <string name="administer_data_saved">م حفظ بيانات تطبيق الدواء/الدعم</string>
+    <string name="no_medication_data_present_to_administer">لا يوجد بيانات عن دواء أو دعم معطى</string>
+    <string name="no_medication_and_aid_data_present_to_dispense">لا يوجد بيانات عن دواء أو دعم مصروف</string>
+    <string name="max_4_images_is_allowed">الحد الأقصى المسموح 4 صور</string>
 
 
 </resources>
