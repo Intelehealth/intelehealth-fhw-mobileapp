@@ -160,7 +160,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
             rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
         }
         else {
-            tvOfflineHintVideosHelpFragment.setVisibility(View.VISIBLE);
+            //tvOfflineHintVideosHelpFragment.setVisibility(View.VISIBLE); for namma aarogya -nak28
             List<YoutubeVideoList> list = new ArrayList<>();
             MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), list);
             rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
@@ -232,7 +232,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
         rvSearchedVideos.setLayoutManager(layoutManager);
 
         if (isInternetAvailable) {
-            rvSearchedVideos.setVisibility(View.VISIBLE);
+           // rvSearchedVideos.setVisibility(View.VISIBLE);  //commented for namma aarogya as per
             tvOfflineHintVideosHelpFragment.setVisibility(View.GONE);
             MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), getVideoList());
             rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
@@ -241,7 +241,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
 
         } else {
             rvSearchedVideos.setVisibility(View.GONE);
-            tvOfflineHintVideosHelpFragment.setVisibility(View.VISIBLE);
+            //tvOfflineHintVideosHelpFragment.setVisibility(View.VISIBLE); for namma aarogya -nak28
             List<YoutubeVideoList> list = new ArrayList<>();
             MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), list);
             rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
