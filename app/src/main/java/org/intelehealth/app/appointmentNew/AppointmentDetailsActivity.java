@@ -453,9 +453,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             // Check if the Visit is Ended Or Not
             // If the visit has ended, we don't need to show the "Prescription Pending" text
 
-            if (isVisitEnded) {
+            if (isVisitEnded && !hasPrescription) {
                 layoutPrescButtons.setVisibility(View.GONE);
-                tvPrescStatus.setText(getResources().getString(R.string.prescription_not_received_because_the_visit_has_been_ended));
+                tvPrescStatus.setText(getResources().getString(R.string.no_prescription_exists));
             } else {
                 String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
                 modifiedDate = timeAgoFormat(modifiedDate);
