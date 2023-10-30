@@ -131,6 +131,7 @@ open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHa
     }
 
     private suspend fun collectEvents() {
+        room.state.name
         room.events.collect {
             Timber.e { "Room event: $it" }
             when (it) {
@@ -462,7 +463,7 @@ open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHa
     }
 
     // Create and publish remote audio/video tracks
-    private suspend fun setupRemoteTrack() {
+    suspend fun setupRemoteTrack() {
         withContext(coroutineContext) {
             remoteParticipant = room.remoteParticipants.values.firstOrNull()
             mutableRemoteVideoTrack.postValue(remoteParticipant?.let { getVideoTrack(it) })
@@ -471,6 +472,22 @@ open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHa
 //            remoteParticipant?.let { observeRemoteParticipantAudioTrack(it) }
 //            remoteParticipant?.let { checkRemoteParticipantConnectivity(it) }
 //            remoteParticipant?.let { updateVideoTrack(it) }
+        }
+    }
+
+    fun resumeRemoteVideoTrack() {
+        viewModelScope.launch {
+            val videoTrack = remoteParticipant?.let { return@let getVideoTrack(it) }
+            videoTrack?.start()
+            mutableRemoteVideoTrack.postValue(videoTrack)
+        }
+    }
+
+    fun pauseRemoteVideoTrack() {
+        viewModelScope.launch {
+            val videoTrack = remoteParticipant?.let { return@let getVideoTrack(it) }
+            videoTrack?.stop()
+            mutableRemoteVideoTrack.postValue(videoTrack)
         }
     }
 

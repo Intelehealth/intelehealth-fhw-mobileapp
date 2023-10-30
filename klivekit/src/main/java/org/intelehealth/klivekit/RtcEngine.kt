@@ -83,7 +83,7 @@ class RtcEngine private constructor(
 
         @SuppressLint("StaticFieldLeak")
         @Volatile
-        private var room: Room? = null
+        var room: Room? = null
 
         fun getConfig(context: Context): RtcEngine? {
             val preferenceHelper = PreferenceHelper(context)

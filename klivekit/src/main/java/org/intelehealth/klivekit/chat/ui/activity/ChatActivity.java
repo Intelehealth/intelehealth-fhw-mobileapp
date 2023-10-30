@@ -14,7 +14,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -347,6 +349,8 @@ public class ChatActivity extends AppCompatActivity {
             return false;
         });
 
+        showCharLimitToast();
+
         if (getIntent().getBooleanExtra("isForVideo", false)) {
 
         }
@@ -361,6 +365,27 @@ public class ChatActivity extends AppCompatActivity {
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
         registerReceiver(mBroadcastReceiver, filterSend);
+    }
+
+    private void showCharLimitToast() {
+        mMessageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > 0 && charSequence.length() >= 1000) {
+                    Toast.makeText(ChatActivity.this, "You reach to max limit of 1000 chars", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private BroadcastReceiver mBroadcastReceiver;

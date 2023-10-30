@@ -1,7 +1,6 @@
 package org.intelehealth.klivekit.provider
 
 import android.content.Context
-import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.livekit.android.LiveKit
 import io.livekit.android.LiveKitOverrides
@@ -14,6 +13,7 @@ import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalVideoTrackOptions
 import io.livekit.android.room.track.VideoPreset169
+import io.livekit.android.room.track.VideoPreset43
 import org.webrtc.EglBase
 import org.webrtc.HardwareVideoEncoderFactory
 
@@ -24,7 +24,7 @@ import org.webrtc.HardwareVideoEncoderFactory
  **/
 object LiveKitProvider {
 
-    fun getRoom(@ApplicationContext context: Context) = provideLiveKitRoom(
+    fun createRoom(@ApplicationContext context: Context) = provideLiveKitRoom(
         context = context,
         options = provideRoomOptions(
             provideLocalAudioTrackOptions(),
@@ -46,7 +46,7 @@ object LiveKitProvider {
     private fun provideLocalVideoTrackOptions() = LocalVideoTrackOptions(
         deviceId = "",
         position = CameraPosition.FRONT,
-        captureParams = VideoPreset169.QVGA.capture,
+        captureParams = VideoPreset43.FHD.capture,
     )
 
     private fun provideAudioPublishDefault() = AudioTrackPublishDefaults(
@@ -55,7 +55,9 @@ object LiveKitProvider {
     )
 
     private fun provideVideoPublishTrack() = VideoTrackPublishDefaults(
-        videoEncoding = VideoPreset169.QVGA.encoding,
+        videoEncoding = VideoPreset43.VGA.encoding
+//        videoEncoding = VideoPreset169.VGA.encoding,
+//            videoCodec = VideoCodec.VP8.codecName
     )
 
     private fun provideRoomOptions(
@@ -69,7 +71,7 @@ object LiveKitProvider {
         adaptiveStream = true
     )
 
-    fun provideAudioSwitchHandler(@ApplicationContext context: Context) =
+    private fun provideAudioSwitchHandler(@ApplicationContext context: Context) =
         AudioSwitchHandler(context)
 
     private fun provideLiveKitRoom(
@@ -83,7 +85,7 @@ object LiveKitProvider {
             audioHandler = audioSwitchHandler,
             videoEncoderFactory = HardwareVideoEncoderFactory(
                 EglBase.create().eglBaseContext,
-                false,
+                true,
                 true
             )
         )

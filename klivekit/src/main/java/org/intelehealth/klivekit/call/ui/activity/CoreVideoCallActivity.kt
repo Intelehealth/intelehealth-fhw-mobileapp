@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import org.intelehealth.app.registry.PermissionRegistry
 import org.intelehealth.app.registry.allGranted
 import org.intelehealth.klivekit.R
+import org.intelehealth.klivekit.RtcEngine
 import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
 import org.intelehealth.klivekit.call.ui.viewmodel.CallViewModel
 import org.intelehealth.klivekit.call.ui.viewmodel.VideoCallViewModel
@@ -276,7 +277,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     private fun handleCallByStatus() {
         if (args.isCallOnGoing()) {
-
+            return
         } else if (args.isIncomingCall() && args.isCallAccepted()) {
             acceptCall()
             args.callStatus = CallStatus.ON_GOING
@@ -315,34 +316,16 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         super.onResume()
         Timber.d { "onResume" }
         videoCallViewModel.registerReceivers(this)
-        onRemoteParticipantCameraChange(false)
-//        videoCallViewModel.remoteParticipant?.let {
-//            it.getTrackPublication(Track.Source.CAMERA)?.let { pub ->
-//                Timber.d { "Remote ${pub.track?.rtcTrack?.enabled()}" }
-//                pub.track?.let { track -> attachRemoteVideo(track as VideoTrack) }
-//            }
-//        }
-//        onRemoteParticipantCameraChange(false)
-//        videoCallViewModel.remoteParticipant?.let {
-//            if (it.signalClient.isConnected) {
-//                val track = it.getTrackPublication(Track.Source.CAMERA)
-//                attachRemoteVideo(track?.track as VideoTrack)
-//            }
-//        }
-//        videoCallViewModel.remoteVideoTrack.observe(this) { it?.let { it1 -> attachRemoteVideo(it1) } }
+        if (args.isCallOnGoing()) videoCallViewModel.resumeRemoteVideoTrack()
     }
 
     override fun onPause() {
         super.onPause()
         Timber.d { "onPause" }
         videoCallViewModel.unregisterBroadcast(this)
-//        videoCallViewModel.remoteParticipant?.let {
-//            it.getTrackPublication(Track.Source.CAMERA)?.let { pub ->
-//                pub.track?.rtcTrack?.setEnabled(false)
-//                Timber.d { "Remote ${pub.track?.rtcTrack?.enabled()}" }
-//                pub.track?.let { track -> (track as VideoTrack).removeRenderer(getRemoteVideoRender()) }
-//            }
-//        }
+        if (args.isCallOnGoing()) {
+            videoCallViewModel.pauseRemoteVideoTrack()
+        }
     }
 
     open fun onCallEnd() {
