@@ -2764,7 +2764,7 @@ public class Node implements Serializable {
                             }
                         }
                     } else {
-                        if (isAssociateSymptomsType) {
+                        if (isAssociateSymptomsType && level > 0) {
                             stringsList.add(right_pointing + mOptions.get(i).findDisplay() + next_line);
                         } else {
                             stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);

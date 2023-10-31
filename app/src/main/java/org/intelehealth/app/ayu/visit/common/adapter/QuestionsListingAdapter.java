@@ -1194,7 +1194,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         } else if (!type.isEmpty() && node.isSelected()) {
                             if(node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
                                 for (int i = 0; i < options.size(); i++) {
-                                    if (!options.get(i).getText().equals(node.getText())) {
+                                    String typeInner = options.get(i).getInputType();
+                                    if (!options.get(i).getText().equals(node.getText()) && !typeInner.equalsIgnoreCase("camera")) {
                                         options.get(i).unselectAllNestedNode();
                                     }
                                 }
