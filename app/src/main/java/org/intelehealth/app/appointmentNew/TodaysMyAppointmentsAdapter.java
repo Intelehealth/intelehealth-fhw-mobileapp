@@ -215,7 +215,6 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 holder.tvDate.setText(appointmentInfoModel.getSlotTime());
                 Log.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.getSlotDate());
                 Log.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.getSlotTime());
-
             }
 
 

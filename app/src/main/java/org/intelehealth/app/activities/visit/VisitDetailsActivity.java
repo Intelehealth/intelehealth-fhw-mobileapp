@@ -57,6 +57,8 @@ import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -69,7 +71,9 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -474,8 +478,11 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         if (pres.getVisitUuid() != null) {
             endvisit_relative_block.setVisibility(View.VISIBLE);
             btn_end_visit.setOnClickListener(v -> {
-                VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate,
-                        vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
+                if (!hasPrescription) {
+                    checkIfAppointmentExistsForVisit(visitID);
+                } else {
+                    triggerEndVisit();
+                }
             });
         } else {
             endvisit_relative_block.setVisibility(View.GONE);
@@ -654,7 +661,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
                                     }
                                     StringBuilder stringBuilder = new StringBuilder();
-                                    for (int i = 0; i < list.size(); i++) {
+                                    int size = list.size() == 1 ? list.size() : list.size() - 1;
+                                    for (int i = 0; i < size; i++) {
                                         String complainName = "";
                                         List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                                         String[] spt1 = list.get(i).split("●");
@@ -939,5 +947,46 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             new SyncUtils().syncBackground();
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void checkIfAppointmentExistsForVisit(String visitUUID) {
+        // First check if there is an appointment or not
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        if (!appointmentDAO.doesAppointmentExistForVisit(visitUUID)) {
+            triggerEndVisit();
+            return;
+        }
+
+        String appointmentDateTime = appointmentDAO.getTimeAndDateForAppointment(visitUUID);
+        boolean isCurrentTimeAfterAppointmentTime = DateAndTimeUtils.isCurrentDateTimeAfterAppointmentTime(appointmentDateTime);
+
+        // Next, check if the time for appointment is passed. In case the time has passed, we don't need to cancel the appointment as it is automatically completed.
+        if (isCurrentTimeAfterAppointmentTime) {
+            triggerEndVisit();
+            return;
+        }
+
+        // In case the appointment time is not passed, only in that case, we will display the dialog for ending the appointment.
+        new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
+            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                cancelAppointment(visitUUID);
+                triggerEndVisit();
+            }
+        });
+    }
+
+    private void triggerEndVisit() {
+        VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
+    }
+
+    private void cancelAppointment(String visitUUID) {
+        AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(visitUUID);
+
+        int appointmentID = appointmentInfo.getId();
+        String reason = "Visit was ended";
+        String providerID = sessionManager.getProviderID();
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }
 }

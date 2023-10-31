@@ -69,6 +69,7 @@ import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.PatientDTO;
@@ -461,21 +462,27 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         } else {
             // if no presc given than show the dialog of remind and pending based on time passed from visit uploaded.
             ivDrawerPrescription.setVisibility(View.GONE);
-            String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
-            modifiedDate = timeAgoFormat(modifiedDate);
-            if (modifiedDate.contains("minutes") || modifiedDate.contains("hours")) {
-                // here dont show remind block
-                // presc_remind_block.setVisibility(View.GONE);
+
+            // Check if the Visit is Ended Or Not
+            // If the visit has ended, we don't need to show the "Prescription Pending" text
+
+            if (isVisitEnded && !hasPrescription) {
                 layoutPrescButtons.setVisibility(View.GONE);
+                tvPrescStatus.setText(getResources().getString(R.string.no_prescription_exists));
             } else {
-                // here show remind block as its pending from more than 1 day.
-                layoutPrescButtons.setVisibility(View.GONE); // show remind btn for presc to be given as its more than days.
+                String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
+                modifiedDate = timeAgoFormat(modifiedDate);
+                if (modifiedDate.contains("minutes") || modifiedDate.contains("hours")) {
+                    // here dont show remind block
+                    // presc_remind_block.setVisibility(View.GONE);
+                    layoutPrescButtons.setVisibility(View.GONE);
+                } else {
+                    // here show remind block as its pending from more than 1 day.
+                    layoutPrescButtons.setVisibility(View.GONE); // show remind btn for presc to be given as its more than days.
+                }
+                tvPrescStatus.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
+                tvPrescStatus.setTextColor(getResources().getColor(R.color.red));
             }
-            String timeText1 = getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", "");
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                timeText1 = modifiedDate.replace("पहले", "") + "से पेंडिंग है";
-            tvPrescStatus.setText(timeText1);
-            tvPrescStatus.setTextColor(getResources().getColor(R.color.red));
         }
         // presc block - end
 

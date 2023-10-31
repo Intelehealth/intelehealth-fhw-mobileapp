@@ -391,6 +391,8 @@ public class AppointmentDAO {
                 try {
                     if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
                         appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else if (status.equalsIgnoreCase("cancelled")) {
+                        appointmentInfo.setStatus(status);
                     } else {
                         appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
                     }
@@ -702,9 +704,13 @@ public class AppointmentDAO {
                 appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
                 appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                 appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+
+                String status = idCursor.getString(idCursor.getColumnIndexOrThrow("status"));
                 try {
                     if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
-                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                        appointmentInfo.setStatus(status);
+                    } else if (status.equalsIgnoreCase("cancelled")) {
+                        appointmentInfo.setStatus(status);
                     } else {
                         appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
                     }
@@ -1619,5 +1625,44 @@ public class AppointmentDAO {
 
         idCursor.close();
         return appointmentInfos;
+    }
+
+    public boolean doesAppointmentExistForVisit(String visitUUID) {
+        boolean doesAppointmentExist = false;
+        String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ?";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String appointmentId = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            if (appointmentId != null) {
+                doesAppointmentExist = true;
+            }
+            cursor.close();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return doesAppointmentExist;
+    }
+
+    public String getTimeAndDateForAppointment(String visitUUID) {
+        String appointmentDateTime = "";
+        String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ?";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String appointmentDate = cursor.getString(cursor.getColumnIndexOrThrow("slot_date"));
+            String appointmentTime = cursor.getString(cursor.getColumnIndexOrThrow("slot_time"));
+            appointmentDateTime = appointmentDate + " " + appointmentTime;
+            cursor.close();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return appointmentDateTime;
     }
 }

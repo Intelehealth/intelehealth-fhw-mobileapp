@@ -70,7 +70,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
     }
 
     public Context setLocale(Context context) {

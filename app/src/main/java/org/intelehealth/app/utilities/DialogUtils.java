@@ -285,4 +285,16 @@ public class DialogUtils {
         return alertDialog;
     }
 
+    public void triggerEndAppointmentConfirmationDialog(Context activityContext, CustomDialogListener customDialogListener) {
+        showCommonDialog(
+                activityContext,
+                R.drawable.dialog_close_visit_icon,
+                activityContext.getResources().getString(R.string.confirm_cancel_appointment),
+                activityContext.getResources().getString(R.string.confirm_cancel_appointment_message),
+                false,
+                activityContext.getResources().getString(R.string.confirm),
+                activityContext.getResources().getString(R.string.cancel),
+                customDialogListener
+        );
+    }
 }

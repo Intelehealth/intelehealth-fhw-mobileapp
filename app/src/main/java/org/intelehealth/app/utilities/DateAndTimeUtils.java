@@ -1067,4 +1067,18 @@ public class DateAndTimeUtils {
             throw new RuntimeException(e);
         }
     }
+
+    public static boolean isCurrentDateTimeAfterAppointmentTime(String givenDateTime) {
+        boolean isGivenDateTimeGreater;
+        Date currentDate = new Date();
+
+        try {
+            Date givenDate = new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.ENGLISH).parse(givenDateTime);
+            isGivenDateTimeGreater = currentDate.after(givenDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        return isGivenDateTimeGreater;
+    }
 }

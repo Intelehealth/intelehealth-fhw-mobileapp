@@ -15,6 +15,7 @@
         <item name="colorOnSurface">#212121</item>
         <item name="textAppearanceLargePopupMenu">@style/AppTheme.TextAppearance.Popup</item>
         <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListViewStyle</item>
     </style>
 

@@ -1860,4 +1860,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">You are offline! Please connect to the internet for videos.</string>
     <string name="follow_up_date_arrived">Your follow-up time has arrived. Please end the current visit to start your follow-up visit.</string>
 
+    <string name="confirm_cancel_appointment">Cancel Appointment?</string>
+    <string name="confirm_cancel_appointment_message">This visit has an associated appointment and ending the visit will also cancel the appointment. Are you sure that you want to proceed?</string>
+    <string name="prescription_not_received_because_the_visit_has_been_ended">The prescription hasn\'t been received as the visit has been ended.</string>
+    <string name="no_prescription_exists">No Prescription Exists</string>
 </resources>
