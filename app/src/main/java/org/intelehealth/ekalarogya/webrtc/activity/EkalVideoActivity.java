@@ -259,9 +259,9 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
 
     private Drawable getCurrentMicStatusIcon(boolean isMuted) {
         if (isMuted) {
-            return ContextCompat.getDrawable(this, R.drawable.ic_mic_off);
+            return ContextCompat.getDrawable(this, org.intelehealth.klivekit.R.drawable.ic_mic_off);
         } else {
-            return ContextCompat.getDrawable(this, R.drawable.selector_active_speaker);
+            return ContextCompat.getDrawable(this, org.intelehealth.klivekit.R.drawable.selector_active_speaker);
         }
     }
 
@@ -274,7 +274,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
 
     private void showAppClosingDialog() {
         new MaterialAlertDialogBuilder(this)
-                .setMessage(R.string.call_end_aler_txt)
+                .setMessage(org.intelehealth.klivekit.R.string.call_end_aler_txt)
                 .setPositiveButton(R.string.survey_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
