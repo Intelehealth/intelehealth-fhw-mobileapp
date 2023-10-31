@@ -1768,11 +1768,11 @@ public class VitalsActivity extends AppCompatActivity {
                     alertMsg = alertMsg + getResources().getString(R.string.vital_alert_hgb_button) + "\n";
                 }
 
-                if ((mSugarRandom.getText() != null && mSugarRandom.getText().toString().trim().length() != 0 && (Integer.parseInt(mSugarRandom.getText().toString().trim()) < 80 || Integer.parseInt(mSugarRandom.getText().toString().trim()) > 130))) {
+                if ((mSugarRandom.getText() != null && mSugarRandom.getText().toString().trim().length() != 0 && (Double.parseDouble(mSugarRandom.getText().toString().trim()) < 80 || Double.parseDouble(mSugarRandom.getText().toString().trim()) > 130))) {
                     alertMsg = alertMsg + getResources().getString(R.string.vital_alert_sugar_random_button) + "\n";
                 }
 
-                if ((mSugarFasting.getText() != null && mSugarFasting.getText().toString().trim().length() != 0 && (Integer.parseInt(mSugarFasting.getText().toString().trim()) < 70 || Integer.parseInt(mSugarFasting.getText().toString().trim()) > 100))) {
+                if ((mSugarFasting.getText() != null && mSugarFasting.getText().toString().trim().length() != 0 && (Double.parseDouble(mSugarFasting.getText().toString().trim()) < 70 || Double.parseDouble(mSugarFasting.getText().toString().trim()) > 100))) {
                     alertMsg = alertMsg + getResources().getString(R.string.vital_alert_sugar_fasting_button) + "\n";
                 }
 
