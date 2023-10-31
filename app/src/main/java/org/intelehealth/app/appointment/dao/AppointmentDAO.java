@@ -388,6 +388,8 @@ public class AppointmentDAO {
                 appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
                 appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                 appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                String status = idCursor.getString(idCursor.getColumnIndexOrThrow("status"));
+
                 try {
                     if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
                         appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
