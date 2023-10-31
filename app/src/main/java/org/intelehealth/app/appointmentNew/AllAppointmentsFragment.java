@@ -350,7 +350,7 @@ public class AllAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart);
+        List<AppointmentInfo> tempList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate);
         if (tempList.size() > 0) {
             upcomingAppointmentInfoList.addAll(tempList);
             upcomingAllAppointmentsAdapter.notifyDataSetChanged();
@@ -371,7 +371,7 @@ public class AllAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart);
+        List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate);
         if (tempList.size() > 0) {
             cancelledAppointmentInfoList.addAll(tempList);
             cancelledAllAppointmentsAdapter.notifyDataSetChanged();
@@ -392,7 +392,7 @@ public class AllAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart);
+        List<AppointmentInfo> tempList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate);
         if (tempList.size() > 0) {
             getDataForCompletedAppointments(tempList);
             completedAppointmentInfoList.addAll(tempList);
@@ -754,7 +754,7 @@ public class AllAppointmentsFragment extends Fragment {
         //recyclerview for upcoming appointments
         tvUpcomingAppsCount.setText("0");
         tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        upcomingAppointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart);
+        upcomingAppointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate);
 
         if (upcomingAppointmentInfoList.size() > 0) {
             rvUpcomingApp.setVisibility(View.VISIBLE);
@@ -782,7 +782,7 @@ public class AllAppointmentsFragment extends Fragment {
         //recyclerview for getCancelledAppointments appointments
         tvCancelledAppsCount.setText("0");
         tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled_0));
-        cancelledAppointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart);
+        cancelledAppointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate);
 
         if (cancelledAppointmentInfoList.size() > 0) {
             rvCancelledApp.setVisibility(View.VISIBLE);
@@ -810,7 +810,7 @@ public class AllAppointmentsFragment extends Fragment {
     private void getCompletedAppointments() {
         tvCompletedAppsCount.setText("0");
         tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        completedAppointmentInfoList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart);
+        completedAppointmentInfoList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate);
 
         if (completedAppointmentInfoList.size() > 0) {
             rvCompletedApp.setVisibility(View.VISIBLE);
@@ -830,7 +830,7 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
-       for (int i = 0; i < appointmentsDaoList.size(); i++) {
+        for (int i = 0; i < appointmentsDaoList.size(); i++) {
             VisitDTO visitDTO = isVisitPresentForPatient_fetchVisitValues(appointmentsDaoList.get(i).getPatientId());
             if (visitDTO.getUuid() != null && visitDTO.getStartdate() != null) {
                 String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());

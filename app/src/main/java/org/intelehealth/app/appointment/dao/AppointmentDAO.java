@@ -337,7 +337,7 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
-    public List<AppointmentInfo> getUpcomingAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset) {
+    public List<AppointmentInfo> getUpcomingAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate) {
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -350,12 +350,13 @@ public class AppointmentDAO {
                     + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                     + "from tbl_patient p, tbl_appointments a "
                     + "where p.uuid = a.patient_id and new_slot_date "
+                    + "AND a.slot_date != ?"
                     + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
                     + "AND a.status = 'booked'"
                     + "AND datetime(a.slot_js_date) >= datetime('now') "
                     + "LIMIT ? OFFSET ?";
 
-            idCursor = db.rawQuery(selectQuery, new String[]{String.valueOf(limit), String.valueOf(offset)});
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
         } else {
             idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
                             + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
@@ -363,9 +364,10 @@ public class AppointmentDAO {
                             + "from tbl_patient p, tbl_appointments a "
                             + "where p.uuid = a.patient_id "
                             + "AND a.status = 'booked'"
+                            + "AND a.slot_date != ?"
                             + "AND datetime(a.slot_js_date) >= datetime('now') "
                             + "LIMIT ? OFFSET ?"
-                    , new String[]{String.valueOf(limit), String.valueOf(offset)});
+                    , new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
         }
         EncounterDAO encounterDAO = new EncounterDAO();
 
@@ -580,7 +582,7 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
-    public List<AppointmentInfo> getCompletedAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset) {
+    public List<AppointmentInfo> getCompletedAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate) {
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -594,21 +596,23 @@ public class AppointmentDAO {
                     + "from tbl_patient p, tbl_appointments a "
                     + "where p.uuid = a.patient_id and new_slot_date "
                     + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
+                    + "AND a.slot_date != ?"
                     + "AND a.status = 'booked'"
                     + "AND datetime(a.slot_js_date) < datetime('now') "
                     + "LIMIT ? OFFSET ?";
 
-            idCursor = db.rawQuery(selectQuery, new String[]{String.valueOf(limit), String.valueOf(offset)});
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
         } else {
             idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
                             + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
                             + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                             + "from tbl_patient p, tbl_appointments a "
                             + "where p.uuid = a.patient_id "
+                            + "AND a.slot_date != ?"
                             + "AND a.status = 'booked'"
                             + "AND datetime(a.slot_js_date) < datetime('now') "
                             + "LIMIT ? OFFSET ?"
-                    , new String[]{String.valueOf(limit), String.valueOf(offset)});
+                    , new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
 
         }
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -1014,7 +1018,7 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
-    public List<AppointmentInfo> getCancelledAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset) {
+    public List<AppointmentInfo> getCancelledAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate) {
         Cursor idCursor;
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
@@ -1027,20 +1031,22 @@ public class AppointmentDAO {
                     + "a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                     + "FROM tbl_patient p, tbl_appointments a "
                     + "WHERE p.uuid = a.patient_id "
+                    + "AND a.slot_date != ?"
                     + "AND a.status = 'cancelled' "
                     + "AND new_slot_date BETWEEN '" + fromDate + "' AND '" + toDate + "' "
                     + "LIMIT ? OFFSET ?";
 
-            idCursor = db.rawQuery(selectQuery, new String[]{String.valueOf(limit), String.valueOf(offset)});
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
         } else {
             idCursor = db.rawQuery("SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, "
                             + "a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, "
                             + "a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                             + "FROM tbl_patient p, tbl_appointments a "
                             + "WHERE p.uuid = a.patient_id "
+                            + "AND a.slot_date != ?"
                             + "AND a.status = 'cancelled'"
                             + "LIMIT ? OFFSET ?",
-                    new String[]{String.valueOf(limit), String.valueOf(offset)});
+                    new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
         }
 
         EncounterDAO encounterDAO = new EncounterDAO();
