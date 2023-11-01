@@ -300,7 +300,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             result = ""; // if family history does not exist
         }
 
-        db.close();
+//        db.close();
         return result;
     }
 

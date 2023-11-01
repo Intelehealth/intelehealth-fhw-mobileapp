@@ -695,29 +695,27 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 long hours = minutes / 60;
                 long mins = minutes % 60;
                 if (minutes >= 60) {
-                    if (hours > 12) {
-                        timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + ", " + getResources().getString(R.string.at) + " " + slotTime;
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                            timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate)) + ", " + slotTime + " " + getResources().getString(R.string.at);
-                    } else {
-                        timeText = getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
+//                    if (hours > 12) {
+//                        timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + ", " + getResources().getString(R.string.at) + " " + slotTime;
+//                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+//                            timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate)) + ", " + slotTime + " " + getResources().getString(R.string.at);
+//                    } else {
+                    timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + ", " + context.getString(R.string.at) + " " + slotTime;
 
-                    }
+//                    }
                 } else {
-                    timeText = getResources().getString(R.string.in) + " " + minutes + " " + getResources().getString(R.string.minutes_txt);
+                    timeText = getResources().getString(R.string.in) + " " + minutes + " " + getResources().getString(R.string.minutes_txt) + ", " + context.getString(R.string.at) + " " + slotTime;
                 }
 
+            } else {
+                isVisitStartsIn = false;
             }
-            else {
-            isVisitStartsIn = false;
+        } catch (ParseException e) {
+            Log.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
-    } catch(ParseException e)
-    {
-        Log.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
-        e.printStackTrace();
-    }
         return timeText;
-}
+    }
 
 
     public void cancelAppointment(Context context, String title, String subTitle,

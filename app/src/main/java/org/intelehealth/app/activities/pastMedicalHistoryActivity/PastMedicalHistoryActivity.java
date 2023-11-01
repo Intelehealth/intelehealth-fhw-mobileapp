@@ -146,7 +146,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
-            if(edit_PatHist == null)
+            if (edit_PatHist == null)
                 new_result = getPastMedicalVisitData();
         }
 
@@ -232,10 +232,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             alertDialog.setCanceledOnTouchOutside(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-            
+
         }
-
-
 
 
         setTitle(getString(R.string.title_activity_patient_history));
@@ -249,9 +247,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         pastMedical_recyclerView.setLayoutManager(linearLayoutManager);
         pastMedical_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -290,10 +288,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         mgender = fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             patientHistoryMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             patientHistoryMap.fetchItem("1");
         }
 
@@ -529,8 +526,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
 
-
-
     public void AnimateView(View v) {
 
         int fadeInDuration = 500; // Configure time values here
@@ -569,7 +564,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
     private String getPastMedicalVisitData() {
-        String result = "";    db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        String result = "";
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         // String[] columns = {"value"};
         String[] columns = {"value", " conceptuuid"};
         try {
@@ -581,7 +577,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             result = ""; // if medical history does not exist
-        }    db.close();    return result;
+        }
+//        db.close();
+        return result;
     }
 }
 
