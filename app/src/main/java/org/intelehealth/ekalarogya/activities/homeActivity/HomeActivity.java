@@ -76,6 +76,7 @@ import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.OfflineLogin;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalCallLogActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
 import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDialog;
@@ -333,7 +334,10 @@ public class HomeActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.userProfileOption) {
+        if (itemId == R.id.actionCallLog) {
+            startActivity(new Intent(this, EkalCallLogActivity.class));
+            return true;
+        } else if (itemId == R.id.userProfileOption) {
             Hw_Profile();
             return true;
         } else if (itemId == R.id.settingsOption) {
@@ -543,12 +547,14 @@ public class HomeActivity extends BaseActivity {
                                 Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
                             }
                         }
+
                         @Override
                         public void onError(Throwable e) {
                             customProgressDialog.dismiss();
                             Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
                             Log.v(TAG, "jwt_response: " + e.toString());
                         }
+
                         @Override
                         public void onComplete() {
                         }
@@ -638,6 +644,7 @@ public class HomeActivity extends BaseActivity {
                     }
                 }
             }
+
             @Override
             public void onError(Throwable e) {
                 Log.e("Error", "" + e);

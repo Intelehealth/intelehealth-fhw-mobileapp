@@ -74,6 +74,7 @@
     <string name="menu_option_end_of_day" translatable="false">End of Day</string>
     <string name="menu_option_logout" translatable="false">Logout</string>
     <string name="menu_option_hw_profile" translatable="false">User Profile</string>
+    <string name="menu_option_call_log" translatable="false">@string/call_logs</string>
 
 
     //Identification Screen

@@ -21,7 +21,7 @@ import org.intelehealth.klivekit.utils.Constants;
 import java.util.List;
 
 public class ChatListingAdapter extends DateHeaderAdapter {
-
+// Medicine adapter <- Test <- Aid adapter <- Header adapter <- Recycler.Adapter
     public interface AttachmentClickListener {
         void onClick(String url);
     }
