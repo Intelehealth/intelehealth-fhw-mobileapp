@@ -144,8 +144,8 @@ object CallNotificationHandler {
 
         return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentTitle(getApplicationName(context))
-            .setContentText("Incoming call from ${messageBody.doctorName ?: "unknown"}")
+            .setContentTitle(messageBody.doctorName ?: "unknown")
+            .setContentText("Incoming call")
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
             .setSmallIcon(messageBody.notificationIcon)
 //            .setSound(getDefaultRingtoneUrl(), AudioManager.STREAM_RING)
@@ -176,8 +176,8 @@ object CallNotificationHandler {
 
         return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentTitle("Ongoing call with ${messageBody.doctorName ?: "unknown"}")
-//            .setContentText("Ongoing call with ${messageBody.doctorName ?: "unknown"}")
+            .setContentTitle(messageBody.doctorName ?: "unknown")
+            .setContentText("Ongoing call")
             .setColor(ContextCompat.getColor(context, R.color.blue_1))
             .setSmallIcon(messageBody.notificationIcon)
             .setCategory(NotificationCompat.CATEGORY_CALL).setContentIntent(notificationIntent)
@@ -226,8 +226,8 @@ object CallNotificationHandler {
         messageBody.callStatus = CallStatus.MISSED
         return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_LOW)
-//            .setContentTitle(getApplicationName(context))
-            .setContentText("Missed call from ${messageBody.doctorName}")
+            .setContentTitle(messageBody.doctorName)
+            .setContentText("Missed call")
             .setColor(ContextCompat.getColor(context, R.color.red))
             .setSmallIcon(messageBody.notificationIcon)
             .setCategory(NotificationCompat.CATEGORY_MISSED_CALL).setAutoCancel(true)

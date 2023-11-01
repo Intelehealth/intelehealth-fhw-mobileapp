@@ -1,5 +1,8 @@
 package org.intelehealth.klivekit.socket
 
+import android.app.ActivityManager
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.socket.client.IO
@@ -107,6 +110,10 @@ open class SocketManager @Inject constructor() {
     private fun invokeListeners(event: String, args: Any?) {
         Timber.d { "No of listener => ${emitterListeners.size}" }
         emitterListeners.forEach { it.invoke(event).call(args) }
+
+//        if (CallNotificationHandler.isAppInBackground() && event == EVENT_CALL_CANCEL_BY_DR) {
+//
+//        }
     }
 
     private fun notifyIfNotActiveRoom(jsonArray: JSONArray, block: (ChatMessage) -> Unit) {
