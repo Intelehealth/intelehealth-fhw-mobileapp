@@ -77,7 +77,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     String LOG_TAG = "SplashActivity";
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
-
+private View emptyView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +87,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         layoutLanguage = findViewById(R.id.layout_panel);
         layoutParent = findViewById(R.id.layout_parent);
         layoutHeader = findViewById(R.id.layout_child1);
+        emptyView = findViewById(R.id.empty_view);
+
+
         //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
@@ -300,6 +303,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void animateViews() {
+        emptyView.setVisibility(View.VISIBLE);
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
