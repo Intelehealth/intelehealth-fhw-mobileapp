@@ -974,7 +974,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patientDTO.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else if (patientDTO.getGender().equalsIgnoreCase("Other")) {
+                } else if (patientDTO.getGender().equalsIgnoreCase("O")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patientDTO.getGender());
@@ -984,7 +984,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patientDTO.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else if (patientDTO.getGender().equalsIgnoreCase("Other")) {
+                } else if (patientDTO.getGender().equalsIgnoreCase("O")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patientDTO.getGender());
@@ -994,7 +994,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patientDTO.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else if (patientDTO.getGender().equalsIgnoreCase("Other")) {
+                } else if (patientDTO.getGender().equalsIgnoreCase("O")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patientDTO.getGender());
@@ -1004,7 +1004,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patientDTO.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else if (patientDTO.getGender().equalsIgnoreCase("Other")) {
+                } else if (patientDTO.getGender().equalsIgnoreCase("O")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patientDTO.getGender());
@@ -1014,7 +1014,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patientDTO.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else if (patientDTO.getGender().equalsIgnoreCase("Other")) {
+                } else if (patientDTO.getGender().equalsIgnoreCase("O")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patientDTO.getGender());
@@ -1024,7 +1024,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patientDTO.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else if (patientDTO.getGender().equalsIgnoreCase("Other")) {
+                } else if (patientDTO.getGender().equalsIgnoreCase("O")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patientDTO.getGender());
@@ -1044,7 +1044,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patientDTO.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else if (patientDTO.getGender().equalsIgnoreCase("Other")) {
+                } else if (patientDTO.getGender().equalsIgnoreCase("O")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patientDTO.getGender());
@@ -1054,7 +1054,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patientDTO.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else if (patientDTO.getGender().equalsIgnoreCase("Other")) {
+                } else if (patientDTO.getGender().equalsIgnoreCase("O")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patientDTO.getGender());
@@ -1064,7 +1064,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patientDTO.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else if (patientDTO.getGender().equalsIgnoreCase("Other")) {
+                } else if (patientDTO.getGender().equalsIgnoreCase("O")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patientDTO.getGender());
@@ -1074,7 +1074,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patientDTO.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else if (patientDTO.getGender().equalsIgnoreCase("Other")) {
+                } else if (patientDTO.getGender().equalsIgnoreCase("O")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patientDTO.getGender());
