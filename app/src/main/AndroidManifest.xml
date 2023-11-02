@@ -347,7 +347,7 @@
             android:resource="@color/colorAccent" />
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="false" /> <!-- Firebase Realdb -->
+            android:value="true" /> <!-- Firebase Realdb -->
         <receiver
             android:name=".services.firebase_services.CallRTCNotifyReceiver"
             android:exported="false">
