@@ -37,8 +37,7 @@ class EkalCallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClic
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(
                 DividerItemDecoration(
-                    this@EkalCallLogActivity,
-                    DividerItemDecoration.VERTICAL
+                    this@EkalCallLogActivity, DividerItemDecoration.VERTICAL
                 )
             )
             this@EkalCallLogActivity.adapter.updateItems(logs.toMutableList())
