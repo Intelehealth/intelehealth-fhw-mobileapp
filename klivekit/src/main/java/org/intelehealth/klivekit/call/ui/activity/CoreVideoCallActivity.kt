@@ -3,7 +3,9 @@ package org.intelehealth.klivekit.call.ui.activity
 import android.Manifest
 import android.content.Intent
 import android.media.MediaPlayer
+import android.media.Ringtone
 import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -81,21 +83,21 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
 
     // initiate the incoming call ringtone
-//    private val ringtone: Ringtone by lazy {
-//        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-//        RingtoneManager.getRingtone(applicationContext, notification)
-//    }
+    private val ringtone: Ringtone by lazy {
+        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+        RingtoneManager.getRingtone(applicationContext, notification)
+    }
 
 //    private val audioManager: AudioManager by lazy {
 //        applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 //    }
 
-    private val mediaPlayer: MediaPlayer by lazy {
-        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-        MediaPlayer.create(this, notification).apply {
-            isLooping = true
-        };
-    }
+//    private val mediaPlayer: MediaPlayer by lazy {
+//        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+//        MediaPlayer.create(this, notification).apply {
+//            isLooping = true
+//        };
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.addFlags(
@@ -304,12 +306,20 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     open fun playRingtone() {
 //        mediaPlayer.prepare()
-        mediaPlayer.start()
+//        mediaPlayer.start()
+        if (!ringtone.isPlaying) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                ringtone.isLooping = true
+            }
+            ringtone.play()
+        }
     }
 
     open fun stopRingtone() {
-        Timber.e { "stopRingtone ${mediaPlayer.isPlaying}" }
-        if (mediaPlayer.isPlaying) mediaPlayer.stop()
+//        Timber.e { "stopRingtone ${mediaPlayer.isPlaying}" }
+//        if (mediaPlayer.isPlaying) mediaPlayer.stop()
+        Timber.e { "stopRingtone ${ringtone.isPlaying}" }
+        if (ringtone.isPlaying) ringtone.stop()
     }
 
     override fun onResume() {
