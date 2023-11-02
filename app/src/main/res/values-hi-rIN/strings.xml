@@ -1455,4 +1455,10 @@
     <string name="old_password_and_new_password_cannot_be_same">पुराना पासवर्ड और नया पासवर्ड एक समान नहीं हो सकते.</string>
     <string name="this_feature_is_not_available_in_offline_mode">यह सुविधा ऑफ़लाइन मोड में उपलब्ध नहीं है.</string>
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">आप संपर्क में नहीं हैं! कृपया वीडियो के लिए इंटरनेट से जुड़ें।</string>
+
+    <string name="follow_up_date_arrived">डॉक्टर से आपके फिर से मिलने का समय आ गया है । कृपया इस विजिट को समाप्त करें जिससे आपकी फॉलो अप विजिट आरंभ हो सके.</string>
+    <string name="confirm_cancel_appointment">अपॉइंटमेंट कैंसल कर दें?</string>
+    <string name="confirm_cancel_appointment_message">इस विजिट से एक अपॉइंटमेंट जुड़ा हुआ है और इसे बंद करते ही वह अपॉइंटमेंट भी ख़ारिज हो जाएगा। क्या आप इस विजिट को बंद करना चाहेंगे?</string>
+    <string name="no_prescription_exists">कोई नुस्खा नहीं पाया गया</string>
+
 </resources>
