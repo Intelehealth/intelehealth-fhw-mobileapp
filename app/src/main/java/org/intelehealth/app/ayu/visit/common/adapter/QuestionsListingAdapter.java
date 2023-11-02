@@ -961,7 +961,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             //   nestedQuestionsListingAdapter = (NestedQuestionsListingAdapter) holder.nestedRecyclerView.getAdapter();
             //}else {
 
-            if(holder.nestedQuestionsListingAdapter!=null){
+            if (holder.nestedQuestionsListingAdapter != null) {
 
             }
             holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, new OnItemSelection() {
@@ -1192,7 +1192,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 }
                             }, 100);
                         } else if (!type.isEmpty() && node.isSelected()) {
-                            if(node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
+                            if (node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
                                 for (int i = 0; i < options.size(); i++) {
                                     String typeInner = options.get(i).getInputType();
                                     if (!options.get(i).getText().equals(node.getText()) && !typeInner.equalsIgnoreCase("camera")) {
@@ -1200,7 +1200,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     }
                                 }
                             }
-                            holder.singleComponentContainer.removeAllViews();
+                            boolean foundUserInputs = false;
+                            for (int i = 0; i < options.size(); i++) {
+                                foundUserInputs = options.get(i).isUserInputsTypeNode();
+                                if (foundUserInputs) {
+                                    break;
+                                }
+                            }
+                            if (!foundUserInputs)
+                                holder.singleComponentContainer.removeAllViews();
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
 
                         } else {
@@ -1241,7 +1249,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 if (!isAnyOtherOptionSelected || isRequiredToShowParentActionButtons)
                                     holder.submitButton.setVisibility(View.VISIBLE);
 
-                                if(node.isExcludedFromMultiChoice()){
+                                if (node.isExcludedFromMultiChoice()) {
                                     /*for (int i = 0; i < options.size(); i++) {
                                         if(!options.get(i).getText().equals(node.getText())){
                                             options.get(i).unselectAllNestedNode();
