@@ -1191,6 +1191,60 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     }
                                 }
                             }, 100);
+                        } else if (type.isEmpty() && node.isSelected()) {
+                            boolean foundUserInputs = false;
+                            for (int i = 0; i < options.size(); i++) {
+                                if (options.get(i).isSelected()) {
+                                    foundUserInputs = options.get(i).isUserInputsTypeNode();
+                                    Log.v(TAG, "opt - " + options.get(i).findDisplay());
+                                    Log.v(TAG, "foundUserInputs - " + foundUserInputs);
+                                    if (foundUserInputs)
+                                        break;
+                                }
+                            }
+                            if (!foundUserInputs)
+                                holder.singleComponentContainer.removeAllViews();
+                            holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                            if (!foundUserInputs) {
+
+                                boolean isNothingNestedOpen = false;
+                                for (int i = 0; i < options.size(); i++) {
+                                    if (options.get(i).isSelected())
+                                        isNothingNestedOpen = options.get(i).isTerminal();
+
+                                }
+                                Log.v(TAG, "isNothingNestedOpen - " + isNothingNestedOpen);
+                                Log.v(TAG, "isRequiredToShowParentActionButtons - " + isRequiredToShowParentActionButtons);
+
+                                if (mItemList.get(index).isMultiChoice()) {
+                                    if (isNothingNestedOpen || isRequiredToShowParentActionButtons){
+                                        holder.submitButton.setVisibility(View.VISIBLE);
+                                        if (mItemList.get(index).isRequired()) {
+                                            holder.skipButton.setVisibility(View.GONE);
+                                        }else{
+                                            holder.skipButton.setVisibility(View.VISIBLE);
+
+                                        }
+                                    }
+                                } else {
+                                    holder.submitButton.setVisibility(View.GONE);
+
+                                   /* new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (!isLoadingForNestedEditData) {
+
+                                                notifyItemChanged(index);
+                                            }
+                                        }
+                                    }, 100);*/
+                                    if (!isLoadingForNestedEditData) {
+                                        mOnItemSelection.onSelect(node, index, false, selectedNode);
+                                        AdapterUtils.setToDisable(holder.skipButton);
+                                    }
+
+                                }
+                            }
                         } else if (!type.isEmpty() && node.isSelected()) {
                             if (node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
                                 for (int i = 0; i < options.size(); i++) {
@@ -1200,15 +1254,18 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     }
                                 }
                             }
-                            boolean foundUserInputs = false;
+                           /* boolean foundUserInputs = false;
                             for (int i = 0; i < options.size(); i++) {
-                                foundUserInputs = options.get(i).isUserInputsTypeNode();
-                                if (foundUserInputs) {
-                                    break;
+                                if (options.get(i).isSelected()) {
+                                    foundUserInputs = options.get(i).isUserInputsTypeNode();
+                                    Log.v(TAG, "opt - "+options.get(i).findDisplay());
+                                    Log.v(TAG, "foundUserInputs - "+foundUserInputs);
+                                    if (foundUserInputs)
+                                        break;
                                 }
                             }
-                            if (!foundUserInputs)
-                                holder.singleComponentContainer.removeAllViews();
+                            if (!foundUserInputs)*/
+                            holder.singleComponentContainer.removeAllViews();
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
 
                         } else {

@@ -2616,7 +2616,7 @@ public class Node implements Serializable {
 
                             positiveAssociations.add(tempString);
                         }
-                    } else if (isForAssociatedSymptoms && isUserInputsTypeNode(mOptions.get(i))) {
+                    } else if (isForAssociatedSymptoms && mOptions.get(i).isUserInputsTypeNode()) {
                         positiveAssociations.add(mOptions.get(i).getText().replaceAll("\\[(.*?)\\]", "") + bullet_arrow + mOptions.get(i).getLanguage());
                     } else {
                         if (mOptions.get(i).getLanguage().equals("%")) {
