@@ -2244,12 +2244,11 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             String valueArray[] = null;
             boolean isAssociateSymptomFound = false;
             if (mIsCCInOldFormat) {
-
+                mChiefComplainList.clear();
                 valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
                 isAssociateSymptomFound = valueArray.length >= 2;
                 String[] headerchips = valueArray[0].split("►");
                 List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
-
 
                 for (int i = 0; i < cc_tempvalues.size(); i++) {
                     if (!cc_tempvalues.get(i).equalsIgnoreCase(""))
