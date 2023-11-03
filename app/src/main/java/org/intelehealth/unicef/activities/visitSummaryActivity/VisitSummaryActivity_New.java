@@ -1056,8 +1056,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // phys exam data
         if (phyExam.getValue() != null) {
             String value = phyExam.getValue();
-            String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
-            physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>").replace("Child", "Ребенок").replace("Neonate", "Новорожденный")));
+
+            String[] valueArray;
+            if (value.contains("General exams: <br>")) {
+                valueArray = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
+            } else {
+                valueArray = value.replace("Общие экзамены: <br>", "<b>Общие экзамены: </b><br/>").split("<b>Общие экзамены: </b><br/>");
+            }
+
+            if (valueArray.length > 1) {
+                physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>").replace("Child", "Ребенок").replace("Neonate", "Новорожденный")));
+            }
         }
         //image download for physcialExamination documents
         Paint p = new Paint();
