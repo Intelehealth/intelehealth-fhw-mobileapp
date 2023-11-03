@@ -677,8 +677,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         List<String> notesList = new ArrayList<>();
         notesList.add(aidNotesValue);
         aidModel.setAidNotesList(notesList);    // 2. notes
-
-        aidModel.setHwName(sessionManager.getProviderID());    // 3. hw name
+        aidModel.setHwUuid(sessionManager.getProviderID()); // 3. hw uuid
+        aidModel.setHwName(sessionManager.getChwname());    // 3b. hw name
         aidModel.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.
 
         // 5. all fields.
@@ -697,6 +697,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         obsDTO.setEncounteruuid(encounteruuid);
         obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setValue(gson.toJson(aidModel));
+
+        Log.d(TAG, "insertAidObs: " + gson.toJson(aidModel));
 
         try {
             boolean isInserted = obsDAO.insertObs(obsDTO);
@@ -734,7 +736,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         List<String> notesList = new ArrayList<>();
         notesList.add(medNotesValue);
         medModel.setMedicationNotesList(notesList);    // 2. notes
-        medModel.setHwName(sessionManager.getProviderID());    // 3. hw name
+        medModel.setHwUuid(sessionManager.getProviderID());    // 3. hw id
+        medModel.setHwName(sessionManager.getChwname());    // 3b. hw name
         medModel.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.
         medModel.setDocumentsList(fileuuidList);
 
@@ -746,6 +749,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         obsDTO.setEncounteruuid(encounteruuid);
         obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setValue(gson.toJson(medModel));
+
+        Log.d(TAG, "insertMedicationObs: " + gson.toJson(medModel));
 
         try {
             boolean isInserted = obsDAO.insertObs(obsDTO);

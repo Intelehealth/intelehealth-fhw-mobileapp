@@ -18,6 +18,9 @@ public class MedicationModel {
     @Expose
     private List<String> documentsList;
 
+    @SerializedName("hwUuid")
+    @Expose
+    private String hwUuid;
     @SerializedName("hwName")
     @Expose
     private String hwName;
@@ -59,6 +62,14 @@ public class MedicationModel {
 
     public void setHwName(String hwName) {
         this.hwName = hwName;
+    }
+
+    public String getHwUuid() {
+        return hwUuid;
+    }
+
+    public void setHwUuid(String hwUuid) {
+        this.hwUuid = hwUuid;
     }
 
     public String getDateTime() {

@@ -39,6 +39,9 @@ public class AidModel {
     @Expose
     private List<String> documentsList;
 
+    @SerializedName("hwUuid")
+    @Expose
+    private String hwUuid;
     @SerializedName("hwName")
     @Expose
     private String hwName;
@@ -112,6 +115,14 @@ public class AidModel {
 
     public void setDocumentsList(List<String> documentsList) {
         this.documentsList = documentsList;
+    }
+
+    public String getHwUuid() {
+        return hwUuid;
+    }
+
+    public void setHwUuid(String hwUuid) {
+        this.hwUuid = hwUuid;
     }
 
     public String getHwName() {
