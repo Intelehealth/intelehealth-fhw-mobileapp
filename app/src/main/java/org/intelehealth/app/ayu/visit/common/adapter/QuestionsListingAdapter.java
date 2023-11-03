@@ -140,6 +140,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private boolean mIsEditMode;
 
     private HashMap<Integer, String> mMindMapVersionMappingHashMap = new HashMap<>();
+    private List<String> mLoadedIds = new ArrayList<String>();
 
     public QuestionsListingAdapter(RecyclerView recyclerView, Context context, boolean isFromAssociatedSymptoms, boolean isPhyExam, PhysicalExam physicalExam, int rootIndex, HashMap<Integer, ComplainBasicInfo> complainBasicInfoHashMap, boolean editMode, OnItemSelection onItemSelection) {
         mContext = context;
@@ -234,7 +235,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             //genericViewHolder.superNestedContainerLinearLayout.setVisibility(View.GONE);
 
             genericViewHolder.tvQuestionCounter.setText("");
-            if (position == mItemList.size() - 1) {
+            String id = mItemList.get(position).getId();
+            Log.v("ID", id);
+            Log.v("ID", new Gson().toJson(mLoadedIds));
+            if (!mLoadedIds.contains(id)) {
+                mLoadedIds.add(id);
                 genericViewHolder.spinKitView.setVisibility(View.VISIBLE);
                 genericViewHolder.bodyLayout.setVisibility(View.GONE);
                 Handler handler = new Handler();

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.knowledgeEngine.Node;
 
@@ -68,11 +70,13 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (genericViewHolder.node.isSelected()) {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
-                if (mItemList.get(genericViewHolder.index).getOptionsList() != null && !mItemList.get(genericViewHolder.index).getOptionsList().isEmpty())
+                //if (mItemList.get(genericViewHolder.index).getOptionsList() != null && !mItemList.get(genericViewHolder.index).getOptionsList().isEmpty())
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             String id = mItemList.get(genericViewHolder.index).getId();
+                            Log.v("ID", id);
+                            Log.v("ID", new Gson().toJson(mEditTimeLoadedIds));
                             if (!mEditTimeLoadedIds.contains(id)) {
                                 mEditTimeLoadedIds.add(id);
                                 mOnItemSelection.onSelect(mItemList.get(genericViewHolder.index), true);
