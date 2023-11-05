@@ -106,7 +106,6 @@
                 android:layout_marginTop="@dimen/tv_app_version_margin_top"
                 android:gravity="center"
                 android:letterSpacing="@dimen/tv_app_version_letter_spacing"
-                android:text="4.0 - Beta"
                 android:textColor="@color/textColorGray"
                 android:textSize="@dimen/tv_app_version_text_size" />
 

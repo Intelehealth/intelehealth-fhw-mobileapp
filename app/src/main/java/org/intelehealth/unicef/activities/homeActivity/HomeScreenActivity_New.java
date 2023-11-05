@@ -73,6 +73,7 @@ import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
+import org.intelehealth.unicef.BuildConfig;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.aboutus.AboutUsActivity;
 import org.intelehealth.unicef.activities.achievements.fragments.MyAchievementsFragment;
@@ -629,7 +630,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         Log.d(TAG, "onReceive: sync_text initui : " + sessionManager.getLastSyncDateTime());
 */
 
-        tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
+        tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
 
 
     }
