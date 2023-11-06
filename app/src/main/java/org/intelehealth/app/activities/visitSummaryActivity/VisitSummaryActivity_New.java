@@ -328,7 +328,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private boolean priorityVisit = false;
     private ObjectAnimator syncAnimator;
     TooltipWindow tipWindow;
-    TextView tvBloodSugar, tvHemoglobin;
+    private TextView tvBloodSugar, tvHemoglobin;
     ObsDTO hemoglobin = new ObsDTO();
     ObsDTO bloodSugar = new ObsDTO();
     private Spinner spinnerVisitType;
@@ -1262,7 +1262,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
-                intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VITAL);
+                intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VITAL);
                 //startActivity(intent1);
                 mStartForEditVisit.launch(intent1);
             }
@@ -1374,7 +1374,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
-                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON);
+                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VISIT_REASON_QUESTION);
+                      // intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY);
+
                         //startActivity(intent1);
                         mStartForEditVisit.launch(intent1);
                         dialogInterface.dismiss();

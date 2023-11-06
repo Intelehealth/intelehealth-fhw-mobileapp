@@ -39,6 +39,7 @@ import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
 import org.intelehealth.app.ayu.visit.familyhist.FamilyHistoryFragment;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.MedicalHistorySummaryFragment;
@@ -69,6 +70,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.WindowsUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONException;
@@ -98,12 +100,12 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private static final String PAST_MEDICAL_HISTORY_FRAGMENT = "PAST_MEDICAL_HISTORY";
     private static final String PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT = "PAST_MEDICAL_HISTORY_SUMMARY";
     private static final String FAMILY_HISTORY_SUMMARY_FRAGMENT = "FAMILY_HISTORY_SUMMARY";
-    public static final int STEP_1_VITAL = 1;
-    public static final int STEP_1_VITAL_SUMMARY = 1001;
-    public static final int STEP_2_VISIT_REASON = 2;
-    public static final int STEP_2_VISIT_REASON_QUESTION = 3;
-    public static final int STEP_2_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS = 4;
-    public static final int STEP_2_VISIT_REASON_QUESTION_SUMMARY = 44;
+    public static final int STEP_2_VITAL = 2;
+    public static final int STEP_2_VITAL_SUMMARY = 1001;
+    // public static final int STEP_1_VISIT_REASON = 1;
+    public static final int STEP_1_VISIT_REASON_QUESTION = 1;
+    public static final int STEP_1_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS = 4;
+    public static final int STEP_1_VISIT_REASON_QUESTION_SUMMARY = 44;
     public static final int STEP_3_PHYSICAL_EXAMINATION = 5;
     public static final int STEP_3_PHYSICAL_SUMMARY_EXAMINATION = 55;
     public static final int STEP_4_PAST_MEDICAL_HISTORY = 6;
@@ -113,7 +115,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public static final int FROM_SUMMARY_RESUME_BACK_FOR_EDIT = 33;
 
 
-    private int mCurrentStep = STEP_1_VITAL;
+    private int mCurrentStep = STEP_1_VISIT_REASON_QUESTION;
 
     SessionManager sessionManager;
     private String patientName = "";
@@ -148,6 +150,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private boolean mIsEditMode = false;
     private boolean mIsEditTriggerFromVisitSummary = false;
     private int mEditFor = 0; // STEP_1_VITAL , STEP_2_VISIT_REASON, STEP_3_PHYSICAL_EXAMINATION, STEP_4_PAST_MEDICAL_HISTORY
+    private String name = "Women's Health"; //for namma aarogya -womens health - Women's health json asset
+    private List<ReasonData> mSelectedComplains;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,19 +181,19 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             patientName = intent.getStringExtra("name");
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
-            mEditFor = intent.getIntExtra("edit_for", STEP_1_VITAL);
+            mEditFor = intent.getIntExtra("edit_for", STEP_1_VISIT_REASON_QUESTION);
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             String[] temp = String.valueOf(float_ageYear_Month).split("\\.");
             mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
             if (Integer.parseInt(temp[0]) == 0) {
-                mAgeAndMonth = temp[1] + " "  + getResources().getString(R.string.months);
+                mAgeAndMonth = temp[1] + " " + getResources().getString(R.string.months);
             } else if (Integer.parseInt(temp[0]) == 0) {
-                mAgeAndMonth = temp[0] + " "  + getResources().getString(R.string.years);
+                mAgeAndMonth = temp[0] + " " + getResources().getString(R.string.years);
             } else {
-                mAgeAndMonth = temp[0] + " "  + getResources().getString(R.string.years) + " " + temp[1] + " "  + getResources().getString(R.string.months);
+                mAgeAndMonth = temp[0] + " " + getResources().getString(R.string.years) + " " + temp[1] + " " + getResources().getString(R.string.months);
             }
 
-        if (intentTag.equalsIgnoreCase("edit")) {
+            if (intentTag.equalsIgnoreCase("edit")) {
                 mIsEditMode = true;
                 mIsEditTriggerFromVisitSummary = true;
             }
@@ -230,11 +234,81 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         bundle.putString("visitUuid", visitUuid);
         bundle.putString("encounterUuidVitals", encounterVitals);
 
-        if (!mIsEditMode)
+      /*  if (!mIsEditMode)
             getSupportFragmentManager().beginTransaction().
                     replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), mIsEditMode, null), VITAL_FRAGMENT).
                     commit();
-        else makeReadyForEdit();
+        else makeReadyForEdit();*/
+
+        if (!mIsEditMode)
+            callVisitReasonFragmentByDefualt();
+        else
+            makeReadyForEdit();
+    }
+
+    private void getChiefComplaintName() {
+        mSelectedComplains = new ArrayList<>();
+        mSelectedComplainList = new ArrayList<>();
+
+        ReasonData data = new ReasonData();
+        data.setReasonName(name);
+        data.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(VisitCreationActivity.this, name));
+        mSelectedComplains.add(data);
+        mSelectedComplainList.add(data);
+    }
+
+    private void callVisitReasonFragmentByDefualt() {
+
+        if (!name.isEmpty()) {
+
+            getChiefComplaintName();
+            boolean isExist = false;
+
+            loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
+
+            //loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
+            //mStep2ProgressBar.setProgress(40);
+            setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
+            //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
+            //mSummaryFrameLayout.setVisibility(View.GONE);
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mIsEditMode, mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
+                    commit();
+          /*  for (int i = 0; i < mSelectedComplains.size(); i++) {
+                if (mSelectedComplains.get(i).getReasonName().equalsIgnoreCase(name)) {
+                    isExist = true;
+                    break;
+                }
+            }
+            if (!isExist) {
+                //mSelectedComplains.clear(); //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
+                mSelectedComplains.add(data);
+            } else
+                Toast.makeText(VisitCreationActivity.this, getString(R.string.already_selected_lbl), Toast.LENGTH_SHORT).show();
+*/
+            // cross check for list also to keep on sync both selected
+/*
+            for (int i = 0; i < mVisitReasonItemList.size(); i++) {
+                List<ReasonData> reasonDataList = mVisitReasonItemList.get(i).getReasons();
+                for (int j = 0; j < reasonDataList.size(); j++) {
+                    ReasonData reasonData = reasonDataList.get(j);
+                    if (reasonData.getReasonName().equalsIgnoreCase(name)) {
+                        mVisitReasonItemList.get(i).getReasons().get(j).setSelected(true);
+                        break; //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
+                    }*/
+/*else{ //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
+                                mVisitReasonItemList.get(i).getReasons().get(j).setSelected(false);
+                            }*//*
+
+                }
+            }
+*/
+            //mReasonListingAdapter.refresh(mVisitReasonItemList);
+
+            // showSelectedComplains();
+            //mVisitReasonAutoCompleteTextView.setText("");
+            //WindowsUtils.hideSoftKeyboard((AppCompatActivity) getActivity());
+        }
     }
 
     public boolean isEditTriggerFromVisitSummary() {
@@ -242,10 +316,15 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     private void makeReadyForEdit() {
+        Log.d(TAG, "makeReadyForEdit: mEditFor :: " + mEditFor);
         findViewById(R.id.ll_progress_steps).setVisibility(View.GONE);
         // init all resources
+        ReasonData data = new ReasonData();
+        data.setReasonName(name);
+        data.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(VisitCreationActivity.this, name));
         mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {
         }.getType());
+        mSelectedComplainList.add(data);
 
         mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {
         }.getType());
@@ -266,13 +345,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         else
             mFamilyHistoryNode = loadFamilyHistory();
         switch (mEditFor) {
-            case STEP_1_VITAL:
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), mIsEditMode, null), VITAL_FRAGMENT).
-                        commit();
-                break;
-            case STEP_2_VISIT_REASON:
-
+            case STEP_1_VISIT_REASON_QUESTION:
+                //commited for namma -dueto single chief complaint
 
                 //loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
                 //mStep2ProgressBar.setProgress(40);
@@ -283,6 +357,24 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mIsEditMode, mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
                 break;
+            case STEP_2_VITAL:
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), mIsEditMode, null), VITAL_FRAGMENT).
+                        commit();
+                break;
+          /*  case STEP_2_VISIT_REASON:
+            //commited for namma -dueto single chief complaint
+
+                //loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
+                //mStep2ProgressBar.setProgress(40);
+                setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
+                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
+                //mSummaryFrameLayout.setVisibility(View.GONE);
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mIsEditMode, mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
+                        commit();
+                break;*/
+
             case STEP_3_PHYSICAL_EXAMINATION:
                 mStep3ProgressBar.setProgress(10);
                 setTitle(getResources().getString(R.string._phy_examination));
@@ -313,23 +405,23 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         mCurrentStep = nextAction;
 
         switch (nextAction) {
-            case STEP_1_VITAL_SUMMARY:
+            case STEP_2_VITAL_SUMMARY:
                 if (object != null)
                     mVitalsObject = (VitalsObject) object;
                 if (mVitalsObject != null) {
                     //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
-                    mStep1ProgressBar.setProgress(100);
+                    mStep2ProgressBar.setProgress(100);
                     getSupportFragmentManager().beginTransaction().
                             replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalsObject, isEditMode), VITAL_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
-            case STEP_1_VITAL:
+            case STEP_2_VITAL:
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 ((TextView) findViewById(R.id.tv_sub_title)).setText(getResources().getString(R.string._1_4_vitals));
-                mStep1ProgressBar.setProgress(100);
-                mStep2ProgressBar.setProgress(0);
+                mStep2ProgressBar.setProgress(100);
+                //mStep2ProgressBar.setProgress(0);//fornamma flow
                 mStep3ProgressBar.setProgress(0);
                 mStep4ProgressBar.setProgress(0);
                 mSummaryFrameLayout.setVisibility(View.GONE);
@@ -337,7 +429,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), isEditMode, mVitalsObject), VITAL_FRAGMENT).
                         commit();
                 break;
-            case STEP_2_VISIT_REASON:
+        /*    case STEP_2_VISIT_REASON:
                 mStep2ProgressBar.setProgress(20);
                 ((TextView) findViewById(R.id.tv_sub_title)).setText(getResources().getString(R.string.visit_reason));
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
@@ -346,13 +438,15 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         replace(R.id.fl_steps_body, VisitReasonCaptureFragment.newInstance(getIntent(), isEditMode, false), VISIT_REASON_FRAGMENT).
                         commit();
                 mSummaryFrameLayout.setVisibility(View.GONE);
-                break;
+                break;*/
 
-            case STEP_2_VISIT_REASON_QUESTION:
+            case STEP_1_VISIT_REASON_QUESTION:
                 mSelectedComplainList = (List<ReasonData>) object;
                 loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
-                mStep2ProgressBar.setProgress(40);
-                setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
+                mStep1ProgressBar.setProgress(20); //tempcommit
+                ((TextView) findViewById(R.id.tv_sub_title)).setText(getResources().getString(R.string.visit_reason));
+
+                //setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 //mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
@@ -367,7 +461,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         showPastMedicalHistoryFragment(isEditMode);
                     } else if (caseNo == STEP_5_FAMILY_HISTORY) {
                         showFamilyHistoryFragment(isEditMode);
-                    }else if (caseNo == STEP_3_PHYSICAL_EXAMINATION){
+                    } else if (caseNo == STEP_3_PHYSICAL_EXAMINATION) {
                         mStep3ProgressBar.setProgress(100);
                         setTitle(getResources().getString(R.string._phy_examination));
                         mSummaryFrameLayout.setVisibility(View.GONE);
@@ -378,16 +472,16 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                                 commit();
                     }
                     // step 2
-                    else if (caseNo == STEP_2_VISIT_REASON_QUESTION) {
+                    else if (caseNo == STEP_1_VISIT_REASON_QUESTION) {
                         //showFamilyHistoryFragment(isEditMode);
-                    } else if (caseNo == STEP_2_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS) {
+                    } else if (caseNo == STEP_1_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS) {
                         //showFamilyHistoryFragment(isEditMode);
                     }
                 }
                 break;
-            case STEP_2_VISIT_REASON_QUESTION_SUMMARY:
+            case STEP_1_VISIT_REASON_QUESTION_SUMMARY:
                 if (isSavedVisitReason()) {
-                    mStep2ProgressBar.setProgress(100);
+                    mStep1ProgressBar.setProgress(100);
 
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
@@ -679,19 +773,23 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     @Override
     public void onProgress(int progress) {
         switch (mCurrentStep) {
-            case STEP_2_VISIT_REASON_QUESTION:
-                mStep2ProgressBar.setProgress(mStep2ProgressBar.getProgress() + progress);
+            case STEP_1_VISIT_REASON_QUESTION:
+                Log.d(TAG, "onProgress: progress : " + progress);
+                mStep1ProgressBar.setProgress(mStep1ProgressBar.getProgress() + progress);
                 break;
             case STEP_3_PHYSICAL_EXAMINATION:
-                mStep3ProgressBar.setProgress(mStep2ProgressBar.getProgress() + progress);
+                mStep3ProgressBar.setProgress(mStep1ProgressBar.getProgress() + progress);
                 break;
         }
     }
 
     @Override
     public void onTitleChange(String title) {
+        Log.d(TAG, "onTitleChange: title :: " + title);
+        Log.d(TAG, "onTitleChange: mCurrentStep :: " + mCurrentStep);
+
         switch (mCurrentStep) {
-            case STEP_2_VISIT_REASON_QUESTION:
+            case STEP_1_VISIT_REASON_QUESTION:
                 if (title == null || title.isEmpty()) {
                     setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
                 } else {
@@ -708,7 +806,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     @Override
     public void onManualClose() {
         switch (mCurrentStep) {
-            case STEP_1_VITAL_SUMMARY:
+            case STEP_2_VITAL_SUMMARY:
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 break;
         }
@@ -721,7 +819,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     @Override
     public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
-        deleteImageFromDatabase(nodeIndex,imageIndex, image);
+        deleteImageFromDatabase(nodeIndex, imageIndex, image);
     }
 
     @Override
@@ -1194,13 +1292,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
 
-    private void deleteImageFromDatabase(int nodeIndex,int imageIndex, String imageName) {
+    private void deleteImageFromDatabase(int nodeIndex, int imageIndex, String imageName) {
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
             String obsUUID = imageName.substring(imageName.lastIndexOf("/") + 1).split("\\.")[0];
             imagesDAO.deleteImageFromDatabase(obsUUID);
-            imageUtilsListener.onImageReadyForDelete(nodeIndex,imageIndex, imageName);
+            imageUtilsListener.onImageReadyForDelete(nodeIndex, imageIndex, imageName);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -1298,6 +1396,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private static final int MY_CAMERA_REQUEST_CODE = 1001;
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private AlertDialog mImagePickerAlertDialog;
+
     private void selectImage() {
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.add_image_by), new DialogUtils.ImagePickerDialogListener() {
             @Override
@@ -1375,7 +1474,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public interface ImageUtilsListener {
         void onImageReady(Bundle bundle);
 
-        void onImageReadyForDelete(int nodeIndex,int imageIndex, String imageName);
+        void onImageReadyForDelete(int nodeIndex, int imageIndex, String imageName);
     }
 
     private ActivityResultLauncher<String> requestPermissionLauncher =

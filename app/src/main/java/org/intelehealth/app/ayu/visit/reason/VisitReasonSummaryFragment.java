@@ -100,25 +100,25 @@ public class VisitReasonSummaryFragment extends Fragment {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION, mIsEditMode, null);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VITAL, mIsEditMode, null);
             }
         });
         view.findViewById(R.id.tv_change_associate_sympt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_1_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS);
             }
         });
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_1_VISIT_REASON_QUESTION);
             }
         });
         view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_1_VISIT_REASON_QUESTION);
             }
         });
         view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
@@ -221,7 +221,7 @@ public class VisitReasonSummaryFragment extends Fragment {
                     view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION);
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_1_VISIT_REASON_QUESTION);
                         }
                     });
 
@@ -357,7 +357,7 @@ public class VisitReasonSummaryFragment extends Fragment {
                     view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION);
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_1_VISIT_REASON_QUESTION);
                         }
                     });
 

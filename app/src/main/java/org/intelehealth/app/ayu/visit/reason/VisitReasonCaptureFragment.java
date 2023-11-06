@@ -132,7 +132,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VITAL_SUMMARY, false, null);
             }
         });
 
@@ -262,7 +262,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             @Override
             public void onDialogActionDone(int action) {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, false, new ArrayList<ReasonData>(mSelectedComplains)); // send the selected mms
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VISIT_REASON_QUESTION, false, new ArrayList<ReasonData>(mSelectedComplains)); // send the selected mms
                 }
             }
         });

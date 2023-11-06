@@ -1662,7 +1662,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="some_issue_with_mindmap">Some issue with the mindmaps.</string>
     <string name="of">of</string>
     <string name="questions">questions</string>
-    <string name="visit_reason">2/4 Visit reason</string>
+    <string name="visit_reason">1/4 Visit reason</string>
     <string name="please_select_range">Please select the range!</string>
     <string name="level">Level</string>
     <string name="drag_to_select">Please drag to select!</string>
@@ -1762,7 +1762,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="all_reasons">All reasons</string>
     <string name="_visit_reason_summary">2/4. Visit Reason summary</string>
     <string name="change">Change</string>
-    <string name="_vitals_summary">1/4. Vitals summary</string>
+    <string name="_vitals_summary">2/4. Vitals summary</string>
     <string name="mo">Mo</string>
     <string name="tu">Tu</string>
     <string name="we">We</string>
@@ -1821,7 +1821,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="profile_update_requires_internet">Profile update requires a strong internet connection. You are not connected to internet, please try again later.</string>
     <string name="describe_lbl">Describe</string>
     <string name="patinet_history">4/4. Medical history: Patient history</string>
-    <string name="_1_4_vitals">1/4 Vitals</string>
+    <string name="_1_4_vitals">2/4 Vitals</string>
     <string name="close_all">Close all</string>
     <string name="open_all">Open all</string>
     <string name="go_to_website">Go to website</string>

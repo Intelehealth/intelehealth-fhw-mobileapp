@@ -894,7 +894,7 @@
     <string name="app_sync_dialog_title">ऐप सिंक किया जा रहा है</string>
     <string name="describe_lbl">वर्णन करें</string>
     <string name="patinet_history">4/4. मेडिकल हिस्ट्री : रोगी हिस्ट्री</string>
-    <string name="_1_4_vitals">"1/4. वायटल्स "</string>
+    <string name="_1_4_vitals">"2/4. वायटल्स "</string>
     <string name="who_we_are">हम कौन हैं?</string>
     <string name="and">”, और “</string>
     <string name="your_time_spent_today">आपके द्वारा आज बिताया गया समय</string>
@@ -1370,7 +1370,7 @@
     <string name="all_reasons">सभी कारण</string>
     <string name="_visit_reason_summary">2/4. विज़िट के कारण का संक्षिप्त विवरण</string>
     <string name="change">बदलें</string>
-    <string name="_vitals_summary">1/4. वायटल्स का संक्षिप्त विवरण</string>
+    <string name="_vitals_summary">2/4. वायटल्स का संक्षिप्त विवरण</string>
     <string name="mo">सोम</string>
     <string name="fr">शुक्र</string>
     <string name="sa">शनि</string>

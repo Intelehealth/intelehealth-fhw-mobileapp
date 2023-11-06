@@ -131,26 +131,26 @@ public class VitalCollectionSummaryFragment extends Fragment {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
+                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION, mIsEditMode, mVitalsObject);
                 }
             }
         });
         view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VITAL, mIsEditMode, mVitalsObject);
             }
         });
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VITAL, mIsEditMode, mVitalsObject);
             }
         });
         view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VITAL, mIsEditMode, mVitalsObject);
             }
         });
         ImageButton refresh = view.findViewById(R.id.imb_btn_refresh);
