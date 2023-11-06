@@ -1190,6 +1190,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
+                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VITAL);
                 //startActivity(intent1);
                 mStartForEditVisit.launch(intent1);
@@ -1302,6 +1303,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON);
                         //startActivity(intent1);
                         mStartForEditVisit.launch(intent1);
@@ -1443,6 +1445,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("edit_for", VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
                         //startActivity(intent1);
                         mStartForEditVisit.launch(intent1);
@@ -1573,6 +1576,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("edit_for", VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
                         //startActivity(intent1);
                         mStartForEditVisit.launch(intent1);
@@ -1715,6 +1719,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("edit_for", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
                         //startActivity(intent1);
                         mStartForEditVisit.launch(intent1);
