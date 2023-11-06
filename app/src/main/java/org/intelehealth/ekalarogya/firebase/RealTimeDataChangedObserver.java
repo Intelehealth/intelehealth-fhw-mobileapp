@@ -86,7 +86,6 @@ public class RealTimeDataChangedObserver {
 //        rtcArgs.setUrl(BuildConfig.LIVE_KIT_URL);
         rtcArgs.setSocketUrl(Constants.BASE_URL + "?userId=" + rtcArgs.getNurseId() + "&name=" + rtcArgs.getNurseName());
 //        rtcArgs.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + rtcArgs.getNurseId() + "&name=" + rtcArgs.getNurseName());
-        rtcArgs.setActionType("VIDEO_CALL");
         return rtcArgs;
     }
 

@@ -6,6 +6,7 @@
         android:id="@+id/action_search"
         android:orderInCategory="1"
         android:title="@string/action_search"
+        android:visible="false"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
     <!-- Location Found -->

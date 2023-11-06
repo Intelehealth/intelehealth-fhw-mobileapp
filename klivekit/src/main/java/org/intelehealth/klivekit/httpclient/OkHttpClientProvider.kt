@@ -1,8 +1,8 @@
 package org.intelehealth.klivekit.httpclient
 
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.intelehealth.klivekit.BuildConfig
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
 /**

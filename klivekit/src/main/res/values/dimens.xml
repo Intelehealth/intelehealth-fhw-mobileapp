@@ -7,4 +7,5 @@
     <dimen name="doctor_image_size">124dp</dimen>
     <dimen name="std_12dp">12dp</dimen>
     <dimen name="date_header_text_siz">16sp</dimen>
+    <dimen name="call_status_icon_size">16dp</dimen>
 </resources>

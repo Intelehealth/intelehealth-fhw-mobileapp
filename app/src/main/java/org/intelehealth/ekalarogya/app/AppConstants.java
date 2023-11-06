@@ -75,21 +75,18 @@ public class AppConstants {
     public static final String BMI_DARK_RED_MIN = "30.0";
 
     // SYS - DIA -- Color codes - start
-    public static final String SYS_GREEN_MIN = "89";
+    public static final String SYS_GREEN_MIN = "90";
     public static final String SYS_GREEN_MAX = "120";
-    public static final String SYS_YELLOW_MIN = "119";
-    public static final String SYS_YELLOW_MAX = "140";
+    public static final String SYS_YELLOW_MIN = "120";
+    public static final String SYS_YELLOW_MAX = "139";
     public static final String SYS_RED_MIN = "90";
-    public static final String SYS_RED_MAX = "139";
+    public static final String SYS_RED_MAX = "140";
 
     // Diastolic color code.
     public static final String DIA_GREEN_MIN = "80";
-  //  public static final String DIA_GREEN_MAX = "120";
-    public static final String DIA_YELLOW_MIN = "79";
+    public static final String DIA_YELLOW_MIN = "80";
     public static final String DIA_YELLOW_MAX = "100";
- //   public static final String DIA_RED_MIN = "90";
     public static final String DIA_RED_MAX = "99";
-    // SYS - DIA -- Color codes - end
 
 
 

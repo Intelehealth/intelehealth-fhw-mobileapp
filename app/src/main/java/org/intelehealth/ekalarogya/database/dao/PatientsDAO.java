@@ -434,8 +434,11 @@ public class PatientsDAO {
             db.endTransaction();
         }
         try {
-            Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
-            IntelehealthApplication.getAppContext().startService(intent);
+            Intent in = new Intent();
+            in.setAction("OpenmrsID");
+            IntelehealthApplication.getAppContext().sendBroadcast(in);
+//            Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
+//            IntelehealthApplication.getAppContext().startService(intent);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }

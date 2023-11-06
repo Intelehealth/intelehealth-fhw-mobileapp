@@ -1158,5 +1158,6 @@
     <string name="normal">স্বাভাৱিক</string>
     <string name="moderate_obesity">মধ্যমীয়া মেদবহুলতা</string>
     <string name="severe_obesity">অতিগম্ভীৰ মেদবহুলতা</string>
+    <string name="type_to_search">সন্ধান কৰিবলৈ টাইপ কৰক...</string>
 
 </resources>

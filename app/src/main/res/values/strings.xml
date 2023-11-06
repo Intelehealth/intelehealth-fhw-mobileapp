@@ -74,6 +74,7 @@
     <string name="menu_option_end_of_day" translatable="false">End of Day</string>
     <string name="menu_option_logout" translatable="false">Logout</string>
     <string name="menu_option_hw_profile" translatable="false">User Profile</string>
+    <string name="menu_option_call_log" translatable="false">@string/call_logs</string>
 
 
     //Identification Screen
@@ -1180,4 +1181,7 @@
     <string name="moderate_obesity">Moderate Obesity</string>
     <string name="severe_obesity">Severe Obesity</string>
     <string name="exit_vitals_warning_dialog">Once you will exit this screen, the data of this visit will not be saved and this action cannot be reverted. \n\nAre you sure, you want to continue?</string>
+    <string name="type_to_search">Type to Search..</string>
+    <string name="na">NA</string>
+    <string name="call_logs">Call Logs</string>
 </resources>

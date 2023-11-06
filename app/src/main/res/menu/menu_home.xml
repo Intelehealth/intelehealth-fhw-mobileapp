@@ -8,10 +8,10 @@
             android:orderInCategory="100"
             android:title="@string/menu_option_hw_profile" />
 
-        <!--<item-->
-        <!--android:id="@+id/syncOption"-->
-        <!--android:title="@string/menu_option_sync"-->
-        <!--android:orderInCategory="50" />-->
+        <item
+            android:id="@+id/actionCallLog"
+            android:orderInCategory="100"
+            android:title="@string/menu_option_call_log" />
 
         <item
             android:id="@+id/settingsOption"

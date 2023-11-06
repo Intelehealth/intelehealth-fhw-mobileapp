@@ -44,6 +44,7 @@ import android.widget.TextView;
 import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
+import org.intelehealth.ekalarogya.utilities.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,32 +81,19 @@ import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 
 public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
-    // private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    // private ViewPager mViewPager;
-
     static String patientUuid;
     static String visitUuid;
     String state;
     String patientName;
     String intentTag;
     private float float_ageYear_Month;
-
     ArrayList<String> selectedExamsList;
-
     SQLiteDatabase localdb;
-
-
     static String imageName;
     static String baseDir;
     static File filePath;
-
-
     String mFileName = "physExam.json";
-
-
     PhysicalExam physicalExamMap;
-
     String physicalString, physicalString_REG = "";
     Boolean complaintConfirmed = false;
     String encounterVitals;
@@ -115,7 +103,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
     QuestionsAdapter adapter;
     String mgender;
     ScrollingPagerIndicator recyclerViewIndicator;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,9 +117,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
@@ -223,47 +208,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(physExam_recyclerView);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-       /* mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), physicalExamMap);
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById(R.id.container);
-        if (mViewPager != null) {
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-        }*/
-        /*TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setSelectedTabIndicatorHeight(15);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            tabLayout.setSelectedTabIndicatorColor(getColor(R.color.amber));
-            tabLayout.setTabTextColors(getColor(R.color.white), getColor(R.color.amber));
-        } else {
-            tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.amber));
-            tabLayout.setTabTextColors(getResources().getColor(R.color.white), getResources().getColor(R.color.amber));
-        }
-        if (tabLayout != null) {
-            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            tabLayout.setupWithViewPager(mViewPager);
-        }
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        assert fab != null;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-            }
-        });
-
-         */
-      /*
-      Commented to avoid crash...
-        Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
-
         mgender = PatientsDAO.fetch_gender(patientUuid);
-
         if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");
         } else if (mgender.equalsIgnoreCase("F")) {
@@ -302,7 +247,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
 
     @Override
     public void fabClickedAtEnd() {
-
         AnswerResult answerResult = physicalExamMap.checkAllRequiredAnsweredPhy(PhysicalExamActivity.this);
         if (!answerResult.result) {
             // show alert dialog
@@ -320,9 +264,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             return;
         } else {
             complaintConfirmed = physicalExamMap.areRequiredAnswered();
-
             if (complaintConfirmed) {
-
                 physicalString = physicalExamMap.generateFindings();
                 physicalString_REG = physicalExamMap.generateFindings_REG(sessionManager.getAppLanguage()); // Regional langauge physical exam string for HW.
 
@@ -344,7 +286,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-                    // regional - end
 
                     Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
@@ -361,11 +302,9 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                     for (String exams : selectedExamsList) {
                         Log.i(TAG, "onClick:++ " + exams);
                     }
-                    // intent.putStringArrayListExtra("exams", selectedExamsList);
                     startActivity(intent);
                 } else {
                     boolean obsId = insertDb(physicalString, UuidDictionary.PHYSICAL_EXAMINATION);
-                    //regional - start
                     JSONObject object = new JSONObject();
                     try {
                         object.put("text_" + sessionManager.getAppLanguage(), physicalString_REG);
@@ -374,8 +313,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-                    // regional - end
-
                     Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
                     intent1.putExtra("patientUuid", patientUuid);
                     intent1.putExtra("visitUuid", visitUuid);
@@ -390,7 +327,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                     // intent1.putStringArrayListExtra("exams", selectedExamsList);
                     startActivity(intent1);
                 }
-
             } else {
                 questionsMissing();
             }
@@ -473,8 +409,25 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                     for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
                         Node childNode = rootNode.getOptionsList().get(i);
                         if (!childNode.getId().equals(question.getId())) {
-                            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
-                        }
+                            // here it will check if take picture was selected previously; if yes than the imagepath against it, it will
+                            // delete it and than set the button to unselected.
+                            Node currNode = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i);
+                            if (currNode.isSelected()) {
+                                String imageFilePath = physicalExamMap.getImagePath();
+                                question.setImagePath(imageFilePath);
+                                imageFilePath = question.getImagePath();
+                                Logger.logV(TAG, "filepath - deleted " + imageFilePath);
+                                if (filePath.exists() && imageFilePath != null && !imageFilePath.isEmpty()) {
+                                    try {
+                                        deleteExisitingAnyImageIfSkipSelected(imageFilePath);
+                                    } catch (DAOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                                physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                                //
+
+                            }                        }
                     }
                 }
             }
@@ -498,6 +451,21 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         }
         //adapter.updateNode(currentNode);
         adapter.notifyDataSetChanged();
+    }
+
+    private void deleteExisitingAnyImageIfSkipSelected(String path) throws DAOException {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        boolean isDeletedFromList = physicalExamMap.deleteImagePath(path);   // 1. delete the item from the arraylist itself.
+
+        if (isDeletedFromList) {
+            File file = new File(path);
+            boolean isDeletedFromStorage = file.delete();  // 2. on success of deleted from array -> delete from the mobile folder too.
+            if (isDeletedFromStorage) {
+                String[] obsUUIDArray = file.getName().split(".jpg");
+                imagesDAO.deleteImageFromDatabase(obsUUIDArray[0]);
+            }
+            //  imagesDAO.deleteConceptImages(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);  // 3. we also need to void this image from local db so that on sync we dont get this image.
+        }
     }
 
 
@@ -574,7 +542,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
 
     private void updateImageDatabase() {
         ImagesDAO imagesDAO = new ImagesDAO();
-
         try {
             imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
         } catch (DAOException e) {
@@ -718,44 +685,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
     public void onBackPressed() {
 
     }
-
-    public void AnimateView(View v) {
-
-        int fadeInDuration = 500; // Configure time values here
-        int timeBetween = 3000;
-        int fadeOutDuration = 1000;
-
-        Animation fadeIn = new AlphaAnimation(0, 1);
-        fadeIn.setInterpolator(new DecelerateInterpolator()); // add this
-        fadeIn.setDuration(fadeInDuration);
-
-        Animation fadeOut = new AlphaAnimation(1, 0);
-        fadeOut.setInterpolator(new AccelerateInterpolator()); // and this
-        fadeOut.setStartOffset(fadeInDuration + timeBetween);
-        fadeOut.setDuration(fadeOutDuration);
-
-        AnimationSet animation = new AnimationSet(false); // change to false
-        animation.addAnimation(fadeIn);
-        animation.addAnimation(fadeOut);
-        animation.setRepeatCount(1);
-        if (v != null) {
-            v.setAnimation(animation);
-        }
-
-
-    }
-
-    public void bottomUpAnimation(View v) {
-
-        if (v != null) {
-            v.setVisibility(View.VISIBLE);
-            Animation bottomUp = AnimationUtils.loadAnimation(this,
-                    R.anim.bottom_up);
-            v.startAnimation(bottomUp);
-        }
-
-    }
-
 }
 
 

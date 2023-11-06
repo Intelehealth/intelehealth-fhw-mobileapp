@@ -96,7 +96,7 @@ public class VitalsActivity extends AppCompatActivity {
     private String encounterVitals;
     private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0, patientAge = 0;
-    String heightvalue;
+    String heightvalue = "0";
     String weightvalue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
 
@@ -161,11 +161,7 @@ public class VitalsActivity extends AppCompatActivity {
             bmiTIL.setVisibility(View.GONE);
         else
             bmiTIL.setVisibility(View.VISIBLE);
-
-//    Respiratory added by mahiti dev team
-
         mResp = findViewById(R.id.table_respiratory);
-
         mBMI.setEnabled(true);
         mBMI.setClickable(false);
         String heightStr = "height_" + sessionManager.getAppLanguage();
@@ -174,8 +170,6 @@ public class VitalsActivity extends AppCompatActivity {
             heightAdapter = ArrayAdapter.createFromResource(this, heightArray, android.R.layout.simple_spinner_dropdown_item);
         }
         mheightSpinner.setAdapter(heightAdapter);
-        //  mheightSpinner.setHint(R.string.height_ft);
-
         mHemoglobin = findViewById(R.id.table_hemoglobin);
         mSugarRandom = findViewById(R.id.table_sugar_level);
         mSugarFasting = findViewById(R.id.table_sugar_fasting);
@@ -194,10 +188,8 @@ public class VitalsActivity extends AppCompatActivity {
                         textView.setTextColor(getResources().getColor(R.color.medium_gray));
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -321,6 +313,9 @@ public class VitalsActivity extends AppCompatActivity {
                     calculateBMI();
                 } else {
                     flag_height = 0;
+                    heightvalue = "0";
+                    mBMI.setText("");
+                    calculateBMI();
                 }
             }
 
@@ -880,38 +875,38 @@ public class VitalsActivity extends AppCompatActivity {
     private void bpSysColorCode(String bpSysValue) {
         if (bpSysValue != null && !bpSysValue.isEmpty()) {
             Double bpSys = Double.valueOf(bpSysValue);
-
-            if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {   // red
+            if (bpSys < Double.valueOf(MINIMUM_BP_SYS) || bpSys > Double.valueOf(MAXIMUM_BP_SYS)) {   // red
+                mBpSys.setTextColor(getResources().getColor(R.color.font_black_0));
+            } else if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys >= Double.valueOf(SYS_RED_MAX)) {   // red
                 mBpSys.setTextColor(getResources().getColor(R.color.scale_1));
-            } else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {  // yellow
-                if (bpSys < Double.valueOf(SYS_YELLOW_MAX))
+            } else if (bpSys >= Double.valueOf(SYS_YELLOW_MIN) && (bpSys <= Double.valueOf(SYS_YELLOW_MAX))){
                     mBpSys.setTextColor(getResources().getColor(R.color.dark_yellow));
-            } else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {   //green
-                if (bpSys < Double.valueOf(SYS_GREEN_MAX))
+            } else if (bpSys >= Double.valueOf(SYS_GREEN_MIN) && (bpSys < Double.valueOf(SYS_GREEN_MAX))){
                     mBpSys.setTextColor(getResources().getColor(R.color.green));
             } else
-                mBpSys.setTextColor(null);
+                mBpSys.setTextColor(getResources().getColor(R.color.font_black_0));
+
         }
     }
 
     private void bpDiaColorCode(String bpDiaValue) {
         if (bpDiaValue != null && !bpDiaValue.isEmpty()) {
             Double bpDia = Double.valueOf(bpDiaValue);
-
-            if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
+            if(bpDia < Double.valueOf(MINIMUM_BP_DSYS) || bpDia > Double.valueOf(MAXIMUM_BP_DSYS))
+                mBpDia.setTextColor(getResources().getColor(R.color.font_black_0));
+            else if (bpDia > Double.valueOf(DIA_RED_MAX))  {  // red
                 mBpDia.setTextColor(getResources().getColor(R.color.scale_1));
-            } else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
-                if (bpDia < Double.valueOf(DIA_YELLOW_MAX))
+            } else if (bpDia >= Double.valueOf(DIA_YELLOW_MIN) && (bpDia < Double.valueOf(DIA_YELLOW_MAX))){
                     mBpDia.setTextColor(getResources().getColor(R.color.dark_yellow));
             } else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
                 mBpDia.setTextColor(getResources().getColor(R.color.green));
             } else
-                mBpDia.setTextColor(null);
+                mBpDia.setTextColor(getResources().getColor(R.color.font_black_0));
         }
     }
 
     public void calculateBMI() {
-        if (mWeight != null && heightvalue != null) {
+        if (mWeight != null && heightvalue != null && !heightvalue.equalsIgnoreCase("0")) {
             if (flag_height == 1 && flag_weight == 1 ||
                     /*(mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".")*/
                     (heightvalue.trim().length() > 0 && (mWeight.getText().toString().trim().length() > 0 &&
@@ -1079,14 +1074,15 @@ public class VitalsActivity extends AppCompatActivity {
             return;
         }
 
-        if (mheightSpinner.getSelectedItemPosition() == 0) {
+        //removing validation as asked under ticket AEAT-729
+        /*if (mheightSpinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) mheightSpinner.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = mheightSpinner;
             cancel = true;
             return;
-        }
+        }*/
 
         //BP vaidations added by Prajwal.
         if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
@@ -1106,8 +1102,8 @@ public class VitalsActivity extends AppCompatActivity {
             mSugarFasting.requestFocus();
             mSugarFasting.setError(getString(R.string.enter_field));
             return;
-
         }*/
+
         // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
         //  values.add(mHeight);
@@ -1301,6 +1297,24 @@ public class VitalsActivity extends AppCompatActivity {
                 emptyList = emptyList + tempEmpty + "\n";
                 mTemperature.requestFocus();
                 mTemperature.setError(getString(R.string.enter_field));
+            }
+
+            if (mBpSys.getText().toString().trim().isEmpty() && mBpDia.getText().toString().trim().isEmpty() &&
+                    mPulse.getText().toString().trim().isEmpty() && mTemperature.getText().toString().trim().isEmpty()) {
+                MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+                alertDialog.setTitle("At least one of the following fields is mandatory to fill - ");
+                alertDialog.setMessage(emptyList);
+                alertDialog.setPositiveButton(context.getResources().getString(R.string.ok),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog dialog = alertDialog.show();
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+                return;
             }
 
             Log.d(TAG, "emptyList: " + emptyList);
@@ -1698,14 +1712,12 @@ public class VitalsActivity extends AppCompatActivity {
             } else {
                 String alertMsg = "";
                 String bmiValue = mBMI.getText().toString().trim();
-
                 if(bmiValue.length() == 3)
                     bmiValue = bmiValue.substring(0,3);
                 else if(bmiValue.length() == 4)
                     bmiValue = bmiValue.substring(0,4);
                 else if (bmiValue.length() >= 5)
                     bmiValue = bmiValue.substring(0,5);
-
                 if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(bmiValue) < 18.5) {
                     alertMsg = alertMsg + getResources().getString(R.string.weight_loss_alert_msg) + "\n";
                 } else if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(bmiValue) > 25.0) {
@@ -1756,11 +1768,11 @@ public class VitalsActivity extends AppCompatActivity {
                     alertMsg = alertMsg + getResources().getString(R.string.vital_alert_hgb_button) + "\n";
                 }
 
-                if ((mSugarRandom.getText() != null && mSugarRandom.getText().toString().trim().length() != 0 && (Integer.parseInt(mSugarRandom.getText().toString().trim()) < 80 || Integer.parseInt(mSugarRandom.getText().toString().trim()) > 130))) {
+                if ((mSugarRandom.getText() != null && mSugarRandom.getText().toString().trim().length() != 0 && (Double.parseDouble(mSugarRandom.getText().toString().trim()) < 80 || Double.parseDouble(mSugarRandom.getText().toString().trim()) > 130))) {
                     alertMsg = alertMsg + getResources().getString(R.string.vital_alert_sugar_random_button) + "\n";
                 }
 
-                if ((mSugarFasting.getText() != null && mSugarFasting.getText().toString().trim().length() != 0 && (Integer.parseInt(mSugarFasting.getText().toString().trim()) < 70 || Integer.parseInt(mSugarFasting.getText().toString().trim()) > 100))) {
+                if ((mSugarFasting.getText() != null && mSugarFasting.getText().toString().trim().length() != 0 && (Double.parseDouble(mSugarFasting.getText().toString().trim()) < 70 || Double.parseDouble(mSugarFasting.getText().toString().trim()) > 100))) {
                     alertMsg = alertMsg + getResources().getString(R.string.vital_alert_sugar_fasting_button) + "\n";
                 }
 

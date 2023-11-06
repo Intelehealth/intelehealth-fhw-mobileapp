@@ -1177,5 +1177,6 @@
     <string name="normal">স্বাভাবিক</string>
     <string name="moderate_obesity">মাঝারি স্থূলতা</string>
     <string name="severe_obesity">গুরুতর স্থূলতা</string>
+    <string name="type_to_search">অনুসন্ধান করতে টাইপ করুন...</string>
 
 </resources>

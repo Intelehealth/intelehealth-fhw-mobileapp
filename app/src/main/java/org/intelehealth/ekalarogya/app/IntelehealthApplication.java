@@ -8,9 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
@@ -30,8 +34,11 @@ import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalarogya.firebase.RealTimeDataChangedObserver;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalCallLogActivity;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
+import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
-import org.intelehealth.klivekit.utils.Constants;
 import org.intelehealth.klivekit.utils.Manager;
 
 
@@ -40,7 +47,7 @@ import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
-public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks, LifecycleObserver {
+public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
@@ -116,7 +123,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
             mDbHelper.onCreate(localdb);
         }
-        registerActivityLifecycleCallbacks(this);
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         startRealTimeObserverAndSocket();
@@ -124,6 +130,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree());
         }
+
+//        WebRtcDatabase.getInstance(this);
     }
 
     private void configureCrashReporting() {
@@ -136,46 +144,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     }
 
-    @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public void onActivityStarted(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityResumed(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityPaused(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityStopped(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-    }
-
-    @Override
-    public void onActivityDestroyed(Activity activity) {
-
-    }
-
-    public Activity getCurrentActivity() {
-        return currentActivity;
-    }
-
-
     /**
      * for setting the Alert Dialog Custom Font.
      *
@@ -185,29 +153,36 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     public static void setAlertDialogCustomTheme(Context context, Dialog builderDialog) {
         // Getting the view elements
         TextView textView = (TextView) builderDialog.getWindow().findViewById(android.R.id.message);
-        TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
+//        TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
         Button button1 = (Button) builderDialog.getWindow().findViewById(android.R.id.button1);
         Button button2 = (Button) builderDialog.getWindow().findViewById(android.R.id.button2);
         textView.setTypeface(ResourcesCompat.getFont(context, R.font.lato_regular));
-        alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
+//        alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button1.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    public void onMoveToForeground() {
-        // app moved to foreground
+    @Override
+    public void onResume(@NonNull LifecycleOwner owner) {
+        DefaultLifecycleObserver.super.onResume(owner);
         isInBackground = false;
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    public void onMoveToBackground() {
-        // app moved to background
+    @Override
+    public void onPause(@NonNull LifecycleOwner owner) {
+        DefaultLifecycleObserver.super.onPause(owner);
         isInBackground = true;
     }
 
+    @Override
+    public void onDestroy(@NonNull LifecycleOwner owner) {
+        DefaultLifecycleObserver.super.onDestroy(owner);
+        Timber.tag("APP").d("DefaultLifecycleObserver.super.onDestroy");
+        stopRealTimeObserverAndSocket();
+    }
+
     public void startRealTimeObserverAndSocket() {
-        startRealTimeObserver();
+//        startRealTimeObserver();
         initSocketConnection();
     }
 
@@ -230,17 +205,31 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
                     + sessionManager.getProviderID()
                     + "&name=" + sessionManager.getChwname();
             if (!socketManager.isConnected()) socketManager.connect(socketUrl);
+            initRtcConfig();
         }
+    }
+
+    private void initRtcConfig() {
+        new RtcEngine.Builder()
+                .callUrl("wss://" + sessionManager.getServerUrl() + ":9090")
+                .socketUrl("https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
+                        + sessionManager.getProviderID()
+                        + "&name=" + sessionManager.getChwname())
+                .callIntentClass(EkalVideoActivity.class)
+                .chatIntentClass(EkalChatActivity.class)
+                .callLogIntentClass(EkalCallLogActivity.class)
+                .build().saveConfig(this);
     }
 
     @Override
     public void onTerminate() {
-        super.onTerminate();
+        Timber.tag("APP").d("onTerminate");
         stopRealTimeObserverAndSocket();
+        super.onTerminate();
     }
 
     public void stopRealTimeObserverAndSocket() {
         if (dataChangedObserver != null) dataChangedObserver.stopObserver();
-        if (socketManager.isConnected()) socketManager.disconnect();
+        socketManager.disconnect();
     }
 }

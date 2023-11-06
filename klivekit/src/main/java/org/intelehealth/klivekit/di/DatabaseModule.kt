@@ -1,7 +1,7 @@
-package com.codeglo.coyamore.di
+package com.intelehealth.coyamore.di
 
 import android.content.Context
-import com.codeglo.coyamore.api.WebRtcDatabase
+import org.intelehealth.klivekit.room.WebRtcDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +21,9 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideChatDao(appDatabase: WebRtcDatabase) = appDatabase.chatDao()
+
+    @Singleton
+    @Provides
+    fun provideRtcCallLogDao(appDatabase: WebRtcDatabase) = appDatabase.rtcCallLogDao()
 
 }

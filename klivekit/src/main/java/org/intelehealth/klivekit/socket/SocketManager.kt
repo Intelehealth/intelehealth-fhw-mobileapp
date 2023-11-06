@@ -1,5 +1,8 @@
 package org.intelehealth.klivekit.socket
 
+import android.app.ActivityManager
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.socket.client.IO
@@ -8,11 +11,13 @@ import io.socket.client.Socket.EVENT_CONNECT
 import io.socket.client.Socket.EVENT_DISCONNECT
 import io.socket.client.SocketIOException
 import io.socket.emitter.Emitter
+import org.intelehealth.klivekit.call.utils.CallNotificationHandler
 import org.intelehealth.klivekit.model.ActiveUser
 import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
+import kotlin.system.exitProcess
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
@@ -21,7 +26,13 @@ import javax.inject.Inject
  **/
 open class SocketManager @Inject constructor() {
     var socket: Socket? = null
+    private var emitterListeners: MutableList<((event: String) -> Emitter.Listener)> = arrayListOf()
     var emitterListener: ((event: String) -> Emitter.Listener)? = null
+        set(value) {
+            field = value
+            value?.let { emitterListeners.add(it) }
+        }
+
     var activeUsers = HashMap<String, ActiveUser>()
     var activeRoomId: String? = null
     var notificationListener: NotificationListener? = null
@@ -32,7 +43,13 @@ open class SocketManager @Inject constructor() {
         fun saveTheDoctor(chatMessage: ChatMessage)
     }
 
+    fun removeListener(listener: (event: String) -> Emitter.Listener) {
+        emitterListeners.removeAt(emitterListeners.indexOf(listener))
+    }
+
     fun connect(url: String?) {
+        Timber.d { "Connect => $url" }
+        if (isConnected()) return
         try {
             url?.let {
                 socket = IO.socket(url)
@@ -66,7 +83,7 @@ open class SocketManager @Inject constructor() {
 
     private fun emitter(event: String) = Emitter.Listener {
         val json: String? = Gson().toJson(it)
-//        Timber.e { "$TAG => $event => $json" }
+        Timber.e { "$TAG => $event" }
         if (event == EVENT_CALL_TIME_UP) {
             isCallTimeUp = true
         }
@@ -78,14 +95,25 @@ open class SocketManager @Inject constructor() {
             json?.let { array ->
                 notifyIfNotActiveRoom(JSONArray(array)) { message ->
                     notificationListener?.saveTheDoctor(message)
-                    emitterListener?.invoke(event)?.call(it)
+//                    emitterListener?.invoke(event)?.call(it)
+                    invokeListeners(event, it)
                 };
             }
         } else {
             if (isCallTimeUp && event == EVENT_CALL_CANCEL_BY_DR) return@Listener
-            emitterListener?.invoke(event)?.call(it)
+            invokeListeners(event, it)
+//            emitterListener?.invoke(event)?.call(it)
         }
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
+    }
+
+    private fun invokeListeners(event: String, args: Any?) {
+        Timber.d { "No of listener => ${emitterListeners.size}" }
+        emitterListeners.forEach { it.invoke(event).call(args) }
+
+//        if (CallNotificationHandler.isAppInBackground() && event == EVENT_CALL_CANCEL_BY_DR) {
+//
+//        }
     }
 
     private fun notifyIfNotActiveRoom(jsonArray: JSONArray, block: (ChatMessage) -> Unit) {
@@ -171,6 +199,14 @@ open class SocketManager @Inject constructor() {
         Timber.e { "Socket $event args $args" }
         if (isConnected()) {
             socket?.emit(event, args) ?: Timber.e { "$event fail due to socket not connected " }
+        } else Timber.e { "$event fail due to socket not connected " }
+    }
+
+    fun emitLocalEvent(event: String, args: Any? = null) {
+        Timber.e { "emitLocalEvent $event args $args" }
+        invokeListeners(event, args)
+        if (CallNotificationHandler.isAppInBackground() && event == EVENT_CALL_HANG_UP) {
+            emit(EVENT_BYE, "app")
         }
     }
 
@@ -195,6 +231,7 @@ open class SocketManager @Inject constructor() {
         socket?.off(EVENT_MSG_DELIVERED)
         socket?.off(EVENT_CALL_TIME_UP)
         socket?.disconnect()
+        Timber.e { "Socket disconnected => ${socket?.connected()}" }
     }
 
     fun reconnect() = socket?.connect()
@@ -210,9 +247,13 @@ open class SocketManager @Inject constructor() {
 
     companion object {
         const val TAG = "SocketManager"
+        private var socketManager: SocketManager? = null
 
         @JvmStatic
-        var instance = SocketManager()
+        var instance = socketManager ?: synchronized(this) {
+            socketManager ?: SocketManager()
+        }
+
         const val EVENT_IP_ADDRESS = "ipaddr"
         const val EVENT_BYE = "bye"
         const val EVENT_NO_ANSWER = "no_answer"
@@ -223,7 +264,7 @@ open class SocketManager @Inject constructor() {
         const val EVENT_READY = "ready"
         const val EVENT_LOG = "log"
         const val EVENT_MESSAGE = "message"
-        const val EVENT_HW_CALL_REJECT = "hw_call_reject"
+        const val EVENT_CALL_REJECT_BY_HW = "hw_call_reject"
         const val EVENT_CALL = "call"
         const val EVENT_CREATE_OR_JOIN_HW = "create_or_join_hw"
         const val EVENT_CREATE_OR_JOIN = "create or join"
@@ -232,6 +273,9 @@ open class SocketManager @Inject constructor() {
         const val EVENT_CALL_CANCEL_BY_HW = "cancel_hw"
         const val EVENT_CALL_CANCEL_BY_DR = "cancel_dr"
         const val EVENT_CALL_TIME_UP = "call_time_up"
+
+        // Local event
+        const val EVENT_CALL_HANG_UP = "call_hang_up"
 
         // Chat message event
         const val EVENT_UPDATE_MESSAGE = "updateMessage"
