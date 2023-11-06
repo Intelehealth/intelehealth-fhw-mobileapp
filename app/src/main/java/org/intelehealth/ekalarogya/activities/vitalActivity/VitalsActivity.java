@@ -1944,13 +1944,21 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
     public void ConvertHeightIntoCm(String height) {
-        height = height.replaceAll(getString(R.string.ft), "").replaceAll(getString(R.string.in), "");
-        String[] heightArr = height.split(" ");
-        int feets = Integer.parseInt(heightArr[0]) * 12;
-        int inches = Integer.parseInt(heightArr[1]);
-        int val = (int) ((feets + inches) * 2.54) + 1;
-        heightvalue = val + "";
-        System.out.println("value of height=" + val);
+        try {
+            if(height.contains("फीट") || height.contains("इंच"))  //this condition has been hardcoded because of the repetitive crash happening on the field.
+                height = height.replaceAll("फीट", "").replaceAll("इंच", "");
+            height = height.replaceAll(getString(R.string.ft), "").replaceAll(getString(R.string.in), "");
+            String[] heightArr = height.split(" ");
+            int feets = Integer.parseInt(heightArr[0]) * 12;
+            int inches = Integer.parseInt(heightArr[1]);
+            int val = (int) ((feets + inches) * 2.54) + 1;
+            heightvalue = val + "";
+            System.out.println("value of height=" + val);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }
