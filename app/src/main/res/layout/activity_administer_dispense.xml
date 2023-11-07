@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_marginTop="-00dp"
+    tools:layout_marginTop="-000dp"
     tools:context=".activities.medicationAidActivity.AdministerDispenseActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -100,7 +100,7 @@
                     android:gravity="start"
                     android:padding="20dp"
                     android:textAlignment="viewStart"
-                    tools:hint="Enter details here."
+                    tools:hint="@string/enter_details_here"
                     android:maxLength="1000"
                     android:textColorHint="@color/edittext_hint_color"
                     android:textSize="@dimen/find_patient_hint_size"
@@ -302,12 +302,13 @@
                             android:background="@drawable/edittext_border"
                             android:textAlignment="viewStart"
                             android:inputType="textMultiLine"
+                            android:gravity="start"
                             android:maxLength="1000"
                             android:minLines="3"
                             android:padding="20dp"
                             android:textColorHint="@color/edittext_hint_color"
                             android:textSize="@dimen/find_patient_hint_size"
-                            tools:hint="Enter details here." />
+                            tools:hint="@string/enter_details_here" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 
