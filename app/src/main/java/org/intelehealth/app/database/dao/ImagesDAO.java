@@ -26,7 +26,7 @@ import java.util.List;
 public class ImagesDAO {
     public String TAG = ImagesDAO.class.getSimpleName();
 
-    public boolean insertObsImageDatabase(String uuid, String encounteruuid, String conceptUuid) throws DAOException {
+    public boolean insertObsImageDatabase(String uuid, String encounteruuid, String conceptUuid, String comments) throws DAOException {
         Log.v(TAG, "ImagesDAO - insertObsImageDatabase uuid - " + uuid + "\t" + encounteruuid + "\n" + conceptUuid);
         boolean isInserted = false;
         SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -39,6 +39,7 @@ public class ImagesDAO {
             contentValues.put("conceptuuid", conceptUuid);
             contentValues.put("voided", "0");
             contentValues.put("sync", "false");
+            contentValues.put("comments", comments);
             localdb.insertWithOnConflict("tbl_obs", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
             isInserted = true;
             localdb.setTransactionSuccessful();

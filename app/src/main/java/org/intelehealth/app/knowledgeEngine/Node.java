@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -141,6 +142,8 @@ public class Node implements Serializable {
     private int associated_symptoms = 0;
     private boolean isNoSelected;
     private List<String> imagePathList = new ArrayList<>();
+    // will capture the section name wrt the image path in map
+    private HashMap<String, String> imagePathListWithSectionTag = new HashMap<String, String>();
     private String imagePath;
 
     /**
@@ -3644,6 +3647,14 @@ public class Node implements Serializable {
 
     public void setSkipped(boolean skipped) {
         isSkipped = skipped;
+    }
+
+    public HashMap<String, String> getImagePathListWithSectionTag() {
+        return imagePathListWithSectionTag;
+    }
+
+    public void setImagePathListWithSectionTag(HashMap<String, String> imagePathListWithSectionTag) {
+        this.imagePathListWithSectionTag = imagePathListWithSectionTag;
     }
     /*End*/
 }

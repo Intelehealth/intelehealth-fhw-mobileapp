@@ -974,7 +974,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Log.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
             if (imagePathList != null) {
                 for (String imagePath : imagePathList) {
-                    updateImageDatabase(imagePath);
+                    String comments = physicalExamMap.getImagePathListWithSectionTag().get(imagePath);
+                    updateImageDatabase(imagePath, comments);
                 }
             }
             JSONObject jsonObject = new JSONObject();
@@ -1035,7 +1036,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         if (imagePathList != null) {
             for (String imagePath : imagePathList) {
-                updateImageDatabase(imagePath);
+                String comments = mFamilyHistoryNode.getImagePathListWithSectionTag().get(imagePath);
+                updateImageDatabase(imagePath,comments);
             }
         }
 
@@ -1187,11 +1189,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
     }
 
-    private void updateImageDatabase(String imageName) {
+    private void updateImageDatabase(String imageName, String comments) {
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
-            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE,comments);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
