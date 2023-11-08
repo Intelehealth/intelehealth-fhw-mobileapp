@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.medicationAidActivity;
+package org.intelehealth.app.activities.medicationAidActivity.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +20,6 @@ import org.intelehealth.app.models.PatientAttributeLanguageModel;
 import org.intelehealth.app.models.dispenseAdministerModel.AidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationModel;
-import org.intelehealth.app.utilities.LocaleHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;

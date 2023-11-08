@@ -2,7 +2,7 @@ package org.intelehealth.app.models.dispenseAdministerModel;
 
 import java.io.Serializable;
 
-public class MedicationAidModel implements Serializable {
+public class MedicationAidModel extends MedicationModel implements Serializable {
     private String uuid;
     private String value;
     private boolean isChecked;

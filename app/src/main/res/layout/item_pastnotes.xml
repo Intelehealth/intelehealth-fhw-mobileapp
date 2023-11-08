@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_item_pastnotes"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3pt"
+    android:layout_marginBottom="3pt"
+    android:paddingHorizontal="@dimen/activity_horizontal_margin"
+    android:paddingVertical="@dimen/padding_identification_screen">
+
+
+        <TextView
+            android:id="@+id/tv_pastnotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Previous Notes."
+            android:textAlignment="viewStart"
+            android:textSize="@dimen/card_content_sub_text_size"
+            android:fontFamily="@font/lato_regular" />
+
+        <TextView
+            android:id="@+id/tv_pastnotes_datetime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="08 Nov, 2023 12:25PM"
+            android:layout_marginTop="@dimen/padding_identification_screen"
+            android:textSize="@dimen/text_size_annotation"
+            android:textAlignment="viewEnd"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/tv_pastnotes"
+            android:fontFamily="@font/lato_regular" />
+
+
+    </RelativeLayout>
+

@@ -1652,6 +1652,9 @@
     <string name="no_medication_and_aid_data_present_to_dispense">لا يوجد بيانات عن دواء أو دعم مصروف</string>
     <string name="max_4_images_is_allowed">الحد الأقصى المسموح 4 صور</string>
     <string name="please_add_at_least_one_image">Please add at-least one image.</string>
+    <string name="view_past_notes">View Past Notes</string>
+    <string name="past_notes">Past Notes</string>
+    <string name="no_records_found">No records found.</string>
 
 
 </resources>

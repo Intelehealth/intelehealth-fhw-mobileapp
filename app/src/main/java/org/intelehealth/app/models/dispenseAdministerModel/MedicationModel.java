@@ -3,9 +3,10 @@ package org.intelehealth.app.models.dispenseAdministerModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MedicationModel {
+public class MedicationModel extends AidModel implements Serializable {
     @SerializedName("medicationUuidList")
     @Expose
     private List<String> medicationUuidList;
@@ -14,20 +15,20 @@ public class MedicationModel {
     @Expose
     private List<String> medicationNotesList;
 
-    @SerializedName("documentsList")
-    @Expose
-    private List<String> documentsList;
+//    @SerializedName("documentsList")
+//    @Expose
+//    private List<String> documentsList;
 
-    @SerializedName("hwUuid")
+   /* @SerializedName("hwUuid")
     @Expose
     private String hwUuid;
     @SerializedName("hwName")
     @Expose
-    private String hwName;
+    private String hwName;*/
 
-    @SerializedName("dateTime")
-    @Expose
-    private String dateTime;
+//    @SerializedName("dateTime")
+//    @Expose
+//    private String dateTime;
 
     public MedicationModel() {
     }
@@ -49,35 +50,35 @@ public class MedicationModel {
     }
 
     public List<String> getDocumentsList() {
-        return documentsList;
+        return super.getDocumentsList();
     }
 
     public void setDocumentsList(List<String> documentsList) {
-        this.documentsList = documentsList;
+        super.setDocumentsList(documentsList);
     }
 
     public String getHwName() {
-        return hwName;
+        return super.getHwName();
     }
 
     public void setHwName(String hwName) {
-        this.hwName = hwName;
+        super.setHwName(hwName);
     }
 
     public String getHwUuid() {
-        return hwUuid;
+        return super.getHwUuid();
     }
 
     public void setHwUuid(String hwUuid) {
-        this.hwUuid = hwUuid;
+        super.setHwUuid(hwUuid);
     }
 
     public String getDateTime() {
-        return dateTime;
+        return super.getDateTime();
     }
 
     public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
+        super.setDateTime(dateTime);
     }
 
     @Override
@@ -85,9 +86,9 @@ public class MedicationModel {
         return "MedicationModel{" +
                 "medicationUuidList=" + medicationUuidList +
                 ", medicationNotesList=" + medicationNotesList +
-                ", documentsList=" + documentsList +
-                ", hwName='" + hwName + '\'' +
-                ", dateTime='" + dateTime + '\'' +
+                ", documentsList=" + super.getDocumentsList() +
+                ", hwName='" + super.getHwName() + '\'' +
+                ", dateTime='" + super.getDateTime() + '\'' +
                 '}';
     }
 }

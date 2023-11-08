@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import org.intelehealth.app.activities.prescription.PrescDataModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
+import org.intelehealth.app.models.dispenseAdministerModel.PastNotesModel;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -367,6 +368,41 @@ public class ObsDAO {
 
         return medicationAidModel;
     }
+
+
+    public static List<PastNotesModel> getObsPastNotes(String visitUUID, String encounterTypeUUID, String conceptUUID) throws DAOException {
+        List<PastNotesModel> pastNotesModelList = new ArrayList<>();
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor obsCursoursor = db.rawQuery("select o.value from tbl_encounter as e join tbl_obs as o " +
+                        "on e.uuid = o.encounteruuid " +
+                        "where e.visituuid = ? and o.comment is null and o.voided = 0 and " +
+                        "(o.sync = 'TRUE' OR o.sync = 'true' OR o.sync = 1) and " +
+                        "e.encounter_type_uuid = ? and o.conceptuuid = ?",
+                new String[]{visitUUID, encounterTypeUUID, conceptUUID});   // ENC_DISPENSE / OBS_DISPENSE_MEDICATION.
+        try {
+            if (obsCursoursor.getCount() > 0) {
+                while (obsCursoursor.moveToNext()) {
+                    PastNotesModel model = new PastNotesModel();
+                    model.setValue(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")));
+                    pastNotesModelList.add(model);
+                }
+                db.setTransactionSuccessful();
+            }
+        } catch (SQLException sql) {
+            FirebaseCrashlytics.getInstance().recordException(sql);
+            throw new DAOException(sql);
+        } finally {
+            obsCursoursor.close();
+            db.endTransaction();
+        }
+
+        return pastNotesModelList;
+    }
+
+
 
 
 

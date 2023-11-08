@@ -88,9 +88,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <RelativeLayout
+                        android:id="@+id/rl_medication"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="5dp"
+                        >
+
                     <TextView
                         android:id="@+id/tv_medication"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAlignment="viewStart"
                         android:lineSpacingExtra="3sp"
@@ -99,11 +106,31 @@
                         android:textSize="@dimen/card_content_sub_text_size"
                         android:textStyle="bold" />
 
+                    <TextView
+                        android:id="@+id/tv_medication_pastnotes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="viewEnd"
+                        android:lineSpacingExtra="3sp"
+                        android:paddingEnd="15dp"
+                        android:gravity="center"
+                        android:text="@string/view_past_notes"
+                        android:textColor="@color/intro_next"
+                        android:textSize="@dimen/card_content_normal_text_size"
+                        android:textStyle="bold"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignBottom="@id/tv_medication"
+                        android:layout_alignTop="@id/tv_medication"
+                        android:onClick="showPastNotes"
+                        android:tag="medication"
+                        />
+                    </RelativeLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_medication"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_medication"
+                        android:layout_below="@id/rl_medication"
                         android:layout_marginVertical="10dp"
                         android:paddingHorizontal="15dp"
                         tools:itemCount="6"
@@ -125,12 +152,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                <RelativeLayout
+                    android:id="@+id/rl_aid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="5dp"
+                    >
 
                     <TextView
                         android:id="@+id/tv_aid"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
                         android:textAlignment="viewStart"
                         android:lineSpacingExtra="3sp"
                         android:paddingStart="15dp"
@@ -138,11 +170,31 @@
                         android:textSize="@dimen/card_content_sub_text_size"
                         android:textStyle="bold" />
 
+                    <TextView
+                        android:id="@+id/tv_aid_pastnotes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="viewEnd"
+                        android:gravity="center"
+                        android:lineSpacingExtra="3sp"
+                        android:paddingEnd="15dp"
+                        android:text="@string/view_past_notes"
+                        android:textColor="@color/intro_next"
+                        android:textSize="@dimen/card_content_normal_text_size"
+                        android:textStyle="bold"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignBottom="@id/tv_aid"
+                        android:layout_alignTop="@id/tv_aid"
+                        android:onClick="showPastNotes"
+                        android:tag="aid"
+                        />
+                </RelativeLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_aid"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_aid"
+                        android:layout_below="@id/rl_aid"
                         android:layout_marginTop="10dp"
                         android:paddingHorizontal="15dp"
                         tools:itemCount="5"

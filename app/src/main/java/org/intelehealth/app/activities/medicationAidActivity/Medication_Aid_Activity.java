@@ -1,6 +1,5 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
-import static org.intelehealth.app.database.dao.EncounterDAO.getEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.EncounterDAO.getEncounterListByVisitUUID;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,14 +24,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
-import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.activities.medicationAidActivity.adapter.MedicationAidAdapter;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.PatientAttributeLanguageModel;
-import org.intelehealth.app.models.dispenseAdministerModel.AidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
-import org.intelehealth.app.models.dispenseAdministerModel.MedicationModel;
-import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -40,7 +35,6 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Medication_Aid_Activity extends AppCompatActivity {
@@ -161,6 +155,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
             fl_aid.setVisibility(View.GONE);
             tvDispenseAdminister.setText(getString(R.string.administer));
             findViewById(R.id.tv_aid).setVisibility(View.GONE);
+            findViewById(R.id.tv_aid_pastnotes).setVisibility(View.GONE);
         } else {  // Dispense
             getSupportActionBar().setTitle(getString(R.string.dispense_medication_and_aid));
             fl_aid.setVisibility(View.VISIBLE);
@@ -371,4 +366,17 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         return gson.fromJson(jsonString, PatientAttributeLanguageModel.class);
     }
 
+    public void showPastNotes(View view) {
+        String viewTag = null;
+        if (view.getTag().equals("medication"))
+            viewTag = "medication";
+        else if (view.getTag().equals("aid"))
+            viewTag = "aid";
+        
+        Intent intent = new Intent(this, PastNotesDispenseAdministerActivity.class);
+        intent.putExtra("viewtag", viewTag);
+        intent.putExtra("tag", tag);
+        intent.putExtra("visitUUID", visitUuid);
+        startActivity(intent);
+    }
 }
