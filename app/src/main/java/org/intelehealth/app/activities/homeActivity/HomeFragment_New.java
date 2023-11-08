@@ -98,6 +98,20 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         view = inflater.inflate(R.layout.fragment_home_ui2, container, false);
         networkUtils = new NetworkUtils(getActivity(), this);
         setLocale(getContext());
+
+        ((HomeScreenActivity_New) getActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
+            @Override
+            public void onStart(int eventFlag) {
+                Log.v(TAG, "onStart");
+            }
+
+            @Override
+            public void onFinished(int eventFlag) {
+                Log.v(TAG, "onFinished");
+                initUI();
+            }
+        });
+
         return view;
     }
 
@@ -145,11 +159,11 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                     e.printStackTrace();
                 }
                 //TODO: need more improvement in main query, this condition can be done by join query
-                if(isForReceivedPrescription) {
+                if (isForReceivedPrescription) {
                     if (!isCompletedExitedSurvey && isPrescriptionReceived) {
                         count += 1;
                     }
-                }else{
+                } else {
                     if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
                         count += 1;
                     }
@@ -189,18 +203,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((HomeScreenActivity_New) getActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
-            @Override
-            public void onStart(int eventFlag) {
-                Log.v(TAG, "onStart");
-            }
 
-            @Override
-            public void onFinished(int eventFlag) {
-                Log.v(TAG, "onFinished");
-                initUI();
-            }
-        });
     }
 
     private void initUI() {
@@ -284,19 +287,21 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         int total = pendingCountTotalVisits + countReceivedPrescription;
         String prescCountText = countReceivedPrescription + " " +
-                getResources().getString(R.string.out_of) + " "  + total + " " +
+                getResources().getString(R.string.out_of) + " " + total + " " +
                 getResources().getString(R.string.received).toLowerCase();
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
         prescriptionCountTextView.setText(prescCountText);
 
-      //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
+        //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
-                requireActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits)));
+                if (getActivity() != null) {
+                    requireActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits)));
+                }
             }
         }).start();
 
