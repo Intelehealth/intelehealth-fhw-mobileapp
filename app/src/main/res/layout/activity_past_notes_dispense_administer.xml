@@ -45,8 +45,6 @@
         tools:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:layout_marginTop="10dp"
         android:paddingHorizontal="5dp"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
