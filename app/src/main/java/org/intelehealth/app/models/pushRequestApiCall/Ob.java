@@ -15,6 +15,10 @@ public class Ob {
     @Expose
     private String value;
 
+    @SerializedName("comments")
+    @Expose
+    private String comments;
+
     public String getUuid() {
         return uuid;
     }
@@ -39,4 +43,11 @@ public class Ob {
         this.value = value;
     }
 
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 }

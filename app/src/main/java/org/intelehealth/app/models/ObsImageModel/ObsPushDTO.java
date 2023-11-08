@@ -22,6 +22,10 @@ public class ObsPushDTO {
     @Expose
     private String person;
 
+    @SerializedName("comments")
+    @Expose
+    private String comments;
+
     public String getUuid() {
         return uuid;
     }
@@ -62,4 +66,11 @@ public class ObsPushDTO {
         this.person = person;
     }
 
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 }

@@ -27,7 +27,7 @@ public class ImagesDAO {
     public String TAG = ImagesDAO.class.getSimpleName();
 
     public boolean insertObsImageDatabase(String uuid, String encounteruuid, String conceptUuid, String comments) throws DAOException {
-        Log.v(TAG, "ImagesDAO - insertObsImageDatabase uuid - " + uuid + "\t" + encounteruuid + "\n" + conceptUuid);
+        Log.v(TAG, "ImagesDAO - insertObsImageDatabase uuid - " + uuid + "\t" + encounteruuid + "\t" + conceptUuid+ "\t" + comments);
         boolean isInserted = false;
         SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         localdb.beginTransaction();
@@ -234,7 +234,7 @@ public class ImagesDAO {
         SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("select c.uuid as patientuuid,d.conceptuuid,a.uuid as encounteruuid,d.uuid as obsuuid,d.modified_date  from tbl_encounter a , tbl_visit b , tbl_patient c,tbl_obs d where a.visituuid=b.uuid and b.patientuuid=c.uuid and d.encounteruuid=a.uuid and (d.sync=0 or d.sync='false') and (d.conceptuuid=? or d.conceptuuid=?) and d.voided='0'", new String[]{UuidDictionary.COMPLEX_IMAGE_PE, UuidDictionary.COMPLEX_IMAGE_AD});
+            Cursor idCursor = localdb.rawQuery("select c.uuid as patientuuid,d.conceptuuid,a.uuid as encounteruuid,d.uuid as obsuuid,d.comments as comment,d.modified_date  from tbl_encounter a , tbl_visit b , tbl_patient c,tbl_obs d where a.visituuid=b.uuid and b.patientuuid=c.uuid and d.encounteruuid=a.uuid and (d.sync=0 or d.sync='false') and (d.conceptuuid=? or d.conceptuuid=?) and d.voided='0'", new String[]{UuidDictionary.COMPLEX_IMAGE_PE, UuidDictionary.COMPLEX_IMAGE_AD});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     ObsPushDTO obsPushDTO = new ObsPushDTO();
@@ -243,6 +243,7 @@ public class ImagesDAO {
                     obsPushDTO.setObsDatetime(idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date")));
                     obsPushDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("obsuuid")));
                     obsPushDTO.setPerson(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+                    obsPushDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
                     obsImages.add(obsPushDTO);
                 }
             }

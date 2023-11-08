@@ -472,7 +472,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
-            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE,"");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

@@ -3718,7 +3718,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertObsImageDatabase(imageuuid, encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+            imagesDAO.insertObsImageDatabase(imageuuid, encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, AppConstants.IMAGE_ADDITIONAL_DOC);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
