@@ -1658,5 +1658,6 @@
     <string name="no_medication_data_present_to_administer">No medication data present to administer.</string>
     <string name="no_medication_and_aid_data_present_to_dispense">No medication and aid data present to dispense.</string>
     <string name="max_4_images_is_allowed">Max 4 images is allowed.</string>
+    <string name="please_add_at_least_one_image">Please add at-least one image.</string>
 
 </resources>

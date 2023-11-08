@@ -96,6 +96,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private AidModel aidModel = new AidModel();
     private TextView additionalImageDownloadText;
     private boolean isEncounterCreated = false;
+    private HorizontalAdapter horizontalAdapter;
 
 
     @Override
@@ -519,7 +520,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                     fileList.add(new File(filename));
                 }
             }
-            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            horizontalAdapter = new HorizontalAdapter(fileList, this);
             docsLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             rv_docs.setLayoutManager(docsLayoutManager);
             rv_docs.setAdapter(horizontalAdapter);
@@ -531,6 +532,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     }
 
     private void checkValidation() {
+        
         if (medList != null && medList.size() > 0) {
             if (tie_medNotes.getText().toString().isEmpty()) {
                 tie_medNotes.requestFocus();
@@ -565,6 +567,11 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 tie_aidNotes.setError(getString(R.string.error_field_required));
                 return;
             }
+        }
+        
+        if (horizontalAdapter != null && horizontalAdapter.getItemCount() == 0) {
+            Toast.makeText(context, R.string.please_add_at_least_one_image, Toast.LENGTH_SHORT).show();
+            return;
         }
 
         saveDataToDB();

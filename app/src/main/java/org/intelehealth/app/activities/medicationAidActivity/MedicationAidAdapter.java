@@ -74,8 +74,11 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
             for (int i = 0; i < updateUUID_List.size(); i++) {
                 MedicationModel medicationModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), MedicationModel.class);
                 if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(list.get(position).getUuid())) {
-                    holder.cb_value.setChecked(true);
-                    holder.cb_value.setEnabled(false);
+                    if (tag.equalsIgnoreCase("dispense")) {
+                        holder.cb_value.setChecked(true);
+                        holder.cb_value.setEnabled(false);
+                    }
+
                   //  checkedList.add(model);
                 }
                 else {
@@ -91,8 +94,10 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
             for (int i = 0; i < updateUUID_List.size(); i++) {
                 AidModel aidModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), AidModel.class);
                 if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(list.get(position).getUuid())) {
-                    holder.cb_value.setChecked(true);
-                    holder.cb_value.setEnabled(false);
+                    if (tag.equalsIgnoreCase("dispense")) {
+                        holder.cb_value.setChecked(true);
+                        holder.cb_value.setEnabled(false);
+                    }
                   //  checkedList.add(model);
                 }
                 else {
