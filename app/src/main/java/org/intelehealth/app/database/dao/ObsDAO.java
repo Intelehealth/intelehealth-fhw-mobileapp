@@ -378,8 +378,8 @@ public class ObsDAO {
 
         Cursor obsCursoursor = db.rawQuery("select o.value from tbl_encounter as e join tbl_obs as o " +
                         "on e.uuid = o.encounteruuid " +
-                        "where e.visituuid = ? and o.comment is null and o.voided = 0 and " +
-                        "(o.sync = 'TRUE' OR o.sync = 'true' OR o.sync = 1) and " +
+                        "where e.visituuid = ? and o.comment is null and o.voided = '0' and " +
+                        "(o.sync = 'TRUE' OR o.sync = 'true' OR o.sync = '1') and " +
                         "e.encounter_type_uuid = ? and o.conceptuuid = ?",
                 new String[]{visitUUID, encounterTypeUUID, conceptUUID});   // ENC_DISPENSE / OBS_DISPENSE_MEDICATION.
         try {
