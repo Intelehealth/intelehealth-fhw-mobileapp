@@ -1880,5 +1880,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="select_visit_type">Select Visit Type</string>
     <string name="please_select_visit_type">Please select visit type</string>
     <string name="obgyn">Obstetrician and Gynecologist</string>
+    <string name="video_consultation">Video consultation</string>
+    <string name="routine_check_up">Routine check up</string>
+    <string name="urgent_care">Urgent care</string>
 
 </resources>

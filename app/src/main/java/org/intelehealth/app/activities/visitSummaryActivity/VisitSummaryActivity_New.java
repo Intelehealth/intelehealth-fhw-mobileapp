@@ -601,9 +601,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 //add for visit type
                 List<String> itemList = new ArrayList<>();
                 itemList.add(0, getString(R.string.select_visit_type));
-                itemList.add(1, "Video consultation");
-                itemList.add(2, "Routine check up");
-                itemList.add(3, "Urgent care");
+                itemList.add(1, getString(R.string.video_consultation));
+                itemList.add(2, getString(R.string.routine_check_up));
+                itemList.add(3, getString(R.string.urgent_care));
                 ArrayAdapter stringArrayAdapter =
                         new ArrayAdapter<String>
                                 (this, android.R.layout.simple_spinner_dropdown_item, itemList);

@@ -8,6 +8,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 
+import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
@@ -194,7 +195,10 @@ public class AppConstants {
     public static final int EVENT_FLAG_SUCCESS = 1;
     public static final int EVENT_FLAG_FAILED = 2;
 
-    public static final String NAMMA_AAROGYA_DOCTOR_SPECIALITY = "Obstetrician & Gynecologist";
+   // public static final String NAMMA_AAROGYA_DOCTOR_SPECIALITY = "Obstetrician & Gynecologist";
+    public static final String NAMMA_AAROGYA_DOCTOR_SPECIALITY = IntelehealthApplication.getAppContext().getResources().getString(R.string.obgyn);
+    public static final String NAMMA_AAROGYA_CHIEF_COMPLAINT = IntelehealthApplication.getAppContext().getResources().getString(R.string.obgyn);
+
 
 }
 
