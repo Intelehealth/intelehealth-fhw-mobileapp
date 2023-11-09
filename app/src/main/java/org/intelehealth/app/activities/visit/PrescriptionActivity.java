@@ -2096,6 +2096,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     private void doWebViewPrint_Button() throws ParseException {
         // Create a WebView object specifically for printing
         WebView webView = new WebView(this);
+        webView.getSettings().setBuiltInZoomControls(true);
         webView.setWebViewClient(new WebViewClient() {
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -2502,7 +2503,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 //                            pat_hist, fam_hist,
                             mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
-            webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+            webView.loadDataWithBaseURL(null, newPrescription(), "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
                     String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
@@ -2547,7 +2548,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             /*pat_hist, fam_hist,*/
                             /*mComplaint*/ "",
                             diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
-            webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+            webView.loadDataWithBaseURL(null, newPrescription(), "text/HTML", "UTF-8", null);
         }
 
 
@@ -2937,5 +2938,581 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         args.putSerializable("patientDTO", (Serializable) patientDTO);
         intent2.putExtra("BUNDLE", args);
         startActivity(intent2);
+    }
+
+    public String newPrescription() {
+        String finalString = "";
+        String htmlStartTag = "<!doctype html>\n" +
+                "<html lang=\"en\">";
+        String htmlEndTag = "</html>";
+
+        String headStartTag = "<head>\n" +
+                "    <meta charset=\"utf-8\" />\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n" +
+                "    <link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\" />\n" +
+                "    <title>Intelehealth</title>\n" +
+                "    <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\" />\n" +
+                "    <link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.8.2/css/all.css\"\n" +
+                "        integrity=\"sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay\" crossorigin=\"anonymous\" />\n" +
+                "    <link rel=\"apple-touch-icon\" href=\"/assets/icons/icon-180x180.png\" />\n" +
+                "    <link rel=\"manifest\" href=\"manifest.webmanifest\" />\n" +
+                "    <link href=\"https://fonts.googleapis.com/css?family=DM Sans\" rel=\"stylesheet\" />\n" +
+                "    <meta name=\"theme-color\" content=\"#2e1e91\" />\n" +
+                "    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\">\n" +
+                "    <link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap\" rel=\"stylesheet\">\n" +
+                "    <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n" +
+                "    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css\"\n" +
+                "        integrity=\"sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N\" crossorigin=\"anonymous\">";
+
+        String headEndTag = "</head>\n";
+        String bodyTagStart = "<body class=\"font-lato mat-typography\">\n" +
+                "    <div class=\"title-con position-relative\">\n" +
+                "        <h6>\n" +
+                "            Intelehealth e-Prescription\n" +
+                "            <img *ngIf=\"isDownloadPrescription\" class=\"logo position-absolute\"\n" +
+                "                src=\"https://dev.intelehealth.org/intelehealth/assets/images/Intelehealth-logo-white.png\" width=\"100%\" alt=\"\" />\n" +
+                "        </h6>\n" +
+                "    </div>\n" +
+                "    <div class=\"main-content\">\n" +
+                "        <div class=\"container-fluid\">\n" +
+                "            <div class=\"row patient-info-wrapper\">\n" +
+                "                <div class=\"col-md-3 patient-info-section p-3\">\n" +
+                "                    <div class=\"patient-img-item mb-2\">\n" +
+                "                        <div class=\"patient-img\">\n" +
+                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/user.svg\" alt=\"\"\n" +
+                "                                width=\"100%\" height=\"100%\" />\n" +
+                "                        </div>\n" +
+                "                        <div class=\"ml-3\">\n" +
+                "                            <h6>\n" +
+                "                                Web Rtc Test (M)\n" +
+                "                            </h6>\n" +
+                "                            <p>13XET-7</p>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "                <div class=\"col-md-3 patient-info-section p-3\">\n" +
+                "                    <div class=\"patient-info-item mb-3\">\n" +
+                "                        <h6>Age</h6>\n" +
+                "                        <p>\n" +
+                "                            22 years\n" +
+                "                        </p>\n" +
+                "                    </div>\n" +
+                "                    <div class=\"patient-info-item\">\n" +
+                "                        <h6>Address</h6>\n" +
+                "                        <p>Nashik:Manmad</p>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "                <div class=\"col-md-3 patient-info-section p-3\">\n" +
+                "                    <div class=\"patient-info-item mb-3\">\n" +
+                "                        <h6>Occupation</h6>\n" +
+                "                        <p>NA</p>\n" +
+                "                    </div>\n" +
+                "                    <div class=\"patient-info-item\">\n" +
+                "                        <h6>National ID</h6>\n" +
+                "                        <p>NA</p>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "                <div class=\"col-md-3 patient-info-section p-3\">\n" +
+                "                    <div class=\"patient-info-item\">\n" +
+                "                        <h6>Contact no.</h6>\n" +
+                "                        <p>\n" +
+                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/phone-black.svg\" alt=\"\" />\n" +
+                "                            +918830308535\n" +
+                "                        </p>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div class=\"row\">\n" +
+                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+                "                    <div class=\"data-section\">\n" +
+                "                        <div class=\"data-section-title\">\n" +
+                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/consultation-details-blue.svg\"\n" +
+                "                                alt=\"\" />\n" +
+                "                            <h6>Consultation details</h6>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"data-section-content consultation-details\">\n" +
+                "                            <ul class=\"items-list\">\n" +
+                "                                <li>\n" +
+                "                                    <div class=\"list-item\">\n" +
+                "                                        <label>Patient Id</label>\n" +
+                "                                        <div class=\"list-item-content\">\n" +
+                "                                            13XET-7\n" +
+                "                                        </div>\n" +
+                "                                    </div>\n" +
+                "                                </li>\n" +
+                "                                <li>\n" +
+                "                                    <div class=\"list-item\">\n" +
+                "                                        <label>Prescription Issued</label>\n" +
+                "                                        <div class=\"list-item-content\">\n" +
+                "                                            03 Nov, 2023\n" +
+                "                                        </div>\n" +
+                "                                    </div>\n" +
+                "                                </li>\n" +
+                "                            </ul>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "\n" +
+                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+                "                    <div class=\"data-section\">\n" +
+                "                        <div class=\"data-section-title\">\n" +
+                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/diagnosis.svg\" alt=\"\" />\n" +
+                "                            <h6>Diagnosis</h6>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"data-section-content\">\n" +
+                "                            <ul class=\"items-list\">\n" +
+                "                            </ul>\n" +
+                "                            <div class=\"table-responsive\">\n" +
+                "                                <table class=\"table\">\n" +
+                "                                    <thead>\n" +
+                "                                        <tr>\n" +
+                "                                            <th scope=\"col\">Diagnosis</th>\n" +
+                "                                            <th scope=\"col\">Type</th>\n" +
+                "                                            <th scope=\"col\">Status</th>\n" +
+                "                                        </tr>\n" +
+                "                                    </thead>\n" +
+                "                                    <tbody>\n" +
+                "                                        <tr>\n" +
+                "                                            <td>Malaria</td>\n" +
+                "                                            <td>Primary</td>\n" +
+                "                                            <td>Confirmed</td>\n" +
+                "                                        </tr>\n" +
+                "                                    </tbody>\n" +
+                "                                </table>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "\n" +
+                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+                "                    <div class=\"data-section\">\n" +
+                "                        <div class=\"data-section-title\">\n" +
+                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/medication.svg\" alt=\"\" />\n" +
+                "                            <h6>Medication</h6>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"data-section-content\">\n" +
+                "                            <div class=\"table-responsive\">\n" +
+                "                                <table class=\"table\">\n" +
+                "                                    <thead>\n" +
+                "                                        <tr>\n" +
+                "                                            <th scope=\"col\">Drug name</th>\n" +
+                "                                            <th scope=\"col\">Strength</th>\n" +
+                "                                            <th scope=\"col\">No. of days</th>\n" +
+                "                                            <th scope=\"col\">Timing</th>\n" +
+                "                                            <th scope=\"col\">Remarks</th>\n" +
+                "                                        </tr>\n" +
+                "                                    </thead>\n" +
+                "                                    <tbody>\n" +
+                "                                        <tr>\n" +
+                "                                            <td>Paracetamol</td>\n" +
+                "                                            <td>500 mg</td>\n" +
+                "                                            <td>14</td>\n" +
+                "                                            <td>1-1-1</td>\n" +
+                "                                            <td>After meal</td>\n" +
+                "                                        </tr>\n" +
+                "                                        <tr>\n" +
+                "                                            <td colspan=\"5\" class=\"text-center\">\n" +
+                "                                                No medicines added\n" +
+                "                                            </td>\n" +
+                "                                        </tr>\n" +
+                "                                    </tbody>\n" +
+                "                                </table>\n" +
+                "                            </div>\n" +
+                "                            <ul class=\"items-list\">\n" +
+                "                                <li>\n" +
+                "                                    <div class=\"d-flex justify-content-between align-items-center\">\n" +
+                "                                        <span>TEST ADDITIONAL INSTRUCTION</span>\n" +
+                "                                    </div>\n" +
+                "                                </li>\n" +
+                "                            </ul>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "\n" +
+                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+                "                    <div class=\"data-section\">\n" +
+                "                        <div class=\"data-section-title\">\n" +
+                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/note.svg\" alt=\"\" />\n" +
+                "                            <h6>Note</h6>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"data-section-content\">\n" +
+                "                            <ul class=\"items-list\">\n" +
+                "                                <li>\n" +
+                "                                    <div class=\"d-flex justify-content-between align-items-center\">\n" +
+                "                                        <span>TEST NOTE</span>\n" +
+                "                                    </div>\n" +
+                "                                </li>\n" +
+                "                            </ul>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "\n" +
+                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+                "                    <div class=\"data-section\">\n" +
+                "                        <div class=\"data-section-title\">\n" +
+                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/advice.svg\" alt=\"\" />\n" +
+                "                            <h6>Advice</h6>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"data-section-content\">\n" +
+                "                            <ul class=\"items-list\">\n" +
+                "                                <li>\n" +
+                "                                    <div class=\"d-flex justify-content-between align-items-center\">\n" +
+                "                                        <span>Regular Physical Exercise</span>\n" +
+                "                                    </div>\n" +
+                "                                </li>\n" +
+                "                            </ul>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "\n" +
+                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+                "                    <div class=\"data-section\">\n" +
+                "                        <div class=\"data-section-title\">\n" +
+                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/test.svg\" alt=\"\" />\n" +
+                "                            <h6>Test</h6>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"data-section-content\">\n" +
+                "                            <ul class=\"items-list\">\n" +
+                "                                <li>\n" +
+                "                                    <div class=\"d-flex justify-content-between align-items-center\">\n" +
+                "                                        <span>Urine Sugar</span>\n" +
+                "                                    </div>\n" +
+                "                                </li>\n" +
+                "                            </ul>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+                "                    <div class=\"data-section\">\n" +
+                "                        <div class=\"data-section-title\">\n" +
+                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/referral.svg\" alt=\"\" />\n" +
+                "                            <h6>Referral-Out</h6>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"data-section-content\">\n" +
+                "                            <div class=\"table-responsive\">\n" +
+                "                                <table class=\"table\">\n" +
+                "                                    <thead>\n" +
+                "                                        <tr>\n" +
+                "                                            <th scope=\"col\">Referral to</th>\n" +
+                "                                            <th scope=\"col\">Referral facility</th>\n" +
+                "                                            <th scope=\"col\">Priority of Referral</th>\n" +
+                "                                            <th scope=\"col\">Referral for (Reason)</th>\n" +
+                "                                        </tr>\n" +
+                "                                    </thead>\n" +
+                "                                    <tbody>\n" +
+                "                                        <tr>\n" +
+                "                                            <td>General Physician</td>\n" +
+                "                                            <td>HSC</td>\n" +
+                "                                            <td>Elective</td>\n" +
+                "                                            <td>TEST</td>\n" +
+                "                                        </tr>\n" +
+                "                                        <tr>\n" +
+                "                                            <td colspan=\"4\" class=\"text-center\">\n" +
+                "                                                No referrals added\n" +
+                "                                            </td>\n" +
+                "                                        </tr>\n" +
+                "                                    </tbody>\n" +
+                "                                </table>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "\n" +
+                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+                "                    <div class=\"data-section\">\n" +
+                "                        <div class=\"data-section-title\">\n" +
+                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/follow-up.svg\" alt=\"\" />\n" +
+                "                            <h6>Follow-up</h6>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"data-section-content\">\n" +
+                "                            <ul class=\"items-list\">\n" +
+                "                                <li>\n" +
+                "                                    <div class=\"list-item\">\n" +
+                "                                        <label class=\"border-0\">Follow-up suggested</label>\n" +
+                "                                        <div class=\"list-item-content\">\n" +
+                "                                            Yes/No\n" +
+                "                                        </div>\n" +
+                "                                    </div>\n" +
+                "                                </li>\n" +
+                "                                <li>\n" +
+                "                                    <div class=\"list-item\">\n" +
+                "                                        <label>Follow-up Date</label>\n" +
+                "                                        <div class=\"list-item-content\">\n" +
+                "                                            11-11-2023\n" +
+                "                                        </div>\n" +
+                "                                    </div>\n" +
+                "                                </li>\n" +
+                "                                <li>\n" +
+                "                                    <div class=\"list-item\">\n" +
+                "                                        <label>Follow-up Time</label>\n" +
+                "                                        <div class=\"list-item-content\">\n" +
+                "                                            09:00 AM\n" +
+                "                                        </div>\n" +
+                "                                    </div>\n" +
+                "                                </li>\n" +
+                "                                <li>\n" +
+                "                                    <div class=\"list-item\">\n" +
+                "                                        <label>Reason for follow-up</label>\n" +
+                "                                        <div class=\"list-item-content\">\n" +
+                "                                            TEST\n" +
+                "                                        </div>\n" +
+                "                                    </div>\n" +
+                "                                </li>\n" +
+                "                            </ul>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "\n" +
+                "            <div class=\"signature w-100\">\n" +
+                "                <div class=\"float-right my-4\">\n" +
+                "                    <img class=\"signature\" alt=\"\"\n" +
+                "                        src=\"data:image/png;base64,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\" />\n" +
+                "                    <div class=\"title-name\">Dr ANURAG R SANGALE</div>\n" +
+                "                    <div class=\"title\">MBBS</div>\n" +
+                "                    <div class=\"sub-title\">\n" +
+                "                        Registration No: 12345678\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "    <script src=\"https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js\"\n" +
+                "        integrity=\"sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj\"\n" +
+                "        crossorigin=\"anonymous\"></script>\n" +
+                "    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js\"\n" +
+                "        integrity=\"sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct\"\n" +
+                "        crossorigin=\"anonymous\"></script>\n" +
+                "    <noscript>\n" +
+                "        <div style=\"width: 100%; height: 100%; text-align: center\">\n" +
+                "            JavaScript is disbled\n" +
+                "        </div>\n" +
+                "    </noscript>\n" +
+                "</body>";
+
+        String styleTag = "<style>\n" +
+                "        .modal-nav {\n" +
+                "            position: fixed;\n" +
+                "            top: 0;\n" +
+                "            left: 0;\n" +
+                "            width: 100%;\n" +
+                "            display: flex;\n" +
+                "            align-items: center;\n" +
+                "            justify-content: space-between;\n" +
+                "            background: var(--color-darkestBlue)86;\n" +
+                "            padding: 10px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .title-con {\n" +
+                "            padding: 24px 24px 16px;\n" +
+                "            background: #E6FFF3;\n" +
+                "            position: relative;\n" +
+                "        }\n" +
+                "\n" +
+                "        .title-con .close-btn-con {\n" +
+                "            position: absolute;\n" +
+                "            right: 24px;\n" +
+                "            top: 24px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .title-con .close-btn-con .modal-close-btn {\n" +
+                "            border: none;\n" +
+                "            background: transparent;\n" +
+                "            outline: none;\n" +
+                "        }\n" +
+                "\n" +
+                "        .title-con h6 {\n" +
+                "            font-size: 24px;\n" +
+                "            line-height: 150%;\n" +
+                "            color: var(--color-darkestBlue);\n" +
+                "            text-align: center;\n" +
+                "            font-weight: bold;\n" +
+                "            margin-bottom: 0px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .main-content {\n" +
+                "            padding: 24px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .patient-info-wrapper {\n" +
+                "            font-family: DM Sans;\n" +
+                "        }\n" +
+                "\n" +
+                "        .patient-info-wrapper .patient-info-section {\n" +
+                "            border-right: 1px solid rgba(178, 175, 190, 0.2);\n" +
+                "        }\n" +
+                "\n" +
+                "        .patient-info-wrapper .patient-info-section .patient-img-item {\n" +
+                "            display: flex;\n" +
+                "            flex-direction: row;\n" +
+                "            align-items: center;\n" +
+                "        }\n" +
+                "\n" +
+                "        .patient-info-wrapper .patient-info-section .patient-img-item .patient-img {\n" +
+                "            width: 56px;\n" +
+                "            height: 50px;\n" +
+                "            border-radius: 50%;\n" +
+                "            overflow: hidden;\n" +
+                "        }\n" +
+                "\n" +
+                "        .patient-info-wrapper .patient-info-section .patient-img-item h6 {\n" +
+                "            margin-bottom: 0px;\n" +
+                "            font-size: 18px;\n" +
+                "            font-weight: bold;\n" +
+                "            line-height: 150%;\n" +
+                "            color: var(--color-darkestBlue);\n" +
+                "        }\n" +
+                "\n" +
+                "        .patient-info-wrapper .patient-info-section .patient-img-item p {\n" +
+                "            margin-bottom: 0px;\n" +
+                "            color: var(--color-gray);\n" +
+                "            font-size: 16px;\n" +
+                "            line-height: 150%;\n" +
+                "        }\n" +
+                "\n" +
+                "        .patient-info-wrapper .patient-info-section .patient-info-item h6 {\n" +
+                "            margin-bottom: 0px;\n" +
+                "            font-size: 16px;\n" +
+                "            line-height: 150%;\n" +
+                "            color: var(--color-darkestBlue);\n" +
+                "        }\n" +
+                "\n" +
+                "        .patient-info-wrapper .patient-info-section .patient-info-item p {\n" +
+                "            margin-bottom: 0px;\n" +
+                "            color: var(--color-darkestBlue);\n" +
+                "            font-size: 16px;\n" +
+                "            line-height: 150%;\n" +
+                "        }\n" +
+                "\n" +
+                "\n" +
+                "        .patient-info-wrapper .patient-info-section:last-child {\n" +
+                "            border: none;\n" +
+                "        }\n" +
+                "\n" +
+                "        .data-section .data-section-title {\n" +
+                "            display: flex;\n" +
+                "            align-items: center;\n" +
+                "            border-bottom: 1px solid rgba(178, 175, 190, 0.2);\n" +
+                "            padding: 5px 0px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .data-section .data-section-title img {\n" +
+                "            width: 48px;\n" +
+                "            margin-right: 10px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .data-section .data-section-title h6 {\n" +
+                "            font-size: 20px;\n" +
+                "            line-height: 150%;\n" +
+                "            color: var(--color-darkestBlue);\n" +
+                "            font-weight: bold;\n" +
+                "            margin-bottom: 0px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .items-list {\n" +
+                "            font-family: DM Sans;\n" +
+                "            font-size: 16px;\n" +
+                "            padding: 24px 0px 0px 24px;\n" +
+                "            margin-bottom: 0px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .items-list li {\n" +
+                "            margin-bottom: 5px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .items-list li .list-item {\n" +
+                "            display: flex;\n" +
+                "            flex-wrap: nowrap;\n" +
+                "            align-items: center;\n" +
+                "        }\n" +
+                "\n" +
+                "        .items-list li .list-item label {\n" +
+                "            width: 25%;\n" +
+                "            margin-bottom: 0px;\n" +
+                "            padding: 5px 0px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .items-list li .list-item .list-item-content {\n" +
+                "            padding: 5px 0px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .items-list li .list-item-col {\n" +
+                "            display: flex;\n" +
+                "            flex-wrap: nowrap;\n" +
+                "            flex-direction: column;\n" +
+                "        }\n" +
+                "\n" +
+                "        .text-important-red {\n" +
+                "            color: var(--color-red);\n" +
+                "            font-weight: bold;\n" +
+                "        }\n" +
+                "\n" +
+                "        .text-important-green {\n" +
+                "            color: var(--color-green);\n" +
+                "            font-weight: bold;\n" +
+                "        }\n" +
+                "\n" +
+                "        .table th,\n" +
+                "        .table td {\n" +
+                "            vertical-align: middle;\n" +
+                "            white-space: nowrap;\n" +
+                "        }\n" +
+                "\n" +
+                "        @media (max-width: 768px) {\n" +
+                "            .patient-info-section {\n" +
+                "                border-bottom: 1px solid rgba(178, 175, 190, 0.2);\n" +
+                "                border-right: none !important;\n" +
+                "            }\n" +
+                "\n" +
+                "            .items-list {\n" +
+                "                list-style-type: none;\n" +
+                "                padding: 5px 0px 0px;\n" +
+                "            }\n" +
+                "\n" +
+                "            .items-list li .list-item {\n" +
+                "                flex-direction: column;\n" +
+                "                align-items: flex-start;\n" +
+                "            }\n" +
+                "\n" +
+                "            .items-list li .list-item label {\n" +
+                "                width: 100%;\n" +
+                "                border-top: 1px solid rgba(178, 175, 190, 0.2);\n" +
+                "                font-weight: bold;\n" +
+                "                margin-top: 0.50rem;\n" +
+                "            }\n" +
+                "\n" +
+                "            .items-list li .list-item-col label {\n" +
+                "                width: 100%;\n" +
+                "                border-top: 1px solid rgba(178, 175, 190, 0.2);\n" +
+                "                font-weight: bold;\n" +
+                "                margin-top: 0.50rem;\n" +
+                "            }\n" +
+                "\n" +
+                "            .data-section .data-section-title img {\n" +
+                "                width: 38px;\n" +
+                "                margin-right: 10px;\n" +
+                "            }\n" +
+                "\n" +
+                "            .data-section .data-section-title h6 {\n" +
+                "                font-size: 16px;\n" +
+                "            }\n" +
+                "\n" +
+                "            .cheif-complaint-wrapper h6 {\n" +
+                "                font-size: 16px;\n" +
+                "            }\n" +
+                "\n" +
+                "            .main-content {\n" +
+                "                padding: 10px !important;\n" +
+                "            }\n" +
+                "        }\n" +
+                "\n" +
+                "        .signature {\n" +
+                "            height: 50px;\n" +
+                "            width: 150px;\n" +
+                "        }\n" +
+                "    </style>";
+
+        finalString = htmlStartTag + headStartTag + bodyTagStart + styleTag + headEndTag + htmlEndTag;
+        return finalString;
     }
 }
