@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="3pt"
     android:layout_marginBottom="3pt"
-    android:paddingHorizontal="@dimen/activity_horizontal_margin"
-    android:paddingVertical="@dimen/padding_identification_screen">
+    android:paddingVertical="@dimen/padding_identification_screen"
+    >
 
 
         <TextView

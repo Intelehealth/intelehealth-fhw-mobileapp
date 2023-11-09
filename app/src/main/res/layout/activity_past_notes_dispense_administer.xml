@@ -45,7 +45,7 @@
         tools:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="5dp"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
