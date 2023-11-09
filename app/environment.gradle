@@ -1,0 +1,44 @@
+android {
+    def dimen = "endpoint"
+    flavorDimensions dimen
+
+    productFlavors {
+
+        def endPoint = "API_ENDPOINT"
+        def socketEndPoint = "SOCKET_ENDPOINT"
+
+        def endPointPropertyFile = file('../endpoint.properties')
+        def property = new Properties()
+
+        if (endPointPropertyFile.canRead()) {
+            property.load(new FileInputStream(endPointPropertyFile))
+        }
+
+        dev {
+            String devEndPoint = property['DEV_API_ENDPOINT'].toString()
+            String devSocketEndPoint = property['DEV_SOCKET_ENDPOINT'].toString()
+
+            println("Dev Endpoint ----> $devEndPoint")
+            println("Dev Socket Endpoint ------> $devSocketEndPoint")
+
+            buildConfigField "String", endPoint, devEndPoint
+            buildConfigField "String", socketEndPoint, devSocketEndPoint
+
+            isDefault = true
+//            getIsDefault().set(true)
+        }
+
+
+        production {
+            String prodEndPoint = property['PROD_API_ENDPOINT'].toString()
+            String prodSocketEndPoint = property['PROD_SOCKET_ENDPOINT'].toString()
+
+            println("Prod Endpoint ----> $prodEndPoint")
+            println("Prod Socket Endpoint ------> $prodSocketEndPoint")
+
+            buildConfigField "String", endPoint, prodEndPoint
+            buildConfigField "String", socketEndPoint, prodSocketEndPoint
+//            isDefault = true
+        }
+    }
+}

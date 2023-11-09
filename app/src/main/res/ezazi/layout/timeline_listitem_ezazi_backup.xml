@@ -5,14 +5,6 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/screen_container_padding">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvStage"
         style="@style/Theme.EZazi.Text.Stage"
@@ -21,7 +13,8 @@
         android:gravity="center"
         android:padding="@dimen/screen_padding"
         android:text="@string/stage_1"
-        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -31,7 +24,7 @@
         android:background="@color/colorStageStroke"
         app:layout_constraintBottom_toBottomOf="@id/cardview_parent"
         app:layout_constraintEnd_toStartOf="@id/cardview_parent"
-        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintStart_toEndOf="@id/vl_1"
         app:layout_constraintTop_toTopOf="@id/cardview_parent" />
 
     <View
@@ -41,8 +34,8 @@
         android:layout_marginEnd="@dimen/screen_container_padding"
         android:background="@color/colorStageStroke"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/cardview_parent"
+        app:layout_constraintStart_toEndOf="@id/time1"
         app:layout_constraintTop_toBottomOf="@id/tvStage" />
 
     <View
@@ -58,12 +51,12 @@
     <TextView
         android:id="@+id/time1"
         style="@style/Theme.EZazi.Heading1"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/timeline_time_width"
         android:layout_height="wrap_content"
         android:text="06:00 PM"
         android:textSize="@dimen/stage_text_size"
         app:layout_constraintBottom_toBottomOf="@id/cardview_parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/vl_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/cardview_parent" />
 
@@ -78,7 +71,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvStage"
-        app:layout_constraintWidth_percent="0.70">
+        app:layout_constraintWidth_percent="0.67">
 
         <TextView
             android:id="@+id/summary_note_textview"

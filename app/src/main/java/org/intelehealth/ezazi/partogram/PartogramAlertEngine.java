@@ -62,9 +62,9 @@ public class PartogramAlertEngine {
                     alert = "R";
                 }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Fetal position")) {
-                if (paramInfo.getCapturedValue().equalsIgnoreCase("OA")) {
+                if (paramInfo.getCapturedValue().equalsIgnoreCase("A")) {
                     alert = "G";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("OP") || paramInfo.getCapturedValue().equalsIgnoreCase("OT")) {
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P") || paramInfo.getCapturedValue().equalsIgnoreCase("T")) {
                     alert = "Y";
                 }
 //                else if (paramInfo.getCapturedValue().equalsIgnoreCase("M+++") || paramInfo.getCapturedValue().equalsIgnoreCase("B")) {
@@ -77,7 +77,9 @@ public class PartogramAlertEngine {
                     alert = "R";
                 }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Moulding")) {
-                if (paramInfo.getCapturedValue().equalsIgnoreCase("N") || paramInfo.getCapturedValue().equalsIgnoreCase("+") || paramInfo.getCapturedValue().equalsIgnoreCase("++")) {
+                if (paramInfo.getCapturedValue().equalsIgnoreCase("N")
+                        || paramInfo.getCapturedValue().equalsIgnoreCase("+")
+                        || paramInfo.getCapturedValue().equalsIgnoreCase("++")) {
                     alert = "G";
                 } else if (paramInfo.getCapturedValue().equalsIgnoreCase("+++")) {
                     alert = "R";
@@ -117,23 +119,37 @@ public class PartogramAlertEngine {
                     alert = "G";
                 }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Urine protein")) {
-                if (paramInfo.getCapturedValue().equalsIgnoreCase("P-") || paramInfo.getCapturedValue().equalsIgnoreCase("P")
-                        || paramInfo.getCapturedValue().equalsIgnoreCase("P1")) {
-                    alert = "G";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P2")) {
-                    alert = "Y";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P3")) {
+                if (paramInfo.getCapturedValue().equalsIgnoreCase("P3+")
+                        || paramInfo.getCapturedValue().equalsIgnoreCase("P4+")) {
                     alert = "R";
-                }
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P2+")) {
+                    alert = "Y";
+                } else alert = "G";
+//                if (paramInfo.getCapturedValue().equalsIgnoreCase("P-")
+//                        || paramInfo.getCapturedValue().equalsIgnoreCase("P")
+//                        || paramInfo.getCapturedValue().equalsIgnoreCase("P1")) {
+//                    alert = "G";
+//                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P2+")) {
+//                    alert = "Y";
+//                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P3+")
+//                        || paramInfo.getCapturedValue().equalsIgnoreCase("P4+")) {
+//                    alert = "R";
+//                }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Urine Acetone")) {
-                if (paramInfo.getCapturedValue().equalsIgnoreCase("A-") || paramInfo.getCapturedValue().equalsIgnoreCase("A")
-                        || paramInfo.getCapturedValue().equalsIgnoreCase("A1")) {
-                    alert = "G";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A2")) {
-                    alert = "Y";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A3")) {
+                if (paramInfo.getCapturedValue().equalsIgnoreCase("A3+")
+                        || paramInfo.getCapturedValue().equalsIgnoreCase("A4+")) {
                     alert = "R";
-                }
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A2+")) {
+                    alert = "Y";
+                } else alert = "G";
+//                if (paramInfo.getCapturedValue().equalsIgnoreCase("A-") || paramInfo.getCapturedValue().equalsIgnoreCase("A")
+//                        || paramInfo.getCapturedValue().equalsIgnoreCase("A1")) {
+//                    alert = "G";
+//                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A2")) {
+//                    alert = "Y";
+//                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A3")) {
+//                    alert = "R";
+//                }
             }
         } else if (paramInfo.getParamSectionName().equalsIgnoreCase("Labour Progress")) {
             if (paramInfo.getParamName().equalsIgnoreCase("Contractions per 10 min")) {

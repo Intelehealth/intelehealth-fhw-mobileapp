@@ -316,7 +316,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
     private Date getMaxDate() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, -10);
+        calendar.add(Calendar.YEAR, -13);
         return calendar.getTime();
     }
 

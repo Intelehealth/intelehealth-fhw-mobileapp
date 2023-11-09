@@ -6,7 +6,7 @@ apply plugin: 'androidx.navigation.safeargs'
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
-apply from: "../resdir.gradle"
+apply from: "resdir.gradle"
 
 static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
@@ -73,6 +73,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     // use the bundle block to control which types of configuration APKs
     // you want your app bundle to support.
     bundle {

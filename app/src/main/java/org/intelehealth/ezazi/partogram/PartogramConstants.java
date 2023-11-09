@@ -151,7 +151,7 @@ public class PartogramConstants {
         paramInfo.setParamName("Fetal Position");
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
         paramInfo.setOptions(new String[]{"Any occiput anterior position", "Any occiput posterior position", "Any occiput transverse position"});
-        paramInfo.setValues(new String[]{"OA", "OP", "OT"});
+        paramInfo.setValues(new String[]{"A", "P", "T"});
         paramInfo.setConceptUUID("9d316387-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
 
@@ -168,7 +168,8 @@ public class PartogramConstants {
         paramInfo.setParamSectionName(SECTION_LIST[1]);
         paramInfo.setParamName("Moulding");
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"None", "Sutures apposed", "Sutures overlapped but reducible", "Sutures overlapped and not reducible"});
+//        paramInfo.setOptions(new String[]{"None", "Sutures apposed", "Sutures overlapped but reducible", "Sutures overlapped and not reducible"});
+        paramInfo.setOptions(new String[]{"0 (None)", "+ (Sutures apposed)", "++ (Sutures overlapped but reducible)", "+++ (Sutures overlapped but not reducible)"});
         paramInfo.setValues(new String[]{"N", "+", "++", "+++"});
         paramInfo.setConceptUUID("9d316823-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
@@ -210,8 +211,9 @@ public class PartogramConstants {
         paramInfo.setParamSectionName(SECTION_LIST[2]);
         paramInfo.setParamName("Urine protein");
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"No Proteinuria (P-)", "Trace of Proteinuria (P Trace)", "P1+", "P2+", "P3+"});
-        paramInfo.setValues(new String[]{"P-", "P", "P1", "P2", "P3"});
+        paramInfo.setOptions(new String[]{"No Proteinuria (P-)", "Trace of Proteinuria (P Trace)", "P1+", "P2+", "P3+", "P4+"});
+//        paramInfo.setValues(new String[]{"P-", "P", "P1", "P2", "P3"});
+        paramInfo.setValues(new String[]{"Negative", "Trace", "P1+", "P2+", "P3+", "P4+"});
         paramInfo.setConceptUUID("9d3168a7-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
 
@@ -219,8 +221,8 @@ public class PartogramConstants {
         paramInfo.setParamSectionName(SECTION_LIST[2]);
         paramInfo.setParamName("Urine Acetone");
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"No Acetonuria (A-)", "Trace of Acetonuria (A Trace)", "A1+", "A2+", "A3+"});
-        paramInfo.setValues(new String[]{"A-", "A", "A1", "A2", "A3"});
+        paramInfo.setOptions(new String[]{"No Acetonuria (A-)", "Trace of Acetonuria (A Trace)", "A1+", "A2+", "A3+", "A4+"});
+        paramInfo.setValues(new String[]{"Negative", "Trace", "A1+", "A2+", "A3+", "A4+"});
         paramInfo.setConceptUUID("968f9bc2-b33d-4daf-b59f-79d9a899e018");
         stringList.add(paramInfo);
 
