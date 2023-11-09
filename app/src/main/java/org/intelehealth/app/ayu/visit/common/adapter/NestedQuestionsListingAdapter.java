@@ -734,7 +734,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     for (int i = 0; i < options.size(); i++) {
                         if (options.get(i).isSelected()) {
                             mItemList.get(index).setSelected(true);
-                            mItemList.get(index).setDataCaptured(true);
+                            //mItemList.get(index).setDataCaptured(true);
                             break;
                         }
                     }

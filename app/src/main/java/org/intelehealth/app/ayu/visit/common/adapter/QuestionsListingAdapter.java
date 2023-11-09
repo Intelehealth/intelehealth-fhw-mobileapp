@@ -903,6 +903,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             holder.tvQuestionDesc.setVisibility(View.VISIBLE);
             holder.recyclerView.setVisibility(View.VISIBLE);
 
+
             if (mItemList.get(index).isMultiChoice()) {
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
                 holder.submitButton.setVisibility(View.VISIBLE);
@@ -921,6 +922,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     AdapterUtils.setToDefault(holder.skipButton);
                 }
             }
+
 
             if (mItemList.get(index).isRequired()) {
                 holder.skipButton.setVisibility(View.GONE);
@@ -1120,6 +1122,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 }
 
+                if (selectedNode.isSkipped()) {
+                    holder.skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
+                    holder.skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+                    AdapterUtils.setToDisable(holder.submitButton);
+                }
+
                 if (mItemList.get(index).isRequired()) {
                     holder.skipButton.setVisibility(View.GONE);
                 } else {
@@ -1164,6 +1172,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         if (!isLoadingForNestedEditData) {
                             mItemList.get(index).setSelected(false);
                             mItemList.get(index).setDataCaptured(false);
+                            mItemList.get(index).setSkipped(false);
+                            AdapterUtils.setToDefault(holder.submitButton);
+                            AdapterUtils.setToDefault(holder.skipButton);
                         }
                         //holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, selectedNode.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
                         //holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
@@ -2007,6 +2018,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 //openCamera(getImagePath(), "");
                 node.setImageUploaded(false);
                 node.setDataCaptured(false);
+                parentNode.setImageUploaded(false);
+                parentNode.setDataCaptured(false);
                 mLastImageCaptureSelectedNodeIndex = index;
                 mOnItemSelection.onCameraRequest();
             }
@@ -2017,6 +2030,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 //openCamera(getImagePath(), "");
                 node.setImageUploaded(false);
                 node.setDataCaptured(false);
+                parentNode.setImageUploaded(false);
+                parentNode.setDataCaptured(false);
                 mLastImageCaptureSelectedNodeIndex = index;
                 mOnItemSelection.onCameraRequest();
             }
@@ -2030,6 +2045,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     public void onFinish() {
                         node.setImageUploaded(true);
                         parentNode.setImageUploaded(true);
+
+                        parentNode.setDataCaptured(true);
                         mOnItemSelection.onSelect(node, index, false, null);
 
                     }
@@ -2058,6 +2075,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onImageRemoved(int imageIndex, String image) {
                     node.setImageUploaded(false);
                     node.setDataCaptured(false);
+                    parentNode.setImageUploaded(false);
+                    parentNode.setDataCaptured(false);
                     mOnItemSelection.onImageRemoved(index, imageIndex, image);
                 }
 
@@ -2065,6 +2084,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onNewImageRequest() {
                     node.setImageUploaded(false);
                     node.setDataCaptured(false);
+                    parentNode.setImageUploaded(false);
+                    parentNode.setDataCaptured(false);
                     mLastImageCaptureSelectedNodeIndex = index;
                     mOnItemSelection.onCameraRequest();
                 }
