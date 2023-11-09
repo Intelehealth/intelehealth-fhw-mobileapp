@@ -164,6 +164,7 @@ public class PatientsFrameJson {
             if (!encounterDTO.getEncounterTypeUuid().equalsIgnoreCase(UuidDictionary.EMERGENCY)) {
                 List<Ob> obsList = new ArrayList<>();
                 List<ObsDTO> obsDTOList = obsDAO.obsDTOList(encounterDTO.getUuid());
+                Log.d("OBS: ", "OBS: obsDTOList" + new Gson().toJson(obsDTOList));
                 Ob ob = new Ob();
                 for (ObsDTO obs : obsDTOList) {
                     if (obs != null && obs.getValue() != null) {
@@ -174,8 +175,9 @@ public class PatientsFrameJson {
                             ob.setUuid(obs.getUuid());
                             ob.setConcept(obs.getConceptuuid());
                             ob.setValue(obs.getValue());
+                            ob.setComments(obs.getComments());
                             obsList.add(ob);
-
+                            Log.d("OBS: ", "OBS: " + new Gson().toJson(ob));
                         }
                     }
                 }

@@ -970,13 +970,27 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             while (physicalString.contains("[Describe"))
                 physicalString = physicalString.replace("[Describe]", "");
 
-            List<String> imagePathList = physicalExamMap.getImagePathList();
-            Log.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
-            if (imagePathList != null) {
-                for (String imagePath : imagePathList) {
-                    updateImageDatabase(imagePath);
+
+            for (int i = 0; i < physicalExamMap.getTotalNumberOfExams(); i++) {
+                Node l1Node = physicalExamMap.getExamNode(i);
+                Log.v(TAG, "savePhysicalExamData, l1Node " + new Gson().toJson(l1Node));
+                for (int j = 0; j < l1Node.getOptionsList().size(); j++) {
+                    Node l2Node = l1Node.getOptionsList().get(j);
+                    Log.v(TAG, "savePhysicalExamData, l2Node " + new Gson().toJson(l2Node));
+                    List<String> imagePathList = l2Node.getImagePathList();
+                    Log.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
+                    if (imagePathList != null) {
+                        for (String imagePath : imagePathList) {
+                            String comments = l2Node.getImagePathListWithSectionTag().get(imagePath);
+                            String fileName = imagePath.substring(imagePath.lastIndexOf("/")+1).split("\\.")[0];
+                            updateImageDatabase(fileName, comments);
+                        }
+                    }
                 }
+
             }
+
+
             JSONObject jsonObject = new JSONObject();
             try {
                 physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
@@ -1035,7 +1049,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         if (imagePathList != null) {
             for (String imagePath : imagePathList) {
-                updateImageDatabase(imagePath);
+                String comments = mFamilyHistoryNode.getImagePathListWithSectionTag().get(imagePath);
+                updateImageDatabase(imagePath,comments);
             }
         }
 
@@ -1187,11 +1202,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
     }
 
-    private void updateImageDatabase(String imageName) {
+    private void updateImageDatabase(String imageName, String comments) {
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
-            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE,comments);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -1226,7 +1241,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         //physicalExamMap.setImagePath(mCurrentPhotoPath);
                         Log.i(TAG, mCurrentPhotoPath);
                         //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
-                        updateImageDatabase(mLastSelectedImageName);
+                        //updateImageDatabase(mLastSelectedImageName);
                     }
                 }
             });
@@ -1263,7 +1278,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                             //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             Log.i(TAG, currentPhotoPath);
                             //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
-                            updateImageDatabase(mLastSelectedImageName);
+                            //updateImageDatabase(mLastSelectedImageName);
                         } else {
                             Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
