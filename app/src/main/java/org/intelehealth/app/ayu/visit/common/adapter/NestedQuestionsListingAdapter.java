@@ -734,7 +734,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     for (int i = 0; i < options.size(); i++) {
                         if (options.get(i).isSelected()) {
                             mItemList.get(index).setSelected(true);
-                            mItemList.get(index).setDataCaptured(true);
+                            //mItemList.get(index).setDataCaptured(true);
                             break;
                         }
                     }
@@ -759,26 +759,43 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
                         type = "options";
                     }
+                    Log.v(TAG, "node - " + node.getText());
+                    Log.v(TAG, "node - " + node.findDisplay());
                     Log.v(TAG, "Type - " + type);
+                    Log.v(TAG, "isLoadingForNestedEditData - " + isLoadingForNestedEditData);
                     if (!node.isSelected()) {
                         node.unselectAllNestedNode();
                         if (type.equalsIgnoreCase("camera"))
                             mItemList.get(index).removeImagesAllNestedNode();
 
-                        if(!mItemList.get(index).isMultiChoice()) {
+                        if (!mItemList.get(index).isMultiChoice()) {
 
-                            if(mItemList.size()>1){
+                            if (mItemList.size() > 1) {
                                 mItemList.remove(1);
                                 notifyItemRemoved(1);
+                            } else {
+                                notifyItemChanged(index);
                             }
-                        }else {
+                        } else {
 
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (!isLoadingForNestedEditData) {
-
-                                        notifyItemChanged(index);
+                                        // found the correct node
+                                        boolean found = false;
+                                        for (int i = 0; i < mItemList.size(); i++) {
+                                            Node n = mItemList.get(i);
+                                            Log.v(TAG, "n - " + n.getText());
+                                            if (node.getText().equalsIgnoreCase(n.getText())) {
+                                                found = true;
+                                                mItemList.remove(i);
+                                                notifyItemRemoved(i);
+                                                break;
+                                            }
+                                        }
+                                        if (!found)
+                                            notifyItemChanged(index);
                                     }
                                 }
                             }, 100);
@@ -786,13 +803,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                         return;
                     } else if (!type.isEmpty() && node.isSelected()) {
-                        if(node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
+                        if (node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
                             for (int i = 0; i < options.size(); i++) {
                                 if (!options.get(i).getText().equals(node.getText())) {
                                     options.get(i).unselectAllNestedNode();
                                 }
                             }
-                            if(mItemList.size()>1){
+                            if (mItemList.size() > 1) {
                                 mItemList.remove(1);
                                 notifyItemRemoved(1);
                             }
@@ -845,12 +862,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void showNestedItemsV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, boolean isGotFromChipSelected) {
-        Log.v(TAG, index+" - "+new Gson().toJson(selectedNode));
+        Log.v(TAG, index + " - " + new Gson().toJson(selectedNode));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         linearLayoutManager.setStackFromEnd(false);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         holder.superNestedRecyclerView.setLayoutManager(linearLayoutManager);
-        int nestedLevel = mNestedLevel+1;
+        int nestedLevel = mNestedLevel + 1;
         holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, new OnItemSelection() {
             @Override
             public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode) {

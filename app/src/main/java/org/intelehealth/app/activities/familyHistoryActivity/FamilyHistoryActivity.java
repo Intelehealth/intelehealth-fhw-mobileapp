@@ -442,7 +442,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
-            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, "");
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, "","");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -141,6 +142,8 @@ public class Node implements Serializable {
     private int associated_symptoms = 0;
     private boolean isNoSelected;
     private List<String> imagePathList = new ArrayList<>();
+    // will capture the section name wrt the image path in map
+    private HashMap<String, String> imagePathListWithSectionTag = new HashMap<String, String>();
     private String imagePath;
 
     /**
@@ -2616,7 +2619,7 @@ public class Node implements Serializable {
 
                             positiveAssociations.add(tempString);
                         }
-                    } else if (isForAssociatedSymptoms && isUserInputsTypeNode(mOptions.get(i))) {
+                    } else if (isForAssociatedSymptoms && mOptions.get(i).isUserInputsTypeNode()) {
                         positiveAssociations.add(mOptions.get(i).getText().replaceAll("\\[(.*?)\\]", "") + bullet_arrow + mOptions.get(i).getLanguage());
                     } else {
                         if (mOptions.get(i).getLanguage().equals("%")) {
@@ -2764,7 +2767,7 @@ public class Node implements Serializable {
                             }
                         }
                     } else {
-                        if (isAssociateSymptomsType) {
+                        if (isAssociateSymptomsType && level > 0) {
                             stringsList.add(right_pointing + mOptions.get(i).findDisplay() + next_line);
                         } else {
                             stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
@@ -3420,9 +3423,9 @@ public class Node implements Serializable {
         return flag;
     }
 
-    public boolean isUserInputsTypeNode(Node node) {
+    public boolean isUserInputsTypeNode() {
         boolean result = false;
-        String type = node.getInputType();
+        String type = getInputType();
         Log.v(TAG, "isUserInputsTypeNode - type : " + type);
         if (type.equals("text") || type.equals("date") || type.equals("location") || type.equals("number") || type.equals("area") || type.equals("duration") || type.equals("range") || type.equals("frequency")) {
             result = true;
@@ -3644,6 +3647,14 @@ public class Node implements Serializable {
 
     public void setSkipped(boolean skipped) {
         isSkipped = skipped;
+    }
+
+    public HashMap<String, String> getImagePathListWithSectionTag() {
+        return imagePathListWithSectionTag;
+    }
+
+    public void setImagePathListWithSectionTag(HashMap<String, String> imagePathListWithSectionTag) {
+        this.imagePathListWithSectionTag = imagePathListWithSectionTag;
     }
     /*End*/
 }

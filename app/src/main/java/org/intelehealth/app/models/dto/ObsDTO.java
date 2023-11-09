@@ -28,6 +28,11 @@ public class ObsDTO {
     @Expose
     private Integer voided;
 
+
+    @SerializedName("comments")
+    @Expose
+    private String comments;
+
     public String getUuid() {
         return uuid;
     }
@@ -82,5 +87,13 @@ public class ObsDTO {
 
     public void setObsServerModifiedDate(String obsServerModifiedDate) {
         this.obsServerModifiedDate = obsServerModifiedDate;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 }

@@ -452,7 +452,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
-            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, "");
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, "","");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

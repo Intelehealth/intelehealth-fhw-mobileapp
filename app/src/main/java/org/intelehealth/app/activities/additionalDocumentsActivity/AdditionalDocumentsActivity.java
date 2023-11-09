@@ -44,6 +44,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.apprtc.data.Constants;
 import org.intelehealth.ihutils.ui.CameraActivity;
 
 public class AdditionalDocumentsActivity extends AppCompatActivity implements AdapterInterface {
@@ -168,7 +169,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity implements Ad
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertObsImageDatabase(imageuuid, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+            imagesDAO.insertObsImageDatabase(imageuuid, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD, AppConstants.IMAGE_ADDITIONAL_DOC);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
