@@ -110,6 +110,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 //                SimpleDateFormat longTimeFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 //                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 String encounterTimeAmPmFormat = "";
+                String encounterDate = "";
                 Calendar encounterTimeCalendar = Calendar.getInstance();
                 encounterTimeCalendar.setTimeZone(TimeZone.getDefault());
                 // check for this enc any obs created if yes than show submitted...
@@ -204,6 +205,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 }
 
                 encounterTimeAmPmFormat = DateTimeUtils.formatToLocalDate(timeDateType, DateTimeUtils.TIME_FORMAT);
+                encounterDate = DateTimeUtils.formatToLocalDate(timeDateType, DateTimeUtils.DD_MMM_YYYY);
                 Log.v("timeline", "AM Format: " + encounterTimeAmPmFormat);
 //                    updateEditIconVisibility(holder.ivEdit);
 //
@@ -369,7 +371,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 }
 
                 holder.timeTextview.setText(encounterTimeAmPmFormat);
-
+                holder.txtDate.setText(encounterDate);
 
             }
         }
@@ -384,7 +386,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     public class TimelineViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout cardview;
-        TextView timeTextview, summary_textview, stage1start, summaryNoteTextview;
+        TextView timeTextview, summary_textview, stage1start, summaryNoteTextview, txtDate;
         //        FrameLayout frame1, frame2, frame3, frame4;
         MaterialButton ivEdit;
         View circle;
@@ -399,6 +401,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
             cardview = itemView.findViewById(R.id.cardview_parent);
             timeTextview = itemView.findViewById(R.id.time1);
+            txtDate = itemView.findViewById(R.id.txtEncounterDate);
             stage1start = itemView.findViewById(R.id.tvStage);
             circle = itemView.findViewById(R.id.circle1);
             summary_textview = itemView.findViewById(R.id.summary_textview);

@@ -26,6 +26,8 @@ public class DateTimeUtils {
 
     public static final String TIME_FORMAT = "hh:mm a";
 
+    public static final String DD_MMM_YYYY = "dd MMM yyyy";
+
     public static final String YYYY_MM_DD_HYPHEN = "yyyy-MM-dd";
     public static final String YYYY_MM_DD_WITH_SPLASH = "dd/MM/yyyy";
     @SuppressLint("SimpleDateFormat")

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/screen_container_padding">
@@ -10,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25"
+        app:layout_constraintGuide_percent="0.3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -56,6 +57,18 @@
         app:layout_constraintTop_toTopOf="@id/cardview_parent" />
 
     <TextView
+        android:id="@+id/txtEncounterDate"
+        style="@style/Theme.EZazi.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/time1"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cardview_parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="23 Oct 2023" />
+
+    <TextView
         android:id="@+id/time1"
         style="@style/Theme.EZazi.Heading1"
         android:layout_width="wrap_content"
@@ -65,7 +78,7 @@
         app:layout_constraintBottom_toBottomOf="@id/cardview_parent"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cardview_parent" />
+        app:layout_constraintTop_toBottomOf="@id/txtEncounterDate" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardview_parent"
@@ -78,7 +91,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvStage"
-        app:layout_constraintWidth_percent="0.70">
+        app:layout_constraintWidth_percent="0.65">
 
         <TextView
             android:id="@+id/summary_note_textview"
@@ -117,359 +130,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/stage2start"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_below="@+id/stage1start"-->
-    <!--        android:layout_centerHorizontal="true"-->
-    <!--        android:layout_marginVertical="10dp"-->
-    <!--        android:gravity="center"-->
-    <!--        android:text="Stage 2"-->
-    <!--        android:textAlignment="center"-->
-    <!--        android:textColor="@color/gray_2"-->
-    <!--        android:textSize="@dimen/text_18sp"-->
-    <!--        android:textStyle="bold"-->
-    <!--        android:visibility="gone"-->
-    <!--        tools:visibility="visible" />-->
-
-    <!--    <FrameLayout-->
-    <!--        android:id="@+id/frame1"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_below="@id/stage2start">-->
-
-    <!--        <RelativeLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent">-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/time1"-->
-    <!--                android:layout_width="65dp"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_centerVertical="true"-->
-    <!--                android:layout_marginStart="10dp"-->
-    <!--                android:gravity="center"-->
-    <!--                android:minWidth="@dimen/timeTextview_min_width"-->
-    <!--                android:text="06:00 PM"-->
-    <!--                android:textColor="@color/colorPrimaryDark"-->
-    <!--                android:textSize="@dimen/header_text_size" />-->
-
-    <!--            <View-->
-    <!--                android:id="@+id/vl_1"-->
-    <!--                android:layout_width="2dp"-->
-    <!--                android:layout_height="100dp"-->
-    <!--                android:layout_above="@+id/vl_2"-->
-    <!--                android:layout_marginStart="21dp"-->
-    <!--                android:layout_toEndOf="@id/time1"-->
-    <!--                android:background="@color/gray_2" />-->
-
-    <!--            <ImageView-->
-    <!--                android:id="@+id/circle1"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_centerVertical="true"-->
-    <!--                android:layout_marginStart="15dp"-->
-    <!--                android:layout_toEndOf="@+id/time1"-->
-    <!--                android:src="@drawable/circle_indicator_timeline" />-->
-
-    <!--            <View-->
-    <!--                android:id="@+id/hl_1"-->
-    <!--                android:layout_width="30dp"-->
-    <!--                android:layout_height="2dp"-->
-    <!--                android:layout_centerVertical="true"-->
-    <!--                android:layout_toEndOf="@+id/circle1"-->
-    <!--                android:background="@color/gray_2" />-->
-
-    <!--            <androidx.cardview.widget.CardView-->
-    <!--                android:id="@+id/cardview_parent"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_centerVertical="true"-->
-    <!--                android:layout_marginTop="4dp"-->
-    <!--                android:layout_marginEnd="4dp"-->
-    <!--                android:layout_marginBottom="4dp"-->
-    <!--                android:layout_toEndOf="@+id/hl_1"-->
-    <!--                android:clipChildren="false"-->
-    <!--                android:clipToPadding="false"-->
-    <!--                android:divider="@android:color/transparent"-->
-    <!--                android:dividerHeight="0.0px"-->
-    <!--                android:elevation="8dp"-->
-    <!--                app:cardCornerRadius="15dp"-->
-    <!--                app:cardElevation="10dp"-->
-    <!--                app:cardPreventCornerOverlap="true"-->
-    <!--                app:contentPadding="10dp">-->
-
-    <!--                <RelativeLayout-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="match_parent"-->
-    <!--                    android:orientation="horizontal"-->
-    <!--                    android:padding="2dp">-->
-
-    <!--                    <TextView-->
-    <!--                        android:id="@+id/summary_note_textview"-->
-    <!--                        android:layout_width="match_parent"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_toStartOf="@+id/ivEdit"-->
-    <!--                        android:text="Tap here to collect the history data!"-->
-    <!--                        android:textColor="@color/gray_4"-->
-    <!--                        android:textSize="@dimen/content_text_size" />-->
-
-    <!--                    <TextView-->
-    <!--                        android:id="@+id/summary_textview"-->
-    <!--                        android:layout_width="wrap_content"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_below="@+id/summary_note_textview"-->
-    <!--                        android:gravity="center"-->
-    <!--                        android:text="@string/click_to_enter"-->
-    <!--                        android:textStyle="bold" />-->
-
-    <!--                    <com.google.android.material.button.MaterialButton-->
-    <!--                        android:id="@+id/ivEdit"-->
-    <!--                        style="@style/Theme.EZazi.Button.Icon.Edit"-->
-    <!--                        android:layout_width="wrap_content"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        app:icon="@drawable/ic_edit" />-->
-    <!--                </RelativeLayout>-->
-    <!--            </androidx.cardview.widget.CardView>-->
-
-
-    <!--        </RelativeLayout>-->
-    <!--    </FrameLayout>-->
-
-
-    <!--    Child A-->
-    <!-- <FrameLayout
-         android:id="@+id/frame2"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/frame1"
-         android:visibility="gone">
-
-         <RelativeLayout
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
-
-             <TextView
-                 android:id="@+id/time2"
-                 android:layout_width="65dp"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_marginStart="10dp"
-                 android:text="23:45 AM" />
-
-             <View
-                 android:id="@+id/vl_2"
-                 android:layout_width="2dp"
-                 android:layout_height="130dp"
-                 android:layout_above="@+id/vl_3"
-                 android:layout_below="@+id/vl_1"
-                 android:layout_marginStart="21dp"
-                 android:layout_toEndOf="@id/time2"
-                 android:background="#33000000" />
-
-             <ImageView
-                 android:id="@+id/circle2"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_marginStart="15dp"
-                 android:layout_toEndOf="@+id/time2"
-                 android:src="@drawable/circle_indicator_timeline" />
-
-
-             <View
-                 android:id="@+id/hl_2"
-                 android:layout_width="20dp"
-                 android:layout_height="2dp"
-                 android:layout_centerVertical="true"
-                 android:layout_toEndOf="@+id/circle2"
-                 android:background="#33000000" />
-
-             <androidx.cardview.widget.CardView
-                 android:id="@+id/cardview_parent1"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_marginTop="30dp"
-                 android:layout_marginEnd="40dp"
-                 android:layout_toEndOf="@+id/hl_2"
-                 app:cardCornerRadius="15dp"
-                 app:cardElevation="10dp"
-                 app:cardPreventCornerOverlap="true"
-                 app:contentPadding="10dp">
-
-                 <LinearLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="match_parent"
-                     android:orientation="vertical"
-                     android:padding="2dp">
-
-                     <TextView
-                         android:layout_width="match_parent"
-                         android:layout_height="match_parent"
-                         android:text="A- Summary: This looks a summary \n\n Alert: This is an Alert!!!" />
-
-                 </LinearLayout>
-             </androidx.cardview.widget.CardView>
-
-
-         </RelativeLayout>
-     </FrameLayout>
-
-     &lt;!&ndash;    Child B&ndash;&gt;
-     <FrameLayout
-         android:id="@+id/frame3"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/frame2"
-         android:visibility="gone">
-
-         <RelativeLayout
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
-
-             <TextView
-                 android:id="@+id/time3"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_marginStart="10dp"
-                 android:text="06:30 AM" />
-
-             <View
-                 android:id="@+id/vl_3"
-                 android:layout_width="2dp"
-                 android:layout_height="130dp"
-                 android:layout_above="@+id/vl_4"
-                 android:layout_below="@+id/vl_2"
-                 android:layout_marginStart="21dp"
-                 android:layout_toEndOf="@id/time3"
-                 android:background="#33000000" />
-
-             <ImageView
-                 android:id="@+id/circle3"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_marginStart="15dp"
-                 android:layout_toEndOf="@+id/time3"
-                 android:src="@drawable/circle_indicator_timeline" />
-
-             <View
-                 android:id="@+id/hl_3"
-                 android:layout_width="20dp"
-                 android:layout_height="2dp"
-                 android:layout_centerVertical="true"
-                 android:layout_toEndOf="@+id/circle3"
-                 android:background="#33000000" />
-
-             <androidx.cardview.widget.CardView
-                 android:id="@+id/cardview_parent2"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_marginTop="30dp"
-                 android:layout_marginEnd="40dp"
-                 android:layout_toEndOf="@+id/hl_3"
-                 app:cardCornerRadius="15dp"
-                 app:cardElevation="10dp"
-                 app:cardPreventCornerOverlap="true"
-                 app:contentPadding="10dp">
-
-                 <LinearLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="match_parent"
-                     android:orientation="vertical"
-                     android:padding="2dp">
-
-                     <TextView
-                         android:layout_width="match_parent"
-                         android:layout_height="match_parent"
-                         android:text="B- Summary: This looks a summary \n\n Alert: This is an Alert!!!" />
-
-                 </LinearLayout>
-             </androidx.cardview.widget.CardView>
-
-
-         </RelativeLayout>
-     </FrameLayout>
-
-     &lt;!&ndash;    Child C&ndash;&gt;
-     <FrameLayout
-         android:id="@+id/frame4"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/frame3"
-         android:visibility="gone">
-
-         <RelativeLayout
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
-
-             <TextView
-                 android:id="@+id/time4"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_marginStart="10dp"
-                 android:text="06:45 AM" />
-
-             <View
-                 android:id="@+id/vl_4"
-                 android:layout_width="2dp"
-                 android:layout_height="130dp"
-                 android:layout_below="@+id/vl_3"
-                 android:layout_alignBottom="@id/frame4"
-                 android:layout_marginStart="21dp"
-                 android:layout_toEndOf="@id/time4"
-                 android:background="#33000000" />
-
-             <ImageView
-                 android:id="@+id/circle4"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_marginStart="15dp"
-                 android:layout_toEndOf="@+id/time4"
-                 android:src="@drawable/circle_indicator_timeline" />
-
-             <View
-                 android:id="@+id/hl_4"
-                 android:layout_width="20dp"
-                 android:layout_height="2dp"
-                 android:layout_centerVertical="true"
-                 android:layout_toEndOf="@+id/circle4"
-                 android:background="#33000000" />
-
-             <androidx.cardview.widget.CardView
-                 android:id="@+id/cardview_parent3"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_marginTop="30dp"
-                 android:layout_marginEnd="40dp"
-                 android:layout_toEndOf="@+id/hl_4"
-                 app:cardCornerRadius="15dp"
-                 app:cardElevation="10dp"
-                 app:cardPreventCornerOverlap="true"
-                 app:contentPadding="10dp">
-
-                 <LinearLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="match_parent"
-                     android:orientation="vertical"
-                     android:padding="2dp">
-
-                     <TextView
-                         android:layout_width="match_parent"
-                         android:layout_height="match_parent"
-                         android:text="C- Summary: This looks a summary \n\n Alert: This is an Alert!!!" />
-
-                 </LinearLayout>
-             </androidx.cardview.widget.CardView>
-
-
-         </RelativeLayout>
-     </FrameLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
