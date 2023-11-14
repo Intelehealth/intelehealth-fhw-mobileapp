@@ -1657,6 +1657,8 @@
     <string name="no_records_found">لا يوجد سجلات سابقة</string>
     <string name="view_aid_past_notes">عرض ملاحظات الدعم السابقة</string>
     <string name="view_medicine_past_notes">عرض ملاحظات الأدوية السابقة</string>
+    <string name="medicine_past_notes">ملاحظات الأدوية السابقة</string>
+    <string name="aid_past_notes">ملاحظات الدعم السابقة</string>
 
 
 </resources>

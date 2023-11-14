@@ -40,6 +40,8 @@ import java.util.List;
 public class Medication_Aid_Activity extends AppCompatActivity {
     private RecyclerView rv_medication, rv_aid;
     public final String TAG = Medication_Aid_Activity.this.getClass().getName();
+    public static final String MEDICATION = "medication";
+    public static final String AID = "aid";
     private MedicationAidAdapter med_adapter, aid_adapter;
     private Context context = Medication_Aid_Activity.this;
     private List<MedicationAidModel> med_list, aid_list;
@@ -368,10 +370,10 @@ public class Medication_Aid_Activity extends AppCompatActivity {
 
     public void showPastNotes(View view) {
         String viewTag = null;
-        if (view.getTag().equals("medication"))
-            viewTag = "medication";
-        else if (view.getTag().equals("aid"))
-            viewTag = "aid";
+        if (view.getTag().equals(MEDICATION))
+            viewTag = MEDICATION;
+        else if (view.getTag().equals(AID))
+            viewTag = AID;
         
         Intent intent = new Intent(this, PastNotesDispenseAdministerActivity.class);
         intent.putExtra("viewtag", viewTag);

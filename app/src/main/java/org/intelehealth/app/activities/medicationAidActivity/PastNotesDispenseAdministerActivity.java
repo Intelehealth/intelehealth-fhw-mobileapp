@@ -52,14 +52,13 @@ public class PastNotesDispenseAdministerActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         context = PastNotesDispenseAdministerActivity.this;
 
-        toolBarSetup();
-
         Intent intent = getIntent();
         viewtag = intent.getStringExtra("viewtag");
         tag = intent.getStringExtra("tag");
         visitUUID = intent.getStringExtra("visitUUID");
         if (tag != null && viewtag != null && visitUUID != null) {
             try {
+                toolBarSetup();
                 initUI();
             } catch (DAOException e) {
                 throw new RuntimeException(e);
@@ -132,7 +131,13 @@ public class PastNotesDispenseAdministerActivity extends AppCompatActivity {
         binding.toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.past_notes));
+
+        String title = "";
+        if (viewtag.equalsIgnoreCase(Medication_Aid_Activity.MEDICATION))
+            title = getString(R.string.medicine_past_notes);
+        else if (viewtag.equalsIgnoreCase(Medication_Aid_Activity.AID))
+            title = getString(R.string.aid_past_notes);
+        getSupportActionBar().setTitle(title);
     }
 
     @Override

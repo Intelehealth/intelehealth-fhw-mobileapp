@@ -1664,5 +1664,7 @@
     <string name="no_records_found">No records found.</string>
     <string name="view_aid_past_notes">View aid past notes</string>
     <string name="view_medicine_past_notes">View medicine past notes</string>
+    <string name="medicine_past_notes">Medicine Past Notes</string>
+    <string name="aid_past_notes">Aid Past Notes</string>
 
 </resources>
