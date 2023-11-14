@@ -41,6 +41,11 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            versionNameSuffix("_debug") // Added to keep track of which variant of apk is been used when a issue is faced.
+        }
+
     }
     // use the bundle block to control which types of configuration APKs
     // you want your app bundle to support.
