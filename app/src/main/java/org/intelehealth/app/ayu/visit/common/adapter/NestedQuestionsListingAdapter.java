@@ -269,7 +269,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         if (type == null || type.isEmpty() && (currentNode.getOptionsList() != null && !currentNode.getOptionsList().isEmpty())) {
             type = "options";
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
-            genericViewHolder.tvQuestionDesc.setVisibility(View.VISIBLE);
+            if (!currentNode.isHavingNestedQuestion())
+                genericViewHolder.tvQuestionDesc.setVisibility(View.VISIBLE);
             if (!isGotFromChipSelected) {
                 if (currentNode.isMultiChoice()) {
                     genericViewHolder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));

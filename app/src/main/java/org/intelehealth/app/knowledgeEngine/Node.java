@@ -2767,10 +2767,23 @@ public class Node implements Serializable {
                             }
                         }
                     } else {
-                        if (isAssociateSymptomsType && level > 0) {
-                            stringsList.add(right_pointing + mOptions.get(i).findDisplay() + next_line);
+                        if (isAssociateSymptomsType) {
+                            if (level > 0) {
+                                stringsList.add(right_pointing + mOptions.get(i).findDisplay() + next_line);
+                            } else {
+                                stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+
+                            }
+
                         } else {
-                            stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                            if (level == 0) {
+                                stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                            } else {
+                               stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + "," + next_line);
+
+
+                            }
+
                         }
 
                     }
@@ -2834,6 +2847,10 @@ public class Node implements Serializable {
                 mLanguage = mLanguage.concat(stringsList.get(i));
             }
 
+        }
+        mLanguage = mLanguage.replaceAll(",<br/>•",",");
+        if(mLanguage.endsWith(",")){
+            mLanguage =  mLanguage.substring(0, mLanguage.length()-1);
         }
         Log.i(TAG, "ipt: formQuestionAnswer: " + mLanguage);
 
@@ -3311,7 +3328,7 @@ public class Node implements Serializable {
      * unselect all nested Node recursively
      */
     public void unselectAllNestedNode() {
-        Log.v(TAG, "unselectAllNestedNode - "+getText());
+        Log.v(TAG, "unselectAllNestedNode - " + getText());
         if (optionsList != null) {
             for (int i = 0; i < optionsList.size(); i++) {
                 optionsList.get(i).setSelected(false);
@@ -3324,7 +3341,7 @@ public class Node implements Serializable {
     }
 
     public void removeImagesAllNestedNode() {
-        Log.v(TAG, "removeImagesAllNestedNode - "+getText());
+        Log.v(TAG, "removeImagesAllNestedNode - " + getText());
         setImageUploaded(false);
         setImagePath("");
         setImagePathList(new ArrayList<String>());

@@ -96,7 +96,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void addImageInLastNode(String image) {
 
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
-        if(mIsForPhysicalExam) {
+        if (mIsForPhysicalExam) {
             final String parent_name = mPhysicalExam.getExamParentNodeName(mLastImageCaptureSelectedNodeIndex);
             mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag().put(image, parent_name);
             Log.v("showCameraView", "addImageInLastNode getImagePathListWithSectionTag - " + mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag());
@@ -1226,8 +1226,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                         break;
                                 }
                             }
-                            if (!foundUserInputs)
+                            if (!foundUserInputs) {
                                 holder.singleComponentContainer.removeAllViews();
+                                holder.nestedRecyclerView.setAdapter(null);
+                            }
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
                             if (!foundUserInputs) {
 
@@ -1241,11 +1243,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 Log.v(TAG, "isRequiredToShowParentActionButtons - " + isRequiredToShowParentActionButtons);
 
                                 if (mItemList.get(index).isMultiChoice()) {
-                                    if (isNothingNestedOpen || isRequiredToShowParentActionButtons){
+                                    if (isNothingNestedOpen || isRequiredToShowParentActionButtons) {
                                         holder.submitButton.setVisibility(View.VISIBLE);
                                         if (mItemList.get(index).isRequired()) {
                                             holder.skipButton.setVisibility(View.GONE);
-                                        }else{
+                                        } else {
                                             holder.skipButton.setVisibility(View.VISIBLE);
 
                                         }
@@ -1289,8 +1291,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 }
                             }
                             if (!foundUserInputs)*/
+
                             holder.singleComponentContainer.removeAllViews();
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                            if (!mItemList.get(index).isMultiChoice()){
+                                holder.nestedRecyclerView.setAdapter(null);
+                            }
 
                         } else {
                             holder.singleComponentContainer.removeAllViews();

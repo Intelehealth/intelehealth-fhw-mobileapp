@@ -189,6 +189,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
                         if (v.contains(":") && v.split(":").length > 1) {
                             v = v.split(":")[1];
                         }
+                        if(v.endsWith(",")){
+                            v =  v.substring(0, v.length()-1);
+                        }
                         VisitSummaryData summaryData = new VisitSummaryData();
                         summaryData.setQuestion(k.isEmpty() ? v : k);
                         summaryData.setDisplayValue(k.isEmpty() ? "" : v);
@@ -216,7 +219,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
                                         v = v.split(":")[1];
                                     }
 
-
+                                    if(v.endsWith(",")){
+                                        v =  v.substring(0, v.length()-1);
+                                    }
                                     VisitSummaryData summaryData = new VisitSummaryData();
                                     summaryData.setQuestion(k1);
 
@@ -244,9 +249,13 @@ public class MedicalHistorySummaryFragment extends Fragment {
                                 }
 
                             }
+                            String v2 = stringBuilder.toString().trim();
+                            if(v2.endsWith(",")){
+                                v2 =  v2.substring(0, v2.length()-1);
+                            }
                             VisitSummaryData summaryData = new VisitSummaryData();
                             summaryData.setQuestion(k1);
-                            summaryData.setDisplayValue(stringBuilder.toString());
+                            summaryData.setDisplayValue(v2);
                             visitSummaryDataList.add(summaryData);
                         }
 
