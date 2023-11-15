@@ -2946,6 +2946,36 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "<html lang=\"en\">";
         String htmlEndTag = "</html>";
 
+        // diagnosis data
+        String[] diagnosisDetails = diagnosisReturned.split(":");
+        String[] typeStatusArray = diagnosisDetails[1].split("&");
+
+        // medication data
+        String drugName = "";
+        String strength = "";
+        String numberOfDays = "";
+        String timing = "";
+        String medicationRemarks = "";
+        String additionalRemarks = "";
+
+        if (rxReturned != null && !rxReturned.isEmpty() && rxReturned.contains(":")) {
+            String[] medicationData = rxReturned.split(":");
+            drugName = medicationData[0];
+            strength = medicationData[1];
+            numberOfDays = medicationData[2];
+            timing = medicationData[3];
+            medicationRemarks = medicationData[4].split("\n")[0];
+            additionalRemarks = medicationData[4].split("\n")[1];
+        } else {
+            drugName = rxReturned;
+        }
+
+        // follow up data
+        String[] followUpData = followUpDate.split(",");
+        String followUpDateFinal = followUpData[0];
+        String followUpTimeFinal = followUpData[1].split("Time:")[1];
+        String followUpRemarksFinal = followUpData[2].split(":")[1];
+
         String headStartTag = "<head>\n" +
                 "    <meta charset=\"utf-8\" />\n" +
                 "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n" +
@@ -2984,28 +3014,27 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                        </div>\n" +
                 "                        <div class=\"ml-3\">\n" +
                 "                            <h6>\n" +
-                "                                Web Rtc Test (M)\n" +
+                patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + patient.getLast_name() +
                 "                            </h6>\n" +
-                "                            <p>13XET-7</p>\n" +
+                "                            <p>" + patient.getOpenmrs_id() + "</p>\n" +
                 "                        </div>\n" +
                 "                    </div>\n" +
                 "                </div>\n" +
                 "                <div class=\"col-md-3 patient-info-section p-3\">\n" +
                 "                    <div class=\"patient-info-item mb-3\">\n" +
                 "                        <h6>Age</h6>\n" +
-                "                        <p>\n" +
-                "                            22 years\n" +
+                "                        <p>\n" + DateAndTimeUtils.getAgeInYears(patient.getDate_of_birth(), this) +
                 "                        </p>\n" +
                 "                    </div>\n" +
                 "                    <div class=\"patient-info-item\">\n" +
                 "                        <h6>Address</h6>\n" +
-                "                        <p>Nashik:Manmad</p>\n" +
+                "                        <p>" + patient.getCity_village() + "</p>\n" +
                 "                    </div>\n" +
                 "                </div>\n" +
                 "                <div class=\"col-md-3 patient-info-section p-3\">\n" +
                 "                    <div class=\"patient-info-item mb-3\">\n" +
                 "                        <h6>Occupation</h6>\n" +
-                "                        <p>NA</p>\n" +
+                "                        <p>" + patient.getOccupation() + "</p>\n" +
                 "                    </div>\n" +
                 "                    <div class=\"patient-info-item\">\n" +
                 "                        <h6>National ID</h6>\n" +
@@ -3017,7 +3046,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                        <h6>Contact no.</h6>\n" +
                 "                        <p>\n" +
                 "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/phone-black.svg\" alt=\"\" />\n" +
-                "                            +918830308535\n" +
+                patient.getPhone_number() +
                 "                        </p>\n" +
                 "                    </div>\n" +
                 "                </div>\n" +
@@ -3036,7 +3065,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                                    <div class=\"list-item\">\n" +
                 "                                        <label>Patient Id</label>\n" +
                 "                                        <div class=\"list-item-content\">\n" +
-                "                                            13XET-7\n" +
+                patient.getOpenmrs_id() +
                 "                                        </div>\n" +
                 "                                    </div>\n" +
                 "                                </li>\n" +
@@ -3073,9 +3102,9 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                                    </thead>\n" +
                 "                                    <tbody>\n" +
                 "                                        <tr>\n" +
-                "                                            <td>Malaria</td>\n" +
-                "                                            <td>Primary</td>\n" +
-                "                                            <td>Confirmed</td>\n" +
+                "                                            <td>" + diagnosisDetails[0].trim() + "</td>\n" +
+                "                                            <td>" + typeStatusArray[0].trim() + "</td>\n" +
+                "                                            <td>" + typeStatusArray[1].trim() + "</td>\n" +
                 "                                        </tr>\n" +
                 "                                    </tbody>\n" +
                 "                                </table>\n" +
@@ -3104,16 +3133,16 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                                    </thead>\n" +
                 "                                    <tbody>\n" +
                 "                                        <tr>\n" +
-                "                                            <td>Paracetamol</td>\n" +
-                "                                            <td>500 mg</td>\n" +
-                "                                            <td>14</td>\n" +
-                "                                            <td>1-1-1</td>\n" +
-                "                                            <td>After meal</td>\n" +
+                "                                            <td>" + drugName + "</td>\n" +
+                "                                            <td>" + strength + "</td>\n" +
+                "                                            <td>" + numberOfDays + "</td>\n" +
+                "                                            <td>" + timing + "</td>\n" +
+                "                                            <td>" + medicationRemarks + "</td>\n" +
                 "                                        </tr>\n" +
                 "                                        <tr>\n" +
-                "                                            <td colspan=\"5\" class=\"text-center\">\n" +
-                "                                                No medicines added\n" +
-                "                                            </td>\n" +
+//                "                                            <td colspan=\"5\" class=\"text-center\">\n" +
+//                "                                                No medicines added\n" +
+//                "                                            </td>\n" +
                 "                                        </tr>\n" +
                 "                                    </tbody>\n" +
                 "                                </table>\n" +
@@ -3121,7 +3150,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                            <ul class=\"items-list\">\n" +
                 "                                <li>\n" +
                 "                                    <div class=\"d-flex justify-content-between align-items-center\">\n" +
-                "                                        <span>TEST ADDITIONAL INSTRUCTION</span>\n" +
+                "                                        <span>" + additionalRemarks + "</span>\n" +
                 "                                    </div>\n" +
                 "                                </li>\n" +
                 "                            </ul>\n" +
@@ -3129,23 +3158,23 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                    </div>\n" +
                 "                </div>\n" +
                 "\n" +
-                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
-                "                    <div class=\"data-section\">\n" +
-                "                        <div class=\"data-section-title\">\n" +
-                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/note.svg\" alt=\"\" />\n" +
-                "                            <h6>Note</h6>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"data-section-content\">\n" +
-                "                            <ul class=\"items-list\">\n" +
-                "                                <li>\n" +
-                "                                    <div class=\"d-flex justify-content-between align-items-center\">\n" +
-                "                                        <span>TEST NOTE</span>\n" +
-                "                                    </div>\n" +
-                "                                </li>\n" +
-                "                            </ul>\n" +
-                "                        </div>\n" +
-                "                    </div>\n" +
-                "                </div>\n" +
+//                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+//                "                    <div class=\"data-section\">\n" +
+//                "                        <div class=\"data-section-title\">\n" +
+//                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/note.svg\" alt=\"\" />\n" +
+//                "                            <h6>Note</h6>\n" +
+//                "                        </div>\n" +
+//                "                        <div class=\"data-section-content\">\n" +
+//                "                            <ul class=\"items-list\">\n" +
+//                "                                <li>\n" +
+//                "                                    <div class=\"d-flex justify-content-between align-items-center\">\n" +
+//                "                                        <span>TEST NOTE</span>\n" +
+//                "                                    </div>\n" +
+//                "                                </li>\n" +
+//                "                            </ul>\n" +
+//                "                        </div>\n" +
+//                "                    </div>\n" +
+//                "                </div>\n" +
                 "\n" +
                 "                <div class=\"col-md-12 px-3 mb-3\">\n" +
                 "                    <div class=\"data-section\">\n" +
@@ -3157,7 +3186,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                            <ul class=\"items-list\">\n" +
                 "                                <li>\n" +
                 "                                    <div class=\"d-flex justify-content-between align-items-center\">\n" +
-                "                                        <span>Regular Physical Exercise</span>\n" +
+                "                                        <span>" + adviceReturned + "</span>\n" +
                 "                                    </div>\n" +
                 "                                </li>\n" +
                 "                            </ul>\n" +
@@ -3165,59 +3194,60 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                    </div>\n" +
                 "                </div>\n" +
                 "\n" +
-                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
-                "                    <div class=\"data-section\">\n" +
-                "                        <div class=\"data-section-title\">\n" +
-                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/test.svg\" alt=\"\" />\n" +
-                "                            <h6>Test</h6>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"data-section-content\">\n" +
-                "                            <ul class=\"items-list\">\n" +
-                "                                <li>\n" +
-                "                                    <div class=\"d-flex justify-content-between align-items-center\">\n" +
-                "                                        <span>Urine Sugar</span>\n" +
-                "                                    </div>\n" +
-                "                                </li>\n" +
-                "                            </ul>\n" +
-                "                        </div>\n" +
-                "                    </div>\n" +
-                "                </div>\n" +
-                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
-                "                    <div class=\"data-section\">\n" +
-                "                        <div class=\"data-section-title\">\n" +
-                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/referral.svg\" alt=\"\" />\n" +
-                "                            <h6>Referral-Out</h6>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"data-section-content\">\n" +
-                "                            <div class=\"table-responsive\">\n" +
-                "                                <table class=\"table\">\n" +
-                "                                    <thead>\n" +
-                "                                        <tr>\n" +
-                "                                            <th scope=\"col\">Referral to</th>\n" +
-                "                                            <th scope=\"col\">Referral facility</th>\n" +
-                "                                            <th scope=\"col\">Priority of Referral</th>\n" +
-                "                                            <th scope=\"col\">Referral for (Reason)</th>\n" +
-                "                                        </tr>\n" +
-                "                                    </thead>\n" +
-                "                                    <tbody>\n" +
-                "                                        <tr>\n" +
-                "                                            <td>General Physician</td>\n" +
-                "                                            <td>HSC</td>\n" +
-                "                                            <td>Elective</td>\n" +
-                "                                            <td>TEST</td>\n" +
-                "                                        </tr>\n" +
-                "                                        <tr>\n" +
-                "                                            <td colspan=\"4\" class=\"text-center\">\n" +
-                "                                                No referrals added\n" +
-                "                                            </td>\n" +
-                "                                        </tr>\n" +
-                "                                    </tbody>\n" +
-                "                                </table>\n" +
-                "                            </div>\n" +
-                "                        </div>\n" +
-                "                    </div>\n" +
-                "                </div>\n" +
-                "\n" +
+//                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+//                "                    <div class=\"data-section\">\n" +
+//                "                        <div class=\"data-section-title\">\n" +
+//                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/test.svg\" alt=\"\" />\n" +
+//                "                            <h6>Test</h6>\n" +
+//                "                        </div>\n" +
+//                "                        <div class=\"data-section-content\">\n" +
+//                "                            <ul class=\"items-list\">\n" +
+//                "                                <li>\n" +
+//                "                                    <div class=\"d-flex justify-content-between align-items-center\">\n" +
+//                "                                        <span>"+ testsReturned + "</span>\n" +
+//                "                                    </div>\n" +
+//                "                                </li>\n" +
+//                "                            </ul>\n" +
+//                "                        </div>\n" +
+//                "                    </div>\n" +
+//                "                </div>\n" +
+//
+//                "                <div class=\"col-md-12 px-3 mb-3\">\n" +
+//                "                    <div class=\"data-section\">\n" +
+//                "                        <div class=\"data-section-title\">\n" +
+//                "                            <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/referral.svg\" alt=\"\" />\n" +
+//                "                            <h6>Referral-Out</h6>\n" +
+//                "                        </div>\n" +
+//                "                        <div class=\"data-section-content\">\n" +
+//                "                            <div class=\"table-responsive\">\n" +
+//                "                                <table class=\"table\">\n" +
+//                "                                    <thead>\n" +
+//                "                                        <tr>\n" +
+//                "                                            <th scope=\"col\">Referral to</th>\n" +
+//                "                                            <th scope=\"col\">Referral facility</th>\n" +
+//                "                                            <th scope=\"col\">Priority of Referral</th>\n" +
+//                "                                            <th scope=\"col\">Referral for (Reason)</th>\n" +
+//                "                                        </tr>\n" +
+//                "                                    </thead>\n" +
+//                "                                    <tbody>\n" +
+//                "                                        <tr>\n" +
+//                "                                            <td>General Physician</td>\n" +
+//                "                                            <td>HSC</td>\n" +
+//                "                                            <td>Elective</td>\n" +
+//                "                                            <td>TEST</td>\n" +
+//                "                                        </tr>\n" +
+//                "                                        <tr>\n" +
+//                "                                            <td colspan=\"4\" class=\"text-center\">\n" +
+//                "                                                No referrals added\n" +
+//                "                                            </td>\n" +
+//                "                                        </tr>\n" +
+//                "                                    </tbody>\n" +
+//                "                                </table>\n" +
+//                "                            </div>\n" +
+//                "                        </div>\n" +
+//                "                    </div>\n" +
+//                "                </div>\n" +
+
                 "                <div class=\"col-md-12 px-3 mb-3\">\n" +
                 "                    <div class=\"data-section\">\n" +
                 "                        <div class=\"data-section-title\">\n" +
@@ -3229,32 +3259,28 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                                <li>\n" +
                 "                                    <div class=\"list-item\">\n" +
                 "                                        <label class=\"border-0\">Follow-up suggested</label>\n" +
-                "                                        <div class=\"list-item-content\">\n" +
-                "                                            Yes/No\n" +
+                "                                        <div class=\"list-item-content\">\n" + ((followUpDate == null || followUpDate.isEmpty()) ? "No" : "Yes") +
                 "                                        </div>\n" +
                 "                                    </div>\n" +
                 "                                </li>\n" +
                 "                                <li>\n" +
                 "                                    <div class=\"list-item\">\n" +
                 "                                        <label>Follow-up Date</label>\n" +
-                "                                        <div class=\"list-item-content\">\n" +
-                "                                            11-11-2023\n" +
+                "                                        <div class=\"list-item-content\">\n" + followUpDateFinal +
                 "                                        </div>\n" +
                 "                                    </div>\n" +
                 "                                </li>\n" +
                 "                                <li>\n" +
                 "                                    <div class=\"list-item\">\n" +
                 "                                        <label>Follow-up Time</label>\n" +
-                "                                        <div class=\"list-item-content\">\n" +
-                "                                            09:00 AM\n" +
+                "                                        <div class=\"list-item-content\">\n" + followUpTimeFinal +
                 "                                        </div>\n" +
                 "                                    </div>\n" +
                 "                                </li>\n" +
                 "                                <li>\n" +
                 "                                    <div class=\"list-item\">\n" +
                 "                                        <label>Reason for follow-up</label>\n" +
-                "                                        <div class=\"list-item-content\">\n" +
-                "                                            TEST\n" +
+                "                                        <div class=\"list-item-content\">\n" + followUpRemarksFinal +
                 "                                        </div>\n" +
                 "                                    </div>\n" +
                 "                                </li>\n" +
@@ -3264,14 +3290,15 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "                </div>\n" +
                 "            </div>\n" +
                 "\n" +
+
                 "            <div class=\"signature w-100\">\n" +
                 "                <div class=\"float-right my-4\">\n" +
                 "                    <img class=\"signature\" alt=\"\"\n" +
-                "                        src=\"data:image/png;base64,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\" />\n" +
-                "                    <div class=\"title-name\">Dr ANURAG R SANGALE</div>\n" +
-                "                    <div class=\"title\">MBBS</div>\n" +
+                "                        src=\"" + details.getTextOfSign() + "\"/>" +
+                "                    <div class=\"title-name\">" + details.getName() + "</div>\n" +
+                "                    <div class=\"title\">" + details.getSpecialization() + "</div>\n" +
                 "                    <div class=\"sub-title\">\n" +
-                "                        Registration No: 12345678\n" +
+                "                        Registration No: " + details.getRegistrationNumber() + "\n" +
                 "                    </div>\n" +
                 "                </div>\n" +
                 "            </div>\n" +
@@ -3283,11 +3310,11 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 "    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js\"\n" +
                 "        integrity=\"sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct\"\n" +
                 "        crossorigin=\"anonymous\"></script>\n" +
-                "    <noscript>\n" +
-                "        <div style=\"width: 100%; height: 100%; text-align: center\">\n" +
-                "            JavaScript is disbled\n" +
-                "        </div>\n" +
-                "    </noscript>\n" +
+//                "    <noscript>\n" +
+//                "        <div style=\"width: 100%; height: 100%; text-align: center\">\n" +
+//                "            JavaScript is disbled\n" +
+//                "        </div>\n" +
+//                "    </noscript>\n" +
                 "</body>";
 
         String styleTag = "<style>\n" +
