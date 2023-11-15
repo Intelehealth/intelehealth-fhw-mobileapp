@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:layout_marginTop="-600dp"
     tools:context=".activities.patientDetailActivity.PatientDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -916,27 +917,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="16dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="8dp">
-
-                <Button
-                    android:id="@+id/cha_button"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/orange3"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/survey_acute_homecare_utilizers"
-                    tools:foreground="?android:attr/selectableItemBackground" />
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="16dp"
                 app:cardCornerRadius="10dp">
 
                 <Button
@@ -1029,6 +1009,27 @@
                     android:fontFamily="@font/lato_bold"
                     android:text="@string/comm_general_need_survey"
                     tools:foreground="?android:attr/selectableItemBackground" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp">
+
+                <Button
+                    android:id="@+id/cha_button"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/orange3"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/survey_acute_homecare_utilizers"
+                    tools:foreground="?android:attr/selectableItemBackground" />
+
             </androidx.cardview.widget.CardView>
 
 
