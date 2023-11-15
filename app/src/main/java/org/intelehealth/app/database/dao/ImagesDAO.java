@@ -243,7 +243,7 @@ public class ImagesDAO {
                     obsPushDTO.setObsDatetime(idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date")));
                     obsPushDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("obsuuid")));
                     obsPushDTO.setPerson(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
-                    obsPushDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
+                    obsPushDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
                     obsImages.add(obsPushDTO);
                 }
             }

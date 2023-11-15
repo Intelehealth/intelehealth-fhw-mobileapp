@@ -1292,9 +1292,21 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             }
                             if (!foundUserInputs)*/
 
-                            holder.singleComponentContainer.removeAllViews();
+                            boolean foundUserInputs = false;
+                            for (int i = 0; i < options.size(); i++) {
+                                if (options.get(i).isSelected()) {
+                                    foundUserInputs = options.get(i).isUserInputsTypeNode();
+                                    Log.v(TAG, "opt - " + options.get(i).findDisplay());
+                                    Log.v(TAG, "foundUserInputs - " + foundUserInputs);
+                                    if (foundUserInputs)
+                                        break;
+                                }
+                            }
+                            if (!foundUserInputs) {
+                                holder.singleComponentContainer.removeAllViews();
+                            }
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
-                            if (!mItemList.get(index).isMultiChoice()){
+                            if (!mItemList.get(index).isMultiChoice()) {
                                 holder.nestedRecyclerView.setAdapter(null);
                             }
 
