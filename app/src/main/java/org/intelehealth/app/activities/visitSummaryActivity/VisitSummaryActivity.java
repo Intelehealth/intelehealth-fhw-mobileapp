@@ -103,7 +103,6 @@ import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivi
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
-import org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity;
 import org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
@@ -1136,7 +1135,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     String[] columnsToReturn = {"openmrs_id"};
                     final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
-
                     if (idCursor.moveToFirst()) {
                         do {
                             patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
@@ -1166,10 +1164,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                             SyncUtils syncUtils = new SyncUtils();
                             boolean isSynced = syncUtils.syncForeground("visitSummary");
                             if (isSynced) {
+                                /*presc_status.setText(getResources().getString(R.string.prescription_pending));
+                                presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_red));*/
+
                                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
                                 isSynedFlag = "1";
                                 //
                                 showVisitID();
+                                isVisitUploaded();
+
                                 Log.d("visitUUID", "showVisitID: " + visitUUID);
                                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
                                 isVisitSecondSpecialityExists = speciality_row_exist_check(visitUUID, "8100ec1a-063b-47d5-9781-224d835fc688");
@@ -1194,8 +1197,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             uploadButton.setEnabled(false);
         }
 
-
-        queryData(String.valueOf(patientUuid));
         nameView = findViewById(R.id.textView_name_value);
         ageView = findViewById(R.id.textView_age_value);
         genderView = findViewById(R.id.textView_gender_value);
@@ -1203,6 +1204,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         //OpenMRS Id
         idView = findViewById(R.id.textView_id_value);
         visitView = findViewById(R.id.textView_visit_value);
+
+        queryData(String.valueOf(patientUuid));
+
+
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_id());
         } else {
@@ -1866,6 +1871,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         });
 
         doQuery();
+        queryData(String.valueOf(patientUuid));
         getAppointmentDetails(visitUuid);
     }
 
@@ -2058,7 +2064,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         if (visitUUID != null && !visitUUID.isEmpty()) {
 
-            String query = "SELECT   a.uuid, a.sync " + "FROM tbl_visit a " + "WHERE a.uuid = '" + visitUUID + "'";
+            String query = "SELECT a.uuid, a.sync " + "FROM tbl_visit a " + "WHERE a.uuid = '" + visitUUID + "'";
 
             db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
             final Cursor cursor = db.rawQuery(query, null);
@@ -2081,6 +2087,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 visitView.setText("XXXX" + hideVisitUUID);
             } else {
                 visitView.setText(getResources().getString(R.string.visit_not_uploaded));
+
+                presc_status.setText(getResources().getString(R.string.case_not_uploaded));
+                presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_red));
             }
         } else {
             if (visitUuid != null && !visitUuid.isEmpty()) {
@@ -4860,6 +4869,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         }
                     } while (visitCursor.moveToNext());
                 }
+                else {
+                    // here presc is not present now we will check for visitUUID present or not if present than show presc pending...
+                    isVisitUploaded();
+                }
                 visitCursor.close();
 
                 //checks if prescription is downloaded and if so then sets the icon color.
@@ -4883,6 +4896,18 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         } catch (DAOException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    private void isVisitUploaded() {
+        isVisitSpecialityExists = speciality_row_exist_check(visitUUID, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+        Log.d(TAG, "isVisitUploaded: " + "visitView: " + visitView.getText().toString() + ", visitUUID: " + visitUUID + ", " + isVisitSpecialityExists);
+
+        if (visitView != null && visitView.getText().toString().contains("XXXX") &&
+                presc_status.getText().toString().equalsIgnoreCase(getString(R.string.case_not_uploaded))   /*&& (visitUUID == null || visitUUID.isEmpty())*/) {
+            presc_status.setText(getResources().getString(R.string.prescription_pending));
+            presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_red));
         }
 
     }
@@ -4929,6 +4954,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 }
             } while (visitCursor.moveToNext());
+        }
+        else {
+            // here presc is not present now we will check for visitUUID present or not if present than show presc pending...
+            isVisitUploaded();
         }
         visitCursor.close();
         downloaded = true;

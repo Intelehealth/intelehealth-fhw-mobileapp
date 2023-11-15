@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary"
-    tools:layout_marginTop="-2600dp"
+    tools:layout_marginTop="-000dp"
     >
     <!-- TODO: Replace hard-coded strings with @string resources-->
 
@@ -64,14 +64,16 @@
                         android:paddingStart="20dp"
                         android:text="@string/visit_summary_patient_details"
                         android:textColor="@color/white"
+                        android:layout_toStartOf="@id/prescription_status"
+                        android:layout_alignParentStart="true"
                         android:textSize="@dimen/card_content_text_size" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/prescription_status"
-                        android:text="@string/prescription_pending"
-                        android:textSize="14sp"
+                        android:text="@string/case_not_uploaded"
+                        android:textSize="12sp"
                         android:fontFamily="@font/lato_regular"
                         android:layout_gravity="end"
                         android:layout_marginHorizontal="5dp"

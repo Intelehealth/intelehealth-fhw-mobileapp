@@ -1666,5 +1666,6 @@
     <string name="view_medicine_past_notes">View medicine past notes</string>
     <string name="medicine_past_notes">Medicine Past Notes</string>
     <string name="aid_past_notes">Aid Past Notes</string>
+    <string name="case_not_uploaded">Case not uploaded</string>
 
 </resources>

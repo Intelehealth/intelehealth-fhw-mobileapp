@@ -1659,6 +1659,7 @@
     <string name="view_medicine_past_notes">عرض ملاحظات الأدوية السابقة</string>
     <string name="medicine_past_notes">ملاحظات الأدوية السابقة</string>
     <string name="aid_past_notes">ملاحظات الدعم السابقة</string>
+    <string name="case_not_uploaded">حالة غير مرسلة</string>
 
 
 </resources>

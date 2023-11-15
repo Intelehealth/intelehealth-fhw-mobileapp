@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:layout_marginTop="-3000dp"
+    tools:layout_marginTop="-00dp"
     tools:context=".activities.identificationActivity.IdentificationActivity">
 
     <com.google.android.material.appbar.AppBarLayout
