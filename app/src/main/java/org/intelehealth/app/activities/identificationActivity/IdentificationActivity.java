@@ -2528,7 +2528,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         patientAttributesDTO.setValue(sessionManager.getProviderID());
         patientAttributesDTOList.add(patientAttributesDTO);
 
-        patientAttributesDTO = new PatientAttributesDTO();
+       /* patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
@@ -2539,7 +2539,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setValue("No");
         }
 
-        patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTOList.add(patientAttributesDTO);*/   // SYR-379
 
         //House Hold Registration
         if (sessionManager.getHouseholdUuid().equals("")) {
@@ -3956,7 +3956,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setValue(patient1.getHealthWorkerID());
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
+           /* patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IS_DISASTER_VICTIM"));
@@ -3967,7 +3967,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setValue("No");
             }
 
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/   // SYR-379
 
             //House Hold Registration
             if (sessionManager.getHouseholdUuid().equals("")) {

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_marginTop="-600dp"
     tools:context=".activities.patientDetailActivity.PatientDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
