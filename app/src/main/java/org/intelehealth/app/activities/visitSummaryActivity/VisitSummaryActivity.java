@@ -1871,7 +1871,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         });
 
         doQuery();
-        queryData(String.valueOf(patientUuid));
+        isVisitUploaded();
+     //   queryData(String.valueOf(patientUuid));
+      //  downloadPrescriptionDefault();
         getAppointmentDetails(visitUuid);
     }
 
