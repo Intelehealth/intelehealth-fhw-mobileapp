@@ -53,6 +53,7 @@ public class PrescriptionBuilder {
                 + divMainContentOpeningTag
                 + divContainerFluidOpeningTag
                 + generatePatientDetailsData(patient)
+                + generateMainRowData(patient)
                 + divContainerFluidClosingTag
                 + divMainContentClosingTag
                 + closingBodyTag;
@@ -104,7 +105,7 @@ public class PrescriptionBuilder {
                 + "</div>\n"
                 + "<div class=\"patient-info-item\">\n"
                 + "<h6>National ID</h6>\n"
-                + "<p>NA</p>\n"
+                + "<p>" + patient.getNationalID() + "</p>\n"
                 + "</div>\n"
                 + "</div>\n"
                 + "<div class=\"col-md-3 patient-info-section p-3\">\n"
@@ -112,6 +113,48 @@ public class PrescriptionBuilder {
                 + "<h6>Contact no.</h6>\n"
                 + "<p>\n <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/phone-black.svg\" alt=\"\" />\n " + patient.getPhone_number() + "\n"
                 + "</p>\n"
+                + "</div>\n"
+                + "</div>\n"
+                + "</div>";
+    }
+
+    private String generateMainRowData(Patient patient) {
+        String finalMainRowData = "";
+        String rowOpeningTag = "<div class=\"row\">\n";
+        String rowClosingTag = "</div>";
+
+
+        finalMainRowData = rowOpeningTag + generateConsultationDetails(patient) + rowClosingTag;
+        return finalMainRowData;
+    }
+
+    private String generateConsultationDetails(Patient patient) {
+        return "<div class=\"col-md-12 px-3 mb-3\">\n"
+                + "<div class=\"data-section\">\n"
+                + "<div class=\"data-section-title\">\n"
+                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/consultation-details-blue.svg\"\n"
+                + "alt=\"\" />\n"
+                + "<h6>Consultation details</h6>\n"
+                + "</div>\n"
+                + "<div class=\"data-section-content consultation-details\">\n"
+                + "<ul class=\"items-list\">\n"
+                + "<li>\n"
+                + "<div class=\"list-item\">\n"
+                + "<label>Patient Id</label>\n"
+                + "<div class=\"list-item-content\">\n"
+                + patient.getOpenmrs_id() + "\n"
+                + "</div>\n"
+                + "</div>\n"
+                + "</li>\n"
+                + "<li>\n"
+                + "<div class=\"list-item\">\n"
+                + "<label>Prescription Issued</label>\n"
+                + "<div class=\"list-item-content\">\n"
+                + "03 Nov, 2023\n"
+                + "</div>\n"
+                + "</div>\n"
+                + "</li>\n"
+                + "</ul>\n"
                 + "</div>\n"
                 + "</div>\n"
                 + "</div>";

@@ -2746,6 +2746,9 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("NationalID")) {
+                    patient.setNationalID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
 
             } while (idCursor1.moveToNext());
         }
