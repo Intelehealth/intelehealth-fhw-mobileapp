@@ -1027,10 +1027,18 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             String med = getMedicationData();
             String aid = getAidData();
 
+            //get from encountertbl from the encounter
+            if (visitnoteencounteruuid.isEmpty()) {
+                visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+            }
+
             if (med.trim().isEmpty() && aid.trim().isEmpty()) {
                 Toast.makeText(context, getString(R.string.no_medication_and_aid_data_present_to_dispense), Toast.LENGTH_LONG).show();
                 return;
             }
+
+            Log.d(TAG, "dispense intent: " + med + ", " + aid + ", " + patientUuid + ", " + visitUuid + ", " +
+                    visitnoteencounteruuid + ", " + encounterVitals + ", " + encounterUuidAdultIntial); // visitnoteenc comes empty here.
 
             Intent i = new Intent(context, Medication_Aid_Activity.class);
             i.putExtra("tag", "dispense");
@@ -1046,6 +1054,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         tvAdminister.setOnClickListener(v -> {
             String med = getMedicationData();
+            //get from encountertbl from the encounter
+            if (visitnoteencounteruuid.isEmpty()) {
+                visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+            }
+
             if (med.trim().isEmpty()) {
                 Toast.makeText(context, getString(R.string.no_medication_data_present_to_administer), Toast.LENGTH_LONG).show();
                 return;
