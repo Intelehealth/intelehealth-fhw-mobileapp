@@ -73,6 +73,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
@@ -2461,6 +2462,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                     "</div>";
         }
 
+        PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
+
         if (isRespiratory) {
             String htmlDocument =
                     String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
@@ -2503,7 +2506,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 //                            pat_hist, fam_hist,
                             mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
-            webView.loadDataWithBaseURL(null, newPrescription(), "text/HTML", "UTF-8", null);
+            webView.loadDataWithBaseURL(null, prescriptionBuilder.builder(patient), "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
                     String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
@@ -2548,7 +2551,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             /*pat_hist, fam_hist,*/
                             /*mComplaint*/ "",
                             diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
-            webView.loadDataWithBaseURL(null, newPrescription(), "text/HTML", "UTF-8", null);
+            webView.loadDataWithBaseURL(null, prescriptionBuilder.builder(patient), "text/HTML", "UTF-8", null);
         }
 
 
