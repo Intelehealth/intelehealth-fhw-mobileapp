@@ -1883,7 +1883,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="video_consultation">Video consultation</string>
     <string name="routine_check_up">Routine check up</string>
     <string name="urgent_care">Urgent care</string>
-    <string name="age_validation">Age should be less than or equal to 10 years</string>
+    <string name="age_validation">Age should be greater than or equal to 10 years</string>
     <string name="aadhar_no">Aadhar Card</string>
     <string name="enter_aadhar_no">Enter Aadhar card number</string>
     <string name="aabha_no_validation">Aabha number should be 14 digit long</string>

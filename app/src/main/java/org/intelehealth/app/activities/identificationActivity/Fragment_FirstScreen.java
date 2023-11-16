@@ -190,8 +190,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
         }
 
-        if (patient_detail)
-            frag1_nxt_btn_main.setText(getString(R.string.save));
+        if (patient_detail) frag1_nxt_btn_main.setText(getString(R.string.save));
 
         // Setting up the screen when user came from Second screen.
         if (fromSecondScreen) {
@@ -228,15 +227,13 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 Log.v(TAG, "yes");
             } else if (patientdto.getGender().equals("F")) {
                 mGenderFemaleRadioButton.setChecked(true);
-                if (mGenderMaleRadioButton.isChecked())
-                    mGenderMaleRadioButton.setChecked(false);
+                if (mGenderMaleRadioButton.isChecked()) mGenderMaleRadioButton.setChecked(false);
                 if (mGenderOthersRadioButton.isChecked())
                     mGenderOthersRadioButton.setChecked(false);
                 Log.v(TAG, "yes");
             } else {
                 mGenderOthersRadioButton.setChecked(true);
-                if (mGenderMaleRadioButton.isChecked())
-                    mGenderMaleRadioButton.setChecked(false);
+                if (mGenderMaleRadioButton.isChecked()) mGenderMaleRadioButton.setChecked(false);
                 if (mGenderFemaleRadioButton.isChecked())
                     mGenderFemaleRadioButton.setChecked(false);
             }
@@ -252,13 +249,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             // profile image edit
             if (patientdto.getPatientPhoto() != null && !patientdto.getPatientPhoto().trim().isEmpty()) {
                 //  patient_imgview.setImageBitmap(BitmapFactory.decodeFile(patientdto.getPatientPhoto()));
-                Glide.with(getActivity())
-                        .load(new File(patientdto.getPatientPhoto()))
-                        .thumbnail(0.25f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(patient_imgview);
+                Glide.with(getActivity()).load(new File(patientdto.getPatientPhoto())).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(patient_imgview);
 
             }
         }
@@ -312,8 +303,11 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 if (years < 10) {
                     mAgeEditText.setText("");
                     mDOBEditText.setText("");
-                    Toast.makeText(getActivity(), getString(R.string.age_validation), Toast.LENGTH_LONG).show();
-                }else{
+                    mDOBErrorTextView.setText(getString(R.string.age_validation));
+                    mAgeErrorTextView.setText(getString(R.string.age_validation));
+
+                    //Toast.makeText(getActivity(), getString(R.string.age_validation), Toast.LENGTH_LONG).show();
+                } else {
                     String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
                     if (!selectedDate.isEmpty()) {
                         dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
@@ -566,35 +560,51 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String ageString = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
-                        mAgeEditText.setText(ageString);
+                        if (mAgeYears < 10) {
+                            alertDialog.dismiss();
+                            mAgeEditText.setText("");
+                            mDOBEditText.setText("");
 
-                        mDOBErrorTextView.setVisibility(View.GONE);
-                        mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                            mAgeErrorTextView.setText(getResources().getString(R.string.age_validation));
+                            mDOBErrorTextView.setText(getResources().getString(R.string.age_validation));
+                            mDOBEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                            mAgeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
 
-                        mAgeErrorTextView.setVisibility(View.GONE);
-                        mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                        } else {
+                            mDOBErrorTextView.setVisibility(View.GONE);
+                            mAgeErrorTextView.setVisibility(View.GONE);
 
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.add(Calendar.DAY_OF_MONTH, -mAgeDays);
-                        calendar.add(Calendar.MONTH, -mAgeMonths);
-                        calendar.add(Calendar.YEAR, -mAgeYears);
+                            mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                            mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
 
-                        mDOBYear = calendar.get(Calendar.YEAR);
-                        mDOBMonth = calendar.get(Calendar.MONTH);
-                        mDOBDay = calendar.get(Calendar.DAY_OF_MONTH);
+                            String ageString = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+                            mAgeEditText.setText(ageString);
 
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd",
-                                Locale.ENGLISH);
-                        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy",
-                                Locale.ENGLISH);
-                        dob.set(mDOBYear, mDOBMonth, mDOBDay);
-                        String dobString = simpleDateFormat.format(dob.getTime());
-                        dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(simpleDateFormat1.format(dob.getTime()));
-                        mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobString));
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                            mDOBEditText.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(dobString)));
-                        alertDialog.dismiss();
+                            mDOBErrorTextView.setVisibility(View.GONE);
+                            mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+                            mAgeErrorTextView.setVisibility(View.GONE);
+                            mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.add(Calendar.DAY_OF_MONTH, -mAgeDays);
+                            calendar.add(Calendar.MONTH, -mAgeMonths);
+                            calendar.add(Calendar.YEAR, -mAgeYears);
+
+                            mDOBYear = calendar.get(Calendar.YEAR);
+                            mDOBMonth = calendar.get(Calendar.MONTH);
+                            mDOBDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+                            dob.set(mDOBYear, mDOBMonth, mDOBDay);
+                            String dobString = simpleDateFormat.format(dob.getTime());
+                            dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(simpleDateFormat1.format(dob.getTime()));
+                            mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobString));
+                            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                mDOBEditText.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(dobString)));
+                            alertDialog.dismiss();
+                        }
                     }
                 });
 
@@ -687,8 +697,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
 
         if (!listPermissionsNeeded.isEmpty()) {
-            requestPermissions(listPermissionsNeeded.toArray
-                    (new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
         return true;
@@ -718,18 +727,15 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         boolean checked = ((RadioButton) view).isChecked();
         switch (view.getId()) {
             case R.id.gender_male:
-                if (checked)
-                    mGender = "M";
+                if (checked) mGender = "M";
                 Log.v(TAG, "gender:" + mGender);
                 break;
             case R.id.gender_female:
-                if (checked)
-                    mGender = "F";
+                if (checked) mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
                 break;
             case R.id.gender_other:
-                if (checked)
-                    mGender = "O";
+                if (checked) mGender = "O";
                 Log.v(TAG, "gender: " + mGender);
                 break;
         }
@@ -825,8 +831,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
 
-            if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91")
-                    && s.length() != mSelectedMobileNumberValidationLength) {
+            if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91") && s.length() != mSelectedMobileNumberValidationLength) {
                 mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
                 mPhoneNumberErrorTextView.setText(R.string.invalid_mobile_no);
                 mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -838,10 +843,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         }
 
-        if (mCurrentPhotoPath != null)
-            patientdto.setPatientPhoto(mCurrentPhotoPath);
-        else
-            patientdto.setPatientPhoto(patientdto.getPatientPhoto());
+        if (mCurrentPhotoPath != null) patientdto.setPatientPhoto(mCurrentPhotoPath);
+        else patientdto.setPatientPhoto(patientdto.getPatientPhoto());
 
         patientdto.setFirstname(mFirstNameEditText.getText().toString());
         patientdto.setMiddlename(mMiddleNameEditText.getText().toString());
@@ -849,8 +852,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         patientdto.setGender(StringUtils.getValue(mGender));
         if (!mPhoneNumberEditText.getText().toString().trim().equals(""))
             patientdto.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
-        else
-            patientdto.setPhonenumber("");
+        else patientdto.setPhonenumber("");
         patientdto.setDateofbirth(dobToDb);
 
 
@@ -887,10 +889,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 bundle.putBoolean("patient_detail", patient_detail);
                 fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.frame_firstscreen, fragment_secondScreen)
-                        .commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, fragment_secondScreen).commit();
             }
 
             if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.
@@ -929,13 +928,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 mCurrentPhotoPath = data.getStringExtra("RESULT");
                 Log.v("IdentificationActivity", mCurrentPhotoPath);
 
-                Glide.with(getActivity())
-                        .load(new File(mCurrentPhotoPath))
-                        .thumbnail(0.25f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(patient_imgview);
+                Glide.with(getActivity()).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(patient_imgview);
             }
         }
     }

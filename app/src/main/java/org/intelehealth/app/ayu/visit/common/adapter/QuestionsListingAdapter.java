@@ -302,9 +302,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
         mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainNameByLocale());
 
-        if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
+        /*if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
             //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
             showAssociateSymptoms(genericViewHolder.node, genericViewHolder, position);
+            genericViewHolder.tvQuestionCounter.setText("");
+        }*/if (genericViewHolder.node.getText().equalsIgnoreCase("Other Remarks [Describe]")) {
+            //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
+            prepareForOtherRemark(genericViewHolder.node, genericViewHolder, position);
             genericViewHolder.tvQuestionCounter.setText("");
         } else {
             //mOnItemSelection.needTitleChange("");
@@ -319,6 +323,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             switch (type) {
                 case "text":
                     // askText(questionNode, context, adapter);
+                    genericViewHolder.tvQuestionDesc.setVisibility(View.GONE);
                     addTextEnterView(mItemList.get(position), genericViewHolder, position);
                     break;
                 case "date":
@@ -994,7 +999,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 } else if (holder.selectedNestedOptionIndex > 0) {
                     for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
-                        if (options.size() < i) {
+                        Log.d(TAG, "showOptionsData: i : " + i);
+                        Log.d(TAG, "showOptionsData: options size : " + options.size());
+                        if (options.size() > i) {
                             holder.nestedQuestionsListingAdapter.addItem(options.get(i));
                         }
                     }
@@ -1679,6 +1686,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
         Log.v(TAG, "addTextEnterView");
         holder.singleComponentContainer.removeAllViews();
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
@@ -2018,6 +2026,132 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
     }
 
+    private void prepareForOtherRemark(Node node, GenericViewHolder holder, int position) {
+        Log.v(TAG, "prepareForOtherRemark()");
+        holder.nestedRecyclerView.removeAllViews();
+        holder.singleComponentContainer.removeAllViews();
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
+        holder.tvQuestionDesc.setVisibility(View.VISIBLE);
+        holder.recyclerView.setVisibility(View.GONE);
+        holder.nestedRecyclerView.setVisibility(View.GONE);
+        holder.submitButton.setVisibility(View.GONE);
+        holder.skipButton.setVisibility(View.GONE);
+        //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_yes_or_no));
+
+       /* View view = View.inflate(mContext, R.layout.associate_symptoms_questionar_main_view, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+*/
+        View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        Button skipButton = view.findViewById(R.id.btn_skip);
+
+        final EditText editText = view.findViewById(R.id.actv_reasons);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (editText.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (!editText.getText().toString().equalsIgnoreCase("")) {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                        } else {
+                            node.addLanguage(editText.getText().toString());
+                        }
+                        node.setSelected(true);
+                        holder.node.setSelected(true);
+
+                        node.setDataCaptured(true);
+                        holder.node.setDataCaptured(true);
+
+                    } else {
+                        node.setDataCaptured(false);
+                        holder.node.setDataCaptured(false);
+                        //if (node.isRequired()) {
+                        node.setSelected(false);
+                        holder.node.setSelected(false);
+                        //} else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        //   node.setSelected(true);
+                        //}
+                    }
+                    //notifyDataSetChanged();
+                    AdapterUtils.setToDisable(skipButton);
+                  /*  AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, index, false, null);
+                        }
+                    });*/
+                    mOnItemSelection.onAllAnswered(true);
+
+                    WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
+                }
+            }
+        });
+        holder.singleComponentContainer.addView(view);
+/*
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onAllAnswered(true);
+
+                    }
+                });
+
+            }
+        });
+*/
+    /*    if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }*/
+        /*RecyclerView recyclerView = view.findViewById(R.id.rcv_container);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        AssociateSymptomsQueryAdapter associateSymptomsQueryAdapter = new AssociateSymptomsQueryAdapter(mContext, mRecyclerView, recyclerView, node.getOptionsList(), mIsEditMode, new AssociateSymptomsQueryAdapter.AssociateSymptomsOnItemSelection() {
+            @Override
+            public void onSelect(Node data) {
+                Log.v(TAG, new Gson().toJson(data));
+                mItemList.get(position).setSelected(false);
+                mItemList.get(position).setDataCaptured(false);
+                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
+                for (int i = 0; i < mItemList.get(position).getOptionsList().size(); i++) {
+                    if (mItemList.get(position).getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
+                        mItemList.get(position).setDataCaptured(true);
+                        Log.v(TAG, "updated associate symptoms selected status");
+                    }
+                }
+                AdapterUtils.setToDefault(holder.submitButton);
+                //VisitUtils.scrollNow(holder.recyclerView, 1000, 0, 200);
+            }
+        });
+        recyclerView.setAdapter(associateSymptomsQueryAdapter);*/
+/*
+
+        if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+*/
+
+
+      //  holder.singleComponentContainer.addView(view);
+        //recyclerView.scrollToPosition(0);
+    }
 
 }
 

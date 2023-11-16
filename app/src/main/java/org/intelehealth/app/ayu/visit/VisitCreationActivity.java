@@ -150,8 +150,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private boolean mIsEditMode = false;
     private boolean mIsEditTriggerFromVisitSummary = false;
     private int mEditFor = 0; // STEP_1_VITAL , STEP_2_VISIT_REASON, STEP_3_PHYSICAL_EXAMINATION, STEP_4_PAST_MEDICAL_HISTORY
-    ///private String name = "Women's Health"; //for namma aarogya -womens health - Women's health json asset
-    private String name = "Diarrhea"; //for namma aarogya -womens health - Women's health json asset // sample complaint for testing
+    private String name = "Women's Health"; //for namma aarogya -womens health - Women's health json asset
+    //private String name = "Diarrhea"; //for namma aarogya -womens health - Women's health json asset // sample complaint for testing
 
     private List<ReasonData> mSelectedComplains;
 
@@ -724,7 +724,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
                 } else {
                     if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age())) {
-                        mainNode.getOptionsList().get(j).getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
+                        if (mainNode.getOptionsList() != null && mainNode.getOptionsList().get(j) != null && mainNode.getOptionsList().get(j).getOptionsList() != null) {
+                            mainNode.getOptionsList().get(j).getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
+                        }
                         optionList.add(mainNode.getOptionsList().get(j));
                     }
                 }
