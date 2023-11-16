@@ -190,7 +190,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
         }
 
-        if(patient_detail)
+        if (patient_detail)
             frag1_nxt_btn_main.setText(getString(R.string.save));
 
         // Setting up the screen when user came from Second screen.
@@ -202,7 +202,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
             mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
 
-            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 mDOBEditText.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(dobToDb)));
 
             // dob_edittext.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
@@ -295,43 +295,62 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
         if (selectedDate != null) {
             try {
-                Date sourceDate = new SimpleDateFormat("dd/MM/yyyy").parse(selectedDate);
-                Date nowDate = new Date();
-                if (sourceDate.after(nowDate)) {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                // Date sourceDate = format.parse(selectedDate);
+
+                Date currentDate = new Date();
+                String nowDate = format.format(currentDate);
+
+                Date startDate = format.parse(selectedDate);
+                Date endDate = format.parse(nowDate);
+
+                long diff = endDate.getTime() - startDate.getTime();
+                long days = diff / (24 * 60 * 60 * 1000);
+                long years = days / 365;
+                Log.d(TAG, "11111getSelectedDate: year : " + years);
+                System.out.println("11111The difference between the dates is: " + days + " days");
+                if (years < 10) {
                     mAgeEditText.setText("");
                     mDOBEditText.setText("");
-                    Toast.makeText(getActivity(), getString(R.string.valid_dob_msg), Toast.LENGTH_SHORT).show();
-                    return;
+                    Toast.makeText(getActivity(), getString(R.string.age_validation), Toast.LENGTH_LONG).show();
+                }else{
+                    String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
+                    if (!selectedDate.isEmpty()) {
+                        dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
+                        //for age
+                        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
+                        mAgeYears = Integer.parseInt(ymdData[0]);
+                        mAgeMonths = Integer.parseInt(ymdData[1]);
+                        mAgeDays = Integer.parseInt(ymdData[2]);
+
+                        String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+                        String[] splitedDate = selectedDate.split("/");
+                        if (age != null && !age.isEmpty()) {
+                            mAgeEditText.setText(age);
+                            mDOBEditText.setText(dateToshow1 + ", " + splitedDate[2]);
+                            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                mDOBEditText.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
+                            Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+                        } else {
+                            mAgeEditText.setText("");
+                            mDOBEditText.setText("");
+                        }
+                    } else {
+                        Log.d(TAG, "onClick: date empty");
+                    }
                 }
+              /*  if (startDate.after(nowDate)) {
+                    mAgeEditText.setText("");
+                    mDOBEditText.setText("");
+                    Toast.makeText(getActivity(), getString(R.string.age_validation), Toast.LENGTH_SHORT).show();
+                    return;
+                }*/
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-        String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
-        if (!selectedDate.isEmpty()) {
-            dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
-//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
-            //for age
-            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
-            mAgeYears = Integer.parseInt(ymdData[0]);
-            mAgeMonths = Integer.parseInt(ymdData[1]);
-            mAgeDays = Integer.parseInt(ymdData[2]);
 
-            String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
-            String[] splitedDate = selectedDate.split("/");
-            if (age != null && !age.isEmpty()) {
-                mAgeEditText.setText(age);
-                mDOBEditText.setText(dateToshow1 + ", " + splitedDate[2]);
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                    mDOBEditText.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
-                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
-            } else {
-                mAgeEditText.setText("");
-                mDOBEditText.setText("");
-            }
-        } else {
-            Log.d(TAG, "onClick: date empty");
-        }
     }
 
     class MyTextWatcher implements TextWatcher {
@@ -573,7 +592,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                         String dobString = simpleDateFormat.format(dob.getTime());
                         dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(simpleDateFormat1.format(dob.getTime()));
                         mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobString));
-                        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             mDOBEditText.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(dobString)));
                         alertDialog.dismiss();
                     }

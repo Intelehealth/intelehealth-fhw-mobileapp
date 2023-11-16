@@ -208,25 +208,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mSubmitButton = view.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(this);
 
-
         //showHeightListing();
-
-
         //showWeightListing();
-
 
         mHemoglobinEdittext = view.findViewById(R.id.etv_hemoglobin);
         mSugarEdittext = view.findViewById(R.id.etv_sugar);
         mBloodSugarErrorTextview = view.findViewById(R.id.etv_sugar_error);
         mHemoglobinErrorTextView = view.findViewById(R.id.etv_hemoglobin_error);
-        mHemoglobinEdittext.addTextChangedListener(new MyTextWatcher(mHemoglobinEdittext));
-        mSugarEdittext.addTextChangedListener(new MyTextWatcher(mSugarEdittext));
+
         mHemoglobinErrorTextView.setVisibility(View.GONE);
         mBloodSugarErrorTextview.setVisibility(View.GONE);
-        mHemoglobinEdittext.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
-
+        //mHemoglobinEdittext.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5)});
+        mHemoglobinEdittext.setFilters(new InputFilter[]{new DecimalDigitsInputFilterNew(2)});
         // Add a TextWatcher to enforce the range and one decimal place rule
-
+        mHemoglobinEdittext.addTextChangedListener(new MyTextWatcher(mHemoglobinEdittext));
+        mSugarEdittext.addTextChangedListener(new MyTextWatcher(mSugarEdittext));
 
         if (mIsEditMode && results == null) {
             loadSavedDateForEditFromDB();
@@ -859,28 +855,31 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         String height = heightvalue;
         String weight = weightvalue;
-        if (!weight.isEmpty() && height.isEmpty()) {
-            mHeightErrorTextView.setVisibility(View.VISIBLE);
-            mHeightErrorTextView.setText(getString(R.string.error_field_required));
-            //mHeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            return false;
-        } else {
-            mHeightErrorTextView.setVisibility(View.GONE);
-            //mHeightSpinner.setBackgroundResource(R.drawable.edittext_border);
-            mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
+        if(height !=null && weight!=null){
+            if (!weight.isEmpty() && height.isEmpty()) {
+                mHeightErrorTextView.setVisibility(View.VISIBLE);
+                mHeightErrorTextView.setText(getString(R.string.error_field_required));
+                //mHeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mHeightErrorTextView.setVisibility(View.GONE);
+                //mHeightSpinner.setBackgroundResource(R.drawable.edittext_border);
+                mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
 
-        if (!height.isEmpty() && weight.isEmpty()) {
-            mWeightErrorTextView.setVisibility(View.VISIBLE);
-            mWeightErrorTextView.setText(getString(R.string.error_field_required));
-            //mWeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            return false;
-        } else {
-            mWeightErrorTextView.setVisibility(View.GONE);
-            //mWeightSpinner.setBackgroundResource(R.drawable.edittext_border);
-            mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            if (!height.isEmpty() && weight.isEmpty()) {
+                mWeightErrorTextView.setVisibility(View.VISIBLE);
+                mWeightErrorTextView.setText(getString(R.string.error_field_required));
+                //mWeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mWeightErrorTextView.setVisibility(View.GONE);
+                //mWeightSpinner.setBackgroundResource(R.drawable.edittext_border);
+                mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+
         }
 
         // Store values at the time of the fab is clicked.
@@ -1142,12 +1141,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             if (results == null) {
                 results = new VitalsObject();
             }
-            if (!height.equals("")) {
+            if (height!=null && !height.equals("")) {
                 results.setHeight(height);
             } else {
                 results.setHeight("0");
             }
-            if (!weight.isEmpty()) {
+            if (weight!=null && !weight.isEmpty()) {
                 results.setWeight(weight);
             }
             if (mPulseEditText.getText() != null) {
@@ -1523,4 +1522,31 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
     }
 
+    private class DecimalDigitsInputFilterNew implements InputFilter {
+        private final int decimalDigits;
+
+        public DecimalDigitsInputFilterNew(int decimalDigits) {
+            this.decimalDigits = decimalDigits;
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            String originalText = dest.toString();
+
+            // Handle the case when the user enters a dot at the start
+            if (originalText.isEmpty() && source.toString().equals(".")) {
+                return "0.";
+            }
+            int dotPosition = originalText.indexOf(".");
+            if (dotPosition >= 0) {
+                // If the text already contains a dot, limit the decimal places
+                int lengthAfterDot = originalText.length() - dotPosition - 1;
+                if (lengthAfterDot >= decimalDigits && end > start) {
+                    return "";
+                }
+            }
+
+            return null; // Accept the input
+        }
+    }
 }

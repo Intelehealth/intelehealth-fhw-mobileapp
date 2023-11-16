@@ -32,7 +32,10 @@
                     android:id="@+id/vitals_header_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/fu_card_margin_sides">
+                    android:layout_marginStart="@dimen/fu_card_margin_sides"
+                    android:layout_marginTop="@dimen/fu_card_margin_sides"
+                    android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <ImageView
                         android:id="@+id/vs_icon"

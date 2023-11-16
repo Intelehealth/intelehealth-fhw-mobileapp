@@ -51,7 +51,7 @@
                     android:background="@drawable/edittext_border"
                     android:gravity="center_vertical"
                     android:hint="@string/enter_abha_no"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:maxLength="14"
                     android:maxLines="1"
                     android:paddingStart="@dimen/fu_margin_start"
@@ -76,6 +76,59 @@
                     tools:visibility="visible" />
 
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linear_aadhar_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear_national_ID"
+                android:layout_marginTop="@dimen/margin_24"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/aadhar_no_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/aadhar_no"
+                    android:textAppearance="@style/blur_txtview"
+                    android:textColor="@null"
+                    android:textSize="@null" />
+
+                <EditText
+                    android:id="@+id/et_aadhar_number"
+                    style="@style/edittext_textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:background="@drawable/edittext_border"
+                    android:gravity="center_vertical"
+                    android:hint="@string/enter_aadhar_no"
+                    android:inputType="number"
+                    android:maxLength="12"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:textSize="@dimen/edittext_textsize_16sp"
+                    ndroid:textAllCaps="true" />
+
+                <TextView
+                    android:id="@+id/aadhar_no_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/linear_relation"
@@ -130,7 +183,7 @@
                 android:id="@+id/linear_occupation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linear_national_ID"
+                android:layout_below="@+id/linear_aadhar_no"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 

@@ -173,8 +173,8 @@
     <dimen name="select_language">20sp</dimen>
     <dimen name="intelehealth_logo_height">100dp</dimen>
     <dimen name="intelehealth_logo_margin_top">20dp</dimen>
-    <dimen name="iv_intele_logo_height">120dp</dimen>
-    <dimen name="iv_intele_logo_margin_top">36dp</dimen>
+    <dimen name="iv_intele_logo_height">110dp</dimen>
+    <dimen name="iv_intele_logo_margin_top">20dp</dimen>
     <dimen name="iv_intele_logo_margin_start">25dp</dimen>
     <dimen name="iv_intele_logo_margin_end">25dp</dimen>
     <dimen name="tv_desc_line_height">28dp</dimen>

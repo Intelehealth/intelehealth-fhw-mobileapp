@@ -523,8 +523,9 @@
                 android:layout_marginTop="@dimen/hamburger_margin_start"
                 android:background="@drawable/edittext_border"
                 android:hint="@string/enter_value"
+                android:digits="0123456789."
+                android:maxLength="5"
                 android:inputType="numberDecimal"
-                android:maxLength="3"
                 android:padding="@dimen/padding_10"
                 android:textColorHint="@color/edittext_hint_color"
                 android:textSize="14sp" />

@@ -93,11 +93,11 @@ public class AppConstants {
 
     public static final String MAXIMUM_RESPIRATORY = "80";
     public static final String MINIMUM_RESPIRATORY = "10";
-    public static final String MAXIMUM_HEMOGLOBIN = "17";
-    public static final String MINIMUM_HEMOGLOBIN = "3";
+    public static final String MAXIMUM_HEMOGLOBIN = "24.00";
+    public static final String MINIMUM_HEMOGLOBIN = "2.00";
 
-    public static final String MAXIMUM_SUGAR= "500";
-    public static final String MINIMUM_SUGAR= "60";
+    public static final String MAXIMUM_SUGAR= "600";
+    public static final String MINIMUM_SUGAR= "10";
 
 
     //functions constants

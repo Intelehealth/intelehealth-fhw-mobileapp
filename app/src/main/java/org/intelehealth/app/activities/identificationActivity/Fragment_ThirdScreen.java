@@ -47,6 +47,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -73,6 +74,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -89,6 +91,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -104,12 +107,13 @@ public class Fragment_ThirdScreen extends Fragment {
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
-    private EditText mRelationNameEditText, mNationalIDEditText;
+    private EditText mRelationNameEditText, mNationalIDEditText, mAadharNumber;
     //private EditText mOccupationEditText;
     private Spinner mCasteSpinner, mEducationSpinner, mEconomicstatusSpinner, mWorkingSpinner;
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag3_btn_back, frag3_btn_next;
-    private TextView mRelationNameErrorTextView, mOccupationErrorTextView, mCasteErrorTextView, mEducationErrorTextView, mEconomicErrorTextView;
+    private TextView mRelationNameErrorTextView, mOccupationErrorTextView, mCasteErrorTextView,
+            mEducationErrorTextView, mEconomicErrorTextView, mAadharNoErrorTextView, mAabhaNoErrorTextView;
     ImagesDAO imagesDAO = new ImagesDAO();
     private Fragment_SecondScreen secondScreen;
     boolean fromThirdScreen = false, fromSecondScreen = false;
@@ -163,7 +167,21 @@ public class Fragment_ThirdScreen extends Fragment {
 
         mRelationNameEditText = view.findViewById(R.id.relation_edittext);
         mNationalIDEditText = view.findViewById(R.id.national_ID_editText);
-        mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(24)}); //all capital input
+        // mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(14)}); //all capital input
+        mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+                return null;
+            }
+        }, new InputFilter.LengthFilter(14)});
+        mAadharNumber = view.findViewById(R.id.et_aadhar_number);
+
+        mAadharNumber.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+                return null;
+            }
+        }, new InputFilter.LengthFilter(12)});
 
         //mOccupationEditText = view.findViewById(R.id.occupation_editText);
         mCasteSpinner = view.findViewById(R.id.caste_spinner);
@@ -179,10 +197,16 @@ public class Fragment_ThirdScreen extends Fragment {
         mRgVegNonVeg = view.findViewById(R.id.radio_veg_non_veg);
         mRbVeg = view.findViewById(R.id.rb_vegetarian);
         mRbNonVeg = view.findViewById(R.id.rb_nonVegetarian);
+        mAadharNoErrorTextView = view.findViewById(R.id.aadhar_no_error);
+        mAabhaNoErrorTextView = view.findViewById(R.id.national_ID_error);
 
 
         mRelationNameEditText.addTextChangedListener(new MyTextWatcher(mRelationNameEditText));
         mRelationNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+
+
+        mNationalIDEditText.addTextChangedListener(new GenericTextwatcher(mNationalIDEditText,mAabhaNoErrorTextView));
+        mAadharNumber.addTextChangedListener(new GenericTextwatcher(mAadharNumber,mAadharNoErrorTextView));
 
         /*mNationalIDEditText.addTextChangedListener(new MyTextWatcher(mNationalIDEditText));
         mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(18), inputFilter_Others});*/ //maxlength 25
@@ -410,15 +434,19 @@ public class Fragment_ThirdScreen extends Fragment {
         if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().isEmpty())
             mNationalIDEditText.setText(patientDTO.getNationalID());
 
-        if (patientDTO.getIsVegetarian() != null && !patientDTO.getIsVegetarian().isEmpty()){
-            if(patientDTO.getIsVegetarian().equalsIgnoreCase("vegetarian")){
-                isVegetarian= getString(R.string.vegetarian);
+        if (patientDTO.getIsVegetarian() != null && !patientDTO.getIsVegetarian().isEmpty()) {
+            if (patientDTO.getIsVegetarian().equalsIgnoreCase("vegetarian")) {
+                isVegetarian = getString(R.string.vegetarian);
                 mRbVeg.setChecked(true);
-            }else{
-                isVegetarian= getString(R.string.non_vegetarian);
+            } else {
+                isVegetarian = getString(R.string.non_vegetarian);
                 mRbNonVeg.setChecked(true);
             }
         }
+
+        if (patientDTO.getAadharCard() != null && !patientDTO.getAadharCard().isEmpty())
+            mAadharNumber.setText(patientDTO.getAadharCard());
+
 
         // setting screen in edit for spinners...
         if (fromThirdScreen || fromSecondScreen) {
@@ -628,6 +656,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
         patientDTO.setOccupation(StringUtils.getValue(mWorkingSpinner.getSelectedItem().toString()));
         patientDTO.setIsVegetarian(StringUtils.getValue(isVegetarian));
+        patientDTO.setAadharCard(mAadharNumber.getText().toString());
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
@@ -650,6 +679,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
         patientDTO.setOccupation(StringUtils.getValue(mWorkingSpinner.getSelectedItem().toString()));
         patientDTO.setIsVegetarian(StringUtils.getValue(isVegetarian));
+        patientDTO.setAadharCard(StringUtils.getValue(mAadharNumber.getText().toString()));
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -658,6 +688,32 @@ public class Fragment_ThirdScreen extends Fragment {
         Gson gson = new Gson();
         boolean cancel = false;
         View focusView = null;
+
+        if (!mNationalIDEditText.getText().toString().isEmpty()) {
+            if (mNationalIDEditText.getText().toString().length() != 14) {
+                mAabhaNoErrorTextView.setVisibility(View.VISIBLE);
+                mAabhaNoErrorTextView.setText(getString(R.string.aabha_no_validation));
+                mNationalIDEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mNationalIDEditText.requestFocus();
+                return;
+            }
+        } else {
+            mAabhaNoErrorTextView.setVisibility(View.GONE);
+            mNationalIDEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }
+
+        if (!mAadharNumber.getText().toString().isEmpty()) {
+            if (mAadharNumber.getText().toString().length() != 12) {
+                mAadharNoErrorTextView.setVisibility(View.VISIBLE);
+                mAadharNoErrorTextView.setText(getString(R.string.aadhar_no_validation));
+                mAadharNumber.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mAadharNumber.requestFocus();
+                return;
+            }
+        } else {
+            mAadharNoErrorTextView.setVisibility(View.GONE);
+            mAadharNumber.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }
 
         // validation - start
         /*if (mRelationNameEditText.getText().toString().equals("")) {
@@ -788,6 +844,14 @@ public class Fragment_ThirdScreen extends Fragment {
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("IsVegetarian"));
         patientAttributesDTO.setValue(StringUtils.getValue(isVegetarian));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        // is vegetarian
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Aadhar Card"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mAadharNumber.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
 
@@ -934,5 +998,32 @@ public class Fragment_ThirdScreen extends Fragment {
         idCursor1.close();
     }
 
+    public class GenericTextwatcher implements TextWatcher {
 
+        private EditText editText;
+        private TextView errorTextview;
+
+        public GenericTextwatcher(EditText editText, TextView errorTextview) {
+            this.editText = editText;
+            this.errorTextview = errorTextview;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            // Not needed for this example
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            // Not needed for this example
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (editText.getText().length() == 0) {
+                errorTextview.setVisibility(View.GONE);
+                editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+    }
 }

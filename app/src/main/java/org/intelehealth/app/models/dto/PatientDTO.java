@@ -12,6 +12,15 @@ public class PatientDTO implements Serializable {
     @SerializedName("uuid")
     @Expose
     private String uuid;
+
+    public String getAadharCard() {
+        return aadharCard;
+    }
+
+    public void setAadharCard(String aadharCard) {
+        this.aadharCard = aadharCard;
+    }
+
     @SerializedName("openmrs_id")
     @Expose
     private String openmrsId;
@@ -91,6 +100,10 @@ public class PatientDTO implements Serializable {
     @SerializedName("isVegetarian")
     @Expose
     private String isVegetarian;
+
+    @SerializedName("Aadhar Card")
+    @Expose
+    private String aadharCard;
 
     public String getUuid() {
         return uuid;

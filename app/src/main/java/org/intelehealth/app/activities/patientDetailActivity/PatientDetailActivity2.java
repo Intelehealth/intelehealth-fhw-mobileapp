@@ -181,7 +181,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private NetworkUtils networkUtils;
     String tag = "";
     private TableRow trAddress2;
-private TextView isVegetarian;
+    private TextView isVegetarian, tvAadharNumber;
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -536,6 +537,8 @@ private TextView isVegetarian;
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         isVegetarian = findViewById(R.id.isVegetarian);
+        tvAadharNumber = findViewById(R.id.tvAadharNumber);
+
 
         initForOpenVisit();
         initForPastVisit();
@@ -828,6 +831,9 @@ private TextView isVegetarian;
                 }
                 if (name.equalsIgnoreCase("isVegetarian")) {
                     patientDTO.setIsVegetarian(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Aadhar Card")) {
+                    patientDTO.setAadharCard(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -1157,11 +1163,14 @@ private TextView isVegetarian;
             phone.setText(getResources().getString(R.string.no_mobile_number_added));
         }
 
-        if(patientDTO.getIsVegetarian()!=null){
+        if (patientDTO.getIsVegetarian() != null) {
             isVegetarian.setText(patientDTO.getIsVegetarian());
         }
+        if (patientDTO.getAadharCard() != null) {
+            tvAadharNumber.setText(patientDTO.getAadharCard());
+        }
         // setting education status
-        if(patientDTO.getEducation()!=null) {
+        if (patientDTO.getEducation() != null) {
             if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 patienteducation.setText("नहीं दिया गया");
@@ -1236,7 +1245,7 @@ private TextView isVegetarian;
         }
 
         // setting economic status
-        if(patientDTO.getEconomic()!=null) {
+        if (patientDTO.getEconomic() != null) {
             if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 patienteconomicstatus.setText("नहीं दिया गया");
@@ -1312,7 +1321,7 @@ private TextView isVegetarian;
         }
 
         // setting caste value
-        if(patientDTO.getCaste()!=null) {
+        if (patientDTO.getCaste() != null) {
             if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 patientcaste.setText("नहीं दिया गया");
@@ -1406,6 +1415,19 @@ private TextView isVegetarian;
             patientoccupation.setText(patientDTO.getOccupation());
         } else {
             patientoccupation.setText(getString(R.string.not_provided));
+        }
+
+        // setting isvegetarian value
+        if (patientDTO.getIsVegetarian() != null && !patientDTO.getIsVegetarian().equals("")) {
+            isVegetarian.setText(patientDTO.getIsVegetarian());
+        } else {
+            isVegetarian.setText(getResources().getString(R.string.not_provided));
+        }
+        // setting aadhar card number value
+        if (patientDTO.getAadharCard() != null && !patientDTO.getAadharCard().equals("")) {
+            tvAadharNumber.setText(patientDTO.getAadharCard());
+        } else {
+            tvAadharNumber.setText(getResources().getString(R.string.not_provided));
         }
     }
 
@@ -1592,7 +1614,7 @@ private TextView isVegetarian;
         });
 
         positive_btn.setOnClickListener(v -> {
-          //  checkVisitOrStartNewVisit();  // commented as this isnt being in use.
+            //  checkVisitOrStartNewVisit();  // commented as this isnt being in use.
         });
 
         alertDialog.show();

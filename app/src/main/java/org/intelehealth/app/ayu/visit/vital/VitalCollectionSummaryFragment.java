@@ -115,12 +115,12 @@ public class VitalCollectionSummaryFragment extends Fragment {
             ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getHemoglobin() != null && !mVitalsObject.getHemoglobin().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_hemoglobin_val)).setText(mVitalsObject.getHemoglobin());
+            ((TextView) view.findViewById(R.id.tv_hemoglobin_val)).setText(mVitalsObject.getHemoglobin() + " " + getResources().getString(R.string.hb_unit));
         else
             ((TextView) view.findViewById(R.id.tv_hemoglobin_val)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getBloodSugar() != null && !mVitalsObject.getBloodSugar().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_blood_sugar_val)).setText(mVitalsObject.getBloodSugar());
+            ((TextView) view.findViewById(R.id.tv_blood_sugar_val)).setText(mVitalsObject.getBloodSugar() + " " + getResources().getString(R.string.sugar_unit));
         else
             ((TextView) view.findViewById(R.id.tv_blood_sugar_val)).setText(getString(R.string.ui2_no_information));
 
