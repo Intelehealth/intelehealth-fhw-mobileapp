@@ -153,10 +153,9 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
     }
 
     public HashSet<MedicationAidModel> getFinalList() {
+        hash_checkedList.clear();
         hash_checkedList.addAll(checkedList);
         return hash_checkedList;
-
-      //  return checkedList;
     }
 
     private PatientAttributeLanguageModel getPatientAttributeFromJSON(String jsonString) {
