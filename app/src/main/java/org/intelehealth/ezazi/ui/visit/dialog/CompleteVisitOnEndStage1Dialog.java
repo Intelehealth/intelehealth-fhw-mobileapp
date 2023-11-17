@@ -1,11 +1,6 @@
 package org.intelehealth.ezazi.ui.visit.dialog;
 
-import static org.intelehealth.ezazi.app.AppConstants.INPUT_MAX_LENGTH;
-
-import android.app.Dialog;
 import android.content.Context;
-import android.text.InputFilter;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -16,11 +11,8 @@ import androidx.fragment.app.FragmentManager;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.EndStage1OptionsDialogBinding;
-import org.intelehealth.ezazi.databinding.MotherDeceasedDialogBinding;
-import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
-import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
 import org.intelehealth.ezazi.ui.visit.model.ConceptsDetailsModel;
 import org.intelehealth.ezazi.utilities.Utils;
@@ -28,8 +20,6 @@ import org.intelehealth.ezazi.utilities.UuidDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Created by Kaveri Zaware on 13-09-2023

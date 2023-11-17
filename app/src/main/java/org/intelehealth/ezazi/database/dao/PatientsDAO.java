@@ -27,6 +27,7 @@ import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 public class PatientsDAO {
 
@@ -72,7 +73,8 @@ public class PatientsDAO {
             values.put("state_province", patient.getStateprovince());
             values.put("city_village", patient.getCityvillage());
             values.put("creatoruuid", patient.getCreatorUuid());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("dateCreated", patient.getCreatedAt());
+            values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
             createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -112,6 +114,7 @@ public class PatientsDAO {
             values.put("city_village", patientDTO.getCityvillage());
             values.put("state_province", patientDTO.getStateprovince());
             values.put("creatoruuid", patientDTO.getCreatorUuid());
+            values.put("dateCreated", patientDTO.getCreatedAt());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatientPhoto());
             values.put("dead", patientDTO.getDead());
@@ -160,6 +163,7 @@ public class PatientsDAO {
             values.put("city_village", patientDTO.getCityvillage());
             values.put("creatoruuid", patientDTO.getCreatorUuid());
             values.put("state_province", patientDTO.getStateprovince());
+//            values.put("dateCreated", patientDTO.getCreatedAt());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatientPhoto());
             values.put("dead", false);
@@ -205,6 +209,7 @@ public class PatientsDAO {
             values.put("postal_code", patientDTO.getPostal_code());
             values.put("city_village", patientDTO.getCity_village());
             values.put("state_province", patientDTO.getState_province());
+//            values.put("dateCreated", patientDTO.getCreatedAt());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatient_photo());
             values.put("dead", false);
@@ -537,6 +542,7 @@ public class PatientsDAO {
                     patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
                     patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
                     patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                    patientDTO.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("dateCreated")));
                     patientDTOList.add(patientDTO);
                 }
             }

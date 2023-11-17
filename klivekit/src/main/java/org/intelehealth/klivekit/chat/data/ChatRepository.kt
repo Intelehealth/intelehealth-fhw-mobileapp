@@ -1,7 +1,7 @@
 package org.intelehealth.klivekit.chat.data
 
 import com.codeglo.billingclient.room.dao.ChatDao
-import org.intelehealth.klivekit.chat.model.ChatMessage
+import org.intelehealth.klivekit.chat.model.CMessage
 import org.intelehealth.klivekit.chat.model.MessageStatus
 
 /**
@@ -11,7 +11,7 @@ import org.intelehealth.klivekit.chat.model.MessageStatus
  **/
 class ChatRepository(private val chatDao: ChatDao) {
 
-    suspend fun addMessage(message: ChatMessage) = chatDao.addMessage(message)
+    suspend fun addMessage(message: CMessage) = chatDao.addMessage(message)
 
     suspend fun getAllMessages() = chatDao.getAll()
 

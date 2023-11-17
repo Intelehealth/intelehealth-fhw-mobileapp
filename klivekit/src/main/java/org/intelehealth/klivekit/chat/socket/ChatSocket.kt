@@ -8,7 +8,7 @@ import org.intelehealth.klivekit.chat.listener.ConnectionListener
 import org.intelehealth.klivekit.chat.listener.ConversationListener
 import org.intelehealth.klivekit.chat.listener.EventCallback
 import org.intelehealth.klivekit.chat.listener.MessageListener
-import org.intelehealth.klivekit.chat.model.ChatMessage
+import org.intelehealth.klivekit.chat.model.CMessage
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.socket.SocketManager.Companion.EVENT_CHAT_READ
 import org.intelehealth.klivekit.socket.SocketManager.Companion.EVENT_CHAT_READ_ACK_SUCCESS
@@ -70,7 +70,7 @@ class ChatSocket(private val socketManager: SocketManager) {
     private fun onMessageRead(it: Array<Any>?) {
         it?.let {
             val gson = Gson()
-            val messages = gson.fromJson<MutableList<ChatMessage>>(gson.toJson(it))
+            val messages = gson.fromJson<MutableList<CMessage>>(gson.toJson(it))
             messageListener?.onMessageRead(messages)
         }
     }
@@ -78,7 +78,7 @@ class ChatSocket(private val socketManager: SocketManager) {
     private fun onMessageDeliver(it: Array<Any>?) {
         it?.let {
             val gson = Gson()
-            val messages = gson.fromJson<MutableList<ChatMessage>>(gson.toJson(it))
+            val messages = gson.fromJson<MutableList<CMessage>>(gson.toJson(it))
             messageListener?.onMessageDelivered(messages)
         }
     }
@@ -96,14 +96,14 @@ class ChatSocket(private val socketManager: SocketManager) {
     private fun onMessageReceived(it: Array<Any>?) {
         it?.let {
             val gson = Gson()
-            val messages = gson.fromJson<MutableList<ChatMessage>>(gson.toJson(it))
+            val messages = gson.fromJson<MutableList<CMessage>>(gson.toJson(it))
             messageListener?.onMessageReceived(messages)
         }
     }
 
-    fun sentMessage(chatMessage: ChatMessage, callback: EventCallback<Any>? = null) {
+    fun sentMessage(cMessage: CMessage, callback: EventCallback<Any>? = null) {
         eventCallbackMap[EVENT_MESSAGE_SENT_ACK] = callback
-        socketManager.emit(EVENT_MESSAGE_SENT, Gson().toJson(chatMessage))
+        socketManager.emit(EVENT_MESSAGE_SENT, Gson().toJson(cMessage))
     }
 
 

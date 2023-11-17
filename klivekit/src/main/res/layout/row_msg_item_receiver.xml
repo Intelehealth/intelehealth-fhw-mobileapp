@@ -6,7 +6,7 @@
 
         <variable
             name="chatMessage"
-            type="org.intelehealth.klivekit.chat.model.ChatMessage" />
+            type="org.intelehealth.klivekit.chat.model.CMessage" />
     </data>
 
     <LinearLayout

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.core.BaseViewModel;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
@@ -41,7 +42,7 @@ public class PasswordViewModel extends BaseViewModel {
     public static final ViewModelInitializer<PasswordViewModel> initializer = new ViewModelInitializer<>(
             PasswordViewModel.class,
             creationExtras -> {
-                String BASE_URL = "https://" + AppConstants.APP_URL + ":" + AppConstants.PORT_NUMBER;
+                String BASE_URL = BuildConfig.SERVER_URL + ":" + AppConstants.PORT_NUMBER;
                 ApiClient.changeApiBaseUrl(BASE_URL);
                 ApiInterface apiService = ApiClient.createService(ApiInterface.class);
                 ForgotPasswordServiceDataSource dataSource = new ForgotPasswordServiceDataSource(apiService);

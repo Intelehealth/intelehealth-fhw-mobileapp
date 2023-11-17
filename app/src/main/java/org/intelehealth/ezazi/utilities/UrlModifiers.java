@@ -8,11 +8,11 @@ public class UrlModifiers {
     private SessionManager sessionManager = null;
 
     public String loginUrl(String CLEAN_URL) {
-        Log.d("TAG", "loginUrl: CLEAN_URL :"+CLEAN_URL);
+        Log.d("TAG", "loginUrl: CLEAN_URL :" + CLEAN_URL);
 
         String urlModifier = "session";
 
-        String BASE_URL = "https://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = CLEAN_URL + "/openmrs/ws/rest/v1/";
         return BASE_URL + urlModifier;
     }
 
@@ -20,7 +20,7 @@ public class UrlModifiers {
 
         String provider = "provider?user=" + USER_UUID;
 
-        String BASE_URL = "https://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = CLEAN_URL + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 

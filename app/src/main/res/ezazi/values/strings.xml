@@ -107,5 +107,6 @@
     <string name="lbl_medicines">Medicines</string>
     <string name="mother_death">Mother Death</string>
     <string name="shifted_patient_to_you">%1$s has shifted patient(s) to you,\nPlease kindly check the active patients\nor refresh the app</string>
+    <string name="add_profile_picture">Add Profile Picture</string>
 
 </resources>

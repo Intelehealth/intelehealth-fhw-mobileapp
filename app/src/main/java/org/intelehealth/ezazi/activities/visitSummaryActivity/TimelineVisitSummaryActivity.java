@@ -33,8 +33,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
@@ -184,7 +186,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
      */
     private void showDoctorSelectionDialog(boolean isChat) {
         LinkedList<SingChoiceItem> choiceItems = CallInitializer.getDoctorsDetails(patientUuid);
-
+        Timber.tag(TAG).d(new Gson().toJson(choiceItems));
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this).title(R.string.select_doctor).content(choiceItems).build();
 
         dialog.setListener(item -> {

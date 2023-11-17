@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import org.intelehealth.klivekit.chat.model.ChatMessage
+import org.intelehealth.klivekit.chat.model.CMessage
 
 
 /**
@@ -16,13 +16,13 @@ import org.intelehealth.klivekit.chat.model.ChatMessage
 @Dao
 interface ChatDao {
     @Query("SELECT * FROM tbl_chat_message")
-    fun getAll(): Flow<List<ChatMessage>>
+    fun getAll(): Flow<List<CMessage>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(messages: List<ChatMessage>)
+    suspend fun insertAll(messages: List<CMessage>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMessage(message: ChatMessage)
+    suspend fun addMessage(message: CMessage)
 
     @Query("UPDATE tbl_chat_message SET messageStatus= :status where messageId =:messageId")
     suspend fun changeMessageStatus(messageId: String, status: String)

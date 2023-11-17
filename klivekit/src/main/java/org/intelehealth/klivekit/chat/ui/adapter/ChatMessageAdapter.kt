@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ajalt.timberkt.Timber
-import org.intelehealth.klivekit.chat.model.ChatMessage
+import org.intelehealth.klivekit.chat.model.CMessage
 import org.intelehealth.klivekit.chat.model.ItemHeader
 import org.intelehealth.klivekit.chat.model.MessageStatus
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.ReceiverViewHolder
@@ -23,8 +23,8 @@ class ChatMessageAdapter(context: Context, list: MutableList<ItemHeader>) :
 
     override fun getItemViewType(position: Int): Int =
         if (getItem(position).isHeader()) DateHeaderAdapter.DATE_HEADER
-        else if (getItem(position) is ChatMessage) {
-            val message = getItem(position) as ChatMessage
+        else if (getItem(position) is CMessage) {
+            val message = getItem(position) as CMessage
             message.layoutType
         } else 0
 
@@ -45,8 +45,8 @@ class ChatMessageAdapter(context: Context, list: MutableList<ItemHeader>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (getItem(position) is ChatMessage) {
-            val message = getItem(position) as ChatMessage
+        if (getItem(position) is CMessage) {
+            val message = getItem(position) as CMessage
             if (holder is ReceiverViewHolder && message.layoutType == Constants.LEFT_ITEM_DOCT) {
                 holder.bind(message)
             } else if (holder is SenderViewHolder && message.layoutType == Constants.RIGHT_ITEM_HW) {
@@ -58,11 +58,11 @@ class ChatMessageAdapter(context: Context, list: MutableList<ItemHeader>) :
 
     fun markMessageAsRead(id: Int) {
         for (i in items.indices) {
-            if (items.get(i) is ChatMessage) {
-                val chatMessage = items.get(i) as ChatMessage
+            if (items.get(i) is CMessage) {
+                val cMessage = items.get(i) as CMessage
                 //                if (id == chatMessage.getId()) {
-                chatMessage.isRead = true
-                chatMessage.messageStatus = MessageStatus.READ.value
+                cMessage.isRead = true
+                cMessage.messageStatus = MessageStatus.READ.value
                 notifyItemChanged(i)
                 //                    break;
 //                }
@@ -72,12 +72,12 @@ class ChatMessageAdapter(context: Context, list: MutableList<ItemHeader>) :
 
     fun markMessageAsDelivered(id: Int) {
         for (i in items.indices) {
-            if (items.get(i) is ChatMessage) {
-                val chatMessage = items.get(i) as ChatMessage
-                if (id == chatMessage.messageId) {
-                    chatMessage.isRead = false
-                    chatMessage.messageStatus = MessageStatus.DELIVERED.value
-                    Timber.e { "markMessageAsDelivered: " + chatMessage.message }
+            if (items.get(i) is CMessage) {
+                val cMessage = items.get(i) as CMessage
+                if (id == cMessage.messageId) {
+                    cMessage.isRead = false
+                    cMessage.messageStatus = MessageStatus.DELIVERED.value
+                    Timber.e { "markMessageAsDelivered: " + cMessage.message }
                     notifyItemChanged(i)
                     break
                 }
@@ -85,13 +85,13 @@ class ChatMessageAdapter(context: Context, list: MutableList<ItemHeader>) :
         }
     }
 
-    fun updatedMessage(message: ChatMessage) {
+    fun updatedMessage(message: CMessage) {
         for (i in items.indices) {
-            if (items.get(i) is ChatMessage) {
-                val chatMessage = items.get(i) as ChatMessage
-                if (message.message == chatMessage.message) {
-                    chatMessage.messageId = message.messageId
-                    chatMessage.messageStatus = message.messageStatus
+            if (items.get(i) is CMessage) {
+                val cMessage = items.get(i) as CMessage
+                if (message.message == cMessage.message) {
+                    cMessage.messageId = message.messageId
+                    cMessage.messageStatus = message.messageStatus
                     notifyItemChanged(i)
                     break
                 }

@@ -42,6 +42,14 @@
                     tools:text="Patient Name" />
 
                 <TextView
+                    android:id="@+id/tvPatientRegOn"
+                    style="@style/Theme.EZazi.Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_4dp"
+                    tools:text="Registered: " />
+
+                <TextView
                     android:id="@+id/tvPatientId"
                     style="@style/Theme.EZazi.Body"
                     android:layout_width="match_parent"

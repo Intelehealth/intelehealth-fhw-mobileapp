@@ -19,6 +19,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
@@ -29,7 +30,7 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
     private static final String TAG = "EpartogramViewActivity";
 
     private String patientUuid, visitUuid;
-    private static final String URL = "https://ezazi.intelehealth.org/intelehealth/index.html#/epartogram/";
+    private static final String URL = BuildConfig.SERVER_URL + "/intelehealth/index.html#/epartogram/";
     //    https://ezazi.intelehealth.org/intelehealth/index.html#/dashboard/visit-summary/af35030a-cbf0-426c-9c61-4b9677ccb3b2
     // "df07db0d-d9b9-4597-a9e5-d62d3cff3d45/705397d4-0c62-4f26-bd53-2dd8523d5d1b";
     private SwipeRefreshLayout mySwipeRefreshLayout;

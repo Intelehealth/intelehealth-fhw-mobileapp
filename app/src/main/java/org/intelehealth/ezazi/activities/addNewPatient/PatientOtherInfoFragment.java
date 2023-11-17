@@ -66,6 +66,7 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.StringUtils;
 import org.intelehealth.ezazi.utilities.UuidGenerator;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1040,6 +1041,7 @@ public class PatientOtherInfoFragment extends Fragment {
                     getActivity().finish();
                 }
             } else {
+                patientDTO.setCreatedAt(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
                 boolean isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, uuid);
                 boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), uuid);
                 if (NetworkConnection.isOnline(mContext)) {

@@ -4,6 +4,9 @@ package org.intelehealth.ezazi.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -59,6 +62,9 @@ public class PatientDTO implements Serializable {
     private String gender;
 
     private String bedNo;
+
+    @SerializedName("dateCreated")
+    private String createdAt;
 
     @SerializedName("creatoruuid")
     private String creatorUuid;
@@ -284,5 +290,17 @@ public class PatientDTO implements Serializable {
 
     public String getCreatorUuid() {
         return creatorUuid;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String regDate() {
+        return "Registered: " + DateTimeUtils.utcToLocalDate(createdAt, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
     }
 }

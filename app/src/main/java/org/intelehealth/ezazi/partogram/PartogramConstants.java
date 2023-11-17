@@ -150,7 +150,7 @@ public class PartogramConstants {
         paramInfo.setParamSectionName(SECTION_LIST[1]);
         paramInfo.setParamName("Fetal Position");
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"Any occiput anterior position", "Any occiput posterior position", "Any occiput transverse position"});
+        paramInfo.setOptions(new String[]{"A (Occiput anterior)", "P (Occiput posterior)", "T (Occiput transverse)"});
         paramInfo.setValues(new String[]{"A", "P", "T"});
         paramInfo.setConceptUUID("9d316387-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
@@ -170,7 +170,7 @@ public class PartogramConstants {
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
 //        paramInfo.setOptions(new String[]{"None", "Sutures apposed", "Sutures overlapped but reducible", "Sutures overlapped and not reducible"});
         paramInfo.setOptions(new String[]{"0 (None)", "+ (Sutures apposed)", "++ (Sutures overlapped but reducible)", "+++ (Sutures overlapped but not reducible)"});
-        paramInfo.setValues(new String[]{"N", "+", "++", "+++"});
+        paramInfo.setValues(new String[]{"0", "+", "++", "+++"});
         paramInfo.setConceptUUID("9d316823-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
 

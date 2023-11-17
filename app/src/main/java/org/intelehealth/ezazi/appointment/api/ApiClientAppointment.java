@@ -1,8 +1,6 @@
 package org.intelehealth.ezazi.appointment.api;
 
 
-
-
 import org.intelehealth.ezazi.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
@@ -26,7 +24,7 @@ public class ApiClientAppointment {
         client.writeTimeout(45, TimeUnit.SECONDS);
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl(BuildConfig.SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.client(client.build()).build();
         mApi = retrofit.create(Api.class);

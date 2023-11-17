@@ -7,8 +7,7 @@ import kotlinx.coroutines.SupervisorJob
 import org.intelehealth.klivekit.chat.data.ChatRepository
 import org.intelehealth.klivekit.chat.listener.ConversationListener
 import org.intelehealth.klivekit.chat.listener.MessageListener
-import org.intelehealth.klivekit.chat.model.ChatMessage
-import org.intelehealth.klivekit.chat.socket.ChatSocket
+import org.intelehealth.klivekit.chat.model.CMessage
 
 /**
  * Created by Vaghela Mithun R. on 03-07-2023 - 16:21.
@@ -30,19 +29,19 @@ class MessageHandler(
 
     }
 
-    override fun onMessageReceived(messages: MutableList<ChatMessage>?) {
+    override fun onMessageReceived(messages: MutableList<CMessage>?) {
 
     }
 
-    override fun onCmdMessageReceived(messages: MutableList<ChatMessage>?) {
+    override fun onCmdMessageReceived(messages: MutableList<CMessage>?) {
 
     }
 
-    override fun onMessageDelivered(messages: MutableList<ChatMessage>?) {
+    override fun onMessageDelivered(messages: MutableList<CMessage>?) {
 
     }
 
-    override fun onMessageRead(messages: MutableList<ChatMessage>?) {
+    override fun onMessageRead(messages: MutableList<CMessage>?) {
 
     }
 }

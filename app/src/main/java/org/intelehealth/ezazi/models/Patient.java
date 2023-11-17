@@ -53,6 +53,8 @@ public class Patient {
     /*end*/
 
     private String creatorUuid;
+    @SerializedName("dateCreated")
+    private String createdAt;
     public String getUuid() {
         return uuid;
     }
@@ -331,5 +333,13 @@ public class Patient {
 
     public String getCreatorUuid() {
         return creatorUuid;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

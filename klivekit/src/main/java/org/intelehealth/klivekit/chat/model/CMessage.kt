@@ -12,7 +12,7 @@ import org.intelehealth.klivekit.utils.DateTimeUtils
  * Mob   : +919727206702
  **/
 @Entity(tableName = "tbl_chat_message")
-data class ChatMessage(
+data class CMessage(
     @PrimaryKey
     @SerializedName("id")
     var messageId: Int = 0,

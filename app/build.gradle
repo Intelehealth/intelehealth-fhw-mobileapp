@@ -7,6 +7,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 apply from: "resdir.gradle"
+apply from: "environment.gradle"
 
 static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
@@ -14,52 +15,25 @@ static def getDateTime() {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "org.intelehealth.ezazi"
         minSdk 21
-        targetSdk 33
-        versionCode 3
-        versionName '2.3-beta'
+        targetSdk 34
+        versionCode 4
+        versionName '2.4-beta'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         archivesBaseName = "eZAZI " + versionName + " - " + getDateTime()
-
-        def serverUrl = "SERVER_URL"
-        def realTimeFbUrl = "REAL_TIME_FB_URL"
-        def liveKitUrl = "LIVE_KIT_URL"
-        def socketUrl = "SOCKET_URL"
-
-        def endPointPropertyFile = file('../endpoint.properties')
-        def property = new Properties()
-
-        if (endPointPropertyFile.canRead()) {
-            property.load(new FileInputStream(endPointPropertyFile))
-        }
-
-        String devServer = property['DEV_SERVER_URL'].toString()
-        String devRealTimeFb = property['DEV_REAL_TIME_FB_URL'].toString()
-        String devLiveKit = property['DEV_LIVE_KIT_URL'].toString()
-        String devSocket = property['DEV_SOCKET_URL'].toString()
-
-        println("SERVER_URL ----> $devServer")
-        println("REAL_TIME_FB_URL ------> $devRealTimeFb")
-        println("LIVE_KIT_URL ------> $devLiveKit")
-        println("SOCKET_URL ------> $devLiveKit")
-
-        buildConfigField "String", serverUrl, devServer
-        buildConfigField "String", realTimeFbUrl, devRealTimeFb
-        buildConfigField 'String', liveKitUrl, devLiveKit
-        buildConfigField 'String', socketUrl, devSocket
     }
     compileOptions {
-        sourceCompatibility = "1.9"
-        targetCompatibility = "1.9"
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     buildTypes {
@@ -95,9 +69,10 @@ android {
             enableSplit = true
         }
     }
+    namespace 'org.intelehealth.ezazi'
 
     // To avoid duplication class error
-    configurations.all {
+    configurations.configureEach {
         resolutionStrategy {
             force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10'
         }
@@ -109,7 +84,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.media:media:1.6.0'
@@ -119,7 +94,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //mvvm
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2'
     // JSON Converter
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     // RxJava
@@ -146,7 +121,7 @@ dependencies {
     //Parse SDK
     implementation 'com.parse:parse-android:1.15.7'
     //date and time
-    implementation 'joda-time:joda-time:2.9.3'
+    implementation 'joda-time:joda-time:2.9.9'
 
     implementation 'org.apache.commons:commons-lang3:3.6'
 
@@ -161,10 +136,10 @@ dependencies {
     annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
 
 //    implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
-    implementation 'com.google.firebase:firebase-crashlytics:18.4.0'
-    implementation 'com.google.firebase:firebase-analytics:21.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.5.1'
+    implementation 'com.google.firebase:firebase-analytics:21.5.0'
     implementation "com.google.firebase:firebase-core:21.1.1"
-    implementation "com.google.firebase:firebase-messaging:23.2.1"
+    implementation "com.google.firebase:firebase-messaging:23.3.1"
 //    implementation 'com.google.firebase:firebase-crash:16.2.1'
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
 //    implementation 'com.google.firebase:firebase-crashlytics'
@@ -173,7 +148,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-config'
 
-    def nav_version = "2.6.0"
+    def nav_version = "2.7.5"
 
     // Java language implementation
     implementation "androidx.navigation:navigation-fragment:$nav_version"

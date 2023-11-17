@@ -44,6 +44,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
@@ -159,7 +160,7 @@ public class SetupActivity extends AppCompatActivity {
         // Persistent login information
 //        manager = AccountManager.get(SetupActivity.this);
 
-        setupUrl = getString(R.string.setupUrl);
+        setupUrl = BuildConfig.SERVER_URL;
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
         TokenRefreshUtils.refreshToken(this);
 //        Toolbar toolbar = findViewById(R.id.toolbar);
@@ -247,7 +248,7 @@ public class SetupActivity extends AppCompatActivity {
 //        mAndroidIdTextView.setText(deviceID);
 
         //temp commited thison09-10-2023
-       // showConfirmationDialog(getString(R.string.generic_warning), R.string.setup_internet);
+        // showConfirmationDialog(getString(R.string.generic_warning), R.string.setup_internet);
 
 
         if (!setupUrl.trim().isEmpty() || !setupUrl.trim().equalsIgnoreCase("")) {
@@ -255,8 +256,7 @@ public class SetupActivity extends AppCompatActivity {
             isLocationFetched = false;
             mEmailView.setError(null);
 
-            LocationArrayAdapter adapter = new LocationArrayAdapter
-                    (SetupActivity.this, new ArrayList<String>());
+            LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, new ArrayList<String>());
             mDropdownLocation.setOnItemClickListener((parent, view, position, id) -> {
                 Log.e(TAG, "onCreate: id=>" + view.getContentDescription());
                 mLocationInputView.setError(null);
@@ -266,8 +266,8 @@ public class SetupActivity extends AppCompatActivity {
 
             if (!setupUrl.trim().isEmpty() && setupUrl.length() >= 12) {
                 if (Patterns.WEB_URL.matcher(setupUrl).matches()) {
-                    String BASE_URL = "https://" + setupUrl + "/openmrs/ws/rest/v1/";
-                    base_url = "https://" + setupUrl + "/openmrs/ws/rest/v1/";
+                    String BASE_URL = setupUrl + "/openmrs/ws/rest/v1/";
+                    base_url = setupUrl + "/openmrs/ws/rest/v1/";
                     if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
 //                                value = getLocationFromServer(BASE_URL); //state wise locations...
                         getLocationFromServer(BASE_URL);
@@ -539,12 +539,7 @@ public class SetupActivity extends AppCompatActivity {
 
     // Replaced by Mithun Vaghela
     private void showConfirmationDialog(String title, int content) {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                .title(title)
-                .positiveButtonLabel(R.string.generic_ok)
-                .hideNegativeButton(true)
-                .content(getString(content))
-                .build();
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this).title(title).positiveButtonLabel(R.string.generic_ok).hideNegativeButton(true).content(getString(content)).build();
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
@@ -662,9 +657,7 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private boolean checkInputNotEmpty() {
-        return mDropdownLocation.getText().length() > 0
-                && Objects.requireNonNull(mEmailView.getText()).length() > 0
-                && Objects.requireNonNull(mPasswordView.getText()).length() > 0;
+        return mDropdownLocation.getText().length() > 0 && Objects.requireNonNull(mEmailView.getText()).length() > 0 && Objects.requireNonNull(mPasswordView.getText()).length() > 0;
     }
 
     /**
@@ -1014,38 +1007,35 @@ public class SetupActivity extends AppCompatActivity {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
-            resultsObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<Results<Location>>() {
-                        @Override
-                        public void onNext(Results<Location> locationResults) {
-                            if (locationResults.getResults() != null) {
-                                Results<Location> locationList = locationResults;
-                                mLocations = locationList.getResults();
-                                List<String> items = getLocationStringList(locationList.getResults());
-                                LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
-                                mDropdownLocation.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
-                                mDropdownLocation.setAdapter(adapter);
-                                isLocationFetched = true;
-                            } else {
-                                isLocationFetched = false;
-                                Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<Results<Location>>() {
+                @Override
+                public void onNext(Results<Location> locationResults) {
+                    if (locationResults.getResults() != null) {
+                        Results<Location> locationList = locationResults;
+                        mLocations = locationList.getResults();
+                        List<String> items = getLocationStringList(locationList.getResults());
+                        LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+                        mDropdownLocation.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+                        mDropdownLocation.setAdapter(adapter);
+                        isLocationFetched = true;
+                    } else {
+                        isLocationFetched = false;
+                        Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            isLocationFetched = false;
-                            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+                @Override
+                public void onError(Throwable e) {
+                    isLocationFetched = false;
+                    Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
 
-                        }
+                }
 
-                        @Override
-                        public void onComplete() {
+                @Override
+                public void onComplete() {
 
-                        }
-                    });
+                }
+            });
         } catch (IllegalArgumentException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
 //            mUrlField.setError(getString(R.string.url_invalid));
@@ -1493,87 +1483,80 @@ public class SetupActivity extends AppCompatActivity {
                 String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
                 if (authencated) {
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
-                    loginProviderModelObservable
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new DisposableObserver<LoginProviderModel>() {
-                                @Override
-                                public void onNext(LoginProviderModel loginProviderModel) {
-                                    if (loginProviderModel.getResults().size() != 0) {
-                                        for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
-                                            Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
-                                            sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+                    loginProviderModelObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<LoginProviderModel>() {
+                        @Override
+                        public void onNext(LoginProviderModel loginProviderModel) {
+                            if (loginProviderModel.getResults().size() != 0) {
+                                for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                    Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                    sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
 //                                                responsecode = 200;
                                           /*  final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, PASSWORD, null);*/
 
-                                            sessionManager.setLocationName(location.getDisplay());
-                                            sessionManager.setLocationUuid(location.getUuid());
-                                            sessionManager.setLocationDescription(location.getDescription());
-                                            sessionManager.setServerUrl(CLEAN_URL);
-                                            sessionManager.setServerUrlRest(BASE_URL);
-                                            sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
-                                            sessionManager.setBaseUrl(BASE_URL);
-                                            sessionManager.setSetupComplete(true);
-                                            saveToken();
+                                    sessionManager.setLocationName(location.getDisplay());
+                                    sessionManager.setLocationUuid(location.getUuid());
+                                    sessionManager.setLocationDescription(location.getDescription());
+                                    sessionManager.setServerUrl(CLEAN_URL);
+                                    sessionManager.setServerUrlRest(BASE_URL);
+                                    sessionManager.setServerUrlBase(CLEAN_URL + "/openmrs");
+                                    sessionManager.setBaseUrl(BASE_URL);
+                                    sessionManager.setSetupComplete(true);
+                                    saveToken();
 
-                                            IntelehealthApplication.getInstance().startRealTimeObserverAndSocket();
+                                    IntelehealthApplication.getInstance().startRealTimeObserverAndSocket();
 
-                                            // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
+                                    // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
 //                                            AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
-                                            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                                                    .applicationId(AppConstants.IMAGE_APP_ID)
-                                                    .server("https://" + CLEAN_URL + ":1337/parse/")
-                                                    .build()
-                                            );
+                                    Parse.initialize(new Parse.Configuration.Builder(getApplicationContext()).applicationId(AppConstants.IMAGE_APP_ID).server("https://" + CLEAN_URL + ":1337/parse/").build());
 
-                                            SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-                                            //SQLiteDatabase read_db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+                                    SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+                                    //SQLiteDatabase read_db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
 
-                                            sqLiteDatabase.beginTransaction();
-                                            //read_db.beginTransaction();
-                                            ContentValues values = new ContentValues();
-                                            //StringEncryption stringEncryption = new StringEncryption();
-                                            String random_salt = getSalt_DATA();
+                                    sqLiteDatabase.beginTransaction();
+                                    //read_db.beginTransaction();
+                                    ContentValues values = new ContentValues();
+                                    //StringEncryption stringEncryption = new StringEncryption();
+                                    String random_salt = getSalt_DATA();
 
-                                            //String random_salt = stringEncryption.getRandomSaltString();
-                                            Log.d("salt", "salt: " + random_salt);
-                                            //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
-                                            //salt_getter_setter.setSalt(random`_salt);
+                                    //String random_salt = stringEncryption.getRandomSaltString();
+                                    Log.d("salt", "salt: " + random_salt);
+                                    //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
+                                    //salt_getter_setter.setSalt(random`_salt);
 
 
-                                            String hash_password = null;
-                                            try {
-                                                //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
-                                                hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
-                                            } catch (NoSuchAlgorithmException |
-                                                     UnsupportedEncodingException e) {
-                                                FirebaseCrashlytics.getInstance().recordException(e);
-                                            }
+                                    String hash_password = null;
+                                    try {
+                                        //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
+                                        hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
+                                    } catch (NoSuchAlgorithmException |
+                                             UnsupportedEncodingException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                    }
 
-                                            try {
-                                                values.put("username", USERNAME);
-                                                values.put("password", hash_password);
-                                                values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                                values.put("chwname", loginModel.getUser().getDisplay());
-                                                values.put("provider_uuid_cred", sessionManager.getProviderID());
-                                                createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                                                sqLiteDatabase.setTransactionSuccessful();
+                                    try {
+                                        values.put("username", USERNAME);
+                                        values.put("password", hash_password);
+                                        values.put("creator_uuid_cred", loginModel.getUser().getUuid());
+                                        values.put("chwname", loginModel.getUser().getDisplay());
+                                        values.put("provider_uuid_cred", sessionManager.getProviderID());
+                                        createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                                        sqLiteDatabase.setTransactionSuccessful();
 
-                                                Logger.logD("values", "values" + values);
-                                                Logger.logD("created user credentials", "create user records" + createdRecordsCount);
-                                            } catch (SQLException e) {
-                                                Log.d("SQL", "SQL user credentials: " + e);
-                                            } finally {
-                                                sqLiteDatabase.endTransaction();
-                                            }
-                                            Log.i(TAG, "onPostExecute: Parse init");
-                                            Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
-                                            intent.putExtra("setup", true);
-                                            sessionManager.setTriggerNoti("no");
-                                            startActivity(intent);
-                                            finish();
+                                        Logger.logD("values", "values" + values);
+                                        Logger.logD("created user credentials", "create user records" + createdRecordsCount);
+                                    } catch (SQLException e) {
+                                        Log.d("SQL", "SQL user credentials: " + e);
+                                    } finally {
+                                        sqLiteDatabase.endTransaction();
+                                    }
+                                    Log.i(TAG, "onPostExecute: Parse init");
+                                    Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
+                                    intent.putExtra("setup", true);
+                                    sessionManager.setTriggerNoti("no");
+                                    startActivity(intent);
+                                    finish();
 //                                            if (r2.isChecked()) {
 //                                                if (!sessionManager.getLicenseKey().isEmpty()) {
 //                                                    sessionManager.setTriggerNoti("no");
@@ -1587,28 +1570,28 @@ public class SetupActivity extends AppCompatActivity {
 //                                                startActivity(intent);
 //                                                finish();
 //                                            }
-                                            progress.dismiss();
-                                        }
-
-                                        // here call Oxytocin api and save the result in sessionmanager.
-                                        if (sessionManager.getOxytocinValue() == null) {
-                                            fetchOxytocinValueFromAPI();
-                                        }
-                                    }
-
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    Logger.logD(TAG, "handle provider error" + e.getMessage());
                                     progress.dismiss();
                                 }
 
-                                @Override
-                                public void onComplete() {
-
+                                // here call Oxytocin api and save the result in sessionmanager.
+                                if (sessionManager.getOxytocinValue() == null) {
+                                    fetchOxytocinValueFromAPI();
                                 }
-                            });
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Logger.logD(TAG, "handle provider error" + e.getMessage());
+                            progress.dismiss();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
                 }
             }
 
@@ -1643,22 +1626,14 @@ public class SetupActivity extends AppCompatActivity {
         final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                .content(getString(R.string.contact_whatsapp))
-                .positiveButtonLabel(R.string.contact)
-                .negativeButtonLabel(R.string.close_button)
-                .build();
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this).content(getString(R.string.contact_whatsapp)).positiveButtonLabel(R.string.contact).negativeButtonLabel(R.string.close_button).build();
 
         dialog.setListener(() -> {
             String phoneNumberWithCountryCode = AppConstants.HELP_NUMBER;//"+917005308163";
-            String message =
-                    getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
-                            /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+            String message = getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
+                    /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
 
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(
-                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                    phoneNumberWithCountryCode, message))));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumberWithCountryCode, message))));
         });
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
@@ -1690,8 +1665,7 @@ public class SetupActivity extends AppCompatActivity {
         BufferedReader reader = null;
         String salt = null;
         try {
-            reader = new BufferedReader(
-                    new InputStreamReader(getAssets().open("salt.env")));
+            reader = new BufferedReader(new InputStreamReader(getAssets().open("salt.env")));
 
             // do reading, usually loop until end of file reading
             String mLine;
@@ -1721,39 +1695,36 @@ public class SetupActivity extends AppCompatActivity {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
-            resultsObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
-                        @Override
-                        public void onNext(DownloadMindMapRes res) {
-                            customProgressDialog.dismiss();
-                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<DownloadMindMapRes>() {
+                @Override
+                public void onNext(DownloadMindMapRes res) {
+                    customProgressDialog.dismiss();
+                    if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
-                                Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
-                                mindmapURL = res.getMindmap().trim();
-                                sessionManager.setLicenseKey(key);
-                                checkExistingMindMaps();
+                        Log.e("MindMapURL", "Successfully get MindMap URL");
+                        mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
+                        mindmapURL = res.getMindmap().trim();
+                        sessionManager.setLicenseKey(key);
+                        checkExistingMindMaps();
 
-                            } else {
+                    } else {
 //                                Toast.makeText(SetupActivity.this, res.getMessage(), Toast.LENGTH_LONG).show();
-                                Toast.makeText(SetupActivity.this, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
-                            }
-                        }
+                        Toast.makeText(SetupActivity.this, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
+                    }
+                }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            customProgressDialog.dismiss();
-                            Log.e("MindMapURL", " " + e);
-                            Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
-                        }
+                @Override
+                public void onError(Throwable e) {
+                    customProgressDialog.dismiss();
+                    Log.e("MindMapURL", " " + e);
+                    Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
+                }
 
-                        @Override
-                        public void onComplete() {
+                @Override
+                public void onComplete() {
 
-                        }
-                    });
+                }
+            });
         } catch (IllegalArgumentException e) {
             Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
             Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());

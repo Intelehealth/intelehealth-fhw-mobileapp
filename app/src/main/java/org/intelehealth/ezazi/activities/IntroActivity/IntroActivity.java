@@ -34,6 +34,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
@@ -300,7 +301,7 @@ public class IntroActivity extends AppCompatActivity {
                                 else
                                     location = mLocations.get(0);
 
-                                TestSetup("demo.intelehealth.org", "nurse1", "Nurse123", "", location);
+                                TestSetup(BuildConfig.SERVER_URL, "nurse1", "Nurse123", "", location);
 
                             } else {
                                 progress.dismiss();

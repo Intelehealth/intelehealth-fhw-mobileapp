@@ -19,11 +19,13 @@ import java.util.List;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 
 import org.intelehealth.ezazi.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdapter.Myholder> {
     List<PatientDTO> patients;
@@ -70,6 +72,8 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         private TextView tvPatientNoOfAlert;
         private TextView tvPatientStage;
 
+        private TextView tvPatientRegOn;
+
         public Myholder(View itemView) {
             super(itemView);
             tvPatientName = itemView.findViewById(R.id.tvPatientName);
@@ -78,6 +82,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             tvPatientBedNo = itemView.findViewById(R.id.tvBedNumber);
             tvPatientNoOfAlert = itemView.findViewById(R.id.tvNoOfAlert);
             tvPatientStage = itemView.findViewById(R.id.tvStageName);
+            tvPatientRegOn = itemView.findViewById(R.id.tvPatientRegOn);
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
 
@@ -95,6 +100,8 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             tvPatientId.setVisibility(View.VISIBLE);
             tvPatientBedNo.setText("Bed No: " + patient.getBedNo());
             tvPatientStage.setText(patient.getStage());
+            tvPatientNoOfAlert.setText("No of Alert: " + patient.getAlternateNo());
+            tvPatientRegOn.setText(patient.regDate());
             if (patient.getOpenmrsId() != null)
                 tvPatientId.setText(patient.getOpenmrsId());
             else

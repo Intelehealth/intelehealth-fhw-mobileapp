@@ -230,7 +230,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 
     private void saveToken() {
         ProviderDAO providerDAO = new ProviderDAO();
-        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        Manager.getInstance().setBaseUrl(sessionManager.getServerUrl());
         // save fcm reg. token for chat (Video)
         try {
             FirebaseUtils.saveToken(this, providerDAO.getUserUuid(sessionManager.getProviderID()), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
@@ -1380,7 +1380,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 
                         String licenseUrl = sessionManager.getMindMapServerUrl();
                         String licenseKey = sessionManager.getLicenseKey();
-                        getMindmapDownloadURL("https://" + licenseUrl + ":3004/", licenseKey);
+                        getMindmapDownloadURL(licenseUrl + ":3004/", licenseKey);
 
                     } else {
 //                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
@@ -1501,7 +1501,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
                                             sessionManager.setMindMapServerUrl(licenseUrl);
 
                                             if (keyVerified(key)) {
-                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
+                                                getMindmapDownloadURL(licenseUrl + ":3004/", key);
                                                 alertDialog.dismiss();
                                             }
                                         } else {

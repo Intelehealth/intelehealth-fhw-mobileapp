@@ -2,7 +2,7 @@ package org.intelehealth.klivekit.chat
 
 import org.intelehealth.klivekit.chat.listener.ConnectionListener
 import org.intelehealth.klivekit.chat.listener.EventCallback
-import org.intelehealth.klivekit.chat.model.ChatMessage
+import org.intelehealth.klivekit.chat.model.CMessage
 import org.intelehealth.klivekit.chat.socket.ChatSocket
 
 /**
@@ -25,8 +25,8 @@ class ChatClient(
 
     fun isConnected() = chatSocket.isConnected()
 
-    fun sendMessage(chatMessage: ChatMessage, callback: EventCallback<String>? = null) =
-        chatSocket.sentMessage(chatMessage)
+    fun sendMessage(cMessage: CMessage, callback: EventCallback<String>? = null) =
+        chatSocket.sentMessage(cMessage)
 
     fun ackMessageAsRead(messageId: String) = chatSocket.ackMessageRead(messageId)
 

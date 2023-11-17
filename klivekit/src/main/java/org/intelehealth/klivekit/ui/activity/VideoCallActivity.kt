@@ -3,6 +3,8 @@ package org.intelehealth.klivekit.ui.activity
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,7 +21,7 @@ import org.intelehealth.klivekit.databinding.ActivityVideoCallBinding
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class VideoCallActivity : CoreVideoCallActivity() {
+class VideoCallActivity(enabled: Boolean) : CoreVideoCallActivity() {
     private lateinit var binding: ActivityVideoCallBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityVideoCallBinding.inflate(layoutInflater)
@@ -29,6 +31,7 @@ class VideoCallActivity : CoreVideoCallActivity() {
         if (isArgsInitiate()) {
             initView()
             initClickListener()
+            onBackPressedDispatcher.addCallback(backPressedCallback)
         }
     }
 
@@ -145,13 +148,15 @@ class VideoCallActivity : CoreVideoCallActivity() {
         binding.tvPoorConnectivity.isVisible = it == ConnectionQuality.POOR
     }
 
-    override fun onBackPressed() {
-        MaterialAlertDialogBuilder(this).apply {
-            setMessage(R.string.call_end_aler_txt)
-            setPositiveButton(R.string.yes) { _, _ ->
-                sayBye("Call ended by you")
-            }
-            setNegativeButton(R.string.no, null)
-        }.create().show()
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            MaterialAlertDialogBuilder(this@VideoCallActivity).apply {
+                setMessage(R.string.call_end_aler_txt)
+                setPositiveButton(R.string.yes) { _, _ ->
+                    sayBye("Call ended by you")
+                }
+                setNegativeButton(R.string.no, null)
+            }.create().show()
+        }
     }
 }

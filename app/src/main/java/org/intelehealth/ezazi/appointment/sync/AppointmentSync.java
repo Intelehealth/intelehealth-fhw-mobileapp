@@ -22,7 +22,7 @@ public class AppointmentSync {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
-        String baseurl = "https://" + new SessionManager(context).getServerUrl() + ":3004";
+        String baseurl = new SessionManager(context).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
 

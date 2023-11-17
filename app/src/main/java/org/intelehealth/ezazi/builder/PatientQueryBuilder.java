@@ -25,8 +25,8 @@ public class PatientQueryBuilder extends QueryBuilder {
                         + "OR LOWER(P.openmrs_id) LIKE LOWER('%" + keyword + "%') "
                         + "OR LOWER(birthStatus) LIKE LOWER('%" + keyword + "%') ")
                 .groupBy("P.uuid")
-                .orderBy("P.first_name")
-                .orderIn("ASC")
+                .orderBy("P.dateCreated")
+                .orderIn("DESC")
                 .build();
         Log.e(TAG, "searchQuery => " + query);
         return query;
@@ -35,8 +35,8 @@ public class PatientQueryBuilder extends QueryBuilder {
     public String pagingQuery(int offset, int limit) {
         String query = selectQuery()
                 .groupBy("P.uuid")
-                .orderBy("P.first_name")
-                .orderIn("ASC")
+                .orderBy("P.dateCreated")
+                .orderIn("DESC")
                 .limit(limit)
                 .offset(offset)
                 .build();
@@ -45,10 +45,11 @@ public class PatientQueryBuilder extends QueryBuilder {
     }
 
     private QueryBuilder selectQuery() {
-        return select("P.uuid, P.openmrs_id, P.first_name, P.last_name, P.middle_name, P.date_of_birth, " +
+        return select("P.uuid, P.openmrs_id, P.first_name, P.last_name, P.middle_name, P.date_of_birth, P.dateCreated," +
                 "CASE WHEN P.middle_name IS NULL THEN P.first_name || ' ' || P.last_name " +
                 "ELSE P.first_name || ' ' || P.middle_name || ' ' || P.last_name " +
-                "END fullName, " + getCompletedVisitStatusCase() + getCurrentStageCase() + ", " + caseOfMotherDeceased()+
+                "END fullName, " + getCompletedVisitStatusCase() + getCurrentStageCase() + ", " + caseOfMotherDeceased() +
+                "(select count(uuid) from tbl_encounter where visituuid = V.uuid) as alertCount, "+
                 "CASE PA.person_attribute_type_uuid WHEN '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END phoneNumber, " +
                 "CASE WHEN PA.person_attribute_type_uuid  != '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END bedNo ")
                 .from("tbl_patient P")

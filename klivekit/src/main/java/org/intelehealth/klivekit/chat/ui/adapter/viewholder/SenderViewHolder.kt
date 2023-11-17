@@ -1,6 +1,6 @@
 package org.intelehealth.klivekit.chat.ui.adapter.viewholder
 
-import org.intelehealth.klivekit.chat.model.ChatMessage
+import org.intelehealth.klivekit.chat.model.CMessage
 import org.intelehealth.klivekit.databinding.RowMsgItemSenderBinding
 
 /**
@@ -10,7 +10,7 @@ import org.intelehealth.klivekit.databinding.RowMsgItemSenderBinding
  **/
 class SenderViewHolder(val binding: RowMsgItemSenderBinding) : BaseViewHolder(binding.root) {
 
-    fun bind(chatMessage: ChatMessage){
-        binding.chatMessage = chatMessage
+    fun bind(cMessage: CMessage){
+        binding.chatMessage = cMessage
     }
 }

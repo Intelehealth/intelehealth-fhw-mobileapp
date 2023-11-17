@@ -1,11 +1,12 @@
 android {
-    def dimen = "endpoint"
-    flavorDimensions dimen
+    def dimen = "beta"
+    flavorDimensions = [dimen]
 
     productFlavors {
-
-        def endPoint = "API_ENDPOINT"
-        def socketEndPoint = "SOCKET_ENDPOINT"
+        def serverUrl = "SERVER_URL"
+        def realTimeFbUrl = "REAL_TIME_FB_URL"
+        def liveKitUrl = "LIVE_KIT_URL"
+        def socketUrl = "SOCKET_URL"
 
         def endPointPropertyFile = file('../endpoint.properties')
         def property = new Properties()
@@ -15,29 +16,41 @@ android {
         }
 
         dev {
-            String devEndPoint = property['DEV_API_ENDPOINT'].toString()
-            String devSocketEndPoint = property['DEV_SOCKET_ENDPOINT'].toString()
+            dimension dimen
+            String devServer = property['DEV_SERVER_URL'].toString()
+            String devRealTimeFb = property['DEV_REAL_TIME_FB_URL'].toString()
+            String devLiveKit = property['DEV_LIVE_KIT_URL'].toString()
+            String devSocket = property['DEV_SOCKET_URL'].toString()
 
-            println("Dev Endpoint ----> $devEndPoint")
-            println("Dev Socket Endpoint ------> $devSocketEndPoint")
+            println("DEV_SERVER_URL ----> $devServer")
+            println("DEV_REAL_TIME_FB_URL ------> $devRealTimeFb")
+            println("DEV_LIVE_KIT_URL ------> $devLiveKit")
+            println("DEV_SOCKET_URL ------> $devLiveKit")
 
-            buildConfigField "String", endPoint, devEndPoint
-            buildConfigField "String", socketEndPoint, devSocketEndPoint
-
+            buildConfigField "String", serverUrl, devServer
+            buildConfigField "String", realTimeFbUrl, devRealTimeFb
+            buildConfigField 'String', liveKitUrl, devLiveKit
+            buildConfigField 'String', socketUrl, devSocket
             isDefault = true
-//            getIsDefault().set(true)
         }
 
 
         production {
-            String prodEndPoint = property['PROD_API_ENDPOINT'].toString()
-            String prodSocketEndPoint = property['PROD_SOCKET_ENDPOINT'].toString()
+            dimension dimen
+            String prodServer = property['PROD_SERVER_URL'].toString()
+            String prodRealTimeFb = property['PROD_REAL_TIME_FB_URL'].toString()
+            String prodLiveKit = property['PROD_LIVE_KIT_URL'].toString()
+            String prodSocket = property['PROD_SOCKET_URL'].toString()
 
-            println("Prod Endpoint ----> $prodEndPoint")
-            println("Prod Socket Endpoint ------> $prodSocketEndPoint")
+            println("PROD_SERVER_URL ----> $prodServer")
+            println("PROD_REAL_TIME_FB_URL ------> $prodRealTimeFb")
+            println("PROD_LIVE_KIT_URL ------> $prodLiveKit")
+            println("PROD_SOCKET_URL ------> $prodLiveKit")
 
-            buildConfigField "String", endPoint, prodEndPoint
-            buildConfigField "String", socketEndPoint, prodSocketEndPoint
+            buildConfigField "String", serverUrl, prodServer
+            buildConfigField "String", realTimeFbUrl, prodRealTimeFb
+            buildConfigField 'String', liveKitUrl, prodLiveKit
+            buildConfigField 'String', socketUrl, prodSocket
 //            isDefault = true
         }
     }

@@ -36,6 +36,8 @@ public class PatientDataBinder {
                 model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setPhonenumber(StringUtils.mobileNumberEmpty(searchCursor.getString(searchCursor.getColumnIndexOrThrow("phoneNumber"))));
                 model.setBedNo(searchCursor.getString(searchCursor.getColumnIndexOrThrow("bedNo")));
+                model.setAlternateNo(searchCursor.getString(searchCursor.getColumnIndexOrThrow("alertCount")));
+                model.setCreatedAt(searchCursor.getString(searchCursor.getColumnIndexOrThrow("dateCreated")));
                 String birthStatus = searchCursor.getString(searchCursor.getColumnIndexOrThrow("birthStatus"));
                 String motherDeceased = searchCursor.getString(searchCursor.getColumnIndexOrThrow("motherDeceased"));
                 String stage = searchCursor.getString(searchCursor.getColumnIndexOrThrow("stage"));

@@ -1,4 +1,4 @@
-package com.codeglo.coyamore.api
+package org.intelehealth.klivekit.room
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
@@ -6,9 +6,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.codeglo.billingclient.room.dao.ChatDao
-import org.intelehealth.klivekit.chat.model.ChatMessage
+import org.intelehealth.klivekit.chat.model.CMessage
 
-@Database(entities = [ChatMessage::class], version = 1)
+@Database(entities = [CMessage::class], version = 1)
 abstract class WebRtcDatabase : RoomDatabase() {
     abstract fun chatDao(): ChatDao
 
