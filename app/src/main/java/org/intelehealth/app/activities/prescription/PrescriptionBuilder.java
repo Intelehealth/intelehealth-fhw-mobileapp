@@ -231,6 +231,8 @@ public class PrescriptionBuilder {
         // For multiple diagnosis
         if (diagnosisData.contains("\n")) {
             diagnosisList = diagnosisData.split(",\n");
+        } else {
+            diagnosisList[0] = diagnosisData;
         }
 
         String[][] finalDiagnosisList = new String[diagnosisList.length][3];
@@ -238,7 +240,7 @@ public class PrescriptionBuilder {
         for (int i = 0; i < diagnosisList.length; i++) {
             String currentDiagnosis = diagnosisList[i].trim();
             if (currentDiagnosis.contains(":") && currentDiagnosis.contains("&")) {
-                finalDiagnosisList[i] = diagnosisList[i].split("\\s*[:&,]\\s*");
+                finalDiagnosisList[i] = diagnosisList[i].split("\\s*[:&]\\s*");
             }
         }
 
@@ -502,6 +504,7 @@ public class PrescriptionBuilder {
     }
 
     private String checkAndBifurcateTestData(String testsData) {
+        testsData = testsData.replace("• ", "");
         StringBuilder finalTestsStringBuilder = new StringBuilder();
         String listOpeningTag = "<li>";
         String listClosingTag = "</li>";
@@ -511,7 +514,6 @@ public class PrescriptionBuilder {
         String spanClosingTag = "</span>";
 
         if (!testsData.contains("\n\n")) {
-            testsData = testsData.replace("• ", "");
             finalTestsStringBuilder.append(listOpeningTag);
             finalTestsStringBuilder.append(divClassOpeningTagCenter);
             finalTestsStringBuilder.append(spanOpeningTag);
@@ -522,7 +524,6 @@ public class PrescriptionBuilder {
         } else {
             String[] adviceArray = testsData.split("\n\n");
             for (String advice : adviceArray) {
-                advice = advice.replace("• ", "");
                 finalTestsStringBuilder.append(listOpeningTag);
                 finalTestsStringBuilder.append(divClassOpeningTagCenter);
                 finalTestsStringBuilder.append(spanOpeningTag);
@@ -546,12 +547,64 @@ public class PrescriptionBuilder {
                 + "<h6>Referral-Out</h6>\n"
                 + "</div>";
 
+        String divDataSectionContentOpening = "<div class=\"data-section-content\">";
+        String divDataSectionTableResponsive = "<div class=\"table-responsive\">";
+        String tableOpeningTag = "<table class=\"table\">";
+        String tableClosingTag = "</table>";
+        String tableHeadOpeningTag = "<thead>\n"
+                + "<tr>\n"
+                + "<th scope=\"col\">Referral to</th>\n"
+                + "<th scope=\"col\">Referral facility</th>\n"
+                + "<th scope=\"col\">Priority of Referral</th>\n"
+                + "<th scope=\"col\">Referral for (Reason)</th>\n"
+                + "</tr>\n"
+                + "</thead>";
+
+        String bifurcatedReferralData = checkAndBifurcateReferredData(referredOutData);
+
         finalReferredOutString = divOpeningTag
                 + divDataSectionOpening
                 + divDataSectionTitleTag
+                + divDataSectionContentOpening
+                + divDataSectionTableResponsive
+                + tableOpeningTag
+                + tableHeadOpeningTag
+                + bifurcatedReferralData
+                + tableClosingTag
+                + divClosingTag
+                + divClosingTag
                 + divClosingTag
                 + divClosingTag;
 
         return finalReferredOutString;
+    }
+
+    private String checkAndBifurcateReferredData(String referredOutData) {
+        StringBuilder finalReferredOutData = new StringBuilder();
+        String tableBodyOpeningTag = "<tbody>";
+        String tableBodyClosingTag = "</tbody>";
+        String tableRowOpeningTag = "<tr>";
+        String tableRowClosingTag = "</tr>";
+        String tableDataOpeningTag = "<td>";
+        String tableDataClosingTag = "</td>";
+
+        String noReferralsAddedOpeningTag = "<td colspan=\"4\" class=\"text-center\">"
+                + "No referrals added";
+
+        finalReferredOutData.append(tableBodyOpeningTag);
+
+        if (referredOutData.isEmpty()) {
+            finalReferredOutData.append(tableRowOpeningTag);
+            finalReferredOutData.append(noReferralsAddedOpeningTag);
+            finalReferredOutData.append(tableRowClosingTag);
+        } else {
+            if (referredOutData.contains(":")) {
+                String[] referredOutArray = referredOutData.split(":");
+
+            }
+        }
+
+        finalReferredOutData.append(tableBodyClosingTag);
+        return finalReferredOutData.toString();
     }
 }
