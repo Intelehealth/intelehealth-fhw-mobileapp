@@ -54,7 +54,7 @@ public class PastNotesDispenseAdministerActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         viewtag = intent.getStringExtra("viewtag");
-        tag = intent.getStringExtra("tag");
+        tag = intent.getStringExtra("mtag");
         visitUUID = intent.getStringExtra("visitUUID");
         if (tag != null && viewtag != null && visitUUID != null) {
             try {

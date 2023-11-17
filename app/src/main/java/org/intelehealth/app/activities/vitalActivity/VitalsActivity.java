@@ -961,11 +961,12 @@ public class VitalsActivity extends AppCompatActivity {
                 obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
-                if (results.getTemperature().equals("")) {
+               /* if (results.getTemperature().equals("")) {
                     obsDTO.setValue("0");
                 } else {
                     obsDTO.setValue(results.getTemperature());
-                }
+                }*/
+                obsDTO.setValue(results.getTemperature());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
                 obsDAO.updateObs(obsDTO);
 

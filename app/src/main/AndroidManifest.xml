@@ -166,7 +166,6 @@
             android:name=".activities.visitSummaryActivity.VisitSummaryActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_visit_summary"
-            android:launchMode="singleTask"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

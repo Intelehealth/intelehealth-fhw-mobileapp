@@ -84,7 +84,12 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private Context context;
     private RecyclerView rv_docs;
     private RecyclerView.LayoutManager docsLayoutManager;
-    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials, encounterDisenseAdminister = ""
+    private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials, encounterDisenseAdminister = "",
+            EncounterAdultInitial_LatestVisit, patientName, patientAge,
+            patientGender, intentTag;
+    private float float_ageYear_Month;
+    private Boolean isPastVisit = false;
+
             /*encounterDispense = "", encounterAdminister = ""*/;
     private ObsDTO obsDTOMedication, obsDTOAid;
     //    private List<ObsDTO> obsDTOList_Medication, obsDTOList_Aid;
@@ -197,12 +202,21 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         aidList = new ArrayList<>();
 
         Intent intent = getIntent();
-        tag = intent.getStringExtra("tag");
+        tag = intent.getStringExtra("mtag");
         patientUuid = intent.getStringExtra("patientUuid");
         visitUuid = intent.getStringExtra("visitUuid");
         encounterVisitNote = intent.getStringExtra("encounterVisitNote");
         encounterVitals = intent.getStringExtra("encounterUuidVitals");
         encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+
+        EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+        patientName = intent.getStringExtra("name");
+        patientAge = intent.getStringExtra("age");
+        patientGender = intent.getStringExtra("gender");
+        float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+        intentTag = intent.getStringExtra("tag");
+        isPastVisit = intent.getBooleanExtra("pastVisit", false);
+
       //  encounterDisenseAdminister = intent.getStringExtra("encounterDisenseAdminister");
 
        /* encounterDispense = intent.getStringExtra("encounterDispense");
@@ -628,6 +642,22 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         }
 
         Intent intent = new Intent(context, VisitSummaryActivity.class);
+        intent.putExtra("mtag", tag);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("encounterVisitNote", encounterVisitNote);
+        intent.putExtra("encounterUuidVitals", encounterVitals);
+        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+        intent.putExtra("encounterDisenseAdminister", encounterDisenseAdminister);
+
+        intent.putExtra("gender", patientGender);
+        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+        intent.putExtra("name", patientName);
+        intent.putExtra("age", patientAge);
+        intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+        intent.putExtra("tag", intentTag);
+        intent.putExtra("pastVisit", isPastVisit);
+
         startActivity(intent);
     }
 

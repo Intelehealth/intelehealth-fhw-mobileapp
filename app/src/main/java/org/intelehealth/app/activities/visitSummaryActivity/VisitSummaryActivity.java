@@ -1041,14 +1041,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     visitnoteencounteruuid + ", " + encounterVitals + ", " + encounterUuidAdultIntial); // visitnoteenc comes empty here.
 
             Intent i = new Intent(context, Medication_Aid_Activity.class);
-            i.putExtra("tag", "dispense");
+            i.putExtra("mtag", "dispense");
             i.putExtra("medicineData", med);
             i.putExtra("aidData", aid);
-            i.putExtra("patientUuid", patientUuid);
-            i.putExtra("visitUuid", visitUuid);
-            i.putExtra("encounterVisitNote", visitnoteencounteruuid);
-            i.putExtra("encounterUuidVitals", encounterVitals);
-            i.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+            i = sendCommonIntentToMedicationActivity(i);
+
+         //   mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
+
             startActivity(i);
         });
 
@@ -1065,13 +1064,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
 
             Intent i = new Intent(context, Medication_Aid_Activity.class);
-            i.putExtra("tag", "administer");
+            i.putExtra("mtag", "administer");
             i.putExtra("medicineData", med);
-            i.putExtra("patientUuid", patientUuid);
-            i.putExtra("visitUuid", visitUuid);
-            i.putExtra("encounterVisitNote", visitnoteencounteruuid);
-            i.putExtra("encounterUuidVitals", encounterVitals);
-            i.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+            i = sendCommonIntentToMedicationActivity(i);
+
             startActivity(i);
         });
 
@@ -1888,6 +1884,23 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
      //   queryData(String.valueOf(patientUuid));
       //  downloadPrescriptionDefault();
         getAppointmentDetails(visitUuid);
+    }
+
+    private Intent sendCommonIntentToMedicationActivity(Intent i) {
+        i.putExtra("patientUuid", patientUuid);
+        i.putExtra("visitUuid", visitUuid);
+        i.putExtra("encounterVisitNote", visitnoteencounteruuid);
+        i.putExtra("encounterUuidVitals", encounterVitals);
+        i.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+        i.putExtra("gender", patientGender);
+        i.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+        i.putExtra("name", patientName);
+        i.putExtra("age", patientAge);
+        i.putExtra("float_ageYear_Month", float_ageYear_Month);
+        i.putExtra("tag", intentTag);
+        i.putExtra("pastVisit", isPastVisit);
+
+        return i;
     }
 
     private String mapDataIntoJson(String dataString) {
@@ -4916,11 +4929,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     }
 
     private void isVisitUploaded() {
-        isVisitSpecialityExists = speciality_row_exist_check(visitUUID, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
-        Log.d(TAG, "isVisitUploaded: " + "visitView: " + visitView.getText().toString() + ", visitUUID: " + visitUUID + ", " + isVisitSpecialityExists);
+        String v = "";
+        if (visitUUID == null)
+            v = visitUuid;
+        else if (visitUuid == null)
+            v = visitUUID;
+
+        isVisitSpecialityExists = speciality_row_exist_check(v, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+        Log.d(TAG, "isVisitUploaded: " + "visitView: " + visitView.getText().toString() + ", visitUUID: " + v + ", " + isVisitSpecialityExists);
 
         if (visitView != null && visitView.getText().toString().contains("XXXX") &&
-                presc_status.getText().toString().equalsIgnoreCase(getString(R.string.case_not_uploaded))   /*&& (visitUUID == null || visitUUID.isEmpty())*/) {
+                presc_status.getText().toString().equalsIgnoreCase(getString(R.string.case_not_uploaded))) {
             presc_status.setText(getResources().getString(R.string.prescription_pending));
             presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_red));
         }

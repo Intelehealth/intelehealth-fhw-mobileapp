@@ -49,7 +49,10 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     private String tag = "", medData = "", aidData = "";
     private FrameLayout fl_med, fl_aid;
     private String patientUuid, visitUuid, encounterVisitNote, encounterVitals, encounterAdultIntials,
-            encounterDispense, encounterAdminister;
+            encounterDispense, encounterAdminister, EncounterAdultInitial_LatestVisit, patientName, patientAge,
+            patientGender, intentTag;
+    private float float_ageYear_Month;
+    private Boolean isPastVisit = false;
     private SessionManager sessionManager;
     private String appLanguage;
     private List<MedicationAidModel> update_medUuidList = new ArrayList<>();
@@ -101,15 +104,21 @@ public class Medication_Aid_Activity extends AppCompatActivity {
 
 
             Intent intent = new Intent(context, AdministerDispenseActivity.class);
-            intent.putExtra("tag", tag);
+            intent.putExtra("mtag", tag);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterVisitNote", encounterVisitNote);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            /*intent.putExtra("encounterDispense", encounterDispense);
-            intent.putExtra("encounterAdminister", encounterAdminister);*/
             intent.putExtra("encounterDisenseAdminister", encounterDisenseAdminister);
+
+            intent.putExtra("gender", patientGender);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+            intent.putExtra("name", patientName);
+            intent.putExtra("age", patientAge);
+            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+            intent.putExtra("tag", intentTag);
+            intent.putExtra("pastVisit", isPastVisit);
 
             if (medCheckedList.size() > 0)
                 intent.putExtra("med", (Serializable) medCheckedList);
@@ -143,7 +152,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         tvAdminister = findViewById(R.id.tvAdminister);
 
         Intent intent = getIntent();
-        tag = intent.getStringExtra("tag");
+        tag = intent.getStringExtra("mtag");
         medData = intent.getStringExtra("medicineData");
         aidData = intent.getStringExtra("aidData");
         patientUuid = intent.getStringExtra("patientUuid");
@@ -151,6 +160,14 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         encounterVisitNote = intent.getStringExtra("encounterVisitNote");
         encounterVitals = intent.getStringExtra("encounterUuidVitals");
         encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+
+        EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+        patientName = intent.getStringExtra("name");
+        patientAge = intent.getStringExtra("age");
+        patientGender = intent.getStringExtra("gender");
+        float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+        intentTag = intent.getStringExtra("tag");
+        isPastVisit = intent.getBooleanExtra("pastVisit", false);
 
         if (tag.equalsIgnoreCase("administer")) {   // Administer
             getSupportActionBar().setTitle(getString(R.string.administer_medication));
@@ -377,7 +394,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         
         Intent intent = new Intent(this, PastNotesDispenseAdministerActivity.class);
         intent.putExtra("viewtag", viewTag);
-        intent.putExtra("tag", tag);
+        intent.putExtra("mtag", tag);
         intent.putExtra("visitUUID", visitUuid);
         startActivity(intent);
     }
