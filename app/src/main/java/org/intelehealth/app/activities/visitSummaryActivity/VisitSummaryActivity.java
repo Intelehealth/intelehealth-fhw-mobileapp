@@ -4358,7 +4358,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
 
         // Dispense & Administer - START
-        fl_DispenseAdminister.setVisibility(View.VISIBLE);
+        if (!isPastVisit)
+            fl_DispenseAdminister.setVisibility(View.VISIBLE);
         // Dispense & Administer - END
 
         String doctorSign = "";
@@ -4886,7 +4887,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
 
                         // Dispense & Administer - START
-                        fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                        if (!isPastVisit)
+                            fl_DispenseAdminister.setVisibility(View.VISIBLE);
                         // Dispense & Administer - END
 
                         if (dbValue.startsWith("{")) {
@@ -4977,7 +4979,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
 
                 // Dispense & Administer - START
-                fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                if (!isPastVisit)
+                    fl_DispenseAdminister.setVisibility(View.VISIBLE);
                 // Dispense & Administer - END
 
                 if (dbValue.startsWith("{")) {
