@@ -40,6 +40,7 @@ import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivi
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -123,6 +124,28 @@ public class VitalsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         sessionManager = new SessionManager(this);
+
+        if (encounterVitals == null) {  // SYR-425: Crash fix.
+            encounterVitals = UUID.randomUUID().toString();
+            EncounterDAO encounterDAO = new EncounterDAO();
+            EncounterDTO encounterDTO = new EncounterDTO();
+            encounterDTO = new EncounterDTO();
+
+            encounterDTO.setUuid(encounterVitals);
+            encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setVisituuid(visitUuid);
+            encounterDTO.setSyncd(false);
+            encounterDTO.setProvideruuid(sessionManager.getProviderID());
+            Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+            encounterDTO.setVoided(0);
+            try {
+                encounterDAO.createEncountersToDB(encounterDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+
         //EzdxBT.authenticate(key); // Authenticate Key before starting the test.
 
         if (intentTag == null || !intentTag.equalsIgnoreCase("edit")) {
