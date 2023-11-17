@@ -14,13 +14,13 @@ public class PrescriptionBuilder {
         this.activityContext = activityContext;
     }
 
-    public String builder(Patient patient, String diagnosisData) {
+    public String builder(Patient patient, String diagnosisData, String medicationData) {
         String prescriptionHTML = "";
         String headingDocTypeTag = "<!doctype html>";
         String headingHTMLLangTag = "<html lang=\"en\">";
         String htmlClosingTag = "</html>";
 
-        prescriptionHTML = headingDocTypeTag + headingHTMLLangTag + buildHeadData() + buildBodyData(patient, diagnosisData) + htmlClosingTag;
+        prescriptionHTML = headingDocTypeTag + headingHTMLLangTag + buildHeadData() + buildBodyData(patient, diagnosisData, medicationData) + htmlClosingTag;
         return prescriptionHTML;
     }
 
@@ -37,7 +37,7 @@ public class PrescriptionBuilder {
         return finalHeadString;
     }
 
-    private String buildBodyData(Patient patient, String diagnosisData) {
+    private String buildBodyData(Patient patient, String diagnosisData, String medicationData) {
         String finalBodyString = "";
         String startingBodyTag = "<body class=\"font-lato mat-typography\">";
         String closingBodyTag = "</body>\n";
@@ -53,7 +53,7 @@ public class PrescriptionBuilder {
                 + divMainContentOpeningTag
                 + divContainerFluidOpeningTag
                 + generatePatientDetailsData(patient)
-                + generateMainRowData(patient, diagnosisData)
+                + generateMainRowData(patient, diagnosisData, medicationData)
                 + divContainerFluidClosingTag
                 + divMainContentClosingTag
                 + closingBodyTag;
@@ -118,13 +118,17 @@ public class PrescriptionBuilder {
                 + "</div>";
     }
 
-    private String generateMainRowData(Patient patient, String diagnosisData) {
+    private String generateMainRowData(Patient patient, String diagnosisData, String medicationData) {
         String finalMainRowData = "";
         String rowOpeningTag = "<div class=\"row\">\n";
         String rowClosingTag = "</div>";
 
+        finalMainRowData = rowOpeningTag
+                + generateConsultationDetails(patient)
+                + generateDiagnosisData(diagnosisData)
+                + generateMedicationData(medicationData)
+                + rowClosingTag;
 
-        finalMainRowData = rowOpeningTag + generateConsultationDetails(patient) + generateDiagnosisData(diagnosisData) + rowClosingTag;
         return finalMainRowData;
     }
 
@@ -236,5 +240,169 @@ public class PrescriptionBuilder {
         }
 
         return finalDiagnosisList;
+    }
+
+    private String generateMedicationData(String medicationData) {
+        String finalMedicationData = "";
+        String closingDivTag = "</div>";
+        String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">";
+        String openingDataSectionTag = "<div class=\"data-section\">";
+        String dataSectionTitleTag = "<div class=\"data-section-title\">"
+                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/medication.svg\" alt=\"\" />"
+                + "<h6>Medication</h6>\n"
+                + "</div>";
+
+        String tableBodyOpeningTag = "<tbody>";
+        String tableBodyClosingTag = "</tbody>";
+        String dataSectionDivTag = "<div class=\"data-section-content\">";
+        String responsiveTableTag = "<div class=\"table-responsive\">";
+        String tableStartTag = "<table class=\"table\">";
+        String tableEndTag = "</table>";
+        String tableHeadTag = "<thead>"
+                + "<tr>\n"
+                + "<th scope=\"col\">Drug name</th>\n"
+                + "<th scope=\"col\">Strength</th>\n"
+                + "<th scope=\"col\">No. of days</th>\n"
+                + "<th scope=\"col\">Timing</th>\n"
+                + "<th scope=\"col\">Remarks</th>\n"
+                + "</tr>\n"
+                + "</thead>";
+
+        String tableDataFinalString = bifurcateMedicationData(medicationData);
+        String tableAdditionalDataFinalString = handleAdditionalData(medicationData);
+
+        finalMedicationData = openingDivTag
+                + openingDataSectionTag
+                + dataSectionTitleTag
+                + dataSectionDivTag
+                + responsiveTableTag
+                + tableStartTag
+                + tableHeadTag
+                + tableBodyOpeningTag
+                + tableDataFinalString
+                + tableBodyClosingTag
+                + tableEndTag
+                + closingDivTag;
+
+        if (!tableAdditionalDataFinalString.isEmpty()) {
+            finalMedicationData = finalMedicationData + tableAdditionalDataFinalString;
+        }
+
+
+        finalMedicationData = finalMedicationData
+                + closingDivTag
+                + closingDivTag
+                + closingDivTag
+                + closingDivTag;
+
+        return finalMedicationData;
+    }
+
+    private String bifurcateMedicationData(String medicationData) {
+        if (medicationData.isEmpty()) {
+            return handleEmptyMedicationData();
+        }
+
+        String finalMedicationDataString = "";
+        String[] medicationDataArray = medicationData.split("\n");
+
+        if (!checkIfArrayContainsMedicationData(medicationDataArray)) {
+            finalMedicationDataString = handleEmptyMedicationData();
+        } else {
+            String[][] splitMedicationDataArray = new String[medicationDataArray.length][5];
+            for (int i = 0; i < splitMedicationDataArray.length; i++) {
+                if (medicationDataArray[i].contains(":")) {
+                    splitMedicationDataArray[i] = medicationDataArray[i].split(":");
+                }
+            }
+
+            String tableRowOpeningTag = "<tr>";
+            String tableRowClosingTag = " </tr>";
+            String tableDataOpeningTag = "<td>";
+            String tableDataClosingTag = "</td>";
+
+            StringBuilder builder = new StringBuilder();
+
+            for (String[] tempArray : splitMedicationDataArray) {
+                builder.append(tableRowOpeningTag);
+
+                for (String s : tempArray) {
+                    if (s != null) {
+                        builder.append(tableDataOpeningTag);
+                        builder.append(s);
+                        builder.append(tableDataClosingTag);
+                    }
+                }
+                builder.append(tableRowClosingTag);
+            }
+
+            finalMedicationDataString = builder.toString();
+        }
+
+        return finalMedicationDataString;
+    }
+
+    private String handleEmptyMedicationData() {
+        String finalEmptyMedicationString = "";
+        String tableRowOpeningTag = "<tr>";
+        String tableRowClosingTag = " </tr>";
+        String noMedicinesTableDataOpeningTag = "<td colspan=\"5\" class=\"text-center\">";
+        String noMedicinesTableDataClosingTag = "</td>";
+        String noMedicinesAddedText = "No medicines added";
+
+        finalEmptyMedicationString = tableRowOpeningTag
+                + noMedicinesTableDataOpeningTag
+                + noMedicinesAddedText
+                + noMedicinesTableDataClosingTag
+                + tableRowClosingTag;
+
+        return finalEmptyMedicationString;
+    }
+
+    private boolean checkIfArrayContainsMedicationData(String[] medicationArray) {
+        boolean containsMedicationData = false;
+        for (String data : medicationArray) {
+            if (data.contains(":")) {
+                containsMedicationData = true;
+                break;
+            }
+        }
+        return containsMedicationData;
+    }
+
+    private String handleAdditionalData(String medicationData) {
+        if (medicationData.isEmpty()) {
+            return "";
+        }
+
+        String finalAdditionalDataString = "";
+        String unorderedListOpeningTag = "<ul class=\"items-list\">";
+        String unorderedListClosingTag = "</ul>";
+        String listOpeningTag = "<li>";
+        String listClosingTag = "</li>";
+        String divOpeningTag = "<div class=\"d-flex justify-content-between align-items-center\">";
+        String divClosingTag = "</div>";
+        String spanOpeningTag = "<span>";
+        String spanClosingTag = "</span>";
+
+        StringBuilder additionalInstructionsData = new StringBuilder();
+        String[] medicationDataArray = medicationData.split("\n");
+        for (String s : medicationDataArray) {
+            if (!s.contains(":")) {
+                additionalInstructionsData.append(listOpeningTag);
+                additionalInstructionsData.append(divOpeningTag);
+                additionalInstructionsData.append(spanOpeningTag);
+                additionalInstructionsData.append(s);
+                additionalInstructionsData.append(spanClosingTag);
+                additionalInstructionsData.append(divClosingTag);
+                additionalInstructionsData.append(listClosingTag);
+            }
+        }
+
+        finalAdditionalDataString = unorderedListOpeningTag
+                + additionalInstructionsData
+                + unorderedListClosingTag;
+
+        return finalAdditionalDataString;
     }
 }
