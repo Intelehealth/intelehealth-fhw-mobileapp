@@ -14,13 +14,13 @@ public class PrescriptionBuilder {
         this.activityContext = activityContext;
     }
 
-    public String builder(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData) {
+    public String builder(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData, String referredOutData) {
         String prescriptionHTML = "";
         String headingDocTypeTag = "<!doctype html>";
         String headingHTMLLangTag = "<html lang=\"en\">";
         String htmlClosingTag = "</html>";
 
-        prescriptionHTML = headingDocTypeTag + headingHTMLLangTag + buildHeadData() + buildBodyData(patient, diagnosisData, medicationData, adviceData, testData) + htmlClosingTag;
+        prescriptionHTML = headingDocTypeTag + headingHTMLLangTag + buildHeadData() + buildBodyData(patient, diagnosisData, medicationData, adviceData, testData, referredOutData) + htmlClosingTag;
         return prescriptionHTML;
     }
 
@@ -37,7 +37,7 @@ public class PrescriptionBuilder {
         return finalHeadString;
     }
 
-    private String buildBodyData(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData) {
+    private String buildBodyData(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData, String referredOutData) {
         String finalBodyString = "";
         String startingBodyTag = "<body class=\"font-lato mat-typography\">";
         String closingBodyTag = "</body>\n";
@@ -53,7 +53,7 @@ public class PrescriptionBuilder {
                 + divMainContentOpeningTag
                 + divContainerFluidOpeningTag
                 + generatePatientDetailsData(patient)
-                + generateMainRowData(patient, diagnosisData, medicationData, adviceData, testData)
+                + generateMainRowData(patient, diagnosisData, medicationData, adviceData, testData, referredOutData)
                 + divContainerFluidClosingTag
                 + divMainContentClosingTag
                 + closingBodyTag;
@@ -118,7 +118,7 @@ public class PrescriptionBuilder {
                 + "</div>";
     }
 
-    private String generateMainRowData(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData) {
+    private String generateMainRowData(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData, String referredOutData) {
         String finalMainRowData = "";
         String rowOpeningTag = "<div class=\"row\">\n";
         String rowClosingTag = "</div>";
@@ -129,6 +129,7 @@ public class PrescriptionBuilder {
                 + generateMedicationData(medicationData)
                 + generateAdviceData(adviceData)
                 + generateTestData(testData)
+                + generateReferredOutData(referredOutData)
                 + rowClosingTag;
 
         return finalMainRowData;
@@ -510,6 +511,7 @@ public class PrescriptionBuilder {
         String spanClosingTag = "</span>";
 
         if (!testsData.contains("\n\n")) {
+            testsData = testsData.replace("• ", "");
             finalTestsStringBuilder.append(listOpeningTag);
             finalTestsStringBuilder.append(divClassOpeningTagCenter);
             finalTestsStringBuilder.append(spanOpeningTag);
@@ -520,6 +522,7 @@ public class PrescriptionBuilder {
         } else {
             String[] adviceArray = testsData.split("\n\n");
             for (String advice : adviceArray) {
+                advice = advice.replace("• ", "");
                 finalTestsStringBuilder.append(listOpeningTag);
                 finalTestsStringBuilder.append(divClassOpeningTagCenter);
                 finalTestsStringBuilder.append(spanOpeningTag);
@@ -531,5 +534,24 @@ public class PrescriptionBuilder {
         }
 
         return finalTestsStringBuilder.toString();
+    }
+
+    private String generateReferredOutData(String referredOutData) {
+        String finalReferredOutString = "";
+        String divClosingTag = "</div>";
+        String divOpeningTag = "<div class=\"col-md-12 px-3 mb-3\">";
+        String divDataSectionOpening = "<div class=\"data-section\">";
+        String divDataSectionTitleTag = "<div class=\"data-section-title\">\n"
+                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/referral.svg\" alt=\"\" />\n"
+                + "<h6>Referral-Out</h6>\n"
+                + "</div>";
+
+        finalReferredOutString = divOpeningTag
+                + divDataSectionOpening
+                + divDataSectionTitleTag
+                + divClosingTag
+                + divClosingTag;
+
+        return finalReferredOutString;
     }
 }
