@@ -8,19 +8,19 @@ import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 public class PrescriptionBuilder {
-    private AppCompatActivity activityContext;
+    private final AppCompatActivity activityContext;
 
     public PrescriptionBuilder(AppCompatActivity activityContext) {
         this.activityContext = activityContext;
     }
 
-    public String builder(Patient patient, String diagnosisData, String medicationData) {
+    public String builder(Patient patient, String diagnosisData, String medicationData, String adviceData) {
         String prescriptionHTML = "";
         String headingDocTypeTag = "<!doctype html>";
         String headingHTMLLangTag = "<html lang=\"en\">";
         String htmlClosingTag = "</html>";
 
-        prescriptionHTML = headingDocTypeTag + headingHTMLLangTag + buildHeadData() + buildBodyData(patient, diagnosisData, medicationData) + htmlClosingTag;
+        prescriptionHTML = headingDocTypeTag + headingHTMLLangTag + buildHeadData() + buildBodyData(patient, diagnosisData, medicationData, adviceData) + htmlClosingTag;
         return prescriptionHTML;
     }
 
@@ -37,7 +37,7 @@ public class PrescriptionBuilder {
         return finalHeadString;
     }
 
-    private String buildBodyData(Patient patient, String diagnosisData, String medicationData) {
+    private String buildBodyData(Patient patient, String diagnosisData, String medicationData, String adviceData) {
         String finalBodyString = "";
         String startingBodyTag = "<body class=\"font-lato mat-typography\">";
         String closingBodyTag = "</body>\n";
@@ -53,7 +53,7 @@ public class PrescriptionBuilder {
                 + divMainContentOpeningTag
                 + divContainerFluidOpeningTag
                 + generatePatientDetailsData(patient)
-                + generateMainRowData(patient, diagnosisData, medicationData)
+                + generateMainRowData(patient, diagnosisData, medicationData, adviceData)
                 + divContainerFluidClosingTag
                 + divMainContentClosingTag
                 + closingBodyTag;
@@ -118,7 +118,7 @@ public class PrescriptionBuilder {
                 + "</div>";
     }
 
-    private String generateMainRowData(Patient patient, String diagnosisData, String medicationData) {
+    private String generateMainRowData(Patient patient, String diagnosisData, String medicationData, String adviceData) {
         String finalMainRowData = "";
         String rowOpeningTag = "<div class=\"row\">\n";
         String rowClosingTag = "</div>";
@@ -127,6 +127,7 @@ public class PrescriptionBuilder {
                 + generateConsultationDetails(patient)
                 + generateDiagnosisData(diagnosisData)
                 + generateMedicationData(medicationData)
+                + generateAdviceData(adviceData)
                 + rowClosingTag;
 
         return finalMainRowData;
@@ -292,7 +293,6 @@ public class PrescriptionBuilder {
         finalMedicationData = finalMedicationData
                 + closingDivTag
                 + closingDivTag
-                + closingDivTag
                 + closingDivTag;
 
         return finalMedicationData;
@@ -404,5 +404,68 @@ public class PrescriptionBuilder {
                 + unorderedListClosingTag;
 
         return finalAdditionalDataString;
+    }
+
+    private String generateAdviceData(String adviceData) {
+        String finalAdviceString = "";
+        String closingDivTag = "</div>";
+        String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">";
+        String dataSectionTag = "<div class=\"data-section\">";
+        String dataSectionTitleTag = "<div class=\"data-section-title\">"
+                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/advice.svg\" alt=\"\" />"
+                + "<h6>Advice</h6>"
+                + "</div>";
+
+        String dataSectionContentOpeningTag = "<div class=\"data-section-content\">";
+        String unorderedListOpeningTag = "<ul class=\"items-list\">";
+        String unorderedListClosingTag = "</ul>";
+
+        String bifurcatedAdviceData = checkAndBifurcateAdviceData(adviceData);
+
+        finalAdviceString = openingDivTag
+                + dataSectionTag
+                + dataSectionTitleTag
+                + dataSectionContentOpeningTag
+                + unorderedListOpeningTag
+                + bifurcatedAdviceData
+                + unorderedListClosingTag
+                + closingDivTag
+                + closingDivTag
+                + closingDivTag;
+
+        return finalAdviceString;
+    }
+
+    private String checkAndBifurcateAdviceData(String adviceData) {
+        StringBuilder finalAdviceStringBuilder = new StringBuilder();
+        String listOpeningTag = "<li>";
+        String listClosingTag = "</li>";
+        String divClassOpeningTagCenter = "<div class=\"d-flex justify-content-between align-items-center\">";
+        String closingDivTag = "</div>";
+        String spanOpeningTag = "<span>";
+        String spanClosingTag = "</span>";
+
+        if (!adviceData.contains("<br><br>")) {
+            finalAdviceStringBuilder.append(listOpeningTag);
+            finalAdviceStringBuilder.append(divClassOpeningTagCenter);
+            finalAdviceStringBuilder.append(spanOpeningTag);
+            finalAdviceStringBuilder.append(adviceData);
+            finalAdviceStringBuilder.append(spanClosingTag);
+            finalAdviceStringBuilder.append(closingDivTag);
+            finalAdviceStringBuilder.append(listClosingTag);
+        } else {
+            String[] adviceArray = adviceData.split("<br><br>");
+            for (String advice : adviceArray) {
+                finalAdviceStringBuilder.append(listOpeningTag);
+                finalAdviceStringBuilder.append(divClassOpeningTagCenter);
+                finalAdviceStringBuilder.append(spanOpeningTag);
+                finalAdviceStringBuilder.append(advice);
+                finalAdviceStringBuilder.append(spanClosingTag);
+                finalAdviceStringBuilder.append(closingDivTag);
+                finalAdviceStringBuilder.append(listClosingTag);
+            }
+        }
+
+        return finalAdviceStringBuilder.toString();
     }
 }
