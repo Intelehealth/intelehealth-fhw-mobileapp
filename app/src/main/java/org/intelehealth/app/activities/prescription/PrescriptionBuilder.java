@@ -14,13 +14,13 @@ public class PrescriptionBuilder {
         this.activityContext = activityContext;
     }
 
-    public String builder(Patient patient, String diagnosisData, String medicationData, String adviceData) {
+    public String builder(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData) {
         String prescriptionHTML = "";
         String headingDocTypeTag = "<!doctype html>";
         String headingHTMLLangTag = "<html lang=\"en\">";
         String htmlClosingTag = "</html>";
 
-        prescriptionHTML = headingDocTypeTag + headingHTMLLangTag + buildHeadData() + buildBodyData(patient, diagnosisData, medicationData, adviceData) + htmlClosingTag;
+        prescriptionHTML = headingDocTypeTag + headingHTMLLangTag + buildHeadData() + buildBodyData(patient, diagnosisData, medicationData, adviceData, testData) + htmlClosingTag;
         return prescriptionHTML;
     }
 
@@ -37,7 +37,7 @@ public class PrescriptionBuilder {
         return finalHeadString;
     }
 
-    private String buildBodyData(Patient patient, String diagnosisData, String medicationData, String adviceData) {
+    private String buildBodyData(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData) {
         String finalBodyString = "";
         String startingBodyTag = "<body class=\"font-lato mat-typography\">";
         String closingBodyTag = "</body>\n";
@@ -53,7 +53,7 @@ public class PrescriptionBuilder {
                 + divMainContentOpeningTag
                 + divContainerFluidOpeningTag
                 + generatePatientDetailsData(patient)
-                + generateMainRowData(patient, diagnosisData, medicationData, adviceData)
+                + generateMainRowData(patient, diagnosisData, medicationData, adviceData, testData)
                 + divContainerFluidClosingTag
                 + divMainContentClosingTag
                 + closingBodyTag;
@@ -118,7 +118,7 @@ public class PrescriptionBuilder {
                 + "</div>";
     }
 
-    private String generateMainRowData(Patient patient, String diagnosisData, String medicationData, String adviceData) {
+    private String generateMainRowData(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData) {
         String finalMainRowData = "";
         String rowOpeningTag = "<div class=\"row\">\n";
         String rowClosingTag = "</div>";
@@ -128,6 +128,7 @@ public class PrescriptionBuilder {
                 + generateDiagnosisData(diagnosisData)
                 + generateMedicationData(medicationData)
                 + generateAdviceData(adviceData)
+                + generateTestData(testData)
                 + rowClosingTag;
 
         return finalMainRowData;
@@ -467,5 +468,68 @@ public class PrescriptionBuilder {
         }
 
         return finalAdviceStringBuilder.toString();
+    }
+
+    private String generateTestData(String testData) {
+        String finalTestString = "";
+        String divClosingTag = "</div>";
+        String divOpeningTag = "<div class=\"col-md-12 px-3 mb-3\">";
+        String divDataSectionOpening = "<div class=\"data-section\">";
+        String divDataSectionTitleTag = "<div class=\"data-section-title\">"
+                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/test.svg\" alt=\"\" />"
+                + "<h6>Test</h6>"
+                + "</div>";
+
+        String dataSectionContentOpeningTag = "<div class=\"data-section-content\">";
+        String unorderedListOpeningTag = "<ul class=\"items-list\">";
+        String unorderedListClosingTag = "</ul>";
+
+        String bifurcatedTestsData = checkAndBifurcateTestData(testData);
+
+        finalTestString = divOpeningTag
+                + divDataSectionOpening
+                + divDataSectionTitleTag
+                + dataSectionContentOpeningTag
+                + unorderedListOpeningTag
+                + bifurcatedTestsData
+                + unorderedListClosingTag
+                + divClosingTag
+                + divClosingTag
+                + divClosingTag;
+
+        return finalTestString;
+    }
+
+    private String checkAndBifurcateTestData(String testsData) {
+        StringBuilder finalTestsStringBuilder = new StringBuilder();
+        String listOpeningTag = "<li>";
+        String listClosingTag = "</li>";
+        String divClassOpeningTagCenter = "<div class=\"d-flex justify-content-between align-items-center\">";
+        String closingDivTag = "</div>";
+        String spanOpeningTag = "<span>";
+        String spanClosingTag = "</span>";
+
+        if (!testsData.contains("\n\n")) {
+            finalTestsStringBuilder.append(listOpeningTag);
+            finalTestsStringBuilder.append(divClassOpeningTagCenter);
+            finalTestsStringBuilder.append(spanOpeningTag);
+            finalTestsStringBuilder.append(testsData);
+            finalTestsStringBuilder.append(spanClosingTag);
+            finalTestsStringBuilder.append(closingDivTag);
+            finalTestsStringBuilder.append(listClosingTag);
+        } else {
+            String[] adviceArray = testsData.split("\n\n");
+            for (String advice : adviceArray) {
+                finalTestsStringBuilder.append(listOpeningTag);
+                finalTestsStringBuilder.append(divClassOpeningTagCenter);
+                finalTestsStringBuilder.append(spanOpeningTag);
+                finalTestsStringBuilder.append(advice);
+                finalTestsStringBuilder.append(spanClosingTag);
+                finalTestsStringBuilder.append(closingDivTag);
+                finalTestsStringBuilder.append(listClosingTag);
+            }
+        }
+
+        return finalTestsStringBuilder.toString();
     }
 }

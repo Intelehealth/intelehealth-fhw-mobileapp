@@ -2506,7 +2506,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 //                            pat_hist, fam_hist,
                             mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
-            webView.loadDataWithBaseURL(null, prescriptionBuilder.builder(patient, diagnosisReturned, rxReturned, adviceReturned), "text/HTML", "UTF-8", null);
+            webView.loadDataWithBaseURL(null, prescriptionBuilder.builder(patient, diagnosisReturned, rxReturned, adviceReturned, testsReturned), "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
                     String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
@@ -2551,7 +2551,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                             /*pat_hist, fam_hist,*/
                             /*mComplaint*/ "",
                             diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
-            webView.loadDataWithBaseURL(null, prescriptionBuilder.builder(patient, diagnosisReturned, rxReturned, adviceReturned), "text/HTML", "UTF-8", null);
+            webView.loadDataWithBaseURL(null, prescriptionBuilder.builder(patient, diagnosisReturned, rxReturned, adviceReturned, testsReturned), "text/HTML", "UTF-8", null);
         }
 
 
