@@ -664,6 +664,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             add_additional_doc.setVisibility(View.VISIBLE);
             editAddDocs.setVisibility(View.VISIBLE);
         }
+
+        if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
+            btnAppointment.setText(getString(R.string.reschedule));
+        }
     }
 
     private int mOpenCount = 0;
