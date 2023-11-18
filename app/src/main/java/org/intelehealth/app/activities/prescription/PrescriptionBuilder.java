@@ -122,13 +122,17 @@ public class PrescriptionBuilder {
         String finalMainRowData = "";
         String rowOpeningTag = "<div class=\"row\">\n";
         String rowClosingTag = "</div>";
+        String lineBreak = "<br>";
 
         finalMainRowData = rowOpeningTag
                 + generateConsultationDetails(patient)
                 + generateDiagnosisData(diagnosisData)
                 + generateMedicationData(medicationData)
+                + lineBreak
                 + generateAdviceData(adviceData)
+                + lineBreak
                 + generateTestData(testData)
+                + lineBreak
                 + generateReferredOutData(referredOutData)
                 + rowClosingTag;
 
@@ -600,7 +604,13 @@ public class PrescriptionBuilder {
         } else {
             if (referredOutData.contains(":")) {
                 String[] referredOutArray = referredOutData.split(":");
-
+                finalReferredOutData.append(tableRowOpeningTag);
+                for (String data : referredOutArray) {
+                    finalReferredOutData.append(tableDataOpeningTag);
+                    finalReferredOutData.append(data);
+                    finalReferredOutData.append(tableDataClosingTag);
+                }
+                finalReferredOutData.append(tableRowClosingTag);
             }
         }
 
