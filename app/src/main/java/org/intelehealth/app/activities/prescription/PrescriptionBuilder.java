@@ -14,13 +14,21 @@ public class PrescriptionBuilder {
         this.activityContext = activityContext;
     }
 
-    public String builder(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData, String referredOutData) {
+    public String builder(
+            Patient patient,
+            String diagnosisData,
+            String medicationData,
+            String adviceData,
+            String testData,
+            String referredOutData,
+            String followUpData
+    ) {
         String prescriptionHTML = "";
         String headingDocTypeTag = "<!doctype html>";
         String headingHTMLLangTag = "<html lang=\"en\">";
         String htmlClosingTag = "</html>";
 
-        prescriptionHTML = headingDocTypeTag + headingHTMLLangTag + buildHeadData() + buildBodyData(patient, diagnosisData, medicationData, adviceData, testData, referredOutData) + htmlClosingTag;
+        prescriptionHTML = headingDocTypeTag + headingHTMLLangTag + buildHeadData() + buildBodyData(patient, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData) + htmlClosingTag;
         return prescriptionHTML;
     }
 
@@ -37,7 +45,15 @@ public class PrescriptionBuilder {
         return finalHeadString;
     }
 
-    private String buildBodyData(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData, String referredOutData) {
+    private String buildBodyData(
+            Patient patient,
+            String diagnosisData,
+            String medicationData,
+            String adviceData,
+            String testData,
+            String referredOutData,
+            String followUpData
+    ) {
         String finalBodyString = "";
         String startingBodyTag = "<body class=\"font-lato mat-typography\">";
         String closingBodyTag = "</body>\n";
@@ -53,7 +69,7 @@ public class PrescriptionBuilder {
                 + divMainContentOpeningTag
                 + divContainerFluidOpeningTag
                 + generatePatientDetailsData(patient)
-                + generateMainRowData(patient, diagnosisData, medicationData, adviceData, testData, referredOutData)
+                + generateMainRowData(patient, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData)
                 + divContainerFluidClosingTag
                 + divMainContentClosingTag
                 + closingBodyTag;
@@ -118,7 +134,15 @@ public class PrescriptionBuilder {
                 + "</div>";
     }
 
-    private String generateMainRowData(Patient patient, String diagnosisData, String medicationData, String adviceData, String testData, String referredOutData) {
+    private String generateMainRowData(
+            Patient patient,
+            String diagnosisData,
+            String medicationData,
+            String adviceData,
+            String testData,
+            String referredOutData,
+            String followUpData
+    ) {
         String finalMainRowData = "";
         String rowOpeningTag = "<div class=\"row\">\n";
         String rowClosingTag = "</div>";
@@ -134,6 +158,7 @@ public class PrescriptionBuilder {
                 + generateTestData(testData)
                 + lineBreak
                 + generateReferredOutData(referredOutData)
+                + generateFollowUpData(followUpData)
                 + rowClosingTag;
 
         return finalMainRowData;
@@ -616,5 +641,84 @@ public class PrescriptionBuilder {
 
         finalReferredOutData.append(tableBodyClosingTag);
         return finalReferredOutData.toString();
+    }
+
+    private String generateFollowUpData(String followUpData) {
+        String finalFollowUpString = "";
+        String closingDivTag = "</div>";
+        String divOpeningTag = "<div class=\"col-md-12 px-3 mb-3\">";
+        String divDataSectionOpeningTag = "<div class=\"data-section\">";
+        String divSectionTitleTag = "<div class=\"data-section-title\">"
+                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/follow-up.svg\" alt=\"\" />"
+                + "<h6>Follow-up</h6>"
+                + "</div>";
+
+        String closingUnorderedListTag = "</ul>";
+        String isFollowUpScheduled = "";
+        String[] followUpArrayData = followUpData.split(",");
+
+        if (followUpData.equalsIgnoreCase("")) {
+            isFollowUpScheduled = "No";
+        } else {
+            isFollowUpScheduled = "Yes";
+        }
+
+        String divSectionContentOpeningTag = "<div class=\"data-section-content\">"
+                + "<ul class=\"items-list\">\n"
+                + "<li>"
+                + "<div class=\"list-item\">"
+                + "<label class=\"border-0\">Follow-up suggested</label>"
+                + "<div class=\"list-item-content\">"
+                + isFollowUpScheduled
+                + "</div>"
+                + "</div>"
+                + "</li>";
+
+        if (!followUpData.equalsIgnoreCase("")) {
+
+            divSectionContentOpeningTag = divSectionContentOpeningTag
+                    + "<li>"
+                    + "<div class=\"list-item\">"
+                    + "<label>Follow-up Date</label>"
+                    + "<div class=\"list-item-content\">"
+                    + DateAndTimeUtils.formatDateFromOnetoAnother(followUpArrayData[0], "yyyy-MM-dd", "dd-MM-yyyy")
+                    + "</div>"
+                    + "</div>"
+                    + "</li>";
+
+            divSectionContentOpeningTag = divSectionContentOpeningTag
+                    + "<li>"
+                    + "<div class=\"list-item\">"
+                    + "<label>Follow-up Time</label>"
+                    + "<div class=\"list-item-content\">"
+                    + followUpArrayData[1].split("Time:")[1]
+                    + "</div>"
+                    + "</div>"
+                    + "</li>";
+
+            divSectionContentOpeningTag = divSectionContentOpeningTag
+                    + "<li>"
+                    + "<div class=\"list-item\">"
+                    + "<label>Reason for follow-up</label>"
+                    + "<div class=\"list-item-content\">"
+                    + followUpArrayData[2].split("Remark:")[1]
+                    + "</div>"
+                    + "</div>"
+                    + "</li>";
+        }
+
+        divSectionContentOpeningTag = divSectionContentOpeningTag
+                + closingUnorderedListTag
+                + closingDivTag;
+
+        finalFollowUpString = divOpeningTag
+                + divDataSectionOpeningTag
+                + divSectionTitleTag
+                + divSectionContentOpeningTag
+                + closingDivTag
+                + closingDivTag;
+
+
+        return finalFollowUpString;
     }
 }
