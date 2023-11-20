@@ -655,16 +655,27 @@ public class PrescriptionBuilder {
             finalReferredOutData.append(noReferralsAddedOpeningTag);
             finalReferredOutData.append(tableRowClosingTag);
         } else {
-            if (referredOutData.contains(":")) {
-                String[] referredOutArray = referredOutData.split(":");
-                finalReferredOutData.append(tableRowOpeningTag);
-                for (String data : referredOutArray) {
-                    finalReferredOutData.append(tableDataOpeningTag);
-                    finalReferredOutData.append(data);
-                    finalReferredOutData.append(tableDataClosingTag);
-                }
-                finalReferredOutData.append(tableRowClosingTag);
+            String[] referredOutArray;
+            if (referredOutData.contains("\n\n")) {
+                referredOutArray = referredOutData.split("\n\n");
+            } else {
+                referredOutArray = new String[]{referredOutData};
             }
+
+            for (String referred : referredOutArray) {
+                if (referred.contains(":")) {
+                    String[] referredOutNewArray = referred.split(":");
+                    finalReferredOutData.append(tableRowOpeningTag);
+
+                    for (String data : referredOutNewArray) {
+                        finalReferredOutData.append(tableDataOpeningTag);
+                        finalReferredOutData.append(data);
+                        finalReferredOutData.append(tableDataClosingTag);
+                    }
+                }
+            }
+
+            finalReferredOutData.append(tableRowClosingTag);
         }
 
         finalReferredOutData.append(tableBodyClosingTag);
