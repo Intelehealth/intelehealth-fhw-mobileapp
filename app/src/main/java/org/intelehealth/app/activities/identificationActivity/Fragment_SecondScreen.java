@@ -12,6 +12,7 @@ import android.os.LocaleList;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.DisplayMetrics;
@@ -141,8 +142,7 @@ public class Fragment_SecondScreen extends Fragment {
         mDistrictET = view.findViewById(R.id.district_edittext);
         mCityVillageET = view.findViewById(R.id.city_village_edittext);
         mCityVillageET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        mCityVillageET.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)}); //maxlength 50
-        mCityVillageET.setKeyListener(DigitsKeyListener.getInstance("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890"));
+        mCityVillageET.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), lettersFilter}); //maxlength 50
         mAddress1EditText = view.findViewById(R.id.address1_edittext);
         mAddress1EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)}); //maxlength 50
         mAddress2EditText = view.findViewById(R.id.address2_edittext);
@@ -833,4 +833,13 @@ public class Fragment_SecondScreen extends Fragment {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
+
+    InputFilter lettersFilter = (source, start, end, dest, dStart, dEnd) -> {
+        for (int i = start; i < end; i++) {
+            if (!Character.isLetterOrDigit(source.charAt(i))) {
+                return ""; // Block non-letter and non-digit characters.
+            }
+        }
+        return null; // Accept the original characters.
+    };
 }
