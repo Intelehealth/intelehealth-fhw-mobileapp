@@ -105,6 +105,7 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
+import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -236,6 +237,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     String doctorName = "";
     String additionalReturned = "";
     String followUpDate = "";
+    String referredSpeciality = "";
 
     CardView diagnosisCard;
     CardView prescriptionCard;
@@ -661,6 +663,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         } else {
             add_additional_doc.setVisibility(View.VISIBLE);
             editAddDocs.setVisibility(View.VISIBLE);
+        }
+
+        if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
+            btnAppointment.setText(getString(R.string.reschedule));
         }
     }
 
@@ -3085,6 +3091,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 //checkForDoctor();
                 break;
             }
+
+            case UuidDictionary.REFERRED_SPECIALIST: {
+                if (!referredSpeciality.isEmpty() && !referredSpeciality.contains(value)) {
+                    referredSpeciality = referredSpeciality + "\n\n" + Node.bullet + " " + value;
+                } else {
+                    referredSpeciality = Node.bullet + " " + value;
+                }
+            }
+
             case UuidDictionary.ADDITIONAL_COMMENTS: {
 
 //                additionalCommentsCard.setVisibility(View.GONE);
@@ -3215,6 +3230,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 }
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("NationalID")) {
+                    patient.setNationalID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -4058,6 +4076,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
         }
 
+        PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
+        String prescriptionString = prescriptionBuilder.builder(patient, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails);
+
+
         if (isRespiratory) {
             String htmlDocument = String.format(/*font_face +*/ "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
                             /* doctorDetailStr +*/
@@ -4071,7 +4093,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
                             doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                     /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
-            webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+            webView.loadDataWithBaseURL(null, prescriptionString, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
@@ -4080,7 +4102,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
                             "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" + "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" + doctorDetailStr + "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                     /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, /*advice_web*/"", followUp_web, doctor_web);
-            webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+            webView.loadDataWithBaseURL(null, prescriptionString, "text/HTML", "UTF-8", null);
         }
 
 
