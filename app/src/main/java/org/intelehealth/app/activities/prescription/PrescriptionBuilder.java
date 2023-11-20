@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 public class PrescriptionBuilder {
@@ -96,11 +97,27 @@ public class PrescriptionBuilder {
     }
 
     private String generatePatientDetailsData(Patient patient) {
+        String patientProfilePhoto = "";
+        if (patient.getPatient_photo() != null && !patient.getPatient_photo().isEmpty()) {
+
+            patientProfilePhoto = new Base64Utils().getBase64FromFileWithConversion(patient.getPatient_photo());
+            String format = patient.getPatient_photo().substring(patient.getPatient_photo().length() - 3);
+
+            if (format.equalsIgnoreCase("png")) {
+                patientProfilePhoto = "data:image/png;base64," + patientProfilePhoto;
+            } else {
+                patientProfilePhoto = "data:image/jpg;base64," + patientProfilePhoto;
+            }
+
+        } else {
+            patientProfilePhoto = "https://dev.intelehealth.org/intelehealth/assets/svgs/user.svg";
+        }
+
         return "<div class=\"row patient-info-wrapper\">\n"
                 + "<div class=\"col-md-3 patient-info-section p-3\">\n"
                 + "<div class=\"patient-img-item mb-2\">\n"
                 + "<div class=\"patient-img\">\n"
-                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/user.svg\" alt=\"\"\n"
+                + "<img src=\"" + patientProfilePhoto + "\" alt=\"\" style='border-radius: 50%; width: 50px; height: 50px; object-fit: cover;'\n"
                 + "width=\"100%\" height=\"100%\" />\n"
                 + "</div>\n"
                 + "<div class=\"ml-3\">\n"
@@ -697,25 +714,29 @@ public class PrescriptionBuilder {
                     + "</div>"
                     + "</li>";
 
-            divSectionContentOpeningTag = divSectionContentOpeningTag
-                    + "<li>"
-                    + "<div class=\"list-item\">"
-                    + "<label>Follow-up Time</label>"
-                    + "<div class=\"list-item-content\">"
-                    + followUpArrayData[1].split("Time:")[1]
-                    + "</div>"
-                    + "</div>"
-                    + "</li>";
+            if (followUpData.contains("Time:")) {
+                divSectionContentOpeningTag = divSectionContentOpeningTag
+                        + "<li>"
+                        + "<div class=\"list-item\">"
+                        + "<label>Follow-up Time</label>"
+                        + "<div class=\"list-item-content\">"
+                        + followUpArrayData[1].split("Time:")[1]
+                        + "</div>"
+                        + "</div>"
+                        + "</li>";
+            }
 
-            divSectionContentOpeningTag = divSectionContentOpeningTag
-                    + "<li>"
-                    + "<div class=\"list-item\">"
-                    + "<label>Reason for follow-up</label>"
-                    + "<div class=\"list-item-content\">"
-                    + followUpArrayData[2].split("Remark:")[1]
-                    + "</div>"
-                    + "</div>"
-                    + "</li>";
+            if (followUpData.contains("Remark:")) {
+                divSectionContentOpeningTag = divSectionContentOpeningTag
+                        + "<li>"
+                        + "<div class=\"list-item\">"
+                        + "<label>Reason for follow-up</label>"
+                        + "<div class=\"list-item-content\">"
+                        + followUpArrayData[2].split("Remark:")[1]
+                        + "</div>"
+                        + "</div>"
+                        + "</li>";
+            }
         }
 
         divSectionContentOpeningTag = divSectionContentOpeningTag
