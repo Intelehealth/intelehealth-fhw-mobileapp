@@ -452,6 +452,7 @@
 
                         <TableRow
                             android:id="@+id/tr_earthquake_victim"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
