@@ -1,9 +1,11 @@
 package org.intelehealth.app.activities.chooseLanguageActivity;
 
 import android.Manifest;
+import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -47,6 +50,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
+import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
@@ -217,12 +221,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
     }
 
+    private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
+
     private boolean checkAndRequestPermissions() {
+
         int cameraPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA);
         int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
-        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
@@ -232,18 +237,54 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (getAccountPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
         }
-        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
 
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+            int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+
+            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+            }
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            int notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS);
+            if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
+
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
+
+        if (!Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
+            startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+        } else {
+            //Permission Granted-System will work
+        }
+
+        try {
+            PackageManager packageManager = getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
+            AppOpsManager appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+
+            if (mode != AppOpsManager.MODE_ALLOWED) {
+                MyAchievementsFragment.CustomDialog customDialog = new MyAchievementsFragment.CustomDialog(this);
+                customDialog.showDialog1();
+            }
+        } catch (PackageManager.NameNotFoundException ignored) {
+            // Control shouldn't reach at this point of the code
+            //
+        }
+
         return true;
     }
 
@@ -542,7 +583,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     break;
                 }
             }
-            if(permissionsCheck) {
+            if (permissionsCheck) {
                 if (allGranted) {
                     checkPerm();
                 } else {
