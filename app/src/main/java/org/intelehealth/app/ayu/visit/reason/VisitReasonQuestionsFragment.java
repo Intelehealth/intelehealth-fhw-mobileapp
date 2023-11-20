@@ -125,7 +125,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
             }
             mRootComplainBasicInfoHashMap.put(i, complainBasicInfo);
         }
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false,false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap,mIsEditMode, new OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
             @Override
             public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                 Log.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
@@ -137,8 +137,11 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     return;
                 }
                 if (isSkipped) {
-                    mQuestionsListingAdapter.geItems().get(index).setSelected(false);
-                    mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
+                    boolean isRequiredToUnselectParent = mQuestionsListingAdapter.geItems().get(index).getOptionsList() == null || mQuestionsListingAdapter.geItems().get(index).size() <= 1;
+                    if (isRequiredToUnselectParent) {
+                        mQuestionsListingAdapter.geItems().get(index).setSelected(false);
+                        mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
+                    }
 
                     if (mQuestionsListingAdapter.geItems().get(index).getOptionsList() != null && mQuestionsListingAdapter.geItems().get(index).getOptionsList().size() > 0)
                         for (int i = 0; i < mQuestionsListingAdapter.geItems().get(index).getOptionsList().size(); i++) {
@@ -204,7 +207,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
             }
 
             @Override
-            public void onImageRemoved(int nodeIndex,int imageIndex, String image) {
+            public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
             }
         });

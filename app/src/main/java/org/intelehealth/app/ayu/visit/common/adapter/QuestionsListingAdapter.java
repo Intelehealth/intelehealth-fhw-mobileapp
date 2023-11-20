@@ -517,7 +517,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-
+        boolean isParentNodeIsMandatory = mItemList.get(index).isRequired();
+        if (isParentNodeIsMandatory)
+            skipButton.setVisibility(View.GONE);
         holder.singleComponentContainer.addView(view);
     }
 
@@ -591,6 +593,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
 
         updateCustomEmojiSliderUI(view, 0);
+        boolean isParentNodeIsMandatory = mItemList.get(index).isRequired();
+        if (isParentNodeIsMandatory)
+            skipButton.setVisibility(View.GONE);
         holder.singleComponentContainer.addView(view);
     }
 
@@ -979,7 +984,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (holder.nestedQuestionsListingAdapter != null) {
 
             }
-            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, new OnItemSelection() {
+            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, mItemList.get(Math.max(holder.getAbsoluteAdapterPosition(), 0)).isRequired(), new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
@@ -1655,7 +1660,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             //if (holder.nestedRecyclerView.getAdapter() != null && mItemList.get(index).isMultiChoice()) {
             //   nestedQuestionsListingAdapter = (NestedQuestionsListingAdapter) holder.nestedRecyclerView.getAdapter();
             //}else {
-            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, new OnItemSelection() {
+            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, mItemList.get(holder.getAbsoluteAdapterPosition()).isRequired(), new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
@@ -2295,7 +2300,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             }
         }, 1000);
-
+        boolean isParentNodeIsMandatory = mItemList.get(index).isRequired();
+        if (isParentNodeIsMandatory)
+            skipButton.setVisibility(View.GONE);
         holder.singleComponentContainer.addView(view);
         Log.v(TAG, "addDurationView holder.singleComponentContainer count child - " + holder.singleComponentContainer.getChildCount());
         Log.v(TAG, "addDurationView holder.singleComponentContainer VISIBLE - " + (holder.singleComponentContainer.getVisibility() == View.VISIBLE));
@@ -2477,12 +2484,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         } else {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }*/
-
+        boolean isParentNodeIsMandatory = mItemList.get(index).isRequired();
+        if (isParentNodeIsMandatory)
+            skipButton.setVisibility(View.GONE);
         holder.singleComponentContainer.addView(view);
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
     }
 
     private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
+
         Log.v(TAG, "addTextEnterView");
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
@@ -2606,6 +2616,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
 */
+        boolean isParentNodeIsMandatory = mItemList.get(index).isRequired();
+
+        if (isParentNodeIsMandatory || (holder.node.getOptionsList() != null && holder.node.getOptionsList().size() > 1))
+            skipButton.setVisibility(View.GONE);
         holder.singleComponentContainer.addView(view);
     }
 
@@ -2720,6 +2734,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         } else {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }*/
+        boolean isParentNodeIsMandatory = mItemList.get(index).isRequired();
+        if (isParentNodeIsMandatory)
+            skipButton.setVisibility(View.GONE);
         holder.singleComponentContainer.addView(view);
     }
 
