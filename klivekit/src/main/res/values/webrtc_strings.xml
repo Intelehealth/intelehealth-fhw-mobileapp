@@ -14,4 +14,11 @@
     <string name="reason_state_mismatch">Call disconnected due to room mismatch</string>
     <string name="reason_join_failure">Call disconnected due to fail to join room</string>
     <string name="reason_unknown">Call disconnected due to fail to unknown reason</string>
+
+    <string name="call_missed">Missed Call</string>
+    <string name="call_outgoing">Outgoing Call</string>
+    <string name="call_ongoing">Ongoing call</string>
+    <string name="call_unknown">Unknown</string>
+    <string name="call_incoming">Incoming Call</string>
+    <string name="calling">Calling</string>
 </resources>

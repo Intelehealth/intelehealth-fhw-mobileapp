@@ -34,6 +34,7 @@
     <string name="call_end_lbl">କଲ୍ ଶେଷ!</string>
     <string name="audio_off_lbl">ଅଡିଓ ବନ୍ଦ!</string>
     <string name="audio_on_lbl">ଅଡିଓ ଅନ୍!</string>
+    <string name="flip_camera">ଫ୍ଲିପ କ୍ୟାମେରା</string>
     <string name="video_on_off_button">ଭିଡିଓ ଅନ୍ / ଅଫ୍ ବଟନ୍ |</string>
     <string name="call_end_button">କଲ୍ ଶେଷ ବଟନ୍ |</string>
     <string name="audio_on_off_button">ଅଡିଓ ଅନ୍ / ଅଫ୍ ବଟନ୍ |</string>
@@ -52,23 +53,35 @@
     <string name="yes">ହଁ</string>
     <string name="no">ନା</string>
 
-    <string name="type_text_here_str">Type here ...</string>
+    <string name="type_text_here_str">ଏଠାରେ ଲେଖ …</string>
 
-    <string name="take_photo_lbl">Take Photo</string>
-    <string name="choose_from_gallery_lbl">Choose from Gallery</string>
-    <string name="cancel_lbl">Cancel</string>
-    <string name="max_doc_size_toast">Max doc size is 512 KB</string>
-    <string name="choose_documents">Choose Documents</string>
-    <string name="read">Read</string>
-    <string name="sent">Sent</string>
-    <string name="max_5_image">Maximum 5 Images you can send per one case</string>
-    <string name="max_2_image">Maximum 2 Images you can send per one case</string>
-    <string name="select">Select</string>
-    <string name="camera_permission_denied">Camera permission denied!</string>
-    <string name="unable_to_pick_data">Unable to pick the gallery data!</string>
-    <string name="max_doc_size_toast_mb">Max doc size is 1 MB</string>
-    <string name="doctor_annotation">Dr.</string>
-    <string name="disconnected">Disconnected!</string>
-    <string name="enter_room_id">Please enter room-id</string>
-    <string name="permission_denied">Permission Denied\n</string>
+    <string name="take_photo_lbl">ଫୋଟ ନିଅ</string>
+    <string name="choose_from_gallery_lbl">ଗ୍ୟାଲେରୀ ରୁ ପସନ୍ଦ କର</string>
+    <string name="cancel_lbl">ବାତିଲ</string>
+    <string name="max_doc_size_toast">ମାକ୍ସ ଡକ ସାଇଜ 512KB</string>
+    <string name="choose_documents">ଦସ୍ତାବିଜ୍ ଚୟନ</string>
+    <string name="read">ପଢ଼</string>
+    <string name="sent">ପଠା</string>
+    <string name="msg_delivered">ଦିଆଗଲା</string>
+    <string name="sending">ପଠାଯାଉଛି ବା ପଠାଇବା</string>
+    <string name="max_5_image">ଗୋଟେ case ପାଇଁ ଅତି ବେଶିରେ 5 ଟି ଛବି ତୁମେ ପଠାଇ ପାର</string>
+    <string name="max_2_image">ଅତି ବେଶୀରେ ଗୋଟେ case ପାଇଁ ତୁମେ 2ଟି ଛବି ପଠାଇ ପାର</string>
+    <string name="select">ଚୟନ କରିବା</string>
+    <string name="camera_permission_denied">କ୍ୟାମେରା ଅନୁମତି ଅମାନ୍ୟ କରିବା</string>
+    <string name="unable_to_pick_data">ଗ୍ୟାଲେରୀ ତଥ୍ୟ ଚୟନ କରିବାରେ ଅକ୍ଷମତା!</string>
+    <string name="max_doc_size_toast_mb">ମାକ୍ସ ଦକ୍ ସାଇଜ 1 MB ଅଟେ</string>
+    <string name="doctor_annotation">ଡାକ୍ତର.</string>
+    <string name="disconnected">ବିଯୋଗ!</string>
+    <string name="enter_room_id">ଦୟାକରି ରୁମ୍ id ପ୍ରବେଶ କର</string>
+    <string name="permission_denied">ଅନୁମତି ଅମାନ୍ୟ କରିବା\n</string>
+
+    <string name="incoming_voice_call">ଇନ୍ କମିଂ ଭଏସ କଲ୍</string>
+    <string name="incoming_call">ଇନ୍ କମିଂ କଲ୍</string>
+    <string name="decline">ମନା କରିବା</string>
+    <string name="accept">ଗ୍ରହଣ କରିବା</string>
+    <string name="doctor_profile_picture">ଡାକ୍ତର ପ୍ରୋଫାଇଲ୍ ଛବି</string>
+    <string name="poor_connection">ଅଳ୍ପ ସଂଯୋଗିକରଣ</string>
+    <string name="remote_participant_mic_off_status">ରିମୋଟ ବା ଦୁରସ୍ଥ ଯୋଗଦାନ କାରି ମିକ୍ ଅପ୍ ଅବସ୍ଥା</string>
+    <string name="sender_image">ପ୍ରେରକ ଛବି</string>
+    <string name="select_spinner">ଚୟନ କରିବା</string>
 </resources>
