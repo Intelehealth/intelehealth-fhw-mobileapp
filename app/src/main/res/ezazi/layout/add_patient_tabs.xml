@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="@dimen/login_screen_padding"
-    android:paddingVertical="@dimen/screen_padding">
+    android:paddingHorizontal="@dimen/patient_info_tab_horizontal_margin"
+    android:paddingVertical="@dimen/screen_container_padding">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_personal_info"
@@ -25,7 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/layout_stages_line_height"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/screen_padding"
+        android:layout_marginTop="@dimen/dotted_line_top_margin"
         android:background="@drawable/ic_dashed_line"
         app:layout_constraintEnd_toStartOf="@id/tv_address_info"
         app:layout_constraintStart_toEndOf="@id/tv_personal_info"
@@ -49,7 +49,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/layout_stages_line_height"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/screen_padding"
+        android:layout_marginTop="@dimen/dotted_line_top_margin"
         android:background="@drawable/ic_dashed_line"
         app:layout_constraintEnd_toStartOf="@id/tv_other_info"
         app:layout_constraintStart_toEndOf="@id/tv_address_info"
@@ -70,101 +70,4 @@
         app:layout_constraintStart_toEndOf="@id/line_2"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_weight="0.6"-->
-    <!--        android:gravity="center"-->
-    <!--        android:orientation="vertical">-->
-
-    <!--        <ImageView-->
-    <!--            android:id="@+id/iv_personal_info"-->
-    <!--            android:layout_width="@dimen/layout_stages_icon_width"-->
-    <!--            android:layout_height="@dimen/layout_stages_icon_height"-->
-    <!--            android:padding="@dimen/layout_stages_icon_padding"-->
-    <!--            android:src="@drawable/ic_personal_info" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/tv_personal_info"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@+id/iv_personal_info"-->
-    <!--            android:layout_marginTop="@dimen/layout_stages_text_margin_top"-->
-    <!--            android:fontFamily="@font/dm_sans_medium"-->
-    <!--            android:gravity="center_horizontal|top"-->
-    <!--            android:text="@string/personal"-->
-    <!--            android:textColor="@color/darkGray"-->
-    <!--            android:textSize="@dimen/body"-->
-    <!--            android:textStyle="bold" />-->
-    <!--    </LinearLayout>-->
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/line_1"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="@dimen/layout_stages_line_height"-->
-    <!--        android:layout_gravity="center"-->
-    <!--        android:layout_marginBottom="@dimen/stages_line_margin_bottom"-->
-    <!--        android:layout_weight="0.5"-->
-    <!--        android:background="@drawable/ic_dashed_line" />-->
-
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_weight="0.6"-->
-    <!--        android:gravity="center"-->
-    <!--        android:orientation="vertical">-->
-
-    <!--        <ImageView-->
-    <!--            android:id="@+id/iv_address_info"-->
-    <!--            android:layout_width="@dimen/layout_stages_icon_width"-->
-    <!--            android:layout_height="@dimen/layout_stages_icon_height"-->
-    <!--            android:padding="@dimen/layout_stages_icon_padding"-->
-    <!--            android:src="@drawable/ic_address_info" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/tv_address_info"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginTop="15dp"-->
-    <!--            android:gravity="center_horizontal|top"-->
-    <!--            android:text="@string/address"-->
-    <!--            android:textColor="@color/darkGray"-->
-    <!--            android:textSize="@dimen/body" />-->
-
-    <!--    </LinearLayout>-->
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/line_1"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="@dimen/layout_stages_line_height"-->
-    <!--        android:layout_gravity="center"-->
-    <!--        android:layout_marginBottom="@dimen/stages_line_margin_bottom"-->
-    <!--        android:layout_weight="0.5"-->
-    <!--        android:background="@drawable/ic_dashed_line" />-->
-
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_weight="0.6"-->
-    <!--        android:gravity="center"-->
-    <!--        android:orientation="vertical">-->
-
-    <!--        <ImageView-->
-    <!--            android:id="@+id/iv_other_info"-->
-    <!--            android:layout_width="@dimen/layout_stages_icon_width"-->
-    <!--            android:layout_height="@dimen/layout_stages_icon_height"-->
-    <!--            android:padding="@dimen/layout_stages_icon_padding"-->
-    <!--            android:src="@drawable/ic_other_info" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/tv_other_info"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@+id/iv_other_info"-->
-    <!--            android:layout_marginTop="@dimen/layout_stages_text_margin_top"-->
-    <!--            android:gravity="center_horizontal|top"-->
-    <!--            android:text="@string/other"-->
-    <!--            android:textColor="@color/darkGray"-->
-    <!--            android:textSize="@dimen/body" />-->
-    <!--    </LinearLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

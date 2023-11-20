@@ -10,6 +10,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
@@ -128,7 +129,7 @@ public class AppConstants {
     public static final int SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE = 3;
     public static final int SYNC_OBS_IMAGE_PUSH_DONE = 4;
 
-    public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://ezazi-8712a-default-rtdb.firebaseio.com/";
+    //    public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://ezazi-8712a-default-rtdb.firebaseio.com/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE = "device_info/";
 
@@ -163,7 +164,7 @@ public class AppConstants {
     public static final String OBSTETRICIAN_GYNECOLOGIST = "Obstetrician & Gynecologist";
 
     public static String getFirebaseRTDBUrl() {
-        return FIREBASE_REAL_TIME_DB_BASE_URL;
+        return BuildConfig.REAL_TIME_FB_URL;
     }
 
     public static String getScreenRefreshEventReceiver() {
@@ -175,12 +176,11 @@ public class AppConstants {
     }
 
     public static String getFirebaseRTDBRootRef() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
-
+        return BuildConfig.FB_RT_DB + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
     }
 
     public static String getFirebaseRTDBRootRefForDeviceInfo() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
+        return BuildConfig.FB_RT_DB + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
     }
 }
 

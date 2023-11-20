@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.klivekit.model.RtcArgs;
 
 import java.util.Set;
@@ -192,7 +193,7 @@ public class SessionManager {
     }
 
     public String getServerUrl() {
-        return pref.getString(KEY_PREF_SERVER_URL, "");
+        return pref.getString(KEY_PREF_SERVER_URL, BuildConfig.SERVER_URL);
     }
 
     public void setServerUrl(String serverUrl) {

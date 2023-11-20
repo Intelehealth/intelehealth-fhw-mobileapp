@@ -29,7 +29,6 @@ public class DeviceInfoUtils {
 
     public static String getDeviceMake() {
         return Build.BRAND;
-
     }
 
     public static String getDeviceModel() {

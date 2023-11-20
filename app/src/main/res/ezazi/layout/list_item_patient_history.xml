@@ -27,10 +27,10 @@
             android:padding="@dimen/screen_container_padding">
 
             <LinearLayout
+                android:id="@+id/llPatientDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -40,14 +40,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="Patient Name" />
-
-                <TextView
-                    android:id="@+id/tvPatientRegOn"
-                    style="@style/Theme.EZazi.Body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_4dp"
-                    tools:text="Registered: " />
 
                 <TextView
                     android:id="@+id/tvPatientId"
@@ -74,15 +66,31 @@
                     android:layout_marginTop="@dimen/std_4dp"
                     tools:text="Age: 24 years" />
 
-                <TextView
-                    android:id="@+id/tvNoOfAlert"
-                    style="@style/Theme.EZazi.Body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_4dp"
-                    android:text="No of Alert: 4"
-                    tools:text="No of Alert: 4" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvNoOfAlert"
+                style="@style/Theme.EZazi.Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/std_4dp"
+                android:text="No of Alert: 4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llPatientDetails"
+                tools:text="No of Alert: 4" />
+
+            <TextView
+                android:id="@+id/tvPatientRegOn"
+                style="@style/Theme.EZazi.Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/std_4dp"
+                app:layout_constraintBottom_toBottomOf="@id/tvNoOfAlert"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvNoOfAlert"
+                tools:text="Registered: " />
 
             <TextView
                 android:id="@+id/tvStageName"
