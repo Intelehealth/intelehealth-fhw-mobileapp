@@ -769,6 +769,10 @@ public class PrescriptionBuilder {
     }
 
     private String generateDoctorSignatureData(ClsDoctorDetails details) {
+        if (details == null) {
+            return "";
+        }
+
         String finalDoctorSignatureString = "";
         String closingDivTag = "</div>";
         String openingSignatureDivTag = "<div class=\"signature w-100\">";
