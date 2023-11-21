@@ -437,6 +437,9 @@ public class PrescriptionBuilder {
         }
 
         String finalAdditionalDataString = "";
+        String divClassLabelTag = "<div>"
+                + "<label class=\"border-0 font-weight-bold\">Additional Instructions:</label>\n"
+                + "</div>";
         String unorderedListOpeningTag = "<ul class=\"items-list\">";
         String unorderedListClosingTag = "</ul>";
         String listOpeningTag = "<li>";
@@ -460,7 +463,8 @@ public class PrescriptionBuilder {
             }
         }
 
-        finalAdditionalDataString = unorderedListOpeningTag
+        finalAdditionalDataString = divClassLabelTag
+                + unorderedListOpeningTag
                 + additionalInstructionsData
                 + unorderedListClosingTag;
 
