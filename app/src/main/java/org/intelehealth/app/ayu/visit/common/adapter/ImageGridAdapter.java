@@ -72,7 +72,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 Glide.with(mContext)
                         .load(genericViewHolder.image)
                         .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
                         .into(genericViewHolder.mainImageView);
                 genericViewHolder.addImageView.setVisibility(View.GONE);
                 genericViewHolder.crossImageView.setVisibility(View.VISIBLE);

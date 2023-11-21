@@ -1,14 +1,7 @@
 package org.intelehealth.app.appointment.api;
-
-
-
-
 import android.util.Log;
-
 import org.intelehealth.app.BuildConfig;
-
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

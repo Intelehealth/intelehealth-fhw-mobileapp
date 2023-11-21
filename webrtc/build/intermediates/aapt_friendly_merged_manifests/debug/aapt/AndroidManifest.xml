@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.intelehealth.apprtc"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    package="org.intelehealth.apprtc" >
 
-    <uses-sdk
-        android:minSdkVersion="19"
-        android:targetSdkVersion="31" />
+    <uses-sdk android:minSdkVersion="19" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />

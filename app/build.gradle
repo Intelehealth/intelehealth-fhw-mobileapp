@@ -10,14 +10,13 @@ static def getDateTime() {
     return df.format(new Date());
 }
 android {
-    compileSdkVersion 31
+    compileSdk 34
 
     defaultConfig {
         applicationId "org.intelehealth.app"
         minSdkVersion 26
-        targetSdkVersion 31
+        targetSdkVersion 34
         versionCode 64
-        buildToolsVersion('29.0.2')
         versionName '4.1 - Beta'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
@@ -26,8 +25,8 @@ android {
         archivesBaseName = "Intelehealth UIUX_" + versionName + " - " + getDateTime()
     }
     compileOptions {
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     buildTypes {
         release {
@@ -64,52 +63,53 @@ android {
 
     buildFeatures{
         dataBinding true // for data binding
-        
+        buildConfig true
     }
+
+    namespace "org.intelehealth.app"
 }
 dependencies {
     implementation project(':webrtc')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
-    implementation 'com.google.android.gms:play-services-fido:18.1.0'
+    implementation 'com.google.android.gms:play-services-fido:20.1.0'
     implementation project(path: ':ihutils')
-    testImplementation 'junit:junit:4.13-beta-2'
+    testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.media:media:1.0.0'
-    implementation 'androidx.vectordrawable:vectordrawable-animated:1.0.0'
+    implementation 'androidx.media:media:1.6.0'
+    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
 
     //fingerprint lock
     implementation 'androidx.biometric:biometric:1.1.0'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //mvvm
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2'
     // JSON Converter
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     // RxJava
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     // RxAndroid
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     //RxBindings
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.2.0'
     //Retrofit
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    implementation "com.squareup.okhttp3:logging-interceptor:3.8.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
 
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //Uncomment below line to enable multidex support for Kitkat
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     //camera view
     implementation 'com.github.google:cameraview:9bbe07ba44'
     //Google Guava
@@ -117,32 +117,32 @@ dependencies {
     //Parse SDK
     implementation 'com.parse:parse-android:1.15.7'
     //date and time
-    implementation 'joda-time:joda-time:2.9.3'
+    implementation 'joda-time:joda-time:2.9.9'
 
     implementation 'org.apache.commons:commons-lang3:3.6'
 
     // (Java only) Targeting S+ (version 31 and above)
-    implementation 'androidx.work:work-runtime:2.7.1'
+    implementation 'androidx.work:work-runtime:2.8.1'
     // optional - RxJava2 support
-    implementation 'androidx.work:work-rxjava2:2.0.1'
+    implementation 'androidx.work:work-rxjava2:2.8.1'
     // optional - Test helpers
-    androidTestImplementation 'androidx.work:work-testing:2.0.1'
+    androidTestImplementation 'androidx.work:work-testing:2.8.1'
 
-    implementation 'com.github.hotchemi:permissionsdispatcher:2.3.2'
-    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
+    implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
+    annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
 
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
-    implementation "com.google.firebase:firebase-core:17.4.3"
+    implementation 'com.google.firebase:firebase-crashlytics:18.5.1'
+    implementation 'com.google.firebase:firebase-analytics:21.5.0'
+    implementation "com.google.firebase:firebase-core:21.1.1"
     //Targeting S+ (version 31 and above)
-    implementation 'com.google.firebase:firebase-messaging:23.0.0'
+    implementation 'com.google.firebase:firebase-messaging:23.3.1'
     implementation "com.google.firebase:firebase-iid:21.1.0"
 
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
 
-    api 'com.google.android.material:material:1.1.0'
+    api 'com.google.android.material:material:1.10.0'
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-config'
 
@@ -153,7 +153,7 @@ dependencies {
     implementation 'com.github.piruin:quickaction:2.4.3'
 
     implementation 'com.hbb20:ccp:2.6.1'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha01'
+    implementation 'androidx.viewpager2:viewpager2:1.1.0-beta02'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'

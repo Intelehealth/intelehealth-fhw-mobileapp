@@ -138,7 +138,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_24">
+                android:layout_marginTop="@dimen/margin_24"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_ass_complain_label"
@@ -170,7 +171,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
             </LinearLayout>
         </LinearLayout>

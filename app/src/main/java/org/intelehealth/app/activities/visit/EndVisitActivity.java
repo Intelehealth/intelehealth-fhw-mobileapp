@@ -121,7 +121,7 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recycler_older.setLayoutManager(layoutManager);
         searchview_received = findViewById(R.id.searchview_received);
-        closeButton = searchview_received.findViewById(R.id.search_close_btn);
+        closeButton = searchview_received.findViewById(androidx.appcompat.R.id.search_close_btn);
         no_patient_found_block = findViewById(R.id.no_patient_found_block);
         main_block = findViewById(R.id.main_block);
         ((TextView) findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));

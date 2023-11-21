@@ -211,7 +211,6 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
             encounterAdultIntials = UUID.randomUUID().toString();
-
         }
 
         EncounterDAO encounterDAO = new EncounterDAO();

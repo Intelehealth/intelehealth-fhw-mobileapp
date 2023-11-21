@@ -23,6 +23,15 @@
     <color name="star_yellow">#FFCC3E</color>
     <color name="amber">#FFC107</color>
     <color name="gray">#444440</color>
+    <color name="gray_0_0">#F3F3F3</color>
+    <color name="gray_1">#E4E2E2</color>
+    <color name="gray_2">#444440</color>
+    <color name="gray_3">#444440</color>
+    <color name="gray_4">#767272</color>
+    <color name="gray_5">#444440</color>
+    <color name="gray_6">#1A1919</color>
+    <color name="hint_light_gray">#D3D3D3</color>
+    <color name="medium_gray">#9E9E9E</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#80FFFFFF</color>
     <color name="button_text_color">#4B0082</color>
@@ -43,6 +52,10 @@
     <color name="font_black_6">#e0e0e0</color>
 
     <color name="lite_red">#F3665C</color>
+    <color name="dark_red">#940E06</color>
+    <color name="orange">#FF5722</color>
+    <color name="lite_yellow">#F8F3C6</color>
+    <color name="dark_yellow">#FBE626</color>
     <!--Home Screen Changes-->
     <color name="txt_sub_header_color">#333333</color>
 
@@ -143,6 +156,7 @@
     <color name="lightBgPrimary1">#edb6b7</color>
     <color name="lightBgPrimary2">#e28c8e</color>
     <color name="iconsBgPrimaryLight">#fbf0f1</color>
+    <color name="black">#000000</color>
 
 
     <!--END-->

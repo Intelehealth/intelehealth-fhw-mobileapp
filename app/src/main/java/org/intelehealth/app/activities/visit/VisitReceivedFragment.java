@@ -145,7 +145,7 @@ public class VisitReceivedFragment extends Fragment {
         main_block = view.findViewById(R.id.main_block);
         visit_received_card_header = view.findViewById(R.id.visit_received_card_header);
         searchview_received = view.findViewById(R.id.searchview_received);
-        closeButton = searchview_received.findViewById(R.id.search_close_btn);
+        closeButton = searchview_received.findViewById(androidx.appcompat.R.id.search_close_btn);
         recent_nodata = view.findViewById(R.id.recent_nodata);
         older_nodata = view.findViewById(R.id.older_nodata);
         month_nodata = view.findViewById(R.id.month_nodata);
@@ -311,7 +311,6 @@ public class VisitReceivedFragment extends Fragment {
         closeButton.setOnClickListener(v -> {
             no_patient_found_block.setVisibility(View.GONE);
             main_block.setVisibility(View.VISIBLE);
-//            defaultData();
             resetData();
             searchview_received.setQuery("", false);
 

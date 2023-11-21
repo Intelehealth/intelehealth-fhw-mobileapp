@@ -1,121 +1,115 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    xmlns:tools="http://schemas.android.com/tools"
-4    package="org.intelehealth.apprtc"
-5    android:versionCode="1"
-6    android:versionName="1.0" >
+4    package="org.intelehealth.apprtc" >
+5
+6    <uses-sdk android:minSdkVersion="19" />
 7
-8    <uses-sdk
-9        android:minSdkVersion="19"
-9-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml
-10        android:targetSdkVersion="31" />
-10-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml
-11
-12    <uses-feature android:name="android.hardware.camera" />
-12-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:6:5-60
-12-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:6:19-57
-13    <uses-feature android:name="android.hardware.camera.autofocus" />
-13-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:7:5-70
-13-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:7:19-67
-14    <uses-feature
-14-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:8:5-10:35
-15        android:glEsVersion="0x00020000"
-15-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:9:9-41
-16        android:required="true" />
-16-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:10:9-32
-17
-18    <uses-permission android:name="android.permission.CAMERA" />
-18-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:12:5-65
-18-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:12:22-62
-19    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-19-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:13:5-79
-19-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:13:22-76
-20    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-20-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:14:5-80
-20-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:14:22-77
-21    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-21-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:15:5-71
-21-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:15:22-68
-22    <uses-permission android:name="android.permission.INTERNET" />
-22-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:16:5-67
-22-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:16:22-64
-23    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-23-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:18:5-81
-23-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:18:22-78
-24    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-24-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:19:5-81
-24-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:19:22-78
-25    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-25-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:20:5-80
-25-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:20:22-77
-26    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-26-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:22:5-79
-26-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:22:22-76
-27    <uses-permission android:name="android.permission.BLUETOOTH" />
-27-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:23:5-68
-27-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:23:22-65
-28    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-28-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:24:5-75
-28-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:24:22-72
-29
-30    <application
-30-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:26:5-66:19
-31        android:allowBackup="true"
-31-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:27:9-35
-32        android:label="@string/app_name"
-32-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:28:9-41
-33        android:requestLegacyExternalStorage="true"
-33-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:29:9-52
-34        android:supportsRtl="true"
-34-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:30:9-35
-35        android:theme="@style/AppTheme"
-35-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:31:9-40
-36        tools:ignore="LockedOrientationActivity" >
-36-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:32:9-49
-37        <activity android:name="org.intelehealth.ihutils.ui.CameraActivity" />
-37-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:33:9-79
-37-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:33:19-76
-38        <activity
-38-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:34:9-38:63
-39            android:name="org.intelehealth.apprtc.ChatActivity"
-39-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:35:13-64
-40            android:screenOrientation="portrait"
-40-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:36:13-49
-41            android:theme="@style/AppTheme.NoActionBar"
-41-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:37:13-56
-42            android:windowSoftInputMode="stateAlwaysHidden" />
-42-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:38:13-60
-43        <!--
+8    <uses-feature android:name="android.hardware.camera" />
+8-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:6:5-60
+8-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:6:19-57
+9    <uses-feature android:name="android.hardware.camera.autofocus" />
+9-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:7:5-70
+9-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:7:19-67
+10    <uses-feature
+10-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:8:5-10:35
+11        android:glEsVersion="0x00020000"
+11-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:9:9-41
+12        android:required="true" />
+12-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:10:9-32
+13
+14    <uses-permission android:name="android.permission.CAMERA" />
+14-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:12:5-65
+14-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:12:22-62
+15    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+15-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:13:5-79
+15-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:13:22-76
+16    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+16-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:14:5-80
+16-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:14:22-77
+17    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+17-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:15:5-71
+17-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:15:22-68
+18    <uses-permission android:name="android.permission.INTERNET" />
+18-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:16:5-67
+18-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:16:22-64
+19    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+19-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:18:5-81
+19-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:18:22-78
+20    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+20-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:19:5-81
+20-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:19:22-78
+21    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+21-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:20:5-80
+21-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:20:22-77
+22    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+22-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:22:5-79
+22-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:22:22-76
+23    <uses-permission android:name="android.permission.BLUETOOTH" />
+23-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:23:5-68
+23-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:23:22-65
+24    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+24-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:24:5-75
+24-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:24:22-72
+25
+26    <application
+26-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:26:5-66:19
+27        android:allowBackup="true"
+27-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:27:9-35
+28        android:label="@string/app_name"
+28-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:28:9-41
+29        android:requestLegacyExternalStorage="true"
+29-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:29:9-52
+30        android:supportsRtl="true"
+30-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:30:9-35
+31        android:theme="@style/AppTheme"
+31-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:31:9-40
+32        tools:ignore="LockedOrientationActivity" >
+32-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:32:9-49
+33        <activity android:name="org.intelehealth.ihutils.ui.CameraActivity" />
+33-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:33:9-79
+33-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:33:19-76
+34        <activity
+34-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:34:9-38:63
+35            android:name="org.intelehealth.apprtc.ChatActivity"
+35-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:35:13-64
+36            android:screenOrientation="portrait"
+36-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:36:13-49
+37            android:theme="@style/AppTheme.NoActionBar"
+37-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:37:13-56
+38            android:windowSoftInputMode="stateAlwaysHidden" />
+38-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:38:13-60
+39        <!--
+40          <activity
+41              android:name="com.shivam.androidwebrtc.app_rtc_sample.main.AppRTCMainActivity"
+42              android:label="@string/app_name"
+43              android:windowSoftInputMode="adjustPan" />
 44          <activity
-45              android:name="com.shivam.androidwebrtc.app_rtc_sample.main.AppRTCMainActivity"
-46              android:label="@string/app_name"
-47              android:windowSoftInputMode="adjustPan" />
-48          <activity
-49              android:name="com.shivam.androidwebrtc.app_rtc_sample.call.CallActivity"
-50              android:configChanges="orientation|screenSize"
-51              android:label="@string/app_name"
-52              android:screenOrientation="fullUser"
-53              android:theme="@style/AppTheme.Call" />
-54        -->
-55        <!--
-56<activity
-57            android:name="com.shivam.androidwebrtc.LauncherActivity"
-58            android:theme="@style/AppTheme.NoActionBar">
-59            <intent-filter>
-60                <action android:name="android.intent.action.MAIN" />
-61
-62                <category android:name="android.intent.category.LAUNCHER" />
-63            </intent-filter>
-64        </activity>
-65        -->
-66        <activity
-66-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:62:9-65:59
-67            android:name="org.intelehealth.apprtc.CompleteActivity"
-67-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:63:13-68
-68            android:screenOrientation="portrait"
-68-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:64:13-49
-69            android:theme="@style/AppTheme.NoActionBar" />
-69-->D:\KAVERI INTELEHEALTH\INTELEHEALTH PROJECTS-ALL\NAMMA AAROGYA\webrtc\src\main\AndroidManifest.xml:65:13-56
-70    </application>
-71
-72</manifest>
+45              android:name="com.shivam.androidwebrtc.app_rtc_sample.call.CallActivity"
+46              android:configChanges="orientation|screenSize"
+47              android:label="@string/app_name"
+48              android:screenOrientation="fullUser"
+49              android:theme="@style/AppTheme.Call" />
+50        -->
+51        <!--
+52<activity
+53            android:name="com.shivam.androidwebrtc.LauncherActivity"
+54            android:theme="@style/AppTheme.NoActionBar">
+55            <intent-filter>
+56                <action android:name="android.intent.action.MAIN" />
+57
+58                <category android:name="android.intent.category.LAUNCHER" />
+59            </intent-filter>
+60        </activity>
+61        -->
+62        <activity
+62-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:62:9-65:59
+63            android:name="org.intelehealth.apprtc.CompleteActivity"
+63-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:63:13-68
+64            android:screenOrientation="portrait"
+64-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:64:13-49
+65            android:theme="@style/AppTheme.NoActionBar" />
+65-->C:\Users\Nishita\Desktop\Intelehealth Studio\Namma Project\webrtc\src\main\AndroidManifest.xml:65:13-56
+66    </application>
+67
+68</manifest>
