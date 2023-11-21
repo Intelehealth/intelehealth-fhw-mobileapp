@@ -60,8 +60,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "onMessageReceived:remote " + new Gson().toJson(remoteMessage));
-        Log.d(TAG, "onMessageReceived:notification " + new Gson().toJson(remoteMessage.getNotification()));
+//        Log.d(TAG, "onMessageReceived:remote " + new Gson().toJson(remoteMessage));
+//        Log.d(TAG, "onMessageReceived:notification " + new Gson().toJson(remoteMessage.getNotification()));
 
         //Displaying data in log
         //It is optional

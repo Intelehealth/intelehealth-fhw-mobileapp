@@ -15,67 +15,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:paddingVertical="@dimen/list_container_padding">
-
-            <!--   <com.google.android.material.checkbox.MaterialCheckBox
-                   android:id="@+id/cbLabourCompleted"
-                   style="@style/Theme.EZazi.Text.Dialog.Content"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:layout_gravity="center_vertical"
-                   android:button="@drawable/checlbox_custom"
-                   android:layout_marginTop="@dimen/other_info_checkbox_margin_top"
-                   android:fontFamily="@font/dm_sans_medium"
-                   android:layoutDirection="rtl"
-                   android:padding="@dimen/small_btn_horizontal_padding"
-                   android:text="@string/labour_completed"
-                   app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintRight_toRightOf="parent" />-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_dialog_list_item"
-                android:padding="@dimen/small_btn_horizontal_padding">
+                android:paddingVertical="0dp"
+                android:paddingStart="0dp"
+                tools:ignore="RtlSymmetry">
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/cbLabourCompleted"
                     style="@style/Theme.EZazi.Text.Dialog.Content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layoutDirection="rtl"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
+                    android:padding="@dimen/small_btn_horizontal_padding"
                     android:text="@{CompletedVisitStatus.LABOUR.label}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="@string/stage_2_labour_complete" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!--            <RelativeLayout-->
-            <!--                style="@style/Theme.EZazi.Text.Dialog.Content"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="@dimen/other_info_checkbox_margin_top"-->
-            <!--                android:background="@drawable/selector_dialog_list_item"-->
-            <!--                android:orientation="horizontal">-->
-
-            <!--                <TextView-->
-            <!--                    style="@style/Theme.EZazi.Text.Dialog.Content"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginEnd="@dimen/tv_labour_margin_end"-->
-            <!--                    android:text="@string/labour_completed" />-->
-
-            <!--                <CheckBox-->
-            <!--                    android:id="@+id/cbLabourCompleted"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_alignParentEnd="true"-->
-            <!--                    android:checked="false" />-->
-            <!--            </RelativeLayout>-->
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvReferToOtherHospital"
@@ -126,7 +91,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dialog_input_margin_top"
                 android:background="@drawable/selector_dialog_list_item"
-                android:padding="@dimen/small_btn_horizontal_padding">
+                android:paddingVertical="0dp"
+                android:paddingStart="0dp"
+                tools:ignore="RtlSymmetry">
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/cbMotherDeceased"
@@ -136,6 +103,7 @@
                     android:layoutDirection="rtl"
                     android:minWidth="0dp"
                     android:minHeight="0dp"
+                    android:padding="@dimen/small_btn_horizontal_padding"
                     android:text="@{CompletedVisitStatus.MOTHER_DECEASED.label}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -172,23 +140,6 @@
                     android:textSize="@dimen/input_inner_size" />
 
             </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
-            <!--<EditText
-                android:id="@+id/etOtherCommentOutcomes"
-                style="@style/Theme.EZazi.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dialog_input_margin_top"
-                android:background="@drawable/selector_dialog_list_item"
-                android:gravity="center_vertical"
-                android:hint="@string/enter_other_comment"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:nextFocusForward="@id/apgar_1min"
-                android:padding="@dimen/input_padding"
-                android:paddingStart="@dimen/input_box_padding_start"
-                android:textSize="@dimen/dialog_input_hints"
-                app:drawableEndCompat="@drawable/ic_space"
-                tools:ignore="TextFields" />-->
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

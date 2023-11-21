@@ -80,7 +80,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
-            android:configChanges="screenLayout|uiMode|orientation|keyboard"
+            android:configChanges="screenLayout|uiMode|orientation|keyboardHidden"
             android:exported="false"
             android:label="@string/title_activity_visit_summary"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
