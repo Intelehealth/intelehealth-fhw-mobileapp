@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.chooseLanguageActivity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,14 +19,18 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
@@ -33,6 +38,7 @@ import androidx.biometric.BiometricPrompt;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -77,6 +83,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     String appLanguage;
     SessionManager sessionManager = null;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
+    private CustomDialog customDialog;
 
     String LOG_TAG = "SplashActivity";
     BiometricPrompt biometricPrompt;
@@ -222,6 +229,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
+    public static final int PERMISSION_USAGE_ACCESS_STATS = 2792;
 
     private boolean checkAndRequestPermissions() {
 
@@ -277,7 +285,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
 
             if (mode != AppOpsManager.MODE_ALLOWED) {
-                MyAchievementsFragment.CustomDialog customDialog = new MyAchievementsFragment.CustomDialog(this);
+                customDialog = new CustomDialog(this);
                 customDialog.showDialog1();
             }
         } catch (PackageManager.NameNotFoundException ignored) {
@@ -573,6 +581,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_USAGE_ACCESS_STATS) {
+            if (customDialog.isVisible()) {
+                customDialog.dismiss();
+            }
+        }
+
         if (requestCode == GROUP_PERMISSION_REQUEST) {
             boolean allGranted = grantResults.length != 0;
             boolean permissionsCheck = false;
@@ -607,5 +621,36 @@ public class SplashScreenActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public static class CustomDialog extends DialogFragment {
+        Context activityContext;
+
+        public CustomDialog(Activity activity) {
+            this.activityContext = activity;
+        }
+
+        public void showDialog1() {
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(activityContext);
+            builder.setCancelable(false);
+            LayoutInflater inflater = LayoutInflater.from(activityContext);
+            View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_enable_permissions, null);
+            builder.setView(customLayout);
+
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+            dialog.show();
+            int width = activityContext.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+
+            dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+            Button btnOkay = customLayout.findViewById(R.id.btn_okay);
+            btnOkay.setOnClickListener(v -> {
+                dialog.dismiss();
+                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                ((ComponentActivity) activityContext).startActivityForResult(intent, PERMISSION_USAGE_ACCESS_STATS);
+            });
+        }
     }
 }
