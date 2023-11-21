@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,21 +70,26 @@ public class CompleteVisitOnEnd2StageDialog extends ReferTypeHelper implements V
 
         binding.tvReferToOtherHospital.setOnClickListener(this);
         binding.tvReferToOtherHospital.setTag(UuidDictionary.REFER_TYPE);
+
         binding.tvSelfDischarge.setOnClickListener(this);
         binding.tvSelfDischarge.setTag(UuidDictionary.REFER_TYPE);
+
         binding.tvShiftToSection.setOnClickListener(this);
         binding.tvShiftToSection.setTag(UuidDictionary.REFER_TYPE);
+
         binding.tvReferToICU.setOnClickListener(this);
         binding.tvReferToICU.setTag(UuidDictionary.REFER_TYPE);
 
         binding.cbLabourCompleted.setOnCheckedChangeListener(this);
         binding.cbLabourCompleted.setTag(UuidDictionary.BIRTH_OUTCOME);
+
         binding.cbMotherDeceased.setOnCheckedChangeListener(this);
         binding.cbMotherDeceased.setTag(UuidDictionary.MOTHER_DECEASED_FLAG);
 
         binding.etOtherCommentOutcomes.setTag(UuidDictionary.REFER_TYPE);
         binding.etOtherCommentOutcomes.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
         binding.etOtherCommentOutcomes.setOnFocusChangeListener((v, hasFocus) -> {
+            Log.e(TAG, "setOnFocusChangeListener: " + hasFocus);
             if (hasFocus) {
                 clearSelection();
                 Utils.showKeyboard(context, v);
@@ -105,21 +111,24 @@ public class CompleteVisitOnEnd2StageDialog extends ReferTypeHelper implements V
     }
 
     private void clearSelection() {
+        Log.e(TAG, "clearSelection: ");
         if (selectedView != null) selectedView.setSelected(false);
         binding.cbLabourCompleted.setChecked(false);
         binding.cbMotherDeceased.setChecked(false);
     }
 
     private void clearUncheckableItemSelection() {
+        Log.e(TAG, "clearUncheckableItemSelection: ");
         if (selectedView != null) selectedView.setSelected(false);
-        binding.etOtherCommentOutcomes.clearFocus();
-        binding.etOtherCommentOutcomes.setCursorVisible(false);
+        binding.llStage2Dialog.requestFocus();
+//        binding.etOtherCommentOutcomes.clearFocus();
         binding.etOtherCommentOutcomes.setText("");
-        Utils.hideKeyboard((AppCompatActivity) context);
+        Utils.hideKeyboard((AppCompatActivity) context, binding.etOtherCommentOutcomes);
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Log.e(TAG, "onCheckedChanged: " + isChecked);
         if (isChecked) clearUncheckableItemSelection();
         selectedView = null;
     }

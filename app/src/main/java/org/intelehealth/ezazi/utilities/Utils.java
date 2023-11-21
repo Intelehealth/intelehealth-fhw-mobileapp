@@ -19,8 +19,11 @@ public class Utils {
     }
 
     public static void hideKeyboard(AppCompatActivity activity) {
+        hideKeyboard(activity, activity.getCurrentFocus());
+    }
+
+    public static void hideKeyboard(AppCompatActivity activity, View view) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        View view = activity.getCurrentFocus();
         if (view == null) {
             view = new View(activity);
         }
