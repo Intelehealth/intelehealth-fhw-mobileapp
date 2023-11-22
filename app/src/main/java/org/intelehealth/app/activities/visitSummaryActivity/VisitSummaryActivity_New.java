@@ -109,6 +109,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
+import org.intelehealth.app.activities.visit.VisitDetailsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -139,6 +140,7 @@ import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
@@ -156,8 +158,9 @@ import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.app.webrtc.activity.EkalChatActivity;
 import org.intelehealth.ihutils.ui.CameraActivity;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -189,7 +192,7 @@ import okhttp3.ResponseBody;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitSummaryActivity_New extends AppCompatActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
+public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     //SQLiteDatabase db;
@@ -338,34 +341,23 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
             return;
         }
+
         EncounterDAO encounterDAO = new EncounterDAO();
-        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUUID);
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUUID);
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
         RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
-        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, ChatActivity.class);
-        chatIntent.putExtra("patientName", patientName);
-        chatIntent.putExtra("visitUuid", visitUUID);
-        chatIntent.putExtra("patientUuid", patientUuid);
-        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-        chatIntent.putExtra("isForVideo", false);
+        RtcArgs args = new RtcArgs();
         if (rtcConnectionDTO != null) {
-            try {
-                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
-                    Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-                } else {
-                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-                    startActivity(chatIntent);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
+            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
+            args.setPatientId(patientUuid);
+            args.setPatientName(patientName);
+            args.setVisitId(visitUUID);
+            args.setNurseId(encounterDTO.getProvideruuid());
+            EkalChatActivity.startChatActivity(VisitSummaryActivity_New.this, args);
         } else {
             //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
             Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
@@ -1946,9 +1938,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 

@@ -10,7 +10,7 @@ buildscript {
 android {
     sourceSets.main {
         jniLibs.srcDir 'libs'
-        jni.srcDirs = [] //disable automatic ndk-build call
+        //disable automatic ndk-build call
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -22,10 +22,8 @@ android {
     }
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
-        minSdkVersion 19
-        targetSdkVersion 34
-        versionCode 1
-        versionName "1.0"
+        minSdk 23
+        targetSdk 34
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -71,7 +69,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.android.volley:volley:1.2.1'
-    annotationProcessor 'androidx.databinding:databinding-compiler:8.2.0'
+    annotationProcessor 'androidx.databinding:databinding-compiler:8.1.4'
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.github.bumptech.glide:glide:4.14.2'

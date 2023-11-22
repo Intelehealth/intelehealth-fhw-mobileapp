@@ -266,7 +266,7 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/divider1"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -278,7 +278,7 @@
                         <TableLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/divider1"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
@@ -448,7 +448,7 @@
                             android:layout_margin="@dimen/fu_card_margin_sides">
 
                             <ImageView
-                                android:id="@+id/vs_icon"
+                                android:id="@+id/ivVisitAddNotes"
                                 android:layout_width="@dimen/edittext_height_44dp"
                                 android:layout_height="@dimen/edittext_height_44dp"
                                 android:src="@drawable/add_notes_redicon" />
@@ -459,7 +459,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_8"
-                                android:layout_toEndOf="@+id/vs_icon"
+                                android:layout_toEndOf="@+id/ivVisitAddNotes"
                                 android:text="@string/additional_notes" />
 
                             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -482,7 +482,7 @@
                             tools:visibility="visible">
 
                             <View
-                                android:id="@+id/divider"
+                                android:id="@+id/divider2"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -495,7 +495,7 @@
                                 android:id="@+id/tilAdditionalNotesVS"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/divider"
+                                android:layout_below="@+id/divider2"
                                 android:scrollbars="vertical"
                                 android:fadeScrollbars="false"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -529,7 +529,7 @@
                                 tools:visibility="visible"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/divider"
+                                android:layout_below="@+id/divider2"
                                 android:layout_marginStart="@dimen/fu_margin_start"
                                 android:layout_marginTop="@dimen/fu_margin_start"
                                 android:layout_marginEnd="@dimen/fu_margin_start"
@@ -622,7 +622,6 @@
                     android:id="@+id/special_vd_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/add_doc_relative"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
                     android:layout_marginTop="@dimen/margin_5"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -754,7 +753,6 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/bottom_btn_relative"
                 android:layout_below="@+id/relative_speciality_block"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="24dp"

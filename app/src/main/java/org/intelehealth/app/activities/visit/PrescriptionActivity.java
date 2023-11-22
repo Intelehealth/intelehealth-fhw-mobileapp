@@ -510,9 +510,9 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 

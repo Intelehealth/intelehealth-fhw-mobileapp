@@ -13,22 +13,32 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.webrtc.activity.EkalCallLogActivity;
+import org.intelehealth.app.webrtc.activity.EkalChatActivity;
+import org.intelehealth.app.webrtc.activity.EkalVideoActivity;
+import org.intelehealth.klivekit.RtcEngine;
+import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.Manager;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
-public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
+public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
@@ -51,6 +61,10 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         return sIntelehealthApplication;
     }
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper;
+//    private RealTimeDataChangedObserver dataChangedObserver;
+
+    private SocketManager socketManager = SocketManager.getInstance();
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -99,7 +113,13 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
             mDbHelper.onCreate(localdb);
         }
-        registerActivityLifecycleCallbacks(this);
+
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+        startRealTimeObserverAndSocket();
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree());
+        }
     }
 
     private void configureCrashReporting() {
@@ -109,41 +129,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-
-    }
-
-    @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public void onActivityStarted(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityResumed(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityPaused(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityStopped(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-    }
-
-    @Override
-    public void onActivityDestroyed(Activity activity) {
 
     }
 
@@ -168,5 +153,57 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button1.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
+    }
+
+    public void startRealTimeObserverAndSocket() {
+//        startRealTimeObserver();
+        initSocketConnection();
+    }
+
+    private void startRealTimeObserver() {
+//        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
+//            dataChangedObserver = new RealTimeDataChangedObserver(this);
+//            dataChangedObserver.startObserver();
+//        }
+    }
+
+    /**
+     * Socket should be open and close app level,
+     * so when app create open it and close on app terminate
+     */
+    private void initSocketConnection() {
+        Log.d(TAG, "initSocketConnection: ");
+        if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().isEmpty()) {
+            Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+            String socketUrl = "https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
+                    + sessionManager.getProviderID()
+                    + "&name=" + sessionManager.getChwname();
+            if (!socketManager.isConnected()) socketManager.connect(socketUrl);
+            initRtcConfig();
+        }
+    }
+
+    private void initRtcConfig() {
+        new RtcEngine.Builder()
+                .callUrl("wss://" + sessionManager.getServerUrl() + ":9090")
+                .socketUrl("https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
+                        + sessionManager.getProviderID()
+                        + "&name=" + sessionManager.getChwname())
+                .callIntentClass(EkalVideoActivity.class)
+                .chatIntentClass(EkalChatActivity.class)
+                .callLogIntentClass(EkalCallLogActivity.class)
+                .build().saveConfig(this);
+    }
+
+    @Override
+    public void onTerminate() {
+        Timber.tag("APP").d("onTerminate");
+        stopRealTimeObserverAndSocket();
+        super.onTerminate();
+    }
+
+    public void stopRealTimeObserverAndSocket() {
+//        if (dataChangedObserver != null) dataChangedObserver.stopObserver();
+        socketManager.disconnect();
     }
 }
