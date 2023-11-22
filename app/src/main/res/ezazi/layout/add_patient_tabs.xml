@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="@dimen/patient_info_tab_horizontal_margin"
+    android:paddingHorizontal="@dimen/actionbar_horizontal_padding"
     android:paddingVertical="@dimen/screen_container_padding">
 
     <com.google.android.material.textview.MaterialTextView

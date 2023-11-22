@@ -215,8 +215,8 @@
     <dimen name="btn_add_patient_margin_top">50dp</dimen>
     <dimen name="dotted_line_top_margin">@dimen/std_24dp</dimen>
     <dimen name="input_bg_radius">@dimen/std_8dp</dimen>
-    <dimen name="dash_line_size">@dimen/std_12dp</dimen>
-    <dimen name="dash_line_gap">@dimen/std_10dp</dimen>
+    <dimen name="dash_line_size">@dimen/std_8dp</dimen>
+    <dimen name="dash_line_gap">@dimen/std_4dp</dimen>
     <dimen name="validation_error_tv_margin_top">6dp</dimen>
     <dimen name="validation_error_tv_size">16sp</dimen>
     <dimen name="summary_values_text_size">@dimen/std_20sp</dimen>

@@ -38,6 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
@@ -372,7 +373,7 @@ public class LoginActivity extends AppCompatActivity {
     public void UserLoginTask(String mEmail, String mPassword) {
         cpd.show();
 //        String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
-        String urlString = urlModifiers.loginUrl(getString(R.string.setupUrl));
+        String urlString = urlModifiers.loginUrl(BuildConfig.SERVER_URL);
         Logger.logD(TAG, "username and password" + mEmail + mPassword);
         encoded = base64Utils.encoded(mEmail, mPassword);
         sessionManager.setEncoded(encoded);
@@ -402,7 +403,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("SESSOO", "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
 
                 UrlModifiers urlModifiers = new UrlModifiers();
-                String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
+                String url = urlModifiers.loginUrlProvider(BuildConfig.SERVER_URL, loginModel.getUser().getUuid());
                 if (authencated) {
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
                     loginProviderModelObservable
