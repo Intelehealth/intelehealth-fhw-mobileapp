@@ -353,7 +353,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             finish();
         }
         else {
-          //  onBackPressed();
+            super.onBackPressed();
         }
 
 
