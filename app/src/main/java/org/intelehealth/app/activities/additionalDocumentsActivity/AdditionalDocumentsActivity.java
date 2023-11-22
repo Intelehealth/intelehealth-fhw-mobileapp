@@ -342,7 +342,20 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+
+        if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty()) {
+            Intent intent = new Intent();
+            intent.putExtra("rowListItem", (Serializable) rowListItem);
+            setResult(IMAGE_LIST_INTENT, intent);
+            finish();
+        }
+        else {
+          //  onBackPressed();
+        }
 
 
-
+    }
 }
