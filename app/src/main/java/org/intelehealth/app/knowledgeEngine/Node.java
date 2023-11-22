@@ -2737,7 +2737,8 @@ public class Node implements Serializable {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
 
                         if (mOptions.get(i).getInputType().equals("camera")) {
-                        } else {
+                        }
+                        else {
                             if (!answer.isEmpty()) {
                                 if (answer.equals("%")) {
                                 } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {

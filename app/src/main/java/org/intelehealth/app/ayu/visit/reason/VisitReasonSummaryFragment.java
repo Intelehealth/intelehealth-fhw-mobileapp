@@ -126,11 +126,9 @@ public class VisitReasonSummaryFragment extends Fragment {
             public void onClick(View view) {
                 if (NetworkConnection.isOnline(getActivity())) {
                     new SyncUtils().syncBackground();
-//                    Toast.makeText(getActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        //prepareSummary();
         prepareSummaryV2();
         return view;
     }
@@ -142,8 +140,6 @@ public class VisitReasonSummaryFragment extends Fragment {
             answerInLocale = answerInLocale.replaceAll("<.*?>", "");
             System.out.println(answerInLocale);
             Log.v(TAG, answerInLocale);
-            //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
-
             String[] spt = answerInLocale.split("►");
             List<String> list = new ArrayList<>();
             String associatedSymptomsString = "";
@@ -180,18 +176,13 @@ public class VisitReasonSummaryFragment extends Fragment {
                             summaryData.setDisplayValue(v);
                             visitSummaryDataList.add(summaryData);
                         } else {
-
-
-                            //String k = value.split("•")[0].trim();
                             StringBuilder stringBuilder = new StringBuilder();
                             String key = "";
                             String lastString = "";
                             for (int j = 0; j < qa.length; j++) {
-
                                 String v1 = qa[j].trim();
                                 System.out.println(v1);
                                 if (lastString.equals(v1)) continue;
-                                //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
                                 stringBuilder.append(v1);
                                 lastString = v1;
                                 if (j % 2 != 0) {
@@ -199,12 +190,10 @@ public class VisitReasonSummaryFragment extends Fragment {
                                     if( j== qa.length-2){
                                         v = v + Node.bullet_arrow +qa[j+1];
                                     }
-
                                     VisitSummaryData summaryData = new VisitSummaryData();
                                     summaryData.setQuestion(key);
                                     summaryData.setDisplayValue(v);
                                     visitSummaryDataList.add(summaryData);
-
                                 } else {
                                     key = qa[j].trim();
                                 }

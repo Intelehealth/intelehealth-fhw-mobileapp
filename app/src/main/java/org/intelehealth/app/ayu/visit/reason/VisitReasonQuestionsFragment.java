@@ -51,7 +51,6 @@ public class VisitReasonQuestionsFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     public static VisitReasonQuestionsFragment newInstance(Intent intent, boolean isEditMode, List<Node> nodeList) {
         VisitReasonQuestionsFragment fragment = new VisitReasonQuestionsFragment();
         fragment.mIsEditMode = isEditMode;
@@ -65,15 +64,11 @@ public class VisitReasonQuestionsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mActionListener = (VisitCreationActionListener) context;
     }
-
-
-    //private List<Node> mCurrentRootOptionList = new ArrayList<>();
     private int mCurrentComplainNodeOptionsIndex = 0;
     private QuestionsListingAdapter mQuestionsListingAdapter;
     private HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
@@ -81,19 +76,13 @@ public class VisitReasonQuestionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-
         View view = inflater.inflate(R.layout.fragment_visit_reason_questions, container, false);
-
         if (mIsEditMode) {
             view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
             view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VISIT_REASON_QUESTION_SUMMARY, mIsEditMode, null);
-
                 }
             });
             view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
@@ -111,7 +100,6 @@ public class VisitReasonQuestionsFragment extends Fragment {
         linearLayoutManager.setReverseLayout(false);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-        //mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
             Log.v("VISIT_REASON", new Gson().toJson(mChiefComplainRootNodeList.get(i)));
@@ -167,20 +155,15 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     mCurrentNode = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
                 }
                 if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
-                    //linearLayoutManager.setStackFromEnd(false);
                     if (!mQuestionsListingAdapter.isIsAssociateSymptomsLoaded())
                         mQuestionsListingAdapter.addItem(mCurrentNode);
                     mQuestionsListingAdapter.setAssociateSymptomsLoaded(true);
                 } else {
-                    //linearLayoutManager.setStackFromEnd(false);
                     mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
                 }
 
                 VisitUtils.scrollNow(recyclerView, 300, 0, 500);
-
                 VisitUtils.scrollNow(recyclerView, 1400, 0, 1400);
-
-
                 mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
                 linearLayoutManager.setStackFromEnd(false);
             }

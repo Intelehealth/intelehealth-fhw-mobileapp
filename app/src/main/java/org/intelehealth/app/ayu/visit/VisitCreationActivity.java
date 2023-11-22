@@ -620,7 +620,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 }
             }
             insertion = VisitUtils.replaceToEnglishCommonString(insertion, sessionManager.getAppLanguage());
-            jsonObject.put("en", insertion);
+            jsonObject.put("en", insertionLocale);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), insertionLocale);
             //}
