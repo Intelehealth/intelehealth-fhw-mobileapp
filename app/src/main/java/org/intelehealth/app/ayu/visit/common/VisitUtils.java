@@ -279,6 +279,10 @@ public class VisitUtils {
         }
     }
 
+    public static String getTranslatedAssociatedSymptomQStringNew(String localeCode) {
+        return "Would you like to add any additional information?";
+    }
+
 
     public static String getTranslatedGeneralExamString(String localeCode) {
         if (localeCode.equalsIgnoreCase("hi")) {

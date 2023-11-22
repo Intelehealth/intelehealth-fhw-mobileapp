@@ -584,11 +584,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     private boolean isSavedVisitReason() {
-
-        // save to cache
         sessionManager.setVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid, new Gson().toJson(mSelectedComplainList));
         sessionManager.setVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid, new Gson().toJson(mChiefComplainRootNodeList));
-        //**********
         insertion = "";
         insertionLocale = "";
         StringBuilder stringBuilder = new StringBuilder();
@@ -605,8 +602,6 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             }
         }
         insertionLocale = stringBuilder.toString();
-
-
         if (insertion.contains("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>")) {
             insertion = insertion.replace("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>", "<br/>►<b> Associated symptoms</b>:  <br/>");
         }
@@ -620,10 +615,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 }
             }
             insertion = VisitUtils.replaceToEnglishCommonString(insertion, sessionManager.getAppLanguage());
-            jsonObject.put("en", insertionLocale);
-            //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+            jsonObject.put("en", insertion);
             jsonObject.put("l-" + sessionManager.getAppLanguage(), insertionLocale);
-            //}
             insertionWithLocaleJsonString = jsonObject.toString();
             Log.v(TAG, insertionWithLocaleJsonString);
         } catch (JSONException e) {

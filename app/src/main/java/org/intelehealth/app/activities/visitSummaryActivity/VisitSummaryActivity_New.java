@@ -5327,9 +5327,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 if (valueArray[0] != null)
                     complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
                 if (isAssociateSymptomFound) {
-
-
-                    if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
+                    /*if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
                         String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
                                 .split("• Patient denies -<br/>");
 
@@ -5339,7 +5337,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         patientReports = reports[1];
                         patientDenies = assoValueBlock[1];
                         complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-                    } else if (valueArray[1].contains("• Patient reports")) {
+                    } else*/ if (valueArray[1].contains("• Patient reports")) {
                         // todo: handle later -> comment added on 14 nov 2022
                         String reports[] = valueArray[1].replace("• Patient reports -<br>", "• Patient reports -<br/>")
                                 .split("• Patient reports -<br/>");
@@ -5352,6 +5350,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     }
 
                 }
+                else {
+                    patientReports = getResources().getString(R.string.no_data_added);
+                    patientDenies = "No Additional Information Added";
+                }
 
                 // todo: testing:
             /*String data = "►Abdominal Pain: <br><span style=\"color:#7F7B92\">• Site</span> &emsp;&emsp; Upper (R) - Right Hypochondrium.<br>" +
@@ -5362,8 +5364,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 // todo: testin end
 
                 // associated symp.
-                patientReports_txtview.setText(Html.fromHtml(patientReports));
-                patientDenies_txtview.setText(Html.fromHtml(patientDenies));
+                if(patientReports.equalsIgnoreCase(getResources().getString(R.string.no_data_added)) && !patientDenies.equalsIgnoreCase(getResources().getString(R.string.no_data_added)))
+                {
+                    patientReports_txtview.setVisibility(View.GONE);
+                    patientDenies_txtview.setVisibility(View.VISIBLE);
+                    patientDenies_txtview.setText(Html.fromHtml(patientDenies));
+                }
+                if(patientDenies.equalsIgnoreCase(getResources().getString(R.string.no_data_added)) && !patientReports.equalsIgnoreCase(getResources().getString(R.string.no_data_added)))
+                {
+                    patientReports_txtview.setVisibility(View.VISIBLE);
+                    patientDenies_txtview.setVisibility(View.GONE);
+                    patientReports_txtview.setText(Html.fromHtml(patientReports));
+                }
             } else {
                 /*String c1 = "►" + getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage());
                 Log.v(TAG, "complaint c1: " + c1);

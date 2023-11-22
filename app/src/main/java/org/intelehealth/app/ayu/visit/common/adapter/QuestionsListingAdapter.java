@@ -300,17 +300,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
 
         }
-        mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainNameByLocale());
+        mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(0).getComplainNameByLocale());
 
-        /*if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
+        if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
             //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
             showAssociateSymptoms(genericViewHolder.node, genericViewHolder, position);
             genericViewHolder.tvQuestionCounter.setText("");
-        }*/if (genericViewHolder.node.getText().equalsIgnoreCase("Other Remarks [Describe]")) {
-            //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
-            prepareForOtherRemark(genericViewHolder.node, genericViewHolder, position);
-            genericViewHolder.tvQuestionCounter.setText("");
-        } else {
+        }else {
             //mOnItemSelection.needTitleChange("");
 
 
@@ -323,7 +319,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             switch (type) {
                 case "text":
                     // askText(questionNode, context, adapter);
-                    genericViewHolder.tvQuestionDesc.setVisibility(View.GONE);
                     addTextEnterView(mItemList.get(position), genericViewHolder, position);
                     break;
                 case "date":
@@ -999,9 +994,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 } else if (holder.selectedNestedOptionIndex > 0) {
                     for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
-                        Log.d(TAG, "showOptionsData: i : " + i);
+                        if (options.size() < i) {
+                            Log.d(TAG, "showOptionsData: i : " + i);
                         Log.d(TAG, "showOptionsData: options size : " + options.size());
-                        if (options.size() > i) {
                             holder.nestedQuestionsListingAdapter.addItem(options.get(i));
                         }
                     }
@@ -1686,7 +1681,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
         Log.v(TAG, "addTextEnterView");
         holder.singleComponentContainer.removeAllViews();
-        holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
@@ -2012,8 +2006,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
         }
-
-
     }
 
     private void showKnowMoreDialog(String title, String message) {
@@ -2021,7 +2013,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         dialogUtils.showCommonDialog(mContext, 0, title, message, true, mContext.getResources().getString(R.string.okay), mContext.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
             @Override
             public void onDialogActionDone(int action) {
-
             }
         });
     }

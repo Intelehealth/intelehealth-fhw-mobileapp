@@ -2721,7 +2721,7 @@ public class Node implements Serializable {
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
-                        question = question + next_line + "Patient reports -";
+                        question = question + next_line + "Additional Infomation -";
                     }
                 } else {
                     question = bullet + " " + mOptions.get(i).findDisplay();
@@ -2794,9 +2794,9 @@ public class Node implements Serializable {
             if (mOptions.get(i).isNoSelected()) {
                 if (!flag) {
                     flag = true;
-                    stringsListNoSelected.add("Patient denies -" + next_line);
+                    stringsListNoSelected.add("No Additional Information" + next_line);
                 }
-                stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+//                stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                 Log.e(TAG, "ipt: " + stringsListNoSelected);
             }
         }

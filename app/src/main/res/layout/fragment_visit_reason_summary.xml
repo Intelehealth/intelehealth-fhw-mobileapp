@@ -138,8 +138,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_24"
-                android:visibility="gone">
+                android:layout_marginTop="@dimen/margin_24">
 
                 <TextView
                     android:id="@+id/tv_ass_complain_label"
@@ -149,7 +148,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:lineSpacingExtra="1sp"
-                    android:text="Associated symptoms:" />
+                    android:text="Additional Information:" />
 
                 <TextView
                     android:id="@+id/tv_change_associate_sympt"
@@ -171,8 +170,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
             </LinearLayout>
         </LinearLayout>
