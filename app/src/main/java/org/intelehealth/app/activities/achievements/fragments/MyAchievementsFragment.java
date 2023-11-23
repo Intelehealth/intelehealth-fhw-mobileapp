@@ -57,7 +57,6 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         setLocale(getContext());
         sessionManager = new SessionManager(requireActivity());
         usageStatsManager = (UsageStatsManager) (requireActivity().getSystemService(Context.USAGE_STATS_SERVICE));
-        checkAndAskForUsagePermissions();
     }
 
     @Override
@@ -173,24 +172,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         }
     }
 
-    private void checkAndAskForUsagePermissions() {
-        try {
-            PackageManager packageManager = requireActivity().getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(requireActivity().getPackageName(), 0);
-            AppOpsManager appOpsManager = (AppOpsManager) requireActivity().getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
-
-            if (mode != AppOpsManager.MODE_ALLOWED) {
-                CustomDialog customDialog = new CustomDialog(requireActivity());
-                customDialog.showDialog1();
-            }
-        } catch (PackageManager.NameNotFoundException ignored) {
-            // Control shouldn't reach at this point of the code
-            //
-        }
-    }
-
-    static class CustomDialog extends DialogFragment {
+    public static class CustomDialog extends DialogFragment {
         Context context;
 
         public CustomDialog(Context context) {

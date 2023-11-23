@@ -1148,7 +1148,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     }
 
-    private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
 
     private void requestPermission() {
         Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
@@ -1159,18 +1158,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 context.startService(serviceIntent);
             }
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
-                    dialogRefreshInProgress.dismiss();
-                }
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
-                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
-            } else {
-                //Permission Granted-System will work
-            }
-        }
-
     }
 
     private boolean isNetworkConnected() {
@@ -1400,12 +1387,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
-            if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing())
-                dialogRefreshInProgress.dismiss();
-            showRefreshInProgressDialog();
-            syncUtils.initialSync("home");
-        }
+//        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
+//            if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing())
+//                dialogRefreshInProgress.dismiss();
+//            showRefreshInProgressDialog();
+//            syncUtils.initialSync("home");
+//        }
     }
 
     private void insertTimeSpentByUserIntoDb() {
