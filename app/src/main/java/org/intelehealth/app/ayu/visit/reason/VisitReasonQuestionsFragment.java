@@ -46,6 +46,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
     private int mCurrentComplainNodeIndex = 0;
     private Node mCurrentNode;
     private boolean mIsEditMode = false;
+    private int mCurrentComplainNodeIndexTemp = 0;
 
     public VisitReasonQuestionsFragment() {
         // Required empty public constructor
@@ -72,6 +73,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
     private int mCurrentComplainNodeOptionsIndex = 0;
     private QuestionsListingAdapter mQuestionsListingAdapter;
     private HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
+    private int mCurrentComplainNodeOptionsIndexTemp = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -146,13 +148,27 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     }
                 }
 
-                if (mCurrentComplainNodeOptionsIndex < mCurrentNode.getOptionsList().size() - 1)
+              /*  if (mCurrentComplainNodeOptionsIndex < mCurrentNode.getOptionsList().size() - 1)
                     mCurrentComplainNodeOptionsIndex++;
                 else {
                     mCurrentComplainNodeOptionsIndex = 0;
-                    mCurrentComplainNodeIndex += 1;
+                    mCurrentComplainNodeIndex += 1; //0+1
                     mQuestionsListingAdapter.setRootNodeIndex(mCurrentComplainNodeIndex);
                     mCurrentNode = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
+                }*/
+
+                if (mCurrentComplainNodeOptionsIndex < mCurrentNode.getOptionsList().size() - 1)
+                    mCurrentComplainNodeOptionsIndex++;
+                else {
+                    mCurrentComplainNodeIndexTemp = mCurrentComplainNodeIndex;
+                    mCurrentComplainNodeOptionsIndexTemp = 0;
+                    mCurrentComplainNodeIndexTemp += 1;
+                    if (mChiefComplainRootNodeList.size() > mCurrentComplainNodeIndexTemp) {
+                        mCurrentComplainNodeOptionsIndex = 0;
+                        mCurrentComplainNodeIndex += 1;
+                        mQuestionsListingAdapter.setRootNodeIndex(mCurrentComplainNodeIndex);
+                        mCurrentNode = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
+                    }
                 }
                 if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
                     if (!mQuestionsListingAdapter.isIsAssociateSymptomsLoaded())

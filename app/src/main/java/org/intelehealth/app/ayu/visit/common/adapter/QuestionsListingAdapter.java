@@ -306,7 +306,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
             showAssociateSymptoms(genericViewHolder.node, genericViewHolder, position);
             genericViewHolder.tvQuestionCounter.setText("");
-        }else {
+        } else {
             //mOnItemSelection.needTitleChange("");
 
 
@@ -993,12 +993,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         holder.nestedQuestionsListingAdapter.addItem(options.get(i));
                     }
                 } else if (holder.selectedNestedOptionIndex > 0) {
-                    for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
-                        if (options.size() < i) {
-                            Log.d(TAG, "showOptionsData: i : " + i);
+                    for (int i = 0; i <= holder.selectedNestedOptionIndex && i < options.size(); i++) {
+                        Log.d(TAG, "showOptionsData: i : " + i);
                         Log.d(TAG, "showOptionsData: options size : " + options.size());
-                            holder.nestedQuestionsListingAdapter.addItem(options.get(i));
-                        }
+                        holder.nestedQuestionsListingAdapter.addItem(options.get(i));
                     }
                 } else {
                     holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
@@ -2140,7 +2138,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 */
 
 
-      //  holder.singleComponentContainer.addView(view);
+        //  holder.singleComponentContainer.addView(view);
         //recyclerView.scrollToPosition(0);
     }
 
