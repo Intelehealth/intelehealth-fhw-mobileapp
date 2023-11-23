@@ -206,7 +206,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         etLayoutDob = view.findViewById(R.id.etLayout_dob);
 
         tvDobForDb = view.findViewById(R.id.tv_selected_date_dob);
-        tvDobForDb.setText(DateTimeUtils.formatToLocalDate(getMaxDate(), DateTimeUtils.YYYY_MM_DD_HYPHEN));
+        tvDobForDb.setText(DateTimeUtils.formatToLocalDate(getMaxDate(), DateTimeUtils.DD_MMM_YYYY));
         tvAgeDob = view.findViewById(R.id.tv_age_dob);
 
         //cards for input fields
