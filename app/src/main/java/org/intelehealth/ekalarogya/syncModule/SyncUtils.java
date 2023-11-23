@@ -17,7 +17,6 @@ public class SyncUtils {
 
     private static final String TAG = SyncUtils.class.getSimpleName();
     public void initialSync(String fromActivity) {
-
         SyncDAO syncDAO = new SyncDAO();
         Logger.logD(TAG, "Pull Started");
         syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
@@ -71,7 +70,6 @@ public class SyncUtils {
         Logger.logD(TAG, "Push Started");
         isSynced = syncDAO.pushDataApi();
         Logger.logD(TAG, "Push ended");
-
 //      need to add delay for pulling the obs correctly
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -82,11 +80,7 @@ public class SyncUtils {
                 Logger.logD(TAG, "Pull ended");
             }
         }, 3000);
-
         imagesPushDAO.patientProfileImagesPush();
-
-//        imagesPushDAO.obsImagesPush();
-
         /*
          * Handler is added for pushing image in sync foreground
          * to fix the issue of Phy exam and additional images not showing up sometimes
@@ -101,17 +95,11 @@ public class SyncUtils {
                 Logger.logD(TAG, "Image Pull ended");
             }
         }, 3000);
-
         imagesPushDAO.deleteObsImage();
-
-
         WorkManager.getInstance()
                 .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
                 .then(AppConstants.LAST_SYNC_WORK_REQUEST)
                 .enqueue();
-
-        /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
-        IntelehealthApplication.getAppContext().startService(intent);*/
 
         return isSynced;
     }

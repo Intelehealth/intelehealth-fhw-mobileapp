@@ -1,10 +1,13 @@
 package org.intelehealth.ekalarogya.activities.homeActivity;
 
+import static android.provider.Telephony.Carriers.PASSWORD;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +16,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -21,6 +26,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.LocaleList;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -47,6 +53,8 @@ import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.parse.Parse;
 
 import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
@@ -57,25 +65,36 @@ import org.intelehealth.ekalarogya.activities.loginActivity.LoginActivity;
 import org.intelehealth.ekalarogya.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.ekalarogya.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ekalarogya.activities.settingsActivity.SettingsActivity;
+import org.intelehealth.ekalarogya.activities.setupActivity.LocationArrayAdapter;
+import org.intelehealth.ekalarogya.activities.setupActivity.SetupActivity;
 import org.intelehealth.ekalarogya.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.appointment.AppointmentListingActivity;
+import org.intelehealth.ekalarogya.database.dao.NewLocationDao;
 import org.intelehealth.ekalarogya.database.dao.SyncDAO;
 import org.intelehealth.ekalarogya.models.CheckAppUpdateRes;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
+import org.intelehealth.ekalarogya.models.loginModel.LoginModel;
+import org.intelehealth.ekalarogya.models.loginProviderModel.LoginProviderModel;
+import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiClient;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiInterface;
 import org.intelehealth.ekalarogya.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.intelehealth.ekalarogya.syncModule.SyncUtils;
+import org.intelehealth.ekalarogya.utilities.AdminPassword;
 import org.intelehealth.ekalarogya.utilities.ConfigUtils;
+import org.intelehealth.ekalarogya.utilities.DialogUtils;
 import org.intelehealth.ekalarogya.utilities.DownloadMindMaps;
 import org.intelehealth.ekalarogya.utilities.FileUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.OfflineLogin;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.ekalarogya.utilities.StringEncryption;
+import org.intelehealth.ekalarogya.utilities.UrlModifiers;
+import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalCallLogActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
@@ -87,21 +106,29 @@ import org.intelehealth.klivekit.utils.RtcUtilsKt;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -125,7 +152,7 @@ public class HomeActivity extends BaseActivity {
     CustomProgressDialog customProgressDialog;
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
-    ProgressDialog mProgressDialog;
+    ProgressDialog mProgressDialog, mSyncDialog;
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView lastSyncTextView, lastSyncAgo, newPatient_textview, findPatients_textview, todaysVisits_textview, activeVisits_textview, videoLibrary_textview, help_textview;
@@ -152,6 +179,10 @@ public class HomeActivity extends BaseActivity {
         setTitle(R.string.title_activity_login);
         context = HomeActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
+        mSyncDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
+        mSyncDialog.setTitle(R.string.app_sync);
+        mSyncDialog.setCancelable(false);
+        mSyncDialog.setProgress(i);
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
@@ -257,6 +288,11 @@ public class HomeActivity extends BaseActivity {
             mSyncProgressDialog.setProgress(i);
             mSyncProgressDialog.show();
             syncUtils.initialSync("home");
+            mSyncProgressDialog.dismiss();
+//            if(getIntent().getStringExtra("intentType")!=null && getIntent().getStringExtra("intentType").equalsIgnoreCase("switchLocation"))
+//            {
+//                getLocationFromServer(sessionManager.getServerUrl());
+//            }
         } else {
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
@@ -266,6 +302,40 @@ public class HomeActivity extends BaseActivity {
         HeartBitApi();
         showAppInfo();
         setLocale(HomeActivity.this);
+    }
+
+    private void getLocationFromServer(String url) {
+        String BASE_URL = "https://" + url + ":3004/api/openmrs/";
+        ApiClient.changeApiBaseUrl(BASE_URL, context);
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        try {
+            Observable<Setup_LocationModel> locationObservable = apiService.SETUP_LOCATIONOBSERVABLE();
+            locationObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableObserver<Setup_LocationModel>() {
+                        @Override
+                        public void onNext(@NonNull Setup_LocationModel location) {
+                            if (location.getStates() != null) {
+                                try {
+                                    NewLocationDao newLocationDao = new NewLocationDao();
+                                    newLocationDao.insertSetupLocations(location);
+                                } catch (DAOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            e.getLocalizedMessage();
+                        }
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 
     public void HeartBitApi() {
@@ -343,6 +413,29 @@ public class HomeActivity extends BaseActivity {
         } else if (itemId == R.id.settingsOption) {
             settings();
             return true;
+        } else if (itemId == R.id.switchLocation) {
+            if ((isNetworkConnected())) {
+                mSyncDialog.show();
+                boolean isSynced = syncUtils.syncForeground("home");
+                if (isSynced) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() { //Do something after 100ms
+                            showConfirmationDialog();
+                        }
+                    }, 3000);
+                } else {
+                    mSyncDialog.dismiss();
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+                }
+                return true;
+            } else {
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+            }
+            return true;
         } else if (itemId == R.id.updateProtocolsOption) {
             if (NetworkConnection.isOnline(this)) {
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
@@ -407,6 +500,26 @@ public class HomeActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showConfirmationDialog() {
+        mSyncDialog.dismiss();
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(getString(R.string.confirm_switch_location, sessionManager.getCurrentLocationName(), sessionManager.getSecondaryLocationName()));
+        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switchLocation();
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     public void settings() {
@@ -740,7 +853,7 @@ public class HomeActivity extends BaseActivity {
 
     private void showAppInfo() {
         TextView tvSetupLocation = findViewById(R.id.tvAppUserLocation);
-        tvSetupLocation.setText(getString(R.string.location_setup, sessionManager.getLocationName()));
+        tvSetupLocation.setText(getString(R.string.location_setup, sessionManager.getCurrentLocationName()));
         TextView tvUserAppInfo = findViewById(R.id.tvAppVersionName);
         tvUserAppInfo.setText(getString(R.string.app_version_string, sessionManager.getChwname(), BuildConfig.VERSION_NAME));
     }
@@ -767,6 +880,55 @@ public class HomeActivity extends BaseActivity {
         }
         res.updateConfiguration(conf, dm);
         return context;
+    }
+
+    private void switchLocation() {
+        HashMap<String, String> hashMap4 = new HashMap<>();
+        Map.Entry<String, String> village_name = null;
+        hashMap4.put(sessionManager.getSecondaryLocationUuid(), sessionManager.getSecondaryLocationName());
+        for (Map.Entry<String, String> entry : hashMap4.entrySet()) {
+            village_name = entry;
+        }
+        if (village_name != null) {
+            switchLocationSetup(village_name);
+            Log.d(TAG, "attempting setup");
+        }
+    }
+    private void switchLocationSetup(Map.Entry<String, String> villageName) {
+        ProgressDialog progress;
+        progress = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
+        progress.setTitle(getString(R.string.please_wait_progress));
+        progress.setMessage(getString(R.string.logging_in));
+        progress.show();
+        sessionManager.setSecondaryLocationName(sessionManager.getCurrentLocationName());
+        sessionManager.setSecondaryLocationUuid(sessionManager.getCurrentLocationUuid());
+        sessionManager.setCurrentLocationName(villageName.getValue());
+        sessionManager.setCurrentLocationUuid(villageName.getKey());
+        sessionManager.setFirstTimeLaunched(true);
+        sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
+        clearDatabase();
+//        getApplicationContext().deleteDatabase(AppConstants.DATABASE_NAME);
+        progress.dismiss();
+        Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+        intent.putExtra("intentType", "switchLocation");
+        startActivity(intent);
+        finish();
+    }
+
+    private void clearDatabase() {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        db.delete("tbl_appointments", null, null);
+        db.delete("tbl_encounter", null, null);
+        db.delete("tbl_dr_speciality", null, null);
+        db.delete("tbl_visit_attribute", null, null);
+        db.delete("tbl_patient", null, null);
+        db.delete("tbl_patient_attribute", null, null);
+        db.delete("tbl_visit", null, null);
+        db.delete("tbl_obs", null, null);
+        db.delete("tbl_image_records", null, null);
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
 }

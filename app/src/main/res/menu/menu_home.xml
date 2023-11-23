@@ -18,20 +18,11 @@
             android:orderInCategory="100"
             android:title="@string/menu_option_settings" />
 
-        <!--<item-->
-        <!--android:id="@+id/endOfDayOption"-->
-        <!--android:title="@string/menu_option_end_of_day"-->
-        <!--android:orderInCategory="100" />-->
+        <item
+            android:id="@+id/switchLocation"
+            android:orderInCategory="100"
+            android:title="@string/switch_location" />
 
-        <!--<item-->
-        <!--android:id="@+id/backupOption"-->
-        <!--android:orderInCategory="125"-->
-        <!--android:title="Backup" />-->
-
-        <!--<item-->
-        <!--android:id="@+id/restoreOption"-->
-        <!--android:orderInCategory="125"-->
-        <!--android:title="Restore" />-->
         <item
             android:id="@+id/updateProtocolsOption"
             android:orderInCategory="150"

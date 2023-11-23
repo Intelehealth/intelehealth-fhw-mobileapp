@@ -34,8 +34,10 @@ public class SessionManager {
     private static final String KEY_PREF_SERVER_URL_REST = "serverurl";
     private static final String KEY_PREF_SERVER_URL = "url";
     private static final String KEY_PREF_SERVER_URL_BASE = "serverurlbase";
-    private static final String KEY_PREF_LOCATION_UUID = "locationuuid";
-    private static final String KEY_PREF_LOCATION_NAME = "locationname";
+    private static final String KEY_PREF_SECONDARY_LOCATION_UUID = "secondarylocationuuid";
+    private static final String KEY_PREF_CURRENT_LOCATION_UUID = "currentlocationuuid";
+    private static final String KEY_PREF_SECONDARY_LOCATION_NAME = "secondarylocationname";
+    private static final String KEY_PREF_CURRENT_LOCATION_NAME = "currentlocationname";
     private static final String KEY_PREF_LOCATION_DESCRIPTION = "locationdesc";
     private static final String LICENSE_KEY = "licensekey";
     private static final String DATE = "date";
@@ -278,21 +280,39 @@ public class SessionManager {
         editor.commit();
     }
 
-    public String getLocationName() {
-        return pref.getString(KEY_PREF_LOCATION_NAME, "");
+    public String getSecondaryLocationName() {
+        return pref.getString(KEY_PREF_SECONDARY_LOCATION_NAME, "");
     }
 
-    public void setLocationName(String locationName) {
-        editor.putString(KEY_PREF_LOCATION_NAME, locationName);
+    public void setSecondaryLocationName(String locationName) {
+        editor.putString(KEY_PREF_SECONDARY_LOCATION_NAME, locationName);
         editor.commit();
     }
 
-    public String getLocationUuid() {
-        return pref.getString(KEY_PREF_LOCATION_UUID, "");
+    public String getSecondaryLocationUuid() {
+        return pref.getString(KEY_PREF_SECONDARY_LOCATION_UUID, "");
     }
 
-    public void setLocationUuid(String locationUuid) {
-        editor.putString(KEY_PREF_LOCATION_UUID, locationUuid);
+    public void setSecondaryLocationUuid(String locationUuid) {
+        editor.putString(KEY_PREF_SECONDARY_LOCATION_UUID, locationUuid);
+        editor.commit();
+    }
+
+    public String getCurrentLocationName() {
+        return pref.getString(KEY_PREF_CURRENT_LOCATION_NAME, "");
+    }
+
+    public void setCurrentLocationName(String locationName) {
+        editor.putString(KEY_PREF_CURRENT_LOCATION_NAME, locationName);
+        editor.commit();
+    }
+
+    public String getCurrentLocationUuid() {
+        return pref.getString(KEY_PREF_CURRENT_LOCATION_UUID, "");
+    }
+
+    public void setCurrentLocationUuid(String locationUuid) {
+        editor.putString(KEY_PREF_CURRENT_LOCATION_UUID, locationUuid);
         editor.commit();
     }
 

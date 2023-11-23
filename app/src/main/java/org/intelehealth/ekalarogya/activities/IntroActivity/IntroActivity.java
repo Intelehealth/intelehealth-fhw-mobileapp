@@ -84,25 +84,18 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
-
         BASE_URL = "https://demo.intelehealth.org/openmrs/ws/rest/v1/";
-
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
         btnSkip = (Button) findViewById(R.id.btn_skip);
         btnNext = (Button) findViewById(R.id.btn_next);
-
         layouts = new int[]{
                 R.layout.welcome_slide1,
                 R.layout.welcome_slide2
         };
-
-        // adding bottom dots
         addBottomDots(0);
-
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
@@ -110,7 +103,6 @@ public class IntroActivity extends AppCompatActivity {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 launchHomeScreen();
             }
         });
@@ -294,7 +286,7 @@ public class IntroActivity extends AppCompatActivity {
                             if (locationResults.getResults() != null) {
                                 Results<Location> locationList = locationResults;
                                 mLocations = locationList.getResults();
-                                location = mLocations.get(0);
+                                 location = mLocations.get(0);
 
                                 TestSetup("demo.intelehealth.org", "nurse1", "Nurse123", "", location);
 
@@ -372,12 +364,8 @@ public class IntroActivity extends AppCompatActivity {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
-//                                                responsecode = 200;
-                                          /*  final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
-                                            manager.addAccountExplicitly(account, PASSWORD, null);*/
-
-                                            sessionManager.setLocationName(location.getDisplay());
-                                            sessionManager.setLocationUuid(location.getUuid());
+                                            sessionManager.setCurrentLocationName(location.getDisplay());
+                                            sessionManager.setCurrentLocationUuid(location.getUuid());
                                             sessionManager.setLocationDescription(location.getDescription());
                                             sessionManager.setServerUrl(CLEAN_URL);
                                             sessionManager.setServerUrlRest(BASE_URL);
@@ -385,7 +373,6 @@ public class IntroActivity extends AppCompatActivity {
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
 
-                                            // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
@@ -395,24 +382,13 @@ public class IntroActivity extends AppCompatActivity {
                                             );
 
                                             SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-                                            //SQLiteDatabase read_db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-
                                             sqLiteDatabase.beginTransaction();
-                                            //read_db.beginTransaction();
                                             ContentValues values = new ContentValues();
-
-                                            //StringEncryption stringEncryption = new StringEncryption();
                                             String random_salt = getSalt_DATA();
-
-                                            //String random_salt = stringEncryption.getRandomSaltString();
                                             Log.d("salt", "salt: " + random_salt);
-                                            //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
-                                            //salt_getter_setter.setSalt(random`_salt);
-
-
                                             String hash_password = null;
+
                                             try {
-                                                //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                                 hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
                                             } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                                                 FirebaseCrashlytics.getInstance().recordException(e);
