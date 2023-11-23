@@ -8,6 +8,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Xml;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.webkit.SslErrorHandler;
@@ -17,13 +18,19 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 
 import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.app.IntelehealthApplication;
+import org.intelehealth.ezazi.ui.elcg.HtmlJSInterface;
 import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
+import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
+
+import io.socket.utf8.UTF8;
 
 public class EpartogramViewActivity extends BaseActionBarActivity {
     private WebView webView;
@@ -35,7 +42,6 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
     // "df07db0d-d9b9-4597-a9e5-d62d3cff3d45/705397d4-0c62-4f26-bd53-2dd8523d5d1b";
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener;
-    private CustomProgressDialog customProgressDialog;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -52,14 +58,14 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
 
         webView = findViewById(R.id.webview_epartogram);
         mySwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipeContainer);
-        customProgressDialog = new CustomProgressDialog(EpartogramViewActivity.this);
 
         webView.setWebViewClient(webViewClient);
+        HtmlJSInterface htmlJSInterface = new HtmlJSInterface();
+        webView.addJavascriptInterface(htmlJSInterface, HtmlJSInterface.EXECUTOR_PAGE_SAVER);
+
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        }
+        webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         webView.getSettings().setUseWideViewPort(true);
 
         webView.getSettings().setSupportZoom(true);
@@ -70,20 +76,24 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
         webView.setVisibility(View.VISIBLE);
-        customProgressDialog.show();
-        webView.loadUrl(URL + visitUuid);
+
+        if (NetworkConnection.isOnline(this)) webView.loadUrl(URL + visitUuid);
+        else if (!htmlJSInterface.getHtml().isEmpty()) {
+            webView.loadData(htmlJSInterface.getHtml(), "text/html; charset=UTF-8", Xml.Encoding.UTF_8.name());
+        } else {
+            webView.setVisibility(View.GONE);
+            Toast.makeText(this, getString(R.string.please_connect_to_internet), Toast.LENGTH_LONG).show();
+        }
+
         Log.v("epartog", "webviewUrl: " + URL + visitUuid);
         mySwipeRefreshLayout.setOnRefreshListener(() -> webView.reload());
-
     }
 
     private final WebViewClient webViewClient = new WebViewClient() {
         @Override
         public void onPageFinished(WebView view, String url) {
             mySwipeRefreshLayout.setRefreshing(false);
-            if (customProgressDialog.isShowing()) {
-                customProgressDialog.dismiss();
-            }
+            view.loadUrl(HtmlJSInterface.jsFunction());
         }
 
         @Override
@@ -115,9 +125,6 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
     };
 
     private void handleError() {
-        if (customProgressDialog.isShowing()) {
-            customProgressDialog.dismiss();
-        }
         webView.setVisibility(View.GONE);
         showPageLoadingErrorDialog();
     }

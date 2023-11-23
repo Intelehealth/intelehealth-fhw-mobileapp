@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.utilities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -208,16 +209,19 @@ public class DateAndTimeUtils {
     }
 
     //calculate year, month, days from two date
+    @SuppressLint("SimpleDateFormat")
     public static String getAgeInYearMonthNew(String s, Context context) {
         if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = null;
+        Date date;
         try {
             date = originalFormat.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
+            date = new Date();
         }
+        assert date != null;
         String formattedDate = targetFormat.format(date);  // 20120821
 
         String[] components = formattedDate.split("\\-");
@@ -253,21 +257,21 @@ public class DateAndTimeUtils {
 
     public static String getAgeInYearMonth(String s) {
         if (s == null) return "";
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat originalFormat = new SimpleDateFormat(DateTimeUtils.DD_MMM_YYYY, Locale.getDefault());
         Date date = null;
         try {
             date = originalFormat.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
+            date = new Date();
         }
-        String formattedDate = targetFormat.format(date);  // 20120821
 
-        String[] components = formattedDate.split("\\-");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date
@@ -353,8 +357,8 @@ public class DateAndTimeUtils {
     }
 
     public static String getFormatedDateOfBirthAsView(String oldformatteddate) {
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+        DateFormat originalFormat = new SimpleDateFormat(DateTimeUtils.YYYY_MM_DD_HYPHEN, Locale.getDefault());
+        DateFormat targetFormat = new SimpleDateFormat(DateTimeUtils.DD_MMM_YYYY, Locale.getDefault());
         Date date = null;
         try {
             date = originalFormat.parse(oldformatteddate);
@@ -565,7 +569,7 @@ public class DateAndTimeUtils {
     public static String convertDateToYyyyMMddFormat(String dateToConvert) {
         Log.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
 
-        java.text.DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+        java.text.DateFormat inputFormat = new SimpleDateFormat(DateTimeUtils.DD_MMM_YYYY);
         // java.text.DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy"); //gives month name
         java.text.DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 

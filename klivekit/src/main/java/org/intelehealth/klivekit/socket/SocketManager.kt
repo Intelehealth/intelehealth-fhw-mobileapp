@@ -69,7 +69,7 @@ open class SocketManager {
         }
 
         if (event == EVENT_ALL_USER) {
-            json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
+//            json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
         } else if (event == EVENT_UPDATE_MESSAGE) {
             json?.let { array -> ackMsgReceived(JSONArray(array)) }
             json?.let { array -> notifyIfNotActiveRoom(JSONArray(array)); }
@@ -115,11 +115,15 @@ open class SocketManager {
             if (array.length() > 0) {
                 for (i in 0 until array.length()) {
                     val json = array.getJSONObject(i).getJSONObject("nameValuePairs");
-                    val activeUser = Gson().fromJson(json.toString(), ActiveUser::class.java)
-                    activeUser?.let {
-                        activeUser.uuid?.let { it1 ->
-                            activeUsers.put(it1, activeUser)
-                        };
+                    try {
+                        val activeUser = Gson().fromJson(json.toString(), ActiveUser::class.java)
+                        activeUser?.let {
+                            activeUser.uuid?.let { it1 ->
+                                activeUsers.put(it1, activeUser)
+                            };
+                        }
+                    } catch (e: IllegalStateException) {
+                        e.printStackTrace()
                     }
                 }
             }

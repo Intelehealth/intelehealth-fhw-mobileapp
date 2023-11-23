@@ -1,4 +1,3 @@
-
 package org.intelehealth.ezazi.models.dto;
 
 import com.google.gson.annotations.Expose;
@@ -301,6 +300,6 @@ public class PatientDTO implements Serializable {
     }
 
     public String regDate() {
-        return "Registered: " + DateTimeUtils.utcToLocalDate(createdAt, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
+        return DateTimeUtils.utcToLocalDate(createdAt, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
     }
 }

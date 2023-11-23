@@ -6,8 +6,13 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.DialogCalendarViewBinding;
 import org.intelehealth.ezazi.databinding.RowItenMonthBinding;
@@ -150,20 +155,30 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
 
     private void moveToNextMonth() {
         if (maxDate > calendar.getTimeInMillis()) {
-            getViewByName("next").performClick();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getViewByName("next").performClick();
+            }
             calendar.add(Calendar.MONTH, 1);
             changeMonth();
         }
     }
 
     private void moveToPreviousMonth() {
-        getViewByName("prev").performClick();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getViewByName("prev").performClick();
+        }
         calendar.add(Calendar.MONTH, -1);
         changeMonth();
     }
 
     private void showYearPicker() {
-        View yearHeader = getViewByName("date_picker_header_year");
+        View yearHeader;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            yearHeader = getViewByName("date_picker_header_year");
+        } else {
+            yearHeader = getViewByName("date_picker_year");
+        }
+
         if (yearHeader != null) {
             yearHeader.performClick();
             calendarBinding.calendar.clMonthsContainer.setVisibility(View.GONE);
@@ -178,6 +193,22 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
 
     private void hideHeader() {
         final View header = getViewByName("date_picker_header");
+        if (header != null) {
+            header.setVisibility(View.GONE);
+        }
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            hideHeaderInLollipop();
+            ConstraintLayout.LayoutParams params = getConstraintLayoutParams(calendarBinding.calendar.clNavigator);
+            params.bottomToTop = calendarBinding.calendar.calendarView.getId();
+            calendarBinding.calendar.clNavigator.setLayoutParams(params);
+        }
+
+        showChild(calendarBinding.calendar.calendarView);
+    }
+
+    private void hideHeaderInLollipop() {
+        final View header = getViewByName("date_picker_month_day_year_layout");
         if (header != null) {
             header.setVisibility(View.GONE);
         }
@@ -300,5 +331,42 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
         DayOfWeek(int value) {
             this.value = value;
         }
+    }
+
+    private void showChild(DatePicker picker) {
+        ViewGroup parent = ((ViewGroup) picker.getChildAt(0));
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            Log.e("TimePicker", "getChild " + +(i + 1));
+//            Log.e("TimePicker", "Id " + parent.getChildAt(i).getId());
+//            Log.e("TimePicker", "tag " + parent.getChildAt(i).getTag());
+//            parent.getChildAt(i).setVisibility(View.GONE);
+            int resId = parent.getChildAt(i).getId();
+            if (resId > -1)
+                Log.e("TimePicker", "ResName=>" + Resources.getSystem().getResourceEntryName(resId));
+
+            if (parent.getChildAt(i) instanceof ViewGroup) {
+                findChild((ViewGroup) parent.getChildAt(i));
+            }
+        }
+    }
+
+    private void findChild(ViewGroup group) {
+        for (int i = 0; i < group.getChildCount(); i++) {
+            Log.e("TimePicker", "ViewGroup getChild " + (i + 1));
+//            Log.e("TimePicker", "ViewGroup Id " + group.getChildAt(i).getId());
+//            Log.e("TimePicker", "ViewGroup tag " + group.getChildAt(i).getTag());
+//            parent.getChildAt(i).setVisibility(View.GONE);
+            int resId = group.getChildAt(i).getId();
+            if (resId > -1)
+                Log.e("TimePicker", "ViewGroup ResName=>" + Resources.getSystem().getResourceEntryName(resId));
+
+            if (group.getChildAt(i) instanceof ViewGroup)
+                findChild((ViewGroup) group.getChildAt(i));
+        }
+    }
+
+    private ConstraintLayout.LayoutParams getConstraintLayoutParams(ConstraintLayout constraintLayout) {
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) constraintLayout.getLayoutParams();
+        return params;
     }
 }

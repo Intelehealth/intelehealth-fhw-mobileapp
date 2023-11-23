@@ -30,6 +30,7 @@ public class DateTimeUtils {
 
     public static final String YYYY_MM_DD_HYPHEN = "yyyy-MM-dd";
     public static final String YYYY_MM_DD_WITH_SPLASH = "dd/MM/yyyy";
+
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat getSimpleDateFormat(String format, TimeZone timeZone) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -41,6 +42,19 @@ public class DateTimeUtils {
 //    public static String formatDate(String date, String format) {
 //
 //    }
+
+    public static String formatDate(String date, String inFormat, String outFormat) {
+        SimpleDateFormat sdfIn = getSimpleDateFormat(inFormat, TimeZone.getDefault());
+        SimpleDateFormat sdfOut = getSimpleDateFormat(outFormat, TimeZone.getDefault());
+        Date dt;
+        try {
+            dt = sdfIn.parse(date);
+        } catch (ParseException e) {
+            dt = new Date();
+        }
+        assert dt != null;
+        return sdfOut.format(dt);
+    }
 
     public static String formatToLocalDate(Date date, String format) {
         SimpleDateFormat sdf = getSimpleDateFormat(format, TimeZone.getDefault());

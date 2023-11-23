@@ -10,7 +10,6 @@
         android:id="@+id/cvPatientItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/screen_container_padding"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/input_box_corner_radius"
         app:cardElevation="0dp"
@@ -24,12 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_list_item"
-            android:padding="@dimen/screen_container_padding">
+            android:paddingTop="@dimen/screen_container_padding">
+
 
             <LinearLayout
                 android:id="@+id/llPatientDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/screen_container_padding"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -74,6 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:layout_marginStart="@dimen/screen_container_padding"
                 android:layout_marginTop="@dimen/std_4dp"
                 android:text="No of Alert: 4"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,28 +83,33 @@
                 tools:text="No of Alert: 4" />
 
             <TextView
-                android:id="@+id/tvPatientRegOn"
-                style="@style/Theme.EZazi.Body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/std_4dp"
-                app:layout_constraintBottom_toBottomOf="@id/tvNoOfAlert"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tvNoOfAlert"
-                tools:text="Registered: " />
-
-            <TextView
                 android:id="@+id/tvStageName"
                 style="@style/Theme.EZazi.Heading2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/screen_container_padding"
                 android:gravity="end"
                 android:padding="@dimen/screen_container_padding"
                 android:text="Stage-1"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/tvNoOfAlert"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/llPatientDetails" />
+
+            <TextView
+                android:id="@+id/tvPatientRegOn"
+                style="@style/Theme.EZazi.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/std_4dp"
+                android:gravity="end"
+                android:background="@color/blinkCardColor"
+                android:paddingHorizontal="@dimen/screen_container_padding"
+                android:paddingVertical="@dimen/list_container_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvNoOfAlert"
+                tools:text="Registered: " />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

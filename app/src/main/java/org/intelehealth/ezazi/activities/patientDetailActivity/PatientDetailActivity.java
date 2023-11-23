@@ -797,14 +797,14 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
         Log.d(TAG, "setDisplay: dob: " + patient.getDate_of_birth());
 
-        String dobPatient = patient.getDate_of_birth();
-        float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(dobPatient);
+        float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient.getDate_of_birth());
+        Log.d(TAG, "float_ageYear_Month: dob: " + float_ageYear_Month);
         String age = DateAndTimeUtils.getAgeInYearMonthNew(patient.getDate_of_birth(), context);
         ageView.setText(age.trim());
         Log.d(TAG, "setDisplay: agedob : " + patient.getDate_of_birth());
         Log.d(TAG, "setDisplay: age : " + age);
 
-        if (dobPatient != null && !dobPatient.isEmpty()) {
+        if (patient.getDate_of_birth() != null && !patient.getDate_of_birth().isEmpty()) {
 
             String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient.getDate_of_birth());
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
