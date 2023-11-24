@@ -858,5 +858,6 @@
     <dimen name="tv_cal_view_date_day_text_size">16sp</dimen>
     <dimen name="icons_appoint_height">60dp</dimen>
     <dimen name="empty_view_spalsh">170dp</dimen>
+    <dimen name="margin_visit_summary">30dp</dimen>
 
 </resources>

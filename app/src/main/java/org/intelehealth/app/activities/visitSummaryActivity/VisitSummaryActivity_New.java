@@ -1687,6 +1687,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         });
 
         // family history
+        //not required in namma
+/*
         editFamHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1702,7 +1704,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     famHistText.setText(Html.fromHtml(familyHistoryLocaleString));
                 famHistText.setEnabled(false);
 
-                /*famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                */
+/*famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
@@ -1742,10 +1745,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                 dialog.dismiss();
                             }
                         });
-                      *//*  AlertDialog alertDialog = textInput.show();
+                      *//*
+*/
+/*  AlertDialog alertDialog = textInput.show();
                         dialogInterface.dismiss();
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
 *//*
+*/
+/*
                         AlertDialog alertDialog = textInput.create();
                         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
                         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
@@ -1768,7 +1775,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
                         dialogInterface.dismiss();
                     }
-                });*/
+                });*//*
+
 
                 famHistDialog.setNeutralButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                     @Override
@@ -1818,6 +1826,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
             }
         });
+*/
         // edit listeners - end
 
         // upload btn click - start

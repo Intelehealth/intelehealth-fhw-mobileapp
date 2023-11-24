@@ -128,17 +128,17 @@ public class MedicalHistorySummaryFragment extends Fragment {
     private void prepareSummaryV2() {
         mSummaryLinearLayout.removeAllViews();
         String str = mSummaryStringPastHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
-        String str1 = mSummaryStringFamilyHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
+        //String str1 = mSummaryStringFamilyHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
         str = str.replaceAll("<.*?>", "");
-        str1 = str1.replaceAll("<.*?>", "");
+        //str1 = str1.replaceAll("<.*?>", "");
         System.out.println("mSummaryStringPastHistory - " + str);
-        System.out.println("mSummaryStringFamilyHistory - " + str1);
+       // System.out.println("mSummaryStringFamilyHistory - " + str1);
         String[] spt = str.split("●");
-        String[] spt1 = str1.split("●");
+        //String[] spt1 = str1.split("●");
         List<String> list = new ArrayList<>();
         TreeMap<String, List<String>> mapData = new TreeMap<>(Collections.reverseOrder());
         mapData.put("Patient history", new ArrayList<>());
-        mapData.put("Family history", new ArrayList<>());
+       // mapData.put("Family history", new ArrayList<>());
         for (String s : spt) {
             System.out.println(s);
             if (!s.trim().isEmpty())
@@ -146,13 +146,13 @@ public class MedicalHistorySummaryFragment extends Fragment {
 
 
         }
-        for (String s : spt1) {
+        /*for (String s : spt1) {
             System.out.println(s);
             if (!s.trim().isEmpty())
                 mapData.get("Family history").add(s.trim());
 
 
-        }
+        }*/
 
         System.out.println(mapData);
         for (String key : mapData.keySet()) {
@@ -169,9 +169,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     public void onClick(View view) {
                         if (key.equalsIgnoreCase("Patient history")) {
                             mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
-                        } else if (key.equalsIgnoreCase("Family history")) {
+                        } /*else if (key.equalsIgnoreCase("Family history")) {
                             mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
-                        }
+                        }*/ //not required for namma
 
                     }
                 });
@@ -313,9 +313,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     public void onClick(View view) {
                         if (key.equalsIgnoreCase("Patient history")) {
                             mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
-                        } else if (key.equalsIgnoreCase("Family history")) {
+                        } /*else if (key.equalsIgnoreCase("Family history")) {
                             mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
-                        }
+                        }*/ //not required for namma
 
                     }
                 });

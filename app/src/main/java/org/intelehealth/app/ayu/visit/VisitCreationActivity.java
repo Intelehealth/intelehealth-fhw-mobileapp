@@ -109,7 +109,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public static final int STEP_3_PHYSICAL_EXAMINATION = 5;
     public static final int STEP_3_PHYSICAL_SUMMARY_EXAMINATION = 55;
     public static final int STEP_4_PAST_MEDICAL_HISTORY = 6;
-    public static final int STEP_5_FAMILY_HISTORY = 7;
+   // public static final int STEP_5_FAMILY_HISTORY = 7;
     public static final int STEP_5_HISTORY_SUMMARY = 8;
     public static final int STEP_6_VISIT_SUMMARY = 9;
     public static final int FROM_SUMMARY_RESUME_BACK_FOR_EDIT = 33;
@@ -235,6 +235,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         bundle.putString("visitUuid", visitUuid);
         bundle.putString("encounterUuidVitals", encounterVitals);
 
+        Log.d(TAG, "onCreate:mIsEditMode ::  "+mIsEditMode);
+
       /*  if (!mIsEditMode)
             getSupportFragmentManager().beginTransaction().
                     replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), mIsEditMode, null), VITAL_FRAGMENT).
@@ -341,10 +343,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         else
             mPastMedicalHistoryNode = loadPastMedicalHistory();
 
-        if (!sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty())
+       /* if (!sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty())
             mFamilyHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class);
         else
-            mFamilyHistoryNode = loadFamilyHistory();
+            mFamilyHistoryNode = loadFamilyHistory();*/
         switch (mEditFor) {
             case STEP_1_VISIT_REASON_QUESTION:
                 //commited for namma -dueto single chief complaint
@@ -389,9 +391,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             case STEP_4_PAST_MEDICAL_HISTORY:
                 showPastMedicalHistoryFragment(mIsEditMode);
                 break;
-            case STEP_5_FAMILY_HISTORY:
+           /* case STEP_5_FAMILY_HISTORY:
                 showFamilyHistoryFragment(mIsEditMode);
-                break;
+                break;*/
         }
     }
 
@@ -404,6 +406,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     @Override
     public void onFormSubmitted(int nextAction, boolean isEditMode, Object object) {
         mCurrentStep = nextAction;
+        Log.d(TAG, "onFormSubmitted: kz : nextAction : "+nextAction);
 
         switch (nextAction) {
             case STEP_2_VITAL_SUMMARY:
@@ -460,9 +463,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     int caseNo = (int) object;
                     if (caseNo == STEP_4_PAST_MEDICAL_HISTORY) {
                         showPastMedicalHistoryFragment(isEditMode);
-                    } else if (caseNo == STEP_5_FAMILY_HISTORY) {
-                        showFamilyHistoryFragment(isEditMode);
-                    } else if (caseNo == STEP_3_PHYSICAL_EXAMINATION) {
+                    }/* else if (caseNo == STEP_5_FAMILY_HISTORY) {// for namma there no requirement of family history
+                       // showFamilyHistoryFragment(isEditMode);
+                    }*/ else if (caseNo == STEP_3_PHYSICAL_EXAMINATION) {
                         mStep3ProgressBar.setProgress(100);
                         setTitle(getResources().getString(R.string._phy_examination));
                         mSummaryFrameLayout.setVisibility(View.GONE);
@@ -514,16 +517,17 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 showPastMedicalHistoryFragment(isEditMode);
                 break;
 
-            case STEP_5_FAMILY_HISTORY:
+            // for namma there no requirement of family history
+         /*   case STEP_5_FAMILY_HISTORY:
                 showFamilyHistoryFragment(isEditMode);
 
                 break;
-
+*/
             case STEP_5_HISTORY_SUMMARY:
                 if (isSavedPastHistory()) {
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(getIntent(), patientHistoryLocale, familyHistoryLocale, isEditMode), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
+                            replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(getIntent(), patientHistoryLocale, null, isEditMode), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -1094,8 +1098,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         return insertDbPhysicalExam(physicalStringWithLocaleJsonString);
     }
 
-    private String patientHistory, familyHistory;
-    String patientHistoryLocale = "", familyHistoryLocale = "";
+    private String patientHistory;
+    //String familyHistory; //not required for namma
+    String patientHistoryLocale = "";
+    //String familyHistoryLocale = "";//not required for namma
     String patientHistoryWithLocaleJsonString = "", familyHistoryWithLocaleJsonString = "";
 
     /**
@@ -1113,7 +1119,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         //familyHistory = mFamilyHistoryNode.generateLanguage();
 
-        familyHistory = generateFamilyHistoryAns(false);
+      /*  familyHistory = generateFamilyHistoryAns(false); //not required for namma
         familyHistoryLocale = generateFamilyHistoryAns(true);
 
         familyHistory = familyHistory.replaceAll("null.", "");
@@ -1128,7 +1134,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 updateImageDatabase(imagePath);
             }
         }
-
+*/
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonObject1 = new JSONObject();
         try {
@@ -1149,6 +1155,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             patientHistoryWithLocaleJsonString = jsonObject.toString();
             Log.v(TAG, patientHistoryWithLocaleJsonString);
 
+           /* //not required for namma
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
 
             String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
@@ -1164,7 +1171,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             jsonObject1.put("l-" + sessionManager.getAppLanguage(), familyHistoryLocale);
             //}
             familyHistoryWithLocaleJsonString = jsonObject1.toString();
-            Log.v(TAG, familyHistoryWithLocaleJsonString);
+            Log.v(TAG, familyHistoryWithLocaleJsonString);*/
 
         } catch (JSONException e) {
             e.printStackTrace();

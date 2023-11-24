@@ -137,6 +137,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         mRootIndex = rootIndex;
         mRootComplainBasicInfoHashMap = complainBasicInfoHashMap;
         mIsEditMode = editMode;
+        Gson gson = new Gson();
+        String complaint = gson.toJson(mRootComplainBasicInfoHashMap);
+        Log.d(TAG, "QuestionsListingAdapter:complaint ::"+complaint);
         //mAnimator = new RecyclerViewAnimator(recyclerView);
     }
 
@@ -300,7 +303,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
 
         }
-        mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(0).getComplainNameByLocale());
+        Log.d(TAG, "setData: title kz : "+mRootComplainBasicInfoHashMap.get(0).getComplainNameByLocale());
+        mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(0).getComplainName());
 
         if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
             //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
@@ -774,6 +778,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             holder.tvQuestionDesc.setVisibility(View.GONE);
             Node node = options.get(0);
             String type = node.getInputType() == null ? "" : node.getInputType();
+            Log.d(TAG, "showOptionsData: node name :"+node.getText()); ///kaveri
 
             if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
                 type = "options";
