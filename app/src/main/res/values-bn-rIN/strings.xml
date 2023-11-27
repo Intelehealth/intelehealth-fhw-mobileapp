@@ -742,6 +742,8 @@
     <string name="setup_select_sanch_str">সঞ্চ  নির্বাচন করুন</string>
     <string name="setup_select_dropdown_sanch_msg">ড্রপডাউন থেকে সঞ্চ  নির্বাচন করুন</string>
     <string name="setup_select_village_str">গ্রাম নির্বাচন করুন</string>
+    <string name="setup_select_primary_village_str">প্রথম  গ্রাম নির্বাচন করুন</string>
+    <string name="setup_select_secondary_village_str">দ্বিতীয় গ্রাম  সিলেক্ট করুন</string>
     <string name="setup_select_dropdown_village_msg">ড্রপডাউন থেকে গ্রাম নির্বাচন করুন</string>
 
     <string name="visit_closed">পরিদর্শন বন্ধ</string>
@@ -1177,6 +1179,15 @@
     <string name="normal">স্বাভাবিক</string>
     <string name="moderate_obesity">মাঝারি স্থূলতা</string>
     <string name="severe_obesity">গুরুতর স্থূলতা</string>
+    <string name="exit_vitals_warning_dialog">একবার আপনি এই স্ক্রীন থেকে প্রস্থান করলে, এই পরিদর্শনের ডেটা সংরক্ষণ করা হবে না এবং এই ক্রিয়াটি প্রত্যাবর্তন করা যাবে না৷ \\n\\n আপনি কি নিশ্চিত, আপনি চালিয়ে যেতে চান?</string>
     <string name="type_to_search">অনুসন্ধান করতে টাইপ করুন...</string>
+    <string name="na">প্রযোজ্য না</string>
+    <string name="call_logs">কল লগ</string>
+    <string name="switch_location">অবস্থান পরিবর্তন করুন</string>
+    <string name="confirm_to_setup">আপনি \\n• প্রথম  গ্রামটিকে \'%1$s\' হিসাবে এবং \\n• দ্বিতীয় গ্রামটিকে \'%2$s\' হিসাবে নির্বাচন করেছেন \\nআপনি কি সেটআপ চালিয়ে যাওয়ার বিষয়ে নিশ্চিত?</string>
+    <string name="confirm_switch_location">আপনি বর্তমানে \'%1$s\' গ্রামে লগ ইন করেছেন৷ আপনি কি নিশ্চিত যে আপনি \'%2$s\' গ্রামে যেতে চান?</string>
+    <string name="sync_failed">সিন ব্যর্থ হয়েছে! অনুগ্রহ করে একটু পরে আবার চেষ্টা করুন.</string>
+    <string name="no_network_sync">আপনি ইন্টারনেটের সাথে সংযুক্ত নন। অনুগ্রহ করে একটু পরে আবার চেষ্টা করুন.</string>
+    <string name="app_sync">অ্যাপ সিন  হচ্ছে..</string>
 
 </resources>

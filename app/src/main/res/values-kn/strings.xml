@@ -742,6 +742,8 @@
     <string name="setup_select_sanch_str">ಸ್ಯಾಂಚ್ ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="setup_select_dropdown_sanch_msg">ಡ್ರಾಪ್‌ಡೌನ್‌ನಿಂದ ಸ್ಯಾಂಚ್ ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="setup_select_village_str">ಗ್ರಾಮವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="setup_select_primary_village_str">"ಪ್ರಾಥಮಿಕ ಗ್ರಾಮವನ್ನು ಆಯ್ಕೆಮಾಡಿ "</string>
+    <string name="setup_select_secondary_village_str">"ದ್ವಿತೀಯ ಗ್ರಾಮವನ್ನು ಆಯ್ಕೆಮಾಡಿ "</string>
     <string name="setup_select_dropdown_village_msg">ಡ್ರಾಪ್‌ಡೌನ್‌ನಿಂದ ಗ್ರಾಮವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
 
     <string name="visit_closed">ಭೇಟಿ ಮುಚ್ಚಲಾಗಿದೆ</string>
@@ -1177,5 +1179,14 @@
     <string name="normal">"ಸಾಮಾನ್ಯ "</string>
     <string name="moderate_obesity">"ಮಧ್ಯಮ ಸ್ಥೂಲಕಾಯತೆ "</string>
     <string name="severe_obesity">"ತೀವ್ರ ಸ್ಥೂಲಕಾಯತೆ "</string>
+    <string name="exit_vitals_warning_dialog">ಒಮ್ಮೆ ನೀವು ಈ ಪರದೆಯಿಂದ ನಿರ್ಗಮಿಸಿದರೆ, ಈ ಭೇಟಿಯ ಡೇಟಾವನ್ನು ಉಳಿಸಲಾಗುವುದಿಲ್ಲ ಮತ್ತು ಈ ಕ್ರಿಯೆಯನ್ನು ಹಿಂತಿರುಗಿಸಲಾಗುವುದಿಲ್ಲ. ಮತ್ತು ನೀವು ಖಚಿತವಾಗಿ, ನೀವು ಮುಂದುವರಿಸಲು ಬಯಸುವಿರಾ?</string>
     <string name="type_to_search">ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಿ...</string>
+    <string name="na">"ಅನ್ವಯಿಸುವುದಿಲ್ಲ "</string>
+    <string name="call_logs">ಕರೆ ದಾಖಲೆಗಳು</string>
+    <string name="switch_location">ಸ್ಥಳ ಬದಲಿಸಿ</string>
+    <string name="confirm_to_setup">ನೀವು ಪ್ರಾಥಮಿಕ ಗ್ರಾಮವನ್ನು ಮತ್ತು ದ್ವಿತೀಯ ಗ್ರಾಮವನ್ನು ಆಯ್ಕೆ ಮಾಡಿದ್ದೀರಿ. ನೀವು ಮುಂದುವರಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ</string>
+    <string name="confirm_switch_location">ನೀವು ಪ್ರಸ್ತುತ ಗ್ರಾಮಕ್ಕೆ ಲಾಗ್ ಇನ್ ಆಗಿರುವಿರಿ. ನೀವು ಹಳ್ಳಿಗೆ ಬದಲಾಯಿಸಲು ಬಯಸುತ್ತೀರಿ ಎಂದು ನಿಮಗೆ ಖಚಿತವಾಗಿದೆಯೇ?</string>
+    <string name="sync_failed">ಸಿಂಕ್ ವಿಫಲವಾಗಿದೆ! ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ</string>
+    <string name="no_network_sync">ನೀವು ಇಂಟರ್ನೆಟ್‌ಗೆ ಸಂಪರ್ಕ ಹೊಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ</string>
+    <string name="app_sync">ಸಿಂಕ್ ಮಾಡುವ ಅಪ್ಲಿಕೇಶನ್.</string>
 </resources>

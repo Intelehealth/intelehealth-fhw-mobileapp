@@ -554,6 +554,8 @@
     <string name="setup_select_sanch_str">ସଞ୍ଚ ଚୟନ କରନ୍ତୁ</string>
     <string name="setup_select_dropdown_sanch_msg">ଡ୍ରପଡାଉନ୍ ରୁ ସାନଚ୍ ଚୟନ କରନ୍ତୁ</string>
     <string name="setup_select_village_str">ଗାଁ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_primary_village_str">"ପ୍ରାଥମିକ ଗ୍ରାମ ଚୟନ "</string>
+    <string name="setup_select_secondary_village_str">"ଦ୍ୱିତୀୟ ଗ୍ରାମ ଚୟନ "</string>
     <string name="setup_select_dropdown_village_msg">ଡ୍ରପଡାଉନ୍ ରୁ ଗାଁ ଚୟନ କରନ୍ତୁ</string>
 
     <string name="visit_closed">ପରିଦର୍ଶନ ବନ୍ଦ ହେଲା / ହୋଇଛି</string>
@@ -1070,6 +1072,15 @@
     <string name="normal">ସାଧାରଣ</string>
     <string name="moderate_obesity">ମଧ୍ୟମ  ମୋଟାପଣ</string>
     <string name="severe_obesity">ଭୟଙ୍କର ମେଦବହୁଳତା</string>
+    <string name="exit_vitals_warning_dialog">ଥରେ ଏହି ପରଦା ଠାରୁ ତୁମେ ଯଦି ପ୍ରସ୍ଥାନ ହେବ, ଏହି ଭିଯିଟ / ପରିଦର୍ଶନ ର ତଥ୍ୟ ସେଭ୍ / ସଞ୍ଚୟ ହୋଇ ପାରିବ ନାହିଁ , ଏବଂ ଏହି କାର୍ଯ୍ୟ ପ୍ରତ୍ୟାବର୍ତ୍ତନ ମଧ୍ୟ ହେବ ନାହିଁ , ଆପଣ ନିଶ୍ଚିନ୍ତ କି, ଆପଣ ଏହାକୁ ଚାଲୁ ରଖିବେ ?</string>
     <string name="type_to_search">ଖୋଜିବାକୁ ଟାଇପ୍ କରନ୍ତୁ ...</string>
+    <string name="na">ଦରକାର ନାହିଁ</string>
+    <string name="call_logs">"କଲ ଲଗ୍ଇନ୍ ସବୁ "</string>
+    <string name="switch_location">"ଅବସ୍ଥିତି ବଦଳାଇ ଦିଅ "</string>
+    <string name="confirm_to_setup">ତୁମେ ଚୟନ କରିଛ, ପ୍ରଥମ ଗ୍ରାମ  , ଏବଂ ଦ୍ୱିତୀୟ ଗ୍ରାମ  , ଆପଣ ନିଶ୍ଚିନ୍ତ କି ଏହାକୁ ଜାରି ରଖିବେ ?</string>
+    <string name="confirm_switch_location">"ତୁମେ ଏବେ ଲଗ୍ କରିଛ ପ୍ରଥମ ଗ୍ରାମ , ତୁମେ ନିଶ୍ଚିନ୍ତ କି ତୁମେ ଚାଲୁ ରଖିବ ନାହିଁ ଦ୍ଵିତୀୟ ଗ୍ରାମ "</string>
+    <string name="sync_failed">"ରିଫ୍ରେଶ କରିବା ହେଉନାହିଁ , ଦୟାକରି ପରେ ଚେଷ୍ଟା କରନ୍ତୁ "</string>
+    <string name="no_network_sync">"ତୁମେ ଇଣ୍ଟରନେଟ ସହ ଯୋଗ ହୋଇ ନାହଁ, ଦୟାକରି ପରେ ଚେଷ୍ଟା କରନ୍ତୁ "</string>
+    <string name="app_sync">"ରେଫ୍ରେଶ ଆପ୍ "</string>
 
 </resources>

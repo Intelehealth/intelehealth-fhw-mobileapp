@@ -621,7 +621,9 @@
 <string name="setup_select_sanch_str">संच निवडा</string>
 <string name="setup_select_dropdown_sanch_msg">ड्रॉपडाउनमधून संच निवडा</string>
 <string name="setup_select_village_str">गाव निवडा</string>
-<string name="setup_select_dropdown_village_msg">ड्रॉपडाउनमधून गाव निवडा</string>
+    <string name="setup_select_primary_village_str">"प्रथम गाव निवडा "</string>
+    <string name="setup_select_secondary_village_str">"दुसरे गाव निवडा "</string>
+    <string name="setup_select_dropdown_village_msg">ड्रॉपडाउनमधून गाव निवडा</string>
 <string name="visit_closed">भेट समाप्त</string>
 <string name="gender_male">पुरुष</string>
 <string name="gender_female">महिला</string>
@@ -1030,5 +1032,14 @@
     <string name="normal">सामान्य</string>
     <string name="moderate_obesity">मध्यम लठ्ठपणा</string>
     <string name="severe_obesity">तीव्र लठ्ठपणा</string>
+    <string name="exit_vitals_warning_dialog">एकदा तुम्ही या स्क्रीनमधून बाहेर पडल्यानंतर, या भेटीचा डेटा जतन केला जाणार नाही आणि ही क्रिया परत केली जाऊ शकत नाही.  तुम्हाला खात्री आहे की, तुम्ही पुढे सुरू ठेवू इच्छिता?</string>
     <string name="type_to_search">शोधण्यासाठी टाइप करा...</string>
+    <string name="na">लागू नाही</string>
+    <string name="call_logs">"कॉल इतिहास "</string>
+    <string name="switch_location">"स्थान निवडा "</string>
+    <string name="confirm_to_setup">तुम्ही \\n• प्राथमिक गाव \'%1$s\' आणि \\n• माध्यमिक गाव \'%2$s\' म्हणून निवडले आहे \\n तुम्हाला खात्री आहे की तुम्ही सेटअप सुरू ठेवू इच्छिता?</string>
+    <string name="confirm_switch_location">तुम्ही सध्या \'%1$s\' गावात लॉग इन आहात. तुमची खात्री आहे की तुम्ही \'%2$s\' गावात स्विच करू इच्छिता?</string>
+    <string name="sync_failed">सिंक अयशस्वी! कृपया पुन्हा प्रयत्न करा.</string>
+    <string name="no_network_sync">तुम्ही इंटरनेटशी कनेक्ट केलेले नाही. कृपया पुन्हा प्रयत्न करा.</string>
+    <string name="app_sync">अॅप सिंक करत आहे..</string>
 </resources>

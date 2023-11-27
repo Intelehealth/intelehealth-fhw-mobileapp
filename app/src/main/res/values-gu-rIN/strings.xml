@@ -730,6 +730,8 @@
     <string name="setup_select_sanch_str">સંચ પસંદ કરો</string>
     <string name="setup_select_dropdown_sanch_msg">ડ્રોપડાઉનમાંથી સાંચ પસંદ કરો</string>
     <string name="setup_select_village_str">ગામ પસંદ કરો</string>
+    <string name="setup_select_primary_village_str">પ્રાથમિક ગામ પસંદ કરો</string>
+    <string name="setup_select_secondary_village_str">સંપર્કિત ગામ પસંદ કરો</string>
     <string name="setup_select_dropdown_village_msg">ડ્રોપડાઉનમાંથી ગામ પસંદ કરો</string>
 
     <string name="visit_closed">મુલાકાત બંધ</string>
@@ -1180,6 +1182,15 @@
     <string name="normal">સામાન્ય</string>
     <string name="moderate_obesity">મધ્યમ સ્થૂળતા</string>
     <string name="severe_obesity">ગંભીર સ્થૂળતા</string>
+    <string name="exit_vitals_warning_dialog">એકવાર તમે આ સક્રીનમાંથી બહાર નીકળી જશો તો આ મુલાકાતની વિગતો સેવ થશે નહિ અને તેને ફરીથી મેળવી શકાશે નહી. \\n\\n શું તમે ખરેખર ચાલુ રાખવા માંગો છો?</string>
     <string name="type_to_search">શોધવા માટે ટાઇપ કરો...</string>
+    <string name="na">લાગુ નથી</string>
+    <string name="call_logs">કોલ લોગ</string>
+    <string name="switch_location">"લોકેશન બદલો "</string>
+    <string name="confirm_to_setup">તમે \\n• પ્રાથમિક ગામ તરીકે \'%1$s\' ને પસંદ કર્યું છે અને \\n• સંપર્કિત ગામ તરીકે \'%2$s\' ને પસંદ કર્યું છે. શું તમે ખરેખર આ સેટઅપ સાથે ચાલુ રાખવા માંગો છો?</string>
+    <string name="confirm_switch_location">તમે વર્તમાનમાં \'%1$s\' ગામમાં લોગીન છો. શું તમે ખરેખર \'%2$s\' ગામમાં લોગીન થવા માંગો છો.</string>
+    <string name="sync_failed">તાજું કરવાનુ નિષ્ફળ! કૃપા કરીને થોડીવાર પછી પ્રયાસ કરો.</string>
+    <string name="no_network_sync">તમે ઇન્ટરનેટ સાથે જોડાયા નથી. કૃપા કરીને થોડીવાર પછી પ્રયાસ કરો.</string>
+    <string name="app_sync">એપ તાજું કરવાની પ્રક્રિયા ચાલુ છે.</string>
 
 </resources>
