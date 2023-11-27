@@ -769,6 +769,26 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     Log.v(TAG, "isLoadingForNestedEditData - " + isLoadingForNestedEditData);
                     if (!node.isSelected()) {
                         node.unselectAllNestedNode();
+
+                        // remove child nodes views on deselect of same option - start
+                        holder.singleComponentContainer.removeAllViews();
+                        if (mItemList.get(index).isMultiChoice()) {
+                            holder.submitButton.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.submitButton.setVisibility(View.GONE);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                            AdapterUtils.setToDisable(holder.skipButton);
+                        }
+
+                        if (mItemList.get(index).isRequired())
+                            holder.skipButton.setVisibility(View.GONE);
+                        else
+                            holder.skipButton.setVisibility(View.VISIBLE);
+
+                        checkAndHideSkipButton(holder.skipButton);
+                        // remove child nodes views on deselect of same option - end
+
+
                         if (type.equalsIgnoreCase("camera"))
                             mItemList.get(index).removeImagesAllNestedNode();
 
