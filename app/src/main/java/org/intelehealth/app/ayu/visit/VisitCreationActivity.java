@@ -791,7 +791,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         switch (mCurrentStep) {
             case STEP_1_VISIT_REASON_QUESTION:
                 if (title == null || title.isEmpty()) {
-                    setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
+                    if(title.equalsIgnoreCase("Patient History")){
+                        setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
+                    }else{
+                        setTitle(getResources().getString(R.string._medical_family_history) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
+                    }
                 } else {
                     setTitle(title);
                 }
