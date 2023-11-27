@@ -1089,12 +1089,12 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
         // medical history data
 
         // past medical hist
-        if (patHistory.getValue() != null)
+        if (patHistory.getValue() != null && !patHistory.getValue().isEmpty())
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
         // past medical hist - end
 
         // family history
-        if (famHistory.getValue() != null)
+        if (famHistory.getValue() != null && !famHistory.getValue().isEmpty())
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         // family history - end
         // medical history data - end

@@ -590,8 +590,9 @@
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/fu_margin_start"
-                        android:text="Test: here comes the data in html format."
-                        android:textSize="@dimen/find_patient_hint_size" />
+                        android:text="@string/no_data_found"
+                        android:textSize="@dimen/find_patient_hint_size"
+                        tools:text="Test: here comes the data in html format." />
                     <!--Chief Complaint details - end-->
 
 
@@ -809,8 +810,9 @@
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/fu_margin_start"
-                        android:text="here comes the phys exam data in html format."
-                        android:textSize="@dimen/find_patient_hint_size" />
+                        android:text="@string/no_data_found"
+                        android:textSize="@dimen/find_patient_hint_size"
+                        tools:text="here comes the phys exam data in html format." />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recy_physexam"
@@ -962,8 +964,9 @@
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/fu_margin_start"
-                        android:text="Test: here comes the patient history data in html format."
-                        android:textSize="@dimen/find_patient_hint_size" />
+                        android:text="@string/no_data_found"
+                        android:textSize="@dimen/find_patient_hint_size"
+                        tools:text="Test: here comes the patient history data in html format." />
 
 
                     <!--Fam History-->
@@ -1029,8 +1032,9 @@
                         android:layout_marginTop="@dimen/margin_4"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/fu_margin_start"
-                        android:text="Test: here comes data with bullets...."
-                        android:textSize="@dimen/find_patient_hint_size" />
+                        android:text="@string/no_data_found"
+                        android:textSize="@dimen/find_patient_hint_size"
+                        tools:text="Test: here comes data with bullets...." />
 
                 </RelativeLayout>
 
