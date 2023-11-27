@@ -194,9 +194,14 @@ public class NewLocationDao {
         return sanch_locations;
     }
 
-    public List<String> getVillageList(String stateName, String districtName, String sanchName, Context context) {
+    public List<String> getVillageList(String stateName, String districtName, String sanchName, Context context, String villageType) {
         List<String> village_locations = new ArrayList<String>();
-        village_locations.add(context.getResources().getString(R.string.setup_select_village_str));
+        if(villageType.equalsIgnoreCase("primary"))
+            village_locations.add(context.getResources().getString(R.string.setup_select_primary_village_str));
+        else if(villageType.equalsIgnoreCase("secondary"))
+            village_locations.add(context.getResources().getString(R.string.setup_select_secondary_village_str));
+        else
+            village_locations.add(context.getResources().getString(R.string.setup_select_village_str));
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT DISTINCT village FROM tbl_location_new where state = ? AND district=? AND tehsil=? COLLATE NOCASE", new String[]{stateName, districtName, sanchName});
         Log.d("count", "count: " + cursor.getCount());

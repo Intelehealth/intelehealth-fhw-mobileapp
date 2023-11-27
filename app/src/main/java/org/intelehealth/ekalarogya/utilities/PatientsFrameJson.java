@@ -106,7 +106,7 @@ public class PatientsFrameJson {
                 List<Identifier> identifierList = new ArrayList<>();
                 Identifier identifier = new Identifier();
                 identifier.setIdentifierType("05a29f94-c0ed-11e2-94be-8c13b969e334");
-                identifier.setLocation(session.getLocationUuid());
+                identifier.setLocation(session.getCurrentLocationUuid());
                 identifier.setPreferred(true);
                 identifierList.add(identifier);
 
@@ -173,7 +173,7 @@ public class PatientsFrameJson {
                 encounter.setObs(obsList);
             }
 
-            encounter.setLocation(session.getLocationUuid());
+            encounter.setLocation(session.getCurrentLocationUuid());
 
             // encounterList.add(encounter);
             if (speciality_row_exist_check(encounter.getVisit())) {

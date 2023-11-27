@@ -1045,7 +1045,6 @@ public class VisitSummaryActivity extends BaseActivity {
                             boolean isSynced = syncUtils.syncForeground("visitSummary");
                             if (isSynced) {
                                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_upload), getResources().getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
-                                //
                                 showVisitID();
                                 Log.d("visitUUID", "showVisitID: " + visitUUID);
 

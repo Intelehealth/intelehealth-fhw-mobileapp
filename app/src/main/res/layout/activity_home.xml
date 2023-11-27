@@ -23,6 +23,9 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <include layout="@layout/view_setup_location_info" />
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

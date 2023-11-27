@@ -157,11 +157,24 @@
                             android:layout_height="10dp" />
 
                         <Spinner
-                            android:id="@+id/spinner_village"
+                            android:id="@+id/spinner_primary_village"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:alpha="0.4"
-                            android:entries="@array/location_village"
+                            android:entries="@array/location_village_primary"
+                            android:focusable="true"
+                            android:nextFocusForward="@+id/demoMindmap" />
+
+                        <android.widget.Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_secondary_village"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.4"
+                            android:entries="@array/location_village_secondary"
                             android:focusable="true"
                             android:nextFocusForward="@+id/demoMindmap" />
 

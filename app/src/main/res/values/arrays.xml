@@ -1400,6 +1400,14 @@
         <item>@string/setup_select_village_str</item>
     </string-array>
 
+    <string-array name="location_village_primary">
+        <item>@string/setup_select_primary_village_str</item>
+    </string-array>
+
+    <string-array name="location_village_secondary">
+        <item>@string/setup_select_secondary_village_str</item>
+    </string-array>
+
     <string-array name="blood_group_en">
         <item>Please Select</item>
         <item>A+</item>

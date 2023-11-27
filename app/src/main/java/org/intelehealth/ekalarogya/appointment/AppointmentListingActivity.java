@@ -86,7 +86,7 @@ public class AppointmentListingActivity extends BaseActivity {
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(mSelectedStartDate, mSelectedEndDate, new SessionManager(this).getLocationUuid())
+                .getSlotsAll(mSelectedStartDate, mSelectedEndDate, new SessionManager(this).getCurrentLocationUuid())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override

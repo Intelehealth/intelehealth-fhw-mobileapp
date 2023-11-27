@@ -48,8 +48,8 @@
             android:layout_below="@id/tv_intro_two"
             android:layout_marginTop="70dp"
             android:layout_marginStart="70dp"
-            android:layout_marginEnd="70dp"
             android:visibility="gone"
+            android:layout_marginEnd="70dp"
             android:includeFontPadding="true"
             android:background="@drawable/ic_rectangle_76" />
 

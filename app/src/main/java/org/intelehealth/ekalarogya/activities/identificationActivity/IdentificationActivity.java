@@ -1839,7 +1839,7 @@ public class IdentificationActivity extends AppCompatActivity implements
 
         NewLocationDao newLocationDao = new NewLocationDao();
         List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(), sessionManager.getDistrictName()
-                , sessionManager.getSanchName(), context);
+                , sessionManager.getSanchName(), context, "");
         if (villageList.size() > 1) {
             LocationArrayAdapter locationArrayAdapter =
                     new LocationArrayAdapter(IdentificationActivity.this, villageList);
@@ -1848,7 +1848,7 @@ public class IdentificationActivity extends AppCompatActivity implements
             if (patientID_edit != null) {
                 mVillage.setSelection(locationArrayAdapter.getPosition(patient1.getCity_village()));
             } else {
-                mVillage.setSelection(locationArrayAdapter.getPosition(sessionManager.getVillageName()));
+                mVillage.setSelection(locationArrayAdapter.getPosition(sessionManager.getCurrentLocationName()));
             }
         }
 

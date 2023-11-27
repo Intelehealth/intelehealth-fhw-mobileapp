@@ -3,22 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
 
     <TextView
-        android:id="@+id/tvAppVersionName"
+        android:id="@+id/tvAppUserLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:drawablePadding="2dp"
         android:fontFamily="@font/lato_regular"
+        android:gravity="center_vertical"
         android:includeFontPadding="false"
         android:textSize="14sp"
+        app:drawableStartCompat="@drawable/ic_location_on"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvAppUserLocation"
-        tools:text="Webrtc Doctor - v2.1.0"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="asasdsdasdasdasdasdsda"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2167,7 +2167,7 @@ public class Node implements Serializable {
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(100);
-        unitPicker.setMinValue(1);
+        unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
 
         EditText input = findInput(quantityPicker);
@@ -2819,7 +2819,7 @@ public class Node implements Serializable {
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(100);
-        unitPicker.setMinValue(1);
+        unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
         frequencyDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -2872,7 +2872,7 @@ public class Node implements Serializable {
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(100);
-        unitPicker.setMinValue(1);
+        unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
 
         EditText input = findInput(quantityPicker);

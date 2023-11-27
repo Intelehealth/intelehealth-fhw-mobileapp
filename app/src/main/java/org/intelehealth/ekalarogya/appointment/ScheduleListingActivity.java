@@ -260,7 +260,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         request.setPatientName(patientName);
         request.setPatientId(patientUuid);
         request.setOpenMrsId(openMrsId);
-        request.setLocationUuid(new SessionManager(ScheduleListingActivity.this).getLocationUuid());
+        request.setLocationUuid(new SessionManager(ScheduleListingActivity.this).getCurrentLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleListingActivity.this).getProviderID()); // user id / healthworker id
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
