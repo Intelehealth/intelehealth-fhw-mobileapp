@@ -2746,6 +2746,7 @@ int string util_flash_on 0x0
 int string util_permission_camera_denied 0x0
 int string util_permission_camera_never_askagain 0x0
 int string util_permission_camera_rationale 0x0
+int string util_photo 0x0
 int string util_picture_taken 0x0
 int string util_switch_camera 0x0
 int string util_switch_flash 0x0

@@ -728,6 +728,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
                 public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+                    Log.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
                     if (!isLoadingForNestedEditData)
                         VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
                     if (!isLoadingForNestedEditData) {
@@ -774,8 +775,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         if (!mItemList.get(index).isMultiChoice()) {
 
                             if (mItemList.size() > 1) {
-                                mItemList.remove(1);
-                                notifyItemRemoved(1);
+                               /* mItemList.remove(1);
+                                notifyItemRemoved(1);*/
                             } else {
                                 notifyItemChanged(index);
                             }
@@ -812,9 +813,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                     options.get(i).unselectAllNestedNode();
                                 }
                             }
-                            if (mItemList.size() > 1) {
-                                mItemList.remove(1);
-                                notifyItemRemoved(1);
+                            if (mItemList.size() > 1) { // TODO: why removing this code from here????
+                               /* mItemList.remove(1);
+                                notifyItemRemoved(1);*/
                             }
                         }
                         //holder.singleComponentContainer.removeAllViews();

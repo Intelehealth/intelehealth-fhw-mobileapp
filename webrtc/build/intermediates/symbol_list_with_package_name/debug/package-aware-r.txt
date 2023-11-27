@@ -2747,6 +2747,7 @@ string util_flash_on
 string util_permission_camera_denied
 string util_permission_camera_never_askagain
 string util_permission_camera_rationale
+string util_photo
 string util_picture_taken
 string util_switch_camera
 string util_switch_flash
