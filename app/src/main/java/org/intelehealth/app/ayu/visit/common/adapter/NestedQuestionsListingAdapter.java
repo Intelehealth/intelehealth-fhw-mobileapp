@@ -1428,7 +1428,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
-        calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+        //Expected Delivery Date [EDD]  for this question future date allowed-nama -kz
+        if(node.getText().equalsIgnoreCase("Expected Delivery Date [EDD]")){
+            calendarView.setMinDate(System.currentTimeMillis() + 1000);
+        }else{
+            calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+        }
         Log.v(TAG, "addDateView - " + node.getLanguage());
         String langVal = node.getLanguage();
         Button skipButton = view.findViewById(R.id.btn_skip);

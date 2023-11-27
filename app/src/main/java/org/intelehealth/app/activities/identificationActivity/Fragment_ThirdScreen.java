@@ -109,7 +109,7 @@ public class Fragment_ThirdScreen extends Fragment {
     private ArrayAdapter<CharSequence> economicStatusAdapter;
     private EditText mRelationNameEditText, mNationalIDEditText, mAadharNumber;
     //private EditText mOccupationEditText;
-    private Spinner mCasteSpinner, mEducationSpinner, mEconomicstatusSpinner, mWorkingSpinner;
+    private Spinner mCasteSpinner, mEducationSpinner, mEconomicstatusSpinner;
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag3_btn_back, frag3_btn_next;
     private TextView mRelationNameErrorTextView, mOccupationErrorTextView, mCasteErrorTextView,
@@ -122,9 +122,12 @@ public class Fragment_ThirdScreen extends Fragment {
     String patientID_edit;
     boolean patient_detail = false;
     private ArrayAdapter<CharSequence> workingSpinnerAdapter;
-    private RadioGroup mRgVegNonVeg;
+    private RadioGroup mRgVegNonVeg, mRgIsWorking;
     private String isVegetarian;
     private RadioButton mRbVeg, mRbNonVeg;
+    private RadioButton mRbWorking, mRbNonWorking;
+    private String isWorking;
+    //private Spinner mWorkingSpinner;
 
     @Nullable
     @Override
@@ -193,20 +196,22 @@ public class Fragment_ThirdScreen extends Fragment {
         mCasteErrorTextView = view.findViewById(R.id.caste_error);
         mEducationErrorTextView = view.findViewById(R.id.education_error);
         mEconomicErrorTextView = view.findViewById(R.id.economic_error);
-        mWorkingSpinner = view.findViewById(R.id.spinner_working);
+        //mWorkingSpinner = view.findViewById(R.id.spinner_working);
         mRgVegNonVeg = view.findViewById(R.id.radio_veg_non_veg);
         mRbVeg = view.findViewById(R.id.rb_vegetarian);
         mRbNonVeg = view.findViewById(R.id.rb_nonVegetarian);
         mAadharNoErrorTextView = view.findViewById(R.id.aadhar_no_error);
         mAabhaNoErrorTextView = view.findViewById(R.id.national_ID_error);
-
+        mRgIsWorking = view.findViewById(R.id.radio_working);
+        mRbWorking = view.findViewById(R.id.rb_working);
+        mRbNonWorking = view.findViewById(R.id.rb_nonworking);
 
         mRelationNameEditText.addTextChangedListener(new MyTextWatcher(mRelationNameEditText));
         mRelationNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
 
-        mNationalIDEditText.addTextChangedListener(new GenericTextwatcher(mNationalIDEditText,mAabhaNoErrorTextView));
-        mAadharNumber.addTextChangedListener(new GenericTextwatcher(mAadharNumber,mAadharNoErrorTextView));
+        mNationalIDEditText.addTextChangedListener(new GenericTextwatcher(mNationalIDEditText, mAabhaNoErrorTextView));
+        mAadharNumber.addTextChangedListener(new GenericTextwatcher(mAadharNumber, mAadharNoErrorTextView));
 
         /*mNationalIDEditText.addTextChangedListener(new MyTextWatcher(mNationalIDEditText));
         mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(18), inputFilter_Others});*/ //maxlength 25
@@ -272,6 +277,7 @@ public class Fragment_ThirdScreen extends Fragment {
             }
         });
 
+/*
         mWorkingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -286,12 +292,23 @@ public class Fragment_ThirdScreen extends Fragment {
 
             }
         });
+*/
 
         mRgVegNonVeg.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rb_vegetarian) {
                 isVegetarian = getString(R.string.vegetarian);
             } else if (checkedId == R.id.rb_nonVegetarian) {
                 isVegetarian = getString(R.string.non_vegetarian);
+            }
+        });
+        mRgIsWorking.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rb_working) {
+                isWorking = getString(R.string.working);
+                mOccupationErrorTextView.setVisibility(View.GONE);
+            } else if (checkedId == R.id.rb_nonworking) {
+                isWorking = getString(R.string.non_working);
+                mOccupationErrorTextView.setVisibility(View.GONE);
+
             }
         });
     }
@@ -407,7 +424,7 @@ public class Fragment_ThirdScreen extends Fragment {
             Logger.logE("Identification", "#648", e);
         }
 
-        // Occupation spinner  //for namma aarogya
+     /*   // Occupation spinner  //for namma aarogya
         try {
             String workingLanguage = "working_" + sessionManager.getAppLanguage();
             int working = res.getIdentifier(workingLanguage, "array", getActivity().getApplicationContext().getPackageName());
@@ -422,7 +439,7 @@ public class Fragment_ThirdScreen extends Fragment {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
-
+*/
 
         if (patientDTO.getSon_dau_wife() != null && !patientDTO.getSon_dau_wife().isEmpty())
             mRelationNameEditText.setText(patientDTO.getSon_dau_wife());
@@ -443,7 +460,15 @@ public class Fragment_ThirdScreen extends Fragment {
                 mRbNonVeg.setChecked(true);
             }
         }
-
+        if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().isEmpty()) {
+            if (patientDTO.getOccupation().equalsIgnoreCase("working")) {
+                isWorking = getString(R.string.working);
+                mRbWorking.setChecked(true);
+            } else {
+                isWorking = getString(R.string.non_working);
+                mRbNonWorking.setChecked(true);
+            }
+        }
         if (patientDTO.getAadharCard() != null && !patientDTO.getAadharCard().isEmpty())
             mAadharNumber.setText(patientDTO.getAadharCard());
 
@@ -596,6 +621,7 @@ public class Fragment_ThirdScreen extends Fragment {
             }
 
             // working status
+/*
             if (patientDTO.getOccupation() != null) {
                 if (patientDTO.getOccupation().equals(getResources().getString(R.string.not_provided)))
                     mWorkingSpinner.setSelection(0);
@@ -606,7 +632,8 @@ public class Fragment_ThirdScreen extends Fragment {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         String working = switch_hi_working_edit(patientDTO.getOccupation());
                         mWorkingSpinner.setSelection(workingSpinnerAdapter.getPosition(working));
-                    } /*else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    } */
+/*else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         String working = switch_or_working_edit(patientDTO.getworking());
                         mWorkingSpinner.setSelection(workingStatusAdapter.getPosition(working));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
@@ -636,11 +663,13 @@ public class Fragment_ThirdScreen extends Fragment {
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                         String working = switch_ta_working_edit(patientDTO.getworking());
                         mWorkingSpinner.setSelection(workingStatusAdapter.getPosition(working));
-                    } */ else {
+                    } *//*
+ else {
                         mWorkingSpinner.setSelection(workingSpinnerAdapter.getPosition(patientDTO.getOccupation()));
                     }
                 }
             }
+*/
 
 
         }
@@ -653,10 +682,11 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
         patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
-        patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
-        patientDTO.setOccupation(StringUtils.getValue(mWorkingSpinner.getSelectedItem().toString()));
+        //patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
+        //patientDTO.setOccupation(StringUtils.getValue(mWorkingSpinner.getSelectedItem().toString()));
         patientDTO.setIsVegetarian(StringUtils.getValue(isVegetarian));
         patientDTO.setAadharCard(mAadharNumber.getText().toString());
+        patientDTO.setOccupation(StringUtils.getValue(isWorking));
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
@@ -677,9 +707,10 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
-        patientDTO.setOccupation(StringUtils.getValue(mWorkingSpinner.getSelectedItem().toString()));
+        //patientDTO.setOccupation(StringUtils.getValue(mWorkingSpinner.getSelectedItem().toString()));
         patientDTO.setIsVegetarian(StringUtils.getValue(isVegetarian));
         patientDTO.setAadharCard(StringUtils.getValue(mAadharNumber.getText().toString()));
+        patientDTO.setOccupation(StringUtils.getValue(isWorking));
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -713,6 +744,12 @@ public class Fragment_ThirdScreen extends Fragment {
         } else {
             mAadharNoErrorTextView.setVisibility(View.GONE);
             mAadharNumber.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }
+        if (isWorking != null && !isWorking.isEmpty())
+            mOccupationErrorTextView.setVisibility(View.GONE);
+        else {
+            mOccupationErrorTextView.setVisibility(View.VISIBLE);
+            return;
         }
 
         // validation - start
@@ -810,7 +847,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
         //patientAttributesDTO.setValue(StringUtils.getValue(mOccupationEditText.getText().toString()));
-        patientAttributesDTO.setValue(StringUtils.getProvided(mWorkingSpinner));
+        patientAttributesDTO.setValue(StringUtils.getValue(isWorking));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // caste
@@ -846,7 +883,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientAttributesDTO.setValue(StringUtils.getValue(isVegetarian));
         patientAttributesDTOList.add(patientAttributesDTO);
 
-        // is vegetarian
+        // aadhar card
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);

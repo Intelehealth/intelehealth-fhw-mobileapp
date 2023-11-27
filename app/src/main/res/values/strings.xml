@@ -1891,5 +1891,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="hb_unit">g/dl</string>
     <string name="sugar_unit">mg/dl</string>
     <string name="loading">Loading...</string>
+    <string name="non_working">Non Working</string>
 
 </resources>
