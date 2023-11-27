@@ -375,7 +375,7 @@ public class SplashScreenActivity extends BaseActivity implements SplashLanguage
             itemList.add(jsonObject);
 
             jsonObject = new JSONObject();
-            jsonObject.put("name", "русский");
+            jsonObject.put("name", "Русский");
             jsonObject.put("code", "ru");
             jsonObject.put("selected", sessionManager.getAppLanguage().equalsIgnoreCase("ru"));
             itemList.add(jsonObject);
