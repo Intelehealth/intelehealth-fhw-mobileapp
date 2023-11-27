@@ -10,6 +10,8 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
 import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
+import org.intelehealth.ekalarogya.webrtc.notification.AppNotification;
 
 
 public class NotificationUtils {
@@ -78,11 +80,15 @@ public class NotificationUtils {
             mNotifyManager.createNotificationChannel(mChannel);
         }
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-        mBuilder.setContentTitle(title)
-                .setContentText(text)
-                .setSmallIcon(R.drawable.ic_cloud_upload);
-        mNotifyManager.notify(notificationId, mBuilder.build());
+        new AppNotification.Builder(context)
+                .title(title)
+                .body(text)
+                .send();
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
+//        mBuilder.setContentTitle(title)
+//                .setContentText(text)
+//                .setSmallIcon(R.drawable.ic_cloud_upload);
+//        mNotifyManager.notify(notificationId, mBuilder.build());
 
     }
 
