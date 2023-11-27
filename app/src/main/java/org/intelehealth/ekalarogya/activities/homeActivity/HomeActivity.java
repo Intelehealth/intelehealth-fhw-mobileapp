@@ -289,10 +289,6 @@ public class HomeActivity extends BaseActivity {
             mSyncProgressDialog.show();
             syncUtils.initialSync("home");
             mSyncProgressDialog.dismiss();
-//            if(getIntent().getStringExtra("intentType")!=null && getIntent().getStringExtra("intentType").equalsIgnoreCase("switchLocation"))
-//            {
-//                getLocationFromServer(sessionManager.getServerUrl());
-//            }
         } else {
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
@@ -302,40 +298,6 @@ public class HomeActivity extends BaseActivity {
         HeartBitApi();
         showAppInfo();
         setLocale(HomeActivity.this);
-    }
-
-    private void getLocationFromServer(String url) {
-        String BASE_URL = "https://" + url + ":3004/api/openmrs/";
-        ApiClient.changeApiBaseUrl(BASE_URL, context);
-        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        try {
-            Observable<Setup_LocationModel> locationObservable = apiService.SETUP_LOCATIONOBSERVABLE();
-            locationObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<Setup_LocationModel>() {
-                        @Override
-                        public void onNext(@NonNull Setup_LocationModel location) {
-                            if (location.getStates() != null) {
-                                try {
-                                    NewLocationDao newLocationDao = new NewLocationDao();
-                                    newLocationDao.insertSetupLocations(location);
-                                } catch (DAOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            e.getLocalizedMessage();
-                        }
-                        @Override
-                        public void onComplete() {
-                        }
-                    });
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
     }
 
     public void HeartBitApi() {
