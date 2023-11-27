@@ -35,7 +35,7 @@
     <string name="audio_off_lbl">Audio Off!</string>
     <string name="audio_on_lbl">Audio On!</string>
     <string name="video_on_off_button">Video On/off button</string>
-    <string name="flip_camera" translatable="false">Flip camera</string>
+    <string name="flip_camera">Flip camera</string>
     <string name="call_end_button">Call end button</string>
     <string name="audio_on_off_button">audio on/off button</string>
     <string name="you">You</string>
@@ -61,7 +61,7 @@
     <string name="read">Read</string>
     <string name="sent">Sent</string>
     <string name="msg_delivered">Delivered</string>
-    <string name="sending" translatable="false">Sending</string>
+    <string name="sending">Sending</string>
     <string name="max_5_image">Maximum 5 Images you can send per one case</string>
     <string name="max_2_image">Maximum 2 Images you can send per one case</string>
     <string name="select">Select</string>
@@ -78,6 +78,7 @@
     <string name="accept">Accept</string>
     <string name="doctor_profile_picture">Doctor profile picture</string>
     <string name="poor_connection">Poor Connection</string>
-    <string name="remote_participant_mic_off_status" translatable="false">Remote participant mic off status</string>
-    <string name="sender_image" translatable="false">Sender Image</string>
+    <string name="remote_participant_mic_off_status">Remote participant mic off status</string>
+    <string name="sender_image">Sender Image</string>
+    <string name="select_spinner">Select</string>
 </resources>
