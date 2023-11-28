@@ -68,7 +68,7 @@ import java.util.Locale;
  */
 public class Node implements Serializable {
 
-
+    public static final String ASSOCIATE_SYMPTOMS = "Associated symptoms";
     public boolean isNeedToHide() {
         return needToHide;
     }

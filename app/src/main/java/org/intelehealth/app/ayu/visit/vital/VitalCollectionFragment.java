@@ -541,7 +541,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (view.getId() == R.id.btn_submit) {//validate
             if (validateTable()) {
                 mActionListener.onProgress(100);
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VITAL_SUMMARY, mIsEditMode, results);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, mIsEditMode, results);
             }
         }
     }

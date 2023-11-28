@@ -1262,7 +1262,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
-                intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VITAL);
+                intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VITAL);
                 //startActivity(intent1);
                 mStartForEditVisit.launch(intent1);
             }
@@ -1374,7 +1374,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
-                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VISIT_REASON_QUESTION);
+                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON);
                       // intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY);
 
                         //startActivity(intent1);
