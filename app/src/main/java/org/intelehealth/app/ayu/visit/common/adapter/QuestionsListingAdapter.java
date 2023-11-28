@@ -85,7 +85,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.v("showCameraView", "addImageInLastNode mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
         Log.v("showCameraView", "addImageInLastNode - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
-        VisitUtils.scrollNow(mRecyclerView, 1000, 0, 700);
+        VisitUtils.scrollNow(mRecyclerView, 1000, 0, 700, mIsEditMode);
     }
 
     public void removeImageInLastNode(int nodeIndex, int imageIndex, String imageName) {
@@ -102,7 +102,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         }
         notifyItemChanged(nodeIndex);
-        VisitUtils.scrollNow(mRecyclerView, 1000, 0, 700);
+        VisitUtils.scrollNow(mRecyclerView, 1000, 0, 700, mIsEditMode);
     }
 
     public boolean isIsAssociateSymptomsLoaded() {
@@ -734,7 +734,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 Log.v(TAG, new Gson().toJson(data));
                 mItemList.get(position).setSelected(false);
                 mItemList.get(position).setDataCaptured(false);
-                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
+                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300, mIsEditMode);
                 for (int i = 0; i < mItemList.get(position).getOptionsList().size(); i++) {
                     if (mItemList.get(position).getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
                         mItemList.get(position).setDataCaptured(true);
@@ -939,7 +939,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
                         holder.nextRelativeLayout.setVisibility(View.GONE);
                     }
-                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 400);
+                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 400, mIsEditMode);
                     ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
                     boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
                     if (isSkipped) {
@@ -1022,7 +1022,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
                 holder.submitButton.setVisibility(View.GONE);
                 holder.skipButton.setVisibility(View.GONE);
-                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 600);
+                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 600, mIsEditMode);
             } /*else if (isSuperNested) {
                 nestedQuestionsListingAdapter.addItem(selectedNode);
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
@@ -1080,13 +1080,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
                 }
-                VisitUtils.scrollNow(mRecyclerView, 1400, 0, 600);
+                VisitUtils.scrollNow(mRecyclerView, 1400, 0, 600, mIsEditMode);
                 // *****************
                 OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                     @Override
                     public void onSelect(Node node, boolean isLoadingForNestedEditData) {
                         if (!isLoadingForNestedEditData)
-                            VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
+                            VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300, mIsEditMode);
                         ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
                         if (!isLoadingForNestedEditData) {
                             mItemList.get(index).setSelected(false);
@@ -1180,7 +1180,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.nestedRecyclerView.setVisibility(View.GONE);
                                 if (!isLoadingForNestedEditData) {
                                     notifyItemChanged(index);
-                                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 1000);
+                                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 1000, mIsEditMode);
                                 }
                             }
                             return;
@@ -1832,7 +1832,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 String dateString = simpleDateFormat.format(date);
                 displayDateButton.setText(simpleDateFormatLocal.format(date));
                 displayDateButton.setTag(dateString);
-                VisitUtils.scrollNow(mRecyclerView, 400, 0, 400);
+                VisitUtils.scrollNow(mRecyclerView, 400, 0, 400, mIsEditMode);
                 AdapterUtils.setToDefault(submitButton);
                 AdapterUtils.setToDefault(skipButton);
             }

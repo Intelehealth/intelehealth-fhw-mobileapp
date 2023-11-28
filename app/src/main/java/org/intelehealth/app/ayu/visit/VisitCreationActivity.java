@@ -29,6 +29,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -479,6 +480,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     // step 2
                     else if (caseNo == STEP_2_VISIT_REASON_QUESTION) {
                         //showFamilyHistoryFragment(isEditMode);
+                        Log.e(TAG, "onFormSubmitted: edit mode =>" + isEditMode);
+                        Fragment fragment = getSupportFragmentManager().findFragmentByTag(VISIT_REASON_QUESTION_FRAGMENT);
+                        if (fragment instanceof VisitReasonQuestionsFragment) {
+                            ((VisitReasonQuestionsFragment) fragment).changeEditMode(isEditMode);
+                        }
                     } else if (caseNo == STEP_2_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS) {
                         //showFamilyHistoryFragment(isEditMode);
                     }
@@ -490,7 +496,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), insertionWithLocaleJsonString, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
+                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), insertionWithLocaleJsonString, isEditMode), VISIT_REASON_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;

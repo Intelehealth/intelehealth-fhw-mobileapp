@@ -41,6 +41,7 @@ import java.util.Objects;
  */
 public class VisitReasonQuestionsFragment extends Fragment {
 
+    private static final String TAG = "VisitReasonQuestionsFragment";
     private List<String> mSelectedComplains = new ArrayList<>();
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
@@ -79,31 +80,33 @@ public class VisitReasonQuestionsFragment extends Fragment {
     private QuestionsListingAdapter mQuestionsListingAdapter;
     private HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
 
+    private View view;
+
+    public void changeEditMode(boolean editMode) {
+        mIsEditMode = editMode;
+        updateEditActionButton();
+        Log.e(TAG, "changeEditMode: " + editMode);
+    }
+
+    private void updateEditActionButton() {
+        if (mIsEditMode) {
+            view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.btn_submit).setOnClickListener(view -> mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, mIsEditMode, null));
+            view.findViewById(R.id.btn_cancel).setOnClickListener(view -> {
+                getActivity().setResult(Activity.RESULT_OK);
+                getActivity().finish();
+            });
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
 
-        View view = inflater.inflate(R.layout.fragment_visit_reason_questions, container, false);
+        view = inflater.inflate(R.layout.fragment_visit_reason_questions, container, false);
 
-        if (mIsEditMode) {
-            view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, mIsEditMode, null);
-
-                }
-            });
-            view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getActivity().setResult(Activity.RESULT_OK);
-                    getActivity().finish();
-                }
-            });
-        }
+        updateEditActionButton();
         RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -173,9 +176,9 @@ public class VisitReasonQuestionsFragment extends Fragment {
             Log.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
             Log.v("onSelect QuestionsListingAdapter", "node - " + node.getText());
             // avoid the scroll for old data change
-            if (mCurrentComplainNodeOptionsIndex - index >= 1) {
+            if (mCurrentComplainNodeOptionsIndex - index >= 1 && !mIsEditMode) {
                 Log.v("onSelect", "Scrolling index - " + index);
-                VisitUtils.scrollNow(recyclerView, 100, 0, 1000);
+                VisitUtils.scrollNow(recyclerView, 100, 0, 1000, mIsEditMode);
                 return;
             }
             if (isSkipped) {
@@ -231,9 +234,9 @@ public class VisitReasonQuestionsFragment extends Fragment {
 //                    mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
 //            }
 
-            VisitUtils.scrollNow(recyclerView, 300, 0, 500);
+            VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode);
 
-            VisitUtils.scrollNow(recyclerView, 1400, 0, 1400);
+            VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode);
 
 
             mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());

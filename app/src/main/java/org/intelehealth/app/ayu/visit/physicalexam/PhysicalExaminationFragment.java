@@ -60,7 +60,7 @@ public class PhysicalExaminationFragment extends Fragment {
             }
 
             @Override
-            public void onImageReadyForDelete(int nodeIndex,int imageIndex, String imageName) {
+            public void onImageReadyForDelete(int nodeIndex, int imageIndex, String imageName) {
                 mQuestionsListingAdapter.removeImageInLastNode(nodeIndex, imageIndex, imageName);
             }
         });
@@ -120,7 +120,7 @@ public class PhysicalExaminationFragment extends Fragment {
             complainBasicInfo.setPhysicalExam(true);
             mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
 
-            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false,true, physicalExam, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
+            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, true, physicalExam, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     // avoid the scroll for old data change
@@ -151,9 +151,9 @@ public class PhysicalExaminationFragment extends Fragment {
                             recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
                         }
                     }, 100);*/
-                        VisitUtils.scrollNow(recyclerView, 300, 0, 500);
+                        VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode);
 
-                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400);
+                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode);
 
                         mActionListener.onProgress((int) 100 / physicalExam.getTotalNumberOfExams());
                         // }
@@ -186,7 +186,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
                 @Override
                 public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
-                    mActionListener.onImageRemoved(nodeIndex,imageIndex, image);
+                    mActionListener.onImageRemoved(nodeIndex, imageIndex, image);
                 }
             });
 

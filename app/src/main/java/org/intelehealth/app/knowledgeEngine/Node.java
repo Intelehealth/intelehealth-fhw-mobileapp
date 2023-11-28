@@ -69,6 +69,7 @@ import java.util.Locale;
 public class Node implements Serializable {
 
     public static final String ASSOCIATE_SYMPTOMS = "Associated symptoms";
+
     public boolean isNeedToHide() {
         return needToHide;
     }
@@ -147,6 +148,7 @@ public class Node implements Serializable {
     //    public static String bullet_hollow = "\u25CB";
     public static String bullet_hollow = "\u2022";
     public static String bullet_arrow = "\u25BA";
+    public static String right_pointing = "▻";
     public static String next_line = "<br/>";
     String space = "\t";
 
@@ -2705,6 +2707,7 @@ public class Node implements Serializable {
 
 
     public String formQuestionAnswer(int level) {
+        boolean isAssociateSymptomsType = getText().equalsIgnoreCase(ASSOCIATE_SYMPTOMS);
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
         List<Node> mOptions = optionsList;
@@ -2720,12 +2723,19 @@ public class Node implements Serializable {
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
-                        question = question + next_line + "Additional Infomation -";
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
+                        question = question + next_line + "Patient reports -";
                     }
                 } else {
-                    question = bullet + " " + mOptions.get(i).findDisplay();
+                    if (isAssociateSymptomsType) {
+                        question = right_pointing + " " + mOptions.get(i).findDisplay();
+                    } else {
+                        question = bullet + " " + mOptions.get(i).findDisplay();
+                    }
                 }
+                question = question.replaceAll("\\[(.*?)\\]", "");
                 String answer = mOptions.get(i).getLanguage();
                 Log.i(TAG, "ipt: +++++++++++++++++++++++++++ isTerminal - " + mOptions.get(i).isTerminal());
                 Log.i(TAG, "ipt: level - " + level);
@@ -2737,21 +2747,49 @@ public class Node implements Serializable {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
 
                         if (mOptions.get(i).getInputType().equals("camera")) {
-                        }
-                        else {
+                        } else {
                             if (!answer.isEmpty()) {
-                                if (answer.equals("%")) {
-                                } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
-                                    stringsList.add(bullet_hollow + answer + next_line);
-                                } else if (answer.substring(0, 1).equals("%")) {
-                                    stringsList.add(bullet_hollow + answer.substring(1) + next_line);
+                                if (isAssociateSymptomsType) {
+                                    if (answer.equals("%")) {
+                                    } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                        stringsList.add(question + " " + right_pointing + answer + next_line);
+                                    } else if (answer.substring(0, 1).equals("%")) {
+                                        stringsList.add(question + " " + right_pointing + answer.substring(1) + next_line);
+                                    } else {
+                                        stringsList.add(question + " " + right_pointing + answer + next_line);
+                                    }
                                 } else {
-                                    stringsList.add(bullet_hollow + answer + next_line);
+                                    if (answer.equals("%")) {
+                                    } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                        stringsList.add(bullet_hollow + answer + next_line);
+                                    } else if (answer.substring(0, 1).equals("%")) {
+                                        stringsList.add(bullet_hollow + answer.substring(1) + next_line);
+                                    } else {
+                                        stringsList.add(bullet_hollow + answer + next_line);
+                                    }
                                 }
                             }
                         }
                     } else {
-                        stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                        if (isAssociateSymptomsType) {
+                            if (level > 0) {
+                                stringsList.add(right_pointing + mOptions.get(i).findDisplay() + next_line);
+                            } else {
+                                stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+
+                            }
+
+                        } else {
+                            if (level == 0) {
+                                stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                            } else {
+                                stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + "," + next_line);
+
+
+                            }
+
+                        }
+
                     }
                 } else {
 
@@ -2794,9 +2832,9 @@ public class Node implements Serializable {
             if (mOptions.get(i).isNoSelected()) {
                 if (!flag) {
                     flag = true;
-                    stringsListNoSelected.add("No Additional Information" + next_line);
+                    stringsListNoSelected.add("Patient denies -" + next_line);
                 }
-//                stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                 Log.e(TAG, "ipt: " + stringsListNoSelected);
             }
         }
@@ -2813,6 +2851,10 @@ public class Node implements Serializable {
                 mLanguage = mLanguage.concat(stringsList.get(i));
             }
 
+        }
+        mLanguage = mLanguage.replaceAll(",<br/>•", ",");
+        if (mLanguage.endsWith(",")) {
+            mLanguage = mLanguage.substring(0, mLanguage.length() - 1);
         }
         Log.i(TAG, "ipt: formQuestionAnswer: " + mLanguage);
 
