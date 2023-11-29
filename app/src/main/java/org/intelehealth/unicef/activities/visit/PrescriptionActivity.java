@@ -1222,14 +1222,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         Log.e("TAG", "TEST VISIT: " + details.toString());
         drname.setText(details.getName());
-        try {
+
+        // the ui for this code is hidden. commenting out this code as well - Commented by Arpan Sircar
+
+/*        try {
             ProviderDTO providerDTO = new ProviderDAO().getProviderInfo(details.getUuid());
             String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(providerDTO.getDateofbirth()).split(" ");
             int mAgeYears = Integer.valueOf(ymdData[0]);
             dr_age_gender.setText("(" + providerDTO.getGender() + ", " + mAgeYears + ")");
         } catch (DAOException e) {
             e.printStackTrace();
-        }
+        } */
 
         if (details.getQualification() != null && !details.getQualification().isEmpty())
             qualification.setText(details.getQualification());
@@ -2290,7 +2293,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             doctorDetailStr =
                     "<div style=\"text-align:right;margin-right:0px;\">" + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + details.getName() + "</span><br>" +
-                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (details.getQualification() == null || details.getQualification().equalsIgnoreCase("null") ? "" : details.getQualification() + ", ") + doctorSpecialization + "</span><br>" +
+                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (details.getQualification() == null || details.getQualification().equalsIgnoreCase("null") ? "" : details.getQualification() + ", ") + (sessionManager.getAppLanguage().equalsIgnoreCase("en") ? doctorSpecialization : StringUtils.convertDoctorSpecialty(doctorSpecialization)) + "</span><br>" +
                             //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
                             //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                             "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(details.getEmailId()) ? getString(R.string.dr_email) + details.getEmailId() : "") + "</span><br>" + "</div>";
