@@ -1215,6 +1215,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (details == null) {
             return;
         }
+
+        if (details.getUuid() == null) {
+            details.setUuid(EncounterDAO.getProviderIdFromEncounterTable(visitID));
+        }
+
         Log.e("TAG", "TEST VISIT: " + details.toString());
         drname.setText(details.getName());
         try {

@@ -2,6 +2,7 @@ package org.intelehealth.unicef.database.dao;
 
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE_UNICEF;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VITALS;
 
@@ -468,7 +469,7 @@ public class EncounterDAO {
                             "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30')",  // ENCOUNTER_PATIENT_EXIT_SURVEY
                     new String[]{visitUUID});
             EncounterDTO encounterDTO = new EncounterDTO();
-            Log.v(TAG, "isCompletedExitedSurvey- visitUUID - "+visitUUID+"\t Count - "+idCursor.getCount());
+            Log.v(TAG, "isCompletedExitedSurvey- visitUUID - " + visitUUID + "\t Count - " + idCursor.getCount());
             if (idCursor.getCount() > 0) {
                 return true;
             }
@@ -758,5 +759,19 @@ public class EncounterDAO {
         //  db.close();
 
         return encounterDTO;
+    }
+
+    public static String getProviderIdFromEncounterTable(String visitUUID) {
+        String providerId = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? AND encounter_type_uuid == ?", new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE_UNICEF});
+        if (idCursor.getCount() != 0) {
+            idCursor.moveToFirst();
+            providerId = idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid"));
+        }
+
+        idCursor.close();
+        return providerId;
     }
 }
