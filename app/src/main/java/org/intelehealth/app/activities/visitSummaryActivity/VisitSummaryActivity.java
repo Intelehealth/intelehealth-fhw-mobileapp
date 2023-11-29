@@ -178,7 +178,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VisitSummaryActivity extends AppCompatActivity /*implements PrinterObserver*/ {
+public class VisitSummaryActivity extends AppCompatActivity implements View.OnClickListener /*implements PrinterObserver*/ {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
@@ -260,6 +260,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     ImageButton editAddDocs;
 
     FrameLayout frameLayout_doctor, fl_DispenseAdminister;
+    View layout_dispense_1, layout_dispense_2;
     TextView nameView;
     TextView ageView;
     TextView genderView;
@@ -293,7 +294,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     NotificationCompat.Builder mBuilder;
 
     RelativeLayout uploadButton, rl_med_aid;
-    private TextView tvDispense, tvAdminister;
+    private TextView tvDispense_1, tvDispense_2,tvAdminister_1, tvAdminister_2;
 
     RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
@@ -717,7 +718,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
-        fl_DispenseAdminister = findViewById(R.id.fl_DispenseAdminister);
+      //  fl_DispenseAdminister = findViewById(R.id.fl_DispenseAdminister);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
         frameLayout_doctor.setVisibility(View.GONE);
         saveButton = findViewById(R.id.card_save);
@@ -840,6 +841,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
 
+
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
@@ -959,8 +961,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
       //  rl_med_aid = findViewById(R.id.rl_med_aid);
-          tvDispense = findViewById(R.id.tvDispense);
-        tvAdminister = findViewById(R.id.tvAdminister);
+
+        layout_dispense_1 = findViewById(R.id.layout_dispense_1);
+        layout_dispense_2 = findViewById(R.id.layout_dispense_2);
+
+        tvDispense_1 = layout_dispense_1.findViewById(R.id.tvDispense);
+        tvDispense_2 = layout_dispense_2.findViewById(R.id.tvDispense);
+
+        tvAdminister_1 = layout_dispense_1.findViewById(R.id.tvAdminister);
+        tvAdminister_2 = layout_dispense_2.findViewById(R.id.tvAdminister);
+        tvAdminister_2.setVisibility(View.GONE);
+
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
@@ -1023,53 +1034,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
         });
 
-        tvDispense.setOnClickListener(v -> {
-            String med = getMedicationData();
-            String aid = getAidData();
+        tvDispense_1.setOnClickListener(this);
+        tvDispense_1.setTag(encounterStartVisitNoteDAO);
+        tvDispense_2.setOnClickListener(this);
+        tvDispense_2.setTag(encounterStartVisitNoteDAO);
 
-            //get from encountertbl from the encounter
-            if (visitnoteencounteruuid.isEmpty()) {
-                visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
-            }
-
-            if (med.trim().isEmpty() && aid.trim().isEmpty()) {
-                Toast.makeText(context, getString(R.string.no_medication_and_aid_data_present_to_dispense), Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            Log.d(TAG, "dispense intent: " + med + ", " + aid + ", " + patientUuid + ", " + visitUuid + ", " +
-                    visitnoteencounteruuid + ", " + encounterVitals + ", " + encounterUuidAdultIntial); // visitnoteenc comes empty here.
-
-            Intent i = new Intent(context, Medication_Aid_Activity.class);
-            i.putExtra("mtag", "dispense");
-            i.putExtra("medicineData", med);
-            i.putExtra("aidData", aid);
-            i = sendCommonIntentToMedicationActivity(i);
-
-         //   mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
-
-            startActivity(i);
-        });
-
-        tvAdminister.setOnClickListener(v -> {
-            String med = getMedicationData();
-            //get from encountertbl from the encounter
-            if (visitnoteencounteruuid.isEmpty()) {
-                visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
-            }
-
-            if (med.trim().isEmpty()) {
-                Toast.makeText(context, getString(R.string.no_medication_data_present_to_administer), Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            Intent i = new Intent(context, Medication_Aid_Activity.class);
-            i.putExtra("mtag", "administer");
-            i.putExtra("medicineData", med);
-            i = sendCommonIntentToMedicationActivity(i);
-
-            startActivity(i);
-        });
+        tvAdminister_1.setOnClickListener(this);
+        tvAdminister_1.setTag(encounterStartVisitNoteDAO);
+        tvAdminister_2.setOnClickListener(this);
+        tvAdminister_2.setTag(encounterStartVisitNoteDAO);
 
 /*
         rl_med_aid.setOnClickListener(v -> {
@@ -1884,6 +1857,56 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
      //   queryData(String.valueOf(patientUuid));
       //  downloadPrescriptionDefault();
         getAppointmentDetails(visitUuid);
+    }
+
+    private void admininisterIntent(EncounterDAO encounterStartVisitNoteDAO) {
+        String med = getMedicationData();
+        //get from encountertbl from the encounter
+        if (visitnoteencounteruuid.isEmpty()) {
+            visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+        }
+
+        if (med.trim().isEmpty()) {
+            Toast.makeText(context, getString(R.string.no_medication_data_present_to_administer), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent i = new Intent(context, Medication_Aid_Activity.class);
+        i.putExtra("mtag", "administer");
+        i.putExtra("medicineData", med);
+        i = sendCommonIntentToMedicationActivity(i);
+
+        startActivity(i);
+    }
+
+
+    public void dispenseIntent(EncounterDAO encounterStartVisitNoteDAO) {
+
+        String med = getMedicationData();
+        String aid = getAidData();
+
+        //get from encountertbl from the encounter
+        if (visitnoteencounteruuid.isEmpty()) {
+            visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+        }
+
+        if (med.trim().isEmpty() && aid.trim().isEmpty()) {
+            Toast.makeText(context, getString(R.string.no_medication_and_aid_data_present_to_dispense), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Log.d(TAG, "dispense intent: " + med + ", " + aid + ", " + patientUuid + ", " + visitUuid + ", " +
+                visitnoteencounteruuid + ", " + encounterVitals + ", " + encounterUuidAdultIntial); // visitnoteenc comes empty here.
+
+        Intent i = new Intent(context, Medication_Aid_Activity.class);
+        i.putExtra("mtag", "dispense");
+        i.putExtra("medicineData", med);
+        i.putExtra("aidData", aid);
+        i = sendCommonIntentToMedicationActivity(i);
+
+        //   mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
+
+        startActivity(i);
     }
 
     private Intent sendCommonIntentToMedicationActivity(Intent i) {
@@ -4358,8 +4381,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
 
         // Dispense & Administer - START
-        if (!isPastVisit)
-            fl_DispenseAdminister.setVisibility(View.VISIBLE);
+        if (!isPastVisit) {
+          //  fl_DispenseAdminister.setVisibility(View.VISIBLE);
+            layout_dispense_1.setVisibility(View.VISIBLE);
+            layout_dispense_2.setVisibility(View.VISIBLE);
+        }
         // Dispense & Administer - END
 
         String doctorSign = "";
@@ -4648,6 +4674,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         return datamodel;
     }
 
+    @Override
+    public void onClick(View view) {
+        EncounterDAO tag = (EncounterDAO) view.getTag();
+        if (view.getId() == R.id.tvDispense)
+            dispenseIntent(tag);
+        else if (view.getId() == R.id.tvAdminister)
+            admininisterIntent(tag);
+    }
+
 /*    @Override
     public void printerObserverCallback(final PrinterInterface printerInterface, final int state) {
         runOnUiThread(new Runnable() {
@@ -4887,8 +4922,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
 
                         // Dispense & Administer - START
-                        if (!isPastVisit)
-                            fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                        if (!isPastVisit) {
+                          //  fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                            layout_dispense_1.setVisibility(View.VISIBLE);
+                            layout_dispense_2.setVisibility(View.VISIBLE);
+                        }
                         // Dispense & Administer - END
 
                         if (dbValue.startsWith("{")) {
@@ -4979,8 +5017,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
 
                 // Dispense & Administer - START
-                if (!isPastVisit)
-                    fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                if (!isPastVisit) {
+                 //   fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                    layout_dispense_1.setVisibility(View.VISIBLE);
+                    layout_dispense_2.setVisibility(View.VISIBLE);
+                }
                 // Dispense & Administer - END
 
                 if (dbValue.startsWith("{")) {
