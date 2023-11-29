@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.text.TextUtils;
 import android.util.Log;
 
 
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -928,5 +930,34 @@ public class ObsDAO {
         String whereClause = " encounteruuid = ? AND conceptuuid = ? AND voided IN ('0', 'false', 'FALSE')";
         String[] whereArgs = {encounterUuid, UuidDictionary.OUT_OF_TIME};
         return db.update("tbl_obs", values, whereClause, whereArgs);
+    }
+
+    public List<ObsDTO> getELCGObsByEncounterUuid(String encounteruuid, LinkedHashMap<String, String> conceptIds) {
+        List<ObsDTO> obsDTOList = new ArrayList<>();
+        String[] ids = new String[conceptIds.size()];
+        ids = conceptIds.values().toArray(ids);
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String query = new QueryBuilder().from("tbl_obs")
+                .select("uuid, encounteruuid, conceptuuid, value, comment")
+                .where("encounteruuid = '" + encounteruuid
+                        + "' AND conceptuuid IN ('" + TextUtils.join("','", ids) + "')").build();
+        Log.d(TAG, "getELCGObsByEncounterUuid: " + query);
+        //take All obs except image obs
+        Cursor idCursor = db.rawQuery(query, null);
+        ObsDTO obsDTO = new ObsDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
+                obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
+                obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
+                obsDTOList.add(obsDTO);
+            }
+        }
+        idCursor.close();
+
+        return obsDTOList;
     }
 }

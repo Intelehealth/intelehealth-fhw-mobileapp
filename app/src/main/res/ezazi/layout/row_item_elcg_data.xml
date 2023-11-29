@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.18"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/viewElcgProgress"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@drawable/vertical_dash_line"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tvElcgHour"
+            app:layout_constraintStart_toStartOf="@id/tvElcgHour"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/viewElcgEncounterGraphLine"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/stage_stroke_width"
+            android:background="@color/red"
+            app:layout_constraintBottom_toBottomOf="@id/tvElcgHour"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintStart_toEndOf="@id/tvElcgHour"
+            app:layout_constraintTop_toTopOf="@id/tvElcgHour" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvElcgHour"
+            style="@style/Theme.EZazi.Text.Timeline.Status"
+            android:layout_width="@dimen/nurse_icon_size"
+            android:layout_height="@dimen/nurse_icon_size"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:background="@drawable/elcg_encounter_num_bg"
+            android:gravity="center"
+            android:padding="@dimen/screen_container_padding"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="15" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEncounters"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="2"
+            tools:listitem="@layout/row_item_elcg_encounter" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

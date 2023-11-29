@@ -1,7 +1,15 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'androidx.navigation.safeargs'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+    id 'androidx.navigation.safeargs'
+//    id 'dagger.hilt.android.plugin'
+    id 'org.jetbrains.kotlin.kapt'
+    id 'kotlin-parcelize'
+//    id("com.google.devtools.ksp")
+}
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -29,7 +37,7 @@ android {
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "eZAZI " + versionName + " - " + getDateTime()
+        archivesBaseName = "eZAZI" + versionName + "-" + getDateTime()
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

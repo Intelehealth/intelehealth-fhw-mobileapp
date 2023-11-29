@@ -26,14 +26,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/hl_1"
+        android:id="@+id/viewElcgEncounterConnectorLine1"
         android:layout_width="0dp"
         android:layout_height="@dimen/stage_stroke_width"
         android:background="@color/colorStageStroke"
-        app:layout_constraintBottom_toBottomOf="@id/cardview_parent"
-        app:layout_constraintEnd_toStartOf="@id/cardview_parent"
+        app:layout_constraintBottom_toBottomOf="@id/cardElcgEncounter2"
+        app:layout_constraintEnd_toStartOf="@id/cardElcgEncounter2"
         app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="@id/cardview_parent" />
+        app:layout_constraintTop_toTopOf="@id/cardElcgEncounter2" />
 
     <View
         android:id="@+id/vl_1"
@@ -47,41 +47,41 @@
         app:layout_constraintTop_toBottomOf="@id/tvStage" />
 
     <View
-        android:id="@+id/circle1"
+        android:id="@+id/viewIndicatorElcgEncounter1"
         android:layout_width="@dimen/screen_container_padding"
         android:layout_height="@dimen/screen_container_padding"
         android:background="@drawable/stage_circle_bg"
-        app:layout_constraintBottom_toBottomOf="@id/cardview_parent"
+        app:layout_constraintBottom_toBottomOf="@id/cardElcgEncounter2"
         app:layout_constraintEnd_toEndOf="@id/vl_1"
         app:layout_constraintStart_toStartOf="@id/vl_1"
-        app:layout_constraintTop_toTopOf="@id/cardview_parent" />
+        app:layout_constraintTop_toTopOf="@id/cardElcgEncounter2" />
 
     <TextView
         android:id="@+id/txtEncounterDate"
         style="@style/Theme.EZazi.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/time1"
+        app:layout_constraintBottom_toTopOf="@id/tvElcgEncounter1Time"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cardview_parent"
+        app:layout_constraintTop_toTopOf="@id/cardElcgEncounter2"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="23 Oct 2023" />
 
     <TextView
-        android:id="@+id/time1"
+        android:id="@+id/tvElcgEncounter1Time"
         style="@style/Theme.EZazi.Heading1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="06:00 PM"
         android:textSize="@dimen/stage_text_size"
-        app:layout_constraintBottom_toBottomOf="@id/cardview_parent"
+        app:layout_constraintBottom_toBottomOf="@id/cardElcgEncounter2"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtEncounterDate" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cardview_parent"
+        android:id="@+id/cardElcgEncounter2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/screen_container_padding"

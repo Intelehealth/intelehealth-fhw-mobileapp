@@ -48,7 +48,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/time1"
+                android:id="@+id/tvElcgEncounter1Time"
                 android:layout_width="65dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -64,35 +64,35 @@
                 android:layout_width="2dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="21dp"
-                android:layout_toEndOf="@id/time1"
+                android:layout_toEndOf="@id/tvElcgEncounter1Time"
                 android:background="@color/gray_2" />
 
             <ImageView
-                android:id="@+id/circle1"
+                android:id="@+id/viewIndicatorElcgEncounter1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
-                android:layout_toEndOf="@+id/time1"
+                android:layout_toEndOf="@+id/tvElcgEncounter1Time"
                 android:src="@drawable/circle_indicator_timeline" />
 
             <View
-                android:id="@+id/hl_1"
+                android:id="@+id/viewElcgEncounterConnectorLine1"
                 android:layout_width="30dp"
                 android:layout_height="2dp"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/circle1"
+                android:layout_toEndOf="@+id/viewIndicatorElcgEncounter1"
                 android:background="@color/gray_2" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_parent"
+                android:id="@+id/cardElcgEncounter2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_toEndOf="@+id/hl_1"
+                android:layout_toEndOf="@+id/viewElcgEncounterConnectorLine1"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"

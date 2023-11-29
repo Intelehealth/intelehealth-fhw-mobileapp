@@ -90,6 +90,6 @@
     <color name="colorInputBgBorder">#267F7B92</color>
     <color name="days_calendar">#19181A</color>
     <color name="dialog_transparency_bg">#80000000</color>
-
+    <color name="darkPink">#FFB7CB</color>
 
 </resources>

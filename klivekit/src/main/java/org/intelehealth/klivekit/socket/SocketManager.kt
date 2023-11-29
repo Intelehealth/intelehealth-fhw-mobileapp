@@ -69,7 +69,7 @@ open class SocketManager {
         }
 
         if (event == EVENT_ALL_USER) {
-//            json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
+            json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
         } else if (event == EVENT_UPDATE_MESSAGE) {
             json?.let { array -> ackMsgReceived(JSONArray(array)) }
             json?.let { array -> notifyIfNotActiveRoom(JSONArray(array)); }

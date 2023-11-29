@@ -5,6 +5,7 @@ import android.webkit.JavascriptInterface;
 import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.ezazi.app.IntelehealthApplication;
+import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 
 /**
@@ -15,6 +16,8 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 public class HtmlJSInterface {
     private static final String TAG = "HtmlJSInterface";
     public static final String EXECUTOR_PAGE_SAVER = "PageSaver";
+
+    private int counter = 1;
     private String html;
 
     private final SessionManager sessionManager;
@@ -37,8 +40,9 @@ public class HtmlJSInterface {
      */
     @JavascriptInterface
     public void setHtml(String html) {
-        Timber.tag(TAG).d(html);
+        Timber.tag(TAG).d("Counter => %s", counter);
         sessionManager.setLCGContent(html);
+        counter++;
     }
 
     public static String jsFunction() {

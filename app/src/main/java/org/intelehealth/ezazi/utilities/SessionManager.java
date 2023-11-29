@@ -60,6 +60,7 @@ public class SessionManager {
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
     private static final String OXYTOCIN_VALUE = "OXYTOCIN_VALUE";
     private static final String ELCG_HTML_CONTENT = "ELCG_HTML_CONTENT";
+
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -490,8 +491,17 @@ public class SessionManager {
         return rtcArgs;
     }
 
+    public void setLCGContentFile(String file, String visitId) {
+        editor.putString(ELCG_HTML_CONTENT + "_" + visitId, file);
+        editor.commit();
+    }
+
+    public String getLCGContentFile(String visitId) {
+        return pref.getString(ELCG_HTML_CONTENT + "_" + visitId, "");
+    }
+
     public void setLCGContent(String content) {
-        editor.putString(ELCG_HTML_CONTENT, content);
+        editor.putString(ELCG_HTML_CONTENT , content);
         editor.commit();
     }
 

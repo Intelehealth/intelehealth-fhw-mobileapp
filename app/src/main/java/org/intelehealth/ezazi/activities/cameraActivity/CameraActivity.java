@@ -338,7 +338,7 @@ public class CameraActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (mCameraView != null) mCameraView.stop();
-        CameraActivityPermissionsDispatcher.startCameraWithPermissionCheck(this);
+//        CameraActivityPermissionsDispatcher.startCameraWithPermissionCheck(this);
     }
 
     @Override
@@ -372,7 +372,7 @@ public class CameraActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        CameraActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+//        CameraActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @NeedsPermission(Manifest.permission.CAMERA)

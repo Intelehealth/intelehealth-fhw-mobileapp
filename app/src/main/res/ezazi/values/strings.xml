@@ -108,5 +108,8 @@
     <string name="mother_death">Mother Death</string>
     <string name="shifted_patient_to_you">%1$s has shifted patient(s) to you,\nPlease kindly check the active patients\nor refresh the app</string>
     <string name="add_profile_picture">Add Profile Picture</string>
-
+    <string name="elcg_patient_parity">Parity: 0, 0</string>
+    <string name="elcg_patient_labour_onset">Labour Onset</string>
+    <string name="elcg_patient_raptured_membranes">Raptured Membrances</string>
+    <string name="observation_by">Observation by %1$s</string>
 </resources>

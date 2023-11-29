@@ -287,4 +287,11 @@
     <dimen name="nurse_icon_size">48dp</dimen>
     <dimen name="patient_personal_info_top_layer_size">132dp</dimen>
     <dimen name="patient_info_tab_horizontal_margin">@dimen/std_36dp</dimen>
+    <dimen name="patient_avatar_default_expand_size">@dimen/std_72dp</dimen>
+    <dimen name="patient_avatar_default_collapsed_size">@dimen/std_36dp</dimen>
+    <dimen name="patient_avatar_top_margin">@dimen/std_77dp</dimen>
+    <dimen name="elcg_patient_info_size">240dp</dimen>
+    <dimen name="elcg_patient_avatar_text_size">@dimen/std_24sp</dimen>
+    <dimen name="elcg_vector_top_neg_margin">-20dp</dimen>
+    <dimen name="elcg_title_top_margin">@dimen/std_12dp</dimen>
 </resources>

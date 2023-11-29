@@ -169,12 +169,13 @@ public class CardGenerationEngine {
     }
 
     private static void playSound() {
-
         try {
-            MediaPlayer mediaPlayer = MediaPlayer.create(IntelehealthApplication.getAppContext(), R.raw.al_1);
-            mediaPlayer.start();
-            mediaPlayer.setOnSeekCompleteListener(mp -> {
-            });
+            int callState = ((TelephonyManager) IntelehealthApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+            if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                MediaPlayer mediaPlayer = MediaPlayer.create(IntelehealthApplication.getAppContext(), R.raw.al_1);
+                mediaPlayer.start();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -229,10 +230,7 @@ public class CardGenerationEngine {
         Intent intent = new Intent(AppConstants.NEW_CARD_INTENT_ACTION);
         IntelehealthApplication.getAppContext().sendBroadcast(intent);
         sendNotification("Alert!", "Time to collect the History data!", null);
-        int callState = ((TelephonyManager) IntelehealthApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-        if (callState == TelephonyManager.CALL_STATE_IDLE) {
-            playSound();
-        }
+        playSound();
     }
 
     private static boolean checkVisitEncounterReachToLimit(String encounterTypeName) {

@@ -31,6 +31,8 @@ public class DateTimeUtils {
     public static final String YYYY_MM_DD_HYPHEN = "yyyy-MM-dd";
     public static final String YYYY_MM_DD_WITH_SPLASH = "dd/MM/yyyy";
 
+    public static final String DD_MMM_YYYY_HH_MM_A = "dd MMM yyyy hh:mm a";
+
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat getSimpleDateFormat(String format, TimeZone timeZone) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -68,9 +70,10 @@ public class DateTimeUtils {
 
     public static Date parseDate(String date, String format, TimeZone timeZone) {
         SimpleDateFormat sdf = getSimpleDateFormat(format, timeZone);
+
         try {
             return sdf.parse(date);
-        } catch (ParseException e) {
+        } catch (ParseException | NullPointerException e) {
             Log.e(TAG, "parseDate: ", e);
             return getCurrentDate(getUTCTimeZone());
         }

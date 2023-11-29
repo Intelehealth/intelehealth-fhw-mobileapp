@@ -4,6 +4,12 @@ package org.intelehealth.ezazi.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
+
+import java.util.List;
+import java.util.TimeZone;
+
 public class EncounterDTO {
     @SerializedName("uuid")
     @Expose
@@ -31,6 +37,9 @@ public class EncounterDTO {
     private String privacynotice_value;
     private String encounterTypeName;
 
+    private String providerName;
+
+    private List<ObsDTO> obsDTOList;
 
     public String getUuid() {
         return uuid;
@@ -112,6 +121,28 @@ public class EncounterDTO {
 
     public Type getEncounterType() {
         return encounterType;
+    }
+
+    public String getEncounterDateTime() {
+        return DateTimeUtils.formatDate(
+                DateTimeUtils.parseUTCDate(encounterTime, AppConstants.UTC_FORMAT),
+                DateTimeUtils.DD_MMM_YYYY_HH_MM_A, TimeZone.getDefault());
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public List<ObsDTO> getObsDTOList() {
+        return obsDTOList;
+    }
+
+    public void setObsDTOList(List<ObsDTO> obsDTOList) {
+        this.obsDTOList = obsDTOList;
     }
 
     public enum Type {SOS, NORMAL}

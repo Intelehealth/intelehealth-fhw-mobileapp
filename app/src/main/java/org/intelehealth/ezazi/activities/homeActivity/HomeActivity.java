@@ -100,6 +100,7 @@ import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
+import org.intelehealth.ezazi.partogram.CardGenerationEngine;
 import org.intelehealth.ezazi.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.ezazi.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;

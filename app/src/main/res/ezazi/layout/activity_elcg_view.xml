@@ -1,63 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBar"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="176dp"
-        android:backgroundTint="@android:color/transparent"
-        android:theme="@style/Theme.EZazi.AppBarOverlay">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="?attr/colorAccent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:theme="@style/Theme.EZazi.AppBarOverlay"
+            app:elevation="0dp">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivBottomLightVector"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/setup_top_vector" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                style="@style/Theme.EZazi.ActionBar.Padding"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:gravity="center_vertical"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/selector_actionbar_back"
-                app:popupTheme="@style/Theme.EZazi.PopupOverlay" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+                app:collapsedTitleTextColor="?attr/colorPrimary"
+                app:expandedTitleMarginStart="@dimen/actionbar_horizontal_padding"
+                app:expandedTitleTextColor="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayoutLcg"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivBottomLightVector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/elcg_vector_top_neg_margin"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/setup_top_vector" />
+
+                <include
+                    layout="@layout/view_who_patient_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/elcg_patient_info_size"
+                    android:layout_marginStart="@dimen/screen_container_padding" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    style="@style/Theme.EZazi.ActionBar.Padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="@drawable/selector_actionbar_back"
+                    app:popupTheme="@style/Theme.EZazi.PopupOverlay"
+                    app:subtitle="XYZ" />
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tvPatientAvatar"-->
+                <!--                    android:layout_width="@dimen/patient_avatar_default_expand_size"-->
+                <!--                    android:layout_height="@dimen/patient_avatar_default_expand_size"-->
+                <!--                    android:layout_gravity="start"-->
+                <!--                    android:layout_marginStart="@dimen/actionbar_horizontal_padding"-->
+                <!--                    android:layout_marginTop="@dimen/patient_avatar_top_margin"-->
+                <!--                    android:background="@drawable/rounded_icon_white_bg"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:text="M"-->
+                <!--                    android:textColor="?colorPrimary"-->
+                <!--                    android:textSize="@dimen/std_36sp"-->
+                <!--                    android:textStyle="bold" />-->
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayoutLcg"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_marginHorizontal="@dimen/actionbar_horizontal_padding"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:tabIndicatorColor="@color/blinkCardColor"
+                app:tabMode="scrollable" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerLcg"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPagerLcg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
-
-    <include
-        layout="@layout/view_bottom_shape"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <!--        <include-->
+        <!--            layout="@layout/view_bottom_shape"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_gravity="bottom" />-->
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

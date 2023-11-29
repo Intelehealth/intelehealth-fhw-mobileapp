@@ -399,11 +399,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             ivEdit = itemView.findViewById(R.id.ivEdit);
             ivEdit.setVisibility(View.GONE);
 
-            cardview = itemView.findViewById(R.id.cardview_parent);
-            timeTextview = itemView.findViewById(R.id.time1);
+            cardview = itemView.findViewById(R.id.cardElcgEncounter2);
+            timeTextview = itemView.findViewById(R.id.tvElcgEncounter1Time);
             txtDate = itemView.findViewById(R.id.txtEncounterDate);
             stage1start = itemView.findViewById(R.id.tvStage);
-            circle = itemView.findViewById(R.id.circle1);
+            circle = itemView.findViewById(R.id.viewIndicatorElcgEncounter1);
             summary_textview = itemView.findViewById(R.id.summary_textview);
 //            frame1 = itemView.findViewById(R.id.frame1);
             ivEdit.setOnClickListener(new View.OnClickListener() {

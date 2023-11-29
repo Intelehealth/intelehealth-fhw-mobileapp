@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="encounter"
+            type="org.intelehealth.ezazi.models.dto.EncounterDTO" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/viewElcgEncounterConnectorLine1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/stage_stroke_width"
+            android:background="@color/red"
+            app:layout_constraintBottom_toBottomOf="@id/cardElcgEncounter"
+            app:layout_constraintEnd_toStartOf="@id/cardElcgEncounter"
+            app:layout_constraintTop_toTopOf="@id/cardElcgEncounter" />
+
+        <View
+            android:id="@+id/viewElcgGraphTopLine"
+            android:layout_width="@dimen/std_2dp"
+            android:layout_height="0dp"
+            android:background="@color/red"
+            app:layout_constraintBottom_toTopOf="@id/viewIndicatorElcgEncounter1"
+            app:layout_constraintEnd_toEndOf="@id/viewIndicatorElcgEncounter1"
+            app:layout_constraintStart_toStartOf="@id/viewIndicatorElcgEncounter1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/viewElcgGraphBottomLine"
+            android:layout_width="@dimen/std_2dp"
+            android:layout_height="0dp"
+            android:background="@color/red"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/viewIndicatorElcgEncounter1"
+            app:layout_constraintStart_toStartOf="@id/viewIndicatorElcgEncounter1"
+            app:layout_constraintTop_toBottomOf="@id/viewIndicatorElcgEncounter1" />
+
+        <View
+            android:id="@+id/viewIndicatorElcgEncounter1"
+            android:layout_width="@dimen/screen_container_padding"
+            android:layout_height="@dimen/screen_container_padding"
+            android:background="@drawable/stage_circle_bg"
+            app:layout_constraintBottom_toBottomOf="@id/cardElcgEncounter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cardElcgEncounter" />
+
+        <View
+            android:id="@+id/viewDivider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/input_stroke_size"
+            android:layout_marginStart="@dimen/screen_container_padding"
+            android:background="@color/darkGray"
+            app:layout_constraintEnd_toEndOf="@id/cardElcgEncounter"
+            app:layout_constraintStart_toStartOf="@id/cardElcgEncounter"
+            app:layout_constraintTop_toBottomOf="@id/cardElcgEncounter" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cardElcgEncounter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_padding"
+            android:padding="@dimen/screen_container_padding"
+            app:layout_constraintBottom_toTopOf="@id/viewDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.88">
+
+            <TextView
+                android:id="@+id/tvElcgEncounter2Time"
+                style="@style/Theme.EZazi.Heading1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{encounter.encounterDateTime}"
+                android:textSize="@dimen/stage_text_size"
+                app:layout_constraintBottom_toTopOf="@id/tvObservedBy2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tvObservedBy2"
+                style="@style/Theme.EZazi.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{@string/observation_by(encounter.providerName)}"
+                android:textColor="@color/darkGray"
+                android:textSize="@dimen/body"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvElcgEncounter2Time"
+                tools:text="@string/observation_by" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnElcgExpandCollapseIndicator2"
+                style="@style/Theme.EZazi.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/list_container_padding"
+                android:contentDescription="@string/content_expand_collapse_indicator"
+                android:paddingStart="@dimen/std_4dp"
+                android:rotation="0"
+                app:icon="@drawable/ic_dropdown"
+                app:iconGravity="textEnd"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvElcgAlertCount2"
+                style="@style/Theme.EZazi.Screen.Title"
+                android:layout_width="@dimen/alert_icon_size"
+                android:layout_height="@dimen/alert_icon_size"
+                android:layout_marginEnd="@dimen/screen_container_padding"
+                android:background="@drawable/ic_normal_alert"
+                android:gravity="center"
+                android:textSize="@dimen/alert_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnElcgExpandCollapseIndicator2"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="25" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

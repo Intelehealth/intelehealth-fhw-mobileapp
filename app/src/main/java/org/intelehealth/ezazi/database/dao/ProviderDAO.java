@@ -179,6 +179,38 @@ public class ProviderDAO {
 
     }
 
+    public String getProviderNameById(String providerId) throws DAOException {
+        String fullname = "";
+        String givenname = "", familyname = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            String query = "select * from tbl_provider where uuid = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{providerId});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    givenname = cursor.getString(cursor.getColumnIndexOrThrow("given_name"));
+                    familyname = cursor.getString(cursor.getColumnIndexOrThrow("family_name"));
+                    fullname = givenname + " " + familyname;
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+
+        }
+
+        if (!fullname.equalsIgnoreCase(""))
+            return fullname;
+        else
+            return "Test Doctor";
+
+    }
+
 
     public List<ProviderDTO> getDoctorList() throws DAOException {
         List<ProviderDTO> providersList = new ArrayList<>();

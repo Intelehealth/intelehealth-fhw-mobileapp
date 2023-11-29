@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 
 import org.intelehealth.ezazi.app.AppConstants;
@@ -113,4 +114,17 @@ public class FileUtils {
         }
     }
 
+    public static void writeToFile(String data, Context context, String file) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(file, Context.MODE_PRIVATE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    public static String getProjectCatchDir(Context context) {
+        return context.getCacheDir().getAbsolutePath() + File.separator;
+    }
 }

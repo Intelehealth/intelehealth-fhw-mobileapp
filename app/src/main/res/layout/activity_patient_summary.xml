@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/actionbar_vertical_padding"
     tools:context=".activities.patientDetailActivity.PatientDetailActivity">
 
     <include
@@ -323,6 +322,7 @@
         android:layout_height="@dimen/input_height"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
+        android:visibility="visible"
         android:layout_margin="@dimen/screen_padding"
         android:text="@string/start_obs"
         app:rippleColor="@color/white" />
@@ -330,7 +330,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:orientation="horizontal">
         <!--Household registration commented out-->
         <!--            <androidx.cardview.widget.CardView-->
         <!--                android:id="@+id/cardView_familymember"-->

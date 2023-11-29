@@ -49,20 +49,41 @@ public class PartogramConstants {
     };
 
     public enum Params {
-        SYSTOLIC_BP("Systolic BP"),
-        DIASTOLIC_BP("Diastolic BP"),
-        IV_FLUID("IV Fluids"),
+        COMPANION("Companion", "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+        PAIN_RELIEF("Pain relief", "9d313f72-538f-11e6-9cfe-86f436325720"),
+        ORAL_FLUID("Oral Fluid", "9d31451b-538f-11e6-9cfe-86f436325720"),
+        POSTURE("Posture", "9d3148b1-538f-11e6-9cfe-86f436325720"),
+        FHR_DEC("FHR Deceleration", "9d31573c-538f-11e6-9cfe-86f436325720"),
+        AMNIOTIC_FLUID("Amniotic Fluid Meconium", "9d3160a6-538f-11e6-9cfe-86f436325720"),
 
-        TEMPERATURE("Temperature(C)"),
-        BASELINE_FHR("Baseline FHR"),
-        PULSE("Pulse"),
-        DURATION_OF_CONTRACTION("Duration of contractions");
+        FETAL_POSITION("Fetal Position", "9d316387-538f-11e6-9cfe-86f436325720"),
+        CAPUTE("Caput", "9d316761-538f-11e6-9cfe-86f436325720"),
+        MOULDING("Moulding", "9d316823-538f-11e6-9cfe-86f436325720"),
+        SYSTOLIC_BP("Systolic BP", "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+        DIASTOLIC_BP("Diastolic BP", "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+        IV_FLUID("IV Fluids", "98c5881f-b214-4597-83d4-509666e9a7c9"),
 
+        TEMPERATURE("Temperature(C)", "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+        BASELINE_FHR("Baseline FHR", "9d315400-538f-11e6-9cfe-86f436325720"),
+        PULSE("Pulse", "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+        URINE_PROTEIN("Urine protein", "9d3168a7-538f-11e6-9cfe-86f436325720"),
+        URINE_ACETONE("Urine Acetone", "968f9bc2-b33d-4daf-b59f-79d9a899e018"),
+        CONTRACTION_PER_10_MIN("Contractions per 10 min", "9d316929-538f-11e6-9cfe-86f436325720"),
+        DURATION_OF_CONTRACTION("Duration of contractions", "9d3169af-538f-11e6-9cfe-86f436325720"),
+        CERVIX_PLOT("Cervix Plot[X]", "9d316ab5-538f-11e6-9cfe-86f436325720"),
+        DESCENT_PLOT("Descent Plot[O]", "9d316d41-538f-11e6-9cfe-86f436325720"),
+        OXYTOCIN("Oxytocin (U/L, drops/min)", "9d316d82-538f-11e6-9cfe-86f436325720"),
+        MEDICINE("Medicine", "c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca"),
+        ASSESSMENT("Assessment", "67a050c1-35e5-451c-a4ab-fff9d57b0db1"),
+        PLAN("Plan", "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+        SUPERVISOR_DOCTOR("Supervisor Doctor", "7a9cb7bc-9ab9-4ff0-ae82-7a1bd2cca93e");
 
         public final String value;
+        public final String conceptId;
 
-        Params(String value) {
+        Params(String value, String conceptId) {
             this.value = value;
+            this.conceptId = conceptId;
         }
     }
 
@@ -73,7 +94,7 @@ public class PartogramConstants {
         List<ParamInfo> stringList = new ArrayList<ParamInfo>();
         ParamInfo paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[0]);
-        paramInfo.setParamName("Companion");
+        paramInfo.setParamName(Params.COMPANION.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
         paramInfo.setOptions(new String[]{"Yes", "No", "Woman Declines"});
         paramInfo.setValues(new String[]{"Y", "N", "D"});
@@ -83,7 +104,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[0]);
-        paramInfo.setParamName("Pain relief");
+        paramInfo.setParamName(Params.PAIN_RELIEF.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
         paramInfo.setOptions(new String[]{"Yes", "No", "Woman Declines"});
         paramInfo.setValues(new String[]{"Y", "N", "D"});
@@ -93,7 +114,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[0]);
-        paramInfo.setParamName("Oral Fluid");
+        paramInfo.setParamName(Params.ORAL_FLUID.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
         paramInfo.setOptions(new String[]{"Yes", "No", "Woman Declines"});
         paramInfo.setValues(new String[]{"Y", "N", "D"});
@@ -103,7 +124,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[0]);
-        paramInfo.setParamName("Posture");
+        paramInfo.setParamName(Params.POSTURE.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
         paramInfo.setOptions(new String[]{"Supine", "Mobile"});
         paramInfo.setValues(new String[]{"SP", "MO"});
@@ -118,7 +139,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[1]);
-        paramInfo.setParamName("Baseline FHR");
+        paramInfo.setParamName(Params.BASELINE_FHR.value);
         paramInfo.setParamDateType(INPUT_INT_3_DIG_TYPE);
         paramInfo.setHalfHourField(true);
         paramInfo.setFifteenMinField(true);
@@ -127,7 +148,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[1]);
-        paramInfo.setParamName("FHR Deceleration");
+        paramInfo.setParamName(Params.FHR_DEC.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
         paramInfo.setOptions(new String[]{"No", "Early", "Late", "Variable"});
         paramInfo.setValues(new String[]{"N", "E", "L", "V"});
@@ -138,7 +159,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[1]);
-        paramInfo.setParamName("Amniotic Fluid Meconium");
+        paramInfo.setParamName(Params.AMNIOTIC_FLUID.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
         paramInfo.setOptions(new String[]{"Intact", "Clear", "Meconium-Stained Fluid (Non-significant)", "Meconium-Stained Fluid (Medium)",
                 "Meconium-Stained Fluid (Thick)", "Blood Stained"});
@@ -148,7 +169,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[1]);
-        paramInfo.setParamName("Fetal Position");
+        paramInfo.setParamName(Params.FETAL_POSITION.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
         paramInfo.setOptions(new String[]{"A (Occiput anterior)", "P (Occiput posterior)", "T (Occiput transverse)"});
         paramInfo.setValues(new String[]{"A", "P", "T"});
@@ -157,7 +178,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[1]);
-        paramInfo.setParamName("Caput");
+        paramInfo.setParamName(Params.CAPUTE.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
         paramInfo.setOptions(new String[]{"None", "+(Marked)", "++(Marked)", "+++(Marked)"});
         paramInfo.setValues(new String[]{"N", "+", "++", "+++"});
@@ -166,7 +187,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[1]);
-        paramInfo.setParamName("Moulding");
+        paramInfo.setParamName(Params.MOULDING.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
 //        paramInfo.setOptions(new String[]{"None", "Sutures apposed", "Sutures overlapped but reducible", "Sutures overlapped and not reducible"});
         paramInfo.setOptions(new String[]{"0 (None)", "+ (Sutures apposed)", "++ (Sutures overlapped but reducible)", "+++ (Sutures overlapped but not reducible)"});
@@ -181,7 +202,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[2]);
-        paramInfo.setParamName("Pulse");
+        paramInfo.setParamName(Params.PULSE.value);
         paramInfo.setParamDateType(INPUT_INT_3_DIG_TYPE);
         paramInfo.setConceptUUID("5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         stringList.add(paramInfo);

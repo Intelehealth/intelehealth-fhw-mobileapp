@@ -1,19 +1,30 @@
 package org.intelehealth.ezazi.partogram.dialog;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -85,6 +96,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        addMargin(view);
         binding = MedicinesListBottomSheetDialogBinding.bind(view);
         binding.clMedicineDialogRoot.setMinHeight(ScreenUtils.getInstance(requireContext()).getHeight());
         BottomSheetBehavior<View> behavior = BottomSheetBehavior.from((View) binding.clMedicineDialogRoot.getParent());
@@ -98,6 +110,20 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         buildAddNewMedicineDialog();
         validateMedicineFormInput();
         setupInputFilter();
+
+        addBottomMarginIfVersion13();
+    }
+
+    private void addBottomMarginIfVersion13() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) binding.btnSaveMedicines.getLayoutParams();
+            params.bottomMargin = params.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
+            binding.btnSaveMedicines.setLayoutParams(params);
+
+            ConstraintLayout.LayoutParams params1 = (ConstraintLayout.LayoutParams) binding.clAddNewMedicineRoot.getLayoutParams();
+            params1.bottomMargin = params1.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
+            binding.clAddNewMedicineRoot.setLayoutParams(params1);
+        }
     }
 
     private BottomSheetBehavior.BottomSheetCallback getCallback(BottomSheetBehavior<View> behavior) {
@@ -119,17 +145,67 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     private void setMedicinesAndItsDetails() {
 
     }
+
 //    @NonNull
 //    @Override
 //    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 //        Dialog dialog = super.onCreateDialog(savedInstanceState);
-//        dialog.setOnShowListener(dialogInterface -> {
-//            BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialogInterface;
-//            setupFullWidth(bottomSheetDialog);
-//        });
+////        dialog.setOnShowListener(dialogInterface -> {
+////            BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialogInterface;
+////            setupFullWidth(bottomSheetDialog);
+////        });
+//
+//        hideBottomSystemTaskbar(dialog);
 //        return dialog;
 //    }
-//
+
+    private void addMargin(View view) {
+        FrameLayout.LayoutParams layoutParams =
+                (FrameLayout.LayoutParams) view.getLayoutParams();
+        int margin_16dp = dpToPx(16);
+        layoutParams.width = ScreenUtils.getInstance(requireContext()).getWidth();
+        layoutParams.height = ScreenUtils.getInstance(requireContext()).getHeight();
+        view.setLayoutParams(layoutParams);
+        view.requestLayout();
+    }
+
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        int px = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                r.getDisplayMetrics()
+        );
+        return px;
+    }
+
+    private void hideBottomSystemTaskbar(Dialog dialog) {
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(dialog.getWindow(), dialog.getWindow().getDecorView());
+        // Configure the behavior of the hidden system bars.
+        windowInsetsController.setSystemBarsBehavior(
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        );
+
+        // Add a listener to update the behavior of the toggle fullscreen button when
+        // the system bars are hidden or revealed.
+        dialog.getWindow().getDecorView().setOnApplyWindowInsetsListener((view, windowInsets) -> {
+            // You can hide the caption bar even when the other system bars are visible.
+            // To account for this, explicitly check the visibility of navigationBars()
+            // and statusBars() rather than checking the visibility of systemBars().
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (windowInsets.isVisible(WindowInsetsCompat.Type.navigationBars())
+                        || windowInsets.isVisible(WindowInsetsCompat.Type.statusBars())) {
+                    // Hide both the status bar and the navigation bar.
+                    windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+                    windowInsetsController.hide(WindowInsetsCompat.Type.displayCutout());
+                    windowInsetsController.hide(WindowInsetsCompat.Type.captionBar());
+                }
+            }
+            return view.onApplyWindowInsets(windowInsets);
+        });
+    }
+
 //    private void setupFullWidth(BottomSheetDialog bottomSheetDialog) {
 //        FrameLayout bottomSheet = (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
 //        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();

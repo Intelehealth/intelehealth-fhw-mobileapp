@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/actionbar_horizontal_padding"
+    android:paddingVertical="@dimen/actionbar_vertical_padding">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvPatientAvatar"
+        android:layout_width="@dimen/patient_avatar_default_expand_size"
+        android:layout_height="@dimen/patient_avatar_default_expand_size"
+        android:layout_marginBottom="@dimen/screen_container_padding"
+        android:background="@drawable/rounded_icon_white_bg"
+        android:gravity="center"
+        android:text="M"
+        android:textColor="?colorPrimary"
+        android:textSize="@dimen/elcg_patient_avatar_text_size"
+        android:textStyle="bold"
+        app:elevation="@dimen/std_8dp"
+        app:layout_constraintBottom_toTopOf="@id/clELCGPatientInfo"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvELCGTitle"
+        style="@style/Theme.EZazi.Screen.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screen_container_padding"
+        android:layout_marginTop="@dimen/elcg_title_top_margin"
+        android:text="WHO LABOUR GUIDE VIEW"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clELCGPatientInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvELCGPatientName"
+            style="@style/Theme.EZazi.Screen.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mithun Vaghela"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvELCGPatientActiveOn"
+            style="@style/Theme.EZazi.Text.Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Active Labour Diagnosis"
+            android:textColor="@color/font_black_0"
+            app:layout_constraintStart_toStartOf="@id/tvELCGPatientName"
+            app:layout_constraintTop_toBottomOf="@id/tvELCGPatientName" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvELCGPatientParityValue"
+        style="@style/Theme.EZazi.Text.Stages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/screen_container_padding"
+        android:gravity="start"
+        android:text="Parity: 0, 0"
+        android:textColor="?colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/clELCGPatientRapturedMembranes"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clELCGPatientRapturedMembranes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/screen_container_padding"
+        app:layout_constraintBottom_toTopOf="@id/clELCGPatientLabourOnset"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvELCGPatientRapturedMembranes"
+            style="@style/Theme.EZazi.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/screen_container_padding"
+            android:gravity="start"
+            android:text="@string/elcg_patient_raptured_membranes"
+            android:textColor="@color/darkGray"
+            app:layout_constraintBottom_toTopOf="@id/rapturedDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:textAllCaps="true" />
+
+        <View
+            android:id="@+id/rapturedDivider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/stage_stroke_size"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:background="@color/darkGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvELCGPatientRapturedMembranes"
+            app:layout_constraintTop_toBottomOf="@id/tvELCGPatientRapturedMembranes" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvELCGPatientRapturedMembranesValue"
+            style="@style/Theme.EZazi.Text.Stages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/elcg_patient_raptured_membranes"
+            android:textColor="?colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rapturedDivider"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clELCGPatientLabourOnset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/screen_container_padding"
+        app:layout_constraintBottom_toTopOf="@id/btnActionViewRiskFactor"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvELCGPatientLabourOnset"
+            style="@style/Theme.EZazi.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/screen_container_padding"
+            android:gravity="start"
+            android:text="@string/labor_onset"
+            android:textColor="@color/darkGray"
+            app:layout_constraintBottom_toTopOf="@id/labourOnsetDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:textAllCaps="true" />
+
+        <View
+            android:id="@+id/labourOnsetDivider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/stage_stroke_size"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:background="@color/darkGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvELCGPatientLabourOnset"
+            app:layout_constraintTop_toBottomOf="@id/tvELCGPatientLabourOnset" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvELCGPatientLabourOnsetValue"
+            style="@style/Theme.EZazi.Text.Stages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/labor_onset"
+            android:textColor="?colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labourOnsetDivider"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnActionViewRiskFactor"
+        style="@style/Theme.EZazi.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/risk_factors"
+        app:icon="@drawable/ic_keyboard_arrow_right"
+        app:iconGravity="end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+</androidx.constraintlayout.widget.ConstraintLayout>

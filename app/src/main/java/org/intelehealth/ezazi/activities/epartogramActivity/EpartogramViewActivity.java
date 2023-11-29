@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
@@ -21,6 +22,8 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 
+import com.github.ajalt.timberkt.Timber;
+
 import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
@@ -28,7 +31,10 @@ import org.intelehealth.ezazi.ui.elcg.HtmlJSInterface;
 import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
+import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
+
+import java.io.File;
 
 import io.socket.utf8.UTF8;
 
@@ -43,12 +49,17 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener;
 
+    private String webArchiveFileDir;
+    private SessionManager sessionManager;
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_epartogram_ezazi);
         super.onCreate(savedInstanceState);
-
+        sessionManager = new SessionManager(this);
+        webArchiveFileDir = getBaseContext().getCacheDir().getAbsolutePath() + File.separator;
+        Timber.tag(TAG).d("webArchive =>%s", webArchiveFileDir);
         Intent intent = this.getIntent();
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientuuid");
@@ -60,13 +71,19 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         mySwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipeContainer);
 
         webView.setWebViewClient(webViewClient);
+        webView.setSaveEnabled(true);
         HtmlJSInterface htmlJSInterface = new HtmlJSInterface();
         webView.addJavascriptInterface(htmlJSInterface, HtmlJSInterface.EXECUTOR_PAGE_SAVER);
 
+        webView.getSettings().setAllowFileAccess(true);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webView.getSettings().setUserAgentString("Android");
+
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
+//        webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setDefaultTextEncodingName("UTF-8");
 
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
@@ -77,9 +94,14 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         webView.setScrollbarFadingEnabled(false);
         webView.setVisibility(View.VISIBLE);
 
+
         if (NetworkConnection.isOnline(this)) webView.loadUrl(URL + visitUuid);
-        else if (!htmlJSInterface.getHtml().isEmpty()) {
-            webView.loadData(htmlJSInterface.getHtml(), "text/html; charset=UTF-8", Xml.Encoding.UTF_8.name());
+        else if (!sessionManager.getLCGContentFile(visitUuid).isEmpty()) {
+            String webArchiveFile = webArchiveFileDir + sessionManager.getLCGContentFile(visitUuid);
+            Timber.tag(TAG).d(webArchiveFile);
+            webView.loadUrl(webArchiveFile);
+//            webView.loadData(htmlJSInterface.getHtml(), "text/html", null);
+//            webView.loadDataWithBaseURL(BuildConfig.SERVER_URL, htmlJSInterface.getHtml(), "text/html", "UTF-8", null);
         } else {
             webView.setVisibility(View.GONE);
             Toast.makeText(this, getString(R.string.please_connect_to_internet), Toast.LENGTH_LONG).show();
@@ -91,9 +113,20 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
 
     private final WebViewClient webViewClient = new WebViewClient() {
         @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            webView.loadUrl(url);
+            return true;
+        }
+
+        @Override
         public void onPageFinished(WebView view, String url) {
             mySwipeRefreshLayout.setRefreshing(false);
-            view.loadUrl(HtmlJSInterface.jsFunction());
+            if (NetworkConnection.isOnline(EpartogramViewActivity.this)) {
+                String fileName = visitUuid + ".mht";
+                sessionManager.setLCGContentFile(fileName, visitUuid);
+                view.saveWebArchive(webArchiveFileDir + fileName);
+//                view.loadUrl(HtmlJSInterface.jsFunction());
+            }
         }
 
         @Override

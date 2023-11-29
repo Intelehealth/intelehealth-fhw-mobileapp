@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -16,6 +17,9 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.IntentCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.intelehealth.ezazi.R;
@@ -47,9 +51,34 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        hideBottomSystemTaskbar();
         super.onCreate(savedInstanceState);
         SocketManager.getInstance().setNotificationListener(this);
         showShiftedPatientDialog(getIntent());
+    }
+
+    private void hideBottomSystemTaskbar() {
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        // Configure the behavior of the hidden system bars.
+        windowInsetsController.setSystemBarsBehavior(
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        );
+
+        // Add a listener to update the behavior of the toggle fullscreen button when
+        // the system bars are hidden or revealed.
+        getWindow().getDecorView().setOnApplyWindowInsetsListener((view, windowInsets) -> {
+            // You can hide the caption bar even when the other system bars are visible.
+            // To account for this, explicitly check the visibility of navigationBars()
+            // and statusBars() rather than checking the visibility of systemBars().
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (windowInsets.isVisible(WindowInsetsCompat.Type.navigationBars())) {
+                    // Hide both the status bar and the navigation bar.
+                    windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
+                }
+            }
+            return view.onApplyWindowInsets(windowInsets);
+        });
     }
 
     @Override
