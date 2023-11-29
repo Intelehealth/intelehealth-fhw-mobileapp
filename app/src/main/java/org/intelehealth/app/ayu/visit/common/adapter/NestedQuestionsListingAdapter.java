@@ -725,7 +725,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             for (int i = 0; i < options.size(); i++) {
                 options.get(i).setNestedLeve(options.get(i).getNestedLeve() + 1);
             }
-            OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
+            OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options,
+                    new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
                 public void onSelect(Node node, boolean isLoadingForNestedEditData) {
                     Log.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
@@ -794,12 +795,23 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                         if (!mItemList.get(index).isMultiChoice()) {
 
-                            if (mItemList.size() > 1) {
-                               /* mItemList.remove(1);
-                                notifyItemRemoved(1);*/
+                            /*if (mItemList.size() > 1) {
+                                mItemList.remove(1);
+                                notifyItemRemoved(1);
                             } else {
                                 notifyItemChanged(index);
+                            }*/
+                            // start
+                            for (int i = 0; i < mItemList.size(); i++) {
+                                if (!mItemList.get(i).isSelected()) {
+                                    if (mItemList.get(i).getText().equalsIgnoreCase(node.getText())) { // Here, if same option is unselected ie. clicked - than the option is set to isSelected = false now it check to make sure to remove only this option, if check if text is equal and removes only that item and its nested options.
+                                        mItemList.remove(i);
+                                        notifyItemRemoved(i);
+                                    }
+                                }
                             }
+                            // end
+
                         } else {
 
                             new Handler().postDelayed(new Runnable() {
@@ -833,10 +845,18 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                     options.get(i).unselectAllNestedNode();
                                 }
                             }
-                            if (mItemList.size() > 1) { // TODO: why removing this code from here????
-                               /* mItemList.remove(1);
-                                notifyItemRemoved(1);*/
+                           /* if (mItemList.size() > 1) { // TODO: why removing this code from here????
+                                mItemList.remove(1);
+                                notifyItemRemoved(1);
+                            }*/
+                            // start
+                            for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
+                                if (!mItemList.get(i).isSelected()) { // here, all those that are not selected nested - options those will be removed thus, keeping only the current selection options - nested options visible.
+                                    mItemList.remove(i);
+                                    notifyItemRemoved(i);
+                                }
                             }
+                            // end
                         }
                         //holder.singleComponentContainer.removeAllViews();
                         //holder.singleComponentContainer.setVisibility(View.VISIBLE);
