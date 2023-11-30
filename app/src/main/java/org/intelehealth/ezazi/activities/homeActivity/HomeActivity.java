@@ -571,7 +571,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
             mSyncProgressDialog.setProgress(i);
             mSyncProgressDialog.show();
 
-            syncUtils.initialSync("home");
+//            syncUtils.initialSync("home");
         } else {
             // if initial setup done then we can directly set the periodic background sync job
 //            WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);

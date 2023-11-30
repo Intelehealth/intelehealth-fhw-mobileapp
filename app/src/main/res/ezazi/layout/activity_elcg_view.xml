@@ -38,8 +38,7 @@
                 <include
                     layout="@layout/view_who_patient_info"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/elcg_patient_info_size"
-                    android:layout_marginStart="@dimen/screen_container_padding" />
+                    android:layout_height="@dimen/elcg_patient_info_size" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"

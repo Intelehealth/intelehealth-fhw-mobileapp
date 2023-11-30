@@ -14,6 +14,7 @@
     <string name="hint_search_cases">Search cases</string>
     <string name="select_all">Select All</string>
     <string name="emergency">Emergency!</string>
+    <string name="title_sos_data_entry">SOS Data Entry!</string>
     <string name="select_patient">Select patients to assign any nurse</string>
     <string name="select_nurse">Select nurse to assign</string>
     <string name="action_view">View</string>

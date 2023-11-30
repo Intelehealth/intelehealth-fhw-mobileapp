@@ -39,6 +39,10 @@ public class EncounterDTO {
 
     private String providerName;
 
+    private int alertCount;
+
+    private Status encounterStatus;
+
     private List<ObsDTO> obsDTOList;
 
     public String getUuid() {
@@ -123,10 +127,16 @@ public class EncounterDTO {
         return encounterType;
     }
 
-    public String getEncounterDateTime() {
+    public String getEncounterDateFormat() {
         return DateTimeUtils.formatDate(
                 DateTimeUtils.parseUTCDate(encounterTime, AppConstants.UTC_FORMAT),
-                DateTimeUtils.DD_MMM_YYYY_HH_MM_A, TimeZone.getDefault());
+                DateTimeUtils.MESSAGE_DAY_FORMAT, TimeZone.getDefault());
+    }
+
+    public String getEncounterTimeFormat() {
+        return DateTimeUtils.formatDate(
+                DateTimeUtils.parseUTCDate(encounterTime, AppConstants.UTC_FORMAT),
+                DateTimeUtils.TIME_FORMAT, TimeZone.getDefault());
     }
 
     public void setProviderName(String providerName) {
@@ -145,7 +155,29 @@ public class EncounterDTO {
         this.obsDTOList = obsDTOList;
     }
 
+    public void setAlertCount(int alertCount) {
+        this.alertCount = alertCount;
+    }
+
+    public int getAlertCount() {
+        return alertCount;
+    }
+
+    public void setEncounterStatus(Status encounterStatus) {
+        this.encounterStatus = encounterStatus;
+    }
+
+    public Status getEncounterStatus() {
+        return encounterStatus;
+    }
+
     public enum Type {SOS, NORMAL}
 
-    public enum Status {MISSED, SUBMITTED, PENDING}
+    public enum Status {
+        MISSED, SUBMITTED, PENDING;
+
+        public boolean isSubmitted() {
+            return this == SUBMITTED;
+        }
+    }
 }

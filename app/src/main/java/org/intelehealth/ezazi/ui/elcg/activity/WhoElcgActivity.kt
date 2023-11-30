@@ -46,10 +46,11 @@ class WhoElcgActivity : BaseActionBarActivity() {
         EXPAND_AVATAR_SIZE = resources.getDimension(R.dimen.patient_avatar_default_expand_size)
         COLLAPSE_IMAGE_SIZE = resources.getDimension(R.dimen.patient_avatar_default_collapsed_size)
         horizontalToolbarAvatarMargin = resources.getDimension(R.dimen.activity_horizontal_margin)
-        setupTabs()
-        viewModel.loadELCGData("ad345f41-b4b7-4013-8aa6-d2313c3bf038")
+
+        viewModel.loadELCGData("ee56f134-7315-4baa-8851-5e3b809f060c")
         viewModel.elcgEncounterData.observe(this) {
             encounters = it
+            setupTabs()
         }
     }
 

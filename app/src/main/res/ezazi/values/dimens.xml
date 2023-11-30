@@ -294,4 +294,6 @@
     <dimen name="elcg_patient_avatar_text_size">@dimen/std_24sp</dimen>
     <dimen name="elcg_vector_top_neg_margin">-20dp</dimen>
     <dimen name="elcg_title_top_margin">@dimen/std_12dp</dimen>
+    <dimen name="elcg_alert_icon_size">@dimen/std_36dp</dimen>
+    <dimen name="elcg_alert_text_size">@dimen/std_12sp</dimen>
 </resources>

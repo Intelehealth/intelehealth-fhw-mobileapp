@@ -98,10 +98,10 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         if (NetworkConnection.isOnline(this)) webView.loadUrl(URL + visitUuid);
         else if (!sessionManager.getLCGContentFile(visitUuid).isEmpty()) {
             String webArchiveFile = webArchiveFileDir + sessionManager.getLCGContentFile(visitUuid);
-            Timber.tag(TAG).d(webArchiveFile);
-            webView.loadUrl(webArchiveFile);
+            Timber.tag(TAG).d("Offline => %s", webArchiveFile);
+//            webView.loadUrl(webArchiveFile);
 //            webView.loadData(htmlJSInterface.getHtml(), "text/html", null);
-//            webView.loadDataWithBaseURL(BuildConfig.SERVER_URL, htmlJSInterface.getHtml(), "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL(null, htmlJSInterface.getHtml(), "text/html", "UTF-8", null);
         } else {
             webView.setVisibility(View.GONE);
             Toast.makeText(this, getString(R.string.please_connect_to_internet), Toast.LENGTH_LONG).show();
@@ -112,11 +112,6 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
     }
 
     private final WebViewClient webViewClient = new WebViewClient() {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            webView.loadUrl(url);
-            return true;
-        }
 
         @Override
         public void onPageFinished(WebView view, String url) {
@@ -125,7 +120,7 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
                 String fileName = visitUuid + ".mht";
                 sessionManager.setLCGContentFile(fileName, visitUuid);
                 view.saveWebArchive(webArchiveFileDir + fileName);
-//                view.loadUrl(HtmlJSInterface.jsFunction());
+                view.loadUrl(HtmlJSInterface.jsFunction());
             }
         }
 

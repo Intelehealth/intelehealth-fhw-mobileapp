@@ -935,7 +935,7 @@ public class ObsDAO {
     public List<ObsDTO> getELCGObsByEncounterUuid(String encounteruuid, LinkedHashMap<String, String> conceptIds) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         String[] ids = new String[conceptIds.size()];
-        ids = conceptIds.values().toArray(ids);
+        ids = conceptIds.keySet().toArray(ids);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String query = new QueryBuilder().from("tbl_obs")
                 .select("uuid, encounteruuid, conceptuuid, value, comment")
@@ -953,11 +953,31 @@ public class ObsDAO {
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
                 obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
+                obsDTO.setName(conceptIds.get(obsDTO.getConceptuuid()));
                 obsDTOList.add(obsDTO);
             }
         }
         idCursor.close();
 
         return obsDTOList;
+    }
+
+    public int countEncounterAlert(String encounterUuid) {
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String query = new QueryBuilder().from("tbl_obs")
+                .select("sum(CASE WHEN comment = 'R' THEN 2 WHEN comment = 'Y' THEN 1 ELSE 0 END) as total")
+                .where("encounteruuid = '" + encounterUuid + "'").build();
+        Log.d(TAG, "countEncounterAlert: " + query);
+        //take All obs except image obs
+        Cursor idCursor = db.rawQuery(query, null);
+        int total = 0;
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                total = idCursor.getInt(idCursor.getColumnIndexOrThrow("total"));
+            }
+        }
+        idCursor.close();
+
+        return total;
     }
 }

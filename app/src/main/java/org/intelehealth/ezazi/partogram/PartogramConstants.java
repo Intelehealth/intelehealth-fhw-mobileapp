@@ -1,7 +1,5 @@
 package org.intelehealth.ezazi.partogram;
 
-import static org.intelehealth.ezazi.utilities.UuidDictionary.TEMPERATURE;
-
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
@@ -57,7 +55,7 @@ public class PartogramConstants {
         AMNIOTIC_FLUID("Amniotic Fluid Meconium", "9d3160a6-538f-11e6-9cfe-86f436325720"),
 
         FETAL_POSITION("Fetal Position", "9d316387-538f-11e6-9cfe-86f436325720"),
-        CAPUTE("Caput", "9d316761-538f-11e6-9cfe-86f436325720"),
+        CAPUT("Caput", "9d316761-538f-11e6-9cfe-86f436325720"),
         MOULDING("Moulding", "9d316823-538f-11e6-9cfe-86f436325720"),
         SYSTOLIC_BP("Systolic BP", "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
         DIASTOLIC_BP("Diastolic BP", "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
@@ -178,10 +176,10 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[1]);
-        paramInfo.setParamName(Params.CAPUTE.value);
+        paramInfo.setParamName(Params.CAPUT.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"None", "+(Marked)", "++(Marked)", "+++(Marked)"});
-        paramInfo.setValues(new String[]{"N", "+", "++", "+++"});
+        paramInfo.setOptions(new String[]{"0 (None)", "+ (Marked)", "++ (Marked)", "+++ (Marked)"});
+        paramInfo.setValues(new String[]{"0", "+", "++", "+++"});
         paramInfo.setConceptUUID("9d316761-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
 

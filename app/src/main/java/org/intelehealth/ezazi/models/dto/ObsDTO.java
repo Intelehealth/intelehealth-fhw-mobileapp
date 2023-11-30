@@ -31,6 +31,8 @@ public class ObsDTO {
     @Expose
     private Integer voided;
 
+    private String name;
+
     public String getUuid() {
         return uuid;
     }
@@ -93,5 +95,13 @@ public class ObsDTO {
 
     public void setObsServerModifiedDate(String obsServerModifiedDate) {
         this.obsServerModifiedDate = obsServerModifiedDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }

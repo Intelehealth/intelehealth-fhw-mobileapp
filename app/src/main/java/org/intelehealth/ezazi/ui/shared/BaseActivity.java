@@ -51,7 +51,7 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        hideBottomSystemTaskbar();
+//        hideBottomSystemTaskbar();
         super.onCreate(savedInstanceState);
         SocketManager.getInstance().setNotificationListener(this);
         showShiftedPatientDialog(getIntent());

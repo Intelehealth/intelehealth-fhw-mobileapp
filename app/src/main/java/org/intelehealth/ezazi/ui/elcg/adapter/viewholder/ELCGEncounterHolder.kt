@@ -17,6 +17,23 @@ class ELCGEncounterHolder(private val binding: RowItemElcgEncounterBinding) : Ba
 ) {
     fun bind(encounter: EncounterDTO) {
         binding.encounter = encounter
+        setAlertCount(encounter)
+        changeLineColor(encounter)
+    }
+
+    private fun changeLineColor(encounter: EncounterDTO) {
+        binding.viewIndicatorElcgEncounter1.isActivated = encounter.encounterStatus.isSubmitted
+        binding.viewElcgGraphBottomLine.isActivated = encounter.encounterStatus.isSubmitted
+        binding.viewElcgGraphTopLine.isActivated = encounter.encounterStatus.isSubmitted
+    }
+
+    private fun setAlertCount(encounter: EncounterDTO) {
+        if (encounter.alertCount > 22) binding.tvElcgAlertCount.isActivated = true
+        else if (encounter.alertCount >= 15) binding.tvElcgAlertCount.isSelected = true
+        else {
+            binding.tvElcgAlertCount.isSelected = false
+            binding.tvElcgAlertCount.isActivated = false
+        }
     }
 
     fun hideTopLine(hide: Boolean) {

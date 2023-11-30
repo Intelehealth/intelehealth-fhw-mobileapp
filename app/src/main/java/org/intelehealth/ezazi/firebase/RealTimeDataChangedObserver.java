@@ -149,7 +149,7 @@ public class RealTimeDataChangedObserver {
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-            if (isAppInForeground()) {
+            if (isAppInForeground() && !sessionManager.isFirstTimeLaunched()) {
                 observeDataChange(snapshot);
             }
         }

@@ -251,7 +251,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     private void showEmergencyDialog() {
         ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                .title(R.string.emergency)
+                .title(R.string.title_sos_data_entry)
                 .positiveButtonLabel(R.string.yes)
                 .content(getString(R.string.are_you_sure_to_capture_emergency_data))
                 .build();

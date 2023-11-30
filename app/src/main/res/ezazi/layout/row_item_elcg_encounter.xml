@@ -27,7 +27,7 @@
             android:id="@+id/viewElcgGraphTopLine"
             android:layout_width="@dimen/std_2dp"
             android:layout_height="0dp"
-            android:background="@color/red"
+            android:background="@color/color_timeline_stroke"
             app:layout_constraintBottom_toTopOf="@id/viewIndicatorElcgEncounter1"
             app:layout_constraintEnd_toEndOf="@id/viewIndicatorElcgEncounter1"
             app:layout_constraintStart_toStartOf="@id/viewIndicatorElcgEncounter1"
@@ -37,7 +37,7 @@
             android:id="@+id/viewElcgGraphBottomLine"
             android:layout_width="@dimen/std_2dp"
             android:layout_height="0dp"
-            android:background="@color/red"
+            android:background="@color/color_timeline_stroke"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/viewIndicatorElcgEncounter1"
             app:layout_constraintStart_toStartOf="@id/viewIndicatorElcgEncounter1"
@@ -47,7 +47,7 @@
             android:id="@+id/viewIndicatorElcgEncounter1"
             android:layout_width="@dimen/screen_container_padding"
             android:layout_height="@dimen/screen_container_padding"
-            android:background="@drawable/stage_circle_bg"
+            android:background="@drawable/circle_indicator_timeline"
             app:layout_constraintBottom_toBottomOf="@id/cardElcgEncounter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/cardElcgEncounter" />
@@ -71,19 +71,34 @@
             app:layout_constraintBottom_toTopOf="@id/viewDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.88">
+            app:layout_constraintWidth_percent="0.85">
+
+            <TextView
+                android:id="@+id/tvELCGEncounterDate"
+                style="@style/Theme.EZazi.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{encounter.encounterDateFormat}"
+                android:textColor="@color/darkGray"
+                android:textSize="@dimen/body"
+                app:layout_constraintBottom_toTopOf="@id/tvObservedBy2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvElcgEncounter2Time"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Thursday, 22 May, 2023" />
 
             <TextView
                 android:id="@+id/tvElcgEncounter2Time"
                 style="@style/Theme.EZazi.Heading1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{encounter.encounterDateTime}"
+                android:text="@{encounter.encounterTimeFormat}"
                 android:textSize="@dimen/stage_text_size"
-                app:layout_constraintBottom_toTopOf="@id/tvObservedBy2"
+                app:layout_constraintBottom_toTopOf="@id/tvELCGEncounterDate"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="01:00 PM" />
 
             <TextView
                 android:id="@+id/tvObservedBy2"
@@ -95,7 +110,7 @@
                 android:textSize="@dimen/body"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvElcgEncounter2Time"
+                app:layout_constraintTop_toBottomOf="@id/tvELCGEncounterDate"
                 tools:text="@string/observation_by" />
 
             <com.google.android.material.button.MaterialButton
@@ -113,14 +128,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvElcgAlertCount2"
+                android:id="@+id/tvElcgAlertCount"
                 style="@style/Theme.EZazi.Screen.Title"
-                android:layout_width="@dimen/alert_icon_size"
-                android:layout_height="@dimen/alert_icon_size"
+                android:layout_width="@dimen/elcg_alert_icon_size"
+                android:layout_height="@dimen/elcg_alert_icon_size"
                 android:layout_marginEnd="@dimen/screen_container_padding"
-                android:background="@drawable/ic_normal_alert"
+                android:background="@drawable/selector_alert_count_state"
                 android:gravity="center"
-                android:textSize="@dimen/alert_text_size"
+                android:text="@{String.valueOf(encounter.alertCount)}"
+                android:textColor="@color/color_alert_count_text"
+                android:textSize="@dimen/elcg_alert_text_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnElcgExpandCollapseIndicator2"
                 app:layout_constraintTop_toTopOf="parent"

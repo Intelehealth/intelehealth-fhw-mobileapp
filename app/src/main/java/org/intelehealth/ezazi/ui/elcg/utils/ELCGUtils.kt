@@ -70,12 +70,15 @@ object ELCGUtils {
     ): LinkedList<ELCGData> {
 //        Stage1_Hour1_1
         val elcgDataList = LinkedList<ELCGData>()
+        val obsDao = ObsDAO();
         for (i in limit downTo 1) {
             Timber.d { "current hour $i" }
             encounters.filter { it.encounterTypeName.contains("Stage${stage}_Hour$i") }.apply {
                 this.forEach {
-                    it.obsDTOList =
-                        ObsDAO().getELCGObsByEncounterUuid(it.uuid, elcgGraph.attributes)
+                    it.alertCount = obsDao.countEncounterAlert(it.uuid)
+                    it.encounterStatus = obsDao.checkObsAddedOrNt(it.uuid, "")
+                    it.obsDTOList = obsDao.getELCGObsByEncounterUuid(it.uuid, elcgGraph.attributes)
+
                 }
                 if (this.isNotEmpty()) elcgDataList.add(ELCGData(i, this))
             }
@@ -89,32 +92,32 @@ object ELCGUtils {
             return@let it.isEmpty().not()
         }
     }
-
-    fun getSupportiveCareObservations(encounterId: String): MutableList<ObsDTO>? {
-        return ObsDAO().getELCGObsByEncounterUuid(encounterId, ELCGGraph.SupportiveCare.attributes)
-    }
-
-    fun getBabyCareObservations(encounterId: String): MutableList<ObsDTO>? {
-        return ObsDAO().getELCGObsByEncounterUuid(encounterId, ELCGGraph.Baby.attributes)
-    }
-
-    fun getWomenCareObservations(encounterId: String): MutableList<ObsDTO>? {
-        return ObsDAO().getELCGObsByEncounterUuid(encounterId, ELCGGraph.Women.attributes)
-    }
-
-    fun getLabourProgressObservations(encounterId: String): MutableList<ObsDTO>? {
-        return ObsDAO().getELCGObsByEncounterUuid(encounterId, ELCGGraph.LabourProgress.attributes)
-    }
-
-    fun getMedicationObservations(encounterId: String): MutableList<ObsDTO>? {
-        return ObsDAO().getELCGObsByEncounterUuid(
-            encounterId, ELCGGraph.MedicationAdministration.attributes
-        )
-    }
-
-    fun getSharedDecisionMakingObservations(encounterId: String): MutableList<ObsDTO>? {
-        return ObsDAO().getELCGObsByEncounterUuid(
-            encounterId, ELCGGraph.SharedDecisionMaking.attributes
-        )
-    }
+//
+//    fun getSupportiveCareObservations(encounterId: String): MutableList<ObsDTO>? {
+//        return ObsDAO().getELCGObsByEncounterUuid(encounterId, ELCGGraph.SupportiveCare.attributes)
+//    }
+//
+//    fun getBabyCareObservations(encounterId: String): MutableList<ObsDTO>? {
+//        return ObsDAO().getELCGObsByEncounterUuid(encounterId, ELCGGraph.Baby.attributes)
+//    }
+//
+//    fun getWomenCareObservations(encounterId: String): MutableList<ObsDTO>? {
+//        return ObsDAO().getELCGObsByEncounterUuid(encounterId, ELCGGraph.Women.attributes)
+//    }
+//
+//    fun getLabourProgressObservations(encounterId: String): MutableList<ObsDTO>? {
+//        return ObsDAO().getELCGObsByEncounterUuid(encounterId, ELCGGraph.LabourProgress.attributes)
+//    }
+//
+//    fun getMedicationObservations(encounterId: String): MutableList<ObsDTO>? {
+//        return ObsDAO().getELCGObsByEncounterUuid(
+//            encounterId, ELCGGraph.MedicationAdministration.attributes
+//        )
+//    }
+//
+//    fun getSharedDecisionMakingObservations(encounterId: String): MutableList<ObsDTO>? {
+//        return ObsDAO().getELCGObsByEncounterUuid(
+//            encounterId, ELCGGraph.SharedDecisionMaking.attributes
+//        )
+//    }
 }
