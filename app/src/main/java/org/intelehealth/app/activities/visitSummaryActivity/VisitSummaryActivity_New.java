@@ -1982,7 +1982,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // permission code - start
     private void checkPerm() {
-        if (checkAndRequestPermissions()) {
+       /// if (checkAndRequestPermissions()) {
             try {
                 if (hasPrescription.equalsIgnoreCase("true")) {
                     doWebViewPrint_downloadBtn();
@@ -1997,7 +1997,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }
+       // }
     }
 
     @Override
@@ -2211,18 +2211,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     // Permission - start
     private void checkPerm(int item) {
         if (item == 0) {
-            if (checkAndRequestPermissions(item)) {
+           // if (checkAndRequestPermissions(item)) {
                 Intent cameraIntent = new Intent(VisitSummaryActivity_New.this, CameraActivity.class);
                 String imageName = UUID.randomUUID().toString();
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
-            }
+         //   }
         } else if (item == 1) {
-            if (checkAndRequestPermissions(item)) {
+          //  if (checkAndRequestPermissions(item)) {
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
-            }
+           // }
         }
     }
 
@@ -5309,8 +5309,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             boolean isAssociateSymptomFound = false;
             if (mIsCCInOldFormat) {
                 complaintView.setVisibility(View.VISIBLE);
-                findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
-                findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
+                //commented for NAK kz
+                //findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
+               // findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
 
                 valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
                 isAssociateSymptomFound = valueArray.length >= 2;

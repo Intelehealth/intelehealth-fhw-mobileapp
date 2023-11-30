@@ -388,10 +388,10 @@ public class ChatHelpActivity_New extends AppCompatActivity implements ClickList
     }
 
     private void checkPerm() {
-        if (checkAndRequestPermissions()) {
+        //if (checkAndRequestPermissions()) {
             clickListeners();
 
-        }
+       // }
        /* PermissionListener permissionlistener = new PermissionListener() {
 
             @Override

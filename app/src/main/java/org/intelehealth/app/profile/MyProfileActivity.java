@@ -1005,9 +1005,9 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void checkPerm() {
-        if (checkAndRequestPermissions()) {
+       // if (checkAndRequestPermissions()) {
             selectImage();
-        }
+       // }
     }
 
     @Override

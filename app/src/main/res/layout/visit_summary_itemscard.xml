@@ -234,6 +234,7 @@
 
                     <!--Associated symp - start-->
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/associ_sym_relative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

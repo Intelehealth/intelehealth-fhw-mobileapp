@@ -479,13 +479,13 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 
     // permission code - start
     private void checkPerm() {
-        if (checkAndRequestPermissions()) {
+       /// if (checkAndRequestPermissions()) {
             try {
                 doWebViewPrint_downloadBtn();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }
+      //  }
     }
 
     @Override

@@ -624,9 +624,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     }
 
     private void checkPerm() {
-        if (checkAndRequestPermissions()) {
+       // if (checkAndRequestPermissions()) {
             takePicture();
-        }
+       // }
     }
 
     @Override
