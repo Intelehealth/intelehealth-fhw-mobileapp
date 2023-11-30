@@ -1277,14 +1277,23 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 }
                             }
                         } else if (!type.isEmpty() && node.isSelected()) {
-                            /*if (node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
+                            if (node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
                                 for (int i = 0; i < options.size(); i++) {
                                     String typeInner = options.get(i).getInputType();
                                     if (!options.get(i).getText().equals(node.getText()) && !typeInner.equalsIgnoreCase("camera")) {
                                         options.get(i).unselectAllNestedNode();
                                     }
                                 }
-                            }*/
+
+                                // start
+                                for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
+                                    if (!mItemList.get(i).isSelected()) { // here, all those that are not selected nested - options those will be removed thus, keeping only the current selection options - nested options visible.
+                                        mItemList.remove(i);
+                                        notifyItemRemoved(i);
+                                    }
+                                }
+                                // end
+                            }
                            /* boolean foundUserInputs = false;
                             for (int i = 0; i < options.size(); i++) {
                                 if (options.get(i).isSelected()) {
@@ -1297,7 +1306,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             }
                             if (!foundUserInputs)*/
 
-                            boolean foundUserInputs = false;
+                           /* boolean foundUserInputs = false;
                             for (int i = 0; i < options.size(); i++) {
                                 if (options.get(i).isSelected()) {
                                     foundUserInputs = options.get(i).isUserInputsTypeNode();
@@ -1313,7 +1322,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
                             if (!mItemList.get(index).isMultiChoice()) {
                                 holder.nestedRecyclerView.setAdapter(null);
-                            }
+                            }*/
 
                         } else {
                             holder.singleComponentContainer.removeAllViews();
