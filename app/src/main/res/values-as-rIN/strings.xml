@@ -1160,12 +1160,12 @@
     <string name="normal">স্বাভাৱিক</string>
     <string name="moderate_obesity">মধ্যমীয়া মেদবহুলতা</string>
     <string name="severe_obesity">অতিগম্ভীৰ মেদবহুলতা</string>
-    <string name="exit_vitals_warning_dialog">আপুনি এবাৰ এই পৰ্দাৰ পৰা ওলাই আহিলে, এই ভ্ৰমণৰ তথ্য সংৰক্ষণ কৰা নহ\'ব আৰু এই কাৰ্য্য ঘূৰাই দিব নোৱাৰিব। \\n\\n আপুনি নিশ্চিত নেকি, আপুনি আগবাঢ়িব বিচাৰে?</string>
+    <string name="exit_vitals_warning_dialog">আপুনি এবাৰ এই পৰ্দাৰ পৰা ওলাই আহিলে, এই ভ্ৰমণৰ তথ্য সংৰক্ষণ কৰা নহ\'ব আৰু এই কাৰ্য্য ঘূৰাই দিব নোৱাৰিব। \n\n আপুনি নিশ্চিত নেকি, আপুনি আগবাঢ়িব বিচাৰে?</string>
     <string name="type_to_search">সন্ধান কৰিবলৈ টাইপ কৰক...</string>
     <string name="na">প্ৰযোজ্য নহয়</string>
     <string name="call_logs">কল লগসমূহ</string>
     <string name="switch_location">অৱস্থান সলনি কৰক</string>
-    <string name="confirm_to_setup">আপুনি \\n• প্ৰাথমিক গাঁওক \'%1$s\' হিচাপে আৰু, \\n• মাধ্যমিক গাঁওক \'%2$s\' হিচাপে নিৰ্ব্বাচন কৰিছে \\nআপুনি নিশ্চিত নেকি যে আপুনি প্ৰতিষ্ঠাৰ সৈতে আগবাঢ়িব বিচাৰে?</string>
+    <string name="confirm_to_setup">আপুনি \n• প্ৰাথমিক গাঁওক \'%1$s\' হিচাপে আৰু, \n• মাধ্যমিক গাঁওক \'%2$s\' হিচাপে নিৰ্ব্বাচন কৰিছে \nআপুনি নিশ্চিত নেকি যে আপুনি প্ৰতিষ্ঠাৰ সৈতে আগবাঢ়িব বিচাৰে?</string>
     <string name="confirm_switch_location">আপুনি বৰ্তমানে \'%1$s\' গাঁৱত লগ ইন কৰিছে। আপুনি নিশ্চিত নেকি যে আপুনি \'%2$s\' গাঁওলৈ সলনি কৰিব বিচাৰে?</string>
     <string name="sync_failed">ছিঙ্ক ব্যৰ্থ! অনুগ্ৰহ কৰি পিছত পুনৰ চেষ্টা কৰক।</string>
     <string name="no_network_sync">আপুনি ইণ্টাৰনেটৰ সৈতে সংযুক্ত নহয়। অনুগ্ৰহ কৰি পিছত পুনৰ চেষ্টা কৰক।</string>
