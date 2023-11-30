@@ -181,6 +181,17 @@ public class MedicalHistorySummaryFragment extends Fragment {
                 for (int i = 0; i < _list.size(); i++) {
                     Log.v("K", "_list.get(i) - " + _list.get(i));
                     String[] qa = _list.get(i).split("•");
+
+
+                  /*  List<String> newArr = new ArrayList<String>();    // sr no. 38 - bug fix.
+                    for (String el : qa) {
+                        if (null != el && !"".equals(el.trim())) {
+                            newArr.add(el);
+                        }
+                    }
+                    qa =  newArr.toArray(new String[newArr.size()]);
+*/
+
                     if (qa.length == 2) {
                         String k = qa[0].trim();
                         String v = qa[1].trim();

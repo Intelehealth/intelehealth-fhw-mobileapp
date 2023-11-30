@@ -1120,7 +1120,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         for (int i = 0; i < familyInsertionList.size(); i++) {
             if (i == 0) {
-                familyHistory = Node.bullet + familyInsertionList.get(i);
+                familyHistory = /*Node.bullet +*/ familyInsertionList.get(i);   // sr no. 38 - bug fix.
             } else {
                 familyHistory = familyHistory + " " + Node.bullet + familyInsertionList.get(i);
             }
