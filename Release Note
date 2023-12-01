@@ -11,4 +11,12 @@ Release 2.4-Beta 01/12/2023
 - Date added in timeline screen with each encounter
 - Minor text changes
 
-Offline support
+E-Partogram view
+=================
+- We are presenting the epartogram view through weblink, so in this sort time we have only option to save
+in cache same as web browser and we achieved this, but some limitation is still there to view in offline mode
+- Require visit page very first time to store in cache where internet is availabe
+- Dependent on version support, some version support fully cache where some version cached only view format,
+  we tried hard to achieve cache full view, but not achieved fully.
+- Dependent on cache behaviour also, some time we can see the fully
+- Latest record will not present, we can view past record only.

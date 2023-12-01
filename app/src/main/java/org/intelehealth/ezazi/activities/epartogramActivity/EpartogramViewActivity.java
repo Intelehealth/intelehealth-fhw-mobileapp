@@ -86,10 +86,10 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         webView.getSettings().setUserAgentString("Android");
-
+//
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setDefaultTextEncodingName("UTF-8");
 
@@ -109,7 +109,7 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
             Timber.tag(TAG).d("Offline => %s", webArchiveFile);
             webView.loadUrl("file://" + webArchiveFile);
 //            webView.loadData(htmlJSInterface.getHtml(), "text/html", null);
-//            webView.loadDataWithBaseURL(null, htmlJSInterface.getHtml(), "text/html", "UTF-8", null);
+//            webView.loadDataWithBaseURL(null, webArchiveFile, "text/html", "UTF-8", null);
         } else {
             webView.setVisibility(View.GONE);
             Toast.makeText(this, getString(R.string.please_connect_to_internet), Toast.LENGTH_LONG).show();
@@ -120,13 +120,13 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
     }
 
     private final WebViewClient webViewClient = new WebViewClient() {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            String webArchiveFile = webArchiveFileDir + sessionManager.getLCGContentFile(visitUuid);
-            Timber.tag(TAG).d("Offline => %s", webArchiveFile);
-            webView.loadUrl("file://" + webArchiveFile);
-            return true;
-        }
+//        @Override
+//        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//            String webArchiveFile = webArchiveFileDir + sessionManager.getLCGContentFile(visitUuid);
+//            Timber.tag(TAG).d("Offline => %s", webArchiveFile);
+//            webView.loadUrl("file://" + webArchiveFile);
+//            return true;
+//        }
 
         @Override
         public void onPageFinished(WebView view, String url) {
