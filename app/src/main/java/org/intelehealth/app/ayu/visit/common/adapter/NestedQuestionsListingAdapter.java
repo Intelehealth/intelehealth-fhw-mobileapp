@@ -1166,6 +1166,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
                 editText.setText(node.getLanguage().split(" : ")[1]);
+            else
+                editText.setText(node.getLanguage());//added for set data to nested edittexts
         }
         String oldValue = editText.getText().toString().trim();
         editText.addTextChangedListener(new TextWatcher() {
