@@ -3,6 +3,7 @@ package org.intelehealth.app.ayu.visit.common.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -11,8 +12,11 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -262,31 +266,31 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         switch (type) {
             case "text":
                 genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
-                addTextEnterView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                addTextEnterView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position, genericViewHolder);
                 break;
             case "date":
-                addDateView(genericViewHolder, parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                addDateView(genericViewHolder, parentNode, currentNode, genericViewHolder.singleComponentContainer, position, genericViewHolder);
                 break;
             case "location":
                 //askLocation(questionNode, context, adapter);
                 break;
             case "number":
-                addNumberView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                addNumberView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position, genericViewHolder);
                 break;
             case "area":
                 // askArea(questionNode, context, adapter);
                 break;
             case "duration":
-                addDurationView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                addDurationView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position, genericViewHolder);
                 break;
             case "range":
-                addRangeView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                addRangeView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position, genericViewHolder);
                 break;
             case "frequency":
-                addFrequencyView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                addFrequencyView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position, genericViewHolder);
                 break;
             case "camera":
-                showCameraView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                showCameraView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position, genericViewHolder);
                 break;
             case "options":
 
@@ -295,7 +299,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         (currentNode.getOptionsList().get(0).getOptionsList() == null || currentNode.getOptionsList().get(0).getOptionsList().isEmpty())) {
                     routeByType(genericViewHolder, currentNode, currentNode.getOptionsList().get(0), position, isSuperNested);
                 } else {
-                    showOptionsData(currentNode, genericViewHolder, currentNode.getOptionsList(), position, isSuperNested);
+                    showOptionsData(currentNode, genericViewHolder, currentNode.getOptionsList(), position, isSuperNested, genericViewHolder);
                 }
                 break;
         }
@@ -316,7 +320,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         return count;
     }
 
-    private void addRangeView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void addRangeView(Node parentNode, Node node, LinearLayout containerLayout, int index, GenericViewHolder genericViewHolder) {
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_number_range, null);
         RangeSlider rangeSlider = view.findViewById(R.id.range_slider);
@@ -327,6 +331,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Button skipButton = view.findViewById(R.id.btn_skip);
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
+        if (genericViewHolder.node.isRequired())
+            addAsteriskToRequiredQuestion(genericViewHolder.node.findDisplay(), genericViewHolder);
+
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -398,7 +405,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         containerLayout.addView(view);
     }
 
-    private void addFrequencyView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void addFrequencyView(Node parentNode, Node node, LinearLayout containerLayout, int index, GenericViewHolder genericViewHolder) {
         containerLayout.removeAllViews();
         final View view = View.inflate(mContext, R.layout.ui2_visit_number_slider_with_icon, null);
         Slider rangeSlider = view.findViewById(R.id.number_slider);
@@ -409,6 +416,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Button skipButton = view.findViewById(R.id.btn_skip);
        /* if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
+        if (genericViewHolder.node.isRequired())
+            addAsteriskToRequiredQuestion(genericViewHolder.node.findDisplay(), genericViewHolder);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -629,7 +638,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
 
-    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, GenericViewHolder genericViewHolder) {
 
         holder.singleComponentContainer.removeAllViews();
         holder.tvQuestionDesc.setVisibility(View.VISIBLE);
@@ -656,6 +665,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
         if (selectedNode.isRequired()) {
             holder.skipButton.setVisibility(View.GONE);
+            addAsteriskToRequiredQuestion(genericViewHolder.node.findDisplay(), genericViewHolder);
         } else {
             holder.skipButton.setVisibility(View.VISIBLE);
         }
@@ -788,7 +798,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             break;
                         }
                     }
-                    if(isLoadingForNestedEditData){
+                    if (isLoadingForNestedEditData) {
                         if (selectedNode.isDataCaptured()) {
                             AdapterUtils.setToDisable(holder.skipButton);
                             AdapterUtils.setToDisable(holder.submitButton);
@@ -796,7 +806,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             AdapterUtils.setToDefault(holder.skipButton);
                             AdapterUtils.setToDefault(holder.submitButton);
                         }
-                    }else{
+                    } else {
                         AdapterUtils.setToDefault(holder.submitButton);
                         AdapterUtils.setToDefault(holder.skipButton);
 
@@ -852,7 +862,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
     }
 
-    private void showCameraView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void showCameraView(Node parentNode, Node node, LinearLayout containerLayout, int index, GenericViewHolder genericViewHolder) {
         Log.v("showCameraView", "Start method - " + new Gson().toJson(node));
         Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
         containerLayout.removeAllViews();
@@ -944,8 +954,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
      * @param node
      * @param containerLayout
      * @param index
+     * @param genericViewHolder
      */
-    private void addDurationView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void addDurationView(Node parentNode, Node node, LinearLayout containerLayout, int index, GenericViewHolder genericViewHolder) {
         Log.v("addDurationView", new Gson().toJson(node));
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
@@ -967,6 +978,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
+        if (genericViewHolder.node.isRequired())
+            addAsteriskToRequiredQuestion(genericViewHolder.node.findDisplay(), genericViewHolder);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1153,7 +1166,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
 
-    private void addNumberView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void addNumberView(Node parentNode, Node node, LinearLayout containerLayout, int index, GenericViewHolder genericViewHolder) {
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
@@ -1196,6 +1209,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         }
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
+        if (genericViewHolder.node.isRequired())
+            addAsteriskToRequiredQuestion(genericViewHolder.node.findDisplay(), genericViewHolder);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1285,7 +1300,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         containerLayout.addView(view);
     }
 
-    private void addTextEnterView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void addTextEnterView(Node parentNode, Node node, LinearLayout containerLayout, int index, GenericViewHolder genericViewHolder) {
         Log.v(TAG, "addTextEnterView");
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
@@ -1329,6 +1344,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         }
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
+        if (genericViewHolder.node.isRequired())
+            addAsteriskToRequiredQuestion(genericViewHolder.node.findDisplay(), genericViewHolder);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1422,7 +1439,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         containerLayout.addView(view);
     }
 
-    private void addDateView(GenericViewHolder genericViewHolder, Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void addDateView(GenericViewHolder genericViewHolder, Node parentNode, Node node, LinearLayout containerLayout, int index, GenericViewHolder viewHolder) {
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
@@ -1431,9 +1448,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         //Expected Delivery Date [EDD]  for this question future date allowed-nama -kz
-        if(node.getText().equalsIgnoreCase("Expected Delivery Date [EDD]")){
+        if (node.getText().equalsIgnoreCase("Expected Delivery Date [EDD]")) {
             calendarView.setMinDate(System.currentTimeMillis() + 1000);
-        }else{
+        } else {
             calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         }
         Log.v(TAG, "addDateView - " + node.getLanguage());
@@ -1511,6 +1528,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         //holder.skipButton.setVisibility(View.GONE);
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
+        if (genericViewHolder.node.isRequired())
+            addAsteriskToRequiredQuestion(genericViewHolder.node.findDisplay(), genericViewHolder);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1689,6 +1708,17 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
     }
 
+    private void addAsteriskToRequiredQuestion(String title,GenericViewHolder genericViewHolder) {
+        SpannableString spannableString = new SpannableString(title + "*");
+        // Set the asterisk (*) to red
+        spannableString.setSpan(
+                new ForegroundColorSpan(Color.RED),
+                spannableString.length() - 1,
+                spannableString.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+        genericViewHolder.tvQuestion.setText(spannableString);
+    }
 
 }
 

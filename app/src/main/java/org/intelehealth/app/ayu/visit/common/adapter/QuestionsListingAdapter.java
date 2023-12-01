@@ -3,6 +3,7 @@ package org.intelehealth.app.ayu.visit.common.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -10,8 +11,11 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -402,7 +406,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         Button skipButton = view.findViewById(R.id.btn_skip);
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
-        else skipButton.setVisibility(View.GONE);
+        else {
+            addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
+            skipButton.setVisibility(View.GONE);
+        }
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -481,7 +488,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         Button skipButton = view.findViewById(R.id.btn_skip);
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
-        else skipButton.setVisibility(View.GONE);
+        else {
+            addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
+            skipButton.setVisibility(View.GONE);
+        }
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -861,6 +871,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             if (mItemList.get(index).isRequired()) {
                 holder.skipButton.setVisibility(View.GONE);
+                addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
             } else {
                 holder.skipButton.setVisibility(View.VISIBLE);
             }
@@ -951,7 +962,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             selectedNode.setDataCaptured(false);
                             selectedNode.unselectAllNestedNode();
                             notifyItemChanged(index);
-                            if (selectedNode.isRequired()) return;
+                            if (selectedNode.isRequired()){
+                                addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
+                                return;
+                            }
                         } else {
                             if (isLastNodeSubmit)
                                 holder.selectedNestedOptionIndex = holder.selectedNestedOptionIndex - 1;
@@ -1054,6 +1068,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 if (mItemList.get(index).isRequired()) {
                     holder.skipButton.setVisibility(View.GONE);
+                    addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
                 } else {
                     holder.skipButton.setVisibility(View.VISIBLE);
                 }
@@ -1171,6 +1186,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                             if (mItemList.get(index).isRequired()) {
                                 holder.skipButton.setVisibility(View.GONE);
+                                addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
                             } else {
                                 if (!isAnyOtherOptionSelected)
                                     holder.skipButton.setVisibility(View.VISIBLE);
@@ -1379,7 +1395,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             AdapterUtils.setToDefault(skipButton);
         }
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
-        else skipButton.setVisibility(View.GONE);
+        else {
+            addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
+            skipButton.setVisibility(View.GONE);
+        }
         String oldDataNumber = "", oldDataType = "";
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1607,7 +1626,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             AdapterUtils.setToDefault(skipButton);
         }
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
-        else skipButton.setVisibility(View.GONE);
+        else {
+            addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
+            skipButton.setVisibility(View.GONE);
+        }
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1724,8 +1746,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         } else {
             AdapterUtils.setToDefault(skipButton);
         }
-        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
-        else skipButton.setVisibility(View.GONE);
+
+        if (!holder.node.isRequired()){
+            skipButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
+            skipButton.setVisibility(View.GONE);
+        }
+
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1846,7 +1875,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
-        else skipButton.setVisibility(View.GONE);
+        else {
+            addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
+            skipButton.setVisibility(View.GONE);
+        }
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -2023,6 +2055,18 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void onDialogActionDone(int action) {
             }
         });
+    }
+
+    private void addAsteriskToRequiredQuestion(String title, GenericViewHolder genericViewHolder) {
+        SpannableString spannableString = new SpannableString(title + "*");
+        // Set the asterisk (*) to red
+        spannableString.setSpan(
+                new ForegroundColorSpan(Color.RED),
+                spannableString.length() - 1,
+                spannableString.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+        genericViewHolder.tvQuestion.setText(spannableString);
     }
 
 }
