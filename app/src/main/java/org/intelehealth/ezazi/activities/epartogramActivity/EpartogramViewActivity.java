@@ -80,7 +80,7 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         webView.getSettings().setUserAgentString("Android");
 
         webView.getSettings().setJavaScriptEnabled(true);
-//        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setDefaultTextEncodingName("UTF-8");

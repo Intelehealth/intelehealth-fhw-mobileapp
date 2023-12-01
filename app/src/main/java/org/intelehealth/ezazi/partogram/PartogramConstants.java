@@ -178,7 +178,7 @@ public class PartogramConstants {
         paramInfo.setParamSectionName(SECTION_LIST[1]);
         paramInfo.setParamName(Params.CAPUT.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"0 (None)", "+ (Marked)", "++ (Marked)", "+++ (Marked)"});
+        paramInfo.setOptions(new String[]{"0 (None)", "+", "++", "+++ (Marked)"});
         paramInfo.setValues(new String[]{"0", "+", "++", "+++"});
         paramInfo.setConceptUUID("9d316761-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
