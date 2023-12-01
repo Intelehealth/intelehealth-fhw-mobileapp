@@ -159,8 +159,8 @@ public class PartogramConstants {
         paramInfo.setParamSectionName(SECTION_LIST[1]);
         paramInfo.setParamName(Params.AMNIOTIC_FLUID.value);
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"Intact", "Clear", "Meconium-Stained Fluid (Non-significant)", "Meconium-Stained Fluid (Medium)",
-                "Meconium-Stained Fluid (Thick)", "Blood Stained"});
+        paramInfo.setOptions(new String[]{"I (Intact)", "C (Clear fluid)", "M+ (Meconium stained fluid-Nonsignificant)",
+                "M++ (Meconium stained fluid-Medium)", "M+++ (Meconium stained fluid-Thick)", "B (Blood stained)"});
         paramInfo.setValues(new String[]{"I", "C", "M+", "M++", "M+++", "B"});
         paramInfo.setConceptUUID("9d3160a6-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);

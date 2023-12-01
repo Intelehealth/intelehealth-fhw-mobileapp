@@ -7,9 +7,6 @@ Patient list ranking should be ordered new to old in find patient listing. - Don
 Patient registration - make the scroll same as IDA app. Profile image should scroll. - Done
 Patient registration - Top three tabs size & margin should same as IDA app. - Done
 View e-partogram - In offline mode its giving 404 error also asking for login credentials some times. ePartogram view should work in offile mode as well.
-- To show the WHO LCG View, we are directly loading the web page url through webview in app only,
-so we have cached whole html page, when there is no internet, it will load page from cache.
-It will represent the html format instead on 404, but very first time it require to load successfully
-when internet is available. This
+- Partially achieved
 Dr web app PWA - PWA splash screen should be same as mobile app splash screen with same logo & colors.
 Dr web app - Login page in responsive mode : Login screen should be on top under scroll then eZazi screen. (Same as IDA) - Done

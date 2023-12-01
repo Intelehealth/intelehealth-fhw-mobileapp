@@ -1,0 +1,14 @@
+Release 2.4-Beta 01/12/2023
+===========================
+- Patient list ordered with newest registered
+- Made profile picture scrollable in patient personal info
+- Patient registration top three tab margin improved
+- ELCG offline support partially added
+- Dr web app - Login page in responsive mode : Login screen set on top under scroll then eZazi screen.
+- Minimum patient age limit increased by 13 year old
+- ELCG login issue resolved while opening from mobile or tablet
+- Fetal position, Urine Protein, Urine Acetone and Moulding value changed with standard format
+- Date added in timeline screen with each encounter
+- Minor text changes
+
+Offline support

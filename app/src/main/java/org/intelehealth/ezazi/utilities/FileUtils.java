@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ezazi.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -125,6 +126,9 @@ public class FileUtils {
     }
 
     public static String getProjectCatchDir(Context context) {
-        return context.getCacheDir().getAbsolutePath() + File.separator;
+        String main = context.getCacheDir().getAbsolutePath() + File.separator;
+        File file = new File(main + context.getResources().getString(R.string.app_name) + File.separator);
+        if (!file.exists()) file.mkdirs();
+        return file.getAbsolutePath() + File.separator;
     }
 }

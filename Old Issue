@@ -1,2 +1,0 @@
-1 - encounter_time updating in encounter table with 2 mins ago of Visit end date.
-    (EncounterDao ->insertVisitCompleteEncounterToDb -> Line 537 )
