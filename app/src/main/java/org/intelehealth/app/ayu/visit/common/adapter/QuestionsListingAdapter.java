@@ -1322,8 +1322,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.singleComponentContainer.removeAllViews();
                             }
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
-                            if (!mItemList.get(index).isMultiChoice()) {
-                                holder.nestedRecyclerView.setAdapter(null);
+                            if (!mItemList.get(index).isMultiChoice() && !mItemList.get(index).isEnableExclusiveOption()) {
+                                holder.nestedRecyclerView.setAdapter(null); // todo: this code should not trigger in-case of phys exam take picture so use is-exclusive logic.
                             }
 
                         } else {
