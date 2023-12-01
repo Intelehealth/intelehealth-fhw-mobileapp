@@ -915,11 +915,21 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
+                <include
+                    android:id="@+id/layout_dispense_1"
+                    layout="@layout/view_dispense_administer_button"
+                    android:layout_below="@+id/textView_heading_rx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
+
                 <TableLayout
                     android:id="@+id/tl_prescribed_medications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textView_heading_rx"
+                    android:layout_below="@id/layout_dispense_1"
                     android:padding="@dimen/padding_card">
 
                     <!--Prescription-->
@@ -940,13 +950,6 @@
                     </TableRow>
                 </TableLayout>
 
-                <include
-                    android:id="@+id/layout_dispense_1"
-                    layout="@layout/view_dispense_administer_button"
-                    android:layout_below="@+id/tl_prescribed_medications"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -1195,12 +1198,21 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
+                <include
+                    android:id="@+id/layout_dispense_2"
+                    layout="@layout/view_dispense_administer_button"
+                    android:layout_below="@+id/textView_heading_aid_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
 
                 <TableLayout
                     android:id="@+id/tl_aidorder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textView_heading_aid_order"
+                    android:layout_below="@id/layout_dispense_2"
                     android:padding="@dimen/padding_card">
 
                     <!--Diagnosis-->
@@ -1313,18 +1325,7 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
-
                 </TableLayout>
-
-                <include
-                    android:id="@+id/layout_dispense_2"
-                    layout="@layout/view_dispense_administer_button"
-                    android:layout_below="@+id/tl_aidorder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
