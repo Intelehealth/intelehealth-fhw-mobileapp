@@ -203,6 +203,7 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
     private RecyclerView.LayoutManager cc_recyclerview_gridlayout;
     private AdditionalDocumentAdapter recyclerViewAdapter;
     private ComplaintHeaderAdapter cc_adapter;
+    private Button homeButton;
 
     boolean hasLicense = false;
     private String hasPrescription = "";
@@ -1910,8 +1911,7 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
 
         reminder.setOnClickListener(v -> {
             // filter options
-            Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
-            startActivity(intent);
+            triggerHomeActivityIntent();
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
@@ -1934,8 +1934,15 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
 
+        homeButton.setOnClickListener(v -> triggerHomeActivityIntent());
+
         String drDetails = fetchDrDetailsFromLocalDb(visitUuid);
         parseDoctorDetails(drDetails);
+    }
+
+    private void triggerHomeActivityIntent() {
+        Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+        startActivity(intent);
     }
 
     // permission code - start
@@ -2231,6 +2238,8 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
         incomplete_act = findViewById(R.id.incomplete_act);
         incomplete_act.setText(getResources().getString(R.string.action_end_visit));
         hl_1 = findViewById(R.id.hl_1);
+
+        homeButton = findViewById(R.id.btn_home);
 
         archieved_notifi = findViewById(R.id.archieved_notifi);
         archieved_notifi.setVisibility(View.GONE);
