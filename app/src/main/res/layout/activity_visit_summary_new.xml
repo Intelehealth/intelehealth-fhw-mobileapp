@@ -878,7 +878,7 @@
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
-                android:layout_marginBottom="65dp"
+                android:layout_marginBottom="@dimen/margin_10"
                 android:elevation="16dp"
                 app:cardCornerRadius="@dimen/margin_5"
                 app:cardElevation="@dimen/margin_5">
@@ -922,7 +922,24 @@
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
+            <Button
+                android:id="@+id/btn_home"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_below="@id/priority_card"
+                android:layout_marginStart="@dimen/toolbar_margin_left"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/toolbar_margin_right"
+                android:layout_marginBottom="65dp"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:padding="@dimen/margin_12"
+                android:text="@string/action_home"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_button_text_size"
+                android:textStyle="bold" />
+
         </RelativeLayout>
+
     </ScrollView>
 
     <!--Visit Details - start -->
