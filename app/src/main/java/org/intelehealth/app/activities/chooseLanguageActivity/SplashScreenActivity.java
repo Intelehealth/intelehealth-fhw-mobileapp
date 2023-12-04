@@ -1,9 +1,12 @@
 package org.intelehealth.app.activities.chooseLanguageActivity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -13,16 +16,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
@@ -30,6 +38,7 @@ import androidx.biometric.BiometricPrompt;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +56,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
+import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
@@ -73,6 +83,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     String appLanguage;
     SessionManager sessionManager = null;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
+    private CustomDialog customDialog;
 
     String LOG_TAG = "SplashActivity";
     BiometricPrompt biometricPrompt;
@@ -217,12 +228,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
     }
 
+    private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
+    public static final int PERMISSION_USAGE_ACCESS_STATS = 2792;
+
     private boolean checkAndRequestPermissions() {
+
         int cameraPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA);
         int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
-        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
@@ -232,18 +245,54 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (getAccountPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
         }
-        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
 
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+            int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+
+            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+            }
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            int notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS);
+            if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
+
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
+
+        if (!Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
+            startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+        } else {
+            //Permission Granted-System will work
+        }
+
+        try {
+            PackageManager packageManager = getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
+            AppOpsManager appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+
+            if (mode != AppOpsManager.MODE_ALLOWED) {
+                customDialog = new CustomDialog(this);
+                customDialog.showDialog1();
+            }
+        } catch (PackageManager.NameNotFoundException ignored) {
+            // Control shouldn't reach at this point of the code
+            //
+        }
+
         return true;
     }
 
@@ -532,6 +581,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_USAGE_ACCESS_STATS) {
+            if (customDialog.isVisible()) {
+                customDialog.dismiss();
+            }
+        }
+
         if (requestCode == GROUP_PERMISSION_REQUEST) {
             boolean allGranted = grantResults.length != 0;
             boolean permissionsCheck = false;
@@ -542,7 +597,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     break;
                 }
             }
-            if(permissionsCheck) {
+            if (permissionsCheck) {
                 if (allGranted) {
                     checkPerm();
                 } else {
@@ -566,5 +621,36 @@ public class SplashScreenActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public static class CustomDialog extends DialogFragment {
+        Context activityContext;
+
+        public CustomDialog(Activity activity) {
+            this.activityContext = activity;
+        }
+
+        public void showDialog1() {
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(activityContext);
+            builder.setCancelable(false);
+            LayoutInflater inflater = LayoutInflater.from(activityContext);
+            View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_enable_permissions, null);
+            builder.setView(customLayout);
+
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+            dialog.show();
+            int width = activityContext.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+
+            dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+            Button btnOkay = customLayout.findViewById(R.id.btn_okay);
+            btnOkay.setOnClickListener(v -> {
+                dialog.dismiss();
+                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                ((ComponentActivity) activityContext).startActivityForResult(intent, PERMISSION_USAGE_ACCESS_STATS);
+            });
+        }
     }
 }

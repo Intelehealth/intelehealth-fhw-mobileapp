@@ -1,12 +1,12 @@
 package org.intelehealth.app.activities.achievements.fragments;
 
+import static org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity.PERMISSION_USAGE_ACCESS_STATS;
+
 import android.animation.ObjectAnimator;
-import android.app.AppOpsManager;
+import android.app.Activity;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -57,7 +57,6 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         setLocale(getContext());
         sessionManager = new SessionManager(requireActivity());
         usageStatsManager = (UsageStatsManager) (requireActivity().getSystemService(Context.USAGE_STATS_SERVICE));
-        checkAndAskForUsagePermissions();
     }
 
     @Override
@@ -170,54 +169,6 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void checkAndAskForUsagePermissions() {
-        try {
-            PackageManager packageManager = requireActivity().getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(requireActivity().getPackageName(), 0);
-            AppOpsManager appOpsManager = (AppOpsManager) requireActivity().getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
-
-            if (mode != AppOpsManager.MODE_ALLOWED) {
-                CustomDialog customDialog = new CustomDialog(requireActivity());
-                customDialog.showDialog1();
-            }
-        } catch (PackageManager.NameNotFoundException ignored) {
-            // Control shouldn't reach at this point of the code
-            //
-        }
-    }
-
-    static class CustomDialog extends DialogFragment {
-        Context context;
-
-        public CustomDialog(Context context) {
-            this.context = context;
-        }
-
-        public void showDialog1() {
-            AlertDialog.Builder builder
-                    = new AlertDialog.Builder(context);
-            builder.setCancelable(false);
-            LayoutInflater inflater = LayoutInflater.from(context);
-            View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_enable_permissions, null);
-            builder.setView(customLayout);
-
-            AlertDialog dialog = builder.create();
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-            dialog.show();
-            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
-
-            dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-            Button btnOkay = customLayout.findViewById(R.id.btn_okay);
-            btnOkay.setOnClickListener(v -> {
-                dialog.dismiss();
-                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                context.startActivity(intent);
-            });
         }
     }
 }

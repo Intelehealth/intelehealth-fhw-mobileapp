@@ -37,6 +37,9 @@ public class ClsDoctorDetails{
 	@SerializedName("textOfSign")
 	private String textOfSign;
 
+	@SerializedName("signature")
+	private String signature;
+
 	public void setWhatsapp(String whatsapp){
 		this.whatsapp = whatsapp;
 	}
@@ -125,20 +128,28 @@ public class ClsDoctorDetails{
 		this.uuid = uuid;
 	}
 
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
 	@Override
  	public String toString(){
-		return 
-			"ClsDoctorDetails{" + 
-			"whatsapp = '" + whatsapp + '\'' + 
-			",qualification = '" + qualification + '\'' + 
-			",phoneNumber = '" + phoneNumber + '\'' + 
-			",address = '" + address + '\'' + 
-			",fontOfSign = '" + fontOfSign + '\'' + 
-			",registrationNumber = '" + registrationNumber + '\'' + 
-			",name = '" + name + '\'' + 
-			",specialization = '" + specialization + '\'' + 
-			",emailId = '" + emailId + '\'' + 
-			",textOfSign = '" + textOfSign + '\'' + 
+		return
+			"ClsDoctorDetails{" +
+			"whatsapp = '" + whatsapp + '\'' +
+			",qualification = '" + qualification + '\'' +
+			",phoneNumber = '" + phoneNumber + '\'' +
+			",address = '" + address + '\'' +
+			",fontOfSign = '" + fontOfSign + '\'' +
+			",registrationNumber = '" + registrationNumber + '\'' +
+			",name = '" + name + '\'' +
+			",specialization = '" + specialization + '\'' +
+			",emailId = '" + emailId + '\'' +
+			",textOfSign = '" + textOfSign + '\'' +
 			"}";
 		}
 
