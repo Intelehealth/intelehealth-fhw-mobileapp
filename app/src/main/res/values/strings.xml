@@ -1092,5 +1092,5 @@
     <string name="duration">Duration*</string>
     <string name="duration_unit">Duration Unit*</string>
     <string name="remark">Remark</string>
-
+    <string name="content_elcg_internet_require">WHO LCG view requires an internet connection. Please ensure you are connected to the internet.</string>
 </resources>

@@ -84,7 +84,7 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
 //        webView.addJavascriptInterface(htmlJSInterface, HtmlJSInterface.EXECUTOR_PAGE_SAVER);
 
         webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+
         webView.getSettings().setUserAgentString("Android");
 //
         webView.getSettings().setJavaScriptEnabled(true);
@@ -103,11 +103,17 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         webView.setVisibility(View.VISIBLE);
         webView.setWebViewClient(webViewClient);
 
-        if (NetworkConnection.isOnline(this)) webView.loadUrl(URL + visitUuid);
-        else if (!sessionManager.getLCGContentFile(visitUuid).isEmpty()) {
-            String webArchiveFile = webArchiveFileDir + sessionManager.getLCGContentFile(visitUuid);
-            Timber.tag(TAG).d("Offline => %s", webArchiveFile);
-            webView.loadUrl("file://" + webArchiveFile);
+        if (NetworkConnection.isOnline(this)) {
+            Log.e(TAG, "onCreate: isOnline");
+            webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            webView.loadUrl(URL + visitUuid);
+        } else if (!sessionManager.getLCGContentFile(visitUuid).isEmpty()) {
+            Log.e(TAG, "onCreate: isOnline");
+//            webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+//            String webArchiveFile = webArchiveFileDir + sessionManager.getLCGContentFile(visitUuid);
+//            Timber.tag(TAG).d("Offline => %s", webArchiveFile);
+//            webView.loadUrl("file://" + webArchiveFile);
+            showInternetRequireDialog();
 //            webView.loadData(htmlJSInterface.getHtml(), "text/html", null);
 //            webView.loadDataWithBaseURL(null, webArchiveFile, "text/html", "UTF-8", null);
         } else {
@@ -199,6 +205,17 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         });
 
         dialogFragment.show(getSupportFragmentManager(), dialogFragment.getClass().getCanonicalName());
+    }
+
+    private void showInternetRequireDialog() {
+        ConfirmationDialogFragment dialogFragment = new ConfirmationDialogFragment.Builder(this)
+                .content(getString(R.string.content_elcg_internet_require))
+                .positiveButtonLabel(R.string.ok)
+                .hideNegativeButton(true)
+                .build();
+
+        dialogFragment.setListener(EpartogramViewActivity.super::onBackNavigate);
+        dialogFragment.show(getSupportFragmentManager(), dialogFragment.getClass().getName());
     }
 
     @Override
