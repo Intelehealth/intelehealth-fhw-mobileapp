@@ -727,73 +727,73 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             }
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options,
                     new OptionsChipsGridAdapter.OnItemSelection() {
-                @Override
-                public void onSelect(Node node, boolean isLoadingForNestedEditData) {
-                    Log.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
-                    if (!isLoadingForNestedEditData)
-                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
-                    if (!isLoadingForNestedEditData) {
-                        mItemList.get(index).setSelected(false);
-                        mItemList.get(index).setDataCaptured(false);
-                    }
-                    for (int i = 0; i < options.size(); i++) {
-                        if (options.get(i).isSelected()) {
-                            mItemList.get(index).setSelected(true);
-                            //mItemList.get(index).setDataCaptured(true);
-                            break;
-                        }
-                    }
-                    if (isLoadingForNestedEditData) {
-                        if (selectedNode.isDataCaptured()) {
-                            AdapterUtils.setToDisable(holder.skipButton);
-                            AdapterUtils.setToDisable(holder.submitButton);
-                        } else {
-                            AdapterUtils.setToDefault(holder.skipButton);
-                            AdapterUtils.setToDefault(holder.submitButton);
-                        }
-                    } else {
-                        AdapterUtils.setToDefault(holder.submitButton);
-                        AdapterUtils.setToDefault(holder.skipButton);
+                        @Override
+                        public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+                            Log.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
+                            if (!isLoadingForNestedEditData)
+                                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
+                            if (!isLoadingForNestedEditData) {
+                                mItemList.get(index).setSelected(false);
+                                mItemList.get(index).setDataCaptured(false);
+                            }
+                            for (int i = 0; i < options.size(); i++) {
+                                if (options.get(i).isSelected()) {
+                                    mItemList.get(index).setSelected(true);
+                                    //mItemList.get(index).setDataCaptured(true);
+                                    break;
+                                }
+                            }
+                            if (isLoadingForNestedEditData) {
+                                if (selectedNode.isDataCaptured()) {
+                                    AdapterUtils.setToDisable(holder.skipButton);
+                                    AdapterUtils.setToDisable(holder.submitButton);
+                                } else {
+                                    AdapterUtils.setToDefault(holder.skipButton);
+                                    AdapterUtils.setToDefault(holder.submitButton);
+                                }
+                            } else {
+                                AdapterUtils.setToDefault(holder.submitButton);
+                                AdapterUtils.setToDefault(holder.skipButton);
 
-                    }
+                            }
                      /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
                     holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
 
-                    String type = node.getInputType();
+                            String type = node.getInputType();
 
-                    if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
-                        type = "options";
-                    }
-                    Log.v(TAG, "node - " + node.getText());
-                    Log.v(TAG, "node - " + node.findDisplay());
-                    Log.v(TAG, "Type - " + type);
-                    Log.v(TAG, "isLoadingForNestedEditData - " + isLoadingForNestedEditData);
-                    if (!node.isSelected()) {
-                        node.unselectAllNestedNode();
+                            if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+                                type = "options";
+                            }
+                            Log.v(TAG, "node - " + node.getText());
+                            Log.v(TAG, "node - " + node.findDisplay());
+                            Log.v(TAG, "Type - " + type);
+                            Log.v(TAG, "isLoadingForNestedEditData - " + isLoadingForNestedEditData);
+                            if (!node.isSelected()) {
+                                node.unselectAllNestedNode();
 
-                        // remove child nodes views on deselect of same option - start
-                        holder.singleComponentContainer.removeAllViews();
-                        if (mItemList.get(index).isMultiChoice()) {
-                            holder.submitButton.setVisibility(View.VISIBLE);
-                        } else {
-                            holder.submitButton.setVisibility(View.GONE);
-                            mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
-                            AdapterUtils.setToDisable(holder.skipButton);
-                        }
+                                // remove child nodes views on deselect of same option - start
+                                holder.singleComponentContainer.removeAllViews();
+                                if (mItemList.get(index).isMultiChoice()) {
+                                    holder.submitButton.setVisibility(View.VISIBLE);
+                                } else {
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                                    AdapterUtils.setToDisable(holder.skipButton);
+                                }
 
-                        if (mItemList.get(index).isRequired())
-                            holder.skipButton.setVisibility(View.GONE);
-                        else
-                            holder.skipButton.setVisibility(View.VISIBLE);
+                                if (mItemList.get(index).isRequired())
+                                    holder.skipButton.setVisibility(View.GONE);
+                                else
+                                    holder.skipButton.setVisibility(View.VISIBLE);
 
-                        checkAndHideSkipButton(holder.skipButton);
-                        // remove child nodes views on deselect of same option - end
+                                checkAndHideSkipButton(holder.skipButton);
+                                // remove child nodes views on deselect of same option - end
 
 
-                        if (type.equalsIgnoreCase("camera"))
-                            mItemList.get(index).removeImagesAllNestedNode();
+                                if (type.equalsIgnoreCase("camera"))
+                                    mItemList.get(index).removeImagesAllNestedNode();
 
-                        if (!mItemList.get(index).isMultiChoice()) {
+                                if (!mItemList.get(index).isMultiChoice()) {
 
                             /*if (mItemList.size() > 1) {
                                 mItemList.remove(1);
@@ -801,97 +801,97 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             } else {
                                 notifyItemChanged(index);
                             }*/
-                            // start
-                            for (int i = 0; i < mItemList.size(); i++) {
-                                if (!mItemList.get(i).isSelected()) {
-                                    if (mItemList.get(i).getText().equalsIgnoreCase(node.getText())) { // Here, if same option is unselected ie. clicked - than the option is set to isSelected = false now it check to make sure to remove only this option, if check if text is equal and removes only that item and its nested options.
-                                        mItemList.remove(i);
-                                        notifyItemRemoved(i);
-                                    }
-                                }
-                            }
-                            // end
-
-                        } else {
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (!isLoadingForNestedEditData) {
-                                        // found the correct node
-                                        boolean found = false;
-                                        for (int i = 0; i < mItemList.size(); i++) {
-                                            Node n = mItemList.get(i);
-                                            Log.v(TAG, "n - " + n.getText());
-                                            if (node.getText().equalsIgnoreCase(n.getText())) {
-                                                found = true;
+                                    // start
+                                    for (int i = 0; i < mItemList.size(); i++) {
+                                        if (!mItemList.get(i).isSelected()) {
+                                            if (mItemList.get(i).getText().equalsIgnoreCase(node.getText())) { // Here, if same option is unselected ie. clicked - than the option is set to isSelected = false now it check to make sure to remove only this option, if check if text is equal and removes only that item and its nested options.
                                                 mItemList.remove(i);
                                                 notifyItemRemoved(i);
-                                                break;
                                             }
                                         }
-                                        if (!found)
-                                            notifyItemChanged(index);
                                     }
-                                }
-                            }, 100);
-                        }
+                                    // end
 
-                        return;
-                    } else if (!type.isEmpty() && node.isSelected()) {
-                        if (node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
-                            for (int i = 0; i < options.size(); i++) {
-                                if (!options.get(i).getText().equals(node.getText())) {
-                                    options.get(i).unselectAllNestedNode();
+                                } else {
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (!isLoadingForNestedEditData) {
+                                                // found the correct node
+                                                boolean found = false;
+                                                for (int i = 0; i < mItemList.size(); i++) {
+                                                    Node n = mItemList.get(i);
+                                                    Log.v(TAG, "n - " + n.getText());
+                                                    if (node.getText().equalsIgnoreCase(n.getText())) {
+                                                        found = true;
+                                                        mItemList.remove(i);
+                                                        notifyItemRemoved(i);
+                                                        break;
+                                                    }
+                                                }
+                                                if (!found)
+                                                    notifyItemChanged(index);
+                                            }
+                                        }
+                                    }, 100);
                                 }
-                            }
+
+                                return;
+                            } else if (!type.isEmpty() && node.isSelected()) {
+                                if (node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
+                                    for (int i = 0; i < options.size(); i++) {
+                                        if (!options.get(i).getText().equals(node.getText())) {
+                                            options.get(i).unselectAllNestedNode();
+                                        }
+                                    }
                            /* if (mItemList.size() > 1) { // TODO: why removing this code from here????
                                 mItemList.remove(1);
                                 notifyItemRemoved(1);
                             }*/
-                            // start
-                            for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
-                                if (!mItemList.get(i).isSelected()) { // here, all those that are not selected nested - options those will be removed thus, keeping only the current selection options - nested options visible.
-                                    mItemList.remove(i);
-                                    notifyItemRemoved(i);
+                                    // start
+                                    for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
+                                        if (!mItemList.get(i).isSelected()) { // here, all those that are not selected nested - options those will be removed thus, keeping only the current selection options - nested options visible.
+                                            mItemList.remove(i);
+                                            notifyItemRemoved(i);
+                                        }
+                                    }
+                                    // end
                                 }
+                                //holder.singleComponentContainer.removeAllViews();
+                                //holder.singleComponentContainer.setVisibility(View.VISIBLE);
+
+                            } else {
+                                holder.singleComponentContainer.removeAllViews();
+                                //holder.superNestedContainerLinearLayout.removeAllViews();
+                                if (mItemList.get(index).isMultiChoice()) {
+                                    //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                                    holder.submitButton.setVisibility(View.VISIBLE);
+                                } else {
+                                    //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                                    AdapterUtils.setToDisable(holder.skipButton);
+                                }
+
+                                if (mItemList.get(index).isRequired()) {
+                                    holder.skipButton.setVisibility(View.GONE);
+                                } else {
+                                    holder.skipButton.setVisibility(View.VISIBLE);
+                                }
+
+                                checkAndHideSkipButton(holder.skipButton);
+                                return;
                             }
-                            // end
+                            checkAndHideSkipButton(holder.skipButton);
+                            if (type.equals("options")) {
+                                addItem(node);
+                                //showNestedItemsV2(node, holder, node.getOptionsList(), index, false, false);
+                            } else {
+                                routeByType(holder, selectedNode, node, index, true, true);
+                            }
                         }
-                        //holder.singleComponentContainer.removeAllViews();
-                        //holder.singleComponentContainer.setVisibility(View.VISIBLE);
-
-                    } else {
-                        holder.singleComponentContainer.removeAllViews();
-                        //holder.superNestedContainerLinearLayout.removeAllViews();
-                        if (mItemList.get(index).isMultiChoice()) {
-                            //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                            holder.submitButton.setVisibility(View.VISIBLE);
-                        } else {
-                            //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
-                            holder.submitButton.setVisibility(View.GONE);
-                            mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
-                            AdapterUtils.setToDisable(holder.skipButton);
-                        }
-
-                        if (mItemList.get(index).isRequired()) {
-                            holder.skipButton.setVisibility(View.GONE);
-                        } else {
-                            holder.skipButton.setVisibility(View.VISIBLE);
-                        }
-
-                        checkAndHideSkipButton(holder.skipButton);
-                        return;
-                    }
-                    checkAndHideSkipButton(holder.skipButton);
-                    if (type.equals("options")) {
-                        addItem(node);
-                        //showNestedItemsV2(node, holder, node.getOptionsList(), index, false, false);
-                    } else {
-                        routeByType(holder, selectedNode, node, index, true, true);
-                    }
-                }
-            });
+                    });
             holder.optionRecyclerView.setAdapter(optionsChipsGridAdapter);
         }
 
@@ -1659,7 +1659,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void addTextEnterView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
-        Log.v(TAG, "addTextEnterView mIsParentNodeIsMandatory = "+mIsParentNodeIsMandatory);
+        Log.v(TAG, "addTextEnterView mIsParentNodeIsMandatory = " + mIsParentNodeIsMandatory);
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
@@ -1938,7 +1938,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
 
                 String d = (String) displayDateButton.getTag();
-                if (d == null || d.equalsIgnoreCase("null") || d.isEmpty() || !d.contains("/")) {
+                if (d == null || d.equalsIgnoreCase("null") || !d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
                     Date fromDateFormat = null;
@@ -1968,12 +1968,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     Date date = cal.getTime();
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*/
 
-                    if (node.getLanguage().contains("_")) {
+                    /*if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", d));
-                    } else {
-                        node.addLanguage(d);
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                    }
+                    } else {*/
+                    node.addLanguage(d);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    //}
                     node.setSelected(true);
                     //holder.node.setSelected(true);
 

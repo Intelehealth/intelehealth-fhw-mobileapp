@@ -2706,7 +2706,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 String d = (String) displayDateButton.getTag();
-                if (d != null && !d.contains("/")) {
+                if (d == null || d.equalsIgnoreCase("null") || !d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
                     /*Calendar cal = Calendar.getInstance();
@@ -2715,12 +2715,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Date date = cal.getTime();
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*/
 
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", d));
-                    } else {
-                        node.addLanguage(d);
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                    }
+
+                    node.addLanguage(d);
+
                     node.setSelected(true);
                     holder.node.setSelected(true);
 
