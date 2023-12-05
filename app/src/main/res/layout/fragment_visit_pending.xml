@@ -52,10 +52,19 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:background="@null"
                     android:src="@drawable/visit_filter_icon"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
 
             </RelativeLayout>
+
+            <include
+                android:id="@+id/patient_filter"
+                layout="@layout/patient_filter_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/search_relative"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone" />
 
             <!--Card Header - start-->
             <androidx.cardview.widget.CardView
