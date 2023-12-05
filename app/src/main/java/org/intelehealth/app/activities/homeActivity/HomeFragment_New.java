@@ -29,6 +29,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.app.R;
@@ -279,15 +280,17 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         //
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
-        int pendingCountTotalVisits = getCurrentMonthsVisits(false);
-        int countReceivedPrescription = getCurrentMonthsVisits(true);
-
-        int total = pendingCountTotalVisits + countReceivedPrescription;
+        List<PrescriptionModel> allRecentList = recentVisits();
+        int countReceivedPrescription =allRecentList.size();
+        //int countReceivedPrescription = getCurrentMonthsVisits(true);
+        //int pendingCountTotalVisits = getCurrentMonthsVisits(false);
+        //int total = pendingCountTotalVisits + countReceivedPrescription;s
+        int pendingCountTotalVisits = recentVisitsForPendingPrescriptions().size();
         String prescCountText = countReceivedPrescription + " " +
-                getResources().getString(R.string.out_of) + " "  + total + " " +
+                getResources().getString(R.string.out_of) + " "  + pendingCountTotalVisits + " " +
                 getResources().getString(R.string.received).toLowerCase();
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-            prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
+            prescCountText = pendingCountTotalVisits + " मे से " + countReceivedPrescription + " प्राप्त हुये";
         prescriptionCountTextView.setText(prescCountText);
 
       //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
@@ -456,5 +459,136 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         return count;
     }
+    private List<PrescriptionModel> recentVisits() {
+        List<PrescriptionModel> recentList = new ArrayList<>();
+        db.beginTransaction();
+
+        // ie. visit is active and presc is given.
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        " v.enddate is null and e.encounter_type_uuid = ? and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " v.startdate > DATETIME('now', '-4 day') " +
+                        " group by e.visituuid ORDER BY v.startdate DESC",
+
+                new String[]{ENCOUNTER_VISIT_NOTE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+                // emergency - start
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+
+                String emergencyUuid = "";
+                EncounterDAO encounterDAO = new EncounterDAO();
+                try {
+                    emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    emergencyUuid = "";
+                }
+
+                if (!emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                    model.setEmergency(true);
+                else
+                    model.setEmergency(false);
+                // emergency - end
+
+                model.setHasPrescription(true);
+                model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("euid")));
+                model.setVisitUuid(visitID);
+                model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("osync")));
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                recentList.add(model);
+
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return recentList;
+    }
+    private List<PrescriptionModel> recentVisitsForPendingPrescriptions() {
+        // new
+        List<PrescriptionModel> recentList = new ArrayList<>();
+        db.beginTransaction();
+
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                " v.enddate is null and" +
+                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                " v.startdate > DATETIME('now', '-4 day') and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+                model.setHasPrescription(false);
+                // emergency - start
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                boolean isCompletedExitedSurvey = false;
+                boolean isPrescriptionReceived = false;
+                try {
+                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
+                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+
+                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending.
+
+                    String emergencyUuid = "";
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    try {
+                        emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        emergencyUuid = "";
+                    }
+
+                    if (!emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                        model.setEmergency(true);
+                    else
+                        model.setEmergency(false);
+                    // emergency - end
+
+                    model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                    model.setVisitUuid(visitID);
+                    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                    model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                    model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                    model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                    model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    recentList.add(model);
+                }
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return recentList;
+
+    }
+
 }
 
