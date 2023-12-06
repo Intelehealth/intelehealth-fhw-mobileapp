@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary"
-    tools:layout_marginTop="-00dp"
+    tools:layout_marginTop="-1400dp"
     >
     <!-- TODO: Replace hard-coded strings with @string resources-->
 
@@ -1217,31 +1217,38 @@
 
                     <!--Diagnosis-->
                     <TableRow
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
                         android:id="@+id/tableRow_content_aid_order_type1"
                         android:visibility="gone"
                         tools:visibility="visible">
 
-                        <TextView
-                            android:id="@+id/textView_content_aid_order_type1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/lato_regular"
-                            android:visibility="gone"
-                            tools:visibility="visible"
-                            android:text="@string/sample_text"
-                            android:textAlignment="viewStart"
-                            android:textSize="@dimen/card_content_sub_text_size" />
+
+
+                            <TextView
+                                android:id="@+id/textView_content_aid_order_type1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_regular"
+                                android:visibility="gone"
+                                tools:visibility="visible"
+                                android:text="@string/sample_text"
+                                android:textAlignment="viewStart"
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:background="@color/divider"
+                        android:layout_gravity="bottom"
+                        android:layout_marginVertical="15dp"
+                        android:layout_height="1dp"/>
 
                     <TableRow
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
                         android:id="@+id/tableRow_content_aid_order_type2"
                         android:visibility="gone"
                         tools:visibility="visible">
@@ -1260,10 +1267,16 @@
 
                     </TableRow>
 
+                    <View
+                        android:layout_width="fill_parent"
+                        android:background="@color/divider"
+                        android:layout_gravity="bottom"
+                        android:layout_marginVertical="15dp"
+                        android:layout_height="1dp"/>
+
                     <TableRow
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
                         android:id="@+id/tableRow_content_aid_order_type3"
                         android:visibility="gone"
                         tools:visibility="visible">
@@ -1282,10 +1295,16 @@
 
                     </TableRow>
 
+                    <View
+                        android:layout_width="fill_parent"
+                        android:background="@color/divider"
+                        android:layout_gravity="bottom"
+                        android:layout_marginVertical="15dp"
+                        android:layout_height="1dp"/>
+
                     <TableRow
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
                         android:id="@+id/tableRow_content_aid_order_type4"
                         android:visibility="gone"
                         tools:visibility="visible">
@@ -1304,10 +1323,16 @@
 
                     </TableRow>
 
+                    <View
+                        android:layout_width="fill_parent"
+                        android:background="@color/divider"
+                        android:layout_gravity="bottom"
+                        android:layout_marginVertical="15dp"
+                        android:layout_height="1dp"/>
+
                     <TableRow
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
                         android:id="@+id/tableRow_content_aid_order_type5"
                         android:visibility="gone"
                         tools:visibility="visible">

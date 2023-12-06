@@ -318,6 +318,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
     TextView additionalCommentsTextView;
     TextView dischargeOrderTextView;
     TextView aidOrderType1TextView, aidOrderType2TextView, aidOrderType3TextView, aidOrderType4TextView, aidOrderType5TextView;
+    String aid1, aid2, aid3, aid4, aid5;
     TableRow aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow, aidOrderType4TableRow, aidOrderType5TableRow;
     TextView followUpDateTextView;
     //added checkbox flag .m
@@ -3782,8 +3783,14 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 break;
             }
             case UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN: {
+              //  LinearLayout linearLayout = findViewById(R.id.ll_aid1);
+                TextView textView = new TextView(VisitSummaryActivity.this);
 
                 if (!newMedicalEquipLoanAidOrder.isEmpty()) {
+                    // ie. there is atleast one item. so add a textview -> show more.
+                    textView.setText("show more");
+                    textView.setTag(0);
+
                     if (comment != null && !comment.trim().isEmpty())
                         newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
@@ -3795,6 +3802,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newMedicalEquipLoanAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
                         newMedicalEquipLoanAidOrder = getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+
+                    aid1 = newMedicalEquipLoanAidOrder;
                 }
 
                 if (!newMedicalEquipLoanAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3826,7 +3835,23 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder.replace("||", " ");
                 }
 
-                aidOrderType1TextView.setText(Html.fromHtml(newMedicalEquipLoanAidOrder));
+                aidOrderType1TextView.setText(Html.fromHtml(aid1));
+                aidOrderType1TableRow.addView(textView);
+                textView.setOnClickListener(v -> {
+                    if (textView.getTag() != null) {
+                        if (textView.getTag().equals(0)) {
+                            textView.setText("show less");
+                            textView.setTag(1);
+                            aidOrderType1TextView.setText(Html.fromHtml(newMedicalEquipLoanAidOrder));
+                        } else {
+                            textView.setText("show more");
+                            textView.setTag(0);
+                            aidOrderType1TextView.setText(Html.fromHtml(aid1));
+                        }
+                    }
+                });
+
+
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType1TextView.setGravity(Gravity.END);
                 }
