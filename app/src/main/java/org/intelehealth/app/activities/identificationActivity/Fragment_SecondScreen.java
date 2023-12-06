@@ -836,7 +836,7 @@ public class Fragment_SecondScreen extends Fragment {
 
     InputFilter lettersFilter = (source, start, end, dest, dStart, dEnd) -> {
         for (int i = start; i < end; i++) {
-            if (!Character.isLetterOrDigit(source.charAt(i))) {
+            if (!Character.isLetterOrDigit(source.charAt(i)) && !Character.isSpaceChar(source.charAt(i))) {
                 return ""; // Block non-letter and non-digit characters.
             }
         }
