@@ -1784,7 +1784,7 @@ public class CompleteActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(url)
                     .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
                     .thumbnail(0.1f)
                     .into((ImageView) findViewById(R.id.preview_img));
             findViewById(R.id.image_preview_ll).setVisibility(View.VISIBLE);

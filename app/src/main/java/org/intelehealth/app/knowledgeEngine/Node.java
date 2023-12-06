@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -23,11 +24,13 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -2348,15 +2351,15 @@ public class Node implements Serializable {
                         .load(new File(imagePath))
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .listener(new RequestListener<File, GlideDrawable>() {
+                        .listener(new RequestListener<Drawable>() {
                             @Override
-                            public boolean onException(Exception e, File file, Target<GlideDrawable> target, boolean b) {
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                 progressBar.setVisibility(View.GONE);
                                 return false;
                             }
 
                             @Override
-                            public boolean onResourceReady(GlideDrawable glideDrawable, File file, Target<GlideDrawable> target, boolean b, boolean b1) {
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                 progressBar.setVisibility(View.GONE);
                                 return false;
                             }

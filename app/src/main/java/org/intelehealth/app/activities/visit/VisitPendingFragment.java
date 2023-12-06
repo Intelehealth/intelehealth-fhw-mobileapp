@@ -150,7 +150,7 @@ public class VisitPendingFragment extends Fragment {
 
         visit_pending_card_header = view.findViewById(R.id.visit_pending_card_header);
         searchview_pending = view.findViewById(R.id.searchview_pending);
-        closeButton = searchview_pending.findViewById(R.id.search_close_btn);
+        closeButton = searchview_pending.findViewById(androidx.appcompat.R.id.search_close_btn);
 
         recent_nodata = view.findViewById(R.id.recent_nodata);
         older_nodata = view.findViewById(R.id.older_nodata);
