@@ -328,6 +328,8 @@ public class ObsDAO {
                     MedicationAidModel model = new MedicationAidModel();
                     model.setUuid(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")));
                     model.setValue(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")));
+                    model.setCreator(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("creator")));
+                    model.setCreatedDate(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("obsservermodifieddate")));
                     list.add(model);
                 }
                 db.setTransactionSuccessful();

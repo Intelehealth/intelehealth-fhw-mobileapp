@@ -1223,8 +1223,6 @@
                         android:visibility="gone"
                         tools:visibility="visible">
 
-
-
                             <TextView
                                 android:id="@+id/textView_content_aid_order_type1"
                                 android:layout_width="match_parent"

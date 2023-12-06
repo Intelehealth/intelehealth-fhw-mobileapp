@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity.checkAndRemoveEndDash;
+import static org.intelehealth.app.database.dao.EncounterDAO.getEncounterListByVisitUUID;
 import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
 import static org.intelehealth.app.utilities.StringUtils.getLocaleGender;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
@@ -129,6 +130,8 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dispenseAdministerModel.AidModel;
+import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
@@ -319,6 +322,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
     TextView dischargeOrderTextView;
     TextView aidOrderType1TextView, aidOrderType2TextView, aidOrderType3TextView, aidOrderType4TextView, aidOrderType5TextView;
     String aid1, aid2, aid3, aid4, aid5;
+    private List<MedicationAidModel> update_aidUuidList = new ArrayList<>();
+    private String encounterDispense;
+
     TableRow aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow, aidOrderType4TableRow, aidOrderType5TableRow;
     TextView followUpDateTextView;
     //added checkbox flag .m
@@ -3599,7 +3605,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
+        String[] columns = {"uuid", "value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
@@ -3640,9 +3646,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         String[] visitArgs = {encounterVitals};
         if (encounterVitals != null) {
             try {
-                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, "obsservermodifieddate DESC");
                 if (visitCursor != null && visitCursor.moveToFirst()) {
                     do {
+                        String uuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                         String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
@@ -3650,9 +3657,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         String created_date = visitCursor.getString(visitCursor.getColumnIndex("obsservermodifieddate"));
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
+                            parseData(uuid, dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                         } else {
-                            parseData(dbConceptID, dbValue, comment, creator, created_date);
+                            parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
                         }
                         //}
                     } while (visitCursor.moveToNext());
@@ -3667,10 +3674,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 //adult intails display code
         String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ? AND voided!='1'";
         String[] encounterargs = {encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
-        Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, null);
+        Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, "obsservermodifieddate DESC");
         try {
             if (encountercursor != null && encountercursor.moveToFirst()) {
                 do {
+                    String uuid = encountercursor.getString(encountercursor.getColumnIndex("uuid"));
                     String comment = encountercursor.getString(encountercursor.getColumnIndex("comment"));
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
@@ -3678,9 +3686,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     String created_date = encountercursor.getString(encountercursor.getColumnIndex("obsservermodifieddate"));
                     if (dbValue.startsWith("{")) {
                         AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
+                        parseData(uuid, dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                     } else {
-                        parseData(dbConceptID, dbValue, comment, creator, created_date);
+                        parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
                     }
                 } while (encountercursor.moveToNext());
             }
@@ -3701,7 +3709,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
-    private void parseData(String concept_id, String value, String comment, String creator, String created_date) {
+    private void parseData(String uuid, String concept_id, String value, String comment, String creator, String created_date) {
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
@@ -3784,26 +3792,44 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN: {
               //  LinearLayout linearLayout = findViewById(R.id.ll_aid1);
+
                 TextView textView = new TextView(VisitSummaryActivity.this);
+                textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                textView.setTextColor(getResources().getColor(R.color.intro_next));
+
+                fetchDispensedAid();
+                String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
 
                 if (!newMedicalEquipLoanAidOrder.isEmpty()) {
-                    // ie. there is atleast one item. so add a textview -> show more.
-                    textView.setText("show more");
-                    textView.setTag(0);
 
                     if (comment != null && !comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"+
+                                disaidformattedvalue;
                 }
 
                 if (newMedicalEquipLoanAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newMedicalEquipLoanAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" +
+                                disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newMedicalEquipLoanAidOrder = getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"+
+                                disaidformattedvalue;
 
-                    aid1 = newMedicalEquipLoanAidOrder;
+                    if (newMedicalEquipLoanAidOrder != null && !newMedicalEquipLoanAidOrder.isEmpty()) {
+                        // ie. there is atleast one item. so add a textview -> show more.
+                        textView.setText("show more");
+                        textView.setTag(0);
+                        aidOrderType1TableRow.addView(textView);
+
+                        // ie. value is present for this Aid_1 field.
+                        aid1 = newMedicalEquipLoanAidOrder;
+                        fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
+                    }
+
                 }
 
                 if (!newMedicalEquipLoanAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3836,7 +3862,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 aidOrderType1TextView.setText(Html.fromHtml(aid1));
-                aidOrderType1TableRow.addView(textView);
+
                 textView.setOnClickListener(v -> {
                     if (textView.getTag() != null) {
                         if (textView.getTag().equals(0)) {
@@ -4258,6 +4284,51 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 break;
 
         }
+    }
+
+    private void fetchDispensedAid() {
+        Log.d(TAG, "fetchDispensedAid: " + visitUuid);
+        List<String> encounterListByVisitUUID = getEncounterListByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_DISPENSE);
+        if (encounterListByVisitUUID != null && encounterListByVisitUUID.size() > 0) {
+            for (int i = 0; i < encounterListByVisitUUID.size(); i++) {
+                encounterDispense = encounterListByVisitUUID.get(i);
+                Log.d(TAG, "encounterDispense: " + encounterDispense);  //
+                if (!encounterDispense.isEmpty()) {
+                    try {
+
+                        //  MedicationAidModel medModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION);    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+                      //  update_medUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION));    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+                        // update_medUuidList.add(medModel);
+
+                        //  MedicationAidModel aidModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_AID);
+                        update_aidUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_AID));
+                        //   update_aidUuidList.add(aidModel);
+
+
+                    } catch (DAOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+            }
+
+        }
+    }
+
+    private String formatDispensedAdministedByDetails(String uuid, boolean isDispense) {
+        String obsAddedByString = "";
+
+        if (update_aidUuidList != null && update_aidUuidList.size() > 0) {
+            for (int i = 0; i < update_aidUuidList.size(); i++) {
+                AidModel aidModel = new Gson().fromJson(update_aidUuidList.get(i).getValue(), AidModel.class);
+                if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(uuid)) {
+                   // String creator_name = getCreatorName(creator);
+                    String valueTimeStamp = getValueTimeStamp(update_aidUuidList.get(i).getCreatedDate());
+                    obsAddedByString = "Dispensed by:" + " " + aidModel.getHwName() + "<br>" + valueTimeStamp;
+                }
+            }
+        }
+        return obsAddedByString;
     }
 
     private String formatCreatorDetails(String creator, String created_date, String comment) {
@@ -4930,13 +5001,14 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     followUpDateTextView.setText("");
                     followUpDateCard.setVisibility(View.GONE);
                 }
-                String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
+                String[] columns = {"uuid", "value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
                 String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
                 String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
-                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, "obsservermodifieddate DESC");
                 if (visitCursor.moveToFirst()) {
                     reset();
                     do {
+                        String uuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                         String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
@@ -4956,9 +5028,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
+                            parseData(uuid, dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                         } else {
-                            parseData(dbConceptID, dbValue, comment, creator, created_date);
+                            parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
                         }
                     } while (visitCursor.moveToNext());
                 }
@@ -5026,12 +5098,13 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
         }
         encounterCursor.close();
-        String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
+        String[] columns = {"uuid", "value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
         String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
-        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, "obsservermodifieddate DESC");
         if (visitCursor.moveToFirst()) {
             do {
+                String uuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                 String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
@@ -5051,9 +5124,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                 if (dbValue.startsWith("{")) {
                     AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
+                    parseData(uuid, dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                 } else {
-                    parseData(dbConceptID, dbValue, comment, creator, created_date);
+                    parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
 
                 }
             } while (visitCursor.moveToNext());
@@ -5122,18 +5195,19 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             dischargeOrderReturned = "";
             aidOrderReturned = "";
             followUpDate = "";
-            String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
+            String[] columns = {"uuid", "value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
             String visitSelection = "encounteruuid = ? ";
             String[] visitArgs = {encounterUuid};
-            Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+            Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, "obsservermodifieddate DESC");
             if (visitCursor.moveToFirst()) {
                 do {
+                    String uuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                     String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                     String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                     String creator = visitCursor.getString(visitCursor.getColumnIndex("creator"));
                     String created_date = visitCursor.getString(visitCursor.getColumnIndex("obsservermodifieddate"));
-                    parseData(dbConceptID, dbValue, comment, creator, created_date);
+                    parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
                 } while (visitCursor.moveToNext());
             }
             visitCursor.close();
