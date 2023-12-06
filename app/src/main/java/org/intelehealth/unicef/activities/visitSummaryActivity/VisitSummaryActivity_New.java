@@ -607,8 +607,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             doc_speciality_card.setVisibility(View.VISIBLE);
             special_vd_card.setVisibility(View.GONE);
 
-
+            hospitalTypeCard.setVisibility(View.VISIBLE);
+            specialHospitalCard.setVisibility(View.GONE);
         }
+
         btn_bottom_printshare.setVisibility(View.GONE);
         btn_bottom_vs.setVisibility(View.VISIBLE);
 
