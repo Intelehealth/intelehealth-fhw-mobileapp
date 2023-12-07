@@ -468,7 +468,7 @@ public class AppointmentDAO {
         return appointmentInfo;
     }
 
-    public List<AppointmentInfo> getCancelledAppointmentsWithFilters(String fromDate, String toDate, String searchPatientText, String currentDate) {
+    public List<AppointmentInfo> getCancelledAppointmentsWithFiltersOld(String fromDate, String toDate, String searchPatientText, String currentDate) {
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
         String search = searchPatientText.trim().replaceAll("\\s", "");
@@ -666,4 +666,849 @@ public class AppointmentDAO {
 
         return requestList;
     }
+
+    public List<AppointmentInfo> getUpcomingAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate) {
+        fromDate = getDateInFormat(fromDate);
+        toDate = getDateInFormat(toDate);
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor;
+
+        if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+            String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+                    + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
+                    + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "from tbl_patient p, tbl_appointments a "
+                    + "where p.uuid = a.patient_id and new_slot_date "
+                    + "AND a.slot_date != ?"
+                    + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
+                    + "AND a.status = 'booked'"
+                    + "AND datetime(a.slot_js_date) >= datetime('now') "
+                    + "LIMIT ? OFFSET ?";
+
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
+        } else {
+            idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
+                            + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
+                            + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                            + "from tbl_patient p, tbl_appointments a "
+                            + "where p.uuid = a.patient_id "
+                            + "AND a.status = 'booked'"
+                            + "AND a.slot_date != ?"
+                            + "AND datetime(a.slot_js_date) >= datetime('now') "
+                            + "LIMIT ? OFFSET ?"
+                    , new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
+        }
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                String status = idCursor.getString(idCursor.getColumnIndexOrThrow("status"));
+
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else if (status.equalsIgnoreCase("cancelled")) {
+                        appointmentInfo.setStatus(status);
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+
+        idCursor.close();
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getCompletedAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate) {
+        fromDate = getDateInFormat(fromDate);
+        toDate = getDateInFormat(toDate);
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor;
+
+        if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+            String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+                    + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
+                    + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "from tbl_patient p, tbl_appointments a "
+                    + "where p.uuid = a.patient_id and new_slot_date "
+                    + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
+                    + "AND a.slot_date != ?"
+                    + "AND a.status = 'booked'"
+                    + "AND datetime(a.slot_js_date) < datetime('now') "
+                    + "LIMIT ? OFFSET ?";
+
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
+        } else {
+            idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
+                            + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
+                            + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                            + "from tbl_patient p, tbl_appointments a "
+                            + "where p.uuid = a.patient_id "
+                            + "AND a.slot_date != ?"
+                            + "AND a.status = 'booked'"
+                            + "AND datetime(a.slot_js_date) < datetime('now') "
+                            + "LIMIT ? OFFSET ?"
+                    , new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
+
+        }
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+        idCursor.close();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
+        //db.close();
+
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getCancelledAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate) {
+        Cursor idCursor;
+        fromDate = getDateInFormat(fromDate);
+        toDate = getDateInFormat(toDate);
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+            String selectQuery = "SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid,"
+                    + " a.appointment_id,a.slot_date, a.slot_day, substr(a.slot_js_date, 1, 10) AS new_slot_date, a.slot_duration,a.slot_duration_unit, a.slot_time, "
+                    + "a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "FROM tbl_patient p, tbl_appointments a "
+                    + "WHERE p.uuid = a.patient_id "
+                    + "AND a.slot_date != ?"
+                    + "AND a.status = 'cancelled' "
+                    + "AND new_slot_date BETWEEN '" + fromDate + "' AND '" + toDate + "' "
+                    + "LIMIT ? OFFSET ?";
+
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
+        } else {
+            idCursor = db.rawQuery("SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, "
+                            + "a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, "
+                            + "a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                            + "FROM tbl_patient p, tbl_appointments a "
+                            + "WHERE p.uuid = a.patient_id "
+                            + "AND a.slot_date != ?"
+                            + "AND a.status = 'cancelled'"
+                            + "LIMIT ? OFFSET ?",
+                    new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+
+        idCursor.close();
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getAllUpcomingAppointmentsWithFilters(String fromDate, String toDate) {
+        fromDate = getDateInFormat(fromDate);
+        toDate = getDateInFormat(toDate);
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor;
+
+        if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+            String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+                    + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
+                    + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "from tbl_patient p, tbl_appointments a "
+                    + "where p.uuid = a.patient_id and new_slot_date "
+                    + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
+                    + "AND a.status = 'booked'"
+                    + "AND datetime(a.slot_js_date) >= datetime('now') ";
+
+            idCursor = db.rawQuery(selectQuery, null);
+        } else {
+            idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
+                            + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
+                            + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                            + "from tbl_patient p, tbl_appointments a "
+                            + "where p.uuid = a.patient_id "
+                            + "AND a.status = 'booked'"
+                            + "AND datetime(a.slot_js_date) >= datetime('now') "
+                    , null);
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+
+        idCursor.close();
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getAllCancelledAppointmentsWithFilters(String fromDate, String toDate) {
+        Cursor idCursor;
+        fromDate = getDateInFormat(fromDate);
+        toDate = getDateInFormat(toDate);
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+            String selectQuery = "SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid,"
+                    + " a.appointment_id,a.slot_date, a.slot_day, substr(a.slot_js_date, 1, 10) AS new_slot_date, a.slot_duration,a.slot_duration_unit, a.slot_time, "
+                    + "a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "FROM tbl_patient p, tbl_appointments a "
+                    + "WHERE p.uuid = a.patient_id "
+                    + "AND a.status = 'cancelled' "
+                    + "AND new_slot_date BETWEEN '" + fromDate + "' AND '" + toDate + "' ";
+
+            idCursor = db.rawQuery(selectQuery, null);
+        } else {
+            idCursor = db.rawQuery("SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, "
+                    + "a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, "
+                    + "a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "FROM tbl_patient p, tbl_appointments a "
+                    + "WHERE p.uuid = a.patient_id "
+                    + "AND a.status = 'cancelled'", null);
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+
+        idCursor.close();
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getAllCompletedAppointmentsWithFilters(String fromDate, String toDate) {
+        fromDate = getDateInFormat(fromDate);
+        toDate = getDateInFormat(toDate);
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor;
+
+        if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+            String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+                    + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
+                    + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "from tbl_patient p, tbl_appointments a "
+                    + "where p.uuid = a.patient_id and new_slot_date "
+                    + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
+                    + "AND a.status = 'booked'"
+                    + "AND datetime(a.slot_js_date) < datetime('now') ";
+
+            idCursor = db.rawQuery(selectQuery, null);
+        } else {
+            idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
+                            + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
+                            + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                            + "from tbl_patient p, tbl_appointments a "
+                            + "where p.uuid = a.patient_id "
+                            + "AND a.status = 'booked'"
+                            + "AND datetime(a.slot_js_date) < datetime('now') "
+                            + "LIMIT ? OFFSET ?"
+                    , null);
+
+        }
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+
+                String status = idCursor.getString(idCursor.getColumnIndexOrThrow("status"));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(status);
+                    } else if (status.equalsIgnoreCase("cancelled")) {
+                        appointmentInfo.setStatus(status);
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+        idCursor.close();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
+        //db.close();
+
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getUpcomingAppointmentsForToday(String currentDate, int limit, int offset) {
+        Cursor idCursor;
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        idCursor = db.rawQuery("SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
+                        + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, "
+                        + "a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                        + "FROM tbl_patient p, tbl_appointments a "
+                        + "WHERE p.uuid = a.patient_id "
+                        + "AND a.slot_date = '" + currentDate + "'"
+                        + "AND a.status = 'booked'"
+                        + "AND datetime(a.slot_js_date) >= datetime('now') "
+                        + "LIMIT ? OFFSET ?"
+                , new String[]{String.valueOf(limit), String.valueOf(offset)});
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+
+        idCursor.close();
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getCompletedAppointmentsForToday(String currentDate, int limit, int offset) {
+        Cursor idCursor;
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        idCursor = db.rawQuery("SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
+                        + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, "
+                        + "a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                        + "FROM tbl_patient p, tbl_appointments a "
+                        + "WHERE p.uuid = a.patient_id "
+                        + "AND a.slot_date = '" + currentDate + "'"
+                        + "AND a.status = 'booked'"
+                        + "AND datetime(a.slot_js_date) < datetime('now') "
+                        + "LIMIT ? OFFSET ?"
+                , new String[]{String.valueOf(limit), String.valueOf(offset)});
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+
+        idCursor.close();
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getCancelledAppointmentsForToday(String currentDate, int limit, int offset) {
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor;
+
+        idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
+                        + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, "
+                        + "a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                        + "from tbl_patient p, tbl_appointments a "
+                        + "where p.uuid = a.patient_id "
+                        + "and a.status = 'cancelled' "
+                        + "and a.slot_date = '" + currentDate + "' "
+                        + "LIMIT ? OFFSET ?",
+                new String[]{String.valueOf(limit), String.valueOf(offset)});
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+
+        idCursor.close();
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getAllUpcomingAppointmentsForToday(String currentDate) {
+        Cursor idCursor;
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        idCursor = db.rawQuery("SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
+                        + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, "
+                        + "a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                        + "FROM tbl_patient p, tbl_appointments a "
+                        + "WHERE p.uuid = a.patient_id "
+                        + "AND a.slot_date = '" + currentDate + "'"
+                        + "AND a.status = 'booked'"
+                        + "AND datetime(a.slot_js_date) >= datetime('now') ",
+                new String[]{});
+
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+
+        idCursor.close();
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getAllCancelledAppointmentsForToday(String currentDate) {
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor;
+
+        idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
+                        + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, "
+                        + "a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                        + "from tbl_patient p, tbl_appointments a "
+                        + "where p.uuid = a.patient_id "
+                        + "and a.status = 'cancelled' "
+                        + "and a.slot_date = '" + currentDate + "' ",
+                new String[]{});
+
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+
+        idCursor.close();
+        return appointmentInfos;
+    }
+    public List<AppointmentInfo> getAllCompletedAppointmentsForToday(String currentDate) {
+        Cursor idCursor;
+        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        idCursor = db.rawQuery("SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
+                        + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, "
+                        + "a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                        + "FROM tbl_patient p, tbl_appointments a "
+                        + "WHERE p.uuid = a.patient_id "
+                        + "AND a.slot_date = '" + currentDate + "'"
+                        + "AND a.status = 'booked'"
+                        + "AND datetime(a.slot_js_date) < datetime('now') ",
+                new String[]{});
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                AppointmentInfo appointmentInfo = new AppointmentInfo();
+                appointmentInfo.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                appointmentInfo.setId(idCursor.getInt(idCursor.getColumnIndexOrThrow("appointment_id")));
+                appointmentInfo.setSlotDay(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_day")));
+                appointmentInfo.setSlotDate(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_date")));
+                appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
+                appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
+                appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
+                appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
+                appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
+                appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
+                appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
+                appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                try {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                        appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
+                    } else {
+                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                appointmentInfo.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("created_at")));
+                appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
+                appointmentInfos.add(appointmentInfo);
+            }
+
+        }
+
+        idCursor.close();
+        return appointmentInfos;
+    }
+    public boolean doesAppointmentExistForVisit(String visitUUID) {
+        boolean doesAppointmentExist = false;
+        String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ?";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String appointmentId = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            if (appointmentId != null) {
+                doesAppointmentExist = true;
+            }
+            cursor.close();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return doesAppointmentExist;
+    }
+    public String getTimeAndDateForAppointment(String visitUUID) {
+        String appointmentDateTime = "";
+        String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ?";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String appointmentDate = cursor.getString(cursor.getColumnIndexOrThrow("slot_date"));
+            String appointmentTime = cursor.getString(cursor.getColumnIndexOrThrow("slot_time"));
+            appointmentDateTime = appointmentDate + " " + appointmentTime;
+            cursor.close();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return appointmentDateTime;
+    }
+    public boolean isAppointmentCancelled(String visitUUID) {
+        boolean isAppointmentCancelled = false;
+        String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ? and status = 'cancelled'";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String appointmentId = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            if (appointmentId != null) {
+                isAppointmentCancelled = true;
+            }
+            cursor.close();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return isAppointmentCancelled;
+    }
+    public boolean isAppointmentBooked(String visitUUID) {
+        boolean isAppointmentCancelled = false;
+        String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ? and status = 'booked'";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String appointmentId = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            if (appointmentId != null) {
+                isAppointmentCancelled = true;
+            }
+            cursor.close();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return isAppointmentCancelled;
+    }
+
 }

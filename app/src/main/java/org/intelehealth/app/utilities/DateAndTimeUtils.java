@@ -115,7 +115,6 @@ public class DateAndTimeUtils {
     }
 
     public static String getAge_FollowUp(String s, Context context) {
-        Log.d(TAG, "getAge_FollowUp: s: " + s);
         Log.d("TAG", "getAge_FollowUp: s : " + s);
         if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -1066,5 +1065,19 @@ public class DateAndTimeUtils {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static boolean isCurrentDateTimeAfterAppointmentTime(String givenDateTime) {
+        boolean isGivenDateTimeGreater;
+        Date currentDate = new Date();
+
+        try {
+            Date givenDate = new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.ENGLISH).parse(givenDateTime);
+            isGivenDateTimeGreater = currentDate.after(givenDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        return isGivenDateTimeGreater;
     }
 }

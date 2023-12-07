@@ -35,10 +35,13 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -190,22 +193,6 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         }
     }
 
-    private void showConfirmDialog(final PrescriptionModel model) {
-        DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
-            @Override
-            public void onDialogActionDone(int action) {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUuid());
-                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUuid());
-
-                    VisitUtils.endVisit(context, model.getVisitUuid(), model.getPatientUuid(), model.getFollowup_date(),
-                            vitalsUUID, adultInitialUUID, "state",
-                            model.getFirst_name() + " " + model.getLast_name().substring(0, 1), "VisitDetailsActivity");
-                }
-            }
-        });
-    }
 
     private void sharePresc(final PrescriptionModel model) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
@@ -277,6 +264,10 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             profile_image = itemView.findViewById(R.id.profile_image);
             shareicon = itemView.findViewById(R.id.shareiconLL);
             end_visit_btn.setVisibility(View.VISIBLE);
+
+
+            // Setting the priority FrameLayout as Gone since we are not showing it here.
+            itemView.findViewById(R.id.fl_priority).setVisibility(View.GONE);
         }
     }
 
@@ -334,5 +325,76 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                     }
                 });
     }
+    private void showConfirmDialog(final PrescriptionModel model) {
+        if (model.isHasPrescription()) {
+            triggerEndVisit(model);
+        } else {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showCommonDialog(
+                    context,
+                    R.drawable.dialog_close_visit_icon,
+                    context.getResources().getString(R.string.confirm_end_visit_reason),
+                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
+                    false,
+                    context.getResources().getString(R.string.confirm),
+                    context.getResources().getString(R.string.cancel),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            checkIfAppointmentExistsForVisit(model);
+                        }
+                    });
+        }
+    }
+    private void checkIfAppointmentExistsForVisit(PrescriptionModel model) {
+        // First check if there is an appointment or not
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        if (!appointmentDAO.doesAppointmentExistForVisit(model.getVisitUuid())) {
+            triggerEndVisit(model);
+            return;
+        }
 
+        String appointmentDateTime = appointmentDAO.getTimeAndDateForAppointment(model.getVisitUuid());
+        boolean isCurrentTimeAfterAppointmentTime = DateAndTimeUtils.isCurrentDateTimeAfterAppointmentTime(appointmentDateTime);
+
+        // Next, check if the time for appointment is passed. In case the time has passed, we don't need to cancel the appointment as it is automatically completed.
+        if (isCurrentTimeAfterAppointmentTime) {
+            triggerEndVisit(model);
+            return;
+        }
+
+        // In case the appointment time is not passed, only in that case, we will display the dialog for ending the appointment.
+        new DialogUtils().triggerEndAppointmentConfirmationDialog(context, action -> {
+            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                cancelAppointment(model);
+                triggerEndVisit(model);
+            }
+        });
+    }
+    private void triggerEndVisit(PrescriptionModel model) {
+        String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUuid());
+        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUuid());
+
+        VisitUtils.endVisit(
+                context,
+                model.getVisitUuid(),
+                model.getPatientUuid(),
+                model.getFollowup_date(),
+                vitalsUUID,
+                adultInitialUUID,
+                "state",
+                model.getFirst_name() + " " + model.getLast_name().substring(0, 1),
+                "VisitDetailsActivity"
+        );
+    }
+    private void cancelAppointment(PrescriptionModel model) {
+        AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(model.getVisitUuid());
+
+        String visitID = model.getVisitUuid();
+        int appointmentID = appointmentInfo.getId();
+        String reason = "Visit was ended";
+        String providerID = sessionManager.getProviderID();
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitID, appointmentID, reason, providerID, baseurl);
+    }
 }

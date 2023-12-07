@@ -295,12 +295,21 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 Date startDate = format.parse(selectedDate);
                 Date endDate = format.parse(nowDate);
 
-                long diff = endDate.getTime() - startDate.getTime();
-                long days = diff / (24 * 60 * 60 * 1000);
-                long years = days / 365;
-                Log.d(TAG, "11111getSelectedDate: year : " + years);
-                System.out.println("11111The difference between the dates is: " + days + " days");
-                if (years < 10) {
+               // long diff = endDate.getTime() - startDate.getTime();
+               // long days = diff / (24 * 60 * 60 * 1000);
+               // long years = days / 365;
+                dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
+                //for age
+                String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
+                mAgeYears = Integer.parseInt(ymdData[0]);
+                mAgeMonths = Integer.parseInt(ymdData[1]);
+                mAgeDays = Integer.parseInt(ymdData[2]);
+               // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+
+                Log.d(TAG, "11111getSelectedDate: year : " + mAgeYears);
+                System.out.println("11111The difference between the dates is: " + mAgeYears + " days");
+                if (mAgeYears < 10) {
                     mAgeEditText.setText("");
                     mDOBEditText.setText("");
                     mDOBErrorTextView.setText(getString(R.string.age_validation));
@@ -310,15 +319,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 } else {
                     String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
                     if (!selectedDate.isEmpty()) {
-                        dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
-//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
-                        //for age
-                        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
-                        mAgeYears = Integer.parseInt(ymdData[0]);
-                        mAgeMonths = Integer.parseInt(ymdData[1]);
-                        mAgeDays = Integer.parseInt(ymdData[2]);
 
-                        String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+
+                       String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
                         String[] splitedDate = selectedDate.split("/");
                         if (age != null && !age.isEmpty()) {
                             mAgeEditText.setText(age);
@@ -932,4 +935,5 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         }
     }
+
 }

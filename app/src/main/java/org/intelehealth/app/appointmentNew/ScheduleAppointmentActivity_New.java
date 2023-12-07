@@ -324,6 +324,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                 SlotInfoResponse slotInfoResponse = response.body();
                 List<SlotInfo> slotInfoList = new ArrayList<>();
+                if (app_start_date != null && app_start_time != null && slotInfoResponse != null) {
+                    removePreviousAppointmentDateTime(slotInfoResponse);
+                }
+
                 slotInfoMorningList = new ArrayList<>();
                 slotInfoAfternoonList = new ArrayList<>();
                 slotInfoEveningList = new ArrayList<>();
@@ -770,6 +774,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             ivIsInternet.clearAnimation();
             syncAnimator.start();
         }
+    }
+    private SlotInfoResponse removePreviousAppointmentDateTime(SlotInfoResponse slotInfoResponse) {
+        List<SlotInfo> slots = slotInfoResponse.getDates();
+        slots.removeIf(slotInfo -> slotInfo.getSlotDate().equalsIgnoreCase(app_start_date) && slotInfo.getSlotTime().equalsIgnoreCase(app_start_time));
+        slotInfoResponse.setDates(slots);
+        return slotInfoResponse;
     }
 
 }
