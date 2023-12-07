@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="15dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="10dp"
     android:visibility="gone"
     tools:visibility="visible">
 

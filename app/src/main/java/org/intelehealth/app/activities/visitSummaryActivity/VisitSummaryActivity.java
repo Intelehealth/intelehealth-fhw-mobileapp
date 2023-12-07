@@ -325,7 +325,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
     private List<MedicationAidModel> update_aidUuidList = new ArrayList<>();
     private String encounterDispense;
 
-    TableRow aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow, aidOrderType4TableRow, aidOrderType5TableRow;
+    LinearLayout aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow, aidOrderType4TableRow, aidOrderType5TableRow;
     TextView followUpDateTextView;
     //added checkbox flag .m
     CheckBox flag;
@@ -3791,18 +3791,13 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 break;
             }
             case UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN: {
-              //  LinearLayout linearLayout = findViewById(R.id.ll_aid1);
 
-                TextView textView = new TextView(VisitSummaryActivity.this);
-                textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-                textView.setTextColor(getResources().getColor(R.color.intro_next));
-
+                TextView textView = createTextView();
                 fetchDispensedAid();
                 String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
                         ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
 
                 if (!newMedicalEquipLoanAidOrder.isEmpty()) {
-
                     if (comment != null && !comment.trim().isEmpty())
                         newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
                                 + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
@@ -3826,7 +3821,12 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         aidOrderType1TableRow.addView(textView);
 
                         // ie. value is present for this Aid_1 field.
-                        aid1 = newMedicalEquipLoanAidOrder;
+                        if (newMedicalEquipLoanAidOrder.contains("Added By")) {
+                            String a[] = newMedicalEquipLoanAidOrder.split("<br>");
+                            aid1 = a[0];
+                            Log.d(TAG, "parseData: " + aid1);
+                           // aid1 = newMedicalEquipLoanAidOrder;
+                        }
                         fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
                     }
 
@@ -3843,6 +3843,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 } else if (aidOrderReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
                     aidOrderReturned = getResources().getString(R.string.aid_order_type1) + " " + value;
                 }
+
                 Log.d("aidOrder", aidOrderReturned);
                 if (aidOrderCard.getVisibility() != View.VISIBLE) {
                     aidOrderCard.setVisibility(View.VISIBLE);
@@ -3876,7 +3877,6 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         }
                     }
                 });
-
 
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType1TextView.setGravity(Gravity.END);
@@ -4284,6 +4284,14 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 break;
 
         }
+    }
+
+    private TextView createTextView() {
+        TextView textView = new TextView(VisitSummaryActivity.this);
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
+        textView.setTextColor(getResources().getColor(R.color.intro_next));
+        textView.setPadding(0, 10, 0, 0);
+        return textView;
     }
 
     private void fetchDispensedAid() {

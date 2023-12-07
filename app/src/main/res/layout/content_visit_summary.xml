@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary"
-    tools:layout_marginTop="-1400dp"
+    tools:layout_marginTop="-2100dp"
     >
     <!-- TODO: Replace hard-coded strings with @string resources-->
 
@@ -1208,17 +1208,19 @@
                     tools:visibility="visible"
                     />
 
-                <TableLayout
+                <LinearLayout
                     android:id="@+id/tl_aidorder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layout_dispense_2"
+                    android:orientation="vertical"
                     android:padding="@dimen/padding_card">
 
                     <!--Diagnosis-->
-                    <TableRow
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:id="@+id/tableRow_content_aid_order_type1"
                         android:visibility="gone"
                         tools:visibility="visible">
@@ -1227,7 +1229,6 @@
                                 android:id="@+id/textView_content_aid_order_type1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_regular"
                                 android:visibility="gone"
                                 tools:visibility="visible"
@@ -1235,7 +1236,7 @@
                                 android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
-                    </TableRow>
+                    </LinearLayout>
 
                     <View
                         android:layout_width="fill_parent"
@@ -1244,8 +1245,8 @@
                         android:layout_marginVertical="15dp"
                         android:layout_height="1dp"/>
 
-                    <TableRow
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/tableRow_content_aid_order_type2"
                         android:visibility="gone"
@@ -1255,7 +1256,6 @@
                             android:id="@+id/textView_content_aid_order_type2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:visibility="gone"
                             tools:visibility="visible"
@@ -1263,7 +1263,7 @@
                             android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
-                    </TableRow>
+                    </LinearLayout>
 
                     <View
                         android:layout_width="fill_parent"
@@ -1272,8 +1272,8 @@
                         android:layout_marginVertical="15dp"
                         android:layout_height="1dp"/>
 
-                    <TableRow
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/tableRow_content_aid_order_type3"
                         android:visibility="gone"
@@ -1283,7 +1283,6 @@
                             android:id="@+id/textView_content_aid_order_type3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:visibility="gone"
                             tools:visibility="visible"
@@ -1291,7 +1290,7 @@
                             android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
-                    </TableRow>
+                    </LinearLayout>
 
                     <View
                         android:layout_width="fill_parent"
@@ -1300,8 +1299,8 @@
                         android:layout_marginVertical="15dp"
                         android:layout_height="1dp"/>
 
-                    <TableRow
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/tableRow_content_aid_order_type4"
                         android:visibility="gone"
@@ -1311,7 +1310,6 @@
                             android:id="@+id/textView_content_aid_order_type4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:visibility="gone"
                             tools:visibility="visible"
@@ -1319,7 +1317,7 @@
                             android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
-                    </TableRow>
+                    </LinearLayout>
 
                     <View
                         android:layout_width="fill_parent"
@@ -1328,8 +1326,8 @@
                         android:layout_marginVertical="15dp"
                         android:layout_height="1dp"/>
 
-                    <TableRow
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/tableRow_content_aid_order_type5"
                         android:visibility="gone"
@@ -1339,7 +1337,6 @@
                             android:id="@+id/textView_content_aid_order_type5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:visibility="gone"
                             tools:visibility="visible"
@@ -1347,8 +1344,8 @@
                             android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
-                    </TableRow>
-                </TableLayout>
+                    </LinearLayout>
+                </LinearLayout>
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
