@@ -1249,6 +1249,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/tableRow_content_aid_order_type2"
+                        android:orientation="vertical"
                         android:visibility="gone"
                         tools:visibility="visible">
 
@@ -1275,6 +1276,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:id="@+id/tableRow_content_aid_order_type3"
                         android:visibility="gone"
                         tools:visibility="visible">
@@ -1302,6 +1304,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:id="@+id/tableRow_content_aid_order_type4"
                         android:visibility="gone"
                         tools:visibility="visible">
@@ -1329,6 +1332,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:id="@+id/tableRow_content_aid_order_type5"
                         android:visibility="gone"
                         tools:visibility="visible">

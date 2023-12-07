@@ -3821,12 +3821,12 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         aidOrderType1TableRow.addView(textView);
 
                         // ie. value is present for this Aid_1 field.
-                        if (newMedicalEquipLoanAidOrder.contains("Added By")) {
+                       // if (newMedicalEquipLoanAidOrder.contains("Added By")) {
                             String a[] = newMedicalEquipLoanAidOrder.split("<br>");
                             aid1 = a[0];
                             Log.d(TAG, "parseData: " + aid1);
                            // aid1 = newMedicalEquipLoanAidOrder;
-                        }
+                     //   }
                         fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
                     }
 
@@ -3885,18 +3885,44 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP: {
 
+                TextView textView = createTextView();
+                fetchDispensedAid();
+                String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
+
                 if (!newFreeMedicalEquipAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type2) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type2) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue;
                 }
 
                 if (newFreeMedicalEquipAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newFreeMedicalEquipAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = getResources().getString(R.string.aid_order_type2) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newFreeMedicalEquipAidOrder = getResources().getString(R.string.aid_order_type2) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue;
+
+                    if (newFreeMedicalEquipAidOrder != null && !newFreeMedicalEquipAidOrder.isEmpty()) {
+                        // ie. there is atleast one item. so add a textview -> show more.
+                        textView.setText("show more");
+                        textView.setTag(0);
+                        aidOrderType2TableRow.addView(textView);
+
+                        // ie. value is present for this Aid_1 field.
+                      //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
+                            String a[] = newFreeMedicalEquipAidOrder.split("<br>");
+                            aid2 = a[0];
+                            Log.d(TAG, "parseData: " + aid2);
+                            // aid2 = newMedicalEquipLoanAidOrder;
+                       // }
+                        fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
+                    }
+
                 }
 
                 if (!newFreeMedicalEquipAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3928,7 +3954,22 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder.replace("||", " ");
                 }
 
-                aidOrderType2TextView.setText(Html.fromHtml(newFreeMedicalEquipAidOrder));
+              //  aidOrderType2TextView.setText(Html.fromHtml(newFreeMedicalEquipAidOrder));
+                aidOrderType2TextView.setText(Html.fromHtml(aid2));
+                textView.setOnClickListener(v -> {
+                    if (textView.getTag() != null) {
+                        if (textView.getTag().equals(0)) {
+                            textView.setText("show less");
+                            textView.setTag(1);
+                            aidOrderType2TextView.setText(Html.fromHtml(newFreeMedicalEquipAidOrder));
+                        } else {
+                            textView.setText("show more");
+                            textView.setTag(0);
+                            aidOrderType2TextView.setText(Html.fromHtml(aid2));
+                        }
+                    }
+                });
+
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType2TextView.setGravity(Gravity.END);
                 }
