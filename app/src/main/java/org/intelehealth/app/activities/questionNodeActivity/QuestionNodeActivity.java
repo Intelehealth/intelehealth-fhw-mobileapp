@@ -698,9 +698,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String a = currentNode.formQuestionAnswer(0);
+            String a = currentNode.formQuestionAnswer(0, false);
             Log.d("tag", a);
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0, false)
                     .replace("Question not answered", "सवाल का जवाब नहीं दिया")
                     .replace("Patient reports -", "पेशेंट ने सूचित किया -")
                     .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
@@ -713,7 +713,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per month", "प्रति माह बार")
                     .replace("times per year", "प्रति वर्ष बार")));
         } else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")){
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0,false)
                     .replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
                     .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
                     .replace("Patient denies -", "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")
@@ -726,7 +726,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
                     .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ")));
         } else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")){
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0,false)
                     .replace("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી")
                     .replace("Patient reports -", "દરદી રિપોર્ટ કરે છે -")
                     .replace("Patient denies -", "દરદી મના કરે છે -")
@@ -740,7 +740,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per year", "વર્ષ દીઠ વખત")));
         }
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0,false)
                     .replace("Question not answered", "ప్రశ్నకు సమాధానం ఇవ్వలేదు")
                     .replace("Patient reports -", "రోగి నివేదికలు -")
                     .replace("Patient denies -", "రోగి నిరాకరించాడు -")
@@ -754,7 +754,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per year", "సంవత్సరానికి సార్లు")));
         }
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0,false)
                     .replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
                     .replace("Patient reports -", "रुग्ण अहवाल-")
                     .replace("Patient denies -", "रुग्ण नकार देतो-")
@@ -771,7 +771,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         }
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0,false)
                     .replace("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಲಾಗಿಲ್ಲ")
                     .replace("Patient reports -", "ರೋಗಿಯ ವರದಿಗಳು-")
                     .replace("Patient denies -", "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ-")
@@ -783,7 +783,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per year", "ವರ್ಷಕ್ಕೆ ಬಾರಿ")));
         }
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0,false)
                     .replace("Question not answered", "প্ৰশ্নৰ উত্তৰ দিয়া হোৱা নাই")
                     .replace("Patient reports -", "ৰোগীৰ প্ৰতিবেদন -")
                     .replace("Patient denies -", "ৰোগীয়ে অস্বীকাৰ কৰে -")
@@ -798,7 +798,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         }
         //Malyalam Language Support...
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0,false)
                     .replace("Question not answered", "ചോദ്യത്തിന് ഉത്തരം ലഭിച്ചില്ല")
                     .replace("Patient reports -", "രോഗിയുടെ റിപ്പോർട്ടുകൾ -")
                     .replace("Patient denies -", "രോഗി നിരസിക്കുന്നു -")
@@ -812,7 +812,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per year", "വർഷത്തിൽ തവണ")));
         }
         else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")){
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0,false)
                     .replace("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি")
                     .replace("Patient reports -", "রোগীর রিপোর্ট-")
                     .replace("Patient denies -", "রোগী অস্বীকার করে-")
@@ -825,7 +825,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per month", "প্রতি মাসে বার")
                     .replace("times per year", "প্রতি বছর বার")));
         } else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")){
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0,false)
                     .replace("Question not answered", "கேள்விக்கு பதில் அளிக்கப்படவில்லை")
                     .replace("Patient reports -", "நோயாளி கூறுகிறார்-")
                     .replace("Patient denies -", "நோயாளி மறுக்கிறார்-")
@@ -839,7 +839,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per year", "வருடத்திற்கு முறை")));
         }
         else {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0,false)));
         }
 
         //  alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
@@ -886,9 +886,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         }
     }
 
-    @Override
-    public void onBackPressed() {
-    }
+    
 
 
     public void AnimateView(View v) {

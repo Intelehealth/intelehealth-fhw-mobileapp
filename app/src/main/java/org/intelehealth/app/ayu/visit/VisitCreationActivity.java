@@ -604,7 +604,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Node node = mChiefComplainRootNodeList.get(i);
             Log.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
             String val = formatComplainRecord(node, node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS));
-            String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0);
+            String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS));
             Log.v(TAG, "answerInLocale- " + answerInLocale);
 
             stringBuilder.append(answerInLocale);
@@ -1116,7 +1116,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
         //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
-        patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0);
+        patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0, false);
         while (patientHistory.contains("[Describe"))
             patientHistory = patientHistory.replace("[Describe]", "");
 
@@ -1189,7 +1189,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         if (mFamilyHistoryNode.anySubSelected()) {
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
-                    String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0);
+                    String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0, false);
                     String toInsert = (!isLocale ? node.getText() : node.findDisplay()) + " : " + familyString;
                     //toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");

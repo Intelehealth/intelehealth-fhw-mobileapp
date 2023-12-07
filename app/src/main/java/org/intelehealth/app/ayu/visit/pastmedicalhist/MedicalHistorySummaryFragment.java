@@ -189,6 +189,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
                         if (v.contains(":") && v.split(":").length > 1) {
                             v = v.split(":")[1];
                         }
+                        if(v.endsWith(",")){
+                            v =  v.substring(0, v.length()-1);
+                        }
                         VisitSummaryData summaryData = new VisitSummaryData();
                         summaryData.setQuestion(k.isEmpty() ? v : k);
                         summaryData.setDisplayValue(k.isEmpty() ? "" : v);
@@ -216,7 +219,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
                                         v = v.split(":")[1];
                                     }
 
-
+                                    if(v.endsWith(",")){
+                                        v =  v.substring(0, v.length()-1);
+                                    }
                                     VisitSummaryData summaryData = new VisitSummaryData();
                                     summaryData.setQuestion(k1);
 

@@ -175,6 +175,9 @@ public class PhysicalExamSummaryFragment extends Fragment {
                         while (v.endsWith("-")) {
                             v = v.substring(0, v.length() - 1);
                         }
+                        if(v.endsWith(",")){
+                            v =  v.substring(0, v.length()-1);
+                        }
                         summaryData.setDisplayValue(v);
                         visitSummaryDataList.add(summaryData);
 

@@ -22,7 +22,7 @@ android {
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Intelehealth UIUX_" + versionName + " - " + getDateTime()
+        archivesBaseName = "Intelehealth NAK_" + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

@@ -81,7 +81,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     RecyclerView mRecyclerView, mRootRecyclerView;
     private int mLastImageCaptureSelectedNodeIndex = 0;
     private boolean mIsEditMode;
-
+    private boolean mIsParentNodeIsMandatory;
     public void addImageInLastNode(String image) {
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
         Log.v("showCameraView", "ImageCaptured mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
@@ -122,7 +122,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private Node mParentNode;
 
 
-    public NestedQuestionsListingAdapter(Context context, RecyclerView rootRecyclerView, RecyclerView recyclerView, Node parentNode, int nestedLevel, int rootIndex, boolean editMode, OnItemSelection onItemSelection) {
+    public NestedQuestionsListingAdapter(Context context, RecyclerView rootRecyclerView, RecyclerView recyclerView, Node parentNode, int nestedLevel, int rootIndex, boolean editMode, boolean isParentNodeIsMandatory,OnItemSelection onItemSelection) {
         mContext = context;
 //        mIsForPhysicalExam = isPhyExam;
 //        mPhysicalExam = physicalExam;
@@ -134,6 +134,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         mRootIndex = rootIndex;
         mParentNode = parentNode;
         mIsEditMode = editMode;
+        mIsParentNodeIsMandatory = isParentNodeIsMandatory;
         //mRootComplainBasicInfoHashMap = complainBasicInfoHashMap;
         //mAnimator = new RecyclerViewAnimator(recyclerView);
     }
@@ -402,6 +403,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 rangeTextView.setText(String.format(x + " " + mContext.getString(R.string.to) + " " + y));
             }
         });
+        checkAndHideSkipButton(skipButton);
         containerLayout.addView(view);
     }
 
@@ -480,7 +482,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 updateCustomEmojiSliderUI(view, x);
             }
         });
-
+        checkAndHideSkipButton(skipButton);
         updateCustomEmojiSliderUI(view, 0);
         containerLayout.addView(view);
     }
@@ -689,7 +691,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             linearLayoutManager.setSmoothScrollbarEnabled(true);
             holder.superNestedRecyclerView.setLayoutManager(linearLayoutManager);
             int nestedLevel = mNestedLevel + 1;
-            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, new OnItemSelection() {
+            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, mIsParentNodeIsMandatory,new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode) {
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + indexSelected);
@@ -841,9 +843,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         } else {
                             holder.skipButton.setVisibility(View.VISIBLE);
                         }
+                        checkAndHideSkipButton(holder.skipButton);
                         return;
                     }
-
+                    checkAndHideSkipButton(holder.skipButton);
                     routeByType(holder, selectedNode, node, index, true);
                 }
             });
@@ -859,7 +862,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 }
             }*/
 
-
+        checkAndHideSkipButton(holder.skipButton);
     }
 
     private void showCameraView(Node parentNode, Node node, LinearLayout containerLayout, int index, GenericViewHolder genericViewHolder) {
@@ -1114,7 +1117,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         } else {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }*/
-
+        checkAndHideSkipButton(skipButton);
         containerLayout.addView(view);
     }
 
@@ -1296,7 +1299,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         } else {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }*/
-
+        checkAndHideSkipButton(skipButton);
         containerLayout.addView(view);
     }
 
@@ -1436,6 +1439,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
 */
+        checkAndHideSkipButton(skipButton);
         containerLayout.addView(view);
     }
 
@@ -1564,7 +1568,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
 
                 String d = (String) displayDateButton.getTag();
-                if (d == null || d.equalsIgnoreCase("null") || d.isEmpty() || !d.contains("/")) {
+                if (d == null || d.equalsIgnoreCase("null") || !d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
                     Date fromDateFormat = null;
@@ -1594,12 +1598,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     Date date = cal.getTime();
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*/
 
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", d));
-                    } else {
-                        node.addLanguage(d);
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                    }
+                    //if (node.getLanguage().contains("_")) {
+                    //    node.setLanguage(node.getLanguage().replace("_", d));
+                    //} else {
+                    node.addLanguage(d);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    //}
                     node.setSelected(true);
                     //holder.node.setSelected(true);
 
@@ -1708,7 +1712,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
     }
 
-    private void addAsteriskToRequiredQuestion(String title,GenericViewHolder genericViewHolder) {
+    private void addAsteriskToRequiredQuestion(String title, GenericViewHolder genericViewHolder) {
         SpannableString spannableString = new SpannableString(title + "*");
         // Set the asterisk (*) to red
         spannableString.setSpan(
@@ -1719,6 +1723,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         );
         genericViewHolder.tvQuestion.setText(spannableString);
     }
-
+    private void checkAndHideSkipButton(Button skipButton) {
+        if (mIsParentNodeIsMandatory) {
+            skipButton.setVisibility(View.GONE);
+        }
+    }
 }
 

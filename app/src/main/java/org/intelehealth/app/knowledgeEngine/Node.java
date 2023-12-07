@@ -2706,8 +2706,7 @@ public class Node implements Serializable {
     }
 
 
-    public String formQuestionAnswer(int level) {
-        boolean isAssociateSymptomsType = getText().equalsIgnoreCase(ASSOCIATE_SYMPTOMS);
+    public String formQuestionAnswer(int level, boolean isAssociateSymptomsType) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
         List<Node> mOptions = optionsList;
@@ -2723,16 +2722,22 @@ public class Node implements Serializable {
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
                     if (isAssociateSymptomsType) {
                         question = right_pointing + " " + mOptions.get(i).findDisplay();
                     } else {
-                        question = bullet + " " + mOptions.get(i).findDisplay();
+                        if (mOptions.get(i).isTerminal()) {
+                            question = bullet + " " + mOptions.get(i).findDisplay();
+                        }else{
+                            if(level%2==0){
+                                question = big_bullet + " " + mOptions.get(i).findDisplay();
+                            }else{
+                                question = bullet + " " + mOptions.get(i).findDisplay();
+                            }
+                        }
                     }
                 }
                 question = question.replaceAll("\\[(.*?)\\]", "");
@@ -2747,6 +2752,7 @@ public class Node implements Serializable {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
 
                         if (mOptions.get(i).getInputType().equals("camera")) {
+                            if (!answer.isEmpty()) stringsList.add(bullet_hollow + answer+ next_line);
                         } else {
                             if (!answer.isEmpty()) {
                                 if (isAssociateSymptomsType) {
@@ -2794,7 +2800,7 @@ public class Node implements Serializable {
                 } else {
 
                     stringsList.add(question + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
                     Log.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
@@ -2807,7 +2813,7 @@ public class Node implements Serializable {
 
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
                 }
 
                 if (mOptions.get(i).getOptionsList().size() > 0) {
@@ -2819,7 +2825,7 @@ public class Node implements Serializable {
 
                             if (!mOptions.get(i).isTerminal()) {
                                 stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
                             }
                         }
                     }
@@ -2852,9 +2858,9 @@ public class Node implements Serializable {
             }
 
         }
-        mLanguage = mLanguage.replaceAll(",<br/>•", ",");
-        if (mLanguage.endsWith(",")) {
-            mLanguage = mLanguage.substring(0, mLanguage.length() - 1);
+        mLanguage = mLanguage.replaceAll(",<br/>•",",");
+        if(mLanguage.endsWith(",")){
+            mLanguage =  mLanguage.substring(0, mLanguage.length()-1);
         }
         Log.i(TAG, "ipt: formQuestionAnswer: " + mLanguage);
 

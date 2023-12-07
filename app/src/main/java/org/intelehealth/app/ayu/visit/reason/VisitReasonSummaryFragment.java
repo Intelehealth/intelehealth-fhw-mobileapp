@@ -182,6 +182,9 @@ public class VisitReasonSummaryFragment extends Fragment {
                         if (qa.length == 2) {
                             String k = value.split("•")[0].trim();
                             String v = value.split("•")[1].trim();
+                            if(v.endsWith(",")){
+                                v =  v.substring(0, v.length()-1);
+                            }
                             VisitSummaryData summaryData = new VisitSummaryData();
                             summaryData.setQuestion(k);
                             summaryData.setDisplayValue(v);
@@ -202,6 +205,9 @@ public class VisitReasonSummaryFragment extends Fragment {
                                         v = v + Node.bullet_arrow + qa[j + 1];
                                     }
                                     VisitSummaryData summaryData = new VisitSummaryData();
+                                    if(v.endsWith(",")){
+                                        v =  v.substring(0, v.length()-1);
+                                    }
                                     summaryData.setQuestion(key);
                                     summaryData.setDisplayValue(v);
                                     visitSummaryDataList.add(summaryData);
