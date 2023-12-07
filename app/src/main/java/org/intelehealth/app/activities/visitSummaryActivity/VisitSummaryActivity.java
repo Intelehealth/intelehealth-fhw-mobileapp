@@ -3977,18 +3977,44 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE: {
 
+                TextView textView = createTextView();
+                fetchDispensedAid();
+                String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
+
                 if (!newCoverMedicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
                 }
 
                 if (newCoverMedicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCoverMedicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCoverMedicalExpenseAidOrder = getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
+
+                    if (newCoverMedicalExpenseAidOrder != null && !newCoverMedicalExpenseAidOrder.isEmpty()) {
+                        // ie. there is atleast one item. so add a textview -> show more.
+                        textView.setText("show more");
+                        textView.setTag(0);
+                        aidOrderType3TableRow.addView(textView);
+
+                        // ie. value is present for this Aid_1 field.
+                        //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
+                        String a[] = newCoverMedicalExpenseAidOrder.split("<br>");
+                        aid3 = a[0];
+                        Log.d(TAG, "parseData: " + aid3);
+                        // aid2 = newMedicalEquipLoanAidOrder;
+                        // }
+                        fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
+                    }
+
                 }
 
                 if (!newCoverMedicalExpenseAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4016,7 +4042,22 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder.replace("Others||", "Others - ");
                 }
 
-                aidOrderType3TextView.setText(Html.fromHtml(newCoverMedicalExpenseAidOrder));
+              //  aidOrderType3TextView.setText(Html.fromHtml(newCoverMedicalExpenseAidOrder));
+                aidOrderType3TextView.setText(Html.fromHtml(aid3));
+                textView.setOnClickListener(v -> {
+                    if (textView.getTag() != null) {
+                        if (textView.getTag().equals(0)) {
+                            textView.setText("show less");
+                            textView.setTag(1);
+                            aidOrderType3TextView.setText(Html.fromHtml(newCoverMedicalExpenseAidOrder));
+                        } else {
+                            textView.setText("show more");
+                            textView.setTag(0);
+                            aidOrderType3TextView.setText(Html.fromHtml(aid3));
+                        }
+                    }
+                });
+
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType3TextView.setGravity(Gravity.END);
                 }
@@ -4024,18 +4065,43 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE: {
 
+                TextView textView = createTextView();
+                fetchDispensedAid();
+                String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
+
                 if (!newCoverSurgicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
                 }
 
                 if (newCoverSurgicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCoverSurgicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCoverSurgicalExpenseAidOrder = getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
+
+                    if (newCoverSurgicalExpenseAidOrder != null && !newCoverSurgicalExpenseAidOrder.isEmpty()) {
+                        // ie. there is atleast one item. so add a textview -> show more.
+                        textView.setText("show more");
+                        textView.setTag(0);
+                        aidOrderType4TableRow.addView(textView);
+
+                        // ie. value is present for this Aid_1 field.
+                        //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
+                        String a[] = newCoverSurgicalExpenseAidOrder.split("<br>");
+                        aid4 = a[0];
+                        Log.d(TAG, "parseData: " + aid4);
+                        // aid2 = newMedicalEquipLoanAidOrder;
+                        // }
+                        fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
+                    }
                 }
 
                 if (!newCoverSurgicalExpenseAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4064,7 +4130,21 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder.replace("Others||", "Others - ");
                 }
 
-                aidOrderType4TextView.setText(Html.fromHtml(newCoverSurgicalExpenseAidOrder));
+              //  aidOrderType4TextView.setText(Html.fromHtml(newCoverSurgicalExpenseAidOrder));
+                aidOrderType4TextView.setText(Html.fromHtml(aid4));
+                textView.setOnClickListener(v -> {
+                    if (textView.getTag() != null) {
+                        if (textView.getTag().equals(0)) {
+                            textView.setText("show less");
+                            textView.setTag(1);
+                            aidOrderType4TextView.setText(Html.fromHtml(newCoverSurgicalExpenseAidOrder));
+                        } else {
+                            textView.setText("show more");
+                            textView.setTag(0);
+                            aidOrderType4TextView.setText(Html.fromHtml(aid4));
+                        }
+                    }
+                });
 
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType4TextView.setGravity(Gravity.END);
@@ -4073,18 +4153,43 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_CASH_ASSISTANCE: {
 
+                TextView textView = createTextView();
+                fetchDispensedAid();
+                String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
+
                 if (!newCashAssistanceExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
                 }
 
                 if (newCashAssistanceExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCashAssistanceExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCashAssistanceExpenseAidOrder = getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
+
+                    if (newCashAssistanceExpenseAidOrder != null && !newCashAssistanceExpenseAidOrder.isEmpty()) {
+                        // ie. there is atleast one item. so add a textview -> show more.
+                        textView.setText("show more");
+                        textView.setTag(0);
+                        aidOrderType5TableRow.addView(textView);
+
+                        // ie. value is present for this Aid_1 field.
+                        //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
+                        String a[] = newCashAssistanceExpenseAidOrder.split("<br>");
+                        aid5 = a[0];
+                        Log.d(TAG, "parseData: " + aid5);
+                        // aid2 = newMedicalEquipLoanAidOrder;
+                        // }
+                        fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
+                    }
                 }
 
                 if (!newCashAssistanceExpenseAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4112,7 +4217,22 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder.replace("Others||", "Others - ");
                 }
 
-                aidOrderType5TextView.setText(Html.fromHtml(newCashAssistanceExpenseAidOrder));
+              //  aidOrderType5TextView.setText(Html.fromHtml(newCashAssistanceExpenseAidOrder));
+                aidOrderType5TextView.setText(Html.fromHtml(aid5));
+                textView.setOnClickListener(v -> {
+                    if (textView.getTag() != null) {
+                        if (textView.getTag().equals(0)) {
+                            textView.setText("show less");
+                            textView.setTag(1);
+                            aidOrderType5TextView.setText(Html.fromHtml(newCashAssistanceExpenseAidOrder));
+                        } else {
+                            textView.setText("show more");
+                            textView.setTag(0);
+                            aidOrderType5TextView.setText(Html.fromHtml(aid5));
+                        }
+                    }
+                });
+
 
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType5TextView.setGravity(Gravity.END);
