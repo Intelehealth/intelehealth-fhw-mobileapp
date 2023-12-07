@@ -8,3 +8,11 @@ Enhancement
 - Remove display on top permission
 - Remove foreground service, not in use
 - Voice detector not working in video
+
+Hi @Shalini
+
+We had brainstorming session on #9 Survey Questionnaire Report(
+similar to the visit report, survey report should be stored as a separate
+record instead of overwritten on the previous values), This is a part of Dynamic Questionnaire and
+we need to re-estimate dynamic questionnaire as per new requirement. Previously we had estimated
+base on only text input type, now we also
