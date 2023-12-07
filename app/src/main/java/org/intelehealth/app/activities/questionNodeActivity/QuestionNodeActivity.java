@@ -886,7 +886,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         }
     }
 
-    
+
 
 
     public void AnimateView(View v) {
