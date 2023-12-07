@@ -12,7 +12,9 @@ import android.os.LocaleList;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.DisplayMetrics;
@@ -142,7 +144,7 @@ public class Fragment_SecondScreen extends Fragment {
         mDistrictET = view.findViewById(R.id.district_edittext);
         mCityVillageET = view.findViewById(R.id.city_village_edittext);
         mCityVillageET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        mCityVillageET.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), lettersFilter}); //maxlength 50
+        mCityVillageET.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Others}); //maxlength 50
         mAddress1EditText = view.findViewById(R.id.address1_edittext);
         mAddress1EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)}); //maxlength 50
         mAddress2EditText = view.findViewById(R.id.address2_edittext);
@@ -198,28 +200,10 @@ public class Fragment_SecondScreen extends Fragment {
             String val = editable.toString().trim();
             if (this.editText.getId() == R.id.postalcode_edittext) {
                 if (val.isEmpty()) {
-                    /*mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
-                    mPostalCodeErrorTextView.setText(getString(R.string.error_field_required));
-                    mPostalCodeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                 else if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase("India") && val.length() != 6) {
-                    mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
-                    mPostalCodeErrorTextView.setText(getString(R.string.postal_code_6_dig_invalid_txt));
-                    mPostalCodeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-
-                } else {*/
                     mPostalCodeErrorTextView.setVisibility(View.GONE);
                     mPostalCodeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } /*else if (this.editText.getId() == R.id.address1_edittext) {
-                if (val.isEmpty()) {
-                    mAddress1ErrorTextView.setVisibility(View.VISIBLE);
-                    mAddress1ErrorTextView.setText(getString(R.string.error_field_required));
-                    mAddress1EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mAddress1ErrorTextView.setVisibility(View.GONE);
-                    mAddress1EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else*/
+            }
             if (this.editText.getId() == R.id.state_edittext) {
                 if (val.isEmpty()) {
                     mStateNameErrorTextView.setVisibility(View.VISIBLE);
@@ -842,4 +826,35 @@ public class Fragment_SecondScreen extends Fragment {
         }
         return null; // Accept the original characters.
     };
+
+    public static InputFilter inputFilter_Others = new InputFilter() { //filter input for all other fields
+        @Override
+        public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int i2, int i3) {
+            boolean keepOriginal = true;
+            StringBuilder sb = new StringBuilder(end - start);
+            for (int i = start; i < end; i++) {
+                char c = charSequence.charAt(i);
+                if (isCharAllowed(c)) // put your condition here
+                    sb.append(c);
+                else
+                    keepOriginal = false;
+            }
+            if (keepOriginal)
+                return null;
+            else {
+                if (charSequence instanceof Spanned) {
+                    SpannableString sp = new SpannableString(sb);
+                    TextUtils.copySpansFrom((Spanned) charSequence, start, sb.length(), null, sp, 0);
+                    return sp;
+                } else {
+                    return sb;
+                }
+            }
+        }
+
+        private boolean isCharAllowed(char c) {
+            return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);   // This allows only alphabets, digits and spaces.
+        }
+    };
+
 }
