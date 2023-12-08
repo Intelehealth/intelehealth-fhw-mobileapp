@@ -451,7 +451,7 @@ public class VisitPendingFragment extends Fragment {
         Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        //" v.enddate is null and" +
+                        " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " STRFTIME('%Y',date(substr(v.startdate, 1, 10))) = STRFTIME('%Y',DATE('now'))" +
                         " AND STRFTIME('%m',date(substr(v.startdate, 1, 10))) = STRFTIME('%m',DATE('now')) and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",

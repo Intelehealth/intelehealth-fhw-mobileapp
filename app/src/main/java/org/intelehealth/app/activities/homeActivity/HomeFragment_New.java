@@ -133,6 +133,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                             " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                             " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                             //" e.encounter_type_uuid = ?  and " +
+                            " v.enddate is null and " +
                             " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                             " " +
                             " STRFTIME('%Y',date(substr(v.startdate, 1, 10))) = STRFTIME('%Y',DATE('now'))  AND " +
