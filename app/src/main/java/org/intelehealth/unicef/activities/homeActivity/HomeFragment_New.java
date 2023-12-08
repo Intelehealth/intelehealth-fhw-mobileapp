@@ -76,7 +76,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
     private static SQLiteDatabase db;
 
-    private int getCurrentMonthsVisits(boolean isForReceivedPrescription) {
+    private int getCurrentMonthsVisits(boolean isForReceivedPrescription, String creatorUUID) {
         int count = 0;
         db.beginTransactionNonExclusive();
 
@@ -86,23 +86,23 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                             " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                             " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                             "  e.encounter_type_uuid = ? and" +
+                            " p.creator_uuid = ? and" +
                             " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                            " o.conceptuuid = ? and" +
+//                            " o.conceptuuid = ? and" +
                             " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
                             " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
                             " group by e.visituuid"
-                    , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                    , new String[]{ENCOUNTER_VISIT_NOTE, creatorUUID/*, "537bb20d-d09d-4f88-930b-cc45c7d662df"*/});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
         else
             cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                             " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                             " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                            //" e.encounter_type_uuid = ?  and " +
                             " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                            " " +
+                            " p.creator_uuid = ? and" +
                             " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
                             " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
                             "  group by e.visituuid"
-                    , new String[]{});
+                    , new String[]{creatorUUID});
         db.setTransactionSuccessful();
         db.endTransaction();
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -252,8 +252,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         //
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
-        int pendingCountTotalVisits = getCurrentMonthsVisits(false);
-        int countReceivedPrescription = getCurrentMonthsVisits(true);
+        int pendingCountTotalVisits = getCurrentMonthsVisits(false, sessionManager.getCreatorID());
+        int countReceivedPrescription = getCurrentMonthsVisits(true, sessionManager.getCreatorID());
         int total = pendingCountTotalVisits + countReceivedPrescription;
         prescriptionCountTextView.setText(countReceivedPrescription + " " + getResources().getString(R.string.out_of) + " " + total);
         int countPendingCloseVisits = getThisMonthsNotEndedVisits();
