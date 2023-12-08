@@ -2069,18 +2069,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         if (id == 1) {
-            int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            }
 
-            if (!listPermissionsNeeded.isEmpty()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
-                }
-                return false;
-            }
+            // if apps are targeting Android level 13+, we don't need to ask for these permissions - Commented by Arpan Sircar
+//            int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+//                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+//                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//            }
+//
+//            if (!listPermissionsNeeded.isEmpty()) {
+//                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
+//                return false;
+//            }
 
         }
 
