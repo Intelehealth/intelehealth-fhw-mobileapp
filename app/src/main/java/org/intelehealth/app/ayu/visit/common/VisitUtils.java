@@ -34,6 +34,7 @@ public class VisitUtils {
     }
 
     public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy, boolean isEditMode) {
+        Log.v("VisitUtils", "scrollNow isEditMode - " + isEditMode);
         if (!isEditMode)
             recyclerView.postDelayed(() -> recyclerView.smoothScrollBy(dx, dy), delayMills);
     }

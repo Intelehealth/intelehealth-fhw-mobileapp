@@ -3358,5 +3358,15 @@ public class Node implements Serializable {
     public void setImageUploaded(boolean imageUploaded) {
         isImageUploaded = imageUploaded;
     }
+    public boolean isUserInputsTypeNode() {
+        boolean result = false;
+        String type = getInputType();
+        Log.v(TAG, "isUserInputsTypeNode - type : " + type);
+        if (type.equals("text") || type.equals("date") || type.equals("location") || type.equals("number") || type.equals("area") || type.equals("duration") || type.equals("range") || type.equals("frequency")) {
+            result = true;
+        }
+        Log.v(TAG, "isUserInputsTypeNode - result : " + result);
+        return result;
+    }
 }
 
