@@ -46,6 +46,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -596,13 +597,25 @@ public class VisitReceivedFragment extends Fragment {
         db.beginTransaction();
 
         // ie. visit is active and presc is given.
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        //as per ticket NAK-72 query condition on v.startdate
+
+      /*  Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " v.startdate > DATETIME('now', '-4 day') " +
                         " group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
+
+                new String[]{ENCOUNTER_VISIT_NOTE, String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.*/
+
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        " v.enddate is null and e.encounter_type_uuid = ? and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " STRFTIME('%Y',date(substr(v.startdate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND STRFTIME('%m',date(substr(v.startdate, 1, 10))) = STRFTIME('%m',DATE('now')) " +
+                        "and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
 
                 new String[]{ENCOUNTER_VISIT_NOTE, String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
@@ -656,15 +669,25 @@ public class VisitReceivedFragment extends Fragment {
     private List<PrescriptionModel> recentVisits() {
         List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
+        //as per ticket NAK-72 query condition on v.startdate
 
         // ie. visit is active and presc is given.
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+      /*  Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " v.startdate > DATETIME('now', '-4 day') " +
                         " group by e.visituuid ORDER BY v.startdate DESC",
+
+                new String[]{ENCOUNTER_VISIT_NOTE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.*/
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        " v.enddate is null and e.encounter_type_uuid = ? and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " STRFTIME('%Y',date(substr(v.startdate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND STRFTIME('%m',date(substr(v.startdate, 1, 10))) = STRFTIME('%m',DATE('now')) " +
+                        " and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "'group by e.visituuid ORDER BY v.startdate DESC",
 
                 new String[]{ENCOUNTER_VISIT_NOTE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
@@ -720,15 +743,26 @@ public class VisitReceivedFragment extends Fragment {
     private List<PrescriptionModel> olderVisits(int limit, int offset) {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
+        //as per ticket NAK-72 query condition on v.startdate
 
         // ie. visit is active and presc is given.
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+       /* Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " v.startdate < DATETIME('now', '-4 day') " +
                         "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
+
+                new String[]{ENCOUNTER_VISIT_NOTE, String.valueOf(limit), String.valueOf(offset)});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+*/
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        " v.enddate is null and e.encounter_type_uuid = ? and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " substr(v.startdate, 1, 7) < substr(DATETIME('now') , 1, 7) " +
+                        "and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
                 new String[]{ENCOUNTER_VISIT_NOTE, String.valueOf(limit), String.valueOf(offset)});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
@@ -782,6 +816,7 @@ public class VisitReceivedFragment extends Fragment {
     private List<PrescriptionModel> olderVisits() {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
+        //as per ticket NAK-72 query condition on v.startdate
 
         // ie. visit is active and presc is given.
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
@@ -789,8 +824,8 @@ public class VisitReceivedFragment extends Fragment {
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate < DATETIME('now', '-4 day') " +
-                        "group by p.openmrs_id ORDER BY v.startdate DESC",
+                        " substr(v.startdate, 1, 7) < substr(DATETIME('now') , 1, 7) " +
+                        "and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by p.openmrs_id ORDER BY v.startdate DESC",
 
                 new String[]{ENCOUNTER_VISIT_NOTE});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 

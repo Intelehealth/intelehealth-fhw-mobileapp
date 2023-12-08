@@ -438,16 +438,24 @@ public class VisitPendingFragment extends Fragment {
         // new
         List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
-
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        //as per ticket NAK-72 query condition on v.startdate
+       /* Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " v.startdate > DATETIME('now', '-4 day') and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
+                                        new String[]{String.valueOf(limit), String.valueOf(offset)});
 
+*/
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        //" v.enddate is null and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " STRFTIME('%Y',date(substr(v.startdate, 1, 10))) = STRFTIME('%Y',DATE('now'))" +
+                        " AND STRFTIME('%m',date(substr(v.startdate, 1, 10))) = STRFTIME('%m',DATE('now')) and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
-
         db.setTransactionSuccessful();
         db.endTransaction();
 
@@ -508,13 +516,21 @@ public class VisitPendingFragment extends Fragment {
         // new
         List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
+        //as per ticket NAK-72 query condition on v.startdate
 
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+     /*   Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " v.startdate > DATETIME('now', '-4 day') and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
+*/
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                " v.enddate is null and" +
+                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                " STRFTIME('%Y',date(substr(v.startdate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND STRFTIME('%m',date(substr(v.startdate, 1, 10))) = STRFTIME('%m',DATE('now')) and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -577,13 +593,24 @@ public class VisitPendingFragment extends Fragment {
     private List<PrescriptionModel> olderVisits(int limit, int offset) {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
+        //as per ticket NAK-72 query condition on v.startdate
 
+/*
         Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " v.startdate < DATETIME('now', '-4 day') and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
+*/
+
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        " v.enddate is null and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " substr(v.startdate, 1, 7) < substr(DATETIME('now') , 1, 7) and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
+
 
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
@@ -645,14 +672,22 @@ public class VisitPendingFragment extends Fragment {
     private List<PrescriptionModel> olderVisits() {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
+        //as per ticket NAK-72 query condition on v.startdate
 
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+       /* Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " v.startdate < DATETIME('now', '-4 day') and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC",
-
+                          new String[]{});
+*/
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        " v.enddate is null and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        "  substr(v.startdate, 1, 7) < substr(DATETIME('now') , 1, 7)  and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid ORDER BY v.startdate DESC",
                 new String[]{});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {

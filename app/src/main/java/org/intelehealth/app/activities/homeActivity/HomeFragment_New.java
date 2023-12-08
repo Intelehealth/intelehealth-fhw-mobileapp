@@ -107,6 +107,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     private int getCurrentMonthsVisits(boolean isForReceivedPrescription) {
         int count = 0;
         db.beginTransactionNonExclusive();
+        //as per ticket NAK-72 query condition on v.startdate
 
         Cursor cursor = null;
         if (isForReceivedPrescription)
@@ -115,11 +116,18 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                             " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                             "  e.encounter_type_uuid = ? and" +
                             " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                            " STRFTIME('%Y',date(substr(v.startdate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
+                            " STRFTIME('%m',date(substr(v.startdate, 1, 10))) = STRFTIME('%m',DATE('now')) and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid"
+                    , new String[]{ENCOUNTER_VISIT_NOTE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+          /*  cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                            " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                            " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                            "  e.encounter_type_uuid = ? and" +
+                            " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                             " o.conceptuuid = ? and" +
-                            " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
-                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
-                            " group by e.visituuid"
-                    , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                            " STRFTIME('%Y',date(substr(v.startdate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
+                            " STRFTIME('%m',date(substr(v.startdate, 1, 10))) = STRFTIME('%m',DATE('now')) and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid"
+                    , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.*/
         else
             cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                             " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
@@ -127,9 +135,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                             //" e.encounter_type_uuid = ?  and " +
                             " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                             " " +
-                            " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
-                            " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
-                            "  group by e.visituuid"
+                            " STRFTIME('%Y',date(substr(v.startdate, 1, 10))) = STRFTIME('%Y',DATE('now'))  AND " +
+                            " STRFTIME('%m',date(substr(v.startdate, 1, 10))) = STRFTIME('%m',DATE('now')) and v.visit_type_uuid  = '" + UuidDictionary.VIDEO_CONSULTATION + "' group by e.visituuid"
                     , new String[]{});
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -146,11 +153,11 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                     e.printStackTrace();
                 }
                 //TODO: need more improvement in main query, this condition can be done by join query
-                if(isForReceivedPrescription) {
+                if (isForReceivedPrescription) {
                     if (!isCompletedExitedSurvey && isPrescriptionReceived) {
                         count += 1;
                     }
-                }else{
+                } else {
                     if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
                         count += 1;
                     }
@@ -280,20 +287,20 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         //
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
-        List<PrescriptionModel> allRecentList = recentVisits();
-        int countReceivedPrescription =allRecentList.size();
-        //int countReceivedPrescription = getCurrentMonthsVisits(true);
-        //int pendingCountTotalVisits = getCurrentMonthsVisits(false);
-        //int total = pendingCountTotalVisits + countReceivedPrescription;s
-        int pendingCountTotalVisits = recentVisitsForPendingPrescriptions().size();
+        int countReceivedPrescription = getCurrentMonthsVisits(true);
+        int pendingCountTotalVisits = getCurrentMonthsVisits(false);
+        Log.d(TAG, "initUI:cc countReceivedPrescription :: " + countReceivedPrescription);
+        Log.d(TAG, "initUI:cc pendingCountTotalVisits :: " + pendingCountTotalVisits);
+
+        int total = pendingCountTotalVisits + countReceivedPrescription;
         String prescCountText = countReceivedPrescription + " " +
-                getResources().getString(R.string.out_of) + " "  + pendingCountTotalVisits + " " +
+                getResources().getString(R.string.out_of) + " " + total + " " +
                 getResources().getString(R.string.received).toLowerCase();
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             prescCountText = pendingCountTotalVisits + " मे से " + countReceivedPrescription + " प्राप्त हुये";
         prescriptionCountTextView.setText(prescCountText);
 
-      //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
+        //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         new Thread(new Runnable() {
             @Override
@@ -459,6 +466,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         return count;
     }
+
     private List<PrescriptionModel> recentVisits() {
         List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
@@ -521,12 +529,13 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         return recentList;
     }
+
     private List<PrescriptionModel> recentVisitsForPendingPrescriptions() {
         // new
         List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                 " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                 " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                 " v.enddate is null and" +
