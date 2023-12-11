@@ -390,10 +390,14 @@ public class EncounterDAO {
                 encounterUuidList.add(encounterUuid);
             }
         }
-        idCursor.close();
+
+
+        if(idCursor != null && !idCursor.isClosed())
+            idCursor.close();
+
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+      //  db.close();
 
         return encounterUuidList;
     }

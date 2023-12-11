@@ -69,7 +69,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +87,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -132,6 +132,7 @@ import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dispenseAdministerModel.AidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
+import org.intelehealth.app.models.dispenseAdministerModel.MedicationModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
@@ -323,9 +324,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
     TextView aidOrderType1TextView, aidOrderType2TextView, aidOrderType3TextView, aidOrderType4TextView, aidOrderType5TextView;
     String aid1, aid2, aid3, aid4, aid5;
     private List<MedicationAidModel> update_aidUuidList = new ArrayList<>();
-    private String encounterDispense;
+    private List<MedicationAidModel> update_medUuidDispenseList = new ArrayList<>();
+    private List<MedicationAidModel> update_medUuidAdministeredList = new ArrayList<>();
+    private String encounterDispense, encounterAdminister;
 
-    LinearLayout aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow, aidOrderType4TableRow, aidOrderType5TableRow;
+    LinearLayout aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow, aidOrderType4TableRow, aidOrderType5TableRow, tl_prescribed_medications;
     TextView followUpDateTextView;
     //added checkbox flag .m
     CheckBox flag;
@@ -830,7 +833,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         speciality_spinner = findViewById(R.id.speciality_spinner);
         second_speciality_spinner = findViewById(R.id.second_speciality_spinner);
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
-        prescriptionTextView = findViewById(R.id.textView_content_rx);
+     //   prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
@@ -845,6 +848,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         aidOrderType3TableRow = findViewById(R.id.tableRow_content_aid_order_type3);
         aidOrderType4TableRow = findViewById(R.id.tableRow_content_aid_order_type4);
         aidOrderType5TableRow = findViewById(R.id.tableRow_content_aid_order_type5);
+        tl_prescribed_medications = findViewById(R.id.tl_prescribed_medications);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -3792,10 +3796,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN: {
 
-                TextView textView = createTextView();
-                fetchDispensedAid();
-                String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
-                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
+                TextView textView = createShowTextView();
+                fetchDispensed_MedicationAndAid();
+                String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
 
                 if (!newMedicalEquipLoanAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
@@ -3827,7 +3831,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                             Log.d(TAG, "parseData: " + aid1);
                            // aid1 = newMedicalEquipLoanAidOrder;
                      //   }
-                        fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
+                        fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
                     }
 
                 }
@@ -3885,10 +3889,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP: {
 
-                TextView textView = createTextView();
-                fetchDispensedAid();
-                String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
-                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
+                TextView textView = createShowTextView();
+                fetchDispensed_MedicationAndAid();
+                String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
 
                 if (!newFreeMedicalEquipAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
@@ -3920,7 +3924,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                             Log.d(TAG, "parseData: " + aid2);
                             // aid2 = newMedicalEquipLoanAidOrder;
                        // }
-                        fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
+                        fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
                     }
 
                 }
@@ -3977,10 +3981,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE: {
 
-                TextView textView = createTextView();
-                fetchDispensedAid();
-                String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
-                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
+                TextView textView = createShowTextView();
+                fetchDispensed_MedicationAndAid();
+                String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
 
                 if (!newCoverMedicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
@@ -4012,7 +4016,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         Log.d(TAG, "parseData: " + aid3);
                         // aid2 = newMedicalEquipLoanAidOrder;
                         // }
-                        fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
+                        fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
                     }
 
                 }
@@ -4065,10 +4069,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE: {
 
-                TextView textView = createTextView();
-                fetchDispensedAid();
-                String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
-                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
+                TextView textView = createShowTextView();
+                fetchDispensed_MedicationAndAid();
+                String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
 
                 if (!newCoverSurgicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
@@ -4100,7 +4104,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         Log.d(TAG, "parseData: " + aid4);
                         // aid2 = newMedicalEquipLoanAidOrder;
                         // }
-                        fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
+                        fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
                     }
                 }
 
@@ -4153,10 +4157,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_CASH_ASSISTANCE: {
 
-                TextView textView = createTextView();
-                fetchDispensedAid();
-                String disaidformattedvalue = (!formatDispensedAdministedByDetails(uuid, true).isEmpty())
-                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedAdministedByDetails(uuid, true) + "</font>" : "";
+                TextView textView = createShowTextView();
+                fetchDispensed_MedicationAndAid();
+                String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
 
                 if (!newCashAssistanceExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
@@ -4188,7 +4192,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         Log.d(TAG, "parseData: " + aid5);
                         // aid2 = newMedicalEquipLoanAidOrder;
                         // }
-                        fetchDispensedAid();    // so that it runs only the first time and fetches all the values at once.
+                        fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
                     }
                 }
 
@@ -4240,22 +4244,38 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 break;
             }
             case UuidDictionary.JSV_MEDICATIONS: {
+
                 Log.e(TAG, "parseData: JSV_MEDICATIONS=>" + value);
                 if(value.contains("\n"))
                     value = value.replace("\n","<br>");
 
+                fetchDispensed_MedicationAndAid();
+                fetchAdministered_Medication();
+
+                String dispenseMedicationValue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
+
+                String administerMedicationValue = (!formatAdministeredByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatAdministeredByDetails(uuid, true) + "</font>" : "";
+
+
                 if (!newRxReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newRxReturned = newRxReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newRxReturned = /*newRxReturned +*/ "<br>" + "<strike><font color=\\'#000000\\'>" + value +
+                                "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + dispenseMedicationValue + administerMedicationValue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newRxReturned = newRxReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newRxReturned = /*newRxReturned + */ "<br>" + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + dispenseMedicationValue + administerMedicationValue;
                 }
 
                 if (newRxReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newRxReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newRxReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + dispenseMedicationValue + administerMedicationValue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newRxReturned = value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newRxReturned = value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + dispenseMedicationValue + administerMedicationValue;
                 }
 
                 if (!rxReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4267,11 +4287,23 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
-                prescriptionTextView.setText(Html.fromHtml(newRxReturned));
-                //checkForDoctor();
-                if (LocaleHelper.isArabic(this)) {
-                    prescriptionTextView.setGravity(Gravity.END);
-                }
+
+                TextView textView = createTextView();
+                textView.setText(Html.fromHtml(newRxReturned));
+                if (LocaleHelper.isArabic(this))
+                    textView.setGravity(Gravity.END);
+
+              /*  View view = new View(VisitSummaryActivity.this);
+                view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
+                view.setBackground(getResources().getDrawable(R.drawable.divider));
+                float scale = getResources().getDisplayMetrics().density;
+                int dpAsPixels = (int) (15*scale + 0.5f);
+                view.setPadding(0, dpAsPixels, 0, dpAsPixels);*/
+
+                tl_prescribed_medications.addView(textView);
+              //  tl_prescribed_medications.addView(view);
+                Log.d(TAG, "parseData: med: " + tl_prescribed_medications.getChildCount() + "\n" + textView.getText().toString());
+
                 break;
             }
             case UuidDictionary.MEDICAL_ADVICE: {
@@ -4447,18 +4479,61 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private TextView createTextView() {
-        TextView textView = new TextView(VisitSummaryActivity.this);
+    private TextView createShowTextView() {
+        TextView textView = new MaterialTextView(VisitSummaryActivity.this);
         textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
         textView.setTextColor(getResources().getColor(R.color.intro_next));
         textView.setPadding(0, 10, 0, 0);
         return textView;
     }
 
-    private void fetchDispensedAid() {
+    private TextView createTextView() {
+        TextView textView = new MaterialTextView(VisitSummaryActivity.this);
+        textView.setTextSize(16.0f);
+        return textView;
+    }
+
+    private void fetchAdministered_Medication() {
+        Log.d(TAG, "fetchDispensedAid: " + visitUuid);
+        List<String> encounterListByVisitUUID = getEncounterListByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_ADMINISTER);
+        if (encounterListByVisitUUID != null && encounterListByVisitUUID.size() > 0) {
+            if (update_medUuidAdministeredList != null && update_medUuidAdministeredList.size() > 0)
+                update_medUuidAdministeredList.clear();
+
+            for (int i = 0; i < encounterListByVisitUUID.size(); i++) {
+                encounterAdminister = encounterListByVisitUUID.get(i);
+                Log.d(TAG, "encounterAdminister: " + encounterAdminister);  //
+                if (!encounterAdminister.isEmpty()) {
+                    try {
+
+                        //  MedicationAidModel medModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION);    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+                        update_medUuidAdministeredList.addAll(ObsDAO.getObsDispenseAdministerData(encounterAdminister, UuidDictionary.OBS_ADMINISTER_MEDICATION));    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+
+                       /* //  MedicationAidModel aidModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_AID);
+                        update_aidUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_AID));
+*/
+                    } catch (DAOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            Log.d(TAG, "fetchAdministered_Medication: " + String.valueOf(update_medUuidAdministeredList.size()));
+        }
+    }
+
+
+    private void fetchDispensed_MedicationAndAid() {
         Log.d(TAG, "fetchDispensedAid: " + visitUuid);
         List<String> encounterListByVisitUUID = getEncounterListByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_DISPENSE);
         if (encounterListByVisitUUID != null && encounterListByVisitUUID.size() > 0) {
+
+            if (update_medUuidDispenseList != null && update_medUuidDispenseList.size() > 0)
+                update_medUuidDispenseList.clear();
+
+            if (update_aidUuidList != null && update_aidUuidList.size() > 0)
+                update_aidUuidList.clear();
+
             for (int i = 0; i < encounterListByVisitUUID.size(); i++) {
                 encounterDispense = encounterListByVisitUUID.get(i);
                 Log.d(TAG, "encounterDispense: " + encounterDispense);  //
@@ -4466,25 +4541,39 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     try {
 
                         //  MedicationAidModel medModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION);    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
-                      //  update_medUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION));    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
-                        // update_medUuidList.add(medModel);
+                        update_medUuidDispenseList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION));    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
 
                         //  MedicationAidModel aidModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_AID);
                         update_aidUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_AID));
-                        //   update_aidUuidList.add(aidModel);
-
 
                     } catch (DAOException e) {
                         throw new RuntimeException(e);
                     }
                 }
-
             }
-
         }
     }
 
-    private String formatDispensedAdministedByDetails(String uuid, boolean isDispense) {
+    private String formatAdministeredByDetails(String uuid, boolean isDispense) {
+        String obsformat = "";
+
+        if (update_medUuidAdministeredList != null && update_medUuidAdministeredList.size() > 0) {
+            for (int i = 0; i < update_medUuidAdministeredList.size(); i++) {
+                MedicationModel medicationModel = new Gson().fromJson(update_medUuidAdministeredList.get(i).getValue(), MedicationModel.class);
+                if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(uuid)) {
+                    // String creator_name = getCreatorName(creator);
+                    String valueTimeStamp = getValueTimeStamp(update_medUuidAdministeredList.get(i).getCreatedDate());
+                    if (!obsformat.isEmpty())
+                        obsformat = obsformat + "<br>" + "Administered By:" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                    else
+                        obsformat = "Administered By:" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                }
+            }
+        }
+
+        return obsformat;
+    }
+    private String formatDispensedByDetails(String uuid, boolean isDispense) {
         String obsAddedByString = "";
 
         if (update_aidUuidList != null && update_aidUuidList.size() > 0) {
@@ -4493,10 +4582,22 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(uuid)) {
                    // String creator_name = getCreatorName(creator);
                     String valueTimeStamp = getValueTimeStamp(update_aidUuidList.get(i).getCreatedDate());
-                    obsAddedByString = "Dispensed by:" + " " + aidModel.getHwName() + "<br>" + valueTimeStamp;
+                    obsAddedByString = "Dispensed By:" + " " + aidModel.getHwName() + "<br>" + valueTimeStamp;
                 }
             }
         }
+
+        if (update_medUuidDispenseList != null && update_medUuidDispenseList.size() > 0) {
+            for (int i = 0; i < update_medUuidDispenseList.size(); i++) {
+                MedicationModel medicationModel = new Gson().fromJson(update_medUuidDispenseList.get(i).getValue(), MedicationModel.class);
+                if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(uuid)) {
+                   // String creator_name = getCreatorName(creator);
+                    String valueTimeStamp = getValueTimeStamp(update_medUuidDispenseList.get(i).getCreatedDate());
+                    obsAddedByString = "Dispensed By:" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                }
+            }
+        }
+
         return obsAddedByString;
     }
 
@@ -4524,6 +4625,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
     }
 
     private String getValueTimeStamp(String created_date) {
+        if (created_date == null)
+            return "";
+
+        Log.d(TAG, "getValueTimeStamp: " + created_date);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = null;
@@ -4552,6 +4657,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         String[] columns = {"uuid", "userid", " given_name", "family_name"};
         String providerSelection = "userid = ?";
         String[] providerArgs = {creator_id};
+        db.beginTransaction();
         Cursor providerCursor = db.query("tbl_provider", columns, providerSelection, providerArgs, null, null, null);
         if (providerCursor.moveToFirst()) {
             do {
@@ -4565,7 +4671,12 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 creator_reg_num = getCreatorRegNumber(providerUuid);
             } while (providerCursor.moveToNext());
         }
-        providerCursor.close();
+
+        if(providerCursor != null && !providerCursor.isClosed())
+            providerCursor.close();
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
         String creatorDetails = creator_name;
         if(!creator_reg_num.equalsIgnoreCase("NA"))
             creatorDetails = creator_name + " (" + creator_reg_num + ")";
@@ -4577,6 +4688,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         String[] columns = {"provideruuid", "value", " attributetypeuuid"};
         String providerSelection = "provideruuid = ? AND attributetypeuuid = ?";
         String[] providerArgs = {providerUuid, "992ccbdd-201a-44ef-8abb-c2eee079886d"};
+        db.beginTransaction();
         Cursor providerCursor = db.query("tbl_provider_attribute", columns, providerSelection, providerArgs, null, null, null);
         if (providerCursor.moveToFirst()) {
             do {
@@ -4585,7 +4697,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     registrationNum = value;
             } while (providerCursor.moveToNext());
         }
-        providerCursor.close();
+        if(providerCursor != null && !providerCursor.isClosed())
+            providerCursor.close();
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
         return registrationNum;
     }
 
@@ -5141,7 +5257,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 }
                 if (!rxReturned.isEmpty()) {
                     rxReturned = "";
-                    prescriptionTextView.setText("");
+                 //   prescriptionTextView.setText("");
                     prescriptionCard.setVisibility(View.GONE);
 
                 }
