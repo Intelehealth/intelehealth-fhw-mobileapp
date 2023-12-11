@@ -13,7 +13,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "org.intelehealth.app"
+        applicationId "org.intelehealth.nak"
         minSdkVersion 26
         targetSdkVersion 34
         versionCode 64
