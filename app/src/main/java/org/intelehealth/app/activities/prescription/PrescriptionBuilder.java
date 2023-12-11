@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.intelehealth.app.R;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.utilities.Base64Utils;
@@ -113,6 +114,13 @@ public class PrescriptionBuilder {
             patientProfilePhoto = "https://dev.intelehealth.org/intelehealth/assets/svgs/user.svg";
         }
 
+        String patientPhoneNumber = "";
+        if (patient.getPhone_number() != null && !patient.getPhone_number().equalsIgnoreCase("")) {
+            patientPhoneNumber = patient.getPhone_number();
+        } else {
+            patientPhoneNumber = activityContext.getString(R.string.not_provided);
+        }
+
         return "<div class=\"row patient-info-wrapper\">\n"
                 + "<div class=\"col-md-3 patient-info-section p-3\">\n"
                 + "<div class=\"patient-img-item mb-2\">\n"
@@ -152,7 +160,7 @@ public class PrescriptionBuilder {
                 + "<div class=\"col-md-3 patient-info-section p-3\">\n"
                 + "<div class=\"patient-info-item\">\n"
                 + "<h6>Contact no.</h6>\n"
-                + "<p>\n <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/phone-black.svg\" alt=\"\" />\n " + patient.getPhone_number() + "\n"
+                + "<p>\n <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/phone-black.svg\" alt=\"\" />\n " + patientPhoneNumber + "\n"
                 + "</p>\n"
                 + "</div>\n"
                 + "</div>\n"
