@@ -921,7 +921,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             //if (holder.nestedRecyclerView.getAdapter() != null && mItemList.get(index).isMultiChoice()) {
             //   nestedQuestionsListingAdapter = (NestedQuestionsListingAdapter) holder.nestedRecyclerView.getAdapter();
             //}else {
-            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode,mItemList.get(Math.max(holder.getAbsoluteAdapterPosition(), 0)).isRequired(), new OnItemSelection() {
+            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, mItemList.get(Math.max(holder.getAbsoluteAdapterPosition(), 0)).isRequired(), new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
@@ -1106,23 +1106,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         if (!isLoadingForNestedEditData) {
                             mItemList.get(index).setSelected(false);
                             mItemList.get(index).setDataCaptured(false);
+                            mItemList.get(index).setSkipped(false);
+                            AdapterUtils.setToDefault(holder.submitButton);
+                            AdapterUtils.setToDefault(holder.skipButton);
                         }
-                        for (int i = 0; i < options.size(); i++) {
-                            if (options.get(i).isSelected()) {
-                                mItemList.get(index).setSelected(true);
-                                //mItemList.get(index).setDataCaptured(true);
-                                break;
-                            }
-                        }
-                        //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
-                        String type = node.getInputType();
-
-                        if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
-                            type = "options";
-                        }
-                        Log.v(TAG, "optionsChipsGridAdapter - Type - " + type);
-                        Log.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
-                        Log.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
                         boolean isRequiredToShowParentActionButtons = false;
                         for (int i = 0; i < options.size(); i++) {
 
@@ -1137,18 +1124,41 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 }
                             }
                         }
+                        //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
+                        String type = node.getInputType();
 
-                        if (type.isEmpty() && node.isSelected()) {
-                            boolean foundUserInputs = false;
-                            for (int i = 0; i < options.size(); i++) {
-                                if (options.get(i).isSelected()) {
-                                    foundUserInputs = options.get(i).isUserInputsTypeNode();
-                                    Log.v(TAG, "opt - " + options.get(i).findDisplay());
-                                    Log.v(TAG, "foundUserInputs - " + foundUserInputs);
-                                    if (foundUserInputs)
-                                        break;
-                                }
+                        if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+                            type = "options";
+                        }
+                        Log.v(TAG, "optionsChipsGridAdapter - Type - " + type);
+                        Log.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
+                        Log.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
+                        boolean foundUserInputs = false;
+                        for (int i = 0; i < options.size(); i++) {
+                            if (options.get(i).isSelected()) {
+                                foundUserInputs = options.get(i).isUserInputsTypeNode();
+                                if (foundUserInputs)
+                                    break;
                             }
+                        }
+                        Log.v(TAG, "foundUserInputs - " + foundUserInputs);
+                        if (!node.isSelected()) {
+                            node.unselectAllNestedNode();
+                            if (type.equalsIgnoreCase("camera"))
+                                mItemList.get(index).removeImagesAllNestedNode();
+                            if (!foundUserInputs)
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isLoadingForNestedEditData) {
+
+                                            notifyItemChanged(index);
+                                        }
+                                    }
+                                }, 100);
+
+                        } else if (type.isEmpty() && node.isSelected()) {
+
                             if (!foundUserInputs) {
                                 holder.singleComponentContainer.removeAllViews();
                                 holder.nestedRecyclerView.setAdapter(null);
@@ -1195,9 +1205,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 }
                             }
                         } else if (!type.isEmpty() && node.isSelected()) {
-
-                            holder.singleComponentContainer.removeAllViews();
+                            if (!foundUserInputs) {
+                                holder.singleComponentContainer.removeAllViews();
+                            }
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                            if (!mItemList.get(index).isMultiChoice() && !mItemList.get(index).isEnableExclusiveOption()) {
+                                holder.nestedRecyclerView.setAdapter(null); /** Note: Sr.No.29 - Fix: This code should not trigger in-case of phys exam take picture so use is-exclusive logic. */
+                            }
 
                         } else {
                             holder.singleComponentContainer.removeAllViews();
@@ -1234,8 +1248,26 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                             if (mItemList.get(index).isMultiChoice()) {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                                if (!isAnyOtherOptionSelected)
+                                if (!isAnyOtherOptionSelected || isRequiredToShowParentActionButtons)
                                     holder.submitButton.setVisibility(View.VISIBLE);
+
+                                if (node.isExcludedFromMultiChoice()) {
+                                    /*for (int i = 0; i < options.size(); i++) {
+                                        if(!options.get(i).getText().equals(node.getText())){
+                                            options.get(i).unselectAllNestedNode();
+                                        }
+                                    }*/
+                                    mItemList.get(index).removeImagesAllNestedNode();
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (!isLoadingForNestedEditData) {
+
+                                                notifyItemChanged(index);
+                                            }
+                                        }
+                                    }, 100);
+                                }
                             } else {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                                 holder.submitButton.setVisibility(View.GONE);
@@ -1257,9 +1289,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                             if (mItemList.get(index).isRequired()) {
                                 holder.skipButton.setVisibility(View.GONE);
-                                addAsteriskToRequiredQuestion(holder.node.findDisplay(), holder);
                             } else {
-                                if (!isAnyOtherOptionSelected)
+                                if (!isAnyOtherOptionSelected || isRequiredToShowParentActionButtons)
                                     holder.skipButton.setVisibility(View.VISIBLE);
                             }
 
@@ -1348,6 +1379,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
     }
+
     private boolean isAnySubChildOpenedWithAction(Node node) {
         String type = node.getInputType() == null ? "" : node.getInputType();
 
@@ -1364,6 +1396,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             return true;
         }
     }
+
     private void showCameraView(Node node, GenericViewHolder holder, int index) {
         Node parentNode = mItemList.get(index);
         Log.v("showCameraView", "QLA " + new Gson().toJson(node));

@@ -84,6 +84,7 @@ public class Node implements Serializable {
     private boolean isExclusiveOption;
     private boolean havingNestedQuestion;
     private boolean isDataCaptured;
+    private boolean isSkipped;
     private boolean isImageUploaded;
     private boolean optional;
     private String id;
@@ -3367,6 +3368,31 @@ public class Node implements Serializable {
         }
         Log.v(TAG, "isUserInputsTypeNode - result : " + result);
         return result;
+    }
+
+    public boolean isSkipped() {
+        return isSkipped;
+    }
+
+    public void setSkipped(boolean skipped) {
+        isSkipped = skipped;
+    }
+
+    public void removeImagesAllNestedNode() {
+        Log.v(TAG, "removeImagesAllNestedNode - " + getText());
+        setImageUploaded(false);
+        setImagePath("");
+        setImagePathList(new ArrayList<String>());
+        if (optionsList != null) {
+            for (int i = 0; i < optionsList.size(); i++) {
+                optionsList.get(i).setImageUploaded(false);
+                optionsList.get(i).setImagePath("");
+                optionsList.get(i).setImagePathList(new ArrayList<String>());
+                if (optionsList.get(i).optionsList != null) {
+                    optionsList.get(i).removeImagesAllNestedNode();
+                }
+            }
+        }
     }
 }
 
