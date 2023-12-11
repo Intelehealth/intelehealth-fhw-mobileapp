@@ -113,7 +113,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etEmail, etMobileNo;
     TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob,
-    etUsername, etFirstName, etMiddleName, etLastName;
+            etUsername, etFirstName, etMiddleName, etLastName;
     LinearLayout layoutParent, ll_middlename;
     String selectedGender, profileImagePAth = "", errorMsg = "", mSelectedCountryCode = "", dobToDb;
     ImageView ivProfileImage, ivIsInternet, refresh;
@@ -1064,17 +1064,13 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
     private boolean checkAndRequestPermissions() {
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
-        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
+
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
@@ -1107,8 +1103,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                     if (profile.getResults().get(0).getPerson().getPreferredName().getMiddleName() != null) {
                         ll_middlename.setVisibility(View.VISIBLE);
                         etMiddleName.setText(profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
-                    }
-                    else {
+                    } else {
                         ll_middlename.setVisibility(View.GONE);
                     }
                     if (profile.getResults().get(0).getPerson().getPreferredName().getFamilyName() != null)
