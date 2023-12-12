@@ -164,7 +164,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
         try {
             pat_phoneno = StringUtils.mobileNumberEmpty(phoneNumber(patientUuid));
-            if(pat_phoneno.equalsIgnoreCase("N/A"))
+            if (pat_phoneno.equalsIgnoreCase("N/A"))
                 pat_phoneno = "";
         } catch (DAOException e) {
             e.printStackTrace();
@@ -630,7 +630,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
                                     }
                                     StringBuilder stringBuilder = new StringBuilder();
-                                    for (int i = 0; i < list.size(); i++) {
+                                    int size = list.size() == 1 ? list.size() : list.size() - 1;
+                                    for (int i = 0; i < size; i++) {
                                         String complainName = "";
                                         List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                                         String[] spt1 = list.get(i).split("●");
@@ -716,7 +717,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
      * @param phoneno
      */
     private void calling_feature(String phoneno) {
-        if (phoneno!= null && !phoneno.equalsIgnoreCase("")) {
+        if (phoneno != null && !phoneno.equalsIgnoreCase("")) {
             Intent i1 = new Intent(Intent.ACTION_DIAL);
             i1.setData(Uri.parse("tel:" + phoneno));
             startActivity(i1);

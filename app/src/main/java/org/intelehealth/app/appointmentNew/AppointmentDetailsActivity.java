@@ -301,7 +301,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 Log.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
                 chief_complaint_value = chief_complaint_value.substring(first, last + 4);
                 tvChiefComplaintTxt.setText(Html.fromHtml(chief_complaint_value));
-            }else{
+            } else {
                 chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
                 System.out.println(chief_complaint_value);
                 Log.v(TAG, chief_complaint_value);
@@ -321,7 +321,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
                 }
                 StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < list.size(); i++) {
+                int size = list.size() == 1 ? list.size() : list.size() - 1;
+                for (int i = 0; i < size; i++) {
                     String complainName = "";
                     List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                     String[] spt1 = list.get(i).split("●");
@@ -520,7 +521,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             stateAppointmentPrescription.setVisibility(View.GONE);
 
             mScheduleAppointmentTextView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btnCancelAppointment.setVisibility(View.VISIBLE);
             btnRescheduleAppointment.setVisibility(View.VISIBLE);
             mScheduleAppointmentTextView.setVisibility(View.GONE);
@@ -671,11 +672,11 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
                         timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + "," + getResources().getString(R.string.at) + " " + slotTime;
                     } else {
-                        timeText =  getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
+                        timeText = getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
 
                     }
                 } else {
-                    timeText =  getResources().getString(R.string.in) + " " + minutes + " " +  getResources().getString(R.string.minutes_txt);
+                    timeText = getResources().getString(R.string.in) + " " + minutes + " " + getResources().getString(R.string.minutes_txt);
                 }
             } else {
                 isVisitStartsIn = false;
