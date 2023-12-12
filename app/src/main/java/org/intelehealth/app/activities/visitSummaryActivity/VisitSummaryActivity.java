@@ -4289,7 +4289,26 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 TextView textView = createTextView();
-                textView.setText(Html.fromHtml(newRxReturned));
+                textView.setTag(R.id.tl_prescribed_medications, newRxReturned);
+                textView.setTag(newRxReturned);
+
+                String a[] = textView.getTag().toString().split("Added By");
+                textView.setText(Html.fromHtml(a[0].substring(0, a[0].lastIndexOf("<br>"))));
+                Log.d(TAG, "parseData: med_txt: " + textView.getText().toString());
+
+                TextView show_textView = createShowTextView();
+                show_textView.setTag(textView);
+                show_textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int c = showMoreAndHideContent((TextView) view.getTag());
+                        if (c == 1)
+                            show_textView.setText("show less");
+                        else
+                            show_textView.setText("show more");
+                    }
+                });
+
                 if (LocaleHelper.isArabic(this))
                     textView.setGravity(Gravity.END);
 
@@ -4301,6 +4320,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 view.setPadding(0, dpAsPixels, 0, dpAsPixels);*/
 
                 tl_prescribed_medications.addView(textView);
+                tl_prescribed_medications.addView(show_textView);
+
               //  tl_prescribed_medications.addView(view);
                 Log.d(TAG, "parseData: med: " + tl_prescribed_medications.getChildCount() + "\n" + textView.getText().toString());
 
@@ -4479,17 +4500,41 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    private int showMoreAndHideContent(TextView contentTextView) {
+        int tag = 0;
+        String value = contentTextView.getTag(R.id.tl_prescribed_medications).toString();
+        String a[] = contentTextView.getTag().toString().split("Added By");
+        Log.d(TAG, "showMoreAndHideContent: " + value + "\n" + a[0] + "\n" + "--------------");
+
+        if (contentTextView.getTag().toString().contains("Added By")) {
+            contentTextView.setText(Html.fromHtml((String) contentTextView.getTag()));
+            contentTextView.setTag(a[0].substring(0, a[0].lastIndexOf("<br>")));
+            tag = 1;
+           // contentTextView.setText("show less");
+        }
+        else {
+            contentTextView.setText(Html.fromHtml(a[0]));
+            contentTextView.setTag(value);
+          //  contentTextView.setText("show more");
+            tag = 0;
+        }
+
+        return tag;
+    }
+
     private TextView createShowTextView() {
         TextView textView = new MaterialTextView(VisitSummaryActivity.this);
         textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
         textView.setTextColor(getResources().getColor(R.color.intro_next));
-        textView.setPadding(0, 10, 0, 0);
+        textView.setPadding(0, 10, 0, 10);
+        textView.setText("show more");
         return textView;
     }
 
     private TextView createTextView() {
         TextView textView = new MaterialTextView(VisitSummaryActivity.this);
         textView.setTextSize(16.0f);
+        textView.setId(View.generateViewId());
         return textView;
     }
 
