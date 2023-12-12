@@ -3828,9 +3828,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newMedicalEquipLoanAidOrder != null && !newMedicalEquipLoanAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                        textView.setText(getString(R.string.show_details));
+                      //  textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
-                        aidOrderType1TableRow.addView(textView);
+                        if (aidOrderType1TableRow.getChildCount() == 1)
+                            aidOrderType1TableRow.addView(textView);
 
                         // ie. value is present for this Aid_1 field.
                        // if (newMedicalEquipLoanAidOrder.contains("Added By")) {
@@ -3924,9 +3925,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newFreeMedicalEquipAidOrder != null && !newFreeMedicalEquipAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                        textView.setText(getString(R.string.show_details));
+                      //  textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
-                        aidOrderType2TableRow.addView(textView);
+                        if (aidOrderType2TableRow.getChildCount() == 1)
+                            aidOrderType2TableRow.addView(textView);
 
                         // ie. value is present for this Aid_1 field.
                       //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
@@ -4019,9 +4021,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newCoverMedicalExpenseAidOrder != null && !newCoverMedicalExpenseAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                        textView.setText(getString(R.string.show_details));
+                      //  textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
-                        aidOrderType3TableRow.addView(textView);
+                        if (aidOrderType3TableRow.getChildCount() == 1)
+                            aidOrderType3TableRow.addView(textView);
 
                         // ie. value is present for this Aid_1 field.
                         //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
@@ -4110,9 +4113,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newCoverSurgicalExpenseAidOrder != null && !newCoverSurgicalExpenseAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                        textView.setText(getString(R.string.show_details));
+                      //  textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
-                        aidOrderType4TableRow.addView(textView);
+                        if (aidOrderType4TableRow.getChildCount() == 1)
+                            aidOrderType4TableRow.addView(textView);
 
                         // ie. value is present for this Aid_1 field.
                         //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
@@ -4201,9 +4205,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newCashAssistanceExpenseAidOrder != null && !newCashAssistanceExpenseAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                        textView.setText(getString(R.string.show_details));
+                      //  textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
-                        aidOrderType5TableRow.addView(textView);
+                        if (aidOrderType5TableRow.getChildCount() == 1)
+                            aidOrderType5TableRow.addView(textView);
 
                         // ie. value is present for this Aid_1 field.
                         //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
@@ -5320,6 +5325,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 }
                 if (!rxReturned.isEmpty()) {
                     rxReturned = "";
+                    tl_prescribed_medications.removeAllViews();
                  //   prescriptionTextView.setText("");
                     prescriptionCard.setVisibility(View.GONE);
 
