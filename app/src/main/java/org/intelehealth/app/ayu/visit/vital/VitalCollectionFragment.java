@@ -204,6 +204,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         mSubmitButton = view.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(this);
+        mSubmitButton.setClickable(true);
 
 
         //showHeightListing();
@@ -238,7 +239,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            if(val.equals(".")){
+            if (val.equals(".")) {
                 editText.setText("");
                 return;
             }
@@ -489,6 +490,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_submit) {//validate
+            mSubmitButton.setClickable(false);
             if (validateTable()) {
                 mActionListener.onProgress(100);
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, mIsEditMode, results);
@@ -1287,19 +1289,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-            /*Intent intent = new Intent(getActivity(), ComplaintNodeActivity.class);
-
-            intent.putExtra("patientUuid", patientUuid);
-            intent.putExtra("visitUuid", visitUuid);
-            intent.putExtra("encounterUuidVitals", encounterVitals);
-            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-            intent.putExtra("state", state);
-            intent.putExtra("name", patientName);
-            intent.putExtra("gender", patientGender);
-            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-            intent.putExtra("tag", intentTag);
-            startActivity(intent);*/
         }
         return true;
     }
