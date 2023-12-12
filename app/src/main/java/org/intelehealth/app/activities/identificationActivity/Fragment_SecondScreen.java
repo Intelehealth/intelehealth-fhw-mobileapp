@@ -301,6 +301,7 @@ public class Fragment_SecondScreen extends Fragment {
             mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
             mCountryNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
             mCountryNameSpinner.setSelection(countryAdapter.getPosition(sessionManager.getAppLanguage().equals("en") ? "India" : "भारत"));
+            mCountryNameSpinner.setEnabled(false);
         } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
         }
@@ -536,33 +537,17 @@ public class Fragment_SecondScreen extends Fragment {
                         mIsIndiaSelected = true;
                         mStateEditText.setVisibility(View.GONE);
                         mStateNameSpinner.setVisibility(View.VISIBLE);
-                        Log.v(TAG, "setStateAdapter calling....599");
                         setStateAdapter(mCountryName);
 
                         mDistrictET.setVisibility(View.GONE);
                         mDistrictNameSpinner.setVisibility(View.VISIBLE);
-
-                        if (fromThirdScreen || fromFirstScreen) {
-                            int itemPosition = 0;
-                            for (int k = 0; k < mLastSelectedStateList.size(); k++) {
-
-                                if (mLastSelectedStateList.get(k).getState().equalsIgnoreCase(String.valueOf(patientDTO.getStateprovince()))) {
-                                    itemPosition = k + 1;
-                                    break;
-                                }
-                            }
-                            mStateNameSpinner.setSelection(itemPosition);
-                        } else
-                            mStateNameSpinner.setSelection(stateAdapter.getPosition(getResources().getString(R.string.select_spinner)));
-
-
                     } else {
                         mIsIndiaSelected = false;
                         mStateEditText.setVisibility(View.VISIBLE);
                         mStateNameSpinner.setVisibility(View.GONE);
-                        if (fromThirdScreen || fromFirstScreen)
+                        if (fromThirdScreen || fromFirstScreen) {
                             mStateEditText.setText(patientDTO.getStateprovince() != null ? String.valueOf(patientDTO.getStateprovince()) : "");
-
+                        }
                         mDistrictET.setVisibility(View.VISIBLE);
                         mDistrictNameSpinner.setVisibility(View.GONE);
                     }
@@ -589,7 +574,6 @@ public class Fragment_SecondScreen extends Fragment {
     private List<DistData> mLastSelectedDistList = new ArrayList<>();
 
     private void setStateAdapter(String countryName) {
-        Log.v(TAG, "setStateAdapter");
         mLastSelectedStateList = mStateDistMaster.getStateDataList();
         String[] stateList = new String[mStateDistMaster.getStateDataList().size() + 1];
         stateList[0] = getResources().getString(R.string.select_spinner);
@@ -597,13 +581,13 @@ public class Fragment_SecondScreen extends Fragment {
             stateList[i] = sessionManager.getAppLanguage().equals("en") ? mStateDistMaster.getStateDataList().get(i - 1).getState() : mStateDistMaster.getStateDataList().get(i - 1).getStateHindi();
         }
 
-        stateAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.simple_spinner_item_1, stateList);
+        stateAdapter = new ArrayAdapter<>(getActivity(), R.layout.simple_spinner_item_1, stateList);
         stateAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mStateNameSpinner.setAdapter(stateAdapter);
         mStateNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
-        mStateNameSpinner.setSelection(1);
+        mStateNameSpinner.setSelection(stateAdapter.getPosition(sessionManager.getAppLanguage().equals("en") ? "Maharashtra" : "महाराष्ट्र"));
+        mStateNameSpinner.setEnabled(false);
     }
 
     private void setDistAdapter(String stateName) {
