@@ -4294,7 +4294,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                 String a[] = textView.getTag().toString().split("Added By");
                 textView.setText(Html.fromHtml(a[0].substring(0, a[0].lastIndexOf("<br>"))));
-                Log.d(TAG, "parseData: med_txt: " + textView.getText().toString());
+                Log.d(TAG, "parseData: med_txt: \n" + newRxReturned + "\n -------- \n" + textView.getText().toString());
 
                 TextView show_textView = createShowTextView();
                 show_textView.setTag(textView);
@@ -4508,12 +4508,13 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
         if (contentTextView.getTag().toString().contains("Added By")) {
             contentTextView.setText(Html.fromHtml((String) contentTextView.getTag()));
-            contentTextView.setTag(a[0].substring(0, a[0].lastIndexOf("<br>")));
+          //  contentTextView.setTag(a[0].substring(0, a[0].lastIndexOf("<br>")));
+            contentTextView.setTag(a[0]);
             tag = 1;
            // contentTextView.setText("show less");
         }
         else {
-            contentTextView.setText(Html.fromHtml(a[0]));
+            contentTextView.setText(Html.fromHtml(a[0].substring(0, a[0].lastIndexOf("<br>"))));
             contentTextView.setTag(value);
           //  contentTextView.setText("show more");
             tag = 0;
