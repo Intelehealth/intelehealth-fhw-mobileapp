@@ -43,7 +43,8 @@
                 android:text="@string/other_details"
                 android:textAppearance="@style/patdetail_header1" />
 
-            <ImageView android:id="@+id/iv_others_drop"
+            <ImageView
+                android:id="@+id/iv_others_drop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -79,28 +80,29 @@
                 android:textSize="@null" />
 
             <LinearLayout
+                android:id="@+id/others_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_change_patdetail"
                 android:layout_alignParentEnd="true"
+                android:background="@drawable/edit_change_patdetail"
                 android:paddingHorizontal="4dp"
-                android:id="@+id/others_edit">
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_margin="5dp"
-                    android:src="@drawable/edit"/>
+                    android:src="@drawable/edit" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/change"
-                    android:textSize="12sp"
-                    android:textAlignment="center"
                     android:layout_gravity="center"
                     android:fontFamily="@font/lato_bold"
-                    android:textColor="#2E1E91"/>
+                    android:text="@string/change"
+                    android:textAlignment="center"
+                    android:textColor="#2E1E91"
+                    android:textSize="12sp" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -149,8 +151,8 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
-                    android:layout_weight="2">
+                    android:layout_weight="2"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -159,8 +161,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/son_daughter_wife_of"
                         android:drawablePadding="5dp"
+                        android:text="@string/son_daughter_wife_of"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="14sp" />
@@ -219,9 +221,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
-                        android:drawablePadding="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="@dimen/margin_5"
                         android:text="@string/social_category"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
