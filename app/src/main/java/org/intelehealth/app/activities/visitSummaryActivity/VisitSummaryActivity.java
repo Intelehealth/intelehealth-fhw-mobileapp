@@ -323,6 +323,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
     TextView dischargeOrderTextView;
     TextView aidOrderType1TextView, aidOrderType2TextView, aidOrderType3TextView, aidOrderType4TextView, aidOrderType5TextView;
     String aid1, aid2, aid3, aid4, aid5;
+    View aidhl_1, aidhl_2, aidhl_3, aidhl_4;
     private List<MedicationAidModel> update_aidUuidList = new ArrayList<>();
     private List<MedicationAidModel> update_medUuidDispenseList = new ArrayList<>();
     private List<MedicationAidModel> update_medUuidAdministeredList = new ArrayList<>();
@@ -848,6 +849,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         aidOrderType3TableRow = findViewById(R.id.tableRow_content_aid_order_type3);
         aidOrderType4TableRow = findViewById(R.id.tableRow_content_aid_order_type4);
         aidOrderType5TableRow = findViewById(R.id.tableRow_content_aid_order_type5);
+        aidhl_1 = findViewById(R.id.aidhl_1);
+        aidhl_2 = findViewById(R.id.aidhl_2);
+        aidhl_3 = findViewById(R.id.aidhl_3);
+        aidhl_4 = findViewById(R.id.aidhl_4);
         tl_prescribed_medications = findViewById(R.id.tl_prescribed_medications);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
@@ -3796,6 +3801,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             }
             case UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN: {
 
+               /* if (aidhl_1.getVisibility() != View.VISIBLE)
+                    aidhl_1.setVisibility(View.VISIBLE);*/
+
                 TextView textView = createShowTextView();
                 fetchDispensed_MedicationAndAid();
                 String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
@@ -3820,7 +3828,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newMedicalEquipLoanAidOrder != null && !newMedicalEquipLoanAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                        textView.setText("show more");
+                        textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
                         aidOrderType1TableRow.addView(textView);
 
@@ -3871,11 +3879,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 textView.setOnClickListener(v -> {
                     if (textView.getTag() != null) {
                         if (textView.getTag().equals(0)) {
-                            textView.setText("show less");
+                            textView.setText(getString(R.string.hide_details));
                             textView.setTag(1);
                             aidOrderType1TextView.setText(Html.fromHtml(newMedicalEquipLoanAidOrder));
                         } else {
-                            textView.setText("show more");
+                            textView.setText(getString(R.string.show_details));
                             textView.setTag(0);
                             aidOrderType1TextView.setText(Html.fromHtml(aid1));
                         }
@@ -3888,6 +3896,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 break;
             }
             case UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP: {
+
+                if (aidhl_1.getVisibility() != View.VISIBLE)
+                    aidhl_1.setVisibility(View.VISIBLE);
 
                 TextView textView = createShowTextView();
                 fetchDispensed_MedicationAndAid();
@@ -3913,7 +3924,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newFreeMedicalEquipAidOrder != null && !newFreeMedicalEquipAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                        textView.setText("show more");
+                        textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
                         aidOrderType2TableRow.addView(textView);
 
@@ -3963,11 +3974,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 textView.setOnClickListener(v -> {
                     if (textView.getTag() != null) {
                         if (textView.getTag().equals(0)) {
-                            textView.setText("show less");
+                            textView.setText(getString(R.string.hide_details));
                             textView.setTag(1);
                             aidOrderType2TextView.setText(Html.fromHtml(newFreeMedicalEquipAidOrder));
                         } else {
-                            textView.setText("show more");
+                            textView.setText(getString(R.string.show_details));
                             textView.setTag(0);
                             aidOrderType2TextView.setText(Html.fromHtml(aid2));
                         }
@@ -3980,6 +3991,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 break;
             }
             case UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE: {
+
+                if (aidhl_2.getVisibility() != View.VISIBLE)
+                    aidhl_2.setVisibility(View.VISIBLE);
 
                 TextView textView = createShowTextView();
                 fetchDispensed_MedicationAndAid();
@@ -4005,7 +4019,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newCoverMedicalExpenseAidOrder != null && !newCoverMedicalExpenseAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                        textView.setText("show more");
+                        textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
                         aidOrderType3TableRow.addView(textView);
 
@@ -4051,11 +4065,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 textView.setOnClickListener(v -> {
                     if (textView.getTag() != null) {
                         if (textView.getTag().equals(0)) {
-                            textView.setText("show less");
+                            textView.setText(getString(R.string.hide_details));
                             textView.setTag(1);
                             aidOrderType3TextView.setText(Html.fromHtml(newCoverMedicalExpenseAidOrder));
                         } else {
-                            textView.setText("show more");
+                            textView.setText(getString(R.string.show_details));
                             textView.setTag(0);
                             aidOrderType3TextView.setText(Html.fromHtml(aid3));
                         }
@@ -4068,6 +4082,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 break;
             }
             case UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE: {
+
+                if (aidhl_3.getVisibility() != View.VISIBLE)
+                    aidhl_3.setVisibility(View.VISIBLE);
 
                 TextView textView = createShowTextView();
                 fetchDispensed_MedicationAndAid();
@@ -4093,7 +4110,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newCoverSurgicalExpenseAidOrder != null && !newCoverSurgicalExpenseAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                        textView.setText("show more");
+                        textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
                         aidOrderType4TableRow.addView(textView);
 
@@ -4139,11 +4156,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 textView.setOnClickListener(v -> {
                     if (textView.getTag() != null) {
                         if (textView.getTag().equals(0)) {
-                            textView.setText("show less");
+                            textView.setText(getString(R.string.hide_details));
                             textView.setTag(1);
                             aidOrderType4TextView.setText(Html.fromHtml(newCoverSurgicalExpenseAidOrder));
                         } else {
-                            textView.setText("show more");
+                            textView.setText(getString(R.string.show_details));
                             textView.setTag(0);
                             aidOrderType4TextView.setText(Html.fromHtml(aid4));
                         }
@@ -4156,6 +4173,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 break;
             }
             case UuidDictionary.AID_ORDER_CASH_ASSISTANCE: {
+
+                if (aidhl_4.getVisibility() != View.VISIBLE)
+                    aidhl_4.setVisibility(View.VISIBLE);
 
                 TextView textView = createShowTextView();
                 fetchDispensed_MedicationAndAid();
@@ -4181,7 +4201,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newCashAssistanceExpenseAidOrder != null && !newCashAssistanceExpenseAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                        textView.setText("show more");
+                        textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
                         aidOrderType5TableRow.addView(textView);
 
@@ -4226,11 +4246,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 textView.setOnClickListener(v -> {
                     if (textView.getTag() != null) {
                         if (textView.getTag().equals(0)) {
-                            textView.setText("show less");
+                            textView.setText(getString(R.string.hide_details));
                             textView.setTag(1);
                             aidOrderType5TextView.setText(Html.fromHtml(newCashAssistanceExpenseAidOrder));
                         } else {
-                            textView.setText("show more");
+                            textView.setText(getString(R.string.show_details));
                             textView.setTag(0);
                             aidOrderType5TextView.setText(Html.fromHtml(aid5));
                         }
@@ -4292,7 +4312,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 textView.setTag(R.id.tl_prescribed_medications, newRxReturned);
                 textView.setTag(newRxReturned);
 
-                String a[] = textView.getTag().toString().split("Added By");
+                String a[] = textView.getTag().toString().split(getResources().getString(R.string.added_by));
                 textView.setText(Html.fromHtml(a[0].substring(0, a[0].lastIndexOf("<br>"))));
                 Log.d(TAG, "parseData: med_txt: \n" + newRxReturned + "\n -------- \n" + textView.getText().toString());
 
@@ -4303,9 +4323,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     public void onClick(View view) {
                         int c = showMoreAndHideContent((TextView) view.getTag());
                         if (c == 1)
-                            show_textView.setText("show less");
+                            show_textView.setText(getString(R.string.hide_details));
                         else
-                            show_textView.setText("show more");
+                            show_textView.setText(getString(R.string.show_details));
                     }
                 });
 
@@ -4503,20 +4523,17 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
     private int showMoreAndHideContent(TextView contentTextView) {
         int tag = 0;
         String value = contentTextView.getTag(R.id.tl_prescribed_medications).toString();
-        String a[] = contentTextView.getTag().toString().split("Added By");
+        String a[] = contentTextView.getTag().toString().split(getResources().getString(R.string.added_by));
         Log.d(TAG, "showMoreAndHideContent: " + value + "\n" + a[0] + "\n" + "--------------");
 
-        if (contentTextView.getTag().toString().contains("Added By")) {
+        if (contentTextView.getTag().toString().contains(getResources().getString(R.string.added_by))) {
             contentTextView.setText(Html.fromHtml((String) contentTextView.getTag()));
-          //  contentTextView.setTag(a[0].substring(0, a[0].lastIndexOf("<br>")));
             contentTextView.setTag(a[0]);
             tag = 1;
-           // contentTextView.setText("show less");
         }
         else {
             contentTextView.setText(Html.fromHtml(a[0].substring(0, a[0].lastIndexOf("<br>"))));
             contentTextView.setTag(value);
-          //  contentTextView.setText("show more");
             tag = 0;
         }
 
@@ -4528,7 +4545,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
         textView.setTextColor(getResources().getColor(R.color.intro_next));
         textView.setPadding(0, 10, 0, 10);
-        textView.setText("show more");
+        textView.setText(getString(R.string.show_details));
         return textView;
     }
 
@@ -4610,9 +4627,9 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     // String creator_name = getCreatorName(creator);
                     String valueTimeStamp = getValueTimeStamp(update_medUuidAdministeredList.get(i).getCreatedDate());
                     if (!obsformat.isEmpty())
-                        obsformat = obsformat + "<br>" + "Administered By:" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                        obsformat = obsformat + "<br>" + getResources().getString(R.string.administered_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
                     else
-                        obsformat = "Administered By:" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                        obsformat = getResources().getString(R.string.administered_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
                 }
             }
         }
@@ -4628,7 +4645,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(uuid)) {
                    // String creator_name = getCreatorName(creator);
                     String valueTimeStamp = getValueTimeStamp(update_aidUuidList.get(i).getCreatedDate());
-                    obsAddedByString = "Dispensed By:" + " " + aidModel.getHwName() + "<br>" + valueTimeStamp;
+                    obsAddedByString = getResources().getString(R.string.dispensed_by) + " " + aidModel.getHwName() + "<br>" + valueTimeStamp;
                 }
             }
         }
@@ -4639,7 +4656,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(uuid)) {
                    // String creator_name = getCreatorName(creator);
                     String valueTimeStamp = getValueTimeStamp(update_medUuidDispenseList.get(i).getCreatedDate());
-                    obsAddedByString = "Dispensed By:" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                    obsAddedByString = getResources().getString(R.string.dispensed_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
                 }
             }
         }

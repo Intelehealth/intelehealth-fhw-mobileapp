@@ -1238,11 +1238,15 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/aidhl_1"
                         android:layout_width="fill_parent"
                         android:background="@color/divider"
                         android:layout_gravity="bottom"
                         android:layout_marginVertical="15dp"
-                        android:layout_height="1dp"/>
+                        android:layout_height="1dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1266,11 +1270,15 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/aidhl_2"
                         android:layout_width="fill_parent"
                         android:background="@color/divider"
                         android:layout_gravity="bottom"
                         android:layout_marginVertical="15dp"
-                        android:layout_height="1dp"/>
+                        android:layout_height="1dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1294,11 +1302,15 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/aidhl_3"
                         android:layout_width="fill_parent"
                         android:background="@color/divider"
                         android:layout_gravity="bottom"
                         android:layout_marginVertical="15dp"
-                        android:layout_height="1dp"/>
+                        android:layout_height="1dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1322,11 +1334,14 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/aidhl_4"
                         android:layout_width="fill_parent"
                         android:background="@color/divider"
                         android:layout_gravity="bottom"
                         android:layout_marginVertical="15dp"
-                        android:layout_height="1dp"/>
+                        android:layout_height="1dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
