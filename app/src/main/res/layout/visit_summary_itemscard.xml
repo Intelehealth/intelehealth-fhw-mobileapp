@@ -98,7 +98,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:background="@drawable/edit_change_patdetail"
-                            android:paddingHorizontal="4dp">
+                            android:paddingHorizontal="4dp"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:layout_width="14dp"
@@ -502,7 +503,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:background="@drawable/edit_change_patdetail"
-                            android:paddingHorizontal="4dp">
+                            android:paddingHorizontal="4dp"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:layout_width="14dp"
@@ -853,7 +855,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:background="@drawable/edit_change_patdetail"
-                            android:paddingHorizontal="4dp">
+                            android:paddingHorizontal="4dp"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:layout_width="14dp"
@@ -1021,7 +1024,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:background="@drawable/edit_change_patdetail"
-                            android:paddingHorizontal="4dp">
+                            android:paddingHorizontal="4dp"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:layout_width="14dp"
@@ -1091,7 +1095,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:background="@drawable/edit_change_patdetail"
-                            android:paddingHorizontal="4dp">
+                            android:paddingHorizontal="4dp"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:layout_width="14dp"
