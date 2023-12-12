@@ -138,7 +138,7 @@ public class VisitReasonCaptureFragment extends Fragment {
 
         // TODO: we are adding this below string array for keeping these two protocol enable for search also
         mFinalEnabledMMList.clear();
-        String[] mindmapsNames = new String[]{"Abdominal Pain", "Diarrhea", "Fever"};//, "Hypertension"};//, "Menstrual disorder"};//getVisitReasonFilesNamesOnly();
+        String[] mindmapsNames = new String[]{"Abdominal Pain", "Diarrhea", "Fever", "Hypertension", "Back & Neck pain"};//, "Menstrual disorder"};//getVisitReasonFilesNamesOnly();
 
         for (String mindmapsName : mindmapsNames) {
             String fileLocation = "engines/" + mindmapsName + ".json";
@@ -197,7 +197,7 @@ public class VisitReasonCaptureFragment extends Fragment {
                             if (reasonData.getReasonName().equalsIgnoreCase(name)) {
                                 mVisitReasonItemList.get(i).getReasons().get(j).setSelected(true);
                                 //break; //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
-                            }else{ //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
+                            } else { //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
                                 mVisitReasonItemList.get(i).getReasons().get(j).setSelected(false);
                             }
                         }
@@ -239,7 +239,7 @@ public class VisitReasonCaptureFragment extends Fragment {
                             if (reasonData.getReasonName().equalsIgnoreCase(data.getReasonName())) {
                                 mVisitReasonItemList.get(i).getReasons().get(j).setSelected(true);
                                 //break; //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
-                            }else{ //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
+                            } else { //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
                                 mVisitReasonItemList.get(i).getReasons().get(j).setSelected(false);
                             }
                         }
