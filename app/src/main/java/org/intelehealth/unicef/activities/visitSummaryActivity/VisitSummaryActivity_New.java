@@ -1949,23 +1949,22 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
 
     // permission code - start
     private void checkPerm() {
-        // No need to ask for write permissions after Android 11
-//        if (checkAndRequestPermissions()) {
-        try {
-            if (hasPrescription.equalsIgnoreCase("true")) {
-                doWebViewPrint_downloadBtn();
-            } else {
-                DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_prescription_available), getResources().getString(R.string.no_prescription_title), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
-                    @Override
-                    public void onDialogActionDone(int action) {
-                    }
-                });
+        if (checkAndRequestPermissions()) {
+            try {
+                if (hasPrescription.equalsIgnoreCase("true")) {
+                    doWebViewPrint_downloadBtn();
+                } else {
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_prescription_available), getResources().getString(R.string.no_prescription_title), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
+                        @Override
+                        public void onDialogActionDone(int action) {
+                        }
+                    });
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
-//        }
     }
 
     @Override
@@ -1980,7 +1979,7 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
                 }
             }
             if (allGranted) {
-                checkPerm();
+
             } else {
                 showPermissionDeniedAlert(permissions, 2);
             }
@@ -2044,18 +2043,27 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
     }
 
     private boolean checkAndRequestPermissions() {
-        int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         List<String> listPermissionsNeeded = new ArrayList<>();
 
-        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) {
+            int readMediaImagesPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+            if (readMediaImagesPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+            }
+        } else {
+            int readExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (readExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+
+            int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
         }
 
         if (!listPermissionsNeeded.isEmpty()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
-            }
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
         return true;
@@ -2080,19 +2088,27 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
         }
 
         if (id == 1) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) {
+                int readMediaImagesPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+                if (readMediaImagesPermission != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+                }
+            } else {
+                int readExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+                if (readExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                }
 
-            // if apps are targeting Android level 13+, we don't need to ask for these permissions - Commented by Arpan Sircar
-//            int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-//                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-//                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//            }
-//
-//            if (!listPermissionsNeeded.isEmpty()) {
-//                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
-//                return false;
-//            }
+                int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                }
+            }
 
+            if (!listPermissionsNeeded.isEmpty()) {
+                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
+                return false;
+            }
         }
 
         return true;
@@ -3726,23 +3742,7 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
      */
     // TODO: crash as there is no permission given in setup app section for firsttime user.
     void compressImageAndSave(final String filePath) {
-        getBackgroundHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                boolean flag = BitmapUtils.fileCompressed(filePath);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (flag) {
-                            saveImage(filePath);
-                        } else
-                            Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            }
-        });
-
+        getBackgroundHandler().post(() -> runOnUiThread(() -> saveImage(filePath)));
     }
 
     // update image database
