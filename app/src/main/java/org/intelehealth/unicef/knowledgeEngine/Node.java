@@ -1177,11 +1177,7 @@ public class Node implements Serializable {
                         messages.add(node_opt.pop_up_or);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                         messages.add(node_opt.pop_up_or);
-                    }
-//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//                        messages.add(node_opt.pop_up_or);
-//                    }
-                    else {
+                    } else {
                         messages.add(node_opt.pop_up);
                     }
 

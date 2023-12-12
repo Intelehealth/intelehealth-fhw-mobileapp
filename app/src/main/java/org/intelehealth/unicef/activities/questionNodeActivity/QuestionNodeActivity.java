@@ -283,8 +283,8 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
-            if (question.isHasPopUp()) {
-                currentNode.getOption(groupPosition).generatePopUp(this);
+            if (question.isSelected() && question.isHasPopUp()) {
+                generatePopup(question.getPop_up());
             }
 
             if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
@@ -937,5 +937,15 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
         onListClicked(null, groupPos, childPos);
     }
 
-
+    private void generatePopup(String popupMessage) {
+        if (!popupMessage.isEmpty()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(popupMessage);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, (dialog, which) -> dialog.dismiss());
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            setAlertDialogBackground(context, alertDialog);
+            alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        }
+    }
 }
