@@ -333,4 +333,15 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         else
             return getWritableDatabase();
     }
+
+    private static InteleHealthDatabaseHelper sInstance;
+
+    public static synchronized InteleHealthDatabaseHelper getInstance(Context context) {
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        if (sInstance == null) {
+            sInstance = new InteleHealthDatabaseHelper(context.getApplicationContext());
+        }
+        return sInstance;
+    }
 }

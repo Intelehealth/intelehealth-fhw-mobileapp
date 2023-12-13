@@ -108,6 +108,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -207,7 +208,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     Intent intent = new Intent(ACTION_NAME);
                     intent.putExtra("visit_uuid", visitUUID);
                     intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.unicef", "org.intelehealth.unicef.utilities.RTCMessageReceiver"));
+                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
                     getApplicationContext().sendBroadcast(intent);
 
                     Intent chatIntent = new Intent(this, ChatActivity.class);
@@ -284,8 +285,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
         context = HomeScreenActivity_New.this;
+
         networkUtils = new NetworkUtils(context, this);
         DeviceInfoUtils.saveDeviceInfo(this);
         catchFCMMessageData();
@@ -297,16 +300,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
         }
         sessionManager = new SessionManager(this);
-        String appLanguage = sessionManager.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            Locale locale = new Locale(appLanguage);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-
-        Log.d("onCreate: ", "I m called! " + sessionManager.getAppLanguage());
         initUI();
         clickListeners();
     }
@@ -316,7 +309,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         if (intent_exit != null) {
             String intentTag = intent_exit.getStringExtra("intentTag");
             if (intentTag != null) {
-                if (intentTag.equalsIgnoreCase("Feedback screen with feedback")) showSnackBarAndRemoveLater();
+                if (intentTag.equalsIgnoreCase("Feedback screen with feedback")) showSnackBarAndRemoveLater(getResources().getString(R.string.thank_you_for_feedback));
+                else if (intentTag.equalsIgnoreCase("profile updated")) showSnackBarAndRemoveLater(getResources().getString(R.string.profile_details_updated_new));
                 else survey_snackbar_cv.setVisibility(View.GONE);
             }
         }
@@ -341,13 +335,15 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         tvEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-
-               /* tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_profile));
-                Fragment fragment = new MyProfileFragment_New();
-                loadFragment(fragment);*/
-                Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
-                startActivity(intent);
+                if (isNetworkConnected()) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                    Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                    showSnackBarAndRemoveLater(getString(R.string.this_feature_is_not_available_in_offline_mode));
+                }
             }
         });
 
@@ -565,10 +561,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
-
                 if (isNetworkConnected()) {
-//                    Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
                     imageViewIsInternet.clearAnimation();
                     syncAnimator.start();
                     syncUtils.syncForeground("home");
@@ -579,13 +572,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
             }
         });
-        //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
-            /*mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
-            mSyncProgressDialog.setTitle(R.string.syncInProgress);
-            mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setProgress(i);
-            mSyncProgressDialog.show();*/
             showRefreshInProgressDialog();
             syncUtils.initialSync("home");
         } else {
@@ -594,32 +581,24 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             saveToken();
             requestPermission();
         }
-        /*sessionManager.setMigration(true);
-
-        if (sessionManager.isReturningUser()) {
-            syncUtils.syncForeground("");
-        }*/
-
         //bottom nav
         bottomNav = findViewById(R.id.bottom_nav_home);
         bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-
-
-       /* String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-        tvAppLastSync.setText(sync_text);
-        Log.d(TAG, "onReceive: sync_text initui : " + sessionManager.getLastSyncDateTime());
-*/
-
         tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
 
+        setLocale(HomeScreenActivity_New.this);
 
     }
 
-    private void showSnackBarAndRemoveLater() {
+    private void showSnackBarAndRemoveLater(String text) {
         survey_snackbar_cv.setVisibility(View.VISIBLE);
+        TextView textView = findViewById(R.id.snackbar_text);
+        ImageView snackbar_icon = findViewById(R.id.snackbar_icon);
 
+        textView.setText(text);
+        snackbar_icon.setImageDrawable(getDrawable(R.drawable.ui2_ic_exit_app));
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
@@ -789,12 +768,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         dialogRefreshInProgress.show();
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dialogRefreshInProgress.dismiss();
-            }
-        }, 3000);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                dialogRefreshInProgress.dismiss();
+//            }
+//        }, 3000);
     }
 
     public void showRefreshFailedDialog() {
@@ -940,12 +919,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        setLocale("onRestart");
-    }
-
-    @Override
     protected void onResume() {
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
@@ -954,6 +927,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         loadLastSelectedFragment();
         //toolbarHome.setVisibility(View.VISIBLE);
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            lastSync = StringUtils.en__hi_dob(lastSync);
         tvAppLastSync.setText(lastSync);
 
         //ui2.0 update user details in  nav header
@@ -969,21 +944,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        setLocale("onResume");
         super.onResume();
     }
 
     @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        setLocale("onConfigurationChanged");
-    }
-
-
-    @Override
     protected void onStart() {
         super.onStart();
-        setLocale("onStart");
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
         requestPermission();
@@ -1077,6 +1043,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
             String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
             String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                lastSync = StringUtils.en__hi_dob(lastSync);
             tvAppLastSync.setText(lastSync);
 
             //ui2.0 update user details in  nav header
@@ -1180,31 +1148,20 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     }
 
-    private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
 
     private void requestPermission() {
         Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
         if (!CallListenerBackgroundService.isInstanceCreated()) {
-            //CallListenerBackgroundService.getInstance().stopForegroundService();
-            context.startService(serviceIntent);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
-                    dialogRefreshInProgress.dismiss();
-                }
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
-                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent);
             } else {
-                //Permission Granted-System will work
+                context.startService(serviceIntent);
             }
         }
-
     }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
@@ -1307,31 +1264,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     public void logout() {
         // to insert time spent by user into the db
         insertTimeSpentByUserIntoDb();
-
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
-//        parseLogOut();
-
-       /* AccountManager manager = AccountManager.get(HomeActivity.this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }*/
-     /*   Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
-        if (accountList.length > 0) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                manager.removeAccount(accountList[0], HomeActivity.this, null, null);
-            } else {
-                manager.removeAccount(accountList[0], null, null); // Legacy implementation
-            }
-        }
-*/
         Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -1426,7 +1360,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private void loadLastSelectedFragment() {
         Fragment fragment = null;
         String tag = getTopFragmentTag();
-        //if (currentFragment != null && !currentFragment.isEmpty()) {
         if (tag.equalsIgnoreCase(TAG_HOME)) {
             fragment = new HomeFragment_New();
             ivHamburger.setVisibility(View.VISIBLE);
@@ -1447,7 +1380,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             tvTitleHomeScreenCommon.setText(getString(R.string.my_achievements));
             tag = TAG_ACHIEVEMENT;
         }
-        // }
         loadFragment(fragment, tag);
 
     }
@@ -1455,23 +1387,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
-            /*if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
-                mSyncProgressDialog.dismiss();
-            }
-            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
-            mSyncProgressDialog.setTitle(R.string.syncInProgress);
-            mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setProgress(i);
-            mSyncProgressDialog.show();*/
-
-            if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing())
-                dialogRefreshInProgress.dismiss();
-
-            showRefreshInProgressDialog();
-
-            syncUtils.initialSync("home");
-        }
+//        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
+//            if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing())
+//                dialogRefreshInProgress.dismiss();
+//            showRefreshInProgressDialog();
+//            syncUtils.initialSync("home");
+//        }
     }
 
     private void insertTimeSpentByUserIntoDb() {
@@ -1500,20 +1421,4 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             }
         }
     }
-
-    public void setLocale(String tag) {
-        sessionManager = new SessionManager(this);
-        Log.d(tag, ": I m called! " + sessionManager.getAppLanguage());
-        String appLanguage = sessionManager.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            Locale locale = new Locale(appLanguage);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-    }
-
-
-
 }

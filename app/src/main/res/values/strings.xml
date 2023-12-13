@@ -1848,5 +1848,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="already_selected_lbl">Already selected!</string>
     <string name="please_submit_to_proceed_next_step">Please submit to proceed next step</string>
     <string name="priority_uppercase">PRIORITY</string>
+    <string name="this_feature_is_not_available_in_offline_mode">This feature is not available in offline mode.</string>
 
 </resources>

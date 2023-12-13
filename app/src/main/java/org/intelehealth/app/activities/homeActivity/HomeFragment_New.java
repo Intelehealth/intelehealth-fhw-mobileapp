@@ -38,6 +38,7 @@ import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivi
 import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.activities.visit.VisitActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
@@ -69,7 +70,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
     }
 
     public Context setLocale(Context context) {
@@ -97,6 +98,20 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         view = inflater.inflate(R.layout.fragment_home_ui2, container, false);
         networkUtils = new NetworkUtils(getActivity(), this);
         setLocale(getContext());
+
+        ((HomeScreenActivity_New) getActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
+            @Override
+            public void onStart(int eventFlag) {
+                Log.v(TAG, "onStart");
+            }
+
+            @Override
+            public void onFinished(int eventFlag) {
+                Log.v(TAG, "onFinished");
+                initUI();
+            }
+        });
+
         return view;
     }
 
@@ -144,11 +159,11 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                     e.printStackTrace();
                 }
                 //TODO: need more improvement in main query, this condition can be done by join query
-                if(isForReceivedPrescription) {
+                if (isForReceivedPrescription) {
                     if (!isCompletedExitedSurvey && isPrescriptionReceived) {
                         count += 1;
                     }
-                }else{
+                } else {
                     if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
                         count += 1;
                     }
@@ -166,7 +181,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
     private int getThisMonthsNotEndedVisits() {
         List<PrescriptionModel> arrayList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         int count = 0;
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, v.startdate " +
@@ -188,18 +203,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((HomeScreenActivity_New) getActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
-            @Override
-            public void onStart(int eventFlag) {
-                Log.v(TAG, "onStart");
-            }
 
-            @Override
-            public void onFinished(int eventFlag) {
-                Log.v(TAG, "onFinished");
-                initUI();
-            }
-        });
     }
 
     private void initUI() {
@@ -235,7 +239,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(StringUtils.translateLocation(sessionManager.getLocationName(), sessionManager.getAppLanguage()));
-        tvLocation.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ui2_ic_location_home, 0);
+        tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ui2_ic_location_home, 0, 0, 0);
         TextView tvLastSyncApp = requireActivity().findViewById(R.id.tv_app_sync_time);
         ImageView ivNotification = requireActivity().findViewById(R.id.imageview_notifications_home);
         tvLastSyncApp.setVisibility(View.VISIBLE);
@@ -282,17 +286,22 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         int countReceivedPrescription = getCurrentMonthsVisits(true);
 
         int total = pendingCountTotalVisits + countReceivedPrescription;
-        prescriptionCountTextView.setText(countReceivedPrescription + " " +
-                getResources().getString(R.string.out_of) + " "  + total + " " +
-                getResources().getString(R.string.received).toLowerCase());
+        String prescCountText = countReceivedPrescription + " " +
+                getResources().getString(R.string.out_of) + " " + total + " " +
+                getResources().getString(R.string.received).toLowerCase();
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
+        prescriptionCountTextView.setText(prescCountText);
 
-      //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
+        //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int countPendingCloseVisits = recentNotEndedVisits(50, 0).size() + olderNotEndedVisits(50, 0).size();    // IDA: 1337 - fetching wrong data.
-                getActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits)));
+                int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
+                if (getActivity() != null) {
+                    requireActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits)));
+                }
             }
         }).start();
 
@@ -453,4 +462,3 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         return count;
     }
 }
-
