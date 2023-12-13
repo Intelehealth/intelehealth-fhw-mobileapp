@@ -7,8 +7,7 @@
     android:background="@drawable/frame_10021"
     android:orientation="vertical"
     android:paddingStart="@dimen/apps_details_parent_padding"
-    android:paddingEnd="@dimen/apps_details_parent_padding"
-    tools:context=".appointmentNew.AppointmentDetailsActivity">
+    android:paddingEnd="@dimen/apps_details_parent_padding">
 
     <include
         android:id="@+id/toolbar_common"
@@ -427,7 +426,7 @@
                 android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/icon_visit_details"
+                    android:id="@+id/ivIconPatientHistory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -441,7 +440,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/cp_margin_start"
-                    android:layout_toEndOf="@+id/icon_visit_details"
+                    android:layout_toEndOf="@+id/ivIconPatientHistory"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
                     android:text="@string/view_patient_history"
@@ -485,7 +484,7 @@
                     android:layout_weight="2">
 
                     <ImageView
-                        android:id="@+id/profile"
+                        android:id="@+id/ivSpecialityProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/icons_appoint_height"
                         android:layout_centerVertical="true"
@@ -496,7 +495,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/cp_margin_start"
-                        android:layout_toEndOf="@+id/profile"
+                        android:layout_toEndOf="@+id/ivSpecialityProfile"
                         android:orientation="vertical">
 
                         <TextView

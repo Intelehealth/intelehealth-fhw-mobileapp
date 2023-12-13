@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply from: "resdir.gradle"
+apply from: "environment.gradle"
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -9,7 +13,10 @@ static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     return df.format(new Date());
 }
+
 android {
+
+    namespace "org.intelehealth.nak"
     compileSdk 34
 
     defaultConfig {
@@ -54,22 +61,26 @@ android {
             enableSplit = false
         }
         density {
-           enableSplit = false
+            enableSplit = false
         }
         abi {
             enableSplit = true
         }
     }
 
-    buildFeatures{
-        dataBinding true // for data binding
+    buildFeatures {
+        viewBinding true
+        dataBinding true
         buildConfig true
     }
 
-    namespace "org.intelehealth.app"
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 }
 dependencies {
-    implementation project(':webrtc')
+    implementation project(':fcm')
+    implementation project(':klivekit')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -80,7 +91,7 @@ dependencies {
     implementation project(path: ':ihutils')
     testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.media:media:1.6.0'
+    implementation 'androidx.media:media:1.7.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
 
     //fingerprint lock
@@ -107,7 +118,7 @@ dependencies {
 
     implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
 
-    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
     //Uncomment below line to enable multidex support for Kitkat
     implementation 'androidx.multidex:multidex:2.0.1'
     //camera view
@@ -122,29 +133,29 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.6'
 
     // (Java only) Targeting S+ (version 31 and above)
-    implementation 'androidx.work:work-runtime:2.8.1'
+    implementation 'androidx.work:work-runtime:2.9.0'
     // optional - RxJava2 support
-    implementation 'androidx.work:work-rxjava2:2.8.1'
+    implementation 'androidx.work:work-rxjava2:2.9.0'
     // optional - Test helpers
-    androidTestImplementation 'androidx.work:work-testing:2.8.1'
+    androidTestImplementation 'androidx.work:work-testing:2.9.0'
 
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
     annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
 
-    implementation 'com.google.firebase:firebase-crashlytics:18.5.1'
-    implementation 'com.google.firebase:firebase-analytics:21.5.0'
-    implementation "com.google.firebase:firebase-core:21.1.1"
-    //Targeting S+ (version 31 and above)
-    implementation 'com.google.firebase:firebase-messaging:23.3.1'
-    implementation "com.google.firebase:firebase-iid:21.1.0"
-
-    implementation platform('com.google.firebase:firebase-bom:25.12.0')
-    implementation 'com.google.firebase:firebase-crashlytics'
-    implementation 'com.google.firebase:firebase-analytics'
-
-    api 'com.google.android.material:material:1.10.0'
-    implementation 'com.google.firebase:firebase-database'
-    implementation 'com.google.firebase:firebase-config'
+//    implementation 'com.google.firebase:firebase-crashlytics:18.6.0'
+//    implementation 'com.google.firebase:firebase-analytics:21.5.0'
+//    implementation "com.google.firebase:firebase-core:21.1.1"
+//    //Targeting S+ (version 31 and above)
+//    implementation 'com.google.firebase:firebase-messaging:23.4.0'
+//    implementation "com.google.firebase:firebase-iid:21.1.0"
+//
+//    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+//    implementation 'com.google.firebase:firebase-crashlytics'
+//    implementation 'com.google.firebase:firebase-analytics'
+//
+//    api 'com.google.android.material:material:1.10.0'
+//    implementation 'com.google.firebase:firebase-database'
+//    implementation 'com.google.firebase:firebase-config'
 
     /* UI2.0*/
     //for pinview

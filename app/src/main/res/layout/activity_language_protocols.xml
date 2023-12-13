@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/frame_10021"
-    tools:context=".activities.settingsActivity.Language_ProtocolsActivity">
+    android:background="@drawable/frame_10021">
 
     <!--    Toolbar - start -->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -108,7 +107,7 @@
                 android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                 <ImageView
-                    android:id="@+id/vs_icon"
+                    android:id="@+id/ivProtocolLangIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_2dp"
@@ -120,19 +119,20 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/margin_8"
-                    android:layout_toEndOf="@+id/vs_icon"
+                    android:layout_toEndOf="@+id/ivProtocolLangIcon"
                     android:text="@string/language"
                     android:textStyle="bold" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/btn_up_special_vd_header"
+                    android:id="@+id/btnSpecialHeader"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:background="@null"
                     android:src="@drawable/ui2_ic_chevron_down"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:ignore="DuplicateIds" />
             </RelativeLayout>
 
             <!--Expanded Vitals-->
@@ -142,7 +142,7 @@
                 android:layout_below="@+id/lang_header_relative">
 
                 <View
-                    android:id="@+id/divider"
+                    android:id="@+id/divider1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -156,7 +156,7 @@
                     android:id="@+id/lang_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/divider"
+                    android:layout_below="@+id/divider1"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginTop="@dimen/margin_20dp"
                     android:layout_marginEnd="@dimen/fu_margin_start">
@@ -239,7 +239,7 @@
                                 android:fontFamily="@font/dm_sans"
                                 android:text="@string/reset"
                                 android:textAlignment="center"
-                                android:textColor="#D1484C"
+                                android:textColor="@color/colorPrimary"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
@@ -307,7 +307,8 @@
                     android:layout_centerVertical="true"
                     android:background="@null"
                     android:src="@drawable/ui2_ic_chevron_down"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:ignore="DuplicateIds" />
             </RelativeLayout>
 
             <!--Expanded Vitals-->
@@ -359,7 +360,7 @@
                             android:fontFamily="@font/dm_sans"
                             android:text="@string/update_button"
                             android:textAlignment="center"
-                            android:textColor="#D1484C"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 

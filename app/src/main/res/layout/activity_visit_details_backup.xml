@@ -1,0 +1,949 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/frame_10021">
+
+    <!--    <RelativeLayout-->
+    <!--        android:id="@+id/frame_10021"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="@dimen/followup_toolbar"-->
+    <!--        android:layout_alignParentLeft="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_alignParentRight="true"-->
+    <!--        android:layout_marginTop="@dimen/toolbar_top_minus_24dp"-->
+    <!--        android:background="@drawable/frame_10021">-->
+
+    <!--        &lt;!&ndash; Frame 100167 &ndash;&gt;-->
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="@dimen/fu_toolbat_txt_height"-->
+    <!--            android:layout_alignParentLeft="true"-->
+    <!--            android:layout_alignParentTop="true"-->
+    <!--            android:layout_alignParentRight="true"-->
+    <!--            android:layout_marginLeft="@dimen/fu_margin_start"-->
+    <!--            android:layout_marginTop="@dimen/toolbar_margin_top"-->
+    <!--            android:layout_marginRight="@dimen/fu_margin_start"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            android:weightSum="3">-->
+
+    <!--            &lt;!&ndash; Frame 100116 &ndash;&gt;-->
+    <!--            <LinearLayout-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="2.8"-->
+    <!--                android:orientation="horizontal">-->
+
+    <!--                &lt;!&ndash; arrow-right &ndash;&gt;-->
+    <!--                <ImageButton-->
+    <!--                    android:id="@+id/backArrow"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_alignParentLeft="true"-->
+    <!--                    android:layout_alignParentTop="true"-->
+    <!--                    android:layout_alignParentRight="true"-->
+    <!--                    android:layout_alignParentBottom="true"-->
+    <!--                    android:background="@null"-->
+    <!--                    android:padding="@dimen/margin_5"-->
+    <!--                    android:src="@drawable/ic_arrow_right" />-->
+
+    <!--                &lt;!&ndash; Label &ndash;&gt;-->
+    <!--                <TextView-->
+    <!--                    android:id="@+id/label"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_marginStart="@dimen/margin_10"-->
+    <!--                    android:gravity="center_vertical"-->
+    <!--                    android:lineSpacingExtra="1sp"-->
+    <!--                    android:text="@string/visit_summary_patient_details"-->
+    <!--                    android:textAppearance="@style/label"-->
+    <!--                    android:textSize="@dimen/toolbar_text_size"-->
+    <!--                    android:textStyle="bold"-->
+    <!--                    android:translationY="-0.28sp" />-->
+
+    <!--            </LinearLayout>-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/refresh"-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="0.2"-->
+    <!--                android:background="@null" android:onClick="syncNow"-->
+    <!--                android:src="@drawable/ic_refreshbtn" />-->
+
+    <!--        </LinearLayout>-->
+    <!--    </RelativeLayout>-->
+
+    <!--    <androidx.core.widget.NestedScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@+id/frame_10021"-->
+    <!--        android:fillViewport="true">-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="vertical">-->
+
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:id="@+id/cardview_head"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_alignParentLeft="true"-->
+    <!--                android:layout_alignParentRight="true"-->
+    <!--                android:layout_marginLeft="@dimen/fu_card_margin_sides"-->
+    <!--                android:layout_marginTop="@dimen/fu_card_margin_updown"-->
+    <!--                android:layout_marginRight="@dimen/fu_card_margin_sides"-->
+    <!--                android:elevation="16dp"-->
+    <!--                app:cardCornerRadius="@dimen/margin_5"-->
+    <!--                app:cardElevation="@dimen/corner_radius_8dp">-->
+
+    <!--                &lt;!&ndash; Frame 100340 &ndash;&gt;-->
+    <!--                <LinearLayout-->
+    <!--                    android:id="@+id/frame_10034"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_margin="@dimen/fu_margin_start"-->
+    <!--                    android:orientation="horizontal"-->
+    <!--                    android:weightSum="1">-->
+
+    <!--                    &lt;!&ndash;1st&ndash;&gt;-->
+    <!--                    <RelativeLayout-->
+    <!--                        android:layout_width="0dp"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_weight="1">-->
+
+    <!--                        <androidx.cardview.widget.CardView-->
+    <!--                            android:id="@+id/profile"-->
+    <!--                            android:layout_width="@dimen/patdetail_profile_imgview_14sp"-->
+    <!--                            android:layout_height="@dimen/patdetail_profile_imgview_14sp"-->
+    <!--                            android:layout_centerVertical="true"-->
+    <!--                            android:layout_marginStart="@dimen/margin_2dp"-->
+    <!--                            android:elevation="0dp"-->
+    <!--                            app:cardCornerRadius="@dimen/cardcornerradius_imagev">-->
+
+    <!--                            <ImageView-->
+    <!--                                android:id="@+id/profile_image"-->
+    <!--                                android:layout_width="@dimen/patdetail_profile_imgview_14sp"-->
+    <!--                                android:layout_height="@dimen/patdetail_profile_imgview_14sp"-->
+    <!--                                android:src="@drawable/avatar1" />-->
+    <!--                        </androidx.cardview.widget.CardView>-->
+
+    <!--                        <LinearLayout-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                            android:layout_toEndOf="@+id/profile"-->
+    <!--                            android:orientation="vertical">-->
+
+    <!--                            <RelativeLayout-->
+    <!--                                android:layout_width="match_parent"-->
+    <!--                                android:layout_height="wrap_content">-->
+
+    <!--                                <TextView-->
+    <!--                                    android:id="@+id/patname_txt"-->
+    <!--                                    android:layout_width="wrap_content"-->
+    <!--                                    android:layout_height="wrap_content"-->
+    <!--                                    android:layout_centerVertical="true"-->
+    <!--                                    android:gravity="center"-->
+    <!--                                    android:lineSpacingExtra="-3sp"-->
+    <!--                                    android:maxWidth="70dp"-->
+    <!--                                    android:maxLines="1"-->
+    <!--                                    android:ellipsize="end"-->
+    <!--                                    android:text="@string/fu_visit_name"-->
+    <!--                                    android:textAppearance="@style/label_16sp"-->
+    <!--                                    android:textColor="@null"-->
+    <!--                                    android:textSize="@dimen/fu_name_txt_size" />-->
+
+    <!--                                <TextView-->
+    <!--                                    android:id="@+id/gender_age_txt"-->
+    <!--                                    android:layout_width="wrap_content"-->
+    <!--                                    android:layout_height="wrap_content"-->
+    <!--                                    android:layout_centerVertical="true"-->
+    <!--                                    android:gravity="center"-->
+    <!--                                    android:layout_marginStart="@dimen/fu_male_margin_start"-->
+    <!--                                    android:layout_toEndOf="@+id/patname_txt"-->
+    <!--                                    android:text="@string/misc_txt"-->
+    <!--                                    tools:text="पुरुष 50"-->
+    <!--                                    android:textAppearance="@style/label_misc_txt_14sp"-->
+    <!--                                    android:textColor="@null"-->
+    <!--                                    android:textSize="@dimen/fu_name_txt_size" />-->
+
+    <!--                                <ImageView-->
+    <!--                                    android:layout_width="wrap_content"-->
+    <!--                                    android:layout_height="wrap_content"-->
+    <!--                                    android:layout_centerVertical="true"-->
+    <!--                                    android:gravity="center"-->
+    <!--                                    android:layout_marginStart="@dimen/fu_male_margin_start"-->
+    <!--                                    android:layout_toEndOf="@+id/gender_age_txt"-->
+    <!--                                    android:onClick="editPatientInfo"-->
+    <!--                                    android:padding="@dimen/margin_4"-->
+    <!--                                    android:src="@drawable/ic_icno8_edit" />-->
+
+    <!--                            </RelativeLayout>-->
+
+    <!--                            &lt;!&ndash; Caption &ndash;&gt;-->
+    <!--                            <TextView-->
+    <!--                                android:id="@+id/openmrsID_txt"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="0dp"-->
+    <!--                                android:layout_marginTop="@dimen/margin_4"-->
+    <!--                                android:layout_weight="1"-->
+    <!--                                android:gravity="center_vertical"-->
+    <!--                                android:text="@string/fu_openmrsID"-->
+    <!--                                android:textAppearance="@style/caption_fu_openmrsId"-->
+    <!--                                android:textColor="@null"-->
+    <!--                                android:textSize="@dimen/fu_male_textsize" />-->
+
+    <!--                        </LinearLayout>-->
+    <!--                    </RelativeLayout>-->
+
+    <!--                    &lt;!&ndash;2nd&ndash;&gt;-->
+    <!--                    <LinearLayout-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_gravity="bottom"-->
+    <!--                        android:orientation="horizontal">-->
+
+    <!--                        <ImageButton-->
+    <!--                            android:id="@+id/pat_call_btn"-->
+    <!--                            android:layout_width="42dip"-->
+    <!--                            android:layout_height="42dip"-->
+    <!--                            android:background="@null"-->
+    <!--                            android:scaleType="fitXY"-->
+    <!--                            android:src="@drawable/ic_icon8_phone" />-->
+
+    <!--                        <ImageButton-->
+    <!--                            android:id="@+id/pat_whatsapp_btn"-->
+    <!--                            android:layout_width="42dip"-->
+    <!--                            android:layout_height="42dip"-->
+    <!--                            android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                            android:background="@null"-->
+    <!--                            android:scaleType="fitXY"-->
+    <!--                            android:src="@drawable/ic_icon8_whatsapp" />-->
+
+    <!--                    </LinearLayout>-->
+
+    <!--                </LinearLayout>-->
+    <!--            </androidx.cardview.widget.CardView>-->
+
+
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_below="@+id/cardview_head"-->
+    <!--                android:layout_alignParentLeft="true"-->
+    <!--                android:layout_alignParentRight="true"-->
+    <!--                android:layout_marginLeft="@dimen/fu_card_margin_sides"-->
+    <!--                android:layout_marginTop="@dimen/margin_24"-->
+    <!--                android:layout_marginRight="@dimen/fu_card_margin_sides"-->
+    <!--                android:layout_marginBottom="@dimen/fu_card_margin_sides"-->
+    <!--                android:elevation="16dp"-->
+    <!--                app:cardCornerRadius="@dimen/margin_5"-->
+    <!--                app:cardElevation="@dimen/margin_5">-->
+
+    <!--                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_marginTop="@dimen/fu_card_margin_updown">-->
+
+    <!--                    <LinearLayout-->
+    <!--                        android:id="@+id/llPriorityTagVisitDetails"-->
+    <!--                        android:contentDescription="Visit Details Screen Priority Tag Linear Layout"-->
+    <!--                        android:layout_marginEnd="@dimen/cp_margin_start"-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_alignParentEnd="true"-->
+    <!--                        android:background="@drawable/ui2_frame_priority"-->
+    <!--                        android:layout_gravity="top">-->
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/fu_priority_tag"-->
+    <!--                            android:layout_gravity="center"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:lineSpacingExtra="0sp"-->
+    <!--                            android:text="@string/priority"-->
+    <!--                            android:textColor="@color/white"-->
+    <!--                            android:textAlignment="center"-->
+    <!--                            android:textAllCaps="true"-->
+    <!--                            android:textSize="10sp"-->
+    <!--                            android:textStyle="bold"-->
+    <!--                            />-->
+
+    <!--                    </LinearLayout>-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/chief_complaint_txt"-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:gravity="center_vertical"-->
+    <!--                        android:lineSpacingExtra="3sp"-->
+    <!--                        android:text="Test Fever"-->
+    <!--                        android:textAppearance="@style/details_head1"-->
+    <!--                        android:textColor="@null"-->
+    <!--                        android:textSize="@dimen/fu_name_txt_size" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:id="@+id/visitID"-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_below="@+id/chief_complaint_txt"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:gravity="center_vertical"-->
+    <!--                        android:lineSpacingExtra="3sp"-->
+    <!--                        android:text="@string/visitID"-->
+    <!--                        android:textAppearance="@style/details_head2"-->
+    <!--                        android:textColor="@null"-->
+    <!--                        android:textSize="@dimen/fu_male_textsize" />-->
+
+    <!--                    <ImageButton-->
+    <!--                        android:id="@+id/fu_progress_indicator"-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_below="@id/visitID"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginTop="@dimen/fu_card_margin_updown"-->
+    <!--                        android:background="@null"-->
+    <!--                        android:src="@drawable/details_progressindic" />-->
+
+    <!--                    <LinearLayout-->
+    <!--                        android:id="@+id/ll_1"-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_below="@+id/fu_progress_indicator"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginTop="@dimen/fu_card_margin_updown"-->
+    <!--                        android:layout_marginEnd="@dimen/margin_40dp"-->
+    <!--                        android:orientation="horizontal">-->
+
+    <!--                        <ImageView-->
+    <!--                            android:id="@+id/fu_details_calendar"-->
+    <!--                            android:layout_width="@dimen/cal_size"-->
+    <!--                            android:layout_height="match_parent"-->
+    <!--                            android:src="@drawable/followup_item_calendar" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/visit_startDate"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="match_parent"-->
+    <!--                            android:layout_marginStart="@dimen/margin_6"-->
+    <!--                            android:layout_toEndOf="@+id/fu_details_calendar"-->
+    <!--                            android:gravity="center_vertical"-->
+    <!--                            android:lineSpacingExtra="3sp"-->
+    <!--                            android:text="@string/fu_detiails_date"-->
+    <!--                            android:textAppearance="@style/fu_detiails_date"-->
+    <!--                            android:textColor="@null"-->
+    <!--                            android:textSize="@dimen/fu_male_textsize" />-->
+    <!--                        />-->
+
+    <!--                    </LinearLayout>-->
+
+    <!--                    &lt;!&ndash;Timer&ndash;&gt;-->
+    <!--                    <LinearLayout-->
+    <!--                        android:id="@+id/ll_2"-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_below="@+id/fu_progress_indicator"-->
+    <!--                        android:layout_marginTop="@dimen/fu_card_margin_updown"-->
+    <!--                        android:layout_toEndOf="@+id/ll_1"-->
+    <!--                        android:orientation="horizontal">-->
+
+    <!--                        <ImageView-->
+    <!--                            android:id="@+id/fu_details_calendar"-->
+    <!--                            android:layout_width="@dimen/cal_size"-->
+    <!--                            android:layout_height="match_parent"-->
+    <!--                            android:src="@drawable/ui2_ic_time"-->
+    <!--                            android:tint="@color/textview_color" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/visit_startTime"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="match_parent"-->
+    <!--                            android:layout_marginStart="@dimen/margin_6"-->
+    <!--                            android:layout_toEndOf="@+id/fu_details_calendar"-->
+    <!--                            android:gravity="center_vertical"-->
+    <!--                            android:lineSpacingExtra="3sp"-->
+    <!--                            android:text="00:00 am"-->
+    <!--                            android:textAppearance="@style/fu_detiails_date"-->
+    <!--                            android:textColor="@null"-->
+    <!--                            android:textSize="@dimen/fu_male_textsize" />-->
+    <!--                        />-->
+
+    <!--                    </LinearLayout>-->
+
+
+    <!--                    <View-->
+    <!--                        android:id="@+id/divider"-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="1dp"-->
+    <!--                        android:layout_below="@+id/ll_1"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginTop="@dimen/fu_card_margin_updown"-->
+    <!--                        android:layout_marginEnd="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginBottom="@dimen/fu_card_margin_updown"-->
+    <!--                        android:background="@color/notifi_divider_color" />-->
+
+    <!--                    &lt;!&ndash;general physician&ndash;&gt;-->
+    <!--                    <LinearLayout-->
+    <!--                        android:id="@+id/ll_2"-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_below="@+id/divider"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginEnd="@dimen/fu_margin_start"-->
+    <!--                        android:orientation="horizontal"-->
+    <!--                        android:weightSum="2">-->
+
+    <!--                        &lt;!&ndash;1st&ndash;&gt;-->
+    <!--                        <RelativeLayout-->
+    <!--                            android:layout_width="0dp"-->
+    <!--                            android:layout_height="match_parent"-->
+    <!--                            android:layout_weight="2">-->
+
+    <!--                            <ImageView-->
+    <!--                                android:id="@+id/profile"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_centerVertical="true"-->
+    <!--                                android:background="@null"-->
+    <!--                                android:src="@drawable/ic_grp_general_phys" />-->
+
+    <!--                            <LinearLayout-->
+    <!--                                android:layout_width="match_parent"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                                android:layout_toEndOf="@+id/profile"-->
+    <!--                                android:orientation="vertical">-->
+
+    <!--                                <TextView-->
+    <!--                                    android:id="@+id/visit_speciality"-->
+    <!--                                    android:layout_width="wrap_content"-->
+    <!--                                    android:layout_height="wrap_content"-->
+    <!--                                    android:lineSpacingExtra="-3sp"-->
+    <!--                                    android:textAppearance="@style/details_head1"-->
+    <!--                                    android:textColor="@null"-->
+    <!--                                    android:textSize="@dimen/fu_name_txt_size"-->
+    <!--                                    tools:text="@string/gp_txt" />-->
+
+
+    <!--                                &lt;!&ndash; Caption &ndash;&gt;-->
+    <!--                                <TextView-->
+    <!--                                    android:id="@+id/dr_speciality"-->
+    <!--                                    android:layout_width="wrap_content"-->
+    <!--                                    android:layout_height="wrap_content"-->
+    <!--                                    android:layout_marginTop="@dimen/fu_male_margin_start"-->
+    <!--                                    android:gravity="center_vertical"-->
+    <!--                                    android:lineSpacingExtra="0sp"-->
+    <!--                                    android:text="@string/dr_speciality"-->
+    <!--                                    android:textAppearance="@style/details_head2"-->
+    <!--                                    android:textColor="@null"-->
+    <!--                                    android:textSize="@dimen/fu_male_textsize" />-->
+
+    <!--                            </LinearLayout>-->
+    <!--                        </RelativeLayout>-->
+
+    <!--                        &lt;!&ndash;2nd&ndash;&gt;-->
+    <!--                        <LinearLayout-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="match_parent"-->
+    <!--                            android:orientation="horizontal">-->
+
+    <!--                            <ImageView-->
+    <!--                                android:id="@+id/dr_call_btn"-->
+    <!--                                android:layout_width="48dip"-->
+    <!--                                android:layout_height="48dip"-->
+    <!--                                android:layout_gravity="center"-->
+    <!--                                android:background="@drawable/ic_baseline_lens_24_light"-->
+    <!--                                android:onClick="startVideoChat"-->
+    <!--                                android:padding="12dip"-->
+    <!--                                android:src="@drawable/ic_baseline_videocam_24"-->
+    <!--                                android:visibility="invisible" />-->
+
+    <!--                            <ImageView-->
+    <!--                                android:id="@+id/dr_whatsapp_btn"-->
+    <!--                                android:layout_width="48dip"-->
+    <!--                                android:layout_height="48dip"-->
+    <!--                                android:layout_gravity="center"-->
+    <!--                                android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                                android:background="@drawable/ic_baseline_lens_24_light"-->
+    <!--                                android:onClick="startTextChat"-->
+    <!--                                android:padding="12dip"-->
+    <!--                                android:src="@drawable/ic_baseline_chat_24"-->
+    <!--                                android:visibility="gone" />-->
+
+    <!--                        </LinearLayout>-->
+    <!--                    </LinearLayout>-->
+
+    <!--                    <View-->
+    <!--                        android:id="@+id/divider_2"-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="1dp"-->
+    <!--                        android:layout_below="@+id/ll_2"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginTop="@dimen/fu_card_margin_updown"-->
+    <!--                        android:layout_marginEnd="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginBottom="@dimen/fu_card_margin_updown"-->
+    <!--                        android:background="@color/notifi_divider_color" />-->
+
+    <!--                    &lt;!&ndash; Frame 2608662 &ndash;&gt;-->
+    <!--                    <RelativeLayout-->
+    <!--                        android:id="@+id/vs_card"-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="@dimen/notifi_header_icon"-->
+    <!--                        android:layout_below="@+id/divider_2"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginEnd="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginBottom="@dimen/fu_card_margin_updown">-->
+
+    <!--                        <ImageView-->
+    <!--                            android:id="@+id/icon_visit_details"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_centerVertical="true"-->
+    <!--                            android:background="@null"-->
+    <!--                            android:src="@drawable/ic_visit_details_icon8" />-->
+
+    <!--                        &lt;!&ndash; label-text &ndash;&gt;-->
+    <!--                        <TextView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_centerVertical="true"-->
+    <!--                            android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                            android:layout_toEndOf="@+id/icon_visit_details"-->
+    <!--                            android:gravity="center_vertical"-->
+    <!--                            android:lineSpacingExtra="3sp"-->
+    <!--                            android:text="@string/visitDetails_text"-->
+    <!--                            android:textAppearance="@style/visitDetails_text"-->
+    <!--                            android:textColor="@null"-->
+    <!--                            android:textSize="@dimen/fu_name_txt_size" />-->
+
+    <!--                        <ImageButton-->
+    <!--                            android:id="@+id/vs_arrowRight"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="match_parent"-->
+    <!--                            android:layout_alignParentEnd="true"-->
+    <!--                            android:layout_centerVertical="true"-->
+    <!--                            android:background="@null"-->
+    <!--                            android:paddingHorizontal="10dp"-->
+    <!--                            android:src="@drawable/arrow_right_icon8" />-->
+    <!--                    </RelativeLayout>-->
+
+
+    <!--                    &lt;!&ndash;View based on visibility and condition - start&ndash;&gt;-->
+    <!--                    &lt;!&ndash;Presc block - Start&ndash;&gt;-->
+    <!--                    <RelativeLayout-->
+    <!--                        android:id="@+id/prescription_block"-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_below="@+id/vs_card"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginEnd="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginBottom="@dimen/margin_16dp"-->
+    <!--                        android:visibility="visible"-->
+    <!--                        tools:visibility="visible">-->
+
+    <!--                        <View-->
+    <!--                            android:id="@+id/divider_3"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="1dp"-->
+    <!--                            android:layout_marginBottom="@dimen/fu_card_margin_updown"-->
+    <!--                            android:background="@color/notifi_divider_color" />-->
+
+
+    <!--                        <RelativeLayout-->
+    <!--                            android:id="@+id/presc_relative"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_below="@+id/divider_3">-->
+
+    <!--                            <ImageView-->
+    <!--                                android:id="@+id/icon_presc_details"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_centerVertical="true"-->
+    <!--                                android:background="@null"-->
+    <!--                                android:src="@drawable/prescription_icon" />-->
+
+    <!--                            &lt;!&ndash; label-text &ndash;&gt;-->
+    <!--                            <LinearLayout-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                                android:layout_toEndOf="@+id/icon_presc_details"-->
+    <!--                                android:orientation="vertical">-->
+
+    <!--                                <TextView-->
+    <!--                                    android:id="@+id/visitDetails_text"-->
+    <!--                                    android:layout_width="wrap_content"-->
+    <!--                                    android:layout_height="wrap_content"-->
+    <!--                                    android:layout_centerVertical="true"-->
+    <!--                                    android:gravity="center_vertical"-->
+    <!--                                    android:lineSpacingExtra="3sp"-->
+    <!--                                    android:text="@string/prescription"-->
+    <!--                                    android:textAppearance="@style/visitDetails_text"-->
+    <!--                                    android:textColor="@null"-->
+    <!--                                    android:textSize="@dimen/fu_name_txt_size" />-->
+
+    <!--                                <TextView-->
+    <!--                                    android:id="@+id/presc_time"-->
+    <!--                                    android:layout_width="wrap_content"-->
+    <!--                                    android:layout_height="wrap_content"-->
+    <!--                                    android:layout_below="@+id/visitDetails_text"-->
+    <!--                                    android:layout_marginTop="@dimen/fu_male_margin_start"-->
+    <!--                                    android:gravity="center_vertical"-->
+    <!--                                    android:lineSpacingExtra="0sp"-->
+    <!--                                    android:text="Test: Received 2 hours ago"-->
+    <!--                                    android:textAppearance="@style/details_head2"-->
+    <!--                                    android:textColor="@color/green_button_bg"-->
+    <!--                                    android:textSize="@dimen/fu_male_textsize" />-->
+    <!--                            </LinearLayout>-->
+
+    <!--                            <ImageButton-->
+    <!--                                android:id="@+id/presc_arrowRight"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="match_parent"-->
+    <!--                                android:layout_alignParentEnd="true"-->
+    <!--                                android:layout_centerVertical="true"-->
+    <!--                                android:background="@null"-->
+    <!--                                android:paddingHorizontal="10dp"-->
+    <!--                                android:paddingVertical="10dp"-->
+    <!--                                android:src="@drawable/arrow_right_icon8" />-->
+    <!--                        </RelativeLayout>-->
+    <!--                        &lt;!&ndash;Presc block - End &ndash;&gt;-->
+
+
+    <!--                        &lt;!&ndash;Remind button - start &ndash;&gt;-->
+    <!--                        <RelativeLayout-->
+    <!--                            android:id="@+id/presc_remind_block"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_below="@+id/presc_relative"-->
+    <!--                            android:visibility="gone"-->
+    <!--                            tools:visibility="visible">-->
+
+    <!--                            <View-->
+    <!--                                android:id="@+id/divider_4"-->
+    <!--                                android:layout_width="match_parent"-->
+    <!--                                android:layout_height="1dp"-->
+    <!--                                android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                                android:layout_marginTop="@dimen/fu_card_margin_updown"-->
+    <!--                                android:layout_marginEnd="@dimen/fu_margin_start"-->
+    <!--                                android:background="@color/notifi_divider_color" />-->
+
+    <!--                            <LinearLayout-->
+    <!--                                android:id="@+id/btn_bottom"-->
+    <!--                                android:layout_width="match_parent"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_below="@+id/divider_4"-->
+    <!--                                android:orientation="horizontal"-->
+    <!--                                android:paddingTop="@dimen/margin_16dp"-->
+    <!--                                android:weightSum="2">-->
+
+    <!--                                <Button-->
+    <!--                                    android:id="@+id/btn_vs_appointment"-->
+    <!--                                    android:layout_width="0dp"-->
+    <!--                                    android:layout_height="@dimen/small_btn_h_48dp"-->
+    <!--                                    android:layout_marginEnd="@dimen/margin_8"-->
+    <!--                                    android:layout_weight="1"-->
+    <!--                                    android:background="@drawable/ui2_common_primary_bg"-->
+    <!--                                    android:backgroundTint="@color/light_red"-->
+    <!--                                    android:lineHeight="@dimen/button_line_height"-->
+    <!--                                    android:padding="@dimen/fu_margin_start"-->
+    <!--                                    android:text="@string/cancel"-->
+    <!--                                    android:textColor="@color/red"-->
+    <!--                                    android:textSize="@dimen/txtsize_patdetail_14sp"-->
+    <!--                                    android:textStyle="bold" />-->
+
+    <!--                                <Button-->
+    <!--                                    android:id="@+id/btn_vs_sendvisit"-->
+    <!--                                    android:layout_width="0dp"-->
+    <!--                                    android:layout_height="@dimen/small_btn_h_48dp"-->
+    <!--                                    android:layout_alignParentBottom="true"-->
+    <!--                                    android:layout_marginStart="@dimen/common_edittext_margin_top"-->
+    <!--                                    android:layout_weight="1"-->
+    <!--                                    android:background="@drawable/ui2_common_primary_bg"-->
+    <!--                                    android:backgroundTint="@color/grey_button_bg"-->
+    <!--                                    android:lineHeight="@dimen/button_line_height"-->
+    <!--                                    android:padding="@dimen/hamburger_margin_top"-->
+    <!--                                    android:text="@string/remind_doctor"-->
+    <!--                                    android:textColor="@color/colorPrimary"-->
+    <!--                                    android:textSize="@dimen/txtsize_patdetail_14sp"-->
+    <!--                                    android:textStyle="bold" />-->
+
+    <!--                            </LinearLayout>-->
+    <!--                        </RelativeLayout>-->
+    <!--                        &lt;!&ndash;Remind button - end &ndash;&gt;-->
+
+    <!--                    </RelativeLayout>-->
+
+    <!--                    &lt;!&ndash;Followup Section - start&ndash;&gt;-->
+    <!--                    <RelativeLayout-->
+    <!--                        android:id="@+id/followup_relative_block"-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_below="@+id/prescription_block"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginEnd="@dimen/fu_margin_start"-->
+    <!--                        android:visibility="gone"-->
+    <!--                        tools:visibility="visible">-->
+
+    <!--                        <View-->
+    <!--                            android:id="@+id/divider_54"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="1dp"-->
+    <!--                            android:layout_marginBottom="@dimen/fu_card_margin_updown"-->
+    <!--                            android:background="@color/notifi_divider_color" />-->
+
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/followup_date_txtv"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_below="@+id/divider_54"-->
+    <!--                            android:gravity="center_vertical"-->
+    <!--                            android:lineSpacingExtra="4sp"-->
+    <!--                            android:text="@string/followup_date_txtv"-->
+    <!--                            android:textAppearance="@style/followup_date_txtv"-->
+    <!--                            android:textColor="@null"-->
+    <!--                            android:textSize="@dimen/txtsize_patdetail_14sp"-->
+    <!--                            android:textStyle="bold" />-->
+
+    <!--                        &lt;!&ndash;Start Follow up - Start&ndash;&gt;-->
+    <!--                        <RelativeLayout-->
+    <!--                            android:id="@+id/followup_start_card"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_below="@+id/followup_date_txtv"-->
+    <!--                            android:visibility="gone"-->
+    <!--                            tools:visibility="gone">-->
+
+    <!--                            <TextView-->
+    <!--                                android:id="@+id/followup_info"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_marginTop="@dimen/fu_male_margin_start"-->
+    <!--                                android:gravity="center_vertical"-->
+    <!--                                android:lineSpacingExtra="3sp"-->
+    <!--                                android:text="@string/followup_info"-->
+    <!--                                android:textAppearance="@style/followup_info"-->
+    <!--                                android:textColor="@null" />-->
+
+    <!--                            <Button-->
+    <!--                                android:layout_width="match_parent"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_below="@+id/followup_info"-->
+    <!--                                android:layout_marginTop="@dimen/fu_margin_start"-->
+    <!--                                android:layout_marginBottom="@dimen/fu_card_margin_updown"-->
+    <!--                                android:background="@drawable/icon_followup_enabled" />-->
+
+    <!--                        </RelativeLayout>-->
+    <!--                        &lt;!&ndash;Start Follow up - Start&ndash;&gt;-->
+
+
+    <!--                        &lt;!&ndash;Do you want to Accept this Follow up - start&ndash;&gt;-->
+    <!--                        <RelativeLayout-->
+    <!--                            android:id="@+id/yes_no_followup_relative"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_below="@+id/followup_date_txtv"-->
+    <!--                            android:visibility="gone"-->
+    <!--                            tools:visibility="visible">-->
+
+    <!--                            <TextView-->
+    <!--                                android:id="@+id/followup_accept_text"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_marginTop="@dimen/fu_male_margin_start"-->
+    <!--                                android:layout_marginBottom="@dimen/padding_12"-->
+    <!--                                android:gravity="center_vertical"-->
+    <!--                                android:lineSpacingExtra="3sp"-->
+    <!--                                android:text="The doctor suggested a follow-up visit on 15 May, 2022. Does the patient want to take a follow-up visit?"-->
+    <!--                                android:textColor="@color/hint_text_color"-->
+    <!--                                android:textSize="@dimen/txtsize_patdetail_14sp" />-->
+
+    <!--                            &lt;!&ndash;Button - start &ndash;&gt;-->
+    <!--                            <LinearLayout-->
+    <!--                                android:layout_width="match_parent"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_below="@+id/followup_accept_text"-->
+    <!--                                android:layout_marginBottom="@dimen/fu_margin_start"-->
+    <!--                                android:orientation="horizontal"-->
+    <!--                                android:paddingTop="@dimen/fu_margin_start"-->
+    <!--                                android:visibility="gone"-->
+    <!--                                android:weightSum="2">-->
+
+    <!--                                <Button-->
+    <!--                                    android:layout_width="0dp"-->
+    <!--                                    android:layout_height="wrap_content"-->
+    <!--                                    android:layout_marginEnd="@dimen/margin_8"-->
+    <!--                                    android:layout_marginBottom="@dimen/margin_5"-->
+    <!--                                    android:layout_weight="1"-->
+    <!--                                    android:background="@drawable/button_white_border"-->
+    <!--                                    android:lineHeight="@dimen/button_line_height"-->
+    <!--                                    android:padding="@dimen/fu_margin_start"-->
+    <!--                                    android:text="@string/no"-->
+    <!--                                    android:textColor="@color/colorPrimary"-->
+    <!--                                    android:textSize="@dimen/common_button_text_size"-->
+    <!--                                    android:textStyle="bold" />-->
+
+    <!--                                <Button-->
+    <!--                                    android:id="@+id/yes_followup_btn"-->
+    <!--                                    android:layout_width="0dp"-->
+    <!--                                    android:layout_height="wrap_content"-->
+    <!--                                    android:layout_marginStart="@dimen/common_edittext_margin_top"-->
+    <!--                                    android:layout_marginBottom="@dimen/margin_5"-->
+    <!--                                    android:layout_weight="1"-->
+    <!--                                    android:background="@drawable/ui2_common_primary_bg"-->
+    <!--                                    android:padding="@dimen/fu_margin_start"-->
+    <!--                                    android:text="@string/yes"-->
+    <!--                                    android:textColor="@color/white"-->
+    <!--                                    android:textSize="@dimen/common_button_text_size"-->
+    <!--                                    android:textStyle="bold" />-->
+
+    <!--                            </LinearLayout>-->
+
+    <!--                            &lt;!&ndash;Button - end &ndash;&gt;-->
+    <!--                        </RelativeLayout>-->
+    <!--                        &lt;!&ndash;Do you want to Accept this Follow up - End &ndash;&gt;-->
+
+    <!--                    </RelativeLayout>-->
+    <!--                    &lt;!&ndash;Followup Section - END &ndash;&gt;-->
+
+
+    <!--                    &lt;!&ndash; End Visit Button - Start &ndash;&gt;-->
+    <!--                    <RelativeLayout-->
+    <!--                        android:id="@+id/endvisit_relative_block"-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_below="@+id/followup_relative_block"-->
+    <!--                        android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginEnd="@dimen/fu_margin_start"-->
+    <!--                        android:layout_marginBottom="@dimen/margin_16dp"-->
+    <!--                        android:visibility="gone"-->
+    <!--                        tools:visibility="visible">-->
+
+    <!--                        <View-->
+    <!--                            android:id="@+id/divider_5"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="1dp"-->
+    <!--                            android:layout_marginBottom="@dimen/fu_card_margin_updown"-->
+    <!--                            android:background="@color/notifi_divider_color" />-->
+
+    <!--                        <Button-->
+    <!--                            android:id="@+id/btn_end_visit"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_below="@+id/divider_5"-->
+    <!--                            android:layout_marginBottom="@dimen/margin_5"-->
+    <!--                            android:layout_weight="1"-->
+    <!--                            android:background="@drawable/ui2_common_primary_bg"-->
+    <!--                            android:padding="@dimen/fu_margin_start"-->
+    <!--                            android:text="@string/end_visit"-->
+    <!--                            android:textColor="@color/white"-->
+    <!--                            android:textSize="@dimen/txtsize_patdetail_14sp"-->
+    <!--                            android:textStyle="bold" />-->
+    <!--                    </RelativeLayout>-->
+    <!--                    &lt;!&ndash; End Visit Button - End &ndash;&gt;-->
+
+    <!--                    &lt;!&ndash;View based on visibility and condition - end&ndash;&gt;-->
+
+
+    <!--                </RelativeLayout>-->
+    <!--            </androidx.cardview.widget.CardView>-->
+
+
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:id="@+id/cv_past_visits"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+
+    <!--                android:layout_marginLeft="@dimen/fu_card_margin_sides"-->
+    <!--                android:layout_marginTop="@dimen/fu_card_margin_sides"-->
+    <!--                android:layout_marginRight="@dimen/fu_card_margin_sides"-->
+    <!--                android:layout_marginBottom="@dimen/fu_card_margin_sides"-->
+    <!--                android:elevation="16dp"-->
+    <!--                android:paddingBottom="@dimen/padding_20"-->
+    <!--                app:cardCornerRadius="@dimen/margin_5"-->
+    <!--                app:cardElevation="@dimen/margin_5">-->
+
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:orientation="vertical"-->
+    <!--                    android:paddingBottom="@dimen/padding_20">-->
+
+    <!--                    <LinearLayout-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginHorizontal="@dimen/padding_12"-->
+    <!--                        android:layout_marginTop="@dimen/padding_12"-->
+    <!--                        android:gravity="center_vertical"-->
+    <!--                        android:orientation="horizontal">-->
+
+    <!--                        <ImageView-->
+    <!--                            android:layout_width="48dip"-->
+    <!--                            android:layout_height="48dip"-->
+    <!--                            android:layout_centerVertical="true"-->
+    <!--                            android:background="@drawable/ic_baseline_lens_24_light_violet"-->
+    <!--                            android:padding="12dip"-->
+    <!--                            android:src="@drawable/icons8_activity_history_24" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_marginStart="@dimen/fu_margin_start"-->
+    <!--                            android:gravity="center_vertical"-->
+    <!--                            android:lineSpacingExtra="3sp"-->
+    <!--                            android:text="@string/past_visits"-->
+    <!--                            android:textAppearance="@style/details_head1"-->
+    <!--                            android:textColor="@null"-->
+    <!--                            android:textSize="@dimen/common_header_text_size"-->
+    <!--                            android:textStyle="bold" />-->
+    <!--                    </LinearLayout>-->
+
+    <!--                    <View-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="1dip"-->
+    <!--                        android:layout_marginVertical="@dimen/padding_12"-->
+    <!--                        android:background="@color/gray_1" />-->
+
+    <!--                    <androidx.recyclerview.widget.RecyclerView-->
+    <!--                        android:id="@+id/rcv_past_visits"-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginHorizontal="@dimen/padding_12" />-->
+
+
+    <!--                </LinearLayout>-->
+
+    <!--            </androidx.cardview.widget.CardView>-->
+    <!--        </LinearLayout>-->
+    <!--    </androidx.core.widget.NestedScrollView>-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:layout_marginBottom="16dp"-->
+    <!--        android:contentDescription="@string/chat_fab"-->
+    <!--        android:onClick="startVideoChat"-->
+    <!--        android:src="@drawable/icons8_video_call"-->
+    <!--        android:visibility="gone" />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:layout_marginBottom="16dip"-->
+    <!--        android:contentDescription="@string/chat_fab"-->
+    <!--        android:onClick="startTextChat"-->
+    <!--        android:src="@drawable/icons8_chat_new" />-->
+</RelativeLayout>

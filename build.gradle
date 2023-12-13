@@ -1,23 +1,26 @@
-
 buildscript {
     ext {
-        agp_version = '8.1.2'
+        agp_version = '8.1.4'
     }
     repositories {
         google()
         gradlePluginPortal()
         mavenCentral()
         maven { url 'https://jitpack.io' }
-        
+
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$agp_version"
-        
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
         // Add the following line:
         classpath 'com.google.gms:google-services:4.4.0'  // Google Services plugin
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10'
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.9.10"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.7.5"
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.47'
     }
 }
 
@@ -27,7 +30,6 @@ allprojects {
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.google.com' }
-
     }
 }
 
