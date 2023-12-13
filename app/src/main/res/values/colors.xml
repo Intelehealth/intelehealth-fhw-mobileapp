@@ -136,6 +136,8 @@
     <color name="error_red">#FF475D</color>
     <color name="ui2_transparent">#221B163A</color>
 
+    <color name="priority_background_color">#FF475D</color>
+
 
     <!--END-->
 </resources>

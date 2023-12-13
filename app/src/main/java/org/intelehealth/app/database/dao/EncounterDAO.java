@@ -462,7 +462,7 @@ public class EncounterDAO {
     }
 
     public boolean isCompletedExitedSurvey(String visitUUID) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -490,7 +490,7 @@ public class EncounterDAO {
     }
 
     public boolean isPrescriptionReceived(String visitUUID) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -522,7 +522,7 @@ public class EncounterDAO {
     public static String getChiefComplaint(String visitUUID) {
         String complaintValue = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
             if(visitUUID != null) {
@@ -577,7 +577,7 @@ public class EncounterDAO {
     public static String fetchEncounterModifiedDateForPrescGiven(String visitUUID) {
         String modifiedDate = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if(visitUUID != null) {
@@ -612,7 +612,7 @@ public class EncounterDAO {
     public static String fetchEncounterUuidForEncounterVitals(String visitUUID) {
         String uuid = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if(visitUUID != null) {
@@ -647,7 +647,7 @@ public class EncounterDAO {
     public static String fetchEncounterUuidForEncounterAdultInitials(String visitUUID) {
         String uuid = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if(visitUUID != null) {
@@ -676,7 +676,7 @@ public class EncounterDAO {
 
 
     public boolean isVisitCompletedOrExited(String visitUUID) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -704,7 +704,7 @@ public class EncounterDAO {
 
     public static String getEncounterIdForCompletedVisit(String visitUUID) throws DAOException {
         String encounterUuid = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -735,7 +735,7 @@ public class EncounterDAO {
 
     public static String getPrescriptionReceivedTime(String visitUUID) {
         String modifiedTime = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (sync = '1' OR sync = 'true' OR sync = 'TRUE') COLLATE NOCASE",
                 new String[]{visitUUID});
@@ -754,7 +754,7 @@ public class EncounterDAO {
 
     public EncounterDTO getEncounterByVisitUUIDLimit1(String visitUUID) {
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         // db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and voided = '0' AND encounter_type_uuid != ? ORDER BY encounter_time DESC limit 1",
                 new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});
