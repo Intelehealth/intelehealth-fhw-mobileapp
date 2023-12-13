@@ -2731,7 +2731,15 @@ public class Node implements Serializable {
                     if (isAssociateSymptomsType) {
                         question = right_pointing + " " + mOptions.get(i).findDisplay();
                     } else {
-                        question = bullet + " " + mOptions.get(i).findDisplay();
+                        if (mOptions.get(i).isTerminal()) {
+                            question = bullet + " " + mOptions.get(i).findDisplay();
+                        } else {
+                            if (level % 2 == 0) {
+                                question = big_bullet + " " + mOptions.get(i).findDisplay();
+                            } else {
+                                question = bullet + " " + mOptions.get(i).findDisplay();
+                            }
+                        }
                     }
                 }
                 question = question.replaceAll("\\[(.*?)\\]", "");
@@ -2782,7 +2790,7 @@ public class Node implements Serializable {
                             if (level == 0) {
                                 stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                             } else {
-                               stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + "," + next_line);
+                                stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + "," + next_line);
 
 
                             }
@@ -2793,7 +2801,11 @@ public class Node implements Serializable {
                 } else {
 
                     stringsList.add(question + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                    String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
+                    Log.i(TAG, "ipt: nested answer " + temp1);
+                    temp1 = temp1.replaceAll("<br/>•", ",");
+                    Log.v(TAG, "ipt: nested answer " + temp1);
+                    stringsList.add(temp1);
                     Log.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
@@ -2851,14 +2863,14 @@ public class Node implements Serializable {
             }
 
         }
-        mLanguage = mLanguage.replaceAll(",<br/>•",",");
-        if(mLanguage.endsWith(",")){
-            mLanguage =  mLanguage.substring(0, mLanguage.length()-1);
+        mLanguage = mLanguage.replaceAll(",<br/>•", ",");
+        if (mLanguage.endsWith(",")) {
+            mLanguage = mLanguage.substring(0, mLanguage.length() - 1);
         }
         Log.i(TAG, "ipt: formQuestionAnswer: " + mLanguage);
 
         if (mLanguage.equalsIgnoreCase("")) {
-            mLanguage = bullet_hollow + "Question not answered" + next_line;
+            mLanguage = (level == 0 ? bullet_hollow : right_pointing) + "Question not answered" + next_line;
         }
 
         return mLanguage;
@@ -3445,8 +3457,14 @@ public class Node implements Serializable {
 
     public boolean isUserInputsTypeNode() {
         boolean result = false;
-        String type = getInputType();
-        Log.v(TAG, "isUserInputsTypeNode - type : " + type);
+        String type = "";
+        if (isHavingNestedQuestion()) {
+            type = getOptionsList() != null && getOptionsList().size() == 1 && getOptionsList().get(0).getOptionsList() != null && getOptionsList().get(0).getOptionsList().size() == 1 ? getOptionsList().get(0).getOptionsList().get(0).getInputType() : getInputType();
+        } else {
+            type = getOptionsList() != null && getOptionsList().size() == 1 ? getOptionsList().get(0).getInputType() : getInputType();
+        }
+
+        Log.v(TAG, "isUserInputsTypeNode - type : " + getText() + "\t=" + type);
         if (type.equals("text") || type.equals("date") || type.equals("location") || type.equals("number") || type.equals("area") || type.equals("duration") || type.equals("range") || type.equals("frequency")) {
             result = true;
         }

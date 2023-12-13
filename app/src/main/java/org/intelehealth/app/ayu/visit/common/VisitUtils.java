@@ -33,14 +33,11 @@ public class VisitUtils {
         return isValidByGender;
     }
 
-    public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy) {
-        recyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
 
-                recyclerView.smoothScrollBy(dx, dy);
-            }
-        }, delayMills);
+    public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy, boolean isEditMode) {
+        Log.v("VisitUtils", "scrollNow isEditMode - " + isEditMode);
+        if (!isEditMode)
+            recyclerView.postDelayed(() -> recyclerView.smoothScrollBy(dx, dy), delayMills);
     }
 
     public static String replaceEnglishCommonString(String data, String locale) {

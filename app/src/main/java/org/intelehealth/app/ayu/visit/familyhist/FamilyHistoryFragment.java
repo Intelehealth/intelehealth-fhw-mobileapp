@@ -141,9 +141,9 @@ public class FamilyHistoryFragment extends Fragment {
                             recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
                         }
                     }, 100);*/
-                        VisitUtils.scrollNow(recyclerView, 300, 0, 500);
+                        VisitUtils.scrollNow(recyclerView, 300, 0, 500,mIsEditMode);
 
-                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400);
+                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400,mIsEditMode);
 
                         mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
                     } else {
