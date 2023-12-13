@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity.checkAndRemoveEndDash;
 import static org.intelehealth.app.database.dao.EncounterDAO.getEncounterListByVisitUUID;
+import static org.intelehealth.app.utilities.DateAndTimeUtils.formatDateFromOnetoAnother;
 import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
 import static org.intelehealth.app.utilities.StringUtils.getLocaleGender;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
@@ -4634,7 +4635,14 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 MedicationModel medicationModel = new Gson().fromJson(update_medUuidAdministeredList.get(i).getValue(), MedicationModel.class);
                 if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(uuid)) {
                     // String creator_name = getCreatorName(creator);
-                    String valueTimeStamp = getValueTimeStamp(update_medUuidAdministeredList.get(i).getCreatedDate());
+                    String valueTimeStamp = "";
+                    if (update_medUuidAdministeredList.get(i).getCreatedDate() != null)
+                        valueTimeStamp = getValueTimeStamp(update_medUuidAdministeredList.get(i).getCreatedDate());
+                    else {
+                        AidModel aidModel = new Gson().fromJson(update_medUuidAdministeredList.get(i).getValue(), AidModel.class);
+                        valueTimeStamp = getValueTimeStamp(aidModel.getDateTime());
+                    }
+                    Log.d(TAG, "formatAdministeredByDetails: medi: " + valueTimeStamp);
                     if (!obsformat.isEmpty())
                         obsformat = obsformat + "<br>" + getResources().getString(R.string.administered_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
                     else
@@ -4653,7 +4661,14 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 AidModel aidModel = new Gson().fromJson(update_aidUuidList.get(i).getValue(), AidModel.class);
                 if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(uuid)) {
                    // String creator_name = getCreatorName(creator);
-                    String valueTimeStamp = getValueTimeStamp(update_aidUuidList.get(i).getCreatedDate());
+                    String valueTimeStamp = "";
+                    if (update_aidUuidList.get(i).getCreatedDate() != null)
+                        valueTimeStamp = getValueTimeStamp(update_aidUuidList.get(i).getCreatedDate());
+                    else {
+                        valueTimeStamp = getValueTimeStamp(aidModel.getDateTime());
+                    }
+
+                    Log.d(TAG, "formatDispensedByDetails: aid: " + valueTimeStamp);
                     obsAddedByString = getResources().getString(R.string.dispensed_by) + " " + aidModel.getHwName() + "<br>" + valueTimeStamp;
                 }
             }
@@ -4664,7 +4679,15 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 MedicationModel medicationModel = new Gson().fromJson(update_medUuidDispenseList.get(i).getValue(), MedicationModel.class);
                 if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(uuid)) {
                    // String creator_name = getCreatorName(creator);
-                    String valueTimeStamp = getValueTimeStamp(update_medUuidDispenseList.get(i).getCreatedDate());
+                    String valueTimeStamp = "";
+                    if (update_medUuidDispenseList.get(i).getCreatedDate() != null)
+                        valueTimeStamp = getValueTimeStamp(update_medUuidDispenseList.get(i).getCreatedDate());
+                    else {
+                        AidModel aidModel = new Gson().fromJson(update_medUuidDispenseList.get(i).getValue(), AidModel.class);
+                        valueTimeStamp = getValueTimeStamp(aidModel.getDateTime());
+                    }
+
+                    Log.d(TAG, "formatDispensedByDetails: medi: " + valueTimeStamp);
                     obsAddedByString = getResources().getString(R.string.dispensed_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
                 }
             }
@@ -4706,10 +4729,19 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         Date date = null;
         try {
             date = df.parse(created_date);
+            df.setTimeZone(TimeZone.getDefault());
         } catch (ParseException e) {
             e.printStackTrace();
+            created_date = formatDateFromOnetoAnother(created_date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "yyyy-MM-dd HH:mm:ss");
+            try {
+                  df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                  date = df.parse(created_date);
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
         }
-        df.setTimeZone(TimeZone.getDefault());
+
+
         String formattedDate = df.format(date);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat formatTime = new SimpleDateFormat("dd-MM-yyyy, hh:mm aa", Locale.ENGLISH);
