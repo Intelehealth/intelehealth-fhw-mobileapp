@@ -9,44 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start Call Notification"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <!--        <org.intelehealth.klivekit.call.ui.custom.SwipeUpIndicator-->
-        <!--            android:id="@+id/imgSwipeUpIndicator"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginBottom="@dimen/std_16dp"-->
-        <!--            app:layout_constraintBottom_toTopOf="@id/fabAcceptCall"-->
-        <!--            app:layout_constraintEnd_toEndOf="@id/fabAcceptCall"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/fabAcceptCall"-->
-        <!--            app:srcCompat="@drawable/ic_swipe_up_indicator" />-->
-
-        <!--        <org.intelehealth.klivekit.call.ui.custom.FabSwipeable-->
-        <!--            android:id="@+id/fabAcceptCall"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginBottom="@dimen/std_48dp"-->
-        <!--            android:src="@drawable/ic_call_accept"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent" />-->
-        <org.intelehealth.klivekit.call.ui.custom.SwipeButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/std_48dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

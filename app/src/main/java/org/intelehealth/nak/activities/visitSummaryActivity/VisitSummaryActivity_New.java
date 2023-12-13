@@ -81,6 +81,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -99,7 +100,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.nak.BuildConfig;
 import org.intelehealth.nak.R;
 import org.intelehealth.nak.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
@@ -152,7 +152,7 @@ import org.intelehealth.nak.utilities.UuidDictionary;
 import org.intelehealth.nak.utilities.exception.DAOException;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.nak.webrtc.activity.BaseActivity;
-import org.intelehealth.nak.webrtc.activity.NammaChatActivity;
+import org.intelehealth.nak.webrtc.activity.IDAChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -336,46 +336,32 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             return;
         }
         EncounterDAO encounterDAO = new EncounterDAO();
-        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUUID);
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUUID);
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
         RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
-        RtcArgs args = new RtcArgs();
-        if (rtcConnectionDTO != null)
-            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
-        else args.setDoctorUuid("");
-        args.setPatientId(patientUuid);
-        args.setPatientName(patientName);
-        args.setVisitId(visitUUID);
-        args.setNurseId(encounterDTO.getProvideruuid());
-        NammaChatActivity.startChatActivity(VisitSummaryActivity_New.this, args);
+        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, IDAChatActivity.class);
+        chatIntent.putExtra("patientName", patientName);
+        chatIntent.putExtra("visitUuid", visitUUID);
+        chatIntent.putExtra("patientUuid", patientUuid);
+        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+        chatIntent.putExtra("isForVideo", false);
+        if (rtcConnectionDTO != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
+                    Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+                } else {
+                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                    startActivity(chatIntent);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-//        EncounterDAO encounterDAO = new EncounterDAO();
-//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUUID);
-//        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-//        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
-//        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, IDAChatActivity.class);
-//        chatIntent.putExtra("patientName", patientName);
-//        chatIntent.putExtra("visitUuid", visitUUID);
-//        chatIntent.putExtra("patientUuid", patientUuid);
-//        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-//        chatIntent.putExtra("isForVideo", false);
-//        if (rtcConnectionDTO != null) {
-//            try {
-//                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-//                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
-//                    Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-//                } else {
-//                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-//                    startActivity(chatIntent);
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-//        } else {
-//            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-//            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-//        }
+        } else {
+            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -2346,8 +2332,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         respiratoryText = findViewById(R.id.textView_respiratory);
         bmiView = findViewById(R.id.textView_bmi_value);
 
-        tvHemoglobin = findViewById(R.id.textView_hemoglobin_value);
-        tvBloodSugar = findViewById(R.id.textView_blood_sugar_value);
+//        tvHemoglobin = findViewById(R.id.textView_hemoglobin_value);
+//        tvBloodSugar = findViewById(R.id.textView_blood_sugar_value);
 
         // vitals ids - end
 

@@ -24,6 +24,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -75,7 +76,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.nak.BuildConfig;
@@ -113,12 +113,20 @@ import org.intelehealth.nak.utilities.TooltipWindow;
 import org.intelehealth.nak.utilities.UrlModifiers;
 import org.intelehealth.nak.utilities.exception.DAOException;
 import org.intelehealth.nak.webrtc.activity.BaseActivity;
+import org.intelehealth.nak.webrtc.activity.IDAChatActivity;
+import org.intelehealth.nak.webrtc.activity.IDAVideoActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -128,7 +136,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import kotlin.Unit;
 import okhttp3.ResponseBody;
 
 public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
@@ -278,7 +285,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         super.onCreate(savedInstanceState);
         setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
-        updateFirebaseToken();
         context = HomeScreenActivity_New.this;
 
         networkUtils = new NetworkUtils(context, this);
@@ -294,14 +300,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager = new SessionManager(this);
         initUI();
         clickListeners();
-    }
-
-    private void updateFirebaseToken() {
-        FcmTokenGenerator.INSTANCE.getDeviceToken(token -> {
-            IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
-            saveToken();
-            return Unit.INSTANCE;
-        });
     }
 
     private void clickListeners() {

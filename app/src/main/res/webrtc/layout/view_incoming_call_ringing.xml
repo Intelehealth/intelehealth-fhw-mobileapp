@@ -6,14 +6,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:paddingTop="@dimen/action_btn_min_width"
+        android:paddingBottom="@dimen/action_btn_min_width">
 
         <TextView
             android:id="@+id/caller_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/action_btn_min_width"
             android:text="Doctor"
             android:textColor="@color/gray_5"
             android:textSize="28sp"
@@ -55,42 +56,29 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
 
-            <org.intelehealth.klivekit.call.ui.custom.SwipeButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabDeclineCall"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
-                app:btnColor="@color/red"
-                app:btnIcon="@drawable/ic_call_end"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/decline"
+                android:src="@drawable/ic_call_end"
+                app:backgroundTint="@color/red"
+                app:elevation="0dp"
+                app:fabCustomSize="@dimen/video_call_action_btn_min_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/fabAcceptCall"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-            <!--                android:id="@+id/fabDeclineCall"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:contentDescription="@string/decline"-->
-            <!--                android:src="@drawable/ic_call_end"-->
-            <!--                app:backgroundTint="@color/red"-->
-            <!--                app:elevation="0dp"-->
-            <!--                app:fabCustomSize="@dimen/video_call_action_btn_min_size"-->
-            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                app:layout_constraintEnd_toStartOf="@id/fabAcceptCall"-->
-            <!--                app:layout_constraintHorizontal_chainStyle="spread"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="parent"-->
-            <!--                app:tint="@null" />-->
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@null" />
 
-            <org.intelehealth.klivekit.call.ui.custom.SwipeButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabAcceptCall"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/action_btn_min_width"
                 android:contentDescription="@string/accept"
                 android:src="@drawable/ic_call_accept"
@@ -103,31 +91,22 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@null" />
 
-            <!--            <org.intelehealth.klivekit.call.ui.custom.FabSwipeable-->
-            <!--                android:id="@+id/fabSpeakerOnOff"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginStart="@dimen/action_btn_min_width"-->
-            <!--                android:contentDescription="@string/accept"-->
-            <!--                android:src="@drawable/selector_mic"-->
-            <!--                android:visibility="gone"-->
-            <!--                app:backgroundTint="@color/color_activated_deactived_action"-->
-            <!--                app:elevation="0dp"-->
-            <!--                app:fabCustomSize="@dimen/video_call_action_btn_min_size"-->
-            <!--                app:layout_constraintBottom_toTopOf="@id/tvAcceptSwipeHint"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintStart_toEndOf="@id/fabDeclineCall"-->
-            <!--                app:layout_constraintTop_toTopOf="parent"-->
-            <!--                app:tint="@null" />-->
-
-            <!--            <TextView-->
-            <!--                android:id="@+id/tvAcceptSwipeHint"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="@string/swipe_up"-->
-            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                app:layout_constraintEnd_toEndOf="@id/fabAcceptCall"-->
-            <!--                app:layout_constraintStart_toStartOf="@id/fabAcceptCall" />-->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabSpeakerOnOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/action_btn_min_width"
+                android:contentDescription="@string/accept"
+                android:src="@drawable/selector_mic"
+                android:visibility="gone"
+                app:backgroundTint="@color/color_activated_deactived_action"
+                app:elevation="0dp"
+                app:fabCustomSize="@dimen/video_call_action_btn_min_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fabDeclineCall"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@null" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 </layout>

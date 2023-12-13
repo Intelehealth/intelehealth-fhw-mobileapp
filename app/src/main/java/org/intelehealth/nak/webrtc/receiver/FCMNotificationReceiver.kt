@@ -21,7 +21,7 @@ import org.intelehealth.nak.database.dao.PatientsDAO
 import org.intelehealth.nak.utilities.NotificationUtils
 import org.intelehealth.nak.utilities.OfflineLogin
 import org.intelehealth.nak.utilities.SessionManager
-import org.intelehealth.nak.webrtc.activity.NammaVideoActivity
+import org.intelehealth.nak.webrtc.activity.IDAVideoActivity
 import java.util.HashMap
 
 /**
@@ -52,11 +52,11 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 }.also { arg ->
                     if (isAppInForeground()) {
                         arg.callMode = CallMode.INCOMING
-                        arg.className = NammaVideoActivity::class.java.name
+                        arg.className = IDAVideoActivity::class.java.name
                         CallHandlerUtils.saveIncomingCall(context, arg)
                         context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
                     } else {
-                        CallHandlerUtils.operateIncomingCall(it, arg, NammaVideoActivity::class.java)
+                        CallHandlerUtils.operateIncomingCall(it, arg, IDAVideoActivity::class.java)
                     }
                 }
             } else {

@@ -46,7 +46,7 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
             new AppNotification.Builder(this)
                     .title(title)
                     .body(chatMessage.getMessage())
-                    .pendingIntent(NammaChatActivity.getPendingIntent(this, args))
+                    .pendingIntent(IDAChatActivity.getPendingIntent(this, args))
                     .send();
 
             saveChatInfoLog(args.getVisitId(), args.getDoctorUuid());

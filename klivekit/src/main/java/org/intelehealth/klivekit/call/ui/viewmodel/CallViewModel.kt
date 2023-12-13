@@ -231,11 +231,9 @@ open class CallViewModel(
     }
 
     private fun onRemoteParticipantTrackPublished(it: RoomEvent.TrackPublished) {
-        if (it.participant is RemoteParticipant) {
-            remoteParticipant = it.participant as RemoteParticipant
-            getVideoTrack(it.participant)?.let {
-                updateParticipantVideoTrack(it)
-            }
+        remoteParticipant = it.participant as RemoteParticipant
+        getVideoTrack(it.participant)?.let {
+            updateParticipantVideoTrack(it)
         }
     }
 

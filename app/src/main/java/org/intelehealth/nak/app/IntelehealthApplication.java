@@ -25,9 +25,9 @@ import org.intelehealth.nak.BuildConfig;
 import org.intelehealth.nak.R;
 import org.intelehealth.nak.database.InteleHealthDatabaseHelper;
 import org.intelehealth.nak.utilities.SessionManager;
-import org.intelehealth.nak.webrtc.activity.NammaCallLogActivity;
-import org.intelehealth.nak.webrtc.activity.NammaChatActivity;
-import org.intelehealth.nak.webrtc.activity.NammaVideoActivity;
+import org.intelehealth.nak.webrtc.activity.IDACallLogActivity;
+import org.intelehealth.nak.webrtc.activity.IDAChatActivity;
+import org.intelehealth.nak.webrtc.activity.IDAVideoActivity;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
@@ -60,7 +60,7 @@ public class IntelehealthApplication extends MultiDexApplication {
 
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper;
 
-    private final SocketManager socketManager = SocketManager.getInstance();
+    private SocketManager socketManager = SocketManager.getInstance();
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -101,7 +101,7 @@ public class IntelehealthApplication extends MultiDexApplication {
             Parse.initialize(new Parse.Configuration.Builder(this)
                     .clientBuilder(builder)
                     .applicationId(AppConstants.IMAGE_APP_ID)
-                    .server(BuildConfig.SERVER_URL + ":1337/parse/")
+                    .server(url + ":1337/parse/")
                     .build()
             );
             Log.i(TAG, "onCreate: Parse init");
@@ -112,8 +112,6 @@ public class IntelehealthApplication extends MultiDexApplication {
         }
 
         initSocketConnection();
-
-        Timber.plant(Timber.DebugTree());
     }
 
     private void configureCrashReporting() {
@@ -165,9 +163,9 @@ public class IntelehealthApplication extends MultiDexApplication {
                 .socketUrl(BuildConfig.SOCKET_URL + "?userId="
                         + sessionManager.getProviderID()
                         + "&name=" + sessionManager.getChwname())
-                .callIntentClass(NammaVideoActivity.class)
-                .chatIntentClass(NammaChatActivity.class)
-                .callLogIntentClass(NammaCallLogActivity.class)
+                .callIntentClass(IDAVideoActivity.class)
+                .chatIntentClass(IDAChatActivity.class)
+                .callLogIntentClass(IDACallLogActivity.class)
                 .build().saveConfig(this);
     }
 
