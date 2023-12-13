@@ -7,8 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import org.intelehealth.ekalarogya.R
@@ -39,6 +41,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         notification: RemoteMessage.Notification?,
         data: HashMap<String, String>
     ) {
+        Timber.tag(TAG).d("onMessageReceived: ")
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {
@@ -137,5 +140,9 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 //            notificationManager.createNotificationChannel(channel)
 //        }
 //        notificationManager.notify(1, notificationBuilder.build())
+    }
+
+    companion object {
+        const val TAG = "FCMNotificationReceiver"
     }
 }
