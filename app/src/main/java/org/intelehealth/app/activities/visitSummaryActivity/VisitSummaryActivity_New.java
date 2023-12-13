@@ -1949,20 +1949,27 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
 
         if (id == 1) {
-            int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) {
+                int readMediaImagesPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+                if (readMediaImagesPermission != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+                }
+            } else {
+                int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                }
+
+                int readExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+                if (readExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                }
             }
 
             if (!listPermissionsNeeded.isEmpty()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(listPermissionsNeeded.toArray
-                            (new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
-                }
+                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
                 return false;
             }
-
         }
 
         return true;
@@ -3835,7 +3842,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             String val = mChiefComplainList.get(i).trim();
             val = val.replaceAll("<.*?>", "");
-            Log.v("mChiefComplainList", "CC - "+val);
+            Log.v("mChiefComplainList", "CC - " + val);
             if (!val.toLowerCase().contains("h/o specific illness")) {
                 if (!stringBuilder.toString().isEmpty()) {
                     stringBuilder.append(",");

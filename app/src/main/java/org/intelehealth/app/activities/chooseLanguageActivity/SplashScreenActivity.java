@@ -218,10 +218,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private boolean checkAndRequestPermissions() {
-        int cameraPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA);
+        int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
-        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
@@ -232,14 +230,33 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (getAccountPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
         }
-        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
         if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
 
         }
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) {
+            int notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS);
+            if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS);
+            }
+
+            int readMediaImagesPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+            if (readMediaImagesPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+            }
+        } else {
+            int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+
+            int readExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (readExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+        }
+
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
@@ -542,7 +559,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     break;
                 }
             }
-            if(permissionsCheck) {
+            if (permissionsCheck) {
                 if (allGranted) {
                     checkPerm();
                 } else {
