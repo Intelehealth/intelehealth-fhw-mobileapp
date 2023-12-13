@@ -413,7 +413,6 @@ public class DateAndTimeUtils {
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
             FirebaseCrashlytics.getInstance().recordException(ex);
-            Log.v("SearchPatient", "date_ex: " + ex);
         }
         return formattedDate;
     }

@@ -72,7 +72,6 @@
                     android:layout_toEndOf="@+id/fu_item_calendar"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/fu_card_item_date"
                     android:textAppearance="@style/caption"
                     android:textColor="@null"
                     android:textSize="@dimen/fu_male_textsize" />
