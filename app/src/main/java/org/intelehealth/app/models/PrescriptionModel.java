@@ -11,6 +11,7 @@ public class PrescriptionModel {
     String patientUuid;
     String openmrs_id;
     String first_name;
+    String middle_name;
     String last_name;
     String phone_number;
     String gender;
@@ -167,5 +168,13 @@ public class PrescriptionModel {
 
     public void setObsservermodifieddate(String obsservermodifieddate) {
         this.obsservermodifieddate = obsservermodifieddate;
+    }
+
+    public String getMiddle_name() {
+        return middle_name;
+    }
+
+    public void setMiddle_name(String middle_name) {
+        this.middle_name = middle_name;
     }
 }

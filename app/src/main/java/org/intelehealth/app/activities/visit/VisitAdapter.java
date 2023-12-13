@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,9 +44,11 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -60,15 +65,18 @@ import okhttp3.ResponseBody;
  */
 public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     private Context context;
-    private List<PrescriptionModel> list;
+    List<PrescriptionModel> list = new ArrayList<>();
     ImagesDAO imagesDAO = new ImagesDAO();
     String profileImage = "";
     String profileImage1 = "";
     SessionManager sessionManager;
+    private String appLanguage;
 
-    public VisitAdapter(Context context, List<PrescriptionModel> list) {
+    public VisitAdapter(Context context, List<PrescriptionModel> list, String appLanguage) {
         this.context = context;
-        this.list = list;
+        this.appLanguage = appLanguage;
+        this.list.addAll(list);
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -95,8 +103,9 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
 
             //  1. Age
-            String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
-            holder.search_gender.setText(model.getGender() + " " + age);
+           /* String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, model.getDob(), model.getGender(), sessionManager);
 
             // Patient Photo
             //1.
@@ -135,32 +144,43 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             // visit start date
             if (!model.getVisit_start_date().equalsIgnoreCase("null") || !model.getVisit_start_date().isEmpty()) {
                 String startDate = model.getVisit_start_date();
-             //   startDate = DateAndTimeUtils.date_formatter(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMMM");
+                //   startDate = DateAndTimeUtils.date_formatter(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMMM");
                 startDate = DateAndTimeUtils.date_formatter(startDate,
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
                 Log.v("startdate", "startDAte: " + startDate);
+                if (appLanguage.equalsIgnoreCase("ru")) {
+                    startDate = StringUtils.translateShortHandMonths(startDate);
+                    startDate = startDate.replace("at", "на");
+                }
+
+                String time = StringUtils.extractTimeFromString(startDate);
+                String convertedTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(time, "HH:mm a", "HH:mm");
+                startDate = startDate.replace(time, convertedTime);
                 holder.fu_date_txtview.setText(startDate);
             }
 
             // Emergency - start
             if (model.isEmergency())
-                holder.fu_priority_tag.setVisibility(View.VISIBLE);
+                holder.fl_priority.setVisibility(View.VISIBLE);
             else
-                holder.fu_priority_tag.setVisibility(View.GONE);
+                holder.fl_priority.setVisibility(View.GONE);
             // Emergency - end
 
+/*
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                 }
             });
+*/
 
             holder.fu_cardview_item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, VisitDetailsActivity.class);
-                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
+                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1));
                 intent.putExtra("patientUuid", model.getPatientUuid());
                 intent.putExtra("gender", model.getGender());
+                intent.putExtra("dob", model.getDob());
                 String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
                 intent.putExtra("age", age1);
                 intent.putExtra("priority_tag", model.isEmergency());
@@ -189,9 +209,10 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
     public class Myholder extends RecyclerView.ViewHolder {
         private CardView fu_cardview_item;
-        private TextView name, fu_date_txtview, search_gender;
-        private ImageView profile_image, fu_priority_tag;
+        private TextView name, fu_date_txtview, search_gender, fu_priority_tag;
+        private ImageView profile_image;
         private LinearLayout shareicon;
+        private FrameLayout fl_priority;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
@@ -201,13 +222,13 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
             fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
+            fl_priority = itemView.findViewById(R.id.fl_priority);
             shareicon = itemView.findViewById(R.id.shareiconLL);
         }
     }
 
     // profile downlaod
     public void profilePicDownloaded(PrescriptionModel model, VisitAdapter.Myholder holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientUuid());
         Logger.logD("TAG", "profileimage url" + url);
@@ -258,7 +279,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
-                }
+                    }
                 });
     }
 
@@ -269,10 +290,17 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         alertdialogBuilder.setView(convertView);
         EditText editText = convertView.findViewById(R.id.editText_mobileno);
         Button sharebtn = convertView.findViewById(R.id.sharebtn);
+
         String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
         String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
-        if(model.getPhone_number()!=null)
-            editText.setText(model.getPhone_number());
+
+        try {
+            String phoneNo = phoneNumber(model.getPatientUuid());
+            editText.setText(phoneNo);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
         sharebtn.setOnClickListener(v -> {
             if (!editText.getText().toString().equalsIgnoreCase("")) {
                 String phoneNumber = /*"+91" +*/ editText.getText().toString();
@@ -297,5 +325,4 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         alertDialog.show();
     }
-
 }

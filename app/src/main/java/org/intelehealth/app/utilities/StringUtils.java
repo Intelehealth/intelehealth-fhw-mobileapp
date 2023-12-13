@@ -21,11 +21,14 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -2265,8 +2268,7 @@ public final class StringUtils {
         return val;
     }
 
-    public static String switch_hi_en_country(String val, String locale)
-    {
+    public static String switch_hi_en_country(String val, String locale) {
         if (locale.equalsIgnoreCase("hi")) {
             switch (val) {
                 case "India":
@@ -2404,7 +2406,7 @@ public final class StringUtils {
                     val = "पश्चिम बंगाल";
                     break;
 
-                    //us states
+                //us states
 
                 case "Alabama":
                     val = "अलाबामा";
@@ -2898,8 +2900,7 @@ public final class StringUtils {
                     break;
             }
 
-        }
-        else {
+        } else {
             return val;
         }
         return val;
@@ -3995,5 +3996,153 @@ public final class StringUtils {
         DecimalFormat df = new DecimalFormat("0.0");
         df.setRoundingMode(RoundingMode.HALF_UP);
         return String.valueOf(df.format(value));
+    }
+
+    public static String translateShortHandMonths(String monthName) {
+        if (monthName.contains("Jan")) monthName = monthName.replace("Jan", "янв.");
+        if (monthName.contains("Feb")) monthName = monthName.replace("Feb", "февр.");
+        if (monthName.contains("Mar")) monthName = monthName.replace("Mar", "март.");
+        if (monthName.contains("Apr")) monthName = monthName.replace("Apr", "апр.");
+        if (monthName.contains("May")) monthName = monthName.replace("May", "май.");
+        if (monthName.contains("Jun")) monthName = monthName.replace("Jun", "июнь");
+        if (monthName.contains("Jul")) monthName = monthName.replace("Jul", "июль");
+        if (monthName.contains("Aug")) monthName = monthName.replace("Aug", "авг.");
+        if (monthName.contains("Sep")) monthName = monthName.replace("Sep", "сент.");
+        if (monthName.contains("Oct")) monthName = monthName.replace("Oct", "окт.");
+        if (monthName.contains("Nov")) monthName = monthName.replace("Nov", "нояб.");
+        if (monthName.contains("Dec")) monthName = monthName.replace("Dec", "дек.");
+
+        return monthName;
+    }
+
+    public static String extractDateFromString(String date) {
+        String result = "";
+        String regex = "\\d{2}/\\d{2}/\\d{4}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(date);
+        while (matcher.find()) {
+            result = matcher.group();
+        }
+        return result;
+    }
+
+    public static String extractTimeFromString(String dateTimeString) {
+        String result = "";
+        String regex = "\\b\\d{1,2}:\\d{2} [APap][mM]\\b";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(dateTimeString);
+        while (matcher.find()) {
+            result = matcher.group();
+        }
+        return result;
+    }
+
+    public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
+        //  1. Age
+        String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        } else {
+            genderView.setText(gender + " " + age);
+        }
     }
 }
