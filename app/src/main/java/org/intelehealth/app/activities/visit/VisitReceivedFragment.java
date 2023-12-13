@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.VisitsDAO.getPendingPrescCount;
 import static org.intelehealth.app.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
@@ -261,9 +262,20 @@ public class VisitReceivedFragment extends Fragment {
     private void visitData() {
 
         // Total no. of End visits.
-        int total = getTotalCounts_EndVisit();
-        String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription);
-        received_endvisit_no.setText(Html.fromHtml(htmlvalue));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int total = getPendingPrescCount();
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription) ;
+                        received_endvisit_no.setText(Html.fromHtml(htmlvalue));
+                    }
+                });
+            }
+        }).start();
+
 
         // Filter - start
         filter_icon.setOnClickListener(v -> {
@@ -309,7 +321,8 @@ public class VisitReceivedFragment extends Fragment {
         closeButton.setOnClickListener(v -> {
             no_patient_found_block.setVisibility(View.GONE);
             main_block.setVisibility(View.VISIBLE);
-            defaultData();
+//            defaultData();
+            resetData();
             searchview_received.setQuery("", false);
 
         });
