@@ -167,9 +167,9 @@ public class AppConstants {
     //UI2.0 Constants
     //public static final String DEMO_URL = "uiux.intelehealth.org";
     //public static final String DEMO_URL = "demo2.intelehealth.org";
-    public static final String DEMO_URL = "demo.intelehealth.org";
+//    public static final String DEMO_URL = "demo.intelehealth.org";
 
-//    public static final String DEMO_URL = "dev.intelehealth.org";
+    public static final String DEMO_URL = "dev.intelehealth.org";
 //    public static final String DEMO_URL = "revamp.intelehealth.org";
     //public static final String DEMO_URL = "testing.intelehealth.org";
 
