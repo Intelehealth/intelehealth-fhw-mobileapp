@@ -54,6 +54,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -4337,19 +4338,12 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 if (LocaleHelper.isArabic(this))
                     textView.setGravity(Gravity.END);
 
-              /*  View view = new View(VisitSummaryActivity.this);
-                view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
-                view.setBackground(getResources().getDrawable(R.drawable.divider));
-                float scale = getResources().getDisplayMetrics().density;
-                int dpAsPixels = (int) (15*scale + 0.5f);
-                view.setPadding(0, dpAsPixels, 0, dpAsPixels);*/
-
                 tl_prescribed_medications.addView(textView);
                 tl_prescribed_medications.addView(show_textView);
+                tl_prescribed_medications.addView(showDividerLine());
+              //  tl_prescribed_medications.removeViewAt(tl_prescribed_medications.getChildCount()-1);
 
-              //  tl_prescribed_medications.addView(view);
                 Log.d(TAG, "parseData: med: " + tl_prescribed_medications.getChildCount() + "\n" + textView.getText().toString());
-
                 break;
             }
             case UuidDictionary.MEDICAL_ADVICE: {
@@ -4523,6 +4517,16 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 break;
 
         }
+    }
+
+    private View showDividerLine() {
+        View view = new View(VisitSummaryActivity.this);
+        view.setBackgroundColor(getResources().getColor(R.color.divider));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2);
+    //    params.setMargins(0, 20, 0, 0);
+        params.topMargin = 50;
+        view.setLayoutParams(params);
+        return view;
     }
 
     private int showMoreAndHideContent(TextView contentTextView) {
