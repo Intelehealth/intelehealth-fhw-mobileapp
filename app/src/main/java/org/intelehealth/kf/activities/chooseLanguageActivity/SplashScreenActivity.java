@@ -39,11 +39,11 @@ import androidx.transition.TransitionManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.intelehealth.kf.BuildConfig;
 import org.intelehealth.kf.R;
 import org.intelehealth.kf.activities.IntroActivity.IntroScreensActivity_New;
 import org.intelehealth.kf.activities.homeActivity.HomeScreenActivity_New;
