@@ -1,3 +1,36 @@
+org/intelehealth/apprtc/data/Constants.java
+ org.intelehealth.apprtc.data.Constants
+org/intelehealth/apprtc/services/SocketBackgroundService.java
+ org.intelehealth.apprtc.services.SocketBackgroundService
+org/intelehealth/apprtc/ChatActivity.java
+ org.intelehealth.apprtc.ChatActivity
+ org.intelehealth.apprtc.ChatActivity$1
+ org.intelehealth.apprtc.ChatActivity$10
+ org.intelehealth.apprtc.ChatActivity$11
+ org.intelehealth.apprtc.ChatActivity$12
+ org.intelehealth.apprtc.ChatActivity$13
+ org.intelehealth.apprtc.ChatActivity$14
+ org.intelehealth.apprtc.ChatActivity$15
+ org.intelehealth.apprtc.ChatActivity$16
+ org.intelehealth.apprtc.ChatActivity$2
+ org.intelehealth.apprtc.ChatActivity$3
+ org.intelehealth.apprtc.ChatActivity$4
+ org.intelehealth.apprtc.ChatActivity$5
+ org.intelehealth.apprtc.ChatActivity$6
+ org.intelehealth.apprtc.ChatActivity$7
+ org.intelehealth.apprtc.ChatActivity$8
+ org.intelehealth.apprtc.ChatActivity$9
+org/intelehealth/apprtc/adapter/ChatListingAdapter.java
+ org.intelehealth.apprtc.adapter.ChatListingAdapter
+ org.intelehealth.apprtc.adapter.ChatListingAdapter$AttachmentClickListener
+ org.intelehealth.apprtc.adapter.ChatListingAdapter$LeftViewHolder
+ org.intelehealth.apprtc.adapter.ChatListingAdapter$LeftViewHolder$1
+ org.intelehealth.apprtc.adapter.ChatListingAdapter$RightViewHolder
+ org.intelehealth.apprtc.adapter.ChatListingAdapter$RightViewHolder$1
+org/intelehealth/apprtc/utils/PropertyReader.java
+ org.intelehealth.apprtc.utils.PropertyReader
+org/intelehealth/apprtc/data/Manager.java
+ org.intelehealth.apprtc.data.Manager
 org/intelehealth/apprtc/DataBindingTriggerClass.java
  org.intelehealth.apprtc.DataBindingTriggerClass
 org/intelehealth/apprtc/CompleteActivity.java
@@ -9,43 +42,58 @@ org/intelehealth/apprtc/CompleteActivity.java
  org.intelehealth.apprtc.CompleteActivity$13
  org.intelehealth.apprtc.CompleteActivity$14
  org.intelehealth.apprtc.CompleteActivity$15
+ org.intelehealth.apprtc.CompleteActivity$16
+ org.intelehealth.apprtc.CompleteActivity$17
+ org.intelehealth.apprtc.CompleteActivity$18
+ org.intelehealth.apprtc.CompleteActivity$19
  org.intelehealth.apprtc.CompleteActivity$2
  org.intelehealth.apprtc.CompleteActivity$2$1
+ org.intelehealth.apprtc.CompleteActivity$20
+ org.intelehealth.apprtc.CompleteActivity$21
+ org.intelehealth.apprtc.CompleteActivity$22
+ org.intelehealth.apprtc.CompleteActivity$23
+ org.intelehealth.apprtc.CompleteActivity$24
+ org.intelehealth.apprtc.CompleteActivity$25
+ org.intelehealth.apprtc.CompleteActivity$26
+ org.intelehealth.apprtc.CompleteActivity$27
+ org.intelehealth.apprtc.CompleteActivity$28
+ org.intelehealth.apprtc.CompleteActivity$29
  org.intelehealth.apprtc.CompleteActivity$3
+ org.intelehealth.apprtc.CompleteActivity$30
+ org.intelehealth.apprtc.CompleteActivity$31
+ org.intelehealth.apprtc.CompleteActivity$32
+ org.intelehealth.apprtc.CompleteActivity$33
+ org.intelehealth.apprtc.CompleteActivity$34
+ org.intelehealth.apprtc.CompleteActivity$35
+ org.intelehealth.apprtc.CompleteActivity$36
+ org.intelehealth.apprtc.CompleteActivity$37
+ org.intelehealth.apprtc.CompleteActivity$38
+ org.intelehealth.apprtc.CompleteActivity$39
  org.intelehealth.apprtc.CompleteActivity$4
+ org.intelehealth.apprtc.CompleteActivity$40
  org.intelehealth.apprtc.CompleteActivity$5
+ org.intelehealth.apprtc.CompleteActivity$5$1
  org.intelehealth.apprtc.CompleteActivity$6
  org.intelehealth.apprtc.CompleteActivity$7
  org.intelehealth.apprtc.CompleteActivity$8
  org.intelehealth.apprtc.CompleteActivity$9
-org/intelehealth/apprtc/data/Constants.java
- org.intelehealth.apprtc.data.Constants
-org/intelehealth/apprtc/services/SocketBackgroundService.java
- org.intelehealth.apprtc.services.SocketBackgroundService
 org/intelehealth/apprtc/utils/FirebaseUtils.java
  org.intelehealth.apprtc.utils.FirebaseUtils
  org.intelehealth.apprtc.utils.FirebaseUtils$1
  org.intelehealth.apprtc.utils.FirebaseUtils$2
-org/intelehealth/apprtc/ChatActivity.java
- org.intelehealth.apprtc.ChatActivity
- org.intelehealth.apprtc.ChatActivity$1
- org.intelehealth.apprtc.ChatActivity$2
- org.intelehealth.apprtc.ChatActivity$3
- org.intelehealth.apprtc.ChatActivity$4
- org.intelehealth.apprtc.ChatActivity$5
- org.intelehealth.apprtc.ChatActivity$6
- org.intelehealth.apprtc.ChatActivity$7
 org/intelehealth/apprtc/LauncherActivity.java
  org.intelehealth.apprtc.LauncherActivity
-org/intelehealth/apprtc/adapter/ChatListingAdapter.java
- org.intelehealth.apprtc.adapter.ChatListingAdapter
- org.intelehealth.apprtc.adapter.ChatListingAdapter$LeftViewHolder
- org.intelehealth.apprtc.adapter.ChatListingAdapter$RightViewHolder
 org/intelehealth/apprtc/databinding/ActivitySamplePeerConnectionBinding.java
  org.intelehealth.apprtc.databinding.ActivitySamplePeerConnectionBinding
+org/intelehealth/apprtc/utils/AwsS3Utils.java
+ org.intelehealth.apprtc.utils.AwsS3Utils
+ org.intelehealth.apprtc.utils.AwsS3Utils$1
+ org.intelehealth.apprtc.utils.AwsS3Utils$1$1
+org/intelehealth/apprtc/utils/BitmapUtils.java
+ org.intelehealth.apprtc.utils.BitmapUtils
+org/intelehealth/apprtc/utils/RealPathUtil.java
+ org.intelehealth.apprtc.utils.RealPathUtil
 org/intelehealth/apprtc/BuildConfig.java
  org.intelehealth.apprtc.BuildConfig
 org/intelehealth/apprtc/SimpleSdpObserver.java
  org.intelehealth.apprtc.SimpleSdpObserver
-org/intelehealth/apprtc/data/Manager.java
- org.intelehealth.apprtc.data.Manager

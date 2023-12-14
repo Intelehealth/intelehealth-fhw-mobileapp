@@ -1,0 +1,1981 @@
+package org.intelehealth.kf.ayu.visit.common.adapter;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+import com.google.android.material.slider.LabelFormatter;
+import com.google.android.material.slider.RangeSlider;
+import com.google.android.material.slider.Slider;
+import com.google.gson.Gson;
+
+import org.intelehealth.kf.R;
+import org.intelehealth.kf.ayu.visit.common.OnItemSelection;
+import org.intelehealth.kf.ayu.visit.common.VisitUtils;
+import org.intelehealth.kf.ayu.visit.model.ComplainBasicInfo;
+import org.intelehealth.kf.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
+import org.intelehealth.kf.knowledgeEngine.Node;
+import org.intelehealth.kf.knowledgeEngine.PhysicalExam;
+import org.intelehealth.kf.utilities.DialogUtils;
+import org.intelehealth.kf.utilities.SessionManager;
+import org.intelehealth.kf.utilities.WindowsUtils;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
+
+public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final String TAG = "QuestionsListingAdapter";
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
+    private static final int TYPE_FOOTER = 2;
+    private Context mContext;
+    private List<Node> mItemList = new ArrayList<Node>();
+    //private int mTotalQuery = 0;
+    RecyclerView mRecyclerView;
+    private int mLastImageCaptureSelectedNodeIndex = 0;
+
+    public void addImageInLastNode(String image) {
+        mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
+        Log.v("showCameraView", "addImageInLastNode mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
+        Log.v("showCameraView", "addImageInLastNode - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
+        notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
+        VisitUtils.scrollNow(mRecyclerView, 1000, 0, 700);
+    }
+
+    public void removeImageInLastNode(int index, String image) {
+        Log.v("showCameraView", "removeImageInLastNode mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
+        Log.v("showCameraView", "removeImageInLastNode - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
+        if (mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList() != null && mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().size() > 0)
+            mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().remove(index);
+        notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
+        VisitUtils.scrollNow(mRecyclerView, 1000, 0, 700);
+    }
+
+    public boolean isIsAssociateSymptomsLoaded() {
+        return mIsAssociateSymptomsLoaded;
+    }
+
+    public void setAssociateSymptomsLoaded(boolean mIsAssociateSymptomsLoaded) {
+        Log.v(TAG, "setAssociateSymptomsLoaded()");
+        this.mIsAssociateSymptomsLoaded = mIsAssociateSymptomsLoaded;
+    }
+
+
+    private OnItemSelection mOnItemSelection;
+    private boolean mIsForPhysicalExam;
+    private PhysicalExam mPhysicalExam;
+    private HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
+    private int mRootIndex = 0;
+    private boolean mIsAssociateSymptomsLoaded = false;
+    private boolean mIsAssociateSymptomsNestedQuery = false;
+    private HashMap<Integer, Integer> mIndexMappingHashMap = new HashMap<>();
+    private boolean mIsEditMode;
+
+    public QuestionsListingAdapter(RecyclerView recyclerView, Context context, boolean isPhyExam, PhysicalExam physicalExam, int rootIndex, HashMap<Integer, ComplainBasicInfo> complainBasicInfoHashMap, boolean editMode, OnItemSelection onItemSelection) {
+        mContext = context;
+        mIsForPhysicalExam = isPhyExam;
+        mPhysicalExam = physicalExam;
+        mRecyclerView = recyclerView;
+        mOnItemSelection = onItemSelection;
+        //mTotalQuery = totalQuery;
+        mRootIndex = rootIndex;
+        mRootComplainBasicInfoHashMap = complainBasicInfoHashMap;
+        mIsEditMode = editMode;
+        //mAnimator = new RecyclerViewAnimator(recyclerView);
+    }
+
+    public void setRootNodeIndex(int rootIndex) {
+        Log.v(TAG, "setRootNodeIndex()");
+        mRootIndex = rootIndex;
+    }
+
+    public void setAssociateSymptomNestedQueryFlag(boolean isAssociateSymptom) {
+        Log.v(TAG, "setAssociateSymptomNestedQueryFlag()");
+        mIsAssociateSymptomsNestedQuery = isAssociateSymptom;
+    }
+
+    private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
+
+    public void addItem(Node node) {
+        Log.v(TAG, "addItem()");
+        mItemList.add(node);
+        int key = mItemList.size() - 1;
+        if (!mIndexMappingHashMap.containsKey(key))
+            mIndexMappingHashMap.put(key, mRootIndex);
+        Log.v(TAG, "mIndexMappingHashMap - " + new Gson().toJson(mIndexMappingHashMap));
+        notifyItemInserted(key);
+    }
+
+    public void addItemAll(List<Node> nodes) {
+        mItemList = nodes;
+
+        for (int i = 0; i < mItemList.size(); i++) {
+            if (!mIndexMappingHashMap.containsKey(i))
+                mIndexMappingHashMap.put(i, mRootIndex);
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public List<Node> geItems() {
+        return mItemList;
+
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.ui2_question_main_root, parent, false);
+        /**
+         * First item's entrance animations.
+         */
+        //mAnimator.onCreateViewHolder(itemView);
+
+        return new GenericViewHolder(itemView);
+    }
+
+    @SuppressLint("DefaultLocale")
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int rawPosition) {
+        if (holder instanceof GenericViewHolder) {
+            Log.v("showCameraView", "onBindViewHolder - " + rawPosition);
+            Log.v("showCameraView", "onBindViewHolder - " + mIndexMappingHashMap);
+            GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
+            genericViewHolder.node = mItemList.get(genericViewHolder.getAbsoluteAdapterPosition());
+            genericViewHolder.index = genericViewHolder.getAbsoluteAdapterPosition();
+            genericViewHolder.rootIndex = mIndexMappingHashMap.getOrDefault(genericViewHolder.index, 0);
+            int position = genericViewHolder.getAbsoluteAdapterPosition();
+
+
+            genericViewHolder.otherContainerLinearLayout.removeAllViews();
+            genericViewHolder.singleComponentContainer.removeAllViews();
+            genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
+            genericViewHolder.recyclerView.setVisibility(View.GONE);
+            genericViewHolder.nestedRecyclerView.setVisibility(View.GONE);
+            genericViewHolder.nextRelativeLayout.setVisibility(View.GONE);
+            //genericViewHolder.superNestedContainerLinearLayout.setVisibility(View.GONE);
+
+            genericViewHolder.tvQuestionCounter.setText("");
+            if (position == mItemList.size() - 1) {
+                genericViewHolder.spinKitView.setVisibility(View.VISIBLE);
+                genericViewHolder.bodyLayout.setVisibility(View.GONE);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        genericViewHolder.spinKitView.setVisibility(View.GONE);
+                        genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
+                        //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
+                        setData(position, genericViewHolder);
+                    }
+                }, 800);
+            } else {
+                genericViewHolder.spinKitView.setVisibility(View.GONE);
+                genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
+                setData(position, genericViewHolder);
+            }
+
+
+        }
+    }
+
+    private void setData(int position, GenericViewHolder genericViewHolder) {
+        Log.v(TAG, "setData");
+        if (mIsForPhysicalExam) {
+            genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", position + 1, mContext.getString(R.string.of), mPhysicalExam.getTotalNumberOfExams(), mContext.getString(R.string.questions))); //"1 of 10 questions"
+
+        } else {
+            genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", getCount(genericViewHolder.index, mIndexMappingHashMap.get(genericViewHolder.index)), mContext.getString(R.string.of), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getOptionSize(), mContext.getString(R.string.questions))); //"1 of 10 questions"
+
+        }
+        genericViewHolder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, genericViewHolder.node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        genericViewHolder.submitButton.setBackgroundResource(genericViewHolder.node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        if (genericViewHolder.node.findPopup() != null && !genericViewHolder.node.findPopup().isEmpty()) {
+            genericViewHolder.knowMoreTextView.setVisibility(View.VISIBLE);
+
+        } else {
+            genericViewHolder.knowMoreTextView.setVisibility(View.GONE);
+        }
+
+           /* if (genericViewHolder.node.isDataCaptured() && genericViewHolder.node.isDataCaptured()) {
+                genericViewHolder.submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+            } else {
+                genericViewHolder.submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            }*/
+        if (mIsForPhysicalExam) {
+
+            Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
+            final String parent_name = mPhysicalExam.getExamParentNodeName(position);
+            String nodeText = parent_name + " : " + _mNode.findDisplay();
+
+            genericViewHolder.tvQuestion.setText(nodeText);
+
+            if (genericViewHolder.node.getJobAidFile() != null && !genericViewHolder.node.getJobAidFile().isEmpty()) {
+                genericViewHolder.referenceContainerLinearLayout.setVisibility(View.VISIBLE);
+                genericViewHolder.tvReferenceDesc.setVisibility(View.VISIBLE);
+            } else {
+                genericViewHolder.referenceContainerLinearLayout.setVisibility(View.GONE);
+                genericViewHolder.tvReferenceDesc.setVisibility(View.GONE);
+            }
+            genericViewHolder.referenceContainerLinearLayout.removeAllViews();
+            String[] imgs = genericViewHolder.node.getJobAidFile().split(",");
+            for (int i = 0; i < imgs.length; i++) {
+                View v2 = View.inflate(mContext, R.layout.ui2_ref_image_view, null);
+                ImageView imageView = v2.findViewById(R.id.image);
+                if (genericViewHolder.node.getJobAidFile() != null || !genericViewHolder.node.getJobAidFile().isEmpty()) {
+                    String drawableName = "physicalExamAssets/" + genericViewHolder.node.getJobAidFile() + ".jpg";
+                    try {
+                        // get input stream
+                        InputStream ims = mContext.getAssets().open(drawableName);
+                        // load image as Drawable
+                        Drawable d = Drawable.createFromStream(ims, null);
+                        // set image to ImageView
+                        imageView.setImageDrawable(d);
+                        imageView.setMinimumHeight(150);
+                        imageView.setMinimumWidth(300);
+                        genericViewHolder.referenceContainerLinearLayout.addView(v2);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+
+                    }
+                }
+            }
+        } else {
+            genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
+
+        }
+        mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainNameByLocale());
+
+        if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
+            //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
+            showAssociateSymptoms(genericViewHolder.node, genericViewHolder, position);
+            genericViewHolder.tvQuestionCounter.setText("");
+        } else {
+            //mOnItemSelection.needTitleChange("");
+
+
+            String type = genericViewHolder.node.getInputType();
+            Log.v(TAG, "onBindViewHolder Type - " + type);
+            Log.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
+            if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
+                type = "options";
+            }
+            switch (type) {
+                case "text":
+                    // askText(questionNode, context, adapter);
+                    addTextEnterView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "date":
+                    //askDate(questionNode, context, adapter);
+                    addDateView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "location":
+                    //askLocation(questionNode, context, adapter);
+                    break;
+                case "number":
+                    // askNumber(questionNode, context, adapter);
+                    addNumberView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "area":
+                    // askArea(questionNode, context, adapter);
+                    break;
+                case "duration":
+                    // askDuration(questionNode, context, adapter);
+                    addDurationView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "range":
+                    // askRange(questionNode, context, adapter);
+                    addRangeView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "frequency":
+                    //askFrequency(questionNode, context, adapter);
+                    addFrequencyView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "camera":
+                    // openCamera(context, imagePath, imageName);
+                    Log.v("showCameraView", "onBindViewHolder 2");
+                    showCameraView(mItemList.get(position), genericViewHolder, position);
+                    break;
+
+                case "options":
+                    // openCamera(context, imagePath, imageName);
+                    //if (mIsForPhysicalExam)
+                    //    showOptionsData(genericViewHolder, mPhysicalExam.getExamNode(position).getOption(0).getOptionsList(), position);
+                    //else
+                    showOptionsData(mItemList.get(position), genericViewHolder, mItemList.get(position).getOptionsList(), position, false);
+                    break;
+            }
+        }
+        if (!mItemList.get(position).getImagePathList().isEmpty()) {
+            Log.v(TAG, "found images");
+            showCameraView(mItemList.get(position), genericViewHolder, position);
+        }
+    }
+
+    private int getCount(int adapterPosition, int rootIndex) {
+        int count = 0;
+        //> mRootComplainBasicInfoHashMap.get(mRootIndex).getOptionSize() ? position - mRootComplainBasicInfoHashMap.get(mRootIndex).getOptionSize() - 1 : position + 1)
+        if (rootIndex == 0) {
+            count = adapterPosition + 1;
+        } else {
+            int completedCount = 0;
+            for (int i = rootIndex - 1; i >= 0; i--) {
+                completedCount += mRootComplainBasicInfoHashMap.get(i).getOptionSize();
+            }
+            count = adapterPosition + 1 - completedCount;
+        }
+        return count;
+    }
+
+    private void addRangeView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
+        View view = View.inflate(mContext, R.layout.ui2_visit_number_range, null);
+        RangeSlider rangeSlider = view.findViewById(R.id.range_slider);
+        //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
+        TextView rangeTextView = view.findViewById(R.id.btn_values);
+        TextView submitTextView = view.findViewById(R.id.btn_submit);
+
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                mOnItemSelection.onSelect(node, index, true, null);
+            }
+        });
+
+        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%")
+                && node.getLanguage().equalsIgnoreCase(" to ")) {
+            String[] vals = node.getLanguage().split(" to ");
+            rangeTextView.setText(vals[0] + " " + mContext.getString(R.string.to) + " " + vals[1]);
+            List<Float> list = new ArrayList<>();
+            list.add(Float.valueOf(vals[0]));
+            list.add(Float.valueOf(vals[1]));
+            rangeSlider.setValues(list);
+        }
+        submitTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
+                    Toast.makeText(mContext, mContext.getString(R.string.please_select_range), Toast.LENGTH_SHORT).show();
+                } else {
+                    List<Float> values = rangeSlider.getValues();
+                    int x = values.get(0).intValue();
+                    int y = values.get(1).intValue();
+                    String durationString = x + " " + mContext.getString(R.string.to) + " " + y;
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(" " + durationString);
+                        node.setText(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    notifyItemChanged(index);
+                    mOnItemSelection.onSelect(node, index, false, null);
+                }
+            }
+        });
+        rangeSlider.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
+        rangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStartTrackingTouch(@NonNull RangeSlider slider) {
+
+            }
+
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStopTrackingTouch(@NonNull RangeSlider slider) {
+                List<Float> values = rangeSlider.getValues();
+                int x = values.get(0).intValue();
+                int y = values.get(1).intValue();
+                rangeTextView.setText(String.format(x + " " + mContext.getString(R.string.to) + " " + y));
+            }
+        });
+
+
+        holder.singleComponentContainer.addView(view);
+    }
+
+    private void addFrequencyView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
+        final View view = View.inflate(mContext, R.layout.ui2_visit_number_slider_with_icon, null);
+        Slider rangeSlider = view.findViewById(R.id.number_slider);
+        //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
+        TextView rangeTextView = view.findViewById(R.id.btn_values);
+        TextView submitTextView = view.findViewById(R.id.btn_submit);
+
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                mOnItemSelection.onSelect(node, index, true, null);
+            }
+        });
+
+
+        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%") && TextUtils.isDigitsOnly(node.getLanguage())) {
+            int i = Integer.parseInt(node.getLanguage());
+            rangeTextView.setText(mContext.getString(R.string.level) + " " + i);
+            rangeSlider.setValue(i);
+        }
+        submitTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
+                    Toast.makeText(mContext, mContext.getString(R.string.drag_to_select), Toast.LENGTH_SHORT).show();
+                } else {
+                    int x = (int) rangeSlider.getValue();
+                    String durationString = String.valueOf(x);
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(" " + durationString);
+                        node.setText(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    notifyItemChanged(index);
+                    mOnItemSelection.onSelect(node, index, false, null);
+                }
+            }
+        });
+        rangeSlider.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
+        rangeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int x = (int) rangeSlider.getValue();
+                rangeTextView.setText(mContext.getString(R.string.level) + " " + x);
+                updateCustomEmojiSliderUI(view, x);
+            }
+        });
+
+        updateCustomEmojiSliderUI(view, 0);
+        holder.singleComponentContainer.addView(view);
+    }
+
+    private void updateCustomEmojiSliderUI(View view, int range) {
+        TextView tv0 = view.findViewById(R.id.n0_tv);
+        TextView tv1 = view.findViewById(R.id.n1_tv);
+        TextView tv2 = view.findViewById(R.id.n2_tv);
+        TextView tv3 = view.findViewById(R.id.n3_tv);
+        TextView tv4 = view.findViewById(R.id.n4_tv);
+        TextView tv5 = view.findViewById(R.id.n5_tv);
+        TextView tv6 = view.findViewById(R.id.n6_tv);
+        TextView tv7 = view.findViewById(R.id.n7_tv);
+        TextView tv8 = view.findViewById(R.id.n8_tv);
+        TextView tv9 = view.findViewById(R.id.n9_tv);
+        TextView tv10 = view.findViewById(R.id.n10_tv);
+
+        ImageView i0 = view.findViewById(R.id.n0_imv);
+        ImageView i1 = view.findViewById(R.id.n1_imv);
+        ImageView i2 = view.findViewById(R.id.n2_imv);
+        ImageView i3 = view.findViewById(R.id.n3_imv);
+        ImageView i4 = view.findViewById(R.id.n4_imv);
+        ImageView i5 = view.findViewById(R.id.n5_imv);
+        ImageView i6 = view.findViewById(R.id.n6_imv);
+        ImageView i7 = view.findViewById(R.id.n7_imv);
+        ImageView i8 = view.findViewById(R.id.n8_imv);
+        ImageView i9 = view.findViewById(R.id.n9_imv);
+        ImageView i10 = view.findViewById(R.id.n10_imv);
+
+        // set default values
+        tv0.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv0.setTextSize(14);
+        tv0.setTypeface(tv0.getTypeface(), Typeface.NORMAL);
+
+        tv1.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv1.setTextSize(14);
+        tv1.setTypeface(tv1.getTypeface(), Typeface.NORMAL);
+
+        tv2.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv2.setTextSize(14);
+        tv2.setTypeface(tv2.getTypeface(), Typeface.NORMAL);
+
+        tv3.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv3.setTextSize(14);
+        tv3.setTypeface(tv3.getTypeface(), Typeface.NORMAL);
+
+        tv4.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv4.setTextSize(14);
+        tv4.setTypeface(tv4.getTypeface(), Typeface.NORMAL);
+
+        tv5.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv5.setTextSize(14);
+        tv5.setTypeface(tv5.getTypeface(), Typeface.NORMAL);
+
+        tv6.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv6.setTextSize(14);
+        tv6.setTypeface(tv6.getTypeface(), Typeface.NORMAL);
+
+        tv7.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv7.setTextSize(14);
+        tv7.setTypeface(tv7.getTypeface(), Typeface.NORMAL);
+
+        tv8.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv8.setTextSize(14);
+        tv8.setTypeface(tv8.getTypeface(), Typeface.NORMAL);
+
+        tv9.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv9.setTextSize(14);
+        tv9.setTypeface(tv9.getTypeface(), Typeface.NORMAL);
+
+        tv10.setTextColor(mContext.getResources().getColor(R.color.gray_3));
+        tv10.setTextSize(14);
+        tv10.setTypeface(tv10.getTypeface(), Typeface.NORMAL);
+
+        i0.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i1.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i2.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i3.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i4.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i5.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i6.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i7.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i8.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i9.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+        i10.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
+
+        if (range == 0) {
+            tv0.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv0.setTextSize(16);
+            tv0.setTypeface(tv0.getTypeface(), Typeface.BOLD);
+
+            i0.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+
+        } else if (range == 1) {
+            tv1.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv1.setTextSize(16);
+            tv1.setTypeface(tv1.getTypeface(), Typeface.BOLD);
+
+            i1.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 2) {
+            tv2.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv2.setTextSize(16);
+            tv2.setTypeface(tv2.getTypeface(), Typeface.BOLD);
+
+            i2.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 3) {
+            tv3.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv3.setTextSize(16);
+            tv3.setTypeface(tv3.getTypeface(), Typeface.BOLD);
+
+            i3.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 4) {
+            tv4.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv4.setTextSize(16);
+            tv4.setTypeface(tv4.getTypeface(), Typeface.BOLD);
+
+            i4.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 5) {
+            tv5.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv5.setTextSize(16);
+            tv5.setTypeface(tv5.getTypeface(), Typeface.BOLD);
+
+            i5.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 6) {
+            tv6.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv6.setTextSize(16);
+            tv6.setTypeface(tv6.getTypeface(), Typeface.BOLD);
+
+            i6.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 7) {
+            tv7.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv7.setTextSize(16);
+            tv7.setTypeface(tv7.getTypeface(), Typeface.BOLD);
+
+            i7.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 8) {
+            tv8.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv8.setTextSize(16);
+            tv8.setTypeface(tv8.getTypeface(), Typeface.BOLD);
+
+            i8.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 9) {
+            tv9.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv9.setTextSize(16);
+            tv9.setTypeface(tv9.getTypeface(), Typeface.BOLD);
+
+            i9.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        } else if (range == 10) {
+            tv10.setTextColor(mContext.getResources().getColor(R.color.colorPrimary1));
+            tv10.setTextSize(16);
+            tv10.setTypeface(tv10.getTypeface(), Typeface.BOLD);
+
+            i10.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+        }
+    }
+
+    private void showAssociateSymptoms(Node node, GenericViewHolder holder, int position) {
+        Log.v(TAG, "showAssociateSymptoms()");
+        holder.nestedRecyclerView.removeAllViews();
+        holder.singleComponentContainer.removeAllViews();
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
+        holder.tvQuestionDesc.setVisibility(View.VISIBLE);
+        holder.recyclerView.setVisibility(View.GONE);
+        holder.nestedRecyclerView.setVisibility(View.GONE);
+        holder.submitButton.setVisibility(View.GONE);
+        holder.skipButton.setVisibility(View.GONE);
+        holder.tvQuestionDesc.setText(mContext.getString(R.string.select_yes_or_no));
+
+        View view = View.inflate(mContext, R.layout.associate_symptoms_questionar_main_view, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onAllAnswered(true);
+
+                    }
+                });
+
+            }
+        });
+        RecyclerView recyclerView = view.findViewById(R.id.rcv_container);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        AssociateSymptomsQueryAdapter associateSymptomsQueryAdapter = new AssociateSymptomsQueryAdapter(mContext, mRecyclerView, recyclerView, node.getOptionsList(), mIsEditMode, new AssociateSymptomsQueryAdapter.AssociateSymptomsOnItemSelection() {
+            @Override
+            public void onSelect(Node data) {
+                Log.v(TAG, new Gson().toJson(data));
+                mItemList.get(position).setSelected(false);
+                mItemList.get(position).setDataCaptured(false);
+                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
+                for (int i = 0; i < mItemList.get(position).getOptionsList().size(); i++) {
+                    if (mItemList.get(position).getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
+                        mItemList.get(position).setDataCaptured(true);
+                        Log.v(TAG, "updated associate symptoms selected status");
+                    }
+                }
+                AdapterUtils.setToDefault(holder.submitButton);
+                //VisitUtils.scrollNow(holder.recyclerView, 1000, 0, 200);
+            }
+        });
+        recyclerView.setAdapter(associateSymptomsQueryAdapter);
+/*
+
+        if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+*/
+
+
+        holder.singleComponentContainer.addView(view);
+        //recyclerView.scrollToPosition(0);
+    }
+
+
+    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+        holder.nextRelativeLayout.setVisibility(View.GONE);
+        holder.isParallelMultiNestedNode = false;
+        holder.singleComponentContainer.removeAllViews();
+        Log.v(TAG, "showOptionsData selectedNode - " + new Gson().toJson(selectedNode));
+        Log.v(TAG, "showOptionsData options - " + options.size());
+        Log.v(TAG, "showOptionsData index - " + index);
+        Log.v(TAG, "showOptionsData isSuperNested - " + isSuperNested);
+        if (!isSuperNested && options != null && options.size() == 1 && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
+            Log.v(TAG, "showOptionsData single option");
+            /*if (isSuperNested)
+                holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
+            else
+                holder.superNestedContainerLinearLayout.setVisibility(View.GONE);*/
+            holder.submitButton.setVisibility(View.GONE);
+            holder.skipButton.setVisibility(View.GONE);
+            // it seems that inside the options only one view and its simple component like text,date, number, area, duration, range, frequency, camera, etc
+            // we we have add same in linear layout dynamically instead of adding in to recyclerView
+            holder.singleComponentContainer.setVisibility(View.VISIBLE);
+            holder.tvQuestionDesc.setVisibility(View.GONE);
+            Node node = options.get(0);
+            String type = node.getInputType() == null ? "" : node.getInputType();
+
+            if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
+                type = "options";
+            }
+            Log.v(TAG, "Type - " + type);
+            switch (type) {
+                case "text":
+                    // askText(questionNode, context, adapter);
+                    addTextEnterView(options.get(0), holder, index);
+                    break;
+                case "date":
+                    //askDate(questionNode, context, adapter);
+                    addDateView(options.get(0), holder, index);
+                    break;
+                case "location":
+                    //askLocation(questionNode, context, adapter);
+                    break;
+                case "number":
+                    // askNumber(questionNode, context, adapter);
+                    addNumberView(options.get(0), holder, index);
+                    break;
+                case "area":
+                    // askArea(questionNode, context, adapter);
+                    break;
+                case "duration":
+                    // askDuration(questionNode, context, adapter);
+                    addDurationView(options.get(0), holder, index);
+                    break;
+                case "range":
+                    // askRange(questionNode, context, adapter);
+                    addRangeView(options.get(0), holder, index);
+                    break;
+                case "frequency":
+                    //askFrequency(questionNode, context, adapter);
+                    addFrequencyView(options.get(0), holder, index);
+                    break;
+                case "camera":
+                    // openCamera(context, imagePath, imageName);
+                    Log.v("showCameraView", "showOptionsData 1");
+                    showCameraView(options.get(0), holder, index);
+                    break;
+
+                case "options":
+                    // openCamera(context, imagePath, imageName);
+                    //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
+                    break;
+                default:
+                    holder.submitButton.setVisibility(View.VISIBLE);
+                    break;
+            }
+
+        } else {
+
+            holder.tvQuestionDesc.setVisibility(View.VISIBLE);
+            holder.recyclerView.setVisibility(View.VISIBLE);
+
+            if (mItemList.get(index).isMultiChoice()) {
+                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                holder.submitButton.setVisibility(View.VISIBLE);
+                holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+                if (mItemList.get(index).isDataCaptured()) {
+                    AdapterUtils.setToDisable(holder.skipButton);
+                } else {
+                    AdapterUtils.setToDefault(holder.skipButton);
+                }
+            } else {
+                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                holder.submitButton.setVisibility(View.GONE);
+
+            }
+
+            if (mItemList.get(index).isRequired()) {
+                holder.skipButton.setVisibility(View.GONE);
+            } else {
+                holder.skipButton.setVisibility(View.VISIBLE);
+            }
+            //if (isSuperNested) {
+            boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
+            Log.v(TAG, "showOptionsData havingNestedQuestion - " + havingNestedQuestion);
+
+                /*//holder.superNestedContainerLinearLayout.removeAllViews();
+                View v1 = View.inflate(mContext, R.layout.nested_recycle_view, null);
+                v1.setTag(selectedNode.getId());
+                for (int i = 0; i < holder.superNestedContainerLinearLayout.getChildCount(); i++) {
+                    if (String.valueOf(holder.superNestedContainerLinearLayout.getChildAt(i).getTag()).equalsIgnoreCase(selectedNode.getId())) {
+                        return;
+                    }
+                }
+
+                RecyclerView recyclerView = v1.findViewById(R.id.rcv_nested_container);
+                TextView questionTextView = v1.findViewById(R.id.tv_question);
+                LinearLayout singleComponentContainerLinearLayout = v1.findViewById(R.id.ll_single_component_container);
+                LinearLayout othersContainerLinearLayout = v1.findViewById(R.id.ll_others_container);
+                FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
+                layoutManager.setFlexDirection(FlexDirection.ROW);
+                layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+                recyclerView.setLayoutManager(layoutManager);
+                TextView tvQuestionDesc = v1.findViewById(R.id.tv_question_desc);
+
+                if (selectedNode.isMultiChoice()) {
+                    tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                    holder.submitButton.setVisibility(View.VISIBLE);
+                } else {
+                    tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                    holder.submitButton.setVisibility(View.GONE);
+
+                }*/
+
+                /*if (mItemList.get(index).isRequired()) {
+                    skipButton.setVisibility(View.GONE);
+                } else {
+                    skipButton.setVisibility(View.VISIBLE);
+                }*/
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            linearLayoutManager.setStackFromEnd(false);
+            linearLayoutManager.setSmoothScrollbarEnabled(true);
+            holder.nestedRecyclerView.setLayoutManager(linearLayoutManager);
+
+
+            //if (holder.nestedRecyclerView.getAdapter() != null && mItemList.get(index).isMultiChoice()) {
+            //   nestedQuestionsListingAdapter = (NestedQuestionsListingAdapter) holder.nestedRecyclerView.getAdapter();
+            //}else {
+            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, new OnItemSelection() {
+                @Override
+                public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.findDisplay());
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.getId());
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.findDisplay());
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
+                   /* if(parentNode.isHavingNestedQuestion()) {
+                        boolean isMoreNestedLevel = true;
+                        for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
+                            if (selectedNode.getOptionsList().get(i).getId().equalsIgnoreCase(node.getId())) {
+                                isMoreNestedLevel = false;
+                            }else{
+
+                            }
+                        }
+                        if (isMoreNestedLevel) {
+                            holder.isParallelMultiNestedNode = true;
+                            holder.nextRelativeLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.nextRelativeLayout.setVisibility(View.GONE);
+                        }
+                    }*/
+                    if (parentNode != null && parentNode.isHavingNestedQuestion()) {
+                        holder.isParallelMultiNestedNode = true;
+                        //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
+                        holder.nextRelativeLayout.setVisibility(View.GONE);
+                    }
+                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 400);
+                    ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
+                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
+                    if (isSkipped) {
+                        if (options.size() == 1) {
+                            Log.v(TAG, "NestedQuestionsListingAdapter onSelect isSkipped && options.size() == 1 ");
+                            mItemList.get(index).setSelected(false);
+                            mItemList.get(index).setDataCaptured(false);
+                            selectedNode.setSelected(false);
+                            selectedNode.setDataCaptured(false);
+                            selectedNode.unselectAllNestedNode();
+                            notifyItemChanged(index);
+                            if (selectedNode.isRequired()) return;
+                        } else {
+                            if (isLastNodeSubmit)
+                                holder.selectedNestedOptionIndex = holder.selectedNestedOptionIndex - 1;
+                        }
+
+                    }
+
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect holder.selectedNestedOptionIndex - " + holder.selectedNestedOptionIndex);
+                    if (!holder.isParallelMultiNestedNode || isLastNodeSubmit)
+                        mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
+                    else {
+                        holder.selectedNestedOptionIndex += 1;
+                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                    }
+                    //VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
+                }
+
+                @Override
+                public void needTitleChange(String title) {
+
+                }
+
+                @Override
+                public void onAllAnswered(boolean isAllAnswered) {
+
+                }
+
+                @Override
+                public void onCameraRequest() {
+
+                }
+
+                @Override
+                public void onImageRemoved(int index, String image) {
+
+                }
+            });
+            holder.nestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
+            // }
+            holder.nestedQuestionsListingAdapter.setSuperNodeList(mItemList);
+
+            //if (havingNestedQuestion) {
+            if (isSuperNested) {
+
+                //questionTextView.setText(options.get(0).findDisplay());
+                holder.nestedQuestionsListingAdapter.clearItems();
+                if (mIsEditMode) {
+                    for (int i = 0; i < options.size(); i++) {
+                        holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+                    }
+                } else if (holder.selectedNestedOptionIndex > 0) {
+                    for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
+                        holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+                    }
+                } else {
+                    holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                }
+                holder.isParallelMultiNestedNode = options.size() > 1;
+
+                if (holder.isParallelMultiNestedNode) {
+                    //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
+                    holder.nextRelativeLayout.setVisibility(View.GONE);
+                } else {
+                    holder.nextRelativeLayout.setVisibility(View.GONE);
+                }
+                holder.nestedRecyclerView.setVisibility(View.VISIBLE);
+                holder.submitButton.setVisibility(View.GONE);
+                holder.skipButton.setVisibility(View.GONE);
+                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 600);
+            } /*else if (isSuperNested) {
+                nestedQuestionsListingAdapter.addItem(selectedNode);
+                holder.nestedRecyclerView.setVisibility(View.VISIBLE);
+            }*/ else {
+                holder.nextRelativeLayout.setVisibility(View.GONE);
+                Log.v(TAG, "showOptionsData multiple option");
+                holder.tvQuestionDesc.setVisibility(View.VISIBLE);
+                holder.recyclerView.setVisibility(View.VISIBLE);
+                holder.nestedRecyclerView.setVisibility(View.GONE);
+                //holder.superNestedContainerLinearLayout.setVisibility(View.GONE);
+                if (mItemList.get(index).isMultiChoice()) {
+                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                    holder.submitButton.setVisibility(View.VISIBLE);
+                    holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+                    if (mItemList.get(index).isDataCaptured()) {
+                        AdapterUtils.setToDisable(holder.skipButton);
+                    } else {
+                        AdapterUtils.setToDefault(holder.skipButton);
+                    }
+                } else {
+                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                    holder.submitButton.setVisibility(View.GONE);
+
+                }
+
+                if (mItemList.get(index).isRequired()) {
+                    holder.skipButton.setVisibility(View.GONE);
+                } else {
+                    holder.skipButton.setVisibility(View.VISIBLE);
+                }
+                //holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
+                FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
+                layoutManager.setFlexDirection(FlexDirection.ROW);
+                layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+                holder.recyclerView.setLayoutManager(layoutManager);
+
+                //**********
+                // Avoid the duplicate options asking to user in connected questions
+                //**************
+                String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
+                Log.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
+                if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
+                    int sourceIndex = 0;
+                    Node toCompareWithNode = null;
+                    for (int i = 0; i < mItemList.size(); i++) {
+                        if (mItemList.get(i).getText().equalsIgnoreCase(duplicateCheckNodeNames)) {
+                            toCompareWithNode = mItemList.get(i);
+                            Log.v(TAG, "toCompareWithNode - " + new Gson().toJson(toCompareWithNode));
+                            break;
+                        }
+                    }
+                    NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
+                }
+                VisitUtils.scrollNow(mRecyclerView, 1400, 0, 600);
+                // *****************
+                OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
+                    @Override
+                    public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+                        if (!isLoadingForNestedEditData)
+                            VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
+                        ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
+                        mItemList.get(index).setSelected(false);
+                        mItemList.get(index).setDataCaptured(false);
+                        for (int i = 0; i < options.size(); i++) {
+                            if (options.get(i).isSelected()) {
+                                mItemList.get(index).setSelected(true);
+                                //mItemList.get(index).setDataCaptured(true);
+                                break;
+                            }
+                        }
+                        //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
+                        String type = node.getInputType();
+
+                        if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+                            type = "options";
+                        }
+                        Log.v(TAG, "optionsChipsGridAdapter - Type - " + type);
+                        Log.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
+                        Log.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
+                        if (!type.isEmpty() && node.isSelected()) {
+
+                            holder.singleComponentContainer.removeAllViews();
+                            holder.singleComponentContainer.setVisibility(View.VISIBLE);
+
+                        } else {
+                            holder.singleComponentContainer.removeAllViews();
+                            //holder.superNestedContainerLinearLayout.removeAllViews();
+                            boolean isAnyOtherOptionSelected = false;
+                            for (int i = 0; i < options.size(); i++) {
+                                if (options.get(i).isSelected()) {
+                                    isAnyOtherOptionSelected = true;
+                                    break;
+                                }
+                            }
+                            AdapterUtils.setToDefault(holder.submitButton);
+                            AdapterUtils.setToDefault(holder.skipButton);
+                            /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
+                            holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
+
+                            if (mItemList.get(index).isMultiChoice()) {
+                                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                                if (!isAnyOtherOptionSelected)
+                                    holder.submitButton.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                                holder.submitButton.setVisibility(View.GONE);
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isLoadingForNestedEditData) {
+
+                                            notifyItemChanged(index);
+                                        }
+                                    }
+                                }, 100);
+                                if (!isLoadingForNestedEditData)
+                                    mOnItemSelection.onSelect(node, index, false, selectedNode);
+                            }
+
+                            if (mItemList.get(index).isRequired()) {
+                                holder.skipButton.setVisibility(View.GONE);
+                            } else {
+                                if (!isAnyOtherOptionSelected)
+                                    holder.skipButton.setVisibility(View.VISIBLE);
+                            }
+
+                            if (node.isExcludedFromMultiChoice()) {
+                                holder.nestedRecyclerView.setVisibility(View.GONE);
+                                if (!isLoadingForNestedEditData) {
+                                    notifyItemChanged(index);
+                                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 1000);
+                                }
+                            }
+                            return;
+                        }
+
+                        switch (type) {
+                            case "text":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askText(questionNode, context, adapter);
+                                addTextEnterView(node, holder, index);
+                                break;
+                            case "date":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                //askDate(questionNode, context, adapter);
+                                addDateView(node, holder, index);
+                                break;
+                            case "location":
+                                //askLocation(questionNode, context, adapter);
+                                break;
+                            case "number":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askNumber(questionNode, context, adapter);
+                                addNumberView(node, holder, index);
+                                break;
+                            case "area":
+                                // askArea(questionNode, context, adapter);
+                                break;
+                            case "duration":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askDuration(questionNode, context, adapter);
+                                addDurationView(node, holder, index);
+                                break;
+                            case "range":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askRange(questionNode, context, adapter);
+                                addRangeView(node, holder, index);
+                                break;
+                            case "frequency":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                //askFrequency(questionNode, context, adapter);
+                                addFrequencyView(node, holder, index);
+                                break;
+                            case "camera":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // openCamera(context, imagePath, imageName);
+                                Log.v("showCameraView", "showOptionsData 2");
+                                showCameraView(node, holder, index);
+                                break;
+
+                            case "options":
+                                // openCamera(context, imagePath, imageName);
+                                //holder.superNestedContainerLinearLayout.removeAllViews();
+                                showOptionsData(node, holder, node.getOptionsList(), index, true);
+                                break;
+                        }
+                        //notifyDataSetChanged();
+                    }
+                });
+                holder.recyclerView.setAdapter(optionsChipsGridAdapter);
+
+
+            }
+            /*for (int i = 0; i < options.size(); i++) {
+                String type = options.get(i).getInputType();
+                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
+                    // openCamera(context, imagePath, imageName);
+                    Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
+                    showCameraView(options.get(i), holder, index);
+                }
+            }*/
+        }
+
+    }
+
+    private void showCameraView(Node node, GenericViewHolder holder, int index) {
+        Log.v("showCameraView", "QLA " + new Gson().toJson(node));
+        Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(node.getImagePathList()));
+        holder.otherContainerLinearLayout.removeAllViews();
+        View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() && node.isImageUploaded() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
+        LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
+        //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
+        newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //openCamera(getImagePath(), "");
+                node.setImageUploaded(false);
+                node.setDataCaptured(false);
+                mLastImageCaptureSelectedNodeIndex = index;
+                mOnItemSelection.onCameraRequest();
+            }
+        });
+        view.findViewById(R.id.btn_1st_capture).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //openCamera(getImagePath(), "");
+                node.setImageUploaded(false);
+                node.setDataCaptured(false);
+                mLastImageCaptureSelectedNodeIndex = index;
+                mOnItemSelection.onCameraRequest();
+            }
+        });
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        node.setImageUploaded(true);
+                        mOnItemSelection.onSelect(node, index, false, null);
+
+                    }
+                });
+            }
+        });
+
+        RecyclerView imagesRcv = view.findViewById(R.id.rcv_added_image);
+        imagesRcv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+
+        if (node.getImagePathList().isEmpty()) {
+            Log.v("showCameraView", "QLA Images check - empty");
+            newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
+            submitButton.setVisibility(View.GONE);
+            imagesRcv.setVisibility(View.GONE);
+        } else {
+            Log.v("showCameraView", "QLA Images check - having data");
+            newImageCaptureLinearLayout.setVisibility(View.GONE);
+            submitButton.setVisibility(View.VISIBLE);
+            imagesRcv.setVisibility(View.VISIBLE);
+        }
+
+        if (!node.getImagePathList().isEmpty()) {
+            ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
+                @Override
+                public void onImageRemoved(int index, String image) {
+                    node.setImageUploaded(false);
+                    node.setDataCaptured(false);
+                    mOnItemSelection.onImageRemoved(index, image);
+                }
+
+                @Override
+                public void onNewImageRequest() {
+                    node.setImageUploaded(false);
+                    node.setDataCaptured(false);
+                    mLastImageCaptureSelectedNodeIndex = index;
+                    mOnItemSelection.onCameraRequest();
+                }
+            });
+            imagesRcv.setAdapter(imageGridAdapter);
+            imageGridAdapter.addNull();
+            Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
+            if (node.getImagePathList().size() >= 4) {
+                imagesRcv.smoothScrollToPosition(imagesRcv.getAdapter().getItemCount() - 1);
+            }
+        }
+
+
+        holder.otherContainerLinearLayout.addView(view);
+        holder.otherContainerLinearLayout.setVisibility(View.VISIBLE);
+        Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
+        Log.v("showCameraView", "otherContainerLinearLayout getChildCount - " + holder.otherContainerLinearLayout.getChildCount());
+    }
+
+
+    /**
+     * Time duration
+     *
+     * @param node
+     * @param holder
+     * @param index
+     */
+    private void addDurationView(Node node, GenericViewHolder holder, int index) {
+        Log.v(TAG, "addDurationView - " + new Gson().toJson(node));
+        holder.singleComponentContainer.removeAllViews();
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
+        View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
+        final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
+        final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        String oldDataNumber = "", oldDataType = "";
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        node.setSelected(false);
+                        mOnItemSelection.onSelect(node, index, true, null);
+                    }
+                });
+
+            }
+        });
+
+        // add a list
+        int i = 0;
+        int max = 100;
+        final String[] data = new String[max + 1];
+        data[0] = mContext.getString(R.string.number_label);
+        for (i = 1; i <= max; i++) {
+            data[i] = String.valueOf(i);
+        }
+
+        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext,
+                R.layout.simple_spinner_item_1, data);
+        adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+
+        numberRangeSpinner.setAdapter(adaptador);
+        numberRangeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
+
+        String finalOldDataNumber1 = oldDataNumber;
+        numberRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
+                String newNumber = numberRangeSpinner.getSelectedItem().toString();
+                if (!newNumber.equals(finalOldDataNumber1)) {
+                    AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        // add a list
+        final String[] data1 = new String[]{mContext.getString(R.string.duration_type),
+                mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
+                mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
+                mContext.getString(R.string.Years)};
+
+        ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(mContext,
+                R.layout.simple_spinner_item_1, data1);
+        adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+
+        durationTypeSpinner.setAdapter(adaptador1);
+        durationTypeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
+
+        String finalOldDataType = oldDataType;
+        durationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
+                String newType = durationTypeSpinner.getSelectedItem().toString();
+                if (!newType.equals(finalOldDataType)) {
+                    AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        if (!node.getLanguage().isEmpty()) {
+            String[] val = node.getLanguage().trim().split(" ");
+            if (val.length == 2) {
+                oldDataNumber = val[0];
+                oldDataType = val[1];
+                numberRangeSpinner.setSelection(Arrays.asList(data).indexOf(oldDataNumber));
+                durationTypeSpinner.setSelection(Arrays.asList(data1).indexOf(oldDataType));
+            }
+        }
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (numberRangeSpinner.getSelectedItemPosition() == 0 || numberRangeSpinner.getSelectedItem().toString().isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.duration_validation_txt), Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (durationTypeSpinner.getSelectedItemPosition() == 0 || durationTypeSpinner.getSelectedItem().toString().isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.duration_type_validation_txt), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String durationString = numberRangeSpinner.getSelectedItem().toString() + " " + durationTypeSpinner.getSelectedItem().toString();
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+
+                node.setSelected(true);
+                holder.node.setSelected(true);
+
+                node.setDataCaptured(true);
+                holder.node.setDataCaptured(true);
+
+                //notifyDataSetChanged();
+                AdapterUtils.setToDisable(skipButton);
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, index, false, null);
+
+                    }
+                });
+            }
+        });
+        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }*/
+
+        holder.singleComponentContainer.addView(view);
+        Log.v(TAG, "addDurationView holder.singleComponentContainer count child - " + holder.singleComponentContainer.getChildCount());
+        Log.v(TAG, "addDurationView holder.singleComponentContainer VISIBLE - " + (holder.singleComponentContainer.getVisibility() == View.VISIBLE));
+    }
+
+    private void showNumberListing(final TextView textView, String title, int i, int max) {
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(title);
+
+        // add a list
+        final String[] data = new String[max];
+        for (; i < max; i++) {
+            data[i] = String.valueOf(i);
+        }
+        builder.setItems(data, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                textView.setText(data[which]);
+
+            }
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showDurationTypes(final TextView textView) {
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(mContext.getString(R.string.select_duration_type_title));
+
+        // add a list
+        final String[] data = new String[]{
+                mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
+                mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
+                mContext.getString(R.string.Years)};
+
+        builder.setItems(data, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                textView.setText(data[which]);
+
+            }
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+    private void addNumberView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
+        View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        final EditText editText = view.findViewById(R.id.actv_reasons);
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+        Button skipButton = view.findViewById(R.id.btn_skip);
+
+        if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
+            //  editText.setText(node.getLanguage());
+            if (node.getLanguage().contains(" : "))
+                editText.setText(node.getLanguage().split(" : ")[1]);
+            else
+                editText.setText(node.getLanguage());
+        }
+        String oldValue = editText.getText().toString().trim();
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().trim().equals(oldValue)) {
+                    AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
+                }
+            }
+        });
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                node.setDataCaptured(false);
+                //holder.node.setDataCaptured(true);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, index, true, null);
+                    }
+                });
+
+                WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (editText.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (!editText.getText().toString().equalsIgnoreCase("")) {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                        } else {
+                            node.addLanguage(editText.getText().toString());
+                        }
+
+                        node.setSelected(true);
+                        holder.node.setSelected(true);
+
+                        node.setDataCaptured(true);
+                        holder.node.setDataCaptured(true);
+                    } else {
+                        node.setDataCaptured(false);
+                        holder.node.setDataCaptured(false);
+
+
+                        //if (node.isRequired()) {
+                        node.setSelected(false);
+                        holder.node.setSelected(false);
+                        //} else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        //   node.setSelected(true);
+                        //}
+                    }
+                    //notifyDataSetChanged();
+                    AdapterUtils.setToDisable(skipButton);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, index, false, null);
+                        }
+                    });
+
+                    WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
+                }
+            }
+        });
+
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setHint(mContext.getString(R.string.describe_hint_txt));
+        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }*/
+
+        holder.singleComponentContainer.addView(view);
+    }
+
+    private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
+        Log.v(TAG, "addTextEnterView");
+        holder.singleComponentContainer.removeAllViews();
+        View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        final EditText editText = view.findViewById(R.id.actv_reasons);
+        if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
+            editText.setText(node.getLanguage());
+        }
+        String oldValue = editText.getText().toString().trim();
+        Button skipButton = view.findViewById(R.id.btn_skip);
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().trim().equals(oldValue)) {
+                    AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
+                }
+            }
+        });
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                node.setDataCaptured(false);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, index, true, null);
+                    }
+                });
+                WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (editText.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
+                } else {
+
+                    if (!editText.getText().toString().equalsIgnoreCase("")) {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                        } else {
+                            node.addLanguage(editText.getText().toString());
+                        }
+                        node.setSelected(true);
+                        holder.node.setSelected(true);
+
+                        node.setDataCaptured(true);
+                        holder.node.setDataCaptured(true);
+
+                    } else {
+                        node.setDataCaptured(false);
+                        holder.node.setDataCaptured(false);
+                        //if (node.isRequired()) {
+                        node.setSelected(false);
+                        holder.node.setSelected(false);
+                        //} else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        //   node.setSelected(true);
+                        //}
+                    }
+                    //notifyDataSetChanged();
+                    AdapterUtils.setToDisable(skipButton);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, index, false, null);
+                        }
+                    });
+                    WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
+                }
+            }
+        });
+
+        editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editText.setMinLines(5);
+        editText.setLines(5);
+        editText.setHorizontallyScrolling(false);
+        editText.setHint(mContext.getString(R.string.describe_hint_txt));
+        editText.setMinHeight(320);
+
+        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+*/
+        holder.singleComponentContainer.addView(view);
+    }
+
+    private void addDateView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
+        View view = View.inflate(mContext, R.layout.visit_reason_date, null);
+        final Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
+        final CalendarView calendarView = view.findViewById(R.id.cav_date);
+        calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                // display the selected date by using a toast
+                int m = month + 1;
+                //String date = (dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth))
+                //       + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(0);
+                //cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
+                cal.set(year, month, dayOfMonth);
+                Date date = cal.getTime();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+                SimpleDateFormat simpleDateFormatLocal = new SimpleDateFormat("dd/MMM/yyyy", new Locale(new SessionManager(mContext).getAppLanguage()));
+                String dateString = simpleDateFormat.format(date);
+                displayDateButton.setText(simpleDateFormatLocal.format(date));
+                displayDateButton.setTag(dateString);
+                VisitUtils.scrollNow(mRecyclerView, 400, 0, 400);
+                AdapterUtils.setToDefault(submitButton);
+                AdapterUtils.setToDefault(skipButton);
+            }
+        });
+        holder.skipButton.setVisibility(View.GONE);
+
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
+
+        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        node.setSelected(false);
+                        mOnItemSelection.onSelect(node, index, true, null);
+                    }
+                });
+
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String d = (String) displayDateButton.getTag();
+                if (!d.contains("/")) {
+                    Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
+                } else {
+                    /*Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(0);
+                    cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
+                    Date date = cal.getTime();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*/
+
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", d));
+                    } else {
+                        node.addLanguage(d);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    holder.node.setSelected(true);
+
+                    node.setDataCaptured(true);
+                    holder.node.setDataCaptured(true);
+
+                    //notifyDataSetChanged();
+                    AdapterUtils.setToDisable(skipButton);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, index, false, null);
+
+                        }
+                    });
+
+                }
+            }
+        });
+        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }*/
+        holder.singleComponentContainer.addView(view);
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return mItemList.size();
+    }
+
+    private class GenericViewHolder extends RecyclerView.ViewHolder {
+        TextView tvQuestion, tvQuestionDesc, tvQuestionCounter, tvReferenceDesc;
+        Node node;
+        int index, rootIndex;
+        RecyclerView recyclerView, nestedRecyclerView;
+        // this will contain independent view like, edittext, date, time, range, etc
+        LinearLayout singleComponentContainer, referenceContainerLinearLayout, otherContainerLinearLayout;//, superNestedContainerLinearLayout;
+        SpinKitView spinKitView;
+        LinearLayout bodyLayout;
+        Button submitButton, skipButton, nextButton;
+        TextView knowMoreTextView;
+        RelativeLayout nextRelativeLayout;
+        boolean isParallelMultiNestedNode = false;
+
+        NestedQuestionsListingAdapter nestedQuestionsListingAdapter = null;
+        int selectedNestedOptionIndex = 0;
+
+        GenericViewHolder(View itemView) {
+            super(itemView);
+            nextRelativeLayout = itemView.findViewById(R.id.rl_next_action);
+            nextButton = itemView.findViewById(R.id.btn_next);
+
+            knowMoreTextView = itemView.findViewById(R.id.tv_know_more);
+            knowMoreTextView.setPaintFlags(knowMoreTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            knowMoreTextView.setVisibility(View.GONE);
+
+            skipButton = itemView.findViewById(R.id.btn_skip);
+            submitButton = itemView.findViewById(R.id.btn_submit);
+            recyclerView = itemView.findViewById(R.id.rcv_container);
+            nestedRecyclerView = itemView.findViewById(R.id.rcv_nested_container);
+            singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
+            referenceContainerLinearLayout = itemView.findViewById(R.id.ll_reference_container);
+            otherContainerLinearLayout = itemView.findViewById(R.id.ll_others_container);
+
+            //superNestedContainerLinearLayout = itemView.findViewById(R.id.ll_super_nested_container);
+            //superNestedContainerLinearLayout.setVisibility(View.GONE);
+
+            tvReferenceDesc = itemView.findViewById(R.id.tv_reference_desc);
+            spinKitView = itemView.findViewById(R.id.spin_kit);
+            bodyLayout = itemView.findViewById(R.id.rl_body);
+            spinKitView.setVisibility(View.VISIBLE);
+            bodyLayout.setVisibility(View.GONE);
+
+            tvQuestion = itemView.findViewById(R.id.tv_question);
+            tvQuestionDesc = itemView.findViewById(R.id.tv_question_desc);
+            tvQuestionCounter = itemView.findViewById(R.id.tv_question_counter);
+
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemList.get(index).isSelected()) {
+                        AdapterUtils.setToDisable(skipButton);
+                        AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                            @Override
+                            public void onFinish() {
+                                mOnItemSelection.onSelect(node, index, false, null);
+                            }
+                        });
+                    } else
+                        Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
+                }
+            });
+            nextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemList.get(index).isSelected())
+                        mOnItemSelection.onSelect(node, index, false, null);
+                    else
+                        Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            skipButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mItemList.get(index).setSelected(false);
+                    mItemList.get(index).setDataCaptured(false);
+                    if (mItemList.get(index).getOptionsList() != null && mItemList.get(index).getOptionsList().size() > 0)
+                        for (int i = 0; i < mItemList.get(index).getOptionsList().size(); i++) {
+                            mItemList.get(index).getOptionsList().get(i).setSelected(false);
+                            mItemList.get(index).getOptionsList().get(i).setDataCaptured(false);
+                        }
+                    AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            notifyItemChanged(index);
+                            mOnItemSelection.onSelect(node, index, true, null);
+                        }
+                    });
+
+
+                }
+            });
+
+            knowMoreTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showKnowMoreDialog(node.findDisplay(), node.findPopup());
+                }
+            });
+        }
+
+
+    }
+
+    private void showKnowMoreDialog(String title, String message) {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(mContext, 0, title, message, true, mContext.getResources().getString(R.string.okay), mContext.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+
+            }
+        });
+    }
+
+
+}
+

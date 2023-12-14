@@ -1,0 +1,86 @@
+package org.intelehealth.kf.activities.help.activities;
+
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.LocaleList;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.intelehealth.kf.R;
+import org.intelehealth.kf.activities.help.adapter.ChatSupportAdapter_New;
+import org.intelehealth.kf.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.kf.utilities.SessionManager;
+
+import java.util.Locale;
+
+public class ChatSupportHelpActivity_New extends AppCompatActivity {
+
+    ImageView ivBackArrow, ivIsInternet;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat_support_help_ui2);
+
+         ivIsInternet = findViewById(R.id.iv_is_internet);
+         ivBackArrow = findViewById(R.id.iv_back_arrow_chat);
+
+        if (CheckInternetAvailability.isNetworkAvailable(this)) {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+        } else {
+            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+
+        }
+
+        ivBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        RecyclerView rvChatSupport = findViewById(R.id.rv_chatting);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rvChatSupport.setLayoutManager(layoutManager);
+        ChatSupportAdapter_New chatSupportAdapter_new = new ChatSupportAdapter_New(this);
+        rvChatSupport.setAdapter(chatSupportAdapter_new);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+}

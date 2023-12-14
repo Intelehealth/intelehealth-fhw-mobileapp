@@ -8,7 +8,7 @@
 8    <uses-sdk
 9        android:minSdkVersion="19"
 9-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-10        android:targetSdkVersion="30" />
+10        android:targetSdkVersion="31" />
 10-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 11
 12    <uses-feature android:name="android.hardware.camera" />
@@ -40,69 +40,82 @@
 22-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:5-67
 22-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:22-64
 23    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-23-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:17:5-81
-23-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:17:22-78
-24    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-24-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:5-79
-24-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:22-76
-25    <uses-permission android:name="android.permission.BLUETOOTH" />
-25-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:5-68
-25-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:22-65
-26    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-26-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:5-75
-26-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:22-72
-27
-28    <application
-28-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:5-60:19
-29        android:allowBackup="true"
-29-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:9-35
-30        android:label="@string/app_name"
-30-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:24:9-41
-31        android:supportsRtl="true"
-31-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:25:9-35
-32        android:theme="@style/AppTheme"
-32-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:26:9-40
-33        tools:ignore="LockedOrientationActivity" >
-33-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:27:9-49
-34        <activity
-34-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:29:9-32:63
-35            android:name="org.intelehealth.apprtc.ChatActivity"
-35-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:30:13-64
-36            android:screenOrientation="portrait"
-36-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:31:13-49
-37            android:windowSoftInputMode="stateAlwaysHidden" />
-37-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:32:13-60
-38        <!--
-39          <activity
-40              android:name="com.shivam.androidwebrtc.app_rtc_sample.main.AppRTCMainActivity"
-41              android:label="@string/app_name"
-42              android:windowSoftInputMode="adjustPan" />
-43          <activity
-44              android:name="com.shivam.androidwebrtc.app_rtc_sample.call.CallActivity"
-45              android:configChanges="orientation|screenSize"
+23-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:5-81
+23-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:22-78
+24    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+24-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:5-81
+24-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:22-78
+25    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+25-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:5-80
+25-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:22-77
+26    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+26-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:5-79
+26-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:22-76
+27    <uses-permission android:name="android.permission.BLUETOOTH" />
+27-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:5-68
+27-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:22-65
+28    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+28-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:24:5-75
+28-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:24:22-72
+29
+30    <application
+30-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:26:5-66:19
+31        android:allowBackup="true"
+31-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:27:9-35
+32        android:label="@string/app_name"
+32-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:28:9-41
+33        android:requestLegacyExternalStorage="true"
+33-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:29:9-52
+34        android:supportsRtl="true"
+34-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:30:9-35
+35        android:theme="@style/AppTheme"
+35-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:31:9-40
+36        tools:ignore="LockedOrientationActivity" >
+36-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:32:9-49
+37        <activity android:name="org.intelehealth.ihutils.ui.CameraActivity" />
+37-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:33:9-79
+37-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:33:19-76
+38        <activity
+38-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:34:9-38:63
+39            android:name="org.intelehealth.apprtc.ChatActivity"
+39-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:35:13-64
+40            android:screenOrientation="portrait"
+40-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:36:13-49
+41            android:theme="@style/AppTheme.NoActionBar"
+41-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:37:13-56
+42            android:windowSoftInputMode="stateAlwaysHidden" />
+42-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:38:13-60
+43        <!--
+44          <activity
+45              android:name="com.shivam.androidwebrtc.app_rtc_sample.main.AppRTCMainActivity"
 46              android:label="@string/app_name"
-47              android:screenOrientation="fullUser"
-48              android:theme="@style/AppTheme.Call" />
-49        -->
-50        <!--
-51<activity
-52            android:name="com.shivam.androidwebrtc.LauncherActivity"
-53            android:theme="@style/AppTheme.NoActionBar">
-54            <intent-filter>
-55                <action android:name="android.intent.action.MAIN" />
-56
-57                <category android:name="android.intent.category.LAUNCHER" />
-58            </intent-filter>
-59        </activity>
-60        -->
-61        <activity
-61-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:56:9-59:59
-62            android:name="org.intelehealth.apprtc.CompleteActivity"
-62-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:57:13-68
-63            android:screenOrientation="portrait"
-63-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:58:13-49
-64            android:theme="@style/AppTheme.NoActionBar" />
-64-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:59:13-56
-65    </application>
-66
-67</manifest>
+47              android:windowSoftInputMode="adjustPan" />
+48          <activity
+49              android:name="com.shivam.androidwebrtc.app_rtc_sample.call.CallActivity"
+50              android:configChanges="orientation|screenSize"
+51              android:label="@string/app_name"
+52              android:screenOrientation="fullUser"
+53              android:theme="@style/AppTheme.Call" />
+54        -->
+55        <!--
+56<activity
+57            android:name="com.shivam.androidwebrtc.LauncherActivity"
+58            android:theme="@style/AppTheme.NoActionBar">
+59            <intent-filter>
+60                <action android:name="android.intent.action.MAIN" />
+61
+62                <category android:name="android.intent.category.LAUNCHER" />
+63            </intent-filter>
+64        </activity>
+65        -->
+66        <activity
+66-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:62:9-65:59
+67            android:name="org.intelehealth.apprtc.CompleteActivity"
+67-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:63:13-68
+68            android:screenOrientation="portrait"
+68-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:64:13-49
+69            android:theme="@style/AppTheme.NoActionBar" />
+69-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:65:13-56
+70    </application>
+71
+72</manifest>
