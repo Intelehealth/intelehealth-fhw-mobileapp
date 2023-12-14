@@ -4336,8 +4336,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     }
                 });
 
-                if (LocaleHelper.isArabic(this))
+                if (LocaleHelper.isArabic(this)) {
                     textView.setGravity(Gravity.END);
+                    textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);  // Had to add this as the text direction was breaking for some text.
+                }
 
                 tl_prescribed_medications.addView(textView);
                 tl_prescribed_medications.addView(show_textView);
