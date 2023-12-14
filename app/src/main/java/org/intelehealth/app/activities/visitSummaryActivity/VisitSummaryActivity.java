@@ -4341,9 +4341,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);  // Had to add this as the text direction was breaking for some text.
                 }
 
+                if (tl_prescribed_medications.getChildCount() > 0)
+                    tl_prescribed_medications.addView(showDividerLine());
                 tl_prescribed_medications.addView(textView);
                 tl_prescribed_medications.addView(show_textView);
-                tl_prescribed_medications.addView(showDividerLine());
               //  tl_prescribed_medications.removeViewAt(tl_prescribed_medications.getChildCount()-1);
 
                 Log.d(TAG, "parseData: med: " + tl_prescribed_medications.getChildCount() + "\n" + textView.getText().toString());
