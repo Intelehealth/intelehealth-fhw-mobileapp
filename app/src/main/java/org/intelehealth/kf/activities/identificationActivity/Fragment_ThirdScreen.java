@@ -733,6 +733,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 //    intent.putExtra("patientUuid", patientID_edit);
                 //   if (patient_detail) {
                 getActivity().startActivity(intent);
+                getActivity().finish();
                 //   }
                 //startActivity(intent);
                 //  getActivity().finish();
