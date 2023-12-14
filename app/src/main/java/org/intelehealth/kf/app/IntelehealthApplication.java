@@ -19,6 +19,7 @@ import androidx.multidex.MultiDexApplication;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
+import org.intelehealth.kf.BuildConfig;
 import org.intelehealth.kf.R;
 import org.intelehealth.kf.database.InteleHealthDatabaseHelper;
 import org.intelehealth.kf.utilities.SessionManager;
@@ -47,6 +48,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     private static IntelehealthApplication sIntelehealthApplication;
     public String refreshedFCMTokenID = "";
     public String webrtcTempCallId = "";
+
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
@@ -110,7 +112,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
 
     }
 
