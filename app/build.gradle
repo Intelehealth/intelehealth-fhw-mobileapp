@@ -9,6 +9,7 @@ static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     return df.format(new Date());
 }
+
 android {
     compileSdkVersion 33
 
@@ -23,7 +24,7 @@ android {
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Koita" + " - " + getDateTime()
+        archivesBaseName = "Koita" + " - " + versionName + "(" + versionCode + ") - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility = "1.8"
@@ -55,16 +56,16 @@ android {
             enableSplit = false
         }
         density {
-           enableSplit = false
+            enableSplit = false
         }
         abi {
             enableSplit = true
         }
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding true // for data binding
-        
+
     }
 }
 dependencies {
