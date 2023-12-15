@@ -2731,14 +2731,16 @@ public class Node implements Serializable {
                     if (isAssociateSymptomsType) {
                         question = right_pointing + " " + mOptions.get(i).findDisplay();
                     } else {
+
                         if (mOptions.get(i).isTerminal()) {
                             question = bullet + " " + mOptions.get(i).findDisplay();
                         } else {
-                            if (level % 2 == 0) {
+                            /*if (level % 2 == 0) {
                                 question = big_bullet + " " + mOptions.get(i).findDisplay();
                             } else {
                                 question = bullet + " " + mOptions.get(i).findDisplay();
-                            }
+                            }*/
+                            question = right_pointing + " " + mOptions.get(i).findDisplay();
                         }
                     }
                 }
@@ -2772,7 +2774,7 @@ public class Node implements Serializable {
                                     } else if (answer.substring(0, 1).equals("%")) {
                                         stringsList.add(bullet_hollow + answer.substring(1) + next_line);
                                     } else {
-                                        stringsList.add(bullet_hollow + answer + next_line);
+                                        stringsList.add((level > 1 ? right_pointing : bullet_hollow) + answer + next_line);
                                     }
                                 }
                             }
@@ -2804,8 +2806,19 @@ public class Node implements Serializable {
                     String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
                     Log.i(TAG, "ipt: nested answer " + temp1);
                     temp1 = temp1.replaceAll("<br/>•", ",");
+                    if (temp1.startsWith("▻") && temp1.chars().filter(ch -> ch == '▻').count() > 1)
+                        temp1 = bullet_hollow + " " + temp1.substring(1);
                     Log.v(TAG, "ipt: nested answer " + temp1);
                     stringsList.add(temp1);
+                    // cleanup duplicate text
+                    String lastVal = "";
+                    for (int j = 0; j < stringsList.size(); j++) {
+                        String v = stringsList.get(j).replaceAll(right_pointing, "").trim().replaceAll(bullet_hollow, "").trim();
+                        if (!lastVal.isEmpty() && v.startsWith(lastVal)) {
+                            stringsList.get(j).replace(lastVal, "");
+                        }
+                        lastVal = v;
+                    }
                     Log.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
