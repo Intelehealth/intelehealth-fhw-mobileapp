@@ -77,8 +77,8 @@ public class PhysicalExamSummaryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
-                    getActivity().setResult(Activity.RESULT_OK);
-                    getActivity().finish();
+                    requireActivity().setResult(Activity.RESULT_OK);
+                    requireActivity().finish();
                 } else
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY, mIsEditMode, null);
             }
@@ -99,9 +99,9 @@ public class PhysicalExamSummaryFragment extends Fragment {
         view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (NetworkConnection.isOnline(getActivity())) {
+                if (NetworkConnection.isOnline(requireActivity())) {
                     new SyncUtils().syncBackground();
-                    // Toast.makeText(getActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(requireActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -141,7 +141,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
             List<String> _list = entry.getValue();
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
-                View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
+                View view = View.inflate(requireActivity(), R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 view.findViewById(R.id.height_adjust_view).setVisibility(View.GONE);
                 complainLabelTextView.setText(_complain);
@@ -152,7 +152,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
                     }
                 });
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 String k1 = "";
                 String lastString = "";
@@ -195,7 +195,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
                 }
 
 
-                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, getActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
+                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, requireActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
 
                     @Override
                     public void onSelect(VisitSummaryData data) {
@@ -203,7 +203,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
                     }
                 });
                 recyclerView.setAdapter(summaryViewAdapter);
-               /* SummarySingleViewAdapter summaryViewAdapter = new SummarySingleViewAdapter(recyclerView, getActivity(), _list, new SummarySingleViewAdapter.OnItemSelection() {
+               /* SummarySingleViewAdapter summaryViewAdapter = new SummarySingleViewAdapter(recyclerView, requireActivity(), _list, new SummarySingleViewAdapter.OnItemSelection() {
                     @Override
                     public void onSelect(String data) {
 

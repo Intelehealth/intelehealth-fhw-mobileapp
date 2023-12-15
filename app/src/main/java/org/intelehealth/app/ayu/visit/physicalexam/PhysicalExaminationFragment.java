@@ -60,7 +60,7 @@ public class PhysicalExaminationFragment extends Fragment {
             }
 
             @Override
-            public void onImageReadyForDelete(int nodeIndex,int imageIndex, String imageName) {
+            public void onImageReadyForDelete(int nodeIndex, int imageIndex, String imageName) {
                 mQuestionsListingAdapter.removeImageInLastNode(nodeIndex, imageIndex, imageName);
             }
         });
@@ -100,15 +100,15 @@ public class PhysicalExaminationFragment extends Fragment {
                 view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        getActivity().setResult(Activity.RESULT_OK);
-                        getActivity().finish();
+                        requireActivity().setResult(Activity.RESULT_OK);
+                        requireActivity().finish();
                     }
                 });
             }
             RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            linearLayoutManager.setStackFromEnd(true);
+            linearLayoutManager.setStackFromEnd(!mIsEditMode);
             linearLayoutManager.setReverseLayout(false);
             linearLayoutManager.setSmoothScrollbarEnabled(true);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -120,7 +120,7 @@ public class PhysicalExaminationFragment extends Fragment {
             complainBasicInfo.setPhysicalExam(true);
             mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
 
-            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false,true, physicalExam, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
+            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, requireActivity(), false, true, physicalExam, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     // avoid the scroll for old data change
@@ -144,7 +144,7 @@ public class PhysicalExaminationFragment extends Fragment {
                         //}
 
 
-                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0),physicalExam.getEngineVersion());
+                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
                    /* recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -153,7 +153,7 @@ public class PhysicalExaminationFragment extends Fragment {
                     }, 100);*/
                         VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode);
 
-                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400,mIsEditMode);
+                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode);
 
                         mActionListener.onProgress((int) 100 / physicalExam.getTotalNumberOfExams());
                         // }
@@ -161,9 +161,10 @@ public class PhysicalExaminationFragment extends Fragment {
                         if (!mIsEditMode)
                             mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
                         else
-                            Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
                     }
-                    linearLayoutManager.setStackFromEnd(false);
+                    if (!mIsEditMode)
+                        linearLayoutManager.setStackFromEnd(false);
                 }
 
                 @Override
@@ -176,7 +177,7 @@ public class PhysicalExaminationFragment extends Fragment {
                     if (!mIsEditMode)
                         mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
                     else
-                        Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -186,20 +187,20 @@ public class PhysicalExaminationFragment extends Fragment {
 
                 @Override
                 public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
-                    mActionListener.onImageRemoved(nodeIndex,imageIndex, image);
+                    mActionListener.onImageRemoved(nodeIndex, imageIndex, image);
                 }
             });
 
             recyclerView.setAdapter(mQuestionsListingAdapter);
             mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).
 
-                    getOption(0),physicalExam.getEngineVersion());
+                    getOption(0), physicalExam.getEngineVersion());
             showSanityDialog();
             if (mIsEditMode) {
                 while (true) {
                     if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
                         mCurrentComplainNodeOptionsIndex++;
-                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0),physicalExam.getEngineVersion());
+                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
 
 
                     } else {
@@ -214,14 +215,14 @@ public class PhysicalExaminationFragment extends Fragment {
             }, 100);*/
             }
         } else {
-            Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
         }
         return view;
     }
 
     private void showSanityDialog() {
         DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(getActivity(), R.drawable.ui2_ic_warning_sanity, getResources().getString(R.string.sanity_alert_title), "", true, getResources().getString(R.string.okay), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+        dialogUtils.showCommonDialog(requireActivity(), R.drawable.ui2_ic_warning_sanity, getResources().getString(R.string.sanity_alert_title), "", true, getResources().getString(R.string.okay), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
             @Override
             public void onDialogActionDone(int action) {
 

@@ -37,7 +37,6 @@ import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.activities.visit.VisitActivity;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
@@ -96,10 +95,10 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_ui2, container, false);
-        networkUtils = new NetworkUtils(getActivity(), this);
+        networkUtils = new NetworkUtils(requireActivity(), this);
         setLocale(getContext());
 
-        ((HomeScreenActivity_New) getActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
+        ((HomeScreenActivity_New) requireActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
                 Log.v(TAG, "onStart");
@@ -207,7 +206,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     }
 
     private void initUI() {
-        sessionManager = new SessionManager(getActivity());
+        sessionManager = new SessionManager(requireActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
         layoutToolbar.setVisibility(View.VISIBLE);
         String language = sessionManager.getAppLanguage();
@@ -216,7 +215,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getActivity().getResources().updateConfiguration(config, getActivity().getResources().getDisplayMetrics());
+            requireActivity().getResources().updateConfiguration(config, requireActivity().getResources().getDisplayMetrics());
         }
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
@@ -244,7 +243,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         ImageView ivNotification = requireActivity().findViewById(R.id.imageview_notifications_home);
         tvLastSyncApp.setVisibility(View.VISIBLE);
         ivNotification.setVisibility(View.VISIBLE);
-        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+        BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.setVisibility(View.VISIBLE);
         ivInternet = requireActivity().findViewById(R.id.imageview_is_internet);
 
@@ -256,7 +255,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         cardAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MyAppointmentActivity.class);
+                Intent intent = new Intent(requireActivity(), MyAppointmentActivity.class);
                 startActivity(intent);
 
             }
@@ -265,9 +264,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         closedVisitsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intent = new Intent(getActivity(), VisitSummaryActivity_New.class);
+               /* Intent intent = new Intent(requireActivity(), VisitSummaryActivity_New.class);
                 startActivity(intent);*/
-                Intent intent = new Intent(getActivity(), EndVisitActivity.class);
+                Intent intent = new Intent(requireActivity(), EndVisitActivity.class);
                 startActivity(intent);
             }
         });
@@ -275,7 +274,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         card_prescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), VisitActivity.class);
+                Intent intent = new Intent(requireActivity(), VisitActivity.class);
                 startActivity(intent);
             }
         });
@@ -299,7 +298,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             @Override
             public void run() {
                 int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
-                if (getActivity() != null) {
+                if (requireActivity() != null) {
                     requireActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits)));
                 }
             }
@@ -335,17 +334,17 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         super.onActivityCreated(savedInstanceState);
 
         textlayout_find_patient.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), SearchPatientActivity_New.class);
+            Intent intent = new Intent(requireActivity(), SearchPatientActivity_New.class);
             startActivity(intent);
         });
 
         followup_cardview.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), FollowUpPatientActivity_New.class);
+            Intent intent = new Intent(requireActivity(), FollowUpPatientActivity_New.class);
             startActivity(intent);
         });
 
         addpatient_cardview.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), PrivacyPolicyActivity_New.class);
+            Intent intent = new Intent(requireActivity(), PrivacyPolicyActivity_New.class);
             intent.putExtra("intentType", "navigateFurther");
             intent.putExtra("add_patient", "add_patient");
             startActivity(intent);

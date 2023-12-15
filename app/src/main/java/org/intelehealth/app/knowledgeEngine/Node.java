@@ -2735,12 +2735,12 @@ public class Node implements Serializable {
                         if (mOptions.get(i).isTerminal()) {
                             question = bullet + " " + mOptions.get(i).findDisplay();
                         } else {
-                            /*if (level % 2 == 0) {
-                                question = big_bullet + " " + mOptions.get(i).findDisplay();
+                            if (level >= 1) {
+                                question = right_pointing + " " + mOptions.get(i).findDisplay();
                             } else {
                                 question = bullet + " " + mOptions.get(i).findDisplay();
-                            }*/
-                            question = right_pointing + " " + mOptions.get(i).findDisplay();
+                            }
+                            //question = right_pointing + " " + mOptions.get(i).findDisplay();
                         }
                     }
                 }
@@ -2752,6 +2752,7 @@ public class Node implements Serializable {
                 Log.i(TAG, "ipt: findDisplay " + mOptions.get(i).findDisplay());
                 Log.i(TAG, "ipt: getText " + mOptions.get(i).getText());
                 Log.i(TAG, "ipt: -------------------answer " + answer);
+                Log.i(TAG, "ipt: -------------------question " + question);
                 if (mOptions.get(i).isTerminal()) {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
 
@@ -2792,8 +2793,8 @@ public class Node implements Serializable {
                             if (level == 0) {
                                 stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                             } else {
-                                stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + "," + next_line);
-
+                                //stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + "," + next_line);
+                                stringsList.add((level > 1 ? right_pointing : bullet_hollow) + mOptions.get(i).findDisplay() + next_line);
 
                             }
 
@@ -2801,24 +2802,33 @@ public class Node implements Serializable {
 
                     }
                 } else {
-
+                    Log.i(TAG, "ipt: nested question " + question);
+                    Log.i(TAG, "ipt: nested question level - " + level);
+                    if (level > 0 && level % 2 != 0)
+                        if (question.startsWith("▻"))
+                            question = bullet_hollow + " " + question.substring(1);
                     stringsList.add(question + next_line);
+                    Log.i(TAG, "ipt: nested question " + question);
+                    Log.i(TAG, "ipt: nested answer stringsList" + stringsList);
                     String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
+
                     Log.i(TAG, "ipt: nested answer " + temp1);
                     temp1 = temp1.replaceAll("<br/>•", ",");
-                    if (temp1.startsWith("▻") && temp1.chars().filter(ch -> ch == '▻').count() > 1)
-                        temp1 = bullet_hollow + " " + temp1.substring(1);
+                    if (level == 0)
+                        if (temp1.startsWith("▻") && temp1.chars().filter(ch -> ch == '▻').count() > 1)
+                            temp1 = bullet_hollow + " " + temp1.substring(1);
                     Log.v(TAG, "ipt: nested answer " + temp1);
                     stringsList.add(temp1);
                     // cleanup duplicate text
                     String lastVal = "";
-                    for (int j = 0; j < stringsList.size(); j++) {
+                    /*for (int j = 0; j < stringsList.size(); j++) {
                         String v = stringsList.get(j).replaceAll(right_pointing, "").trim().replaceAll(bullet_hollow, "").trim();
+                        Log.v(TAG, "ipt: nested answer v" + v);
                         if (!lastVal.isEmpty() && v.startsWith(lastVal)) {
                             stringsList.get(j).replace(lastVal, "");
                         }
                         lastVal = v;
-                    }
+                    }*/
                     Log.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
@@ -3707,6 +3717,18 @@ public class Node implements Serializable {
     public void setImagePathListWithSectionTag(HashMap<String, String> imagePathListWithSectionTag) {
         this.imagePathListWithSectionTag = imagePathListWithSectionTag;
     }
+
+    public boolean isFoundCompareAttribute() {
+        Log.v(TAG, "isFoundCompareAttribute - " + getText());
+        if (compareDuplicateNode != null && !compareDuplicateNode.isEmpty()) return true;
+        if (optionsList != null) {
+            for (int i = 0; i < optionsList.size(); i++) {
+                optionsList.get(i).isFoundCompareAttribute();
+            }
+        }
+        return false;
+    }
+
     /*End*/
 }
 

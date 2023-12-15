@@ -34,7 +34,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.TreeMap;
 
 /**
@@ -90,8 +89,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
-                    getActivity().setResult(Activity.RESULT_OK);
-                    getActivity().finish();
+                    requireActivity().setResult(Activity.RESULT_OK);
+                    requireActivity().finish();
                 } else
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_6_VISIT_SUMMARY, mIsEditMode, null);
             }
@@ -114,8 +113,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (NetworkConnection.isOnline(getActivity())) {
-                    syncNow(getActivity(), refresh, syncAnimator);
+                if (NetworkConnection.isOnline(requireActivity())) {
+                    syncNow(requireActivity(), refresh, syncAnimator);
                 }
             }
         });
@@ -161,7 +160,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
             List<String> _list = mapData.get(key);
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
-                View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
+                View view = View.inflate(requireActivity(), R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 complainLabelTextView.setText(_complain);
                 view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
@@ -176,7 +175,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     }
                 });
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 for (int i = 0; i < _list.size(); i++) {
                     Log.v("K", "_list.get(i) - " + _list.get(i));
@@ -275,7 +274,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
 
                 }
 
-                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, getActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
+                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, requireActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
 
                     @Override
                     public void onSelect(VisitSummaryData data) {
@@ -325,7 +324,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
             List<String> _list = mapData.get(key);
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
-                View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
+                View view = View.inflate(requireActivity(), R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 complainLabelTextView.setText(_complain);
                 view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
@@ -340,8 +339,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     }
                 });
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-                SummarySingleViewAdapter summaryViewAdapter = new SummarySingleViewAdapter(recyclerView, getActivity(), _list, new SummarySingleViewAdapter.OnItemSelection() {
+                recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
+                SummarySingleViewAdapter summaryViewAdapter = new SummarySingleViewAdapter(recyclerView, requireActivity(), _list, new SummarySingleViewAdapter.OnItemSelection() {
                     @Override
                     public void onSelect(String data) {
 

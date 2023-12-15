@@ -68,8 +68,17 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 
             if (genericViewHolder.node.isSelected()) {
-                genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
-                genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
+                if (genericViewHolder.node.isNeedToHide()) {
+                    genericViewHolder.tvName.setEnabled(false);
+                    genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
+                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+                    genericViewHolder.node.setSelected(false);
+                    genericViewHolder.node.setDataCaptured(false);
+                }else {
+                    genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
+                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
+                    genericViewHolder.tvName.setEnabled(true);
+                }
                 //if (mItemList.get(genericViewHolder.index).getOptionsList() != null && !mItemList.get(genericViewHolder.index).getOptionsList().isEmpty())
                     new Handler().postDelayed(new Runnable() {
                         @Override

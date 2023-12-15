@@ -2775,6 +2775,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                             @Override
                             public void onFinish() {
+                                //if (mIsEditMode) {
+                                int targetIndex = index + 1;
+                                if (targetIndex < mItemList.size()) {
+                                    List<Node> optionList = mItemList.get(targetIndex).getOptionsList();
+                                    for (int i = 0; i < optionList.size(); i++) {
+                                        if (optionList.get(i).isFoundCompareAttribute()) {
+                                            notifyItemChanged(targetIndex);
+                                            break;
+                                        }
+                                    }
+                                    // }
+                                }
+                                mItemList.get(index).setDataCaptured(true);
                                 mOnItemSelection.onSelect(node, index, false, null);
                             }
                         });

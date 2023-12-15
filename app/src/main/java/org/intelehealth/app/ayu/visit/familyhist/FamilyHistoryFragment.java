@@ -85,7 +85,7 @@ public class FamilyHistoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_family_history, container, false);
         if (mCurrentNode != null) {
             RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             linearLayoutManager.setStackFromEnd(true);
             linearLayoutManager.setReverseLayout(false);
@@ -112,13 +112,13 @@ public class FamilyHistoryFragment extends Fragment {
                 view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        getActivity().setResult(Activity.RESULT_OK);
-                        getActivity().finish();
+                        requireActivity().setResult(Activity.RESULT_OK);
+                        requireActivity().finish();
                     }
                 });
             }
 
-            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, false, null, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
+            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, requireActivity(), false, false, null, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     // avoid the scroll for old data change
@@ -150,7 +150,7 @@ public class FamilyHistoryFragment extends Fragment {
                         if (!mIsEditMode)
                             mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
                         else
-                            Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
                     }
                     linearLayoutManager.setStackFromEnd(false);
                 }
@@ -165,7 +165,7 @@ public class FamilyHistoryFragment extends Fragment {
                     if (!mIsEditMode)
                         mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
                     else
-                        Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -188,7 +188,7 @@ public class FamilyHistoryFragment extends Fragment {
 
             }
         } else {
-            Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
         }
         return view;
     }
