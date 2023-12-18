@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.intelehealth.app.R;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
@@ -19,6 +20,7 @@ public class PrescriptionBuilder {
 
     public String builder(
             Patient patient,
+            VitalsObject vitalsData,
             String diagnosisData,
             String medicationData,
             String adviceData,
@@ -35,7 +37,7 @@ public class PrescriptionBuilder {
         prescriptionHTML = headingDocTypeTag
                 + headingHTMLLangTag
                 + buildHeadData()
-                + buildBodyData(patient, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
+                + buildBodyData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
                 + htmlClosingTag;
 
         return prescriptionHTML;
@@ -56,6 +58,7 @@ public class PrescriptionBuilder {
 
     private String buildBodyData(
             Patient patient,
+            VitalsObject vitalsData,
             String diagnosisData,
             String medicationData,
             String adviceData,
@@ -79,7 +82,7 @@ public class PrescriptionBuilder {
                 + divMainContentOpeningTag
                 + divContainerFluidOpeningTag
                 + generatePatientDetailsData(patient)
-                + generateMainRowData(patient, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
+                + generateMainRowData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
                 + divContainerFluidClosingTag
                 + divMainContentClosingTag
                 + closingBodyTag;
@@ -169,6 +172,7 @@ public class PrescriptionBuilder {
 
     private String generateMainRowData(
             Patient patient,
+            VitalsObject vitalsData,
             String diagnosisData,
             String medicationData,
             String adviceData,
@@ -183,6 +187,7 @@ public class PrescriptionBuilder {
         String lineBreak = "<br>";
 
         finalMainRowData = rowOpeningTag
+                + generateVitalsData(vitalsData)
                 + generateConsultationDetails(patient)
                 + generateDiagnosisData(diagnosisData)
                 + generateMedicationData(medicationData)
@@ -198,6 +203,72 @@ public class PrescriptionBuilder {
                 + rowClosingTag;
 
         return finalMainRowData;
+    }
+
+    private String generateVitalsData(VitalsObject vitalsData) {
+        String finalVitalsData = "";
+        String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">\n";
+        String openingDataSectionTag = "<div class=\"data-section\">\n";
+        String closingDivTag = "</div>";
+
+        String vitalsTitleTag = "<div class=\"data-section-title\">\n"
+                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/vitals.svg\"\n"
+                + "alt=\"\" />\n"
+                + "<h6>Vitals</h6>\n"
+                + "</div>";
+
+        String dataSectionContentConsultationTitle = "<div class=\"data-section-content consultation-details\">";
+        String unorderedListOpeningTag = "<ul class=\"items-list\">";
+        String unorderedListClosingTag = "</ul>";
+
+        String vitalsDataString = "";
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_ht), vitalsData.getHeight());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_wt), vitalsData.getWeight());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_systolic_blood_pressure), vitalsData.getBpsys());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_diastolic_blood_pressure), vitalsData.getBpdia());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_pulse), vitalsData.getPulse());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_temp), vitalsData.getTemperature());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_spo2), vitalsData.getSpo2());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.respiratory_rate), vitalsData.getResp());
+
+        finalVitalsData = openingDivTag
+                + openingDataSectionTag
+                + vitalsTitleTag
+                + dataSectionContentConsultationTitle
+                + unorderedListOpeningTag
+                + vitalsDataString
+                + unorderedListClosingTag
+                + closingDivTag
+                + closingDivTag
+                + closingDivTag;
+
+        return finalVitalsData;
+    }
+
+    private String createVitalsListItem(String label, String value) {
+        String listOpeningTag = "<li>";
+        String listClosingTag = "</li>";
+        String divListItemOpeningTag = "<div class=\"list-item\">";
+        String labelOpeningTag = "<label>";
+        String labelClosingTag = "</label>";
+        String divListItemContentOpeningTag = "<div class=\"list-item-content\">";
+        String closingDivTag = "</div>";
+
+        String newValue = value;
+        if (newValue == null || newValue.isEmpty() || newValue.equalsIgnoreCase("0")) {
+            newValue = activityContext.getString(R.string.not_provided);
+        }
+
+        return listOpeningTag
+                + divListItemOpeningTag
+                + labelOpeningTag
+                + label + ": "
+                + labelClosingTag
+                + divListItemContentOpeningTag
+                + newValue
+                + closingDivTag
+                + closingDivTag
+                + listClosingTag;
     }
 
     private String generateConsultationDetails(Patient patient) {

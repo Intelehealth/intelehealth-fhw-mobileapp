@@ -133,6 +133,7 @@ import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
@@ -4211,7 +4212,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
-        String prescriptionString = prescriptionBuilder.builder(patient, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails);
+        VitalsObject vitalsData = getAllVitalsData();
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails);
 
 
         if (isRespiratory) {
@@ -4249,6 +4251,19 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
         // to the PrintManager
         mWebView = webView;
+    }
+
+    private VitalsObject getAllVitalsData() {
+        VitalsObject vitalsObject = new VitalsObject();
+        vitalsObject.setHeight(height.getValue());
+        vitalsObject.setWeight(weight.getValue());
+        vitalsObject.setPulse(pulse.getValue());
+        vitalsObject.setResp(resp.getValue());
+        vitalsObject.setSpo2(spO2.getValue());
+        vitalsObject.setTemperature(temperature.getValue());
+        vitalsObject.setBpdia(bpDias.getValue());
+        vitalsObject.setBpsys(bpSys.getValue());
+        return vitalsObject;
     }
 
     // print job
