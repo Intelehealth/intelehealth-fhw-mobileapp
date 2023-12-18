@@ -672,18 +672,31 @@ public class AppointmentDAO {
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor;
+        Log.d(TAG, "getUpcomingAppointmentsWithFilters: fromDate :"+fromDate);
+        Log.d(TAG, "getUpcomingAppointmentsWithFilters: toDate :"+toDate);
 
         if (!fromDate.isEmpty() && !toDate.isEmpty()) {
             String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
                     + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
                     + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                     + "from tbl_patient p, tbl_appointments a "
-                    + "where p.uuid = a.patient_id and new_slot_date "
+                    + "where p.uuid = a.patient_id "
                     + "AND a.slot_date != ?"
-                    + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
+                    + "AND new_slot_date  BETWEEN '" + fromDate + "'  and '" + toDate + "' "
                     + "AND a.status = 'booked'"
                     + "AND datetime(a.slot_js_date) >= datetime('now') "
                     + "LIMIT ? OFFSET ?";
+
+            String query1 = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,\"\n" +
+                    "                    + \"a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, \"\n" +
+                    "                    + \"a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id \"\n" +
+                    "                    + \"from tbl_patient p, tbl_appointments a \"\n" +
+                    "                    + \"where p.uuid = a.patient_id and new_slot_date \"\n" +
+                    "                    + \"AND a.slot_date != ?\"\n" +
+                    "                    + \"BETWEEN '\" + fromDate + \"'  and '\" + toDate + \"' \"\n" +
+                    "                    + \"AND a.status = 'booked'\"\n" +
+                    "                    + \"AND datetime(a.slot_js_date) >= datetime('now') \"\n";
+            Log.d(TAG, "getUpcomingAppointmentsWithFilters: query1 : "+query1);
 
             idCursor = db.rawQuery(selectQuery, new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
         } else {
@@ -697,6 +710,16 @@ public class AppointmentDAO {
                             + "AND datetime(a.slot_js_date) >= datetime('now') "
                             + "LIMIT ? OFFSET ?"
                     , new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
+            String query2 = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, \"\n" +
+                    "                            + \"a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, \"\n" +
+                    "                            + \"a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id \"\n" +
+                    "                            + \"from tbl_patient p, tbl_appointments a \"\n" +
+                    "                            + \"where p.uuid = a.patient_id \"\n" +
+                    "                            + \"AND a.status = 'booked'\"\n" +
+                    "                            + \"AND a.slot_date != ?\"\n" +
+                    "                            + \"AND datetime(a.slot_js_date) >= datetime('now') \"\n";
+            Log.d(TAG, "getUpcomingAppointmentsWithFilters: query2 : "+query2);
+
         }
         EncounterDAO encounterDAO = new EncounterDAO();
 

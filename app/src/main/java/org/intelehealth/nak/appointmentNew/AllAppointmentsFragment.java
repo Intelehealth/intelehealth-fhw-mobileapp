@@ -219,7 +219,8 @@ public class AllAppointmentsFragment extends Fragment {
                     fromDate = "";
                     toDate = "";
                     whichAppointment = "";
-                    getAppointments();
+                   // getAppointments();
+                    resetData();
                 }
             });
         }
@@ -982,9 +983,11 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void searchOperation(String query) {
+        Log.d(TAG, "searchOperation: query :: "+query);
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
         String finalQuery = query;
+        Log.d(TAG, "searchOperation: queryafter :: "+query);
 
         new Thread(() -> {
             List<AppointmentInfo> allUpcomingList = new AppointmentDAO().getAllUpcomingAppointmentsWithFilters(fromDate, toDate);
@@ -995,6 +998,7 @@ public class AllAppointmentsFragment extends Fragment {
                 upcomingSearchList.clear();
                 cancelledSearchList.clear();
                 completedSearchList.clear();
+
 
                 if (allUpcomingList.size() > 0) {
                     for (AppointmentInfo info : allUpcomingList) {
@@ -1022,17 +1026,20 @@ public class AllAppointmentsFragment extends Fragment {
                         }
                     }
                 }
+                //set counts to the textviews
+                setCountsToTextviews();
 
                 requireActivity().runOnUiThread(() -> {
-                    upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedAppointmentInfoList, "upcoming");
+                    Log.d(TAG, "searchOperation: ");
+                    upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), upcomingSearchList, "upcoming");
                     rvUpcomingApp.setNestedScrollingEnabled(true);
                     rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
 
-                    cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledAppointmentInfoList, "cancelled");
+                    cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledSearchList, "cancelled");
                     rvCancelledApp.setNestedScrollingEnabled(true);
                     rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
 
-                    completedAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedAppointmentInfoList, "completed");
+                    completedAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedSearchList, "completed");
                     rvCompletedApp.setNestedScrollingEnabled(true);
                     rvCompletedApp.setAdapter(completedAllAppointmentsAdapter);
                 });
@@ -1040,6 +1047,24 @@ public class AllAppointmentsFragment extends Fragment {
 
 
         }).start();
+    }
+
+    private void setCountsToTextviews() {
+        tvUpcomingAppsCountTitle.setText("");
+        tvCancelledAppsCountTitle.setText("");
+        tvCompletedAppsCountTitle.setText("");
+        tvUpcomingAppsCount.setText("");
+        tvCancelledAppsCount.setText("");
+        tvCompletedAppsCount.setText("");
+
+        tvUpcomingAppsCount.setText(upcomingSearchList.size() + "");
+        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingSearchList.size() + ")");
+
+        tvCancelledAppsCount.setText(cancelledSearchList.size() + "");
+        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledSearchList.size() + ")");
+
+        tvCompletedAppsCount.setText(completedSearchList.size() + "");
+        tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedSearchList.size() + ")");
     }
 
     private void initLimits() {

@@ -101,7 +101,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLocale(getContext());
-        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(0,new UpdateFragmentOnEvent() {
+        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(0, new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
                 Log.v(TAG, "onStart");
@@ -221,38 +221,38 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
         nsvToday = view.findViewById(R.id.nsv_today);
         nsvToday.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                    if (v.getChildAt(v.getChildCount() - 1) != null) {
-                        if (scrollY > oldScrollY) {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                if (scrollY > oldScrollY) {
 
-                            if (upcomingAppointmentInfoList != null && upcomingAppointmentInfoList.size() == 0) {
-                                isUpcomingFullyLoaded = true;
-                            }
+                    if (upcomingAppointmentInfoList != null && upcomingAppointmentInfoList.size() == 0) {
+                        isUpcomingFullyLoaded = true;
+                    }
 
-                            if (!isUpcomingFullyLoaded) {
-                                setMoreDataIntoUpcomingRecyclerView();
-                            }
+                    if (!isUpcomingFullyLoaded) {
+                        setMoreDataIntoUpcomingRecyclerView();
+                    }
 
-                            if (cancelledAppointmentInfoList != null && cancelledAppointmentInfoList.size() == 0) {
-                                isCancelledFullyLoaded = true;
-                            }
+                    if (cancelledAppointmentInfoList != null && cancelledAppointmentInfoList.size() == 0) {
+                        isCancelledFullyLoaded = true;
+                    }
 
-                            if (isUpcomingFullyLoaded && !isCancelledFullyLoaded) {
-                                setMoreDataIntoCancelledRecyclerView();
-                            }
+                    if (isUpcomingFullyLoaded && !isCancelledFullyLoaded) {
+                        setMoreDataIntoCancelledRecyclerView();
+                    }
 
-                            if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
-                                if (completedAppointmentInfoList != null && completedAppointmentInfoList.size() == 0) {
-                                    isCompletedFullyLoaded = true;
-                                    return;
-                                }
+                    if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        if (completedAppointmentInfoList != null && completedAppointmentInfoList.size() == 0) {
+                            isCompletedFullyLoaded = true;
+                            return;
+                        }
 
-                                if (!isCompletedFullyLoaded) {
-                                    setMoreDataIntoCompletedRecyclerView();
-                                }
-                            }
+                        if (!isCompletedFullyLoaded) {
+                            setMoreDataIntoCompletedRecyclerView();
                         }
                     }
-                });
+                }
+            }
+        });
 
         searchPatient();
         //getSlots();
@@ -278,7 +278,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     ivClearText.setVisibility(View.VISIBLE);
                 } else {
                     searchPatientText = "";
-                   // getAppointments();
+                    // getAppointments();
                     ivClearText.setVisibility(View.GONE);
                     resetData();
 
@@ -568,6 +568,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     }
                 });
     }
+
     private void resetData() {
         completedSearchList.clear();
         cancelledSearchList.clear();
@@ -652,6 +653,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             tvCompletedAppointmentsTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");
         }
     }
+
     private void searchOperation(String query) {
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
@@ -693,7 +695,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                         }
                     }
                 }
-
+                setCountsToTextviews();
                 requireActivity().runOnUiThread(() -> {
                     todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), upcomingSearchList, "upcoming");
                     rvUpcomingApp.setNestedScrollingEnabled(true);
@@ -767,6 +769,24 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
         idCursor.close();
         return appointmentInfos;
+    }
+
+    private void setCountsToTextviews() {
+        tvUpcomingAppointmentsTitle.setText("");
+        tvCancelledAppsCountTitle.setText("");
+        tvCompletedAppointmentsTitle.setText("");
+        tvUpcomingAppointments.setText("");
+        tvCancelledAppsCount.setText("");
+        tvCompletedAppointments.setText("");
+
+        tvUpcomingAppointments.setText(upcomingSearchList.size() + "");
+        tvUpcomingAppointmentsTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingSearchList.size() + ")");
+
+        tvCancelledAppsCount.setText(cancelledSearchList.size() + "");
+        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledSearchList.size() + ")");
+
+        tvCompletedAppointments.setText(completedSearchList.size() + "");
+        tvCompletedAppointmentsTitle.setText(getResources().getString(R.string.completed) + " (" + completedSearchList.size() + ")");
     }
 
 }
