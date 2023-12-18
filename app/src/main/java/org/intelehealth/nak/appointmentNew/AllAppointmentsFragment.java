@@ -276,7 +276,7 @@ public class AllAppointmentsFragment extends Fragment {
         ivClearText.setOnClickListener(v -> {
             autotvSearch.setText("");
             searchPatientText = "";
-           // getAppointments();
+            // getAppointments();
             resetData();
 
         });
@@ -461,9 +461,9 @@ public class AllAppointmentsFragment extends Fragment {
                     ivClearText.setVisibility(View.VISIBLE);
                 } else {
                     searchPatientText = "";
-                    getAppointments();
+                    //getAppointments();
                     ivClearText.setVisibility(View.GONE);
-
+                    resetData();
                 }
             }
         });

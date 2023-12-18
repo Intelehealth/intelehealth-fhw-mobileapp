@@ -1102,7 +1102,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         if (isRespiratory) {
             String htmlDocument =
-                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                    String.format(font_face + "<div style=\"margin-left:30px; margin-right:30px; margin-top:30px;\"><b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
@@ -1128,7 +1128,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                                     "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
                                     "%s<br>" +
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
+                                    "%s<br></div>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                                     //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                                     "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
@@ -1142,10 +1142,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             pat_hist, fam_hist,
                             mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument1 : "+htmlDocument);
+
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
-                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                    String.format(font_face + "<div style=\"margin-left:30px; margin-right:30px; margin-top:30px;\"><b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
@@ -1170,7 +1172,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                                     "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
                                     "%s<br>" +
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
+                                    "%s<br></div>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                                     "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
                                     doctorDetailStr +
@@ -1187,6 +1189,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             /*pat_hist, fam_hist,*/
                             /*mComplaint*/ "",
                             diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument2 : "+htmlDocument);
+
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
 
@@ -2465,7 +2469,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         if (isRespiratory) {
             String htmlDocument =
-                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                    String.format(font_face + "<div style=\"margin-left:30px !important; margin-right:30px !important; margin-top:30px !important;\"><b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
@@ -2491,7 +2495,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                                     "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
                                     "%s<br>" +
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
+                                    "%s<br></div>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                                     //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                                     "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
@@ -2505,10 +2509,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 //                            pat_hist, fam_hist,
                             mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument3 : "+htmlDocument);
+
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
-                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                    String.format(font_face + "<div style=\"margin-left:30px; margin-right:30px; margin-top:30px;\"><b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
@@ -2533,7 +2539,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                                     "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
                                     "%s<br>" +
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
+                                    "%s<br></div>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                                     "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
                                     doctorDetailStr +
@@ -2550,6 +2556,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             /*pat_hist, fam_hist,*/
                             /*mComplaint*/ "",
                             diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument4 : "+htmlDocument);
+
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
 

@@ -278,8 +278,9 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     ivClearText.setVisibility(View.VISIBLE);
                 } else {
                     searchPatientText = "";
-                    getAppointments();
+                   // getAppointments();
                     ivClearText.setVisibility(View.GONE);
+                    resetData();
 
                 }
             }

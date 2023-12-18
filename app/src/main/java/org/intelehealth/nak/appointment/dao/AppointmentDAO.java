@@ -1050,7 +1050,7 @@ public class AppointmentDAO {
                             + "where p.uuid = a.patient_id "
                             + "AND a.status = 'booked'"
                             + "AND datetime(a.slot_js_date) < datetime('now') "
-                            + "LIMIT ? OFFSET ?"
+                          /*  + "LIMIT ? OFFSET ?"*/ //commenting due to crash
                     , null);
 
         }
