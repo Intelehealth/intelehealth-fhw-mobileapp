@@ -993,9 +993,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.findDisplay());
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
                     if (!node.isSelected()) return;
-
-                    if (parentNode != null && parentNode.isHavingMoreNestedQuestion()) {
-                        holder.isParallelMultiNestedNode = true;
+                    holder.isParallelMultiNestedNode = false;
+                    if (parentNode != null) {
+                        holder.isParallelMultiNestedNode = parentNode.isHavingMoreNestedQuestion();
                         //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
                         //holder.nextRelativeLayout.setVisibility(View.GONE);
                     }
@@ -1024,7 +1024,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect holder.isParallelMultiNestedNode - " + holder.isParallelMultiNestedNode);
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect isLastNodeSubmit - " + isLastNodeSubmit);
 
-                    if (!selectedNode.isContainsTheQuestionBeforeOptions()) {
+                    if (holder.isParallelMultiNestedNode && !isLastNodeSubmit) {
+                        holder.selectedNestedOptionIndex += 1;
+                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+
+                    } else if (!selectedNode.isContainsTheQuestionBeforeOptions()) {
                         mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
                     } else {
                         if (!holder.isParallelMultiNestedNode || isLastNodeSubmit)
@@ -1661,8 +1665,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             holder.nextRelativeLayout.setVisibility(View.GONE);
                         }
                     }*/
-                    if (parentNode != null && parentNode.isHavingMoreNestedQuestion()) {
-                        holder.isParallelMultiNestedNode = true;
+                    holder.isParallelMultiNestedNode = false;
+                    if (parentNode != null) {
+                        holder.isParallelMultiNestedNode = parentNode.isHavingMoreNestedQuestion();
                         //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
                         //holder.nextRelativeLayout.setVisibility(View.GONE);
                     }
