@@ -23,3 +23,4 @@ salt.env
 /app/release/
 /app/src/main/assets
 /webrtc/src/main/assets/config.properties
+/webrtc/

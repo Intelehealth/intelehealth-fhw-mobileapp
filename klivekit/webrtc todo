@@ -1,0 +1,16 @@
+1 - Show incoming notification - DONE
+2 - Accept and decline - DONE
+3 - Cancel notification on call cancel by dr. - DONE
+4 - Star video calling on accept - DONE
+5 - 1 min timer for incoming notification - DONE
+6 - Missed call notification - DONE
+7 - Lock screen notification - DONE
+8 - Hangup call from UI ongoing notification should be remove - DONE
+
+PENDING
+9 - Remove toast for left by you, no require - DONE
+10 - Same as other toasts - DONE
+11 - Notification default ringtone
+12 - Latest notification implementing
+13 - End on hangup action when call in background - DONE
+
