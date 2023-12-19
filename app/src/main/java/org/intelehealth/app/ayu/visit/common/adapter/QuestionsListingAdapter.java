@@ -233,37 +233,29 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.rootIndex = mIndexMappingHashMap.getOrDefault(genericViewHolder.index, 0);
             int position = genericViewHolder.getAbsoluteAdapterPosition();
 
-
-            genericViewHolder.otherContainerLinearLayout.removeAllViews();
-            genericViewHolder.singleComponentContainer.removeAllViews();
-            genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
-            genericViewHolder.recyclerView.setVisibility(View.GONE);
-            genericViewHolder.nestedRecyclerView.setVisibility(View.GONE);
-            //genericViewHolder.nextRelativeLayout.setVisibility(View.GONE);
-            //genericViewHolder.superNestedContainerLinearLayout.setVisibility(View.GONE);
-
             genericViewHolder.tvQuestionCounter.setText("");
             String id = mItemList.get(position).getId();
-            Log.v("ID", id);
-            Log.v("ID", new Gson().toJson(mLoadedIds));
+            Log.v(TAG, "ID - " + id);
+            Log.v(TAG, "mLoadedIds - " + new Gson().toJson(mLoadedIds));
+            Handler handler = new Handler();
             if (!mLoadedIds.contains(id)) {
                 mLoadedIds.add(id);
                 genericViewHolder.spinKitView.setVisibility(View.VISIBLE);
                 genericViewHolder.bodyLayout.setVisibility(View.GONE);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        genericViewHolder.spinKitView.setVisibility(View.GONE);
-                        genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
-                        //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
-                        setData(position, genericViewHolder);
-                    }
+
+                handler.postDelayed(() -> {
+
+                    genericViewHolder.spinKitView.setVisibility(View.GONE);
+                    genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
+                    //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
+                    setData(position, genericViewHolder);
                 }, 800);
             } else {
-                genericViewHolder.spinKitView.setVisibility(View.GONE);
-                genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
-                setData(position, genericViewHolder);
+                handler.postDelayed(() -> {
+                    genericViewHolder.spinKitView.setVisibility(View.GONE);
+                    genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
+                    setData(position, genericViewHolder);
+                }, 100);
             }
 
 
@@ -272,6 +264,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void setData(int position, GenericViewHolder genericViewHolder) {
         Log.v(TAG, "setData");
+        genericViewHolder.otherContainerLinearLayout.removeAllViews();
+        genericViewHolder.singleComponentContainer.removeAllViews();
+        genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
+        genericViewHolder.recyclerView.setAdapter(null);
+        genericViewHolder.recyclerView.setVisibility(View.GONE);
+        genericViewHolder.nestedRecyclerView.setAdapter(null);
+        genericViewHolder.nestedRecyclerView.setVisibility(View.GONE);
+
+        //genericViewHolder.nextRelativeLayout.setVisibility(View.GONE);
+        //genericViewHolder.superNestedContainerLinearLayout.setVisibility(View.GONE);
+
+
+
         if (mIsForPhysicalExam) {
             genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", position + 1, mContext.getString(R.string.of), mPhysicalExam.getTotalNumberOfExams(), mContext.getString(R.string.questions))); //"1 of 10 questions"
 
@@ -422,6 +427,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void addRangeView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.ui2_visit_number_range, null);
         RangeSlider rangeSlider = view.findViewById(R.id.range_slider);
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
@@ -525,6 +531,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void addFrequencyView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
         final View view = View.inflate(mContext, R.layout.ui2_visit_number_slider_with_icon, null);
         Slider rangeSlider = view.findViewById(R.id.number_slider);
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
@@ -2340,6 +2347,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void addNumberView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
@@ -2477,6 +2485,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         Log.v(TAG, "addTextEnterView");
         holder.singleComponentContainer.removeAllViews();
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
@@ -2607,6 +2616,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void addDateView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
