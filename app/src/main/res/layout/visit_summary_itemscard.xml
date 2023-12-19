@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
 
+
         <!--Visit Reason card-->
         <androidx.cardview.widget.CardView
             android:id="@+id/visitReasonCard"
@@ -37,7 +38,7 @@
                     android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <ImageView
-                        android:id="@+id/ivNoteIcon"
+                        android:id="@+id/vsVisitReasonIcon"
                         android:layout_width="@dimen/edittext_height_44dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:src="@drawable/visit_reason_icon" />
@@ -48,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/ivNoteIcon"
+                        android:layout_toEndOf="@+id/vsVisitReasonIcon"
                         android:text="@string/complaint_dialog_title" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -69,7 +70,7 @@
                     android:layout_below="@+id/chiefcomplaint_header_relative">
 
                     <View
-                        android:id="@+id/divider2"
+                        android:id="@+id/divider1"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -82,7 +83,7 @@
                         android:id="@+id/cc_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider2"
+                        android:layout_below="@+id/divider1"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
@@ -106,6 +107,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="@color/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -115,7 +117,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -199,7 +201,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -232,6 +234,7 @@
 
                     <!--Associated symp - start-->
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/associ_sym_relative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -244,7 +247,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lineSpacingExtra="-3sp"
-                            android:text="@string/associated_symptoms"
+                            android:text="Additional Information"
                             android:textStyle="bold" />
 
                         <LinearLayout
@@ -269,7 +272,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -296,7 +299,8 @@
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginTop="@dimen/margin_8"
                         android:layout_marginEnd="@dimen/fu_margin_start"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:id="@+id/pat_reports_txtview1"
@@ -305,7 +309,9 @@
                             android:text="@string/patient_reports"
                             android:textAppearance="@style/caption"
                             android:textColor="@color/hint_text_color"
-                            android:textSize="@dimen/find_patient_hint_size" />
+                            android:textSize="@dimen/find_patient_hint_size"
+                            android:visibility="gone"
+                            tools:visibility="visible"/>
 
                         <TextView
                             android:id="@+id/patientReports_txtview"
@@ -314,7 +320,7 @@
                             android:layout_below="@+id/pat_reports_txtview1"
                             android:layout_marginStart="@dimen/margin_10"
                             android:layout_marginTop="4dp"
-                            android:text="Test: Nausea, Anorexia, Constipation, Abdominal distinction / bloating, passing GAS, Restlessness, Injury, Breathlessness, Wheezing, Shortness of breath, Pain/Tightness of chest, Hemoptysis, Hoarseness, Naval congestion/Stuffy nose, Runny nose, Recurrent Diarrhea."
+                            android:text="@string/no_data_added"
                             android:textColor="@color/textview_color"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </RelativeLayout>
@@ -329,7 +335,8 @@
                         android:layout_marginTop="@dimen/margin_8"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/margin_16dp"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:id="@+id/pat_denies_txtview"
@@ -338,7 +345,9 @@
                             android:text="@string/patient_denies"
                             android:textAppearance="@style/caption"
                             android:textColor="@color/hint_text_color"
-                            android:textSize="@dimen/find_patient_hint_size" />
+                            android:textSize="@dimen/find_patient_hint_size"
+                            android:visibility="gone"
+                            tools:visibility="visible"/>
 
                         <TextView
                             android:id="@+id/patientDenies_txtview"
@@ -347,7 +356,7 @@
                             android:layout_below="@+id/pat_denies_txtview"
                             android:layout_marginStart="@dimen/margin_10"
                             android:layout_marginTop="4dp"
-                            android:text="Test: Vomiting, Diarrhea, Fever, Belching/Burping, Blood in stool, change in frequency of urination, Color change in urine, Hiccups, Vaginal discharge(describe), Burning felling in a throat at night/early in the morning, Post nasal drip, Recent severe stress."
+                            android:text="@string/no_data_added"
                             android:textColor="@color/textview_color"
                             android:textSize="@dimen/find_patient_hint_size" />
 
@@ -360,12 +369,13 @@
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
+
         <!--Vitals card-->
         <androidx.cardview.widget.CardView
             android:id="@+id/vitalsCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/visitReasonCard"
+            android:layout_below="@+id/visitReasonCard"
             android:layout_marginStart="@dimen/toolbar_margin_left"
             android:layout_marginTop="@dimen/fu_card_margin_sides"
             android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -375,7 +385,6 @@
             app:cardElevation="@dimen/margin_5">
 
             <RelativeLayout
-                android:id="@+id/rlVitals"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -389,7 +398,7 @@
                     android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <ImageView
-                        android:id="@+id/ivVitalIcon"
+                        android:id="@+id/vsVitalIcon"
                         android:layout_width="@dimen/edittext_height_44dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:src="@drawable/vitals_icon" />
@@ -400,7 +409,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/ivVitalIcon"
+                        android:layout_toEndOf="@+id/vsVitalIcon"
                         android:text="@string/visit_summary_vitals" />
 
                     <ImageButton
@@ -421,7 +430,7 @@
                     android:layout_below="@+id/vitals_header_relative">
 
                     <View
-                        android:id="@+id/divider1"
+                        android:id="@+id/dividerVital"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -434,7 +443,7 @@
                         android:id="@+id/vitals_details_relative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider1"
+                        android:layout_below="@+id/dividerVital"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
@@ -457,6 +466,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="@color/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -466,7 +476,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -754,7 +764,67 @@
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
                         </TableRow>
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:layout_weight="2">
 
+                            <TextView
+                                android:id="@+id/textView_hemoglobin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/bullet_gray"
+                                android:drawablePadding="5dp"
+                                android:text="@string/hemoglobin"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+
+                            <TextView
+                                android:id="@+id/textView_hemoglobin_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/no_information"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/textview_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:layout_weight="2">
+
+                            <TextView
+                                android:id="@+id/textView_blood_sugar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/bullet_gray"
+                                android:drawablePadding="5dp"
+                                android:text="@string/blood_sugar"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+
+                            <TextView
+                                android:id="@+id/textView_blood_sugar_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/no_information"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/textview_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </TableRow>
 
                     </TableLayout>
                 </RelativeLayout>
@@ -762,6 +832,8 @@
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
+
+
         <!--    Phys exam card-->
         <androidx.cardview.widget.CardView
             android:id="@+id/physExamCard"
@@ -786,7 +858,7 @@
                     android:layout_margin="@dimen/fu_card_margin_sides">
 
                     <ImageView
-                        android:id="@+id/vs_icon"
+                        android:id="@+id/vsPhysExamIcon"
                         android:layout_width="@dimen/edittext_height_44dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:src="@drawable/phys_exam_icon" />
@@ -797,7 +869,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/vs_icon"
+                        android:layout_toEndOf="@+id/vsPhysExamIcon"
                         android:text="@string/physical_examination" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -855,6 +927,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="@color/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -864,7 +937,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -952,7 +1025,7 @@
                     android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <ImageView
-                        android:id="@+id/ivSummeryMedIcon"
+                        android:id="@+id/vs_icon"
                         android:layout_width="@dimen/edittext_height_44dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:src="@drawable/med_history_icon" />
@@ -963,7 +1036,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/ivSummeryMedIcon"
+                        android:layout_toEndOf="@+id/vs_icon"
                         android:text="@string/visit_summary_medical_history" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -1021,6 +1094,7 @@
                             <ImageView
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
+                                app:tint="@color/colorPrimary"
                                 android:layout_margin="5dp"
                                 android:src="@drawable/edit" />
 
@@ -1031,7 +1105,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -1069,6 +1143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textView_content_pathist"
                         android:layout_marginStart="@dimen/fu_margin_start"
+                        android:visibility="gone"
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
@@ -1091,6 +1166,7 @@
                             <ImageView
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
+                                app:tint="@color/colorPrimary"
                                 android:layout_margin="5dp"
                                 android:src="@drawable/edit" />
 
@@ -1101,7 +1177,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="#D1484C"
                                 android:textSize="12sp" />
 
                         </LinearLayout>

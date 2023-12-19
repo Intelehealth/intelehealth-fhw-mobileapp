@@ -76,6 +76,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.nak.BuildConfig;
@@ -136,6 +137,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
 import okhttp3.ResponseBody;
 
 public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
@@ -285,6 +287,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         super.onCreate(savedInstanceState);
         setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
+        updateFirebaseToken();
         context = HomeScreenActivity_New.this;
 
         networkUtils = new NetworkUtils(context, this);
@@ -300,6 +303,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager = new SessionManager(this);
         initUI();
         clickListeners();
+    }
+
+    private void updateFirebaseToken() {
+        FcmTokenGenerator.INSTANCE.getDeviceToken(token -> {
+            IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+            saveToken();
+            return Unit.INSTANCE;
+        });
     }
 
     private void clickListeners() {

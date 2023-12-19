@@ -1,12 +1,10 @@
-package org.intelehealth.app.webrtc.activity
+package org.intelehealth.nak.webrtc.activity
 
 import android.os.Bundle
 import com.google.android.material.button.MaterialButton
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.nak.R
-import org.intelehealth.nak.webrtc.activity.BaseActivity
-import org.intelehealth.nak.webrtc.activity.IDAVideoActivity
 
 /**
  * Created by Vaghela Mithun R. on 10-10-2023 - 18:28.

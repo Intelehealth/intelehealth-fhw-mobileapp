@@ -101,7 +101,7 @@ public class IntelehealthApplication extends MultiDexApplication {
             Parse.initialize(new Parse.Configuration.Builder(this)
                     .clientBuilder(builder)
                     .applicationId(AppConstants.IMAGE_APP_ID)
-                    .server(url + ":1337/parse/")
+                    .server(BuildConfig.SERVER_URL + ":1337/parse/")
                     .build()
             );
             Log.i(TAG, "onCreate: Parse init");
@@ -112,6 +112,8 @@ public class IntelehealthApplication extends MultiDexApplication {
         }
 
         initSocketConnection();
+
+        Timber.plant(Timber.DebugTree());
     }
 
     private void configureCrashReporting() {
