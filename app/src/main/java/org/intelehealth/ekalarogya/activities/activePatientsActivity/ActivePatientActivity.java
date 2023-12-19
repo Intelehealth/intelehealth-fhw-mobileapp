@@ -96,7 +96,7 @@ public class ActivePatientActivity extends BaseActivity {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
                     Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset);
@@ -261,7 +261,7 @@ public class ActivePatientActivity extends BaseActivity {
                 "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
-                "AND a.voided = 0 AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
+                "AND a.voided = 0 AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.sync ASC  limit ? offset ?";
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
@@ -293,6 +293,7 @@ public class ActivePatientActivity extends BaseActivity {
         }
         return activePatientList;
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

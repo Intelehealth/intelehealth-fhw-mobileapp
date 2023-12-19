@@ -23,6 +23,35 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/unUploadedVisitsNotificationCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="startActiveVisits"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:background="@color/lite_red"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/unUploadedVisitsNotificationTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:text="You have 10 un-uploaded visits."
+                            android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
                 <include layout="@layout/view_setup_location_info" />
 
 
@@ -81,6 +110,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/white"
+                        android:onClick="startActiveVisits"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="5dp"

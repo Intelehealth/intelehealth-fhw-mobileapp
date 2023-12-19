@@ -1192,4 +1192,7 @@
     <string name="sync_failed">Sync Failed! Please try again later.</string>
     <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
     <string name="app_sync">Syncing App..</string>
+    <string name="title_un_uploaded_visit_reminder">Un-uploaded visit reminder</string>
+    <string name="title_un_uploaded_visit_reminder_desc">Hello, there are some visits which are yet to be uploaded, kindly take action.</string>
+
 </resources>

@@ -17,6 +17,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,13 +65,14 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";
     String patientUuid, visitUuid, state, patientName, intentTag, encounterVitals, encounterAdultIntials, EncounterAdultInitial_LatestVisit, mgender;
     SearchView searchView;
-    List<Node> complaints;
+    List<Node> complaints, suggestedComplaints;
     ComplaintNodeListAdapter listAdapter;
+    SuggestedComplaintNodeListAdapter suggestedComplaintListAdapter;
     EncounterDTO encounterDTO;
     SessionManager sessionManager = null;
     ImageView img_question;
     TextView tv_selectComplaint;
-    RecyclerView list_recyclerView;
+    RecyclerView list_recyclerView, rv_suggested_complaints;
     private float float_ageYear_Month;
 
     @Override
@@ -130,6 +134,13 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         img_question = findViewById(R.id.img_question);
         tv_selectComplaint = findViewById(R.id.tv_selectComplaint);
         list_recyclerView = findViewById(R.id.list_recyclerView);
+
+        rv_suggested_complaints = findViewById(R.id.rvSuggestedComplaints);
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        rv_suggested_complaints.setLayoutManager(layoutManager);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         list_recyclerView.setLayoutManager(linearLayoutManager);
         list_recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -152,6 +163,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }
 
         complaints = new ArrayList<>();
+        suggestedComplaints = new ArrayList<>();
 
 
         boolean hasLicense = !sessionManager.getLicenseKey().isEmpty();
@@ -210,7 +222,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     }
                 }
             }
-        } else {
+        }
+        else {
             String[] fileNames = new String[0];
             try {
                 fileNames = getApplicationContext().getAssets().list("engines");
@@ -222,7 +235,12 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     String fileLocation = "engines/" + name;
                     currentFile = FileUtils.encodeJSON(this, fileLocation);
                     Node currentNode = new Node(currentFile);
-                    complaints.add(currentNode);
+                    if(name.equalsIgnoreCase("Fever.json") || name.equalsIgnoreCase("Abdominal Pain.json") ||
+                        name.equalsIgnoreCase("Dry mouth.json") || name.equalsIgnoreCase("Fever & Rash.json") ||
+                                name.equalsIgnoreCase("Jaundice.json"))
+                        suggestedComplaints.add(currentNode);
+                    else
+                        complaints.add(currentNode);
                 }
                 //remove items from complaints array here...
                 mgender = PatientsDAO.fetch_gender(patientUuid);
@@ -243,13 +261,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 for (int i = 0; i < complaints.size(); i++) {
                     if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
                             !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
-
                         if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                             complaints.get(i).remove(complaints, i);
                             i--;
                         }
-
-                        //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
                         else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
                             complaints.get(i).remove(complaints, i);
                             i--;
@@ -260,56 +275,22 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 }
             }
         }
-
-      /*  listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
-                R.layout.list_item_subquestion,
-                complaints);
-
-        assert complaintList != null;
-        complaintList.setAdapter(listAdapter);
-
-
-        complaintList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                complaints.get(position).toggleSelected();
-                listAdapter.notifyDataSetChanged();
-                //The adapter needs to be notified every time a knowledgeEngine is clicked to ensure proper display of selected nodes.
-            }
-        });*/
-
-        listAdapter
-                = new ComplaintNodeListAdapter(this, complaints);
+        listAdapter = new ComplaintNodeListAdapter(this, complaints);
+        suggestedComplaintListAdapter = new SuggestedComplaintNodeListAdapter(this, suggestedComplaints);
         list_recyclerView.setAdapter(listAdapter);
+        rv_suggested_complaints.setAdapter(suggestedComplaintListAdapter);
 
         img_question.setVisibility(View.VISIBLE);
         tv_selectComplaint.setVisibility(View.VISIBLE);
         list_recyclerView.setVisibility(View.VISIBLE);
+        rv_suggested_complaints.setVisibility(View.VISIBLE);
         fab.setVisibility(View.VISIBLE);
-
-//        animateView(img_question);
-////        animateView(tv_selectComplaint);
-////        final Handler handler = new Handler();
-////        handler.postDelayed(new Runnable() {
-////            @Override
-////            public void run() {
-////                bottomUpAnimation(list_recyclerView);
-////            }
-////        }, 1000);
-////        handler.postDelayed(new Runnable() {
-////            @Override
-////            public void run() {
-////                animateView(fab);
-////            }
-////        }, 1000);
-
     }
 
     /**
      * Method to confirm all the complaints that were selected, and ensure that the conversation with the patient is thorough.
      */
     public void confirmComplaints() {
-
         final ArrayList<String> selection = new ArrayList<>();
         final ArrayList<String> displaySelection = new ArrayList<>();
         if (listAdapter != null) {
