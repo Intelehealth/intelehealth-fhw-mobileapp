@@ -112,12 +112,16 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                         holder.presc_pendingCV.setVisibility(View.GONE);
                         holder.presc_receivingCV.setVisibility(View.GONE);
                     }
+
+                    if (model.getVisitDTO().getEnddate() != null) {
+                        holder.visitNotUploadCV.setVisibility(View.GONE);
+                    }
                 }
                 // checking visit uploaded or not - end
 
                 holder.fu_item_calendar.setVisibility(View.VISIBLE);
                 String visitDate = model.getVisit_startdate();
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     visitDate = StringUtils.en_hi_dob_three(visitDate);
                 holder.search_date_relative.setText(visitDate);
             } else {
@@ -170,7 +174,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
     public class SearchHolderView extends RecyclerView.ViewHolder {
         TextView search_gender, search_name, search_date_relative;
-        ImageView  fu_item_calendar, profile_imgview;
+        ImageView fu_item_calendar, profile_imgview;
         LinearLayout priority_tag_imgview;
         PatientDTO patientDTO;
         CardView presc_pendingCV, presc_receivingCV, visitNotUploadCV;

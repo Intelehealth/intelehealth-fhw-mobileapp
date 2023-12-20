@@ -2,6 +2,7 @@ package org.intelehealth.app.database.dao;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
 import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
 
 import android.content.ContentValues;
@@ -42,8 +43,7 @@ public class ObsDAO {
             db.beginTransaction();
             Logger.logD("insert", " insert obs");
             for (ObsDTO obs : obsDTOS) {
-                if (sessionManager.isFirstTimeSyncExcuted() && obs.getVoided() == 1)
-                    continue;
+                if (sessionManager.isFirstTimeSyncExcuted() && obs.getVoided() == 1) continue;
                 createObs(obs);
             }
             db.setTransactionSuccessful();
@@ -254,17 +254,11 @@ public class ObsDAO {
         List<PrescDataModel> prescDataModelList = new ArrayList<>();
 
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        Cursor obsCursoursor = db.rawQuery("Select * from tbl_obs where conceptuuid=? and encounteruuid=? and sync=? and voided =?",
-                new String[]{CONCEPTUUID, encounterVisitNote, sync, "0"});
+        Cursor obsCursoursor = db.rawQuery("Select * from tbl_obs where conceptuuid=? and encounteruuid=? and sync=? and voided =?", new String[]{CONCEPTUUID, encounterVisitNote, sync, "0"});
         try {
             if (obsCursoursor.getCount() != 0) {
                 while (obsCursoursor.moveToNext()) {
-                    prescDataModelList.add(new PrescDataModel(
-                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")),
-                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")),
-                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("encounteruuid")),
-                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("conceptuuid"))
-                    ));
+                    prescDataModelList.add(new PrescDataModel(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")), obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")), obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("encounteruuid")), obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("conceptuuid"))));
                 }
             }
         } catch (SQLException sql) {
@@ -317,6 +311,7 @@ public class ObsDAO {
 
     /**
      * This fetches the value of Follow up shared for this Visit UUID.
+     *
      * @param visitUUID
      * @return Followup date Eg. 30-11-2022
      */
@@ -326,19 +321,15 @@ public class ObsDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
 
-        if(visitUUID != null) {
-            final Cursor cursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " +
-                    "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " +
-                    "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " +
-                    "v.uuid = ? and o.conceptuuid = ?", new String[]{visitUUID, FOLLOW_UP_VISIT});  // e8caffd6-5d22-41c4-8d6a-bc31a44d0c86
+        if (visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " + "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " + "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " + "v.uuid = ? and o.conceptuuid = ?", new String[]{visitUUID, FOLLOW_UP_VISIT});  // e8caffd6-5d22-41c4-8d6a-bc31a44d0c86
 
             if (cursor.moveToFirst()) {
                 do {
                     try {
                         result = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
                         Log.v("value_text", "value_text: " + result);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } while (cursor.moveToNext());
@@ -364,8 +355,7 @@ public class ObsDAO {
         String encounterIDSelection = "visituuid = ? ";
         String[] encounterIDArgs = {visitUuid};
         String encounter_type_uuid_comp = ENCOUNTER_VISIT_COMPLETE; // bd1fbfaa-f5fb-4ebd-b75c-564506fc309e // make the encounter_type_uuid as constant later on.
-        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs,
-                null, null, null);
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
 
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
@@ -396,4 +386,25 @@ public class ObsDAO {
         // fetch dr details from local db - end
     }
 
+    public static void deleteExistingVitalsDataIfExists(String visitUuid) {
+        boolean doesVitalsEncounterExist = false;
+        String encounterUuid = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        // Check if the vitals encounter exists
+        // If it does,fetch the vitals encounter
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter WHERE visituuid = ? AND encounter_type_uuid = ?", new String[]{visitUuid, ENCOUNTER_VITALS});
+        if (cursor.moveToFirst()) {
+            doesVitalsEncounterExist = true;
+            encounterUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+        }
+        cursor.close();
+
+        // In case the vitals encounter exists
+        // delete all the entries which have encounteruuid
+        if (doesVitalsEncounterExist) {
+            String deleteClause = "encounteruuid = ?";
+            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid});
+        }
+    }
 }

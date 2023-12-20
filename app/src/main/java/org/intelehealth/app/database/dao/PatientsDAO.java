@@ -733,6 +733,7 @@ public class PatientsDAO {
                 do {
                     visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                     visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+                    visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
                     String isSynced = idCursor.getString(idCursor.getColumnIndexOrThrow("sync"));
                     boolean sync = false;
                     if (isSynced != null) {

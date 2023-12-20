@@ -70,6 +70,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -80,6 +82,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -110,6 +113,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
+import org.intelehealth.app.appointmentNew.AppointmentDetailsActivity;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -129,6 +133,7 @@ import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
@@ -209,6 +214,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private RecyclerView.LayoutManager cc_recyclerview_gridlayout;
     private AdditionalDocumentAdapter recyclerViewAdapter;
     private ComplaintHeaderAdapter cc_adapter;
+    private String mEngReason = "";
 
     boolean hasLicense = false;
     private String hasPrescription = "";
@@ -325,7 +331,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private boolean priorityVisit = false;
     private ObjectAnimator syncAnimator;
     TooltipWindow tipWindow;
-
+    Boolean doesAppointmentExist = false;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -667,6 +673,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
             btnAppointment.setText(getString(R.string.reschedule));
+            doesAppointmentExist = true;
         }
     }
 
@@ -2314,33 +2321,161 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         // navigation for book appointmnet
         btnAppointment = findViewById(R.id.btn_vs_appointment);
-        btnAppointment.setOnClickListener(new View.OnClickListener() {
+        btnAppointment.setOnClickListener(v -> {
+            if (!NetworkConnection.isOnline(context)) {
+                Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (priorityVisit) {
+                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!isVisitSpecialityExists) {
+                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (doesAppointmentExist) {
+                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment, patientName);
+                rescheduleAppointment(VisitSummaryActivity_New.this, getResources().getString(R.string.reschedule_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
+                return;
+            }
+
+            Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
+            in.putExtra("visitUuid", visitUuid);
+            in.putExtra("patientUuid", patientUuid);
+            in.putExtra("patientName", patientName);
+            in.putExtra("appointmentId", 0);
+            in.putExtra("actionTag", "new_schedule");
+            in.putExtra("openMrsId", patient.getOpenmrs_id());
+            in.putExtra("speciality", speciality_selected);
+            mStartForScheduleAppointment.launch(in);
+        });
+    }
+
+    private void rescheduleAppointment(VisitSummaryActivity_New context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.iv_dialog_image);
+        TextView dialog_title = convertView.findViewById(R.id.tv_title_book_app);
+        TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
+        Button noButton = convertView.findViewById(R.id.button_no_appointment);
+        Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
+
+        icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_book_app_red));
+
+        dialog_title.setText(title);
+        tvInfo.setText(Html.fromHtml(subTitle));
+        yesButton.setText(positiveBtnTxt);
+        noButton.setText(negativeBtnTxt);
+
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        noButton.setOnClickListener(v -> alertDialog.dismiss());
+
+        yesButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            askReasonForRescheduleAppointment(VisitSummaryActivity_New.this);
+        });
+
+        alertDialog.show();
+    }
+
+    private void askReasonForRescheduleAppointment(Context context) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_ask_reason_new_ui2, null);
+        alertdialogBuilder.setView(convertView);
+
+        final TextView titleTextView = convertView.findViewById(R.id.titleTv_new);
+        titleTextView.setText(getString(R.string.please_select_your_reschedule_reason));
+        final EditText reasonEtv = convertView.findViewById(R.id.reasonEtv_new);
+        reasonEtv.setVisibility(View.GONE);
+        final RadioButton rb1 = convertView.findViewById(R.id.rb_no_doctor);
+        final RadioButton rb2 = convertView.findViewById(R.id.rb_no_patient);
+        final RadioButton rb3 = convertView.findViewById(R.id.rb_other_ask);
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        final RadioGroup optionsRadioGroup = convertView.findViewById(R.id.rg_ask_reason);
+        optionsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rb_no_doctor) {
+                    rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.doctor_is_not_available));
+                    mEngReason = "Doctor is not available";
+                } else if (checkedId == R.id.rb_no_patient) {
+                    rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                    rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.patient_is_not_available));
+                    mEngReason = "Patient is not available";
+                } else if (checkedId == R.id.rb_other_ask) {
+                    rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    reasonEtv.setText("");
+                    reasonEtv.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        final Button textView = convertView.findViewById(R.id.btn_save_ask);
+        final Button btnCancel = convertView.findViewById(R.id.btn_cancel_ask);
+
+        textView.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            String reason = reasonEtv.getText().toString().trim();
+
+            if (reason.isEmpty()) {
+                Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
+            } else {
+                AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(visitUUID);
+                Intent in = new Intent(context, ScheduleAppointmentActivity_New.class);
+                in.putExtra("actionTag", "rescheduleAppointment");
+                in.putExtra("visitUuid", visitUUID);
+                in.putExtra("patientUuid", patientUuid);
+                in.putExtra("patientName", patientName);
+                in.putExtra("appointmentId", appointmentInfo.getId());
+                in.putExtra("openMrsId", patient.getOpenmrs_id());
+                in.putExtra("app_start_date", appointmentInfo.getSlotDate());
+                in.putExtra("app_start_time", appointmentInfo.getSlotTime());
+                in.putExtra("app_start_day", appointmentInfo.getSlotDay());
+                in.putExtra("rescheduleReason", mEngReason);
+                in.putExtra("speciality", speciality_selected);
+                mStartForScheduleAppointment.launch(in);
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (NetworkConnection.isOnline(context)) {
-                    if (!priorityVisit) {
-                        if (isVisitSpecialityExists) {
-                            Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
-                            in.putExtra("visitUuid", visitUuid);
-                            in.putExtra("patientUuid", patientUuid);
-                            in.putExtra("patientName", patientName);
-                            in.putExtra("appointmentId", 0);
-                            in.putExtra("actionTag", "new_schedule");
-                            in.putExtra("openMrsId", patient.getOpenmrs_id());
-                            in.putExtra("speciality", speciality_selected);
-                            mStartForScheduleAppointment.launch(in);
-                        } else
-                            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
-                    } else
-                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
-                }
+                alertDialog.dismiss();
 
             }
         });
+        alertDialog.show();
+
     }
+
 
     private ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -4077,7 +4212,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
-        String prescriptionString = prescriptionBuilder.builder(patient, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails);
+        VitalsObject vitalsData = getAllVitalsData();
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails);
 
 
         if (isRespiratory) {
@@ -4115,6 +4251,19 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
         // to the PrintManager
         mWebView = webView;
+    }
+
+    private VitalsObject getAllVitalsData() {
+        VitalsObject vitalsObject = new VitalsObject();
+        vitalsObject.setHeight(height.getValue());
+        vitalsObject.setWeight(weight.getValue());
+        vitalsObject.setPulse(pulse.getValue());
+        vitalsObject.setResp(resp.getValue());
+        vitalsObject.setSpo2(spO2.getValue());
+        vitalsObject.setTemperature(temperature.getValue());
+        vitalsObject.setBpdia(bpDias.getValue());
+        vitalsObject.setBpsys(bpSys.getValue());
+        return vitalsObject;
     }
 
     // print job

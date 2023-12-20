@@ -190,7 +190,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
         }
 
-        if(patient_detail)
+        if (patient_detail)
             frag1_nxt_btn_main.setText(getString(R.string.save));
 
         // Setting up the screen when user came from Second screen.
@@ -202,7 +202,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
             mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
 
-            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 mDOBEditText.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(dobToDb)));
 
             // dob_edittext.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
@@ -322,7 +322,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             if (age != null && !age.isEmpty()) {
                 mAgeEditText.setText(age);
                 mDOBEditText.setText(dateToshow1 + ", " + splitedDate[2]);
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     mDOBEditText.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
                 Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
             } else {
@@ -573,7 +573,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                         String dobString = simpleDateFormat.format(dob.getTime());
                         dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(simpleDateFormat1.format(dob.getTime()));
                         mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobString));
-                        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             mDOBEditText.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(dobString)));
                         alertDialog.dismiss();
                     }
@@ -654,7 +654,6 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     private boolean checkAndRequestPermissions() {
         int cameraPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
@@ -662,14 +661,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
 
-        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-
         if (!listPermissionsNeeded.isEmpty()) {
-            requestPermissions(listPermissionsNeeded.toArray
-                    (new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
         return true;
