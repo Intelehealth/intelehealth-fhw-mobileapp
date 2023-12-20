@@ -1086,6 +1086,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         if (getActivity().getIntent().equals("edit")) {
+            ObsDAO.deleteExistingVitalsDataIfExists(visitUuid);
+
             try {
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
@@ -1187,6 +1189,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 FirebaseCrashlytics.getInstance().recordException(dao);
             }
         } else {
+            ObsDAO.deleteExistingVitalsDataIfExists(visitUuid);
 
             obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
