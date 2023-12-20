@@ -35,7 +35,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layout_button_privacy"
-        android:layout_below="@+id/ll_action_bar">
+        android:layout_below="@+id/ll_action_bar"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:paddingEnd="2dp"
+        android:scrollbarThumbVertical="@color/colorPrimary1"
+        >
 
 
         <TextView
