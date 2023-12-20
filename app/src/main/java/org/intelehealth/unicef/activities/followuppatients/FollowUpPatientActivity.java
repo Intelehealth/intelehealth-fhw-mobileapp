@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.models.FollowUpModel;
 import org.intelehealth.unicef.utilities.Logger;
@@ -37,7 +37,7 @@ import java.util.Locale;
  * Github : @nishitagoyal
  */
 
-public class FollowUpPatientActivity extends BaseActivity {
+public class FollowUpPatientActivity extends LocalConfigActivity {
 
     private FollowUpPatientAdapter recycler;
     RecyclerView recyclerView;

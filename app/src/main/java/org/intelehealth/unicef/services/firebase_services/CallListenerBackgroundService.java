@@ -28,7 +28,6 @@ import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.utilities.SessionManager;
-import org.intelehealth.apprtc.CompleteActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -138,7 +137,7 @@ public class CallListenerBackgroundService extends Service {
                     if (value == null) return;
                     if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
                         Intent broadcast = new Intent();
-                        broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
+//                        broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
                         sendBroadcast(broadcast);
                         return;
                     }

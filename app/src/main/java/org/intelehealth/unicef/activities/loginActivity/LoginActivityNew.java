@@ -27,10 +27,11 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.models.loginModel.LoginModel;
 import org.intelehealth.unicef.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.unicef.utilities.Base64Utils;
@@ -57,7 +58,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginActivityNew extends BaseActivity {
+public class LoginActivityNew extends LocalConfigActivity {
     private static final String TAG = "LoginActivityNew";
     TextInputEditText etUsername, etPassword;
     SessionManager sessionManager = null;
@@ -347,7 +348,7 @@ public class LoginActivityNew extends BaseActivity {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
-
+                                            IntelehealthApplication.getInstance().initSocketConnection();
                                             provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
 //                                                success = true;
                                           /*  final Account account = new Account(mEmail, "io.intelehealth.openmrs");

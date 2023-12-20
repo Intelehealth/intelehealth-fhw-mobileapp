@@ -14,14 +14,13 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.syncModule.SyncUtils;
@@ -34,7 +33,7 @@ import org.intelehealth.unicef.utilities.VisitCountInterface;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitActivity extends BaseActivity implements
+public class VisitActivity extends LocalConfigActivity implements
         NetworkUtils.InternetCheckUpdateInterface, VisitCountInterface {
     private static final String TAG = VisitActivity.class.getName();
     private ImageButton ibBack, refresh;

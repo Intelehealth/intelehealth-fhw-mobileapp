@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="video_call_action_btn_min_size">56dp</dimen>
+    <dimen name="std_72dp">72dp</dimen>
+    <dimen name="std_36sp">36sp</dimen>
+    <dimen name="std_16dp">16dp</dimen>
+    <dimen name="rtc_partner_profile_size">84dp</dimen>
+    <dimen name="std_48dp">48dp</dimen>
+    <dimen name="std_24sp">24sp</dimen>
+    <dimen name="rtc_self_view_width">124dp</dimen>
+    <dimen name="rtc_self_view_height">152dp</dimen>
+    <dimen name="std_8dp">8dp</dimen>
+</resources>

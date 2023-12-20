@@ -10,12 +10,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.utilities.SessionManager;
 
-public class PrivacyPolicyActivity_New extends BaseActivity {
+public class PrivacyPolicyActivity_New extends LocalConfigActivity {
     private static final String TAG = "PrivacyPolicyActivityNe";
     private Button btn_accept_privacy;
     private int mIntentFrom;

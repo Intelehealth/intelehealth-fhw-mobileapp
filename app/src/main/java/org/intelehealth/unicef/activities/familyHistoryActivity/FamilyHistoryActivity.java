@@ -33,11 +33,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.unicef.activities.questionNodeActivity.QuestionsAdapter;
 import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -62,7 +61,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
+public class FamilyHistoryActivity extends LocalConfigActivity implements QuestionsAdapter.FabClickListener {
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
 
     String patientUuid;

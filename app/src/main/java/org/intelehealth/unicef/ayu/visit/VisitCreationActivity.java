@@ -31,7 +31,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -77,7 +77,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-public class VisitCreationActivity extends BaseActivity implements VisitCreationActionListener {
+public class VisitCreationActivity extends LocalConfigActivity implements VisitCreationActionListener {
 
     private static final String TAG = VisitCreationActivity.class.getSimpleName();
     private static final String VITAL_FRAGMENT = "VITAL";

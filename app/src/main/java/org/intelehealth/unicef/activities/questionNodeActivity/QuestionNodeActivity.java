@@ -33,7 +33,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.unicef.app.AppConstants;
@@ -66,7 +66,7 @@ import java.util.Set;
 import java.util.UUID;
 
 
-public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
+public class QuestionNodeActivity extends LocalConfigActivity implements QuestionsAdapter.FabClickListener {
     final String TAG = "Question Node Activity";
     String patientUuid;
     String visitUuid;

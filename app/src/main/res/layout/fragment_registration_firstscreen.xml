@@ -175,7 +175,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/lastname_title"
+                    android:id="@+id/tvLastNameLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"

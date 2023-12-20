@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
@@ -41,7 +41,7 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class ScheduleListingActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
+public class ScheduleListingActivity extends LocalConfigActivity implements DatePickerDialog.OnDateSetListener {
 
     String visitUuid;
     String patientUuid;

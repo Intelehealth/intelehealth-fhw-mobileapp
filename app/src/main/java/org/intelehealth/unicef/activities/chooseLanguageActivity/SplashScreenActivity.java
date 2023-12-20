@@ -34,24 +34,21 @@ import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.intelehealth.fcm.utils.FcmRemoteConfig;
+import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.unicef.BuildConfig;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.IntroActivity.IntroScreensActivity_New;
 import org.intelehealth.unicef.activities.achievements.fragments.MyAchievementsFragment;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.unicef.activities.onboarding.SetupPrivacyNoteActivity_New;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.dataMigration.SmoothUpgrade;
-import org.intelehealth.unicef.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.unicef.utilities.DialogUtils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.SessionManager;
@@ -63,7 +60,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 
-public class SplashScreenActivity extends BaseActivity implements SplashLanguageUpdater {
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+
+public class SplashScreenActivity extends LocalConfigActivity implements SplashLanguageUpdater {
     private static final String TAG = "SplashScreenActivity";
     RecyclerView rvSelectLanguage;
     View layoutLanguage;
@@ -102,8 +102,12 @@ public class SplashScreenActivity extends BaseActivity implements SplashLanguage
         tvTitle = findViewById(R.id.tv_title);
 
         // refresh the fcm token
-        TokenRefreshUtils.refreshToken(this);
-        initFirebaseRemoteConfig();
+        FcmTokenGenerator.INSTANCE.getDeviceToken(token -> {
+            IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+            return Unit.INSTANCE;
+        });
+
+        FcmRemoteConfig.getRemoteConfig(this, fcmConfigExecutor);
     }
 
     private void checkAndSetLanguage() {
@@ -150,38 +154,68 @@ public class SplashScreenActivity extends BaseActivity implements SplashLanguage
 
     }
 
-    private void initFirebaseRemoteConfig() {
-        FirebaseApp.initializeApp(this);
-        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build();
-        instance.setConfigSettingsAsync(configSettings);
+    private final Function1<FirebaseRemoteConfig, Unit> fcmConfigExecutor = firebaseRemoteConfig -> {
+        checkLatestVersionUpdate(firebaseRemoteConfig);
+        return Unit.INSTANCE;
+    };
 
-        instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
-            @Override
-            public void onComplete(@NonNull Task<Boolean> task) {
-                if (task.isSuccessful() && !isFinishing()) {
-                    long force_update_version_code = instance.getLong("force_update_version_code");
-                    if (force_update_version_code > BuildConfig.VERSION_CODE) {
-                        MyAchievementsFragment.CustomDialog customDialog = new MyAchievementsFragment.CustomDialog(context);
-                        customDialog.showDialog1(getResources().getString(R.string.app_update_available), getResources().getString(R.string.warning_app_update), action -> {
-                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-                                } catch (android.content.ActivityNotFoundException anfe) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-                                }
-                                finish();
-                            }
-                        });
-                    } else {
-                        checkPerm();
+    private void checkLatestVersionUpdate(FirebaseRemoteConfig config) {
+        long forceUpdateVersionCode = config.getLong("force_update_version_code");
+        if (forceUpdateVersionCode > BuildConfig.VERSION_CODE) {
+            MyAchievementsFragment.CustomDialog customDialog = new MyAchievementsFragment.CustomDialog(context);
+            customDialog.showDialog1(getResources().getString(R.string.app_update_available), getResources().getString(R.string.warning_app_update), action -> {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
                     }
-                } else {
-                    checkPerm();
+                    finish();
                 }
-            }
-        });
+            });
+        } else {
+            checkPerm();
+        }
     }
+
+//    private void initFirebaseRemoteConfig() {
+//        FcmRemoteConfig.getRemoteConfig(this, new Function1<FirebaseRemoteConfig, Unit>() {
+//            @Override
+//            public Unit invoke(FirebaseRemoteConfig firebaseRemoteConfig) {
+//                return Unit.INSTANCE;
+//            }
+//        });
+//        FirebaseApp.initializeApp(this);
+//        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
+//        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build();
+//        instance.setConfigSettingsAsync(configSettings);
+//
+//        instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Boolean> task) {
+//                if (task.isSuccessful() && !isFinishing()) {
+//                    long force_update_version_code = instance.getLong("force_update_version_code");
+//                    if (force_update_version_code > BuildConfig.VERSION_CODE) {
+//                        MyAchievementsFragment.CustomDialog customDialog = new MyAchievementsFragment.CustomDialog(context);
+//                        customDialog.showDialog1(getResources().getString(R.string.app_update_available), getResources().getString(R.string.warning_app_update), action -> {
+//                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+//                                try {
+//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+//                                } catch (android.content.ActivityNotFoundException anfe) {
+//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+//                                }
+//                                finish();
+//                            }
+//                        });
+//                    } else {
+//                        checkPerm();
+//                    }
+//                } else {
+//                    checkPerm();
+//                }
+//            }
+//        });
+//    }
 
     private boolean checkAndRequestPermissions() {
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -527,10 +561,10 @@ public class SplashScreenActivity extends BaseActivity implements SplashLanguage
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }

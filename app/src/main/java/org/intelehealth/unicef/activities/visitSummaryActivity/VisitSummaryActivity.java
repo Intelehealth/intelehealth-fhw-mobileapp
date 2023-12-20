@@ -90,9 +90,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.unicef.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
@@ -140,7 +141,7 @@ import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.unicef.webrtc.activity.UnicefChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -164,7 +165,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VisitSummaryActivity extends BaseActivity {
+public class VisitSummaryActivity extends LocalConfigActivity {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
@@ -547,24 +548,37 @@ public class VisitSummaryActivity extends BaseActivity {
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-                Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);
-                chatIntent.putExtra("patientName", patientName);
-                chatIntent.putExtra("visitUuid", visitUuid);
-                chatIntent.putExtra("patientUuid", patientUuid);
-                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-
-                if (rtcConnectionDTO != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-                }
-                startActivity(chatIntent);
+                RtcArgs args = new RtcArgs();
+                if (rtcConnectionDTO != null)
+                    args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
+                else args.setDoctorUuid("");
+                args.setPatientId(patientUuid);
+                args.setPatientName(patientName);
+                args.setVisitId(visitUuid);
+                args.setNurseId(encounterDTO.getProvideruuid());
+                UnicefChatActivity.startChatActivity(VisitSummaryActivity.this, args);
+//                EncounterDAO encounterDAO = new EncounterDAO();
+//                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
+//                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+//                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+//                Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);
+//                chatIntent.putExtra("patientName", patientName);
+//                chatIntent.putExtra("visitUuid", visitUuid);
+//                chatIntent.putExtra("patientUuid", patientUuid);
+//                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+//
+//                if (rtcConnectionDTO != null) {
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+//                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                } else {
+//                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+//                }
+//                startActivity(chatIntent);
             }
         });
         mLayout = findViewById(R.id.summary_layout);

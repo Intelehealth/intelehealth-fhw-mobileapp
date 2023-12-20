@@ -37,7 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.adapter.DialogListAdapter;
 import org.intelehealth.unicef.adapter.SimpleItemData;
@@ -60,7 +60,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class Language_ProtocolsActivity extends BaseActivity {
+public class Language_ProtocolsActivity extends LocalConfigActivity {
     private Spinner lang_spinner;
     private ImageButton btRefresh;
     private LinearLayoutCompat reset_btn, update_protocols_btn;

@@ -264,7 +264,7 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/dividerProfile"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -276,7 +276,7 @@
                         <TableLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/dividerProfile"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
@@ -438,7 +438,6 @@
                     android:id="@+id/addnotes_vd_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/add_doc_relative"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
                     android:layout_marginTop="@dimen/margin_5"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -459,7 +458,7 @@
                             android:layout_margin="@dimen/fu_card_margin_sides">
 
                             <ImageView
-                                android:id="@+id/vs_icon"
+                                android:id="@+id/vsAddNoteIcon"
                                 android:layout_width="@dimen/edittext_height_44dp"
                                 android:layout_height="@dimen/edittext_height_44dp"
                                 android:src="@drawable/add_notes_redicon" />
@@ -470,7 +469,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_8"
-                                android:layout_toEndOf="@+id/vs_icon"
+                                android:layout_toEndOf="@+id/vsAddNoteIcon"
                                 android:text="@string/additional_notes" />
 
                             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -493,7 +492,7 @@
                             tools:visibility="visible">
 
                             <View
-                                android:id="@+id/divider"
+                                android:id="@+id/dividerAddNote"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -507,7 +506,7 @@
                                 android:id="@+id/vd_addnotes_value"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/divider"
+                                android:layout_below="@+id/dividerAddNote"
                                 android:layout_marginStart="@dimen/fu_margin_start"
                                 android:layout_marginEnd="@dimen/fu_margin_start"
                                 android:layout_marginBottom="@dimen/margin_16dp"
@@ -599,7 +598,6 @@
                     android:id="@+id/special_vd_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/add_doc_relative"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
                     android:layout_marginTop="@dimen/margin_5"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -622,7 +620,7 @@
                             android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                             <ImageView
-                                android:id="@+id/vs_icon"
+                                android:id="@+id/vsSpecialHeaderIcon"
                                 android:layout_width="@dimen/edittext_height_44dp"
                                 android:layout_height="@dimen/edittext_height_44dp"
                                 android:src="@drawable/speciality_red_icon" />
@@ -633,7 +631,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_8"
-                                android:layout_toEndOf="@+id/vs_icon"
+                                android:layout_toEndOf="@+id/vsSpecialHeaderIcon"
                                 android:text="@string/doctor_speciality" />
 
                             <ImageButton
@@ -701,7 +699,7 @@
                         android:layout_margin="@dimen/fu_card_margin_sides">
 
                         <TextView
-                            android:id="@+id/doc_speciality_title"
+                            android:id="@+id/tvDoctorSpecialityTitle"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -714,7 +712,7 @@
                             style="@style/AppTheme"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/edittext_height_44dp"
-                            android:layout_below="@+id/doc_speciality_title"
+                            android:layout_below="@+id/tvDoctorSpecialityTitle"
                             android:layout_marginTop="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/margin_16dp"
                             android:entries="@array/speciality_values"
@@ -873,7 +871,6 @@
                 android:id="@+id/priority_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/bottom_btn_relative"
                 android:layout_below="@+id/relative_hospital_block"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="24dp"

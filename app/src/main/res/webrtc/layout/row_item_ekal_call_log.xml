@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="callLog"
+            type="org.intelehealth.klivekit.call.model.RtcCallLog" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/std_8dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgCallStatus"
+            android:layout_width="@dimen/std_48dp"
+            android:layout_height="@dimen/std_48dp"
+            android:background="@drawable/call_outgoing_status_bg"
+            android:callStatus="@{callLog}"
+            android:scaleType="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_call_outgoing" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvCallLogRoomName"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:text="@{callLog.roomName}"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/imgCallStatus"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Patient Name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvCallLogTime"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:callStatusColor="@{callLog}"
+            android:paddingHorizontal="16dp"
+            android:text="@{callLog.callLogTime()}"
+            app:layout_constraintStart_toEndOf="@id/imgCallStatus"
+            app:layout_constraintTop_toBottomOf="@id/tvCallLogRoomName"
+            tools:text="Oct 16, 11:30 AM" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvCallLogCallerName"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:text="@{callLog.callerName}"
+            app:layout_constraintStart_toEndOf="@id/imgCallStatus"
+            app:layout_constraintTop_toBottomOf="@id/tvCallLogTime"
+            tools:text="Dr.Vishal Purohit" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnCallLogChat"
+            android:layout_width="@dimen/action_btn_min_width"
+            android:layout_height="@dimen/action_btn_min_width"
+            android:background="@drawable/ripple_rounded_icon_bg"
+            android:scaleType="center"
+            android:visibility="@{callLog.hasChatAction ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnCallLogCallback"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_call_log_chat" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnCallLogCallback"
+            android:layout_width="@dimen/action_btn_min_width"
+            android:layout_height="@dimen/action_btn_min_width"
+            android:background="@drawable/ripple_rounded_icon_bg"
+            android:scaleType="center"
+            android:visibility="@{callLog.hasCallAction ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_call_log_video" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

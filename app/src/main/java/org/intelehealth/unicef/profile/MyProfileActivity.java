@@ -56,7 +56,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.forgotPasswordNew.ChangePasswordActivity_New;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
@@ -101,7 +101,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class MyProfileActivity extends BaseActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
+public class MyProfileActivity extends LocalConfigActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
     TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob;
@@ -938,10 +938,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }

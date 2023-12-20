@@ -38,7 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.models.loginModel.LoginModel;
@@ -61,7 +61,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends LocalConfigActivity {
     TextView txt_cant_login;
     /**
      * A dummy authentication store containing known user names and passwords.

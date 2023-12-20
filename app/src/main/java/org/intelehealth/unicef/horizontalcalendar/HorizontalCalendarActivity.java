@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 
 import java.text.ParseException;
@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class HorizontalCalendarActivity extends BaseActivity {
+public class HorizontalCalendarActivity extends LocalConfigActivity {
     private static final String TAG = "HorizontalCalendarActiv";
     RecyclerView rvHorizontalCal;
     int currentMonth;

@@ -17,10 +17,10 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.onboarding.SetupPrivacyNoteActivity_New;
 
-public class IntroScreensActivity_New extends BaseActivity {
+public class IntroScreensActivity_New extends LocalConfigActivity {
     private static final String TAG = "IntroScreensActivityNew";
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;

@@ -1,12 +1,15 @@
 package org.intelehealth.unicef.activities.additionalDocumentsActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +20,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -67,7 +71,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screen_height = displayMetrics.heightPixels;
         screen_width = displayMetrics.widthPixels;
-        mEncounterUUID=edult;
+        mEncounterUUID = edult;
         this.filePath = filePath;
         this.anInterface = anInterface;
         this.fromVisitDetails = fromVisitDetails;
@@ -82,7 +86,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     }
 
     @Override
-    public void onBindViewHolder(final AdditionalDocumentViewHolder holder, final int position) {
+    public void onBindViewHolder(final AdditionalDocumentViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.getDocumentNameTextView().setText
                 (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
 
@@ -91,7 +95,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         Glide.with(context)
                 .load(image)
                 .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .thumbnail(0.1f)
                 .into(holder.getDocumentPhotoImageView());
 
@@ -119,20 +123,20 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 String imageName = holder.getDocumentNameTextView().getText().toString();
 
 
-                    try {
-                        List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
-                        for (String images : imageList) {
-                           Log.d(TAG,"image= "+images);
+                try {
+                    List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
+                    for (String images : imageList) {
+                        Log.d(TAG, "image= " + images);
 
-                        }
-                        imagesDAO.deleteImageFromDatabase(imageList.get(position));
-
-
-                    } catch (DAOException e) {
-
-                        e.printStackTrace();
-                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
+                    imagesDAO.deleteImageFromDatabase(imageList.get(position));
+
+
+                } catch (DAOException e) {
+
+                    e.printStackTrace();
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
 //                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
 
             }
@@ -172,20 +176,18 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                             .load(file)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .listener(new RequestListener<File, GlideDrawable>() {
+                            .listener(new RequestListener<Drawable>() {
                                 @Override
-                                public boolean onException(Exception e, File file, Target<GlideDrawable> target, boolean b) {
-                                    if (progressBar != null) {
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    if (progressBar != null)
                                         progressBar.setVisibility(View.GONE);
-                                    }
                                     return false;
                                 }
 
                                 @Override
-                                public boolean onResourceReady(GlideDrawable glideDrawable, File file, Target<GlideDrawable> target, boolean b, boolean b1) {
-                                    if (progressBar != null) {
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    if (progressBar != null)
                                         progressBar.setVisibility(View.GONE);
-                                    }
                                     return false;
                                 }
                             })

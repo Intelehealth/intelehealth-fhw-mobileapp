@@ -2,11 +2,11 @@ package org.intelehealth.unicef.activities.base;
 
 import android.content.res.Configuration;
 
-import androidx.appcompat.app.AppCompatActivity;
+import org.intelehealth.unicef.webrtc.activity.BaseActivity;
 
 import java.util.Locale;
 
-public class BaseActivity extends AppCompatActivity {
+public class LocalConfigActivity extends BaseActivity {
     public void setLocale(String appLanguage) {
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);

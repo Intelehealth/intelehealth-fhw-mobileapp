@@ -27,7 +27,7 @@ android {
             println("DEV_SERVER_URL ----> $devServer")
             println("DEV_REAL_TIME_FB_URL ------> $devRealTimeFb")
             println("DEV_LIVE_KIT_URL ------> $devLiveKit")
-            println("DEV_SOCKET_URL ------> $devLiveKit")
+            println("DEV_SOCKET_URL ------> $devSocket")
             println("DEV_FB_RT_INSTANCE ------> $devFbRtDb")
 
             buildConfigField "String", serverUrl, devServer
@@ -50,7 +50,7 @@ android {
             println("PROD_SERVER_URL ----> $prodServer")
             println("PROD_REAL_TIME_FB_URL ------> $prodRealTimeFb")
             println("PROD_LIVE_KIT_URL ------> $prodLiveKit")
-            println("PROD_SOCKET_URL ------> $prodLiveKit")
+            println("PROD_SOCKET_URL ------> $prodSocket")
             println("PROD_FB_RT_INSTANCE ------> $prodFbRtDb")
 
             buildConfigField "String", serverUrl, prodServer

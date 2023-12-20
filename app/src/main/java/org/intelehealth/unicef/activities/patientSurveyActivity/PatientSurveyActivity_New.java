@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
@@ -40,7 +40,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class PatientSurveyActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class PatientSurveyActivity_New extends LocalConfigActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientSurveyActivity_New.class.getSimpleName();
     String patientUuid;
     String visitUuid;

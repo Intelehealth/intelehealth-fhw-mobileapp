@@ -29,7 +29,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -52,7 +52,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
-public class ActivePatientActivity extends BaseActivity {
+public class ActivePatientActivity extends LocalConfigActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
     SessionManager sessionManager = null;

@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
@@ -52,7 +52,7 @@ import java.util.concurrent.Executors;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class FollowUpPatientActivity_New extends BaseActivity {
+public class FollowUpPatientActivity_New extends LocalConfigActivity {
     public static final String TAG = FollowUpPatientActivity_New.class.getName();
     RecyclerView rv_today, rv_week, rv_month;
     FollowUpPatientAdapter_New adapter_new;

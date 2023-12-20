@@ -22,8 +22,6 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.utilities.OfflineLogin;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,79 +50,79 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "Notification Message Data: " + remoteMessage.getData());
         //  {nurseId=28cea4ab-3188-434a-82f0-055133090a38, doctorName=doctor1, roomId=b60263f2-5716-4047-aaf5-7c13199b7f0c}
 
-        if (remoteMessage.getData().containsKey("actionType")) {
-            if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
-                Log.d(TAG, "actionType : VIDEO_CALL");
-                Intent in = new Intent(this, CompleteActivity.class);
-                String roomId = remoteMessage.getData().get("roomId");
-                String doctorName = remoteMessage.getData().get("doctorName");
-                String nurseId = remoteMessage.getData().get("nurseId");
-                in.putExtra("roomId", roomId);
-                in.putExtra("isInComingRequest", true);
-                in.putExtra("doctorname", doctorName);
-                in.putExtra("nurseId", nurseId);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                if (callState == TelephonyManager.CALL_STATE_IDLE) {
-                    startActivity(in);
-                }else{
-                    sendNotification(remoteMessage, null);
-                }
-
-            } else if (remoteMessage.getData().get("actionType").equals("TEXT_CHAT")) {
-                try {
-                    Log.d(TAG, "actionType : TEXT_CHAT");
-                    String fromUUId = remoteMessage.getData().get("toUser");
-                    String toUUId = remoteMessage.getData().get("fromUser");
-                    String patientUUid = remoteMessage.getData().get("patientId");
-                    String visitUUID = remoteMessage.getData().get("visitId");
-                    String patientName = remoteMessage.getData().get("patientName");
-                    JSONObject connectionInfoObject = new JSONObject();
-                    connectionInfoObject.put("fromUUID", fromUUId);
-                    connectionInfoObject.put("toUUID", toUUId);
-                    connectionInfoObject.put("patientUUID", patientUUid);
-
-
-                    Intent chatIntent = new Intent(this, ChatActivity.class);
-
-
-                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    chatIntent.putExtra("patientName", patientName);
-                    chatIntent.putExtra("visitUuid", visitUUID);
-                    chatIntent.putExtra("patientUuid", patientUUid);
-                    chatIntent.putExtra("fromUuid", fromUUId);
-                    chatIntent.putExtra("toUuid", toUUId);
-
-
-                    PendingIntent pendingIntent = null;  // after s+ version it is needed to set IMMUTABLE.
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-                    } else {
-                        pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    }
-
-                    sendNotification(remoteMessage, pendingIntent);
-
-
-                    Intent intent = new Intent(ACTION_NAME);
-                    intent.putExtra("visit_uuid", visitUUID);
-                    intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
-                    getApplicationContext().sendBroadcast(intent);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else {
-            parseMessage(remoteMessage);
-        }
+//        if (remoteMessage.getData().containsKey("actionType")) {
+//            if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
+//                Log.d(TAG, "actionType : VIDEO_CALL");
+////                Intent in = new Intent(this, CompleteActivity.class);
+//                String roomId = remoteMessage.getData().get("roomId");
+//                String doctorName = remoteMessage.getData().get("doctorName");
+//                String nurseId = remoteMessage.getData().get("nurseId");
+//                in.putExtra("roomId", roomId);
+//                in.putExtra("isInComingRequest", true);
+//                in.putExtra("doctorname", doctorName);
+//                in.putExtra("nurseId", nurseId);
+//
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                }
+//                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+//                if (callState == TelephonyManager.CALL_STATE_IDLE) {
+//                    startActivity(in);
+//                }else{
+//                    sendNotification(remoteMessage, null);
+//                }
+//
+//            } else if (remoteMessage.getData().get("actionType").equals("TEXT_CHAT")) {
+//                try {
+//                    Log.d(TAG, "actionType : TEXT_CHAT");
+//                    String fromUUId = remoteMessage.getData().get("toUser");
+//                    String toUUId = remoteMessage.getData().get("fromUser");
+//                    String patientUUid = remoteMessage.getData().get("patientId");
+//                    String visitUUID = remoteMessage.getData().get("visitId");
+//                    String patientName = remoteMessage.getData().get("patientName");
+//                    JSONObject connectionInfoObject = new JSONObject();
+//                    connectionInfoObject.put("fromUUID", fromUUId);
+//                    connectionInfoObject.put("toUUID", toUUId);
+//                    connectionInfoObject.put("patientUUID", patientUUid);
+//
+//
+////                    Intent chatIntent = new Intent(this, ChatActivity.class);
+//
+//
+//                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    chatIntent.putExtra("patientName", patientName);
+//                    chatIntent.putExtra("visitUuid", visitUUID);
+//                    chatIntent.putExtra("patientUuid", patientUUid);
+//                    chatIntent.putExtra("fromUuid", fromUUId);
+//                    chatIntent.putExtra("toUuid", toUUId);
+//
+//
+//                    PendingIntent pendingIntent = null;  // after s+ version it is needed to set IMMUTABLE.
+//
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                        pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+//                    } else {
+//                        pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                    }
+//
+//                    sendNotification(remoteMessage, pendingIntent);
+//
+//
+//                    Intent intent = new Intent(ACTION_NAME);
+//                    intent.putExtra("visit_uuid", visitUUID);
+//                    intent.putExtra("connection_info", connectionInfoObject.toString());
+//                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
+//                    getApplicationContext().sendBroadcast(intent);
+//
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        } else {
+//            parseMessage(remoteMessage);
+//        }
     }
 
 

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.help.adapter.FAQExpandableAdapter;
 import org.intelehealth.unicef.activities.help.models.QuestionModel;
 import org.intelehealth.unicef.ui2.utils.CheckInternetAvailability;
@@ -21,7 +21,7 @@ import org.intelehealth.unicef.utilities.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FAQActivity_New extends BaseActivity {
+public class FAQActivity_New extends LocalConfigActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

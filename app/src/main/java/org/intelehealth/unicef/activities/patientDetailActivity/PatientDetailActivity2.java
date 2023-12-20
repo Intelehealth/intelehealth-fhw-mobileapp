@@ -12,37 +12,26 @@ import static org.intelehealth.unicef.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.unicef.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.unicef.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.unicef.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_as_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_as_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_as_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_bn_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_bn_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_bn_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_gu_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_gu_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_kn_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_kn_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_kn_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ml_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_ml_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_ml_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_mr_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_mr_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_mr_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_or_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_or_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ta_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_ta_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_ta_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.switch_te_education_edit;
 
@@ -82,7 +71,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.unicef.activities.visit.adapter.PastVisitListingAdapter;
@@ -131,7 +120,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class PatientDetailActivity2 extends LocalConfigActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone, postalcode, patientcountry, patientstate, /*patientdistrict,*/
             village, address1, son_daughter_wife, patientoccupation, /*patientcaste,*/

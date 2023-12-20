@@ -48,7 +48,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.base.BaseActivity"
+            android:name=".activities.base.LocalConfigActivity"
             android:exported="false" />
         <activity
             android:name="org.intelehealth.unicef.ayu.visit.VisitCreationActivity"
@@ -516,6 +516,36 @@
                 android:value="" />
         </activity>
 
+        <activity
+            android:name=".webrtc.activity.UnicefVideoActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
+            android:name=".webrtc.activity.UnicefChatActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
+            android:name=".webrtc.activity.UnicefCallLogActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <service
             android:name="org.intelehealth.unicef.utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">
@@ -549,12 +579,21 @@
         <service android:name="org.intelehealth.unicef.services.LastSyncIntentService" />
         <service android:name="org.intelehealth.unicef.services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
         <service
-            android:name="org.intelehealth.unicef.services.firebase_services.MyFirebaseMessagingService"
-            android:exported="false">
+            android:name=".webrtc.service.FCMMessageService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service> <!-- <receiver -->
+        </service>
+
+        <receiver
+            android:name=".webrtc.receiver.FCMNotificationReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="org.intelehealth.ekalarogya.FCM_BACKGROUND_BROADCAST_ACTION" />
+            </intent-filter>
+        </receiver>
+        <!-- <receiver -->
         <!-- android:name="org.intelehealth.app.utilities.NetworkChangeListener" -->
         <!-- android:label="NetworkChangeReceiver"> -->
         <!-- <intent-filter> -->
@@ -568,34 +607,34 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" /> <!-- Firebase Realdb -->
-        <receiver
-            android:name="org.intelehealth.unicef.services.firebase_services.CallRTCNotifyReceiver"
-            android:exported="false">
-            <intent-filter android:priority="100">
-                <action
-                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"
-                    android:enabled="true" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="org.intelehealth.unicef.services.firebase_services.RestartServiceReceiver"
-            android:exported="false">
-            <intent-filter android:priority="99">
-                <action
-                    android:name="org.intelehealth.app.RTC_SERVICE_START"
-                    android:enabled="true" />
-            </intent-filter>
-            <intent-filter android:priority="99">
-                <action
-                    android:name="android.intent.action.BOOT_COMPLETED"
-                    android:enabled="true" />
-            </intent-filter>
-        </receiver>
+        <!--        <receiver-->
+        <!--            android:name="org.intelehealth.unicef.services.firebase_services.CallRTCNotifyReceiver"-->
+        <!--            android:exported="false">-->
+        <!--            <intent-filter android:priority="100">-->
+        <!--                <action-->
+        <!--                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"-->
+        <!--                    android:enabled="true" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
+        <!--        <receiver-->
+        <!--            android:name="org.intelehealth.unicef.services.firebase_services.RestartServiceReceiver"-->
+        <!--            android:exported="false">-->
+        <!--            <intent-filter android:priority="99">-->
+        <!--                <action-->
+        <!--                    android:name="org.intelehealth.app.RTC_SERVICE_START"-->
+        <!--                    android:enabled="true" />-->
+        <!--            </intent-filter>-->
+        <!--            <intent-filter android:priority="99">-->
+        <!--                <action-->
+        <!--                    android:name="android.intent.action.BOOT_COMPLETED"-->
+        <!--                    android:enabled="true" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
 
-        <service
-            android:name="org.intelehealth.unicef.services.firebase_services.CallListenerBackgroundService"
-            android:enabled="true"
-            android:exported="true" />
+        <!--        <service-->
+        <!--            android:name="org.intelehealth.unicef.services.firebase_services.CallListenerBackgroundService"-->
+        <!--            android:enabled="true"-->
+        <!--            android:exported="true" />-->
 
         <meta-data
             android:name="com.google.android.gms.version"

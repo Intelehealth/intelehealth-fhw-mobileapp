@@ -110,7 +110,7 @@
                 android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                 <ImageView
-                    android:id="@+id/vs_icon"
+                    android:id="@+id/vsLanguageIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_2dp"
@@ -122,12 +122,11 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/margin_8"
-                    android:layout_toEndOf="@+id/vs_icon"
+                    android:layout_toEndOf="@+id/vsLanguageIcon"
                     android:text="@string/language"
                     android:textStyle="bold" />
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/btn_up_special_vd_header"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:layout_alignParentEnd="true"
@@ -145,7 +144,7 @@
                 android:layout_below="@+id/lang_header_relative">
 
                 <View
-                    android:id="@+id/divider"
+                    android:id="@+id/dividerLanguage"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -159,7 +158,7 @@
                     android:id="@+id/lang_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/divider"
+                    android:layout_below="@+id/dividerLanguage"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginTop="@dimen/margin_20dp"
                     android:layout_marginEnd="@dimen/fu_margin_start">
@@ -203,7 +202,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/reset_lang_relative"
+                    android:id="@+id/rlReset"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/lang_relative"

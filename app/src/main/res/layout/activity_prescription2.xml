@@ -251,7 +251,7 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/dividerProfile"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -263,7 +263,7 @@
                         <TableLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/dividerProfile"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
@@ -362,7 +362,7 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/vsDoctorIcon"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/dr_details_icon" />
@@ -373,7 +373,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/vsDoctorIcon"
                             android:text="@string/consulted_doctor_details" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -396,7 +396,7 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/dividerDoctor"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -409,7 +409,7 @@
                             android:id="@+id/vitals_details_relative"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/dividerDoctor"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start">
 
@@ -601,7 +601,7 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/vsDiagnosisIcon"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/diagnosis_icon" />
@@ -612,7 +612,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/vsDiagnosisIcon"
                             android:text="@string/diagnosis" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -635,7 +635,7 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/dividerDiagnosis"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -647,7 +647,7 @@
                             android:id="@+id/diagnosis_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/dividerDiagnosis"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -687,7 +687,7 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/vsMedicationIcon"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/medication_icon" />
@@ -698,7 +698,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/vsMedicationIcon"
                             android:text="@string/visit_summary_rx" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -828,7 +828,7 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/vsMedHistoryIcon"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/med_history_icon" />
@@ -839,7 +839,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/vsMedHistoryIcon"
                             android:text="@string/advice" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -862,7 +862,7 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/dividerAdviced"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -874,7 +874,7 @@
                             android:id="@+id/advice_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/dividerAdviced"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -914,7 +914,7 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/vsTestIcon"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/test_icon" />
@@ -925,7 +925,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/vsTestIcon"
                             android:text="@string/test" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -948,7 +948,7 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/dividerTest"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -960,7 +960,7 @@
                             android:id="@+id/test_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/dividerTest"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -1001,7 +1001,7 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/vsDrDetailIcon"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/dr_details_icon" />
@@ -1012,7 +1012,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/vsDrDetailIcon"
                             android:text="@string/referred_specialist" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -1035,7 +1035,7 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/dividerDrSpeciality"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -1047,7 +1047,7 @@
                             android:id="@+id/referred_speciality_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/dividerDrSpeciality"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"

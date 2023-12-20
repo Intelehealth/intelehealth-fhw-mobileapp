@@ -86,7 +86,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity;
@@ -128,7 +128,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class PatientDetailActivity extends BaseActivity {
+public class PatientDetailActivity extends LocalConfigActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
     String mGender;
