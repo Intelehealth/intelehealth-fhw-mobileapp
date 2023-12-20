@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -328,7 +329,10 @@ public class ObsDAO {
                     MedicationAidModel model = new MedicationAidModel();
                     model.setUuid(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")));
                     model.setValue(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")));
+                    model.setCreator(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("creator")));
+                    model.setCreatedDate(obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("obsservermodifieddate")));
                     list.add(model);
+                    Log.d("TAG", "getObsDispenseAdministerData: " + model.toString());
                 }
                 db.setTransactionSuccessful();
             }

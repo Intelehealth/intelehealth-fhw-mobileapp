@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class MedicationAidModel extends MedicationModel implements Serializable {
     private String uuid;
     private String value;
+    private String creator;
+    private String createdDate;
     private boolean isChecked;
 
     public MedicationAidModel(String uuid, String value, boolean isChecked) {
@@ -38,5 +40,21 @@ public class MedicationAidModel extends MedicationModel implements Serializable 
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 }

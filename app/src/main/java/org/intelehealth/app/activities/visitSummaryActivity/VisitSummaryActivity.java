@@ -1,6 +1,8 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity.checkAndRemoveEndDash;
+import static org.intelehealth.app.database.dao.EncounterDAO.getEncounterListByVisitUUID;
+import static org.intelehealth.app.utilities.DateAndTimeUtils.formatDateFromOnetoAnother;
 import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
 import static org.intelehealth.app.utilities.StringUtils.getLocaleGender;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
@@ -53,6 +55,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -68,7 +71,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,6 +89,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -129,6 +132,9 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dispenseAdministerModel.AidModel;
+import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
+import org.intelehealth.app.models.dispenseAdministerModel.MedicationModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
@@ -178,7 +184,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VisitSummaryActivity extends AppCompatActivity /*implements PrinterObserver*/ {
+public class VisitSummaryActivity extends AppCompatActivity implements View.OnClickListener /*implements PrinterObserver*/ {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
@@ -260,6 +266,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     ImageButton editAddDocs;
 
     FrameLayout frameLayout_doctor, fl_DispenseAdminister;
+    View layout_dispense_1, layout_dispense_2;
     TextView nameView;
     TextView ageView;
     TextView genderView;
@@ -293,7 +300,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     NotificationCompat.Builder mBuilder;
 
     RelativeLayout uploadButton, rl_med_aid;
-    private TextView tvDispense, tvAdminister;
+    private TextView tvDispense_1, tvDispense_2,tvAdminister_1, tvAdminister_2;
 
     RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
@@ -317,7 +324,14 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     TextView additionalCommentsTextView;
     TextView dischargeOrderTextView;
     TextView aidOrderType1TextView, aidOrderType2TextView, aidOrderType3TextView, aidOrderType4TextView, aidOrderType5TextView;
-    TableRow aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow, aidOrderType4TableRow, aidOrderType5TableRow;
+    String aid1, aid2, aid3, aid4, aid5;
+    View aidhl_1, aidhl_2, aidhl_3, aidhl_4;
+    private List<MedicationAidModel> update_aidUuidList = new ArrayList<>();
+    private List<MedicationAidModel> update_medUuidDispenseList = new ArrayList<>();
+    private List<MedicationAidModel> update_medUuidAdministeredList = new ArrayList<>();
+    private String encounterDispense, encounterAdminister;
+
+    LinearLayout aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow, aidOrderType4TableRow, aidOrderType5TableRow, tl_prescribed_medications;
     TextView followUpDateTextView;
     //added checkbox flag .m
     CheckBox flag;
@@ -717,7 +731,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
-        fl_DispenseAdminister = findViewById(R.id.fl_DispenseAdminister);
+      //  fl_DispenseAdminister = findViewById(R.id.fl_DispenseAdminister);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
         frameLayout_doctor.setVisibility(View.GONE);
         saveButton = findViewById(R.id.card_save);
@@ -822,7 +836,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         speciality_spinner = findViewById(R.id.speciality_spinner);
         second_speciality_spinner = findViewById(R.id.second_speciality_spinner);
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
-        prescriptionTextView = findViewById(R.id.textView_content_rx);
+     //   prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
@@ -837,8 +851,14 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         aidOrderType3TableRow = findViewById(R.id.tableRow_content_aid_order_type3);
         aidOrderType4TableRow = findViewById(R.id.tableRow_content_aid_order_type4);
         aidOrderType5TableRow = findViewById(R.id.tableRow_content_aid_order_type5);
+        aidhl_1 = findViewById(R.id.aidhl_1);
+        aidhl_2 = findViewById(R.id.aidhl_2);
+        aidhl_3 = findViewById(R.id.aidhl_3);
+        aidhl_4 = findViewById(R.id.aidhl_4);
+        tl_prescribed_medications = findViewById(R.id.tl_prescribed_medications);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
+
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
@@ -959,8 +979,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
       //  rl_med_aid = findViewById(R.id.rl_med_aid);
-          tvDispense = findViewById(R.id.tvDispense);
-        tvAdminister = findViewById(R.id.tvAdminister);
+
+        layout_dispense_1 = findViewById(R.id.layout_dispense_1);
+        layout_dispense_2 = findViewById(R.id.layout_dispense_2);
+
+        tvDispense_1 = layout_dispense_1.findViewById(R.id.tvDispense);
+        tvDispense_2 = layout_dispense_2.findViewById(R.id.tvDispense);
+
+        tvAdminister_1 = layout_dispense_1.findViewById(R.id.tvAdminister);
+        tvAdminister_2 = layout_dispense_2.findViewById(R.id.tvAdminister);
+        tvAdminister_2.setVisibility(View.GONE);
+
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
@@ -1023,53 +1052,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
         });
 
-        tvDispense.setOnClickListener(v -> {
-            String med = getMedicationData();
-            String aid = getAidData();
+        tvDispense_1.setOnClickListener(this);
+        tvDispense_1.setTag(encounterStartVisitNoteDAO);
+        tvDispense_2.setOnClickListener(this);
+        tvDispense_2.setTag(encounterStartVisitNoteDAO);
 
-            //get from encountertbl from the encounter
-            if (visitnoteencounteruuid.isEmpty()) {
-                visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
-            }
-
-            if (med.trim().isEmpty() && aid.trim().isEmpty()) {
-                Toast.makeText(context, getString(R.string.no_medication_and_aid_data_present_to_dispense), Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            Log.d(TAG, "dispense intent: " + med + ", " + aid + ", " + patientUuid + ", " + visitUuid + ", " +
-                    visitnoteencounteruuid + ", " + encounterVitals + ", " + encounterUuidAdultIntial); // visitnoteenc comes empty here.
-
-            Intent i = new Intent(context, Medication_Aid_Activity.class);
-            i.putExtra("mtag", "dispense");
-            i.putExtra("medicineData", med);
-            i.putExtra("aidData", aid);
-            i = sendCommonIntentToMedicationActivity(i);
-
-         //   mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
-
-            startActivity(i);
-        });
-
-        tvAdminister.setOnClickListener(v -> {
-            String med = getMedicationData();
-            //get from encountertbl from the encounter
-            if (visitnoteencounteruuid.isEmpty()) {
-                visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
-            }
-
-            if (med.trim().isEmpty()) {
-                Toast.makeText(context, getString(R.string.no_medication_data_present_to_administer), Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            Intent i = new Intent(context, Medication_Aid_Activity.class);
-            i.putExtra("mtag", "administer");
-            i.putExtra("medicineData", med);
-            i = sendCommonIntentToMedicationActivity(i);
-
-            startActivity(i);
-        });
+        tvAdminister_1.setOnClickListener(this);
+        tvAdminister_1.setTag(encounterStartVisitNoteDAO);
+        tvAdminister_2.setOnClickListener(this);
+        tvAdminister_2.setTag(encounterStartVisitNoteDAO);
 
 /*
         rl_med_aid.setOnClickListener(v -> {
@@ -1884,6 +1875,56 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
      //   queryData(String.valueOf(patientUuid));
       //  downloadPrescriptionDefault();
         getAppointmentDetails(visitUuid);
+    }
+
+    private void admininisterIntent(EncounterDAO encounterStartVisitNoteDAO) {
+        String med = getMedicationData();
+        //get from encountertbl from the encounter
+        if (visitnoteencounteruuid.isEmpty()) {
+            visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+        }
+
+        if (med.trim().isEmpty()) {
+            Toast.makeText(context, getString(R.string.no_medication_data_present_to_administer), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent i = new Intent(context, Medication_Aid_Activity.class);
+        i.putExtra("mtag", "administer");
+        i.putExtra("medicineData", med);
+        i = sendCommonIntentToMedicationActivity(i);
+
+        startActivity(i);
+    }
+
+
+    public void dispenseIntent(EncounterDAO encounterStartVisitNoteDAO) {
+
+        String med = getMedicationData();
+        String aid = getAidData();
+
+        //get from encountertbl from the encounter
+        if (visitnoteencounteruuid.isEmpty()) {
+            visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+        }
+
+        if (med.trim().isEmpty() && aid.trim().isEmpty()) {
+            Toast.makeText(context, getString(R.string.no_medication_and_aid_data_present_to_dispense), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Log.d(TAG, "dispense intent: " + med + ", " + aid + ", " + patientUuid + ", " + visitUuid + ", " +
+                visitnoteencounteruuid + ", " + encounterVitals + ", " + encounterUuidAdultIntial); // visitnoteenc comes empty here.
+
+        Intent i = new Intent(context, Medication_Aid_Activity.class);
+        i.putExtra("mtag", "dispense");
+        i.putExtra("medicineData", med);
+        i.putExtra("aidData", aid);
+        i = sendCommonIntentToMedicationActivity(i);
+
+        //   mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
+
+        startActivity(i);
     }
 
     private Intent sendCommonIntentToMedicationActivity(Intent i) {
@@ -3575,7 +3616,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
+        String[] columns = {"uuid", "value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
@@ -3616,9 +3657,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String[] visitArgs = {encounterVitals};
         if (encounterVitals != null) {
             try {
-                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, "obsservermodifieddate DESC");
                 if (visitCursor != null && visitCursor.moveToFirst()) {
                     do {
+                        String uuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                         String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
@@ -3626,9 +3668,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         String created_date = visitCursor.getString(visitCursor.getColumnIndex("obsservermodifieddate"));
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
+                            parseData(uuid, dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                         } else {
-                            parseData(dbConceptID, dbValue, comment, creator, created_date);
+                            parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
                         }
                         //}
                     } while (visitCursor.moveToNext());
@@ -3643,10 +3685,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 //adult intails display code
         String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ? AND voided!='1'";
         String[] encounterargs = {encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
-        Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, null);
+        Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, "obsservermodifieddate DESC");
         try {
             if (encountercursor != null && encountercursor.moveToFirst()) {
                 do {
+                    String uuid = encountercursor.getString(encountercursor.getColumnIndex("uuid"));
                     String comment = encountercursor.getString(encountercursor.getColumnIndex("comment"));
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
@@ -3654,9 +3697,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     String created_date = encountercursor.getString(encountercursor.getColumnIndex("obsservermodifieddate"));
                     if (dbValue.startsWith("{")) {
                         AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
+                        parseData(uuid, dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                     } else {
-                        parseData(dbConceptID, dbValue, comment, creator, created_date);
+                        parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
                     }
                 } while (encountercursor.moveToNext());
             }
@@ -3677,7 +3720,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
-    private void parseData(String concept_id, String value, String comment, String creator, String created_date) {
+    private void parseData(String uuid, String concept_id, String value, String comment, String creator, String created_date) {
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
@@ -3760,18 +3803,48 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
             case UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN: {
 
+               /* if (aidhl_1.getVisibility() != View.VISIBLE)
+                    aidhl_1.setVisibility(View.VISIBLE);*/
+
+                TextView textView = createShowTextView();
+                fetchDispensed_MedicationAndAid();
+                String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
+
                 if (!newMedicalEquipLoanAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"+
+                                disaidformattedvalue;
                 }
 
                 if (newMedicalEquipLoanAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newMedicalEquipLoanAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" +
+                                disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newMedicalEquipLoanAidOrder = getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"+
+                                disaidformattedvalue;
+
+                    if (newMedicalEquipLoanAidOrder != null && !newMedicalEquipLoanAidOrder.isEmpty()) {
+                        // ie. there is atleast one item. so add a textview -> show more.
+                      //  textView.setText(getString(R.string.show_details));
+                        textView.setTag(0);
+                        if (aidOrderType1TableRow.getChildCount() == 1)
+                            aidOrderType1TableRow.addView(textView);
+
+                        // ie. value is present for this Aid_1 field.
+                       // if (newMedicalEquipLoanAidOrder.contains("Added By")) {
+                            String a[] = newMedicalEquipLoanAidOrder.split("<br>");
+                            aid1 = a[0];
+                            Log.d(TAG, "parseData: " + aid1);
+                           // aid1 = newMedicalEquipLoanAidOrder;
+                     //   }
+                        fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
+                    }
+
                 }
 
                 if (!newMedicalEquipLoanAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3785,6 +3858,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 } else if (aidOrderReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
                     aidOrderReturned = getResources().getString(R.string.aid_order_type1) + " " + value;
                 }
+
                 Log.d("aidOrder", aidOrderReturned);
                 if (aidOrderCard.getVisibility() != View.VISIBLE) {
                     aidOrderCard.setVisibility(View.VISIBLE);
@@ -3803,7 +3877,22 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder.replace("||", " ");
                 }
 
-                aidOrderType1TextView.setText(Html.fromHtml(newMedicalEquipLoanAidOrder));
+                aidOrderType1TextView.setText(Html.fromHtml(aid1));
+
+                textView.setOnClickListener(v -> {
+                    if (textView.getTag() != null) {
+                        if (textView.getTag().equals(0)) {
+                            textView.setText(getString(R.string.hide_details));
+                            textView.setTag(1);
+                            aidOrderType1TextView.setText(Html.fromHtml(newMedicalEquipLoanAidOrder));
+                        } else {
+                            textView.setText(getString(R.string.show_details));
+                            textView.setTag(0);
+                            aidOrderType1TextView.setText(Html.fromHtml(aid1));
+                        }
+                    }
+                });
+
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType1TextView.setGravity(Gravity.END);
                 }
@@ -3811,18 +3900,48 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
             case UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP: {
 
+                if (aidhl_1.getVisibility() != View.VISIBLE)
+                    aidhl_1.setVisibility(View.VISIBLE);
+
+                TextView textView = createShowTextView();
+                fetchDispensed_MedicationAndAid();
+                String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
+
                 if (!newFreeMedicalEquipAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type2) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type2) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue;
                 }
 
                 if (newFreeMedicalEquipAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newFreeMedicalEquipAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = getResources().getString(R.string.aid_order_type2) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newFreeMedicalEquipAidOrder = getResources().getString(R.string.aid_order_type2) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue;
+
+                    if (newFreeMedicalEquipAidOrder != null && !newFreeMedicalEquipAidOrder.isEmpty()) {
+                        // ie. there is atleast one item. so add a textview -> show more.
+                      //  textView.setText(getString(R.string.show_details));
+                        textView.setTag(0);
+                        if (aidOrderType2TableRow.getChildCount() == 1)
+                            aidOrderType2TableRow.addView(textView);
+
+                        // ie. value is present for this Aid_1 field.
+                      //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
+                            String a[] = newFreeMedicalEquipAidOrder.split("<br>");
+                            aid2 = a[0];
+                            Log.d(TAG, "parseData: " + aid2);
+                            // aid2 = newMedicalEquipLoanAidOrder;
+                       // }
+                        fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
+                    }
+
                 }
 
                 if (!newFreeMedicalEquipAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3854,7 +3973,22 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder.replace("||", " ");
                 }
 
-                aidOrderType2TextView.setText(Html.fromHtml(newFreeMedicalEquipAidOrder));
+              //  aidOrderType2TextView.setText(Html.fromHtml(newFreeMedicalEquipAidOrder));
+                aidOrderType2TextView.setText(Html.fromHtml(aid2));
+                textView.setOnClickListener(v -> {
+                    if (textView.getTag() != null) {
+                        if (textView.getTag().equals(0)) {
+                            textView.setText(getString(R.string.hide_details));
+                            textView.setTag(1);
+                            aidOrderType2TextView.setText(Html.fromHtml(newFreeMedicalEquipAidOrder));
+                        } else {
+                            textView.setText(getString(R.string.show_details));
+                            textView.setTag(0);
+                            aidOrderType2TextView.setText(Html.fromHtml(aid2));
+                        }
+                    }
+                });
+
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType2TextView.setGravity(Gravity.END);
                 }
@@ -3862,18 +3996,48 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
             case UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE: {
 
+                if (aidhl_2.getVisibility() != View.VISIBLE)
+                    aidhl_2.setVisibility(View.VISIBLE);
+
+                TextView textView = createShowTextView();
+                fetchDispensed_MedicationAndAid();
+                String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
+
                 if (!newCoverMedicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
                 }
 
                 if (newCoverMedicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCoverMedicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCoverMedicalExpenseAidOrder = getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
+
+                    if (newCoverMedicalExpenseAidOrder != null && !newCoverMedicalExpenseAidOrder.isEmpty()) {
+                        // ie. there is atleast one item. so add a textview -> show more.
+                      //  textView.setText(getString(R.string.show_details));
+                        textView.setTag(0);
+                        if (aidOrderType3TableRow.getChildCount() == 1)
+                            aidOrderType3TableRow.addView(textView);
+
+                        // ie. value is present for this Aid_1 field.
+                        //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
+                        String a[] = newCoverMedicalExpenseAidOrder.split("<br>");
+                        aid3 = a[0];
+                        Log.d(TAG, "parseData: " + aid3);
+                        // aid2 = newMedicalEquipLoanAidOrder;
+                        // }
+                        fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
+                    }
+
                 }
 
                 if (!newCoverMedicalExpenseAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3901,7 +4065,22 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder.replace("Others||", "Others - ");
                 }
 
-                aidOrderType3TextView.setText(Html.fromHtml(newCoverMedicalExpenseAidOrder));
+              //  aidOrderType3TextView.setText(Html.fromHtml(newCoverMedicalExpenseAidOrder));
+                aidOrderType3TextView.setText(Html.fromHtml(aid3));
+                textView.setOnClickListener(v -> {
+                    if (textView.getTag() != null) {
+                        if (textView.getTag().equals(0)) {
+                            textView.setText(getString(R.string.hide_details));
+                            textView.setTag(1);
+                            aidOrderType3TextView.setText(Html.fromHtml(newCoverMedicalExpenseAidOrder));
+                        } else {
+                            textView.setText(getString(R.string.show_details));
+                            textView.setTag(0);
+                            aidOrderType3TextView.setText(Html.fromHtml(aid3));
+                        }
+                    }
+                });
+
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType3TextView.setGravity(Gravity.END);
                 }
@@ -3909,18 +4088,47 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
             case UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE: {
 
+                if (aidhl_3.getVisibility() != View.VISIBLE)
+                    aidhl_3.setVisibility(View.VISIBLE);
+
+                TextView textView = createShowTextView();
+                fetchDispensed_MedicationAndAid();
+                String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
+
                 if (!newCoverSurgicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
                 }
 
                 if (newCoverSurgicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCoverSurgicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCoverSurgicalExpenseAidOrder = getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
+
+                    if (newCoverSurgicalExpenseAidOrder != null && !newCoverSurgicalExpenseAidOrder.isEmpty()) {
+                        // ie. there is atleast one item. so add a textview -> show more.
+                      //  textView.setText(getString(R.string.show_details));
+                        textView.setTag(0);
+                        if (aidOrderType4TableRow.getChildCount() == 1)
+                            aidOrderType4TableRow.addView(textView);
+
+                        // ie. value is present for this Aid_1 field.
+                        //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
+                        String a[] = newCoverSurgicalExpenseAidOrder.split("<br>");
+                        aid4 = a[0];
+                        Log.d(TAG, "parseData: " + aid4);
+                        // aid2 = newMedicalEquipLoanAidOrder;
+                        // }
+                        fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
+                    }
                 }
 
                 if (!newCoverSurgicalExpenseAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3949,7 +4157,21 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder.replace("Others||", "Others - ");
                 }
 
-                aidOrderType4TextView.setText(Html.fromHtml(newCoverSurgicalExpenseAidOrder));
+              //  aidOrderType4TextView.setText(Html.fromHtml(newCoverSurgicalExpenseAidOrder));
+                aidOrderType4TextView.setText(Html.fromHtml(aid4));
+                textView.setOnClickListener(v -> {
+                    if (textView.getTag() != null) {
+                        if (textView.getTag().equals(0)) {
+                            textView.setText(getString(R.string.hide_details));
+                            textView.setTag(1);
+                            aidOrderType4TextView.setText(Html.fromHtml(newCoverSurgicalExpenseAidOrder));
+                        } else {
+                            textView.setText(getString(R.string.show_details));
+                            textView.setTag(0);
+                            aidOrderType4TextView.setText(Html.fromHtml(aid4));
+                        }
+                    }
+                });
 
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType4TextView.setGravity(Gravity.END);
@@ -3958,18 +4180,47 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
             case UuidDictionary.AID_ORDER_CASH_ASSISTANCE: {
 
+                if (aidhl_4.getVisibility() != View.VISIBLE)
+                    aidhl_4.setVisibility(View.VISIBLE);
+
+                TextView textView = createShowTextView();
+                fetchDispensed_MedicationAndAid();
+                String disaidformattedvalue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
+
                 if (!newCashAssistanceExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
                 }
 
                 if (newCashAssistanceExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newCashAssistanceExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newCashAssistanceExpenseAidOrder = getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + disaidformattedvalue ;
+
+                    if (newCashAssistanceExpenseAidOrder != null && !newCashAssistanceExpenseAidOrder.isEmpty()) {
+                        // ie. there is atleast one item. so add a textview -> show more.
+                      //  textView.setText(getString(R.string.show_details));
+                        textView.setTag(0);
+                        if (aidOrderType5TableRow.getChildCount() == 1)
+                            aidOrderType5TableRow.addView(textView);
+
+                        // ie. value is present for this Aid_1 field.
+                        //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
+                        String a[] = newCashAssistanceExpenseAidOrder.split("<br>");
+                        aid5 = a[0];
+                        Log.d(TAG, "parseData: " + aid5);
+                        // aid2 = newMedicalEquipLoanAidOrder;
+                        // }
+                        fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
+                    }
                 }
 
                 if (!newCashAssistanceExpenseAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3997,7 +4248,22 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder.replace("Others||", "Others - ");
                 }
 
-                aidOrderType5TextView.setText(Html.fromHtml(newCashAssistanceExpenseAidOrder));
+              //  aidOrderType5TextView.setText(Html.fromHtml(newCashAssistanceExpenseAidOrder));
+                aidOrderType5TextView.setText(Html.fromHtml(aid5));
+                textView.setOnClickListener(v -> {
+                    if (textView.getTag() != null) {
+                        if (textView.getTag().equals(0)) {
+                            textView.setText(getString(R.string.hide_details));
+                            textView.setTag(1);
+                            aidOrderType5TextView.setText(Html.fromHtml(newCashAssistanceExpenseAidOrder));
+                        } else {
+                            textView.setText(getString(R.string.show_details));
+                            textView.setTag(0);
+                            aidOrderType5TextView.setText(Html.fromHtml(aid5));
+                        }
+                    }
+                });
+
 
                 if (LocaleHelper.isArabic(this)) {
                     aidOrderType5TextView.setGravity(Gravity.END);
@@ -4005,22 +4271,38 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 break;
             }
             case UuidDictionary.JSV_MEDICATIONS: {
+
                 Log.e(TAG, "parseData: JSV_MEDICATIONS=>" + value);
                 if(value.contains("\n"))
                     value = value.replace("\n","<br>");
 
+                fetchDispensed_MedicationAndAid();
+                fetchAdministered_Medication();
+
+                String dispenseMedicationValue = (!formatDispensedByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatDispensedByDetails(uuid, true) + "</font>" : "";
+
+                String administerMedicationValue = (!formatAdministeredByDetails(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + formatAdministeredByDetails(uuid, true) + "</font>" : "";
+
+
                 if (!newRxReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newRxReturned = newRxReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newRxReturned = /*newRxReturned +*/ "<br>" + "<strike><font color=\\'#000000\\'>" + value +
+                                "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + dispenseMedicationValue + administerMedicationValue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newRxReturned = newRxReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newRxReturned = /*newRxReturned + */ "<br>" + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + dispenseMedicationValue + administerMedicationValue;
                 }
 
                 if (newRxReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newRxReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newRxReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + dispenseMedicationValue + administerMedicationValue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newRxReturned = value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newRxReturned = value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
+                                + dispenseMedicationValue + administerMedicationValue;
                 }
 
                 if (!rxReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4032,11 +4314,40 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
-                prescriptionTextView.setText(Html.fromHtml(newRxReturned));
-                //checkForDoctor();
+
+                TextView textView = createTextView();
+                textView.setTag(R.id.tl_prescribed_medications, newRxReturned);
+                textView.setTag(newRxReturned);
+
+                String a[] = textView.getTag().toString().split(getResources().getString(R.string.added_by));
+                textView.setText(Html.fromHtml(a[0].substring(0, a[0].lastIndexOf("<br>"))));
+                Log.d(TAG, "parseData: med_txt: \n" + newRxReturned + "\n -------- \n" + textView.getText().toString());
+
+                TextView show_textView = createShowTextView();
+                show_textView.setTag(textView);
+                show_textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int c = showMoreAndHideContent((TextView) view.getTag());
+                        if (c == 1)
+                            show_textView.setText(getString(R.string.hide_details));
+                        else
+                            show_textView.setText(getString(R.string.show_details));
+                    }
+                });
+
                 if (LocaleHelper.isArabic(this)) {
-                    prescriptionTextView.setGravity(Gravity.END);
+                    textView.setGravity(Gravity.END);
+                    textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);  // Had to add this as the text direction was breaking for some text.
                 }
+
+                if (tl_prescribed_medications.getChildCount() > 0)
+                    tl_prescribed_medications.addView(showDividerLine());
+                tl_prescribed_medications.addView(textView);
+                tl_prescribed_medications.addView(show_textView);
+              //  tl_prescribed_medications.removeViewAt(tl_prescribed_medications.getChildCount()-1);
+
+                Log.d(TAG, "parseData: med: " + tl_prescribed_medications.getChildCount() + "\n" + textView.getText().toString());
                 break;
             }
             case UuidDictionary.MEDICAL_ADVICE: {
@@ -4212,6 +4523,182 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
     }
 
+    private View showDividerLine() {
+        View view = new View(VisitSummaryActivity.this);
+        view.setBackgroundColor(getResources().getColor(R.color.divider));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2);
+    //    params.setMargins(0, 20, 0, 0);
+        params.topMargin = 50;
+        view.setLayoutParams(params);
+        return view;
+    }
+
+    private int showMoreAndHideContent(TextView contentTextView) {
+        int tag = 0;
+        String value = contentTextView.getTag(R.id.tl_prescribed_medications).toString();
+        String a[] = contentTextView.getTag().toString().split(getResources().getString(R.string.added_by));
+        Log.d(TAG, "showMoreAndHideContent: " + value + "\n" + a[0] + "\n" + "--------------");
+
+        if (contentTextView.getTag().toString().contains(getResources().getString(R.string.added_by))) {
+            contentTextView.setText(Html.fromHtml((String) contentTextView.getTag()));
+            contentTextView.setTag(a[0]);
+            tag = 1;
+        }
+        else {
+            contentTextView.setText(Html.fromHtml(a[0].substring(0, a[0].lastIndexOf("<br>"))));
+            contentTextView.setTag(value);
+            tag = 0;
+        }
+
+        return tag;
+    }
+
+    private TextView createShowTextView() {
+        TextView textView = new MaterialTextView(VisitSummaryActivity.this);
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
+        textView.setTextColor(getResources().getColor(R.color.intro_next));
+        textView.setPadding(0, 10, 0, 10);
+        textView.setText(getString(R.string.show_details));
+        return textView;
+    }
+
+    private TextView createTextView() {
+        TextView textView = new MaterialTextView(VisitSummaryActivity.this);
+        textView.setTextSize(16.0f);
+        textView.setId(View.generateViewId());
+        return textView;
+    }
+
+    private void fetchAdministered_Medication() {
+        Log.d(TAG, "fetchDispensedAid: " + visitUuid);
+        List<String> encounterListByVisitUUID = getEncounterListByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_ADMINISTER);
+        if (encounterListByVisitUUID != null && encounterListByVisitUUID.size() > 0) {
+            if (update_medUuidAdministeredList != null && update_medUuidAdministeredList.size() > 0)
+                update_medUuidAdministeredList.clear();
+
+            for (int i = 0; i < encounterListByVisitUUID.size(); i++) {
+                encounterAdminister = encounterListByVisitUUID.get(i);
+                Log.d(TAG, "encounterAdminister: " + encounterAdminister);  //
+                if (!encounterAdminister.isEmpty()) {
+                    try {
+
+                        //  MedicationAidModel medModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION);    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+                        update_medUuidAdministeredList.addAll(ObsDAO.getObsDispenseAdministerData(encounterAdminister, UuidDictionary.OBS_ADMINISTER_MEDICATION));    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+
+                       /* //  MedicationAidModel aidModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_AID);
+                        update_aidUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_AID));
+*/
+                    } catch (DAOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            Log.d(TAG, "fetchAdministered_Medication: " + String.valueOf(update_medUuidAdministeredList.size()));
+        }
+    }
+
+
+    private void fetchDispensed_MedicationAndAid() {
+        Log.d(TAG, "fetchDispensedAid: " + visitUuid);
+        List<String> encounterListByVisitUUID = getEncounterListByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_DISPENSE);
+        if (encounterListByVisitUUID != null && encounterListByVisitUUID.size() > 0) {
+
+            if (update_medUuidDispenseList != null && update_medUuidDispenseList.size() > 0)
+                update_medUuidDispenseList.clear();
+
+            if (update_aidUuidList != null && update_aidUuidList.size() > 0)
+                update_aidUuidList.clear();
+
+            for (int i = 0; i < encounterListByVisitUUID.size(); i++) {
+                encounterDispense = encounterListByVisitUUID.get(i);
+                Log.d(TAG, "encounterDispense: " + encounterDispense);  //
+                if (!encounterDispense.isEmpty()) {
+                    try {
+
+                        //  MedicationAidModel medModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION);    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+                        update_medUuidDispenseList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_MEDICATION));    // 27f6b6df-d3a5-47b6-8a36-5843ed204794
+
+                        //  MedicationAidModel aidModel = ObsDAO.getObsValue(encounterDispense, UuidDictionary.OBS_DISPENSE_AID);
+                        update_aidUuidList.addAll(ObsDAO.getObsDispenseAdministerData(encounterDispense, UuidDictionary.OBS_DISPENSE_AID));
+
+                    } catch (DAOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+    }
+
+    private String formatAdministeredByDetails(String uuid, boolean isDispense) {
+        String obsformat = "";
+
+        if (update_medUuidAdministeredList != null && update_medUuidAdministeredList.size() > 0) {
+            for (int i = 0; i < update_medUuidAdministeredList.size(); i++) {
+                MedicationModel medicationModel = new Gson().fromJson(update_medUuidAdministeredList.get(i).getValue(), MedicationModel.class);
+                if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(uuid)) {
+                    // String creator_name = getCreatorName(creator);
+                    String valueTimeStamp = "";
+                    if (update_medUuidAdministeredList.get(i).getCreatedDate() != null)
+                        valueTimeStamp = getValueTimeStamp(update_medUuidAdministeredList.get(i).getCreatedDate());
+                    else {
+                        AidModel aidModel = new Gson().fromJson(update_medUuidAdministeredList.get(i).getValue(), AidModel.class);
+                        valueTimeStamp = getValueTimeStamp(aidModel.getDateTime());
+                    }
+                    Log.d(TAG, "formatAdministeredByDetails: medi: " + valueTimeStamp);
+                    if (!obsformat.isEmpty())
+                        obsformat = obsformat + "<br>" + getResources().getString(R.string.administered_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                    else
+                        obsformat = getResources().getString(R.string.administered_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                }
+            }
+        }
+
+        return obsformat;
+    }
+    private String formatDispensedByDetails(String uuid, boolean isDispense) {
+        String obsAddedByString = "";
+
+        if (update_aidUuidList != null && update_aidUuidList.size() > 0) {
+            for (int i = 0; i < update_aidUuidList.size(); i++) {
+                AidModel aidModel = new Gson().fromJson(update_aidUuidList.get(i).getValue(), AidModel.class);
+                if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(uuid)) {
+                   // String creator_name = getCreatorName(creator);
+                    String valueTimeStamp = "";
+                    if (update_aidUuidList.get(i).getCreatedDate() != null)
+                        valueTimeStamp = getValueTimeStamp(update_aidUuidList.get(i).getCreatedDate());
+                    else {
+                        valueTimeStamp = getValueTimeStamp(aidModel.getDateTime());
+                    }
+
+                    Log.d(TAG, "formatDispensedByDetails: aid: " + valueTimeStamp);
+                    obsAddedByString = getResources().getString(R.string.dispensed_by) + " " + aidModel.getHwName() + "<br>" + valueTimeStamp;
+                }
+            }
+        }
+
+        if (update_medUuidDispenseList != null && update_medUuidDispenseList.size() > 0) {
+            for (int i = 0; i < update_medUuidDispenseList.size(); i++) {
+                MedicationModel medicationModel = new Gson().fromJson(update_medUuidDispenseList.get(i).getValue(), MedicationModel.class);
+                if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(uuid)) {
+                   // String creator_name = getCreatorName(creator);
+                    String valueTimeStamp = "";
+                    if (update_medUuidDispenseList.get(i).getCreatedDate() != null)
+                        valueTimeStamp = getValueTimeStamp(update_medUuidDispenseList.get(i).getCreatedDate());
+                    else {
+                        AidModel aidModel = new Gson().fromJson(update_medUuidDispenseList.get(i).getValue(), AidModel.class);
+                        valueTimeStamp = getValueTimeStamp(aidModel.getDateTime());
+                    }
+
+                    Log.d(TAG, "formatDispensedByDetails: medi: " + valueTimeStamp);
+                    obsAddedByString = getResources().getString(R.string.dispensed_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                }
+            }
+        }
+
+        return obsAddedByString;
+    }
+
     private String formatCreatorDetails(String creator, String created_date, String comment) {
         String obsAddedByString = "Added by:";
         String valueTimeStamp = getValueTimeStamp(created_date);
@@ -4236,15 +4723,28 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     }
 
     private String getValueTimeStamp(String created_date) {
+        if (created_date == null)
+            return "";
+
+        Log.d(TAG, "getValueTimeStamp: " + created_date);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = null;
         try {
             date = df.parse(created_date);
+            df.setTimeZone(TimeZone.getDefault());
         } catch (ParseException e) {
             e.printStackTrace();
+            created_date = formatDateFromOnetoAnother(created_date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "yyyy-MM-dd HH:mm:ss");
+            try {
+                  df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                  date = df.parse(created_date);
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
         }
-        df.setTimeZone(TimeZone.getDefault());
+
+
         String formattedDate = df.format(date);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat formatTime = new SimpleDateFormat("dd-MM-yyyy, hh:mm aa", Locale.ENGLISH);
@@ -4264,6 +4764,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String[] columns = {"uuid", "userid", " given_name", "family_name"};
         String providerSelection = "userid = ?";
         String[] providerArgs = {creator_id};
+        db.beginTransaction();
         Cursor providerCursor = db.query("tbl_provider", columns, providerSelection, providerArgs, null, null, null);
         if (providerCursor.moveToFirst()) {
             do {
@@ -4277,7 +4778,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 creator_reg_num = getCreatorRegNumber(providerUuid);
             } while (providerCursor.moveToNext());
         }
-        providerCursor.close();
+
+        if(providerCursor != null && !providerCursor.isClosed())
+            providerCursor.close();
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
         String creatorDetails = creator_name;
         if(!creator_reg_num.equalsIgnoreCase("NA"))
             creatorDetails = creator_name + " (" + creator_reg_num + ")";
@@ -4289,6 +4795,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String[] columns = {"provideruuid", "value", " attributetypeuuid"};
         String providerSelection = "provideruuid = ? AND attributetypeuuid = ?";
         String[] providerArgs = {providerUuid, "992ccbdd-201a-44ef-8abb-c2eee079886d"};
+        db.beginTransaction();
         Cursor providerCursor = db.query("tbl_provider_attribute", columns, providerSelection, providerArgs, null, null, null);
         if (providerCursor.moveToFirst()) {
             do {
@@ -4297,7 +4804,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     registrationNum = value;
             } while (providerCursor.moveToNext());
         }
-        providerCursor.close();
+        if(providerCursor != null && !providerCursor.isClosed())
+            providerCursor.close();
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
         return registrationNum;
     }
 
@@ -4358,8 +4869,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
 
         // Dispense & Administer - START
-        if (!isPastVisit)
-            fl_DispenseAdminister.setVisibility(View.VISIBLE);
+        if (!isPastVisit) {
+          //  fl_DispenseAdminister.setVisibility(View.VISIBLE);
+            layout_dispense_1.setVisibility(View.VISIBLE);
+            layout_dispense_2.setVisibility(View.VISIBLE);
+        }
         // Dispense & Administer - END
 
         String doctorSign = "";
@@ -4648,6 +5162,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         return datamodel;
     }
 
+    @Override
+    public void onClick(View view) {
+        EncounterDAO tag = (EncounterDAO) view.getTag();
+        if (view.getId() == R.id.tvDispense)
+            dispenseIntent(tag);
+        else if (view.getId() == R.id.tvAdminister)
+            admininisterIntent(tag);
+    }
+
 /*    @Override
     public void printerObserverCallback(final PrinterInterface printerInterface, final int state) {
         runOnUiThread(new Runnable() {
@@ -4841,7 +5364,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 if (!rxReturned.isEmpty()) {
                     rxReturned = "";
-                    prescriptionTextView.setText("");
+                    tl_prescribed_medications.removeAllViews();
+                 //   prescriptionTextView.setText("");
                     prescriptionCard.setVisibility(View.GONE);
 
                 }
@@ -4870,13 +5394,14 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     followUpDateTextView.setText("");
                     followUpDateCard.setVisibility(View.GONE);
                 }
-                String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
+                String[] columns = {"uuid", "value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
                 String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
                 String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
-                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, "obsservermodifieddate DESC");
                 if (visitCursor.moveToFirst()) {
                     reset();
                     do {
+                        String uuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                         String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
@@ -4887,15 +5412,18 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
 
                         // Dispense & Administer - START
-                        if (!isPastVisit)
-                            fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                        if (!isPastVisit) {
+                          //  fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                            layout_dispense_1.setVisibility(View.VISIBLE);
+                            layout_dispense_2.setVisibility(View.VISIBLE);
+                        }
                         // Dispense & Administer - END
 
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
+                            parseData(uuid, dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                         } else {
-                            parseData(dbConceptID, dbValue, comment, creator, created_date);
+                            parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
                         }
                     } while (visitCursor.moveToNext());
                 }
@@ -4963,12 +5491,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         }
         encounterCursor.close();
-        String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
+        String[] columns = {"uuid", "value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
         String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
-        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, "obsservermodifieddate DESC");
         if (visitCursor.moveToFirst()) {
             do {
+                String uuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                 String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
@@ -4979,15 +5508,18 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
 
                 // Dispense & Administer - START
-                if (!isPastVisit)
-                    fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                if (!isPastVisit) {
+                 //   fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                    layout_dispense_1.setVisibility(View.VISIBLE);
+                    layout_dispense_2.setVisibility(View.VISIBLE);
+                }
                 // Dispense & Administer - END
 
                 if (dbValue.startsWith("{")) {
                     AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
+                    parseData(uuid, dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                 } else {
-                    parseData(dbConceptID, dbValue, comment, creator, created_date);
+                    parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
 
                 }
             } while (visitCursor.moveToNext());
@@ -5056,18 +5588,19 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             dischargeOrderReturned = "";
             aidOrderReturned = "";
             followUpDate = "";
-            String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
+            String[] columns = {"uuid", "value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
             String visitSelection = "encounteruuid = ? ";
             String[] visitArgs = {encounterUuid};
-            Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+            Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, "obsservermodifieddate DESC");
             if (visitCursor.moveToFirst()) {
                 do {
+                    String uuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                     String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                     String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                     String creator = visitCursor.getString(visitCursor.getColumnIndex("creator"));
                     String created_date = visitCursor.getString(visitCursor.getColumnIndex("obsservermodifieddate"));
-                    parseData(dbConceptID, dbValue, comment, creator, created_date);
+                    parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
                 } while (visitCursor.moveToNext());
             }
             visitCursor.close();

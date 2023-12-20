@@ -1660,6 +1660,10 @@
     <string name="medicine_past_notes">ملاحظات الأدوية السابقة</string>
     <string name="aid_past_notes">ملاحظات الدعم السابقة</string>
     <string name="case_not_uploaded">حالة غير مرسلة</string>
+    <string name="show_details">إظهار التفاصيل</string>
+    <string name="hide_details">إخفاء التفاصيل</string>
+    <string name="dispensed_by">اسم صارف الدواء/الدعم</string>
+    <string name="administered_by">اسم معطي الدواء/الدعم</string>
 
 
 </resources>

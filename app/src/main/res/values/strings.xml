@@ -1634,8 +1634,8 @@
     <string name="prescription_pending">Prescription Pending</string>
     <string name="prescription_in_progress">Prescription In-Progress</string>
     <string name="prescription_received">Prescription Received</string>
-    <string name="deleted_by">Deleted By</string>
-    <string name="added_by">Added By</string>
+    <string name="deleted_by">Deleted by</string>
+    <string name="added_by">Added by</string>
 
     <string name="medication_and_aid">Medication and Aid</string>
     <string name="administer_dispense">Administer/Dispense</string>
@@ -1667,5 +1667,9 @@
     <string name="medicine_past_notes">Medicine Past Notes</string>
     <string name="aid_past_notes">Aid Past Notes</string>
     <string name="case_not_uploaded">Case not uploaded</string>
+    <string name="show_details">Show Details</string>
+    <string name="hide_details">Hide Details</string>
+    <string name="dispensed_by">Dispensed by</string>
+    <string name="administered_by">Administered by</string>
 
 </resources>

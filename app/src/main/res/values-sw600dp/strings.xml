@@ -30,4 +30,8 @@
     <string name="medicine_past_notes">Medicine Past Notes</string>
     <string name="aid_past_notes">Aid Past Notes</string>
     <string name="case_not_uploaded">Case not uploaded</string>
+    <string name="show_details">Show Details</string>
+    <string name="hide_details">Hide Details</string>
+    <string name="dispensed_by">Dispensed by</string>
+    <string name="administered_by">Administered by</string>
 </resources>
