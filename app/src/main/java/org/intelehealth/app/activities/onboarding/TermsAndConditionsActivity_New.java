@@ -81,7 +81,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
                         }
                     });
                 }
-            });
+            }).start();
 
 //        } catch (JSONException e) {
 //            e.printStackTrace();
