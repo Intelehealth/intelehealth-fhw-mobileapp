@@ -24,6 +24,7 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
+    private static final String TAG = OptionsChipsGridAdapter.class.getSimpleName();
     private Context mContext;
     private Node mParentNode;
     private List<Node> mItemList = new ArrayList<Node>();
@@ -84,15 +85,15 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                         @Override
                         public void run() {
                             String id = mItemList.get(genericViewHolder.index).getId();
-                            Log.v("ID", id);
-                            Log.v("ID", new Gson().toJson(mEditTimeLoadedIds));
+                            Log.v(TAG, "TAG - "+id);
+                            Log.v(TAG, "mEditTimeLoadedIds - "+new Gson().toJson(mEditTimeLoadedIds));
                             if (!mEditTimeLoadedIds.contains(id)) {
                                 mEditTimeLoadedIds.add(id);
                                 mOnItemSelection.onSelect(mItemList.get(genericViewHolder.index), true);
                             }
 
                         }
-                    }, 1000);
+                    }, 100);
             } else {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));

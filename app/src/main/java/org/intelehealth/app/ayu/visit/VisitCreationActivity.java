@@ -1032,7 +1032,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
         patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0 , false);
-        while (patientHistory.contains("[Describe"))
+        while (patientHistory!=null && patientHistory.contains("[Describe"))
             patientHistory = patientHistory.replace("[Describe]", "");
 
         //familyHistory = mFamilyHistoryNode.generateLanguage();

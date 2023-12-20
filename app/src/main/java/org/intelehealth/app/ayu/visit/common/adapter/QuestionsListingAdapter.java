@@ -231,10 +231,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.node = mItemList.get(genericViewHolder.getAbsoluteAdapterPosition());
             genericViewHolder.index = genericViewHolder.getAbsoluteAdapterPosition();
             genericViewHolder.rootIndex = mIndexMappingHashMap.getOrDefault(genericViewHolder.index, 0);
-            int position = genericViewHolder.getAbsoluteAdapterPosition();
+
 
             genericViewHolder.tvQuestionCounter.setText("");
-            String id = mItemList.get(position).getId();
+            String id = mItemList.get(genericViewHolder.index).getId();
             Log.v(TAG, "ID - " + id);
             Log.v(TAG, "mLoadedIds - " + new Gson().toJson(mLoadedIds));
             Handler handler = new Handler();
@@ -248,13 +248,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     genericViewHolder.spinKitView.setVisibility(View.GONE);
                     genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
                     //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
-                    setData(position, genericViewHolder);
+                    setData(genericViewHolder.index, genericViewHolder);
                 }, 800);
             } else {
                 handler.postDelayed(() -> {
                     genericViewHolder.spinKitView.setVisibility(View.GONE);
                     genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
-                    setData(position, genericViewHolder);
+                    setData(genericViewHolder.index, genericViewHolder);
                 }, 100);
             }
 
