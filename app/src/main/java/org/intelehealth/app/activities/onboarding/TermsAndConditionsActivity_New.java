@@ -34,7 +34,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
     JSONObject obj = null;
     TextView tvText;
     ImageView ivBack;
-    String privacy_string;
+    String privacy_string = "";
     private Context context = TermsAndConditionsActivity_New.this;
     private SessionManager sessionManager;
 
@@ -59,7 +59,8 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
             }
         });
 
-      //  try {
+        if (privacy_string.isEmpty()) {
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -69,7 +70,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
                                 FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
                                 String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
                         privacy_string = sessionManager.getAppLanguage().equalsIgnoreCase("hi") ?
-                                obj.getString("terms_and_conditions_Hindi"):obj.getString("terms_and_conditions");
+                                obj.getString("terms_and_conditions_Hindi") : obj.getString("terms_and_conditions");
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
@@ -82,11 +83,9 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
                     });
                 }
             }).start();
-
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
+        }
+        else
+            tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
     @Override
