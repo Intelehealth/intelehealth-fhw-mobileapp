@@ -65,38 +65,38 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/llSuggestedComplaints"
-        android:layout_below="@id/header_view"
-        android:layout_margin="16dp">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:id="@+id/llSuggestedComplaints"-->
+<!--        android:layout_below="@id/header_view"-->
+<!--        android:layout_margin="16dp">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Suggested Complaints (Based on Vitals):"
-            android:textColor="@color/gray_2"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Suggested Complaints (Based on Vitals):"-->
+<!--            android:textColor="@color/gray_2"/>-->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvSuggestedComplaints"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rvSuggestedComplaints"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:visibility="gone"-->
+<!--            tools:visibility="visible"/>-->
 
-        <View
-            android:id="@+id/divider_view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/rvSuggestedComplaints"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/gray_1" />
+<!--        <View-->
+<!--            android:id="@+id/divider_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_below="@id/rvSuggestedComplaints"-->
+<!--            android:layout_marginHorizontal="10dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:background="@color/gray_1" />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -115,7 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/fab"
-        android:layout_below="@+id/llSuggestedComplaints"
+        android:layout_below="@+id/header_view"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"

@@ -65,14 +65,14 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";
     String patientUuid, visitUuid, state, patientName, intentTag, encounterVitals, encounterAdultIntials, EncounterAdultInitial_LatestVisit, mgender;
     SearchView searchView;
-    List<Node> complaints, suggestedComplaints;
+    List<Node> complaints/*, suggestedComplaints*/;
     ComplaintNodeListAdapter listAdapter;
-    SuggestedComplaintNodeListAdapter suggestedComplaintListAdapter;
+//    SuggestedComplaintNodeListAdapter suggestedComplaintListAdapter;
     EncounterDTO encounterDTO;
     SessionManager sessionManager = null;
     ImageView img_question;
     TextView tv_selectComplaint;
-    RecyclerView list_recyclerView, rv_suggested_complaints;
+    RecyclerView list_recyclerView/*, rv_suggested_complaints*/;
     private float float_ageYear_Month;
 
     @Override
@@ -135,11 +135,11 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         tv_selectComplaint = findViewById(R.id.tv_selectComplaint);
         list_recyclerView = findViewById(R.id.list_recyclerView);
 
-        rv_suggested_complaints = findViewById(R.id.rvSuggestedComplaints);
-        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
-        layoutManager.setFlexDirection(FlexDirection.ROW);
-        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
-        rv_suggested_complaints.setLayoutManager(layoutManager);
+//        rv_suggested_complaints = findViewById(R.id.rvSuggestedComplaints);
+//        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
+//        layoutManager.setFlexDirection(FlexDirection.ROW);
+//        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+//        rv_suggested_complaints.setLayoutManager(layoutManager);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         list_recyclerView.setLayoutManager(linearLayoutManager);
@@ -163,7 +163,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }
 
         complaints = new ArrayList<>();
-        suggestedComplaints = new ArrayList<>();
+//        suggestedComplaints = new ArrayList<>();
 
 
         boolean hasLicense = !sessionManager.getLicenseKey().isEmpty();
@@ -235,11 +235,11 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     String fileLocation = "engines/" + name;
                     currentFile = FileUtils.encodeJSON(this, fileLocation);
                     Node currentNode = new Node(currentFile);
-                    if(name.equalsIgnoreCase("Fever.json") || name.equalsIgnoreCase("Abdominal Pain.json") ||
-                        name.equalsIgnoreCase("Dry mouth.json") || name.equalsIgnoreCase("Fever & Rash.json") ||
-                                name.equalsIgnoreCase("Jaundice.json"))
-                        suggestedComplaints.add(currentNode);
-                    else
+//                    if(name.equalsIgnoreCase("Fever.json") || name.equalsIgnoreCase("Abdominal Pain.json") ||
+//                        name.equalsIgnoreCase("Dry mouth.json") || name.equalsIgnoreCase("Fever & Rash.json") ||
+//                                name.equalsIgnoreCase("Jaundice.json"))
+//                        suggestedComplaints.add(currentNode);
+//                    else
                         complaints.add(currentNode);
                 }
                 //remove items from complaints array here...
@@ -276,14 +276,14 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             }
         }
         listAdapter = new ComplaintNodeListAdapter(this, complaints);
-        suggestedComplaintListAdapter = new SuggestedComplaintNodeListAdapter(this, suggestedComplaints);
+//        suggestedComplaintListAdapter = new SuggestedComplaintNodeListAdapter(this, suggestedComplaints);
         list_recyclerView.setAdapter(listAdapter);
-        rv_suggested_complaints.setAdapter(suggestedComplaintListAdapter);
+//        rv_suggested_complaints.setAdapter(suggestedComplaintListAdapter);
 
         img_question.setVisibility(View.VISIBLE);
         tv_selectComplaint.setVisibility(View.VISIBLE);
         list_recyclerView.setVisibility(View.VISIBLE);
-        rv_suggested_complaints.setVisibility(View.VISIBLE);
+//        rv_suggested_complaints.setVisibility(View.VISIBLE);
         fab.setVisibility(View.VISIBLE);
     }
 
