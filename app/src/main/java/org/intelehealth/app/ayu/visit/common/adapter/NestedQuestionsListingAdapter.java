@@ -836,7 +836,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                                 boolean found = false;
                                                 for (int i = 0; i < mItemList.size(); i++) {
                                                     Node n = mItemList.get(i);
-                                                    Log.v(TAG, "n - " + n.getText());
+                                                    Log.v(TAG, node.getText()+"## n ## " + n.getText());
                                                     if (node.getText().equalsIgnoreCase(n.getText())) {
                                                         found = true;
                                                         mItemList.remove(i);

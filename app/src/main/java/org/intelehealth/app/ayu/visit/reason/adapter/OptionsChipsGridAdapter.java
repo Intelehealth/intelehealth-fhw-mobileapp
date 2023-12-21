@@ -75,25 +75,22 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                     genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
                     genericViewHolder.node.setSelected(false);
                     genericViewHolder.node.setDataCaptured(false);
-                }else {
+                } else {
                     genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                     genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
                     genericViewHolder.tvName.setEnabled(true);
                 }
                 //if (mItemList.get(genericViewHolder.index).getOptionsList() != null && !mItemList.get(genericViewHolder.index).getOptionsList().isEmpty())
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            String id = mItemList.get(genericViewHolder.index).getId();
-                            Log.v(TAG, "TAG - "+id);
-                            Log.v(TAG, "mEditTimeLoadedIds - "+new Gson().toJson(mEditTimeLoadedIds));
-                            if (!mEditTimeLoadedIds.contains(id)) {
-                                mEditTimeLoadedIds.add(id);
-                                mOnItemSelection.onSelect(mItemList.get(genericViewHolder.index), true);
-                            }
+                new Handler().postDelayed(() -> {
+                    String id = mItemList.get(genericViewHolder.index).getId();
+                    Log.v(TAG, "TAG - " + id);
+                    Log.v(TAG, "mEditTimeLoadedIds - " + new Gson().toJson(mEditTimeLoadedIds));
+                    if (!mEditTimeLoadedIds.contains(id)) {
+                        mEditTimeLoadedIds.add(id);
+                        mOnItemSelection.onSelect(mItemList.get(genericViewHolder.index), true);
+                    }
+                }, 100);
 
-                        }
-                    }, 100);
             } else {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
@@ -142,10 +139,10 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                             mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
                         } else {
                             for (int i = 0; i < mItemList.size(); i++) {
-                                if(i==index) {
+                                if (i == index) {
                                     //mItemList.get(i).setSelected(i == index);
                                     mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
-                                }else {
+                                } else {
                                     mItemList.get(i).setSelected(false);
                                 }
                             }
