@@ -39,7 +39,7 @@ import io.livekit.android.room.track.VideoTrack;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class IDAVideoActivity extends CoreVideoCallActivity {
+public class NammaVideoActivity extends CoreVideoCallActivity {
     public static void startVideoCallActivity(Context context, RtcArgs args) {
 
         Log.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
@@ -47,7 +47,7 @@ public class IDAVideoActivity extends CoreVideoCallActivity {
         args.setCallType(CallType.VIDEO);
         args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
 
-        Intent intent = new Intent(context, IDAVideoActivity.class);
+        Intent intent = new Intent(context, NammaVideoActivity.class);
         intent.putExtra(RtcUtilsKt.RTC_ARGS, args);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

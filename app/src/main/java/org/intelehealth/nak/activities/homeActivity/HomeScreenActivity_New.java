@@ -24,7 +24,6 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -114,20 +113,12 @@ import org.intelehealth.nak.utilities.TooltipWindow;
 import org.intelehealth.nak.utilities.UrlModifiers;
 import org.intelehealth.nak.utilities.exception.DAOException;
 import org.intelehealth.nak.webrtc.activity.BaseActivity;
-import org.intelehealth.nak.webrtc.activity.IDAChatActivity;
-import org.intelehealth.nak.webrtc.activity.IDAVideoActivity;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.UUID;
 
 import io.reactivex.Observable;

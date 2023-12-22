@@ -354,17 +354,17 @@
         </activity>
 
         <activity
-            android:name=".webrtc.activity.IDAChatActivity"
+            android:name=".webrtc.activity.NammaChatActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".webrtc.activity.IDAVideoActivity"
+            android:name=".webrtc.activity.NammaVideoActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".webrtc.activity.IDACallLogActivity"
+            android:name=".webrtc.activity.NammaCallLogActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />

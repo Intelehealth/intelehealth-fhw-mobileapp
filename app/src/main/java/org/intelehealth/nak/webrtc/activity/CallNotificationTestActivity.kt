@@ -1,7 +1,9 @@
 package org.intelehealth.nak.webrtc.activity
 
 import android.os.Bundle
+import com.github.ajalt.timberkt.Timber
 import com.google.android.material.button.MaterialButton
+import org.intelehealth.klivekit.call.ui.custom.FabSwipeable
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.nak.R
@@ -11,32 +13,37 @@ import org.intelehealth.nak.R
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class CallNotificationTestActivity : BaseActivity() {
+class CallNotificationTestActivity : BaseActivity(), FabSwipeable.SwipeEventListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_call_notification_test)
-
-//        RtcConfig.Builder()
-//            .callUrl("wss://" + sessionManager.getServerUrl() + ":9090")
-//            .socketUrl(
-//                "https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
-//                        + sessionManager.getProviderID()
-//                        + "&name=" + sessionManager.getChwname()
-//            )
-//            .callIntentClass(EkalVideoActivity::class.java)
-//            .chatIntentClass(EkalChatActivity::class.java)
-//            .callLogIntentClass(EkalCoreCallLogActivity::class.java)
-//            .build().saveConfig(this)
-        findViewById<MaterialButton>(R.id.btnStartCallNotification).setOnClickListener {
-            startCall()
-        }
+        setContentView(R.layout.view_incoming_call_ringing)
+//        findViewById<MaterialButton>(R.id.btnStartCallNotification).setOnClickListener {
+//            startCall()
+//        }
     }
+
 
     private fun startCall() {
         CallHandlerUtils.operateIncomingCall(
             this,
             RtcArgs.dummy().apply { patientName = "Test User" },
-            IDAVideoActivity::class.java
+            NammaVideoActivity::class.java
         )
+    }
+
+    override fun onTap() {
+        Timber.tag("Test").d("onTap")
+    }
+
+    override fun onReleased() {
+        Timber.tag("Test").d("onRelease")
+    }
+
+    override fun onSwipe() {
+        Timber.tag("Test").d("onSwipe")
+    }
+
+    override fun onCompleted() {
+        Timber.tag("Test").d("onCompleted")
     }
 }

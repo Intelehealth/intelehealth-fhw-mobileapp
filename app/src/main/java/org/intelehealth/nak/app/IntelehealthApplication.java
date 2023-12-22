@@ -25,9 +25,9 @@ import org.intelehealth.nak.BuildConfig;
 import org.intelehealth.nak.R;
 import org.intelehealth.nak.database.InteleHealthDatabaseHelper;
 import org.intelehealth.nak.utilities.SessionManager;
-import org.intelehealth.nak.webrtc.activity.IDACallLogActivity;
-import org.intelehealth.nak.webrtc.activity.IDAChatActivity;
-import org.intelehealth.nak.webrtc.activity.IDAVideoActivity;
+import org.intelehealth.nak.webrtc.activity.NammaCallLogActivity;
+import org.intelehealth.nak.webrtc.activity.NammaChatActivity;
+import org.intelehealth.nak.webrtc.activity.NammaVideoActivity;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
@@ -60,7 +60,7 @@ public class IntelehealthApplication extends MultiDexApplication {
 
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper;
 
-    private SocketManager socketManager = SocketManager.getInstance();
+    private final SocketManager socketManager = SocketManager.getInstance();
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -165,9 +165,9 @@ public class IntelehealthApplication extends MultiDexApplication {
                 .socketUrl(BuildConfig.SOCKET_URL + "?userId="
                         + sessionManager.getProviderID()
                         + "&name=" + sessionManager.getChwname())
-                .callIntentClass(IDAVideoActivity.class)
-                .chatIntentClass(IDAChatActivity.class)
-                .callLogIntentClass(IDACallLogActivity.class)
+                .callIntentClass(NammaVideoActivity.class)
+                .chatIntentClass(NammaChatActivity.class)
+                .callLogIntentClass(NammaCallLogActivity.class)
                 .build().saveConfig(this);
     }
 

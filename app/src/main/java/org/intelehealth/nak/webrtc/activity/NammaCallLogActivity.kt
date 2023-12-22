@@ -19,7 +19,7 @@ import org.intelehealth.nak.databinding.ActivityCallLogBinding
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClickListener {
+class NammaCallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClickListener {
 
     private lateinit var binding: ActivityCallLogBinding
     private lateinit var adapter: CallLogAdapter
@@ -37,11 +37,11 @@ class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClick
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(
                 DividerItemDecoration(
-                    this@IDACallLogActivity, DividerItemDecoration.VERTICAL
+                    this@NammaCallLogActivity, DividerItemDecoration.VERTICAL
                 )
             )
-            this@IDACallLogActivity.adapter.updateItems(logs.toMutableList())
-            adapter = this@IDACallLogActivity.adapter
+            this@NammaCallLogActivity.adapter.updateItems(logs.toMutableList())
+            adapter = this@NammaCallLogActivity.adapter
         }
     }
 
@@ -70,6 +70,6 @@ class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClick
         args.patientName = callLog.roomName
         args.visitId = VisitsDAO().getVisitIdByPatientId(args.patientId)
         args.nurseId = callLog.calleeId
-        IDAChatActivity.startChatActivity(this, args)
+        NammaChatActivity.startChatActivity(this, args)
     }
 }

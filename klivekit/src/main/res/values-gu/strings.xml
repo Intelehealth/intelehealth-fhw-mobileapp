@@ -77,4 +77,6 @@
     <string name="remote_participant_mic_off_status">દૂરના સહભાગીનું માઇક બંધ સ્તિથી</string>
     <string name="sender_image">પ્રેષક છબી</string>
     <string name="select_spinner">પસંદ કરો</string>
+    <string name="call_swipe_up">Swipe up</string>
+    <string name="release_now">Release</string>
 </resources>

@@ -75,4 +75,6 @@
     <string name="remote_participant_mic_off_status">दूरस्थ सहभागी माइक बंद स्थिती</string>
     <string name="sender_image">प्रेषक प्रतिमा</string>
     <string name="select_spinner">निवडा</string>
+    <string name="call_swipe_up">Swipe up</string>
+    <string name="release_now">Release</string>
 </resources>

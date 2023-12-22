@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SwipeButton">
+        <attr name="btnIcon" format="reference" />
+        <attr name="btnColor" format="reference" />
+    </declare-styleable>
+</resources>

@@ -20,14 +20,14 @@ import org.intelehealth.nak.utilities.exception.DAOException;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class IDAChatActivity extends ChatActivity {
+public class NammaChatActivity extends ChatActivity {
     public static void startChatActivity(Context context, RtcArgs args) {
-        Intent chatIntent = new Intent(context, IDAChatActivity.class);
+        Intent chatIntent = new Intent(context, NammaChatActivity.class);
         context.startActivity(buildExtra(chatIntent, args, context));
     }
 
     public static PendingIntent getPendingIntent(Context context, RtcArgs args) {
-        Intent chatIntent = new Intent(context, IDAChatActivity.class);
+        Intent chatIntent = new Intent(context, NammaChatActivity.class);
         chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(context, 0, buildExtra(chatIntent, args, context),
                 NotificationHandler.getPendingIntentFlag());
@@ -70,7 +70,7 @@ public class IDAChatActivity extends ChatActivity {
         mLoadingLinearLayout = findViewById(R.id.loading_layout);
         mEmptyLinearLayout = findViewById(R.id.empty_view);
         mRecyclerView = findViewById(R.id.rvConversation);
-        mLayoutManager = new LinearLayoutManager(IDAChatActivity.this, LinearLayoutManager.VERTICAL, true);
+        mLayoutManager = new LinearLayoutManager(NammaChatActivity.this, LinearLayoutManager.VERTICAL, true);
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 }
