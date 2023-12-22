@@ -29,7 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:backgroundTint="@color/green2"
             android:contentDescription="@string/accept"
             android:src="@drawable/ic_call_accept"
             app:fabSize="normal"

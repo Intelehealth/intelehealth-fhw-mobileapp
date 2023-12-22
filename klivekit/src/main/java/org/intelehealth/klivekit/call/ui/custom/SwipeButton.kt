@@ -4,6 +4,8 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -63,7 +65,9 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
             binding.hint = context.resources.getString(R.string.call_swipe_up)
             startInfiniteBounceAnimation()
             binding.fabAction.setOnTouchListener(this)
-            binding.fabAction.setBackgroundColor(ContextCompat.getColor(context, btnColor))
+
+            binding.fabAction.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(context, btnColor))
             binding.fabAction.setImageDrawable(ContextCompat.getDrawable(context, btnIcon))
             addView(binding.root)
         }
