@@ -349,15 +349,15 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
 
-        <receiver
-            android:name=".services.firebase_services.CallRTCNotifyReceiver"
-            android:exported="false">
-            <intent-filter android:priority="100">
-                <action
-                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"
-                    android:enabled="true" />
-            </intent-filter>
-        </receiver>
+<!--        <receiver-->
+<!--            android:name=".services.firebase_services.CallRTCNotifyReceiver"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter android:priority="100">-->
+<!--                <action-->
+<!--                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"-->
+<!--                    android:enabled="true" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
         <!--        <receiver-->
         <!--            android:name=".services.firebase_services.RestartServiceReceiver"-->
         <!--            android:exported="false">-->
