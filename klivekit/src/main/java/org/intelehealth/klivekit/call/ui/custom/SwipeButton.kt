@@ -38,10 +38,10 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     private var arrowVisibility = true
 
     interface SwipeEventListener {
-        fun onTap()
-        fun onReleased()
-        fun onSwipe()
-        fun onCompleted()
+        fun onTap(view: View){}
+        fun onReleased(view: View){}
+        fun onSwipe(view: View){}
+        fun onCompleted(view: View){}
     }
 
     constructor(context: Context) : this(context, null, 0)
@@ -55,6 +55,7 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     }
 
     private fun obtainAttrs(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
+        btnSize = resources.getDimensionPixelSize(R.dimen.fabDefaultSize)
         context.obtainStyledAttributes(attrs, R.styleable.SwipeButton, defStyleAttr, 0).apply {
             btnIcon = getResourceId(R.styleable.SwipeButton_btnIcon, btnIcon)
             btnColor = getResourceId(R.styleable.SwipeButton_btnColor, btnColor)
@@ -78,7 +79,7 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                 binding.fabAction.backgroundTintList = this
             }
             binding.fabAction.setImageDrawable(ContextCompat.getDrawable(context, btnIcon))
-            binding.fabAction.customSize = resources.getDimensionPixelSize(R.dimen.fabDefaultSize)
+            binding.fabAction.customSize = resources.getDimensionPixelOffset(btnSize)
             binding.swipeUpIndicator.isVisible = arrowVisibility
             addView(binding.root)
         }
@@ -109,7 +110,7 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                         .setDuration(0)
                         .alpha(1 - (swipe / FabSwipeable.MIN_SWIPE_DISTANCE) + 0.2f)
                         .start()
-                    if (::swipeEventListener.isInitialized) swipeEventListener.onSwipe()
+                    if (::swipeEventListener.isInitialized) swipeEventListener.onSwipe(this)
                     complete(swipe)
                 }
 
@@ -120,9 +121,9 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                         .scaleY(1.0f)
                         .setDuration(0).start()
                     binding.tvSwipeHint.isInvisible = true
-                    binding.swipeUpIndicator.isVisible = true
+                    binding.swipeUpIndicator.isVisible = arrowVisibility
                     bounceAnimator.start()
-                    if (::swipeEventListener.isInitialized) swipeEventListener.onReleased()
+                    if (::swipeEventListener.isInitialized) swipeEventListener.onReleased(this)
                     complete(swipe)
                 }
 
@@ -136,7 +137,7 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                         .scaleY(1.2f)
                         .setDuration(0)
                         .start()
-                    if (::swipeEventListener.isInitialized) swipeEventListener.onTap()
+                    if (::swipeEventListener.isInitialized) swipeEventListener.onTap(this)
                 }
             }
         }
@@ -147,7 +148,7 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
         if (swiped > MIN_SWIPE_DISTANCE) {
             binding.tvSwipeHint.text = resources.getString(R.string.release_now)
             Timber.tag(TAG).d("reach to lime=>")
-            if (::swipeEventListener.isInitialized) swipeEventListener.onCompleted()
+            if (::swipeEventListener.isInitialized) swipeEventListener.onCompleted(this)
         }
     }
 

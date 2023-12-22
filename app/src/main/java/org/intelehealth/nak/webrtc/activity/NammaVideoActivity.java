@@ -19,6 +19,7 @@ import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
+import org.intelehealth.klivekit.call.ui.custom.SwipeButton;
 import org.intelehealth.klivekit.call.utils.CallType;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.call.ui.activity.CoreVideoCallActivity;
@@ -39,7 +40,7 @@ import io.livekit.android.room.track.VideoTrack;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class NammaVideoActivity extends CoreVideoCallActivity {
+public class NammaVideoActivity extends CoreVideoCallActivity implements SwipeButton.SwipeEventListener {
     public static void startVideoCallActivity(Context context, RtcArgs args) {
 
         Log.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
@@ -84,8 +85,10 @@ public class NammaVideoActivity extends CoreVideoCallActivity {
         binding.videoCallView.callActionView.btnMicOnOff.setOnClickListener(view -> getVideoCallViewModel().toggleMicrophone());
         binding.videoCallView.callActionView.btnVideoOnOff.setOnClickListener(view -> getVideoCallViewModel().toggleCamera());
         binding.videoCallView.callActionView.btnFlipCamera.setOnClickListener(view -> getVideoCallViewModel().flipCamera());
-        binding.incomingCallView.fabDeclineCall.setOnClickListener(view -> declineCall());
-        binding.incomingCallView.fabAcceptCall.setOnClickListener(view -> acceptCall());
+//        binding.incomingCallView.fabDeclineCall.setOnClickListener(view -> declineCall());
+//        binding.incomingCallView.fabAcceptCall.setOnClickListener(view -> acceptCall());
+        binding.incomingCallView.fabDeclineCall.swipeEventListener = this;
+        binding.incomingCallView.fabAcceptCall.swipeEventListener = this;
     }
 
     private void initView() {
@@ -279,5 +282,31 @@ public class NammaVideoActivity extends CoreVideoCallActivity {
                         sayBye("Call ended by you", null);
                     }
                 }).setNegativeButton(R.string.no, null).create().show();
+    }
+
+    public void onCompleted(@NonNull View view) {
+        if (view.getId() == R.id.fabDeclineCall) declineCall();
+        else acceptCall();
+    }
+
+    @Override
+    public void onSwipe(@NonNull View view) {
+
+    }
+
+    @Override
+    public void onReleased(@NonNull View view) {
+        if (view.getId() == R.id.fabAcceptCall)
+            binding.incomingCallView.fabDeclineCall.setVisibility(View.VISIBLE);
+        else
+            binding.incomingCallView.fabAcceptCall.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onTap(@NonNull View view) {
+        if (view.getId() == R.id.fabAcceptCall)
+            binding.incomingCallView.fabDeclineCall.setVisibility(View.INVISIBLE);
+        else
+            binding.incomingCallView.fabAcceptCall.setVisibility(View.INVISIBLE);
     }
 }

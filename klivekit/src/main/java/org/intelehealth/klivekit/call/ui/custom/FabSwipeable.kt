@@ -25,10 +25,10 @@ class FabSwipeable : FloatingActionButton, OnTouchListener {
     lateinit var swipeEventListener: SwipeEventListener
 
     interface SwipeEventListener {
-        fun onTap()
-        fun onReleased()
-        fun onSwipe()
-        fun onCompleted()
+        fun onTap(){}
+        fun onReleased(){}
+        fun onSwipe(){}
+        fun onCompleted(){}
     }
 
     constructor(context: Context) : this(context, null, 0)

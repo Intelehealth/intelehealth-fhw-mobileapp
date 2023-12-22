@@ -194,7 +194,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".webrtc.activity.CallNotificationTestActivity"
+            android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
