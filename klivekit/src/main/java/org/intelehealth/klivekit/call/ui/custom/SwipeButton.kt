@@ -5,8 +5,6 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -16,7 +14,6 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.databinding.AnimCallActionButtonBinding
 
@@ -38,10 +35,10 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     private var arrowVisibility = true
 
     interface SwipeEventListener {
-        fun onTap(view: View){}
-        fun onReleased(view: View){}
-        fun onSwipe(view: View){}
-        fun onCompleted(view: View){}
+        fun onTap(view: View) {}
+        fun onReleased(view: View) {}
+        fun onSwipe(view: View) {}
+        fun onCompleted(view: View) {}
     }
 
     constructor(context: Context) : this(context, null, 0)
@@ -99,16 +96,13 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
         view ?: return false
         event?.let {
             if (viewY == 0f) viewY = view.y
-            Timber.tag(TAG).d("viewY=>$viewY")
-            Timber.tag(TAG).d("rawY=>${it.rawY}")
             val newY = viewY.coerceAtMost(it.rawY)
             val swipe = viewY - newY
-            Timber.tag(TAG).d("newY=>$newY")
             when (it.action) {
                 MotionEvent.ACTION_MOVE -> {
                     view.animate().y(newY)
                         .setDuration(0)
-                        .alpha(1 - (swipe / FabSwipeable.MIN_SWIPE_DISTANCE) + 0.2f)
+                        .alpha(1 - (swipe / MIN_SWIPE_DISTANCE) + 0.2f)
                         .start()
                     if (::swipeEventListener.isInitialized) swipeEventListener.onSwipe(this)
                     complete(swipe)
@@ -140,20 +134,23 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                     if (::swipeEventListener.isInitialized) swipeEventListener.onTap(this)
                 }
             }
+
+            view.performClick()
         }
         return true
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun complete(swiped: Float) {
         if (swiped > MIN_SWIPE_DISTANCE) {
+            binding.fabAction.setOnTouchListener(null)
             binding.tvSwipeHint.text = resources.getString(R.string.release_now)
-            Timber.tag(TAG).d("reach to lime=>")
             if (::swipeEventListener.isInitialized) swipeEventListener.onCompleted(this)
         }
     }
 
     companion object {
         const val TAG = "AnimCallActionButton"
-        const val MIN_SWIPE_DISTANCE = 600f
+        const val MIN_SWIPE_DISTANCE = 250f
     }
 }
