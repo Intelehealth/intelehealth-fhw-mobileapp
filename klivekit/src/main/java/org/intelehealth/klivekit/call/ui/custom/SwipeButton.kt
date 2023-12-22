@@ -36,10 +36,10 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     private var arrowVisibility = true
 
     interface SwipeEventListener {
-        fun onTap(view: View){}
-        fun onReleased(view: View){}
-        fun onSwipe(view: View){}
-        fun onCompleted(view: View){}
+        fun onTap(view: View) {}
+        fun onReleased(view: View) {}
+        fun onSwipe(view: View) {}
+        fun onCompleted(view: View) {}
     }
 
     constructor(context: Context) : this(context, null, 0)
@@ -97,11 +97,8 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
         view ?: return false
         event?.let {
             if (viewY == 0f) viewY = view.y
-            Timber.tag(TAG).d("viewY=>$viewY")
-            Timber.tag(TAG).d("rawY=>${it.rawY}")
             val newY = viewY.coerceAtMost(it.rawY)
             val swipe = viewY - newY
-            Timber.tag(TAG).d("newY=>$newY")
             when (it.action) {
                 MotionEvent.ACTION_MOVE -> {
                     view.animate().y(newY)
@@ -145,13 +142,12 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     private fun complete(swiped: Float) {
         if (swiped > MIN_SWIPE_DISTANCE) {
             binding.tvSwipeHint.text = resources.getString(R.string.release_now)
-            Timber.tag(TAG).d("reach to lime=>")
             if (::swipeEventListener.isInitialized) swipeEventListener.onCompleted(this)
         }
     }
 
     companion object {
         const val TAG = "AnimCallActionButton"
-        const val MIN_SWIPE_DISTANCE = 600f
+        const val MIN_SWIPE_DISTANCE = 250f
     }
 }
