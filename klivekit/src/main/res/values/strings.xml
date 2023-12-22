@@ -81,4 +81,6 @@
     <string name="remote_participant_mic_off_status">Remote participant mic off status</string>
     <string name="sender_image">Sender Image</string>
     <string name="select_spinner">Select</string>
+    <string name="call_swipe_up">Swipe Up</string>
+    <string name="release_now">Release Now</string>
 </resources>
