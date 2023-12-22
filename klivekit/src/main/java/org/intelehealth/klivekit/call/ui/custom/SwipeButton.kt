@@ -14,7 +14,6 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.databinding.AnimCallActionButtonBinding
 
@@ -135,12 +134,16 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                     if (::swipeEventListener.isInitialized) swipeEventListener.onTap(this)
                 }
             }
+
+            view.performClick()
         }
         return true
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun complete(swiped: Float) {
         if (swiped > MIN_SWIPE_DISTANCE) {
+            binding.fabAction.setOnTouchListener(null)
             binding.tvSwipeHint.text = resources.getString(R.string.release_now)
             if (::swipeEventListener.isInitialized) swipeEventListener.onCompleted(this)
         }
