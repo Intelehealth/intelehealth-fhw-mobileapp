@@ -782,6 +782,37 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             if (!foundUserInputs) {
                                 holder.singleComponentContainer.removeAllViews();
                             }
+
+                            boolean isRequiredToShowParentActionButtons = false;
+                            for (int i = 0; i < options.size(); i++) {
+
+                                if (options.get(i).isSelected()) {
+                                    mItemList.get(index).setSelected(true);
+                                    if (!options.get(i).isTerminal()) {
+
+                                        //mItemList.get(index).setDataCaptured(true);
+                                        //break;
+                                        if (!isRequiredToShowParentActionButtons)
+                                            isRequiredToShowParentActionButtons = !isAnySubChildOpenedWithAction(options.get(i));
+                                    }
+                                }
+                            }
+                            boolean isAnyOtherOptionSelected = false;
+                            for (int i = 0; i < options.size(); i++) {
+                                if (options.get(i).isSelected()) {
+                                    isAnyOtherOptionSelected = true;
+                                    break;
+                                }
+                            }
+
+                            if (mItemList.get(index).isMultiChoice()) {
+                                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                                if (!isAnyOtherOptionSelected || isRequiredToShowParentActionButtons)
+                                    holder.submitButton.setVisibility(View.VISIBLE);
+                                else{
+                                    holder.submitButton.setVisibility(View.GONE);
+                                }
+                            }
                             if (!node.isSelected()) {
                                 node.unselectAllNestedNode();
 
@@ -2107,6 +2138,21 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
     }
 
+    private boolean isAnySubChildOpenedWithAction(Node node) {
+        String type = node.getInputType() == null ? "" : node.getInputType();
 
+        if (type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+            type = "options";
+        }
+        if (type.isEmpty()) {
+            if (node.isSelected()) {
+                return node.getOptionsList() != null && node.getOptionsList().size() != 0;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
 }
 
