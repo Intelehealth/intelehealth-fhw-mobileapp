@@ -32,6 +32,10 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     lateinit var swipeEventListener: SwipeEventListener
     private var btnIcon: Int = R.drawable.ic_call_accept
     private var btnColor: Int = R.color.green1
+    private var btnSize: Int = R.dimen.fabDefaultSize
+    private var animDelay: Int = 500
+    private var animDistance: Float = -150f
+    private var arrowVisibility = true
 
     interface SwipeEventListener {
         fun onTap()
@@ -54,6 +58,10 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
         context.obtainStyledAttributes(attrs, R.styleable.SwipeButton, defStyleAttr, 0).apply {
             btnIcon = getResourceId(R.styleable.SwipeButton_btnIcon, btnIcon)
             btnColor = getResourceId(R.styleable.SwipeButton_btnColor, btnColor)
+            btnSize = getResourceId(R.styleable.SwipeButton_btnSize, btnSize)
+            animDelay = getInteger(R.styleable.SwipeButton_animDelay, animDelay)
+            animDistance = getFloat(R.styleable.SwipeButton_animDistance, animDistance)
+            arrowVisibility = getBoolean(R.styleable.SwipeButton_arrowVisibility, arrowVisibility)
             init(context)
         }.recycle()
     }
@@ -66,17 +74,20 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
             startInfiniteBounceAnimation()
             binding.fabAction.setOnTouchListener(this)
 
-            binding.fabAction.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(context, btnColor))
+            ColorStateList.valueOf(ContextCompat.getColor(context, btnColor)).apply {
+                binding.fabAction.backgroundTintList = this
+            }
             binding.fabAction.setImageDrawable(ContextCompat.getDrawable(context, btnIcon))
+            binding.fabAction.customSize = resources.getDimensionPixelSize(R.dimen.fabDefaultSize)
+            binding.swipeUpIndicator.isVisible = arrowVisibility
             addView(binding.root)
         }
     }
 
     private fun startInfiniteBounceAnimation() {
-        bounceAnimator = ObjectAnimator.ofFloat(binding.fabAction, "translationY", -150f, 0f)
+        bounceAnimator = ObjectAnimator.ofFloat(binding.fabAction, "translationY", animDistance, 0f)
         bounceAnimator.interpolator = BounceInterpolator()
-        bounceAnimator.startDelay = 500
+        bounceAnimator.startDelay = animDelay.toLong()
         bounceAnimator.duration = 2500
         bounceAnimator.repeatCount = ValueAnimator.INFINITE
         bounceAnimator.repeatMode = ValueAnimator.REVERSE
