@@ -78,14 +78,14 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
                         @Override
                         public void run() {
                             // ui task
-                            tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_LEGACY));
+                            tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT));
                         }
                     });
                 }
             }).start();
         }
         else
-            tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_LEGACY));
+            tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT));
     }
 
     @Override
