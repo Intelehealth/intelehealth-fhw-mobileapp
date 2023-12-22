@@ -411,11 +411,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
     }
 
-    private SlotInfoResponse removePreviousAppointmentDateTime(SlotInfoResponse slotInfoResponse) {
+    private void removePreviousAppointmentDateTime(SlotInfoResponse slotInfoResponse) {
         List<SlotInfo> slots = slotInfoResponse.getDates();
         slots.removeIf(slotInfo -> slotInfo.getSlotDate().equalsIgnoreCase(app_start_date) && slotInfo.getSlotTime().equalsIgnoreCase(app_start_time));
         slotInfoResponse.setDates(slots);
-        return slotInfoResponse;
     }
 
     private void sortByTime(List<SlotInfo> slotInfoList) {
