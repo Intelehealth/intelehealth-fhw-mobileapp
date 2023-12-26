@@ -99,19 +99,15 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     private static final String TAG = "AppointmentDetailsActiv";
     RelativeLayout stateAppointmentPrescription, layoutPrevScheduledOn, layoutPatientHistory, layoutVisitSummary, stateAppointmentStarted;
     LinearLayout layoutPrescButtons, layoutContactAction, layoutEndVisit;
-    TextView tvPrescStatus, tvRescheduleOnTitle, tvAppointmentTime, tvPatientName, tvOpenMrsID, tvGenderAgeText, tvChiefComplaintTxt,
-            tvVisitId, tvVisitStartDate, tvVisitStartTime, tvDrSpeciality, tvPrevAppDate, tvPrevAppTime;
-    ImageView ivPrescription, ivDrawerPrescription, ivProfileImage, ivDrawerVisitSummary, ivCallPatient, ivWhatsappPatient,
-            ivWhatsappDoctor, ivCallDoctor;
+    TextView tvPrescStatus, tvRescheduleOnTitle, tvAppointmentTime, tvPatientName, tvOpenMrsID, tvGenderAgeText, tvChiefComplaintTxt, tvVisitId, tvVisitStartDate, tvVisitStartTime, tvDrSpeciality, tvPrevAppDate, tvPrevAppTime;
+    ImageView ivPrescription, ivDrawerPrescription, ivProfileImage, ivDrawerVisitSummary, ivCallPatient, ivWhatsappPatient, ivWhatsappDoctor, ivCallDoctor;
     Button btnEndVisit, btnRescheduleAppointment, btnCancelAppointment;
     View layoutSummaryBtns;
     FloatingActionButton fabHelp;
     int appointment_id = 0;
     private LinearLayout priorityTag;
     private boolean isEmergency, hasPrescription;
-    private String patientName, patientUuid, gender, age, openmrsID, dob,
-            visitID, visit_speciality, followupDate, patient_photo_path, app_start_date,
-            app_start_time, app_start_day, prescription_received_time, appointmentStatus;
+    private String patientName, patientUuid, gender, age, openmrsID, dob, visitID, visit_speciality, followupDate, patient_photo_path, app_start_date, app_start_time, app_start_day, prescription_received_time, appointmentStatus;
     SQLiteDatabase db;
     boolean isVisitStartsIn = false;
     private String vitalsUUID, adultInitialUUID;
@@ -235,8 +231,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             app_start_day = intent.getStringExtra("app_start_day");
             prescription_received_time = intent.getStringExtra("prescription_received_time");
             followupDate = intent.getStringExtra("followup_date");
-            if (followupDate == null)
-                followupDate = getFollowupDataForVisitUUID(visitID);
+            if (followupDate == null) followupDate = getFollowupDataForVisitUUID(visitID);
             isEmergency = intent.getBooleanExtra("priority_tag", false);
             hasPrescription = intent.getBooleanExtra("hasPrescription", false);
             appointmentStatus = intent.getStringExtra("status");
@@ -268,13 +263,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         }
         // Patient Photo
         if (patient_photo_path != null) {
-            Glide.with(this)
-                    .load(patient_photo_path)
-                    .thumbnail(0.3f)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(ivProfileImage);
+            Glide.with(this).load(patient_photo_path).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
         } else {
             ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
         }
@@ -344,8 +333,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                     String[] spt1 = list.get(i).split("●");
                     for (String value : spt1) {
                         if (value.contains("::")) {
-                            if (!stringBuilder.toString().isEmpty())
-                                stringBuilder.append(",");
+                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(",");
                             complainName = value.replace("::", "");
                             System.out.println(complainName);
                             stringBuilder.append(complainName);
@@ -453,8 +441,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             if (pres.getVisitUuid() != null) {
                 layoutEndVisit.setVisibility(View.VISIBLE);
                 btnEndVisit.setOnClickListener(v -> {
-                    VisitUtils.endVisit(AppointmentDetailsActivity.this, visitID, patientUuid, followupDate,
-                            vitalsUUID, adultInitialUUID, "state", patientName, "AppointmentDetailsActivity");
+                    VisitUtils.endVisit(AppointmentDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "AppointmentDetailsActivity");
                 });
             } else {
                 layoutEndVisit.setVisibility(View.GONE);
@@ -528,8 +515,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         });*/
 
         //if appointment is rescheduled and prescription is pending then hide layout summary buttons i.e. cancel and reschedule
-        if (appointmentInfo != null && appointmentInfo.getPrev_slot_date() != null &&
-                !appointmentInfo.getPrev_slot_date().isEmpty() && !hasPrescription && !isVisitStartsIn) {
+        if (appointmentInfo != null && appointmentInfo.getPrev_slot_date() != null && !appointmentInfo.getPrev_slot_date().isEmpty() && !hasPrescription && !isVisitStartsIn) {
             layoutSummaryBtns.setVisibility(View.GONE);
             stateAppointmentStarted.setVisibility(View.VISIBLE);
             tvAppointmentTime.setVisibility(View.GONE);
@@ -566,7 +552,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 in.putExtra("openMrsId", openmrsID);
                 in.putExtra("speciality", visit_speciality);
                 mStartForScheduleAppointment.launch(in);
-
             }
         });
 
@@ -653,9 +638,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         String chief_complaint_value = "";
         Log.v("Followup", "visitid: " + visitUUID);
         if (visitUUID != null && !visitUUID.isEmpty()) {
-            String complaint_query = "select e.uuid, o.value  from tbl_encounter e, tbl_obs o where " +
-                    "e.visituuid = ? " +
-                    "and e.encounter_type_uuid = '8d5b27bc-c2cc-11de-8d13-0010c6dffd0f' " + // adult_initial
+            String complaint_query = "select e.uuid, o.value  from tbl_encounter e, tbl_obs o where " + "e.visituuid = ? " + "and e.encounter_type_uuid = '8d5b27bc-c2cc-11de-8d13-0010c6dffd0f' " + // adult_initial
                     "and e.uuid = o.encounteruuid and o.conceptuuid = '3edb0e09-9135-481e-b8f0-07a26fa9a5ce'"; // chief complaint
 
             final Cursor cursor = db.rawQuery(complaint_query, new String[]{visitUUID});
@@ -701,7 +684,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate)) + ", " + slotTime + " " + getResources().getString(R.string.at);
                     } else {
-                    timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + ", " + context.getString(R.string.at) + " " + slotTime;
+                        timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + ", " + context.getString(R.string.at) + " " + slotTime;
 
                     }
                 } else {
@@ -719,8 +702,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     }
 
 
-    public void cancelAppointment(Context context, String title, String subTitle,
-                                  String positiveBtnTxt, String negativeBtnTxt) {
+    public void cancelAppointment(Context context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
@@ -766,39 +748,36 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         request.setReason(reason);
         request.setHwUUID(new SessionManager(AppointmentDetailsActivity.this).getProviderID()); // user id / healthworker id
         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
-        ApiClientAppointment.getInstance(baseurl).getApi()
-                .cancelAppointment(request)
-                .enqueue(new Callback<CancelResponse>() {
-                    @Override
-                    public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
-                        if (response.body() == null) return;
-                        CancelResponse cancelResponse = response.body();
-                        if (cancelResponse.isStatus()) {
-                            //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
-                            //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
-                            appointmentDAO.deleteAppointmentByVisitId(visitID);
-                            //}
+        ApiClientAppointment.getInstance(baseurl).getApi().cancelAppointment(request).enqueue(new Callback<CancelResponse>() {
+            @Override
+            public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
+                if (response.body() == null) return;
+                CancelResponse cancelResponse = response.body();
+                if (cancelResponse.isStatus()) {
+                    //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                    //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
+                    appointmentDAO.deleteAppointmentByVisitId(visitID);
+                    //}
 
-                            Toast.makeText(AppointmentDetailsActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
-                            //   getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
-                            //Intent intent = new Intent(AppointmentDetailsActivity.this, HomeScreenActivity_New.class);
-                            //startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(AppointmentDetailsActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AppointmentDetailsActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
+                    //   getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+                    //Intent intent = new Intent(AppointmentDetailsActivity.this, HomeScreenActivity_New.class);
+                    //startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(AppointmentDetailsActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
 
-                        }
-                    }
+                }
+            }
 
-                    @Override
-                    public void onFailure(Call<CancelResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                    }
-                });
+            @Override
+            public void onFailure(Call<CancelResponse> call, Throwable t) {
+                Log.v("onFailure", t.getMessage());
+            }
+        });
     }
 
-    public void rescheduleAppointment(Context context, String title, String subTitle,
-                                      String positiveBtnTxt, String negativeBtnTxt) {
+    public void rescheduleAppointment(Context context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
@@ -932,26 +911,17 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-
             }
         });
         alertDialog.show();
 
     }
 
-    private ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Toast.makeText(AppointmentDetailsActivity.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
-                        Intent in = new Intent(AppointmentDetailsActivity.this, MyAppointmentActivity.class);
-                        startActivity(in);
-                        finish();
-
-                    }
-                }
-            });
+    private final ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == AppConstants.EVENT_APPOINTMENT_BOOKING) {
+            Toast.makeText(AppointmentDetailsActivity.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
+        }
+    });
 
     private void askReason(Context context) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
@@ -1036,14 +1006,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         db.beginTransaction();
 
         if (visitUUID != null) {
-            Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                            " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                            " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                            " e.encounter_type_uuid = ? and" +
-                            " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                            " o.conceptuuid = ? and " +
-                            " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now') group by p.openmrs_id "
-                    , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+            Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" + " e.encounter_type_uuid = ? and" + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" + " o.conceptuuid = ? and " + " (substr(o.obsservermodifieddate, 1, 4) ||'-'|| substr(o.obsservermodifieddate, 6,2) ||'-'|| substr(o.obsservermodifieddate, 9,2)) = DATE('now') group by p.openmrs_id ", new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
 
             if (cursor.moveToFirst()) {
@@ -1101,10 +1064,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         PatientDTO patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {patientUuid};
-        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "patient_photo"};
         SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {

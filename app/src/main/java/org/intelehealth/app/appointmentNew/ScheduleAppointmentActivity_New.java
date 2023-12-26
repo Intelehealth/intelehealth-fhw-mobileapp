@@ -183,12 +183,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                         if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing()) {
                             mSyncAlertDialog.dismiss();
                         }
-
-                        if (isRescheduled) {
-                            ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_RESCHEDULE);
-                        } else {
-                            ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
-                        }
+                        ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
                         finish();
                     }
                 } else {
@@ -395,14 +390,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 findViewById(R.id.tv_afternoon_label).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
                 findViewById(R.id.rv_afternoon_time_slots).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
-                if (isSlotNotAvailable)
-                    isSlotNotAvailable = slotInfoAfternoonList.isEmpty();
+                if (isSlotNotAvailable) isSlotNotAvailable = slotInfoAfternoonList.isEmpty();
 
                 findViewById(R.id.tv_evening_label).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
                 findViewById(R.id.rv_evening_time_slots).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForEveningAppointments(slotInfoEveningList);
-                if (isSlotNotAvailable)
-                    isSlotNotAvailable = slotInfoEveningList.isEmpty();
+                if (isSlotNotAvailable) isSlotNotAvailable = slotInfoEveningList.isEmpty();
 
                 ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.slot_empty_message));
                 findViewById(R.id.empty_tv).setVisibility(isSlotNotAvailable ? View.VISIBLE : View.GONE);
@@ -713,11 +706,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 mIsPendingForAppointmentSave = true;
             }, 100);
         } else {
-            if (isRescheduled) {
-                ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_RESCHEDULE);
-            } else {
-                ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
-            }
+            ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
             finish();
         }
     }

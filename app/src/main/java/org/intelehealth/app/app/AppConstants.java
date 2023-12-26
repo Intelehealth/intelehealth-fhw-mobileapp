@@ -191,7 +191,6 @@ public class AppConstants {
     public static final String IMAGE_ADDITIONAL_DOC = "ADDITIONAL_DOC";
 
     public static final int EVENT_APPOINTMENT_BOOKING = 3992;
-    public static final int EVENT_APPOINTMENT_RESCHEDULE = 3993;
 
 }
 
