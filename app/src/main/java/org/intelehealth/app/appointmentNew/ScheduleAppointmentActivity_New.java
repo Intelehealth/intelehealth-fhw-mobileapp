@@ -103,6 +103,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     private ObjectAnimator syncAnimator;
     private SessionManager sessionManager;
     private BroadcastReceiver mBroadcastReceiver;
+    private boolean isRescheduled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,18 +149,19 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             app_start_time = getIntent().getStringExtra("app_start_time");
             app_start_day = getIntent().getStringExtra("app_start_day");
             rescheduleReason = getIntent().getStringExtra("rescheduleReason");
-
             String prevDetails = app_start_day + ", " + DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date) + " " + getResources().getString(R.string.at) + " " + app_start_time;
             tvPrevSelectedAppDetails.setText(prevDetails);
         } else if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("new_schedule")) {
-
             visitUuid = getIntent().getStringExtra("visitUuid");
             patientUuid = getIntent().getStringExtra("patientUuid");
             patientName = getIntent().getStringExtra("patientName");
             appointmentId = getIntent().getIntExtra("appointmentId", 0);
             openMrsId = getIntent().getStringExtra("openMrsId");
             speciality = getIntent().getStringExtra("speciality");
+        }
 
+        if (app_start_date != null && app_start_time != null) {
+            isRescheduled = true;
         }
 
         if (speciality != null) {
@@ -178,12 +180,17 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 if (mIsPendingForAppointmentSave) {
                     mStatusCount = mStatusCount + intent.getIntExtra("JOB", -1);
                     if (mStatusCount == AppConstants.SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE) {
-                        if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing())
+                        if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing()) {
                             mSyncAlertDialog.dismiss();
-                        ScheduleAppointmentActivity_New.this.setResult(Activity.RESULT_OK);
+                        }
+
+                        if (isRescheduled) {
+                            ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_RESCHEDULE);
+                        } else {
+                            ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
+                        }
                         finish();
                     }
-
                 } else {
                     Log.v(TAG, "Sync Done!");
                     if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing())
@@ -274,7 +281,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         yearToCompare = String.valueOf(currentYear);
         SimpleDateFormat month_date = new SimpleDateFormat("MMMM", Locale.ENGLISH);
         String month_name = month_date.format(calendarInstance.getTime());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             month_name = StringUtils.en__hi_dob(month_name);
         tvSelectedMonthYear.setText(month_name + ", " + currentYear);
         currentMonth = calendarInstance.get(Calendar.MONTH) + 1;
@@ -323,7 +330,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             @Override
             public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                 SlotInfoResponse slotInfoResponse = response.body();
-                if (app_start_date != null && app_start_time != null && slotInfoResponse != null) {
+                if (isRescheduled && slotInfoResponse != null) {
                     removePreviousAppointmentDateTime(slotInfoResponse);
                 }
 
@@ -568,7 +575,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             if (monthYear.length > 0) {
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     selectedPrevMonth = StringUtils.en__hi_dob(selectedPrevMonth);
                 tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear) {
@@ -609,7 +616,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 selectedNextMonth = monthYear[0];
                 selectedMonthYear = monthYear[1];
                 String[] dateSplit = formateDate.split("/");
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     selectedNextMonth = StringUtils.en__hi_dob(selectedNextMonth);
                 tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
                 getAllDatesOfSelectedMonth(calendarInstance, calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear, selectedNextMonth, selectedMonthYear, dateSplit[1]);
@@ -647,7 +654,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
         String infoText = getResources().getString(R.string.sure_to_book_appointment, selectedDateTime);
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             infoText = StringUtils.en__hi_dob(infoText);
         tvInfo.setText(Html.fromHtml(infoText));
 
@@ -706,7 +713,11 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 mIsPendingForAppointmentSave = true;
             }, 100);
         } else {
-            ScheduleAppointmentActivity_New.this.setResult(Activity.RESULT_OK);
+            if (isRescheduled) {
+                ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_RESCHEDULE);
+            } else {
+                ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
+            }
             finish();
         }
     }

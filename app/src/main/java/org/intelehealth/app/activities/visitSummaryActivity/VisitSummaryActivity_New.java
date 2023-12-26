@@ -2480,12 +2480,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == Activity.RESULT_OK) {
+            int resultCode = result.getResultCode();
+            if (resultCode == AppConstants.EVENT_APPOINTMENT_BOOKING) {
+                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
+                btnAppointment.setText(getString(R.string.reschedule));
+                doesAppointmentExist = true;
+            }
+
+            if (resultCode == AppConstants.EVENT_APPOINTMENT_RESCHEDULE) {
                 Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
                 Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivity.class);
                 startActivity(in);
                 finish();
-
             }
         }
     });

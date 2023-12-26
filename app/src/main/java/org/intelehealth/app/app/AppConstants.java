@@ -50,6 +50,7 @@ public class AppConstants {
             return "20";
         }
     }
+
     public static String getMaxWeightByAge(int ageInMonth) {
 
         if (ageInMonth <= 1) {
@@ -95,7 +96,7 @@ public class AppConstants {
 
 
     //functions constants
-    
+
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
     public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
@@ -189,6 +190,8 @@ public class AppConstants {
     // OBS IMAGE TYPE
     public static final String IMAGE_ADDITIONAL_DOC = "ADDITIONAL_DOC";
 
+    public static final int EVENT_APPOINTMENT_BOOKING = 3992;
+    public static final int EVENT_APPOINTMENT_RESCHEDULE = 3993;
 
 }
 
