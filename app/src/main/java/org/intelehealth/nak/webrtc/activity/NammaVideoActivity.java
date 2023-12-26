@@ -87,8 +87,8 @@ public class NammaVideoActivity extends CoreVideoCallActivity implements SwipeBu
         binding.videoCallView.callActionView.btnFlipCamera.setOnClickListener(view -> getVideoCallViewModel().flipCamera());
 //        binding.incomingCallView.fabDeclineCall.setOnClickListener(view -> declineCall());
 //        binding.incomingCallView.fabAcceptCall.setOnClickListener(view -> acceptCall());
-        binding.incomingCallView.fabDeclineCall.swipeEventListener = this;
-        binding.incomingCallView.fabAcceptCall.swipeEventListener = this;
+        binding.incomingCallView.fabDeclineCall.swipeEventListener = NammaVideoActivity.this;
+        binding.incomingCallView.fabAcceptCall.swipeEventListener = NammaVideoActivity.this;
     }
 
     private void initView() {
@@ -284,7 +284,9 @@ public class NammaVideoActivity extends CoreVideoCallActivity implements SwipeBu
                 }).setNegativeButton(R.string.no, null).create().show();
     }
 
+    @Override
     public void onCompleted(@NonNull View view) {
+        Timber.tag(TAG).d("onCompleted");
         if (view.getId() == R.id.fabDeclineCall) declineCall();
         else acceptCall();
     }

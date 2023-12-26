@@ -7,13 +7,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import io.livekit.android.renderer.SurfaceViewRenderer
 import io.livekit.android.renderer.TextureViewRenderer
 import io.livekit.android.room.participant.ConnectionQuality
 import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.VideoTrack
 import org.intelehealth.klivekit.R
-import org.intelehealth.klivekit.call.ui.custom.FabSwipeable
 import org.intelehealth.klivekit.databinding.ActivityVideoCallBinding
 
 /**

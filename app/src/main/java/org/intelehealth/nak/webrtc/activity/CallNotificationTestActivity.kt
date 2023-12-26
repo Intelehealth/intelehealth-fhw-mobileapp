@@ -6,7 +6,7 @@ import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.nak.R
 import org.intelehealth.nak.webrtc.activity.BaseActivity
-import org.intelehealth.nak.webrtc.activity.IDAVideoActivity
+import org.intelehealth.nak.webrtc.activity.NammaVideoActivity
 
 /**
  * Created by Vaghela Mithun R. on 10-10-2023 - 18:28.
@@ -38,7 +38,7 @@ class CallNotificationTestActivity : BaseActivity() {
         CallHandlerUtils.operateIncomingCall(
             this,
             RtcArgs.dummy().apply { patientName = "Test User" },
-            IDAVideoActivity::class.java
+            NammaVideoActivity::class.java
         )
     }
 }

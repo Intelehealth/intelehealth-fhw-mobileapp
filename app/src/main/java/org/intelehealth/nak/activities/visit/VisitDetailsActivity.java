@@ -41,7 +41,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,7 +77,7 @@ import org.intelehealth.nak.utilities.UuidDictionary;
 import org.intelehealth.nak.utilities.VisitUtils;
 import org.intelehealth.nak.utilities.exception.DAOException;
 import org.intelehealth.nak.webrtc.activity.BaseActivity;
-import org.intelehealth.nak.webrtc.activity.IDAChatActivity;
+import org.intelehealth.nak.webrtc.activity.NammaChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -793,7 +792,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitID);
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
         RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
-        Intent chatIntent = new Intent(VisitDetailsActivity.this, IDAChatActivity.class);
+        Intent chatIntent = new Intent(VisitDetailsActivity.this, NammaChatActivity.class);
         chatIntent.putExtra("patientName", patientName);
         chatIntent.putExtra("visitUuid", visitID);
         chatIntent.putExtra("patientUuid", patientUuid);

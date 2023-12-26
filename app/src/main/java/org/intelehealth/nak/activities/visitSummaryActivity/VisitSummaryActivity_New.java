@@ -81,7 +81,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -152,7 +151,7 @@ import org.intelehealth.nak.utilities.UuidDictionary;
 import org.intelehealth.nak.utilities.exception.DAOException;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.nak.webrtc.activity.BaseActivity;
-import org.intelehealth.nak.webrtc.activity.IDAChatActivity;
+import org.intelehealth.nak.webrtc.activity.NammaChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -339,7 +338,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUUID);
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
         RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
-        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, IDAChatActivity.class);
+        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, NammaChatActivity.class);
         chatIntent.putExtra("patientName", patientName);
         chatIntent.putExtra("visitUuid", visitUUID);
         chatIntent.putExtra("patientUuid", patientUuid);
