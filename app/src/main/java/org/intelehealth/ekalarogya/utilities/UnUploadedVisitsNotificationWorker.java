@@ -52,11 +52,11 @@ public class UnUploadedVisitsNotificationWorker extends Worker {
             showNotification(getApplicationContext().getString(R.string.title_un_uploaded_visit_reminder), getApplicationContext().getString(R.string.title_un_uploaded_visit_reminder_desc), getApplicationContext());
         }
         scheduled = false;
-        schedule();
+        schedule(getApplicationContext());
         return Result.success();
     }
 
-    public static void schedule() {
+    public static void schedule(Context context) {
         if (scheduled)
             return;
         Calendar currentDate = Calendar.getInstance();
@@ -86,7 +86,7 @@ public class UnUploadedVisitsNotificationWorker extends Worker {
                 .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
                 .addTag(TAG)
                 .build();
-        WorkManager.getInstance().enqueueUniqueWork(TAG, ExistingWorkPolicy.REPLACE, dailyWorkRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(TAG, ExistingWorkPolicy.REPLACE, dailyWorkRequest);
         scheduled = true;
     }
 
@@ -129,7 +129,7 @@ public class UnUploadedVisitsNotificationWorker extends Worker {
 //                .setContentText(text).build();
 //        mNotifyManager.notify(mId, mBuilder.build());
         new AppNotification.Builder(context)
-                .pendingIntent(PendingIntent.getActivity(context, 0, new Intent(context, ActivePatientActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                .pendingIntent(PendingIntent.getActivity(context, 0, new Intent(context, ActivePatientActivity.class), NotificationUtils.getPendingIntentFlag()))
                 .title(title)
                 .body(text)
                 .send();

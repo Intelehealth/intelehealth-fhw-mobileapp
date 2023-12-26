@@ -227,11 +227,11 @@ public class HomeActivity extends BaseActivity {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
             } else {
-                UnUploadedVisitsNotificationWorker.schedule();
+                UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
                 Toast.makeText(HomeActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
             }
         } else {
-            UnUploadedVisitsNotificationWorker.schedule();
+            UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
         }
 
         //Help section of watsapp...
@@ -325,7 +325,7 @@ public class HomeActivity extends BaseActivity {
         if (requestCode == 100) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(HomeActivity.this, "Notification Permission Granted", Toast.LENGTH_SHORT).show();
-                UnUploadedVisitsNotificationWorker.schedule();
+                UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
             } else {
                 Toast.makeText(HomeActivity.this, "Notification Permission Denied", Toast.LENGTH_SHORT).show();
             }
