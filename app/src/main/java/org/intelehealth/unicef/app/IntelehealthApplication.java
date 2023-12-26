@@ -148,26 +148,31 @@ public class IntelehealthApplication extends MultiDexApplication {
      */
     public void initSocketConnection() {
         Log.d(TAG, "initSocketConnection: ");
-        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
-            Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
-            String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
-                    + sessionManager.getProviderID()
-                    + "&name=" + sessionManager.getChwname();
-            if (!socketManager.isConnected()) socketManager.connect(socketUrl);
+        if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().isEmpty()) {
+            Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+            if (!socketManager.isConnected()) socketManager.connect(getSocketUrl());
             initRtcConfig();
         }
     }
 
     private void initRtcConfig() {
         new RtcEngine.Builder()
-                .callUrl(BuildConfig.LIVE_KIT_URL)
-                .socketUrl(BuildConfig.SOCKET_URL + "?userId="
-                        + sessionManager.getProviderID()
-                        + "&name=" + sessionManager.getChwname())
+                .callUrl(getLiveKitUrl())
+                .socketUrl(getSocketUrl())
                 .callIntentClass(UnicefVideoActivity.class)
                 .chatIntentClass(UnicefChatActivity.class)
                 .callLogIntentClass(UnicefCallLogActivity.class)
                 .build().saveConfig(this);
+    }
+
+    public String getSocketUrl() {
+        return "https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
+                + sessionManager.getProviderID()
+                + "&name=" + sessionManager.getChwname();
+    }
+
+    public String getLiveKitUrl() {
+        return "wss://" + sessionManager.getServerUrl() + ":9090";
     }
 
     @Override

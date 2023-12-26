@@ -40,23 +40,23 @@ import io.livekit.android.room.track.VideoTrack;
  * Mob   : +919727206702
  **/
 public class UnicefVideoActivity extends CoreVideoCallActivity {
-    public static void startVideoCallActivity(Context context, RtcArgs args) {
-
-        Log.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
-        args.setUrl(BuildConfig.LIVE_KIT_URL);
-        args.setCallType(CallType.VIDEO);
-        args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
-
-        Intent intent = new Intent(context, UnicefVideoActivity.class);
-        intent.putExtra(RtcUtilsKt.RTC_ARGS, args);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        int callState = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-        if (callState == TelephonyManager.CALL_STATE_IDLE) {
-            context.startActivity(intent);
-        }
-    }
+//    public static void startVideoCallActivity(Context context, RtcArgs args) {
+//
+//        Log.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
+//        args.setUrl(BuildConfig.LIVE_KIT_URL);
+//        args.setCallType(CallType.VIDEO);
+//        args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
+//
+//        Intent intent = new Intent(context, UnicefVideoActivity.class);
+//        intent.putExtra(RtcUtilsKt.RTC_ARGS, args);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        }
+//        int callState = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+//        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+//            context.startActivity(intent);
+//        }
+//    }
 
     public static final String TAG = "EkalVideoCallActivity";
 

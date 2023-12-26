@@ -17,6 +17,7 @@ import org.intelehealth.klivekit.utils.extensions.fromJson
 import org.intelehealth.unicef.BuildConfig
 import org.intelehealth.unicef.R
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New
+import org.intelehealth.unicef.app.IntelehealthApplication
 import org.intelehealth.unicef.database.dao.PatientsDAO
 import org.intelehealth.unicef.utilities.NotificationUtils
 import org.intelehealth.unicef.utilities.OfflineLogin
@@ -44,8 +45,8 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
                     nurseName = sessionManager.chwname
                     callType = CallType.VIDEO
-                    url = BuildConfig.LIVE_KIT_URL
-                    socketUrl = BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
+                    url = IntelehealthApplication.getInstance().liveKitUrl
+                    socketUrl = IntelehealthApplication.getInstance().socketUrl
                     PatientsDAO().getPatientName(roomId).apply {
                         patientName = get(0).name
                     }
@@ -56,7 +57,11 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                         CallHandlerUtils.saveIncomingCall(context, arg)
                         context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
                     } else {
-                        CallHandlerUtils.operateIncomingCall(it, arg, UnicefVideoActivity::class.java)
+                        CallHandlerUtils.operateIncomingCall(
+                            it,
+                            arg,
+                            UnicefVideoActivity::class.java
+                        )
                     }
                 }
             } else {
