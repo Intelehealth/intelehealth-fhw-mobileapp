@@ -1,15 +1,19 @@
 package org.intelehealth.ekalarogya.utilities;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
@@ -22,6 +26,7 @@ import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
+import org.intelehealth.ekalarogya.webrtc.notification.AppNotification;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -114,17 +119,20 @@ public class UnUploadedVisitsNotificationWorker extends Worker {
             NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
             mNotifyManager.createNotificationChannel(mChannel);
         }
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, ActivePatientActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = mBuilder
-                .setSmallIcon(R.drawable.ic_cloud_upload)
-                .setAutoCancel(true).setContentTitle(title)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                .setContentIntent(contentIntent)
-                .setContentText(text).build();
-        mNotifyManager.notify(mId, mBuilder.build());
-
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
+//        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, ActivePatientActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+//        Notification notification = mBuilder
+//                .setSmallIcon(R.drawable.ic_cloud_upload)
+//                .setAutoCancel(true).setContentTitle(title)
+//                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+//                .setContentIntent(contentIntent)
+//                .setContentText(text).build();
+//        mNotifyManager.notify(mId, mBuilder.build());
+        new AppNotification.Builder(context)
+                .pendingIntent(PendingIntent.getActivity(context, 0, new Intent(context, ActivePatientActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                .title(title)
+                .body(text)
+                .send();
     }
 
 }

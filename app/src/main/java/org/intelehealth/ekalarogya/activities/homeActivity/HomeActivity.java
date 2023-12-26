@@ -2,6 +2,7 @@ package org.intelehealth.ekalarogya.activities.homeActivity;
 
 import static android.provider.Telephony.Carriers.PASSWORD;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -44,10 +45,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
@@ -133,7 +136,6 @@ import java.util.TimerTask;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -221,7 +223,16 @@ public class HomeActivity extends BaseActivity {
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
         unUploadedVisitNotificationTV = findViewById(R.id.unUploadedVisitsNotificationTextView);
-        UnUploadedVisitsNotificationWorker.schedule();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
+            } else {
+                UnUploadedVisitsNotificationWorker.schedule();
+                Toast.makeText(HomeActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            UnUploadedVisitsNotificationWorker.schedule();
+        }
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
@@ -291,8 +302,7 @@ public class HomeActivity extends BaseActivity {
             mSyncProgressDialog.show();
             syncUtils.initialSync("home");
             mSyncProgressDialog.dismiss();
-        }
-        else {
+        } else {
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
         }
@@ -309,8 +319,20 @@ public class HomeActivity extends BaseActivity {
         setLocale(HomeActivity.this);
     }
 
-    public void startActiveVisits(View view)
-    {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(HomeActivity.this, "Notification Permission Granted", Toast.LENGTH_SHORT).show();
+                UnUploadedVisitsNotificationWorker.schedule();
+            } else {
+                Toast.makeText(HomeActivity.this, "Notification Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void startActiveVisits(View view) {
         Intent intent = new Intent(HomeActivity.this, ActivePatientActivity.class);
         startActivity(intent);
     }
@@ -320,7 +342,7 @@ public class HomeActivity extends BaseActivity {
         List<VisitDTO> unSyncedOldVisitList = visitsDAO.getAllUnSyncedOldVisits();
         final boolean[] isVisitVoid = {false};
         if (unSyncedOldVisitList.size() > 0) {
-            for(int i=0; i< unSyncedOldVisitList.size();i++) {
+            for (int i = 0; i < unSyncedOldVisitList.size(); i++) {
                 try {
                     isVisitVoid[0] = visitsDAO.voidVisit(unSyncedOldVisitList.get(i).getUuid());
                 } catch (DAOException e) {
@@ -328,8 +350,7 @@ public class HomeActivity extends BaseActivity {
                 }
             }
         }
-        if(isVisitVoid[0] = true)
-        {
+        if (isVisitVoid[0] = true) {
             int count = getUnUploadedVisitCount();
             unUploadedVisitNotificationTV.setText("You have " + String.valueOf(count) + " un-uploaded visits.");
             if (count == 0)
@@ -578,7 +599,7 @@ public class HomeActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        registerReceiver(syncBroadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
     }
 
     @Override

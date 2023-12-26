@@ -46,12 +46,7 @@ public class AppNotification {
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        /*NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);*/
-
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Default Channel";
             String description = "Default Channel description";
@@ -63,10 +58,6 @@ public class AppNotification {
             notificationManager.createNotificationChannel(channel);
         }
 
-
-//        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-//            return;
-//        }
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions

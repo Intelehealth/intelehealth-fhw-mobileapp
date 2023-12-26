@@ -451,7 +451,7 @@ public class PatientDetailActivity extends BaseActivity {
 
     @Override
     protected void onStart() {
-        registerReceiver(reMyreceive, filter);
+        registerReceiver(reMyreceive, filter, RECEIVER_NOT_EXPORTED);
         super.onStart();
     }
 
@@ -460,19 +460,6 @@ public class PatientDetailActivity extends BaseActivity {
         unregisterReceiver(reMyreceive);
         super.onDestroy();
     }
-
-//    public float age_in_Decimal(String age) {
-//        float age_float = 0;
-//        //2 years 4 months 4 days
-//        //int age_int = Integer.parseInt(age.replaceAll("[\\D]", "")); //244
-//        String ageTrim = age.trim();
-//        String year = String.valueOf(ageTrim.charAt(ageTrim.indexOf("years") - 1));
-//        String month = String.valueOf(ageTrim.charAt(ageTrim.indexOf("months") - 1));
-//        String result = year + " " + month;
-//        //int month = age_.indexOf("months") - 1;
-//
-//        return age_float;
-//    }
 
     public void setDisplay(String dataString) {
 

@@ -15,7 +15,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -141,8 +143,8 @@ public class IdentificationActivity extends AppCompatActivity implements
     ImagesDAO imagesDAO = new ImagesDAO();
     private String mCurrentPhotoPath;
     Context context;
-    private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
-    private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
+    private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~#";
+    private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~#:";
     FrameLayout framelayout_vaccination, framelayout_vaccine_question;
     private LinearLayoutCompat ll18;
     private AppCompatImageButton addMedicalHistoryButton, addSmokingStatusButton, addTobaccoStatusButton, addAlcoholConsumptionButton;
@@ -201,23 +203,23 @@ public class IdentificationActivity extends AppCompatActivity implements
             }
         });
         mFirstName = findViewById(R.id.identification_first_name);
-        mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name, emojiFilter}); //maxlength 25
 
         mMiddleName = findViewById(R.id.identification_middle_name);
-        mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name, emojiFilter}); //maxlength 25
 
         mLastName = findViewById(R.id.identification_last_name);
-        mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name, emojiFilter}); //maxlength 25
 
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
 
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
-        mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
+        mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_NameAddress, emojiFilter}); //maxlength 50
 
         mAddress2 = findViewById(R.id.identification_address2);
-        mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
+        mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_NameAddress, emojiFilter}); //maxlength 50
 
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
@@ -235,7 +237,6 @@ public class IdentificationActivity extends AppCompatActivity implements
         framelayout_vaccine_question = findViewById(R.id.framelayout_vaccine_question);
         spinner_vaccination = findViewById(R.id.spinner_vaccination);
         mRelationship = findViewById(R.id.identification_relationship);
-        mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
         mCaste = findViewById(R.id.spinner_caste);
         mEducation = findViewById(R.id.spinner_education);
         mEconomicStatus = findViewById(R.id.spinner_economic_status);
@@ -249,11 +250,13 @@ public class IdentificationActivity extends AppCompatActivity implements
         mImageView = findViewById(R.id.imageview_id_picture);
         occupation_spinner = findViewById(R.id.occupation_spinner);
         occupation_edittext = findViewById(R.id.occupation_edittext);
+        occupation_edittext.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_NameAddress, emojiFilter}); //maxlength 25
         bankaccount_spinner = findViewById(R.id.bankaccount_spinner);
         mobilephone_spinner = findViewById(R.id.mobilephone_spinner);
         whatsapp_spinner = findViewById(R.id.whatsapp_spinner);
         toilet_facility_spinner = findViewById(R.id.toilet_facility_spinner);
         toiletfacility_edittext = findViewById(R.id.toiletfacility_edittext);
+        toiletfacility_edittext.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_NameAddress, emojiFilter}); //maxlength 25
         structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);
         unitsSpinner = findViewById(R.id.units_spinner);
         hohRelationshipSpinner = findViewById(R.id.hoh_relationship_spinner);
@@ -265,6 +268,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         no_of_member_edittext = findViewById(R.id.no_of_member_edittext);
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);
         otherHohRelationshipEditText = findViewById(R.id.other_hoh_relationship_editText);
+        otherHohRelationshipEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name, emojiFilter}); //maxlength 25
         landOwnedEditText = findViewById(R.id.land_owned_edit_text);
         cardview_household = findViewById(R.id.cardview_household);
         hohRelationshipCardView = findViewById(R.id.cardview_hoh_relationship);
@@ -472,11 +476,6 @@ public class IdentificationActivity extends AppCompatActivity implements
         mCountry.setAdapter(countryAdapter);
         mCountry.setEnabled(false);
 
-//        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
-//                R.array.caste, R.layout.custom_spinner);
-//        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        mCaste.setAdapter(casteAdapter);
-
         try { //Caste adapter setting...
             String casteLanguage = "caste_" + sessionManager.getAppLanguage();
             int castes = res.getIdentifier(casteLanguage, "array", getApplicationContext().getPackageName());
@@ -583,19 +582,6 @@ public class IdentificationActivity extends AppCompatActivity implements
             Logger.logE("Identification", "#648", e);
         }
 
-      /*  //  BMI Level Spinner
-        try {
-            String bmiLanguage = "test_status_" + sessionManager.getAppLanguage();
-            int bmi_id = res.getIdentifier(bmiLanguage, "array", getApplicationContext().getPackageName());
-            if (bmi_id != 0) {
-                bmi_adapt = ArrayAdapter.createFromResource(this, bmi_id, android.R.layout.simple_spinner_dropdown_item);
-            }
-            bmiLevelSpinner.setAdapter(hbLevel_adapt);
-        } catch (Exception e) {
-            Toast.makeText(this, "Values are missing", Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
-*/
         hohRelationshipSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -2376,30 +2362,83 @@ public class IdentificationActivity extends AppCompatActivity implements
         }
     }
 
-    private InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
+    private InputFilter emojiFilter = new InputFilter() {
         @Override
-        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
-            if (charSequence != null && BlockCharacterSet_Name.contains(("" + charSequence))) {
-                return "";
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            for (int index = start; index < end - 1; index++) {
+                int type = Character.getType(source.charAt(index));
+                if(type == Character.SURROGATE || type == Character.OTHER_SYMBOL) {
+                    return "";
+                }
             }
             return null;
         }
     };
 
-    private InputFilter inputFilter_Others = new InputFilter() { //filter input for all other fields
+    public static InputFilter inputFilter_NameAddress = new InputFilter() { //filter input for all other fields
         @Override
-        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
-            if (charSequence != null && BlockCharacterSet_Others.contains(("" + charSequence))) {
-                return "";
+        public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int i2, int i3) {
+            boolean keepOriginal = true;
+            StringBuilder sb = new StringBuilder(end - start);
+            for (int i = start; i < end; i++) {
+                char c = charSequence.charAt(i);
+                if (isCharAllowed(c)) // put your condition here
+                    sb.append(c);
+                else if (c=='.' || c=='&' || c=='(' || c==')' || c=='\'' || c=='-' || c=='#' || c=='@' || c=='%' || c=='/')
+                    sb.append(c);
+                else
+                    keepOriginal = false;
             }
-            return null;
+            if (keepOriginal)
+                return null;
+            else {
+                if (charSequence instanceof Spanned) {
+                    SpannableString sp = new SpannableString(sb);
+                    TextUtils.copySpansFrom((Spanned) charSequence, start, sb.length(), null, sp, 0);
+                    return sp;
+                } else {
+                    return sb;
+                }
+            }
+        }
+        private boolean isCharAllowed(char c) {
+            return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);   // This allows only alphabets, digits and spaces.
+        }
+    };
+
+    public static InputFilter inputFilter_Name = new InputFilter() { //filter input for all other fields
+        @Override
+        public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int i2, int i3) {
+            boolean keepOriginal = true;
+            StringBuilder sb = new StringBuilder(end - start);
+            for (int i = start; i < end; i++) {
+                char c = charSequence.charAt(i);
+                if (isCharAllowed(c)) // put your condition here
+                    sb.append(c);
+                else if (c=='.')
+                    sb.append(c);
+                else
+                    keepOriginal = false;
+            }
+            if (keepOriginal)
+                return null;
+            else {
+                if (charSequence instanceof Spanned) {
+                    SpannableString sp = new SpannableString(sb);
+                    TextUtils.copySpansFrom((Spanned) charSequence, start, sb.length(), null, sp, 0);
+                    return sp;
+                } else {
+                    return sb;
+                }
+            }
+        }
+        private boolean isCharAllowed(char c) {
+            return Character.isLetter(c) || Character.isSpaceChar(c);   // This allows only alphabets, digits and spaces.
         }
     };
 
     public void generateUuid() {
-
         patientUuid = uuidGenerator.generateUuid();
-
     }
 
     // This method is for setting the screen with existing values in database whenn user clicks edit details
