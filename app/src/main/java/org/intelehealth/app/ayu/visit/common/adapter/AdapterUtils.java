@@ -2,6 +2,7 @@ package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Button;
 
 import com.github.ybq.android.spinkit.style.ThreeBounce;
@@ -9,6 +10,8 @@ import com.github.ybq.android.spinkit.style.ThreeBounce;
 import org.intelehealth.app.R;
 
 public class AdapterUtils {
+    private static final String TAG = AdapterUtils.class.getSimpleName();
+
     public interface OnFinishActionListener {
         void onFinish();
 
@@ -73,6 +76,7 @@ public class AdapterUtils {
     }
 
     public static void setToDefault(Button button) {
+        Log.v(TAG, "setToDefault");
         button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
         button.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
         button.setClickable(true);
@@ -80,6 +84,7 @@ public class AdapterUtils {
     }
 
     public static void setToDisable(Button button) {
+        Log.v(TAG, "setToDisable");
         button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
         button.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg_1);
         button.setClickable(false);
