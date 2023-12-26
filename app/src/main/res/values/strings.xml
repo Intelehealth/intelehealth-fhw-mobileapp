@@ -1194,5 +1194,5 @@
     <string name="app_sync">Syncing App..</string>
     <string name="title_un_uploaded_visit_reminder">Un-uploaded visit reminder</string>
     <string name="title_un_uploaded_visit_reminder_desc">Hello, there are some visits which are yet to be uploaded, kindly take action.</string>
-
+    <string name="you_have_unuploaded_visits">You have %1$s un-uploaded visits.</string>
 </resources>

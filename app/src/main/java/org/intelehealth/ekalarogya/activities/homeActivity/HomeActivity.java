@@ -352,7 +352,7 @@ public class HomeActivity extends BaseActivity {
         }
         if (isVisitVoid[0] = true) {
             int count = getUnUploadedVisitCount();
-            unUploadedVisitNotificationTV.setText("You have " + String.valueOf(count) + " un-uploaded visits.");
+            unUploadedVisitNotificationTV.setText(getResources().getString(R.string.you_have_unuploaded_visits, String.valueOf(count)));
             if (count == 0)
                 unUploadedVisitNotificationCV.setVisibility(View.GONE);
         }
