@@ -75,6 +75,6 @@
     <string name="remote_participant_mic_off_status">দূৰৱৰ্তী অংশগ্ৰহণকাৰীৰ মাইক অফ অৱস্থা</string>
     <string name="sender_image">প্ৰেৰক ছবি(emage)</string>
     <string name="select_spinner">চয়ন কৰা</string>
-    <string name="call_swipe_up">Swipe Up</string>
-    <string name="release_now">Release Now</string>
+    <string name="call_swipe_up">ওপৰলৈ চুইপ কৰক</string>
+    <string name="release_now">এতিয়াই মুক্তি দিয়ক</string>
 </resources>

@@ -84,6 +84,6 @@
     <string name="remote_participant_mic_off_status">ରିମୋଟ ବା ଦୁରସ୍ଥ ଯୋଗଦାନ କାରି ମିକ୍ ଅପ୍ ଅବସ୍ଥା</string>
     <string name="sender_image">ପ୍ରେରକ ଛବି</string>
     <string name="select_spinner">ଚୟନ କରିବା</string>
-    <string name="call_swipe_up">Swipe Up</string>
-    <string name="release_now">Release Now</string>
+    <string name="call_swipe_up">ଆଘାତ ହେବା</string>
+    <string name="release_now">ଏବେ ଖଲାସ ହେବା</string>
 </resources>
