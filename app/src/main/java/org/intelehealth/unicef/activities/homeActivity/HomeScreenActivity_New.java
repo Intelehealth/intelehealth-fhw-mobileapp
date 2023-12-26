@@ -67,6 +67,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
+import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.unicef.BuildConfig;
@@ -110,6 +111,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class HomeScreenActivity_New extends LocalConfigActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HomeScreenActivity";
@@ -263,6 +266,10 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         context = HomeScreenActivity_New.this;
         networkUtils = new NetworkUtils(context, this);
         DeviceInfoUtils.saveDeviceInfo(this);
+        FcmTokenGenerator.INSTANCE.getDeviceToken(s -> {
+            IntelehealthApplication.getInstance().refreshedFCMTokenID = s;
+            return Unit.INSTANCE;
+        });
 //        catchFCMMessageData();
 
 

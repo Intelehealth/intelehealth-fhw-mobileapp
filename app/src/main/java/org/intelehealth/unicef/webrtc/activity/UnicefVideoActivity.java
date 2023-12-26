@@ -1,13 +1,8 @@
 package org.intelehealth.unicef.webrtc.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
@@ -17,14 +12,10 @@ import androidx.core.content.ContextCompat;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
 
-import org.intelehealth.klivekit.call.utils.CallType;
-import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.call.ui.activity.CoreVideoCallActivity;
+import org.intelehealth.klivekit.call.ui.custom.SwipeButton;
 import org.intelehealth.klivekit.call.utils.CallMode;
-import org.intelehealth.klivekit.utils.RtcUtilsKt;
-import org.intelehealth.unicef.BuildConfig;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.databinding.ActivityVideoCallBinding;
 
@@ -39,7 +30,7 @@ import io.livekit.android.room.track.VideoTrack;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class UnicefVideoActivity extends CoreVideoCallActivity {
+public class UnicefVideoActivity extends CoreVideoCallActivity implements SwipeButton.SwipeEventListener {
 //    public static void startVideoCallActivity(Context context, RtcArgs args) {
 //
 //        Log.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
@@ -84,8 +75,10 @@ public class UnicefVideoActivity extends CoreVideoCallActivity {
         binding.videoCallView.callActionView.btnMicOnOff.setOnClickListener(view -> getVideoCallViewModel().toggleMicrophone());
         binding.videoCallView.callActionView.btnVideoOnOff.setOnClickListener(view -> getVideoCallViewModel().toggleCamera());
         binding.videoCallView.callActionView.btnFlipCamera.setOnClickListener(view -> getVideoCallViewModel().flipCamera());
-        binding.incomingCallView.fabDeclineCall.setOnClickListener(view -> declineCall());
-        binding.incomingCallView.fabAcceptCall.setOnClickListener(view -> acceptCall());
+//        binding.incomingCallView.fabDeclineCall.setOnClickListener(view -> declineCall());
+//        binding.incomingCallView.fabAcceptCall.setOnClickListener(view -> acceptCall());
+        binding.incomingCallView.fabDeclineCall.swipeEventListener = this;
+        binding.incomingCallView.fabAcceptCall.swipeEventListener = this;
     }
 
     private void initView() {
@@ -279,5 +272,31 @@ public class UnicefVideoActivity extends CoreVideoCallActivity {
                         sayBye("Call ended by you", null);
                     }
                 }).setNegativeButton(R.string.no, null).create().show();
+    }
+
+    public void onCompleted(@NonNull View view) {
+        if (view.getId() == R.id.fabDeclineCall) declineCall();
+        else acceptCall();
+    }
+
+    @Override
+    public void onSwipe(@NonNull View view) {
+
+    }
+
+    @Override
+    public void onReleased(@NonNull View view) {
+        if (view.getId() == R.id.fabAcceptCall)
+            binding.incomingCallView.fabDeclineCall.setVisibility(View.VISIBLE);
+        else
+            binding.incomingCallView.fabAcceptCall.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onTap(@NonNull View view) {
+        if (view.getId() == R.id.fabAcceptCall)
+            binding.incomingCallView.fabDeclineCall.setVisibility(View.INVISIBLE);
+        else
+            binding.incomingCallView.fabAcceptCall.setVisibility(View.INVISIBLE);
     }
 }
