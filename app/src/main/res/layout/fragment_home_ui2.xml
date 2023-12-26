@@ -320,7 +320,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/options_sub_heading_margin_top"
                         android:layout_marginBottom="@dimen/common_info_margin_bottom"
-                        android:text="4 Upcoming"
+                        android:text="444545 Upcoming"
                         android:textSize="@dimen/common_label_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -363,7 +363,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/label_folloup"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_8"
@@ -383,7 +383,7 @@
                         android:textSize="@dimen/common_label_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                        app:layout_constraintTop_toBottomOf="@+id/label_folloup" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>

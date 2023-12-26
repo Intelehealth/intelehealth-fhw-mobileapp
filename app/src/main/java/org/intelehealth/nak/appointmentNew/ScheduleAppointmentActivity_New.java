@@ -321,87 +321,92 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         //api for get appointment slots for selected date and doctor speciality
 
 //        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
-        ApiClientAppointment.getInstance(BuildConfig.SERVER_URL).getApi().getSlots(mSelectedStartDate, mSelectedEndDate, speciality).enqueue(new Callback<SlotInfoResponse>() {
+        String baseUrl = BuildConfig.SERVER_URL + ":3004";
+
+        ApiClientAppointment.getInstance(baseUrl).getApi().getSlots(mSelectedStartDate, mSelectedEndDate, speciality).enqueue(new Callback<SlotInfoResponse>() {
             @Override
             public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
-                SlotInfoResponse slotInfoResponse = response.body();
-                List<SlotInfo> slotInfoList = new ArrayList<>();
-                if (app_start_date != null && app_start_time != null && slotInfoResponse != null) {
-                    removePreviousAppointmentDateTime(slotInfoResponse);
-                }
-
-                slotInfoMorningList = new ArrayList<>();
-                slotInfoAfternoonList = new ArrayList<>();
-                slotInfoEveningList = new ArrayList<>();
-
-                slotInfoList.addAll(slotInfoResponse.getDates());
-
-                for (int i = 0; i < slotInfoList.size(); i++) {
-                    SlotInfo slotInfo = slotInfoList.get(i);
-                    if (!slotInfo.getSlotTime().isEmpty() && slotInfo.getSlotTime().contains(" ")) {
-                        String[] splitedTime = slotInfo.getSlotTime().split(" ");
-                        if (splitedTime[1].trim().equals("AM")) {
-
-                            slotInfoMorningList.add(slotInfo);
-                        }
-
+                if(response.isSuccessful() && response.body().getDates()!=null){
+                    SlotInfoResponse slotInfoResponse = response.body();
+                    List<SlotInfo> slotInfoList = new ArrayList<>();
+                    if (app_start_date != null && app_start_time != null && slotInfoResponse != null) {
+                        removePreviousAppointmentDateTime(slotInfoResponse);
                     }
-                }
 
-                for (int i = 0; i < slotInfoList.size(); i++) {
-                    SlotInfo slotInfo = slotInfoList.get(i);
-                    if (!slotInfo.getSlotTime().isEmpty() && slotInfo.getSlotTime().contains(" ")) {
-                        String[] splitedTime = slotInfo.getSlotTime().split(" ");
-                        double appointmentTime;
-                        if (splitedTime[1].trim().equals("PM")) {
-                            if (splitedTime[0].contains(":")) {
-                                String time = splitedTime[0].replace(":", ".");
-                                appointmentTime = Double.parseDouble(time);
+                    slotInfoMorningList = new ArrayList<>();
+                    slotInfoAfternoonList = new ArrayList<>();
+                    slotInfoEveningList = new ArrayList<>();
 
-                            } else {
-                                appointmentTime = Double.parseDouble(splitedTime[0]);
-                            }
-                            if ((appointmentTime >= 1 && appointmentTime <= 6) || appointmentTime >= 12) {
-                                slotInfoAfternoonList.add(slotInfo);
+                    slotInfoList.addAll(slotInfoResponse.getDates());
 
-                            } else {
-                                slotInfoEveningList.add(slotInfo);
+                    for (int i = 0; i < slotInfoList.size(); i++) {
+                        SlotInfo slotInfo = slotInfoList.get(i);
+                        if (!slotInfo.getSlotTime().isEmpty() && slotInfo.getSlotTime().contains(" ")) {
+                            String[] splitedTime = slotInfo.getSlotTime().split(" ");
+                            if (splitedTime[1].trim().equals("AM")) {
 
+                                slotInfoMorningList.add(slotInfo);
                             }
 
                         }
+                    }
+
+                    for (int i = 0; i < slotInfoList.size(); i++) {
+                        SlotInfo slotInfo = slotInfoList.get(i);
+                        if (!slotInfo.getSlotTime().isEmpty() && slotInfo.getSlotTime().contains(" ")) {
+                            String[] splitedTime = slotInfo.getSlotTime().split(" ");
+                            double appointmentTime;
+                            if (splitedTime[1].trim().equals("PM")) {
+                                if (splitedTime[0].contains(":")) {
+                                    String time = splitedTime[0].replace(":", ".");
+                                    appointmentTime = Double.parseDouble(time);
+
+                                } else {
+                                    appointmentTime = Double.parseDouble(splitedTime[0]);
+                                }
+                                if ((appointmentTime >= 1 && appointmentTime <= 6) || appointmentTime >= 12) {
+                                    slotInfoAfternoonList.add(slotInfo);
+
+                                } else {
+                                    slotInfoEveningList.add(slotInfo);
+
+                                }
+
+                            }
+
+                        }
 
                     }
 
+                    // sort data
+                    sortByTime(slotInfoMorningList);
+                    sortByTime(slotInfoAfternoonList);
+                    sortByTime(slotInfoAfternoonList);
+
+                    boolean isSlotNotAvailable = true;
+
+                    findViewById(R.id.tv_morning_label).setVisibility(slotInfoMorningList.isEmpty() ? View.GONE : View.VISIBLE);
+                    findViewById(R.id.rv_morning_time_slots).setVisibility(slotInfoMorningList.isEmpty() ? View.GONE : View.VISIBLE);
+                    setDataForMorningAppointments(slotInfoMorningList);
+                    isSlotNotAvailable = slotInfoMorningList.isEmpty();
+
+                    findViewById(R.id.tv_afternoon_label).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
+                    findViewById(R.id.rv_afternoon_time_slots).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
+                    setDataForAfternoonAppointments(slotInfoAfternoonList);
+                    if (isSlotNotAvailable)
+                        isSlotNotAvailable = slotInfoAfternoonList.isEmpty();
+
+                    findViewById(R.id.tv_evening_label).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
+                    findViewById(R.id.rv_evening_time_slots).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
+                    setDataForEveningAppointments(slotInfoEveningList);
+                    if (isSlotNotAvailable)
+                        isSlotNotAvailable = slotInfoEveningList.isEmpty();
+
+                    ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.slot_empty_message));
+                    findViewById(R.id.empty_tv).setVisibility(isSlotNotAvailable ? View.VISIBLE : View.GONE);
+                    findViewById(R.id.tv_time_slot_title).setVisibility(isSlotNotAvailable ? View.GONE : View.VISIBLE);
+
                 }
-
-                // sort data
-                sortByTime(slotInfoMorningList);
-                sortByTime(slotInfoAfternoonList);
-                sortByTime(slotInfoAfternoonList);
-
-                boolean isSlotNotAvailable = true;
-
-                findViewById(R.id.tv_morning_label).setVisibility(slotInfoMorningList.isEmpty() ? View.GONE : View.VISIBLE);
-                findViewById(R.id.rv_morning_time_slots).setVisibility(slotInfoMorningList.isEmpty() ? View.GONE : View.VISIBLE);
-                setDataForMorningAppointments(slotInfoMorningList);
-                isSlotNotAvailable = slotInfoMorningList.isEmpty();
-
-                findViewById(R.id.tv_afternoon_label).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
-                findViewById(R.id.rv_afternoon_time_slots).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
-                setDataForAfternoonAppointments(slotInfoAfternoonList);
-                if (isSlotNotAvailable)
-                    isSlotNotAvailable = slotInfoAfternoonList.isEmpty();
-
-                findViewById(R.id.tv_evening_label).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
-                findViewById(R.id.rv_evening_time_slots).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
-                setDataForEveningAppointments(slotInfoEveningList);
-                if (isSlotNotAvailable)
-                    isSlotNotAvailable = slotInfoEveningList.isEmpty();
-
-                ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.slot_empty_message));
-                findViewById(R.id.empty_tv).setVisibility(isSlotNotAvailable ? View.VISIBLE : View.GONE);
-                findViewById(R.id.tv_time_slot_title).setVisibility(isSlotNotAvailable ? View.GONE : View.VISIBLE);
 
             }
 

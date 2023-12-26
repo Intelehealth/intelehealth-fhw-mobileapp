@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AppointmentDAO {
 
@@ -669,11 +670,10 @@ public class AppointmentDAO {
     public List<AppointmentInfo> getUpcomingAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate) {
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
+
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor;
-        Log.d(TAG, "getUpcomingAppointmentsWithFilters: fromDate :"+fromDate);
-        Log.d(TAG, "getUpcomingAppointmentsWithFilters: toDate :"+toDate);
 
         if (!fromDate.isEmpty() && !toDate.isEmpty()) {
             String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
@@ -687,16 +687,6 @@ public class AppointmentDAO {
                     + "AND datetime(a.slot_js_date) >= datetime('now') "
                     + "LIMIT ? OFFSET ?";
 
-            String query1 = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,\"\n" +
-                    "                    + \"a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, \"\n" +
-                    "                    + \"a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id \"\n" +
-                    "                    + \"from tbl_patient p, tbl_appointments a \"\n" +
-                    "                    + \"where p.uuid = a.patient_id and new_slot_date \"\n" +
-                    "                    + \"AND a.slot_date != ?\"\n" +
-                    "                    + \"BETWEEN '\" + fromDate + \"'  and '\" + toDate + \"' \"\n" +
-                    "                    + \"AND a.status = 'booked'\"\n" +
-                    "                    + \"AND datetime(a.slot_js_date) >= datetime('now') \"\n";
-            Log.d(TAG, "getUpcomingAppointmentsWithFilters: query1 : "+query1);
 
             idCursor = db.rawQuery(selectQuery, new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
         } else {
@@ -710,15 +700,6 @@ public class AppointmentDAO {
                             + "AND datetime(a.slot_js_date) >= datetime('now') "
                             + "LIMIT ? OFFSET ?"
                     , new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
-            String query2 = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, \"\n" +
-                    "                            + \"a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, \"\n" +
-                    "                            + \"a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id \"\n" +
-                    "                            + \"from tbl_patient p, tbl_appointments a \"\n" +
-                    "                            + \"where p.uuid = a.patient_id \"\n" +
-                    "                            + \"AND a.status = 'booked'\"\n" +
-                    "                            + \"AND a.slot_date != ?\"\n" +
-                    "                            + \"AND datetime(a.slot_js_date) >= datetime('now') \"\n";
-            Log.d(TAG, "getUpcomingAppointmentsWithFilters: query2 : "+query2);
 
         }
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -913,6 +894,8 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
     public List<AppointmentInfo> getAllUpcomingAppointmentsWithFilters(String fromDate, String toDate) {
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String currentDate = dateFormat1.format(new Date());
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -927,9 +910,9 @@ public class AppointmentDAO {
                     + "where p.uuid = a.patient_id and new_slot_date "
                     + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
                     + "AND a.status = 'booked'"
-                    + "AND datetime(a.slot_js_date) >= datetime('now') ";
+                    + "AND datetime(a.slot_js_date) >= datetime('now') AND  +  a.slot_date != ?";
 
-            idCursor = db.rawQuery(selectQuery, null);
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate});
         } else {
             idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
                             + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
@@ -937,8 +920,8 @@ public class AppointmentDAO {
                             + "from tbl_patient p, tbl_appointments a "
                             + "where p.uuid = a.patient_id "
                             + "AND a.status = 'booked'"
-                            + "AND datetime(a.slot_js_date) >= datetime('now') "
-                    , null);
+                            + "AND datetime(a.slot_js_date) >= datetime('now') AND  +  a.slot_date != ?"
+                    , new String[]{currentDate});
         }
 
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -982,6 +965,8 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
     public List<AppointmentInfo> getAllCancelledAppointmentsWithFilters(String fromDate, String toDate) {
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String currentDate = dateFormat1.format(new Date());
         Cursor idCursor;
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
@@ -995,16 +980,16 @@ public class AppointmentDAO {
                     + "FROM tbl_patient p, tbl_appointments a "
                     + "WHERE p.uuid = a.patient_id "
                     + "AND a.status = 'cancelled' "
-                    + "AND new_slot_date BETWEEN '" + fromDate + "' AND '" + toDate + "' ";
+                    + "AND new_slot_date BETWEEN '" + fromDate + "' AND '" + toDate + "' AND  +  a.slot_date != ?";
 
-            idCursor = db.rawQuery(selectQuery, null);
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate});
         } else {
             idCursor = db.rawQuery("SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, "
                     + "a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, "
                     + "a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                     + "FROM tbl_patient p, tbl_appointments a "
                     + "WHERE p.uuid = a.patient_id "
-                    + "AND a.status = 'cancelled'", null);
+                    + "AND a.status = 'cancelled' AND  +  a.slot_date != ?", new String[]{currentDate});
         }
 
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -1048,6 +1033,8 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
     public List<AppointmentInfo> getAllCompletedAppointmentsWithFilters(String fromDate, String toDate) {
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String currentDate = dateFormat1.format(new Date());
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -1062,9 +1049,9 @@ public class AppointmentDAO {
                     + "where p.uuid = a.patient_id and new_slot_date "
                     + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
                     + "AND a.status = 'booked'"
-                    + "AND datetime(a.slot_js_date) < datetime('now') ";
+                    + "AND datetime(a.slot_js_date) < datetime('now') AND  +  a.slot_date != ?";
 
-            idCursor = db.rawQuery(selectQuery, null);
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate});
         } else {
             idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
                             + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
@@ -1072,9 +1059,9 @@ public class AppointmentDAO {
                             + "from tbl_patient p, tbl_appointments a "
                             + "where p.uuid = a.patient_id "
                             + "AND a.status = 'booked'"
-                            + "AND datetime(a.slot_js_date) < datetime('now') "
+                            + "AND datetime(a.slot_js_date) < datetime('now') + a.slot_date != ?"
                           /*  + "LIMIT ? OFFSET ?"*/ //commenting due to crash
-                    , null);
+                    , new String[]{currentDate});
 
         }
         EncounterDAO encounterDAO = new EncounterDAO();

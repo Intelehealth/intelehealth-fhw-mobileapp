@@ -31,8 +31,8 @@ public class AppointmentSync {
         String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
 
-//        String baseurl = BuildConfig.SERVER_URL + ":3004";
-        ApiClientAppointment.getInstance(BuildConfig.SERVER_URL).getApi()
+        String baseUrl = BuildConfig.SERVER_URL + ":3004";
+        ApiClientAppointment.getInstance(baseUrl).getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
