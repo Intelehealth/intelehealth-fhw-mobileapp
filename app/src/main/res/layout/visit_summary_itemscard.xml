@@ -754,7 +754,67 @@
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
                         </TableRow>
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:layout_weight="2">
 
+                            <TextView
+                                android:id="@+id/textView_hemoglobin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/bullet_gray"
+                                android:drawablePadding="5dp"
+                                android:text="@string/hemoglobin"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+
+                            <TextView
+                                android:id="@+id/textView_hemoglobin_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/no_information"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/textview_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:layout_weight="2">
+
+                            <TextView
+                                android:id="@+id/textView_blood_sugar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/bullet_gray"
+                                android:drawablePadding="5dp"
+                                android:text="@string/blood_sugar"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+
+                            <TextView
+                                android:id="@+id/textView_blood_sugar_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/no_information"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/textview_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </TableRow>
 
                     </TableLayout>
                 </RelativeLayout>

@@ -2332,8 +2332,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         respiratoryText = findViewById(R.id.textView_respiratory);
         bmiView = findViewById(R.id.textView_bmi_value);
 
-//        tvHemoglobin = findViewById(R.id.textView_hemoglobin_value);
-//        tvBloodSugar = findViewById(R.id.textView_blood_sugar_value);
+        tvHemoglobin = findViewById(R.id.textView_hemoglobin_value);
+        tvBloodSugar = findViewById(R.id.textView_blood_sugar_value);
 
         // vitals ids - end
 
