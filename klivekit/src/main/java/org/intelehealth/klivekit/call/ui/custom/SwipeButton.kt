@@ -105,7 +105,8 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                         .alpha(1 - (swipe / MIN_SWIPE_DISTANCE) + 0.2f)
                         .start()
                     if (::swipeEventListener.isInitialized) swipeEventListener.onSwipe(this)
-                    complete(swipe)
+                    if (swipe > MIN_SWIPE_DISTANCE)
+                        binding.tvSwipeHint.text = resources.getString(R.string.release_now)
                 }
 
                 MotionEvent.ACTION_UP -> {
@@ -144,7 +145,6 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     private fun complete(swiped: Float) {
         if (swiped > MIN_SWIPE_DISTANCE) {
             binding.fabAction.setOnTouchListener(null)
-            binding.tvSwipeHint.text = resources.getString(R.string.release_now)
             if (::swipeEventListener.isInitialized) swipeEventListener.onCompleted(this)
         }
     }
