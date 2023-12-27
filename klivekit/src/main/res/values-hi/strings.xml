@@ -86,4 +86,6 @@
     <string name="poor_connection">ख़राब कनेक्शन</string>
     <string name="remote_participant_mic_off_status">रिमोट प्रतिभागी माइक बंद स्थिति</string>
     <string name="sender_image">प्रेषक छवि</string>
+    <string name="call_swipe_up">ऊपर जाए</string>
+    <string name="release_now">अभी रिलीज़ करो</string>
 </resources>

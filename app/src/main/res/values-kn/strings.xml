@@ -1189,4 +1189,7 @@
     <string name="sync_failed">ಸಿಂಕ್ ವಿಫಲವಾಗಿದೆ! ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ</string>
     <string name="no_network_sync">ನೀವು ಇಂಟರ್ನೆಟ್‌ಗೆ ಸಂಪರ್ಕ ಹೊಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ</string>
     <string name="app_sync">ಸಿಂಕ್ ಮಾಡುವ ಅಪ್ಲಿಕೇಶನ್.</string>
+    <string name="title_un_uploaded_visit_reminder">ಅಪ್‌ಲೋಡ್ ಮಾಡದ ಭೇಟಿ ಜ್ಞಾಪನೆ</string>
+    <string name="title_un_uploaded_visit_reminder_desc">ಹಲೋ, ಇನ್ನೂ ಕೆಲವು ಭೇಟಿಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಬೇಕಾಗಿದೆ, ದಯವಿಟ್ಟು ಕ್ರಮ ತೆಗೆದುಕೊಳ್ಳಿ.</string>
+    <string name="you_have_unuploaded_visits">ನೀವು ಮತ್ತು %1$s ಅಪ್‌ಲೋಡ್ ಮಾಡದ ಭೇಟಿಗಳನ್ನು ಹೊಂದಿದ್ದೀರಿ</string>
 </resources>

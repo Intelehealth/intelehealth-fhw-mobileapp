@@ -326,13 +326,13 @@ public class VisitSummaryActivity extends BaseActivity {
     public void registerBroadcastReceiverDynamically() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
+        registerReceiver(broadcastReceiverForIamgeDownlaod, filter, RECEIVER_EXPORTED);
     }
 
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        registerReceiver(downloadPrescriptionService, filter);
+        registerReceiver(downloadPrescriptionService, filter, RECEIVER_EXPORTED);
     }
 
 
@@ -1053,7 +1053,7 @@ public class VisitSummaryActivity extends BaseActivity {
 
                             }
                             uploaded = true;
-                            editComplaint.setVisibility(View.GONE);
+//                            editComplaint.setVisibility(View.GONE);
                         }
                     }, 4000);
                 } else {
@@ -1444,7 +1444,7 @@ public class VisitSummaryActivity extends BaseActivity {
         if (visitCursor != null && visitCursor.moveToFirst()) {
             String val = visitCursor.getString(visitCursor.getColumnIndexOrThrow("sync"));
             if (val.equalsIgnoreCase("1")) {
-                editComplaint.setVisibility(View.GONE);
+//                editComplaint.setVisibility(View.GONE);
             }
         }
         if (visitCursor != null)

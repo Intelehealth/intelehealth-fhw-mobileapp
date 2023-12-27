@@ -9,8 +9,12 @@ import android.database.sqlite.SQLiteException;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.intelehealth.ekalarogya.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
@@ -212,8 +216,40 @@ public class VisitsDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-//        db.close();
         return visitDTOList;
+    }
+
+    public List<VisitDTO> getAllUnSyncedOldVisits() throws ParseException {
+        List<VisitDTO> unSyncedOldVisitList = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        String currentDate = sdf.format(new Date());
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
+        VisitDTO visitDTO = new VisitDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                Date sDate = sdf.parse(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+                Date cDate = sdf.parse(currentDate);
+                long difference_In_Time = cDate.getTime() - sDate.getTime();
+                long difference_In_Days = (difference_In_Time / (1000 * 60 * 60 * 24)) % 365;
+                if(difference_In_Days>=3) {
+                    visitDTO = new VisitDTO();
+                    visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                    visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+                    visitDTO.setLocationuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("locationuuid")));
+                    visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+                    visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
+                    visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
+                    visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
+                    unSyncedOldVisitList.add(visitDTO);
+                }
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return unSyncedOldVisitList;
     }
 
     public boolean updateVisitSync(String uuid, String synced) throws DAOException {

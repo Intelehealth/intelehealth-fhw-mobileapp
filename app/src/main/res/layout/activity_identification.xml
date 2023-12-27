@@ -2354,17 +2354,6 @@
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
-                        <!--                        <EditText-->
-                        <!--                            android:id="@+id/watersafe_edittext"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:focusable="true"-->
-                        <!--                            android:focusableInTouchMode="true"-->
-                        <!--                            android:hint="@string/enter_answer"-->
-                        <!--                            android:textSize="@dimen/card_content_sub_text_size"-->
-                        <!--                            android:visibility="gone"-->
-                        <!--                            tools:visibility="visible" />-->
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"

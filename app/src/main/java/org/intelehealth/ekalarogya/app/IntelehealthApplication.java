@@ -39,6 +39,7 @@ import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
 import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
 
 
@@ -131,6 +132,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
             Timber.plant(Timber.DebugTree());
         }
 
+        DateTimeResource.build(this);
 //        WebRtcDatabase.getInstance(this);
     }
 

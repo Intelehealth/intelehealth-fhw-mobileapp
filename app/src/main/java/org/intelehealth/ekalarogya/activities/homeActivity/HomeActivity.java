@@ -2,6 +2,7 @@ package org.intelehealth.ekalarogya.activities.homeActivity;
 
 import static android.provider.Telephony.Carriers.PASSWORD;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -16,6 +17,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -43,10 +45,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
@@ -71,10 +75,13 @@ import org.intelehealth.ekalarogya.activities.todayPatientActivity.TodayPatientA
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.appointment.AppointmentListingActivity;
+import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
 import org.intelehealth.ekalarogya.database.dao.NewLocationDao;
 import org.intelehealth.ekalarogya.database.dao.SyncDAO;
+import org.intelehealth.ekalarogya.database.dao.VisitsDAO;
 import org.intelehealth.ekalarogya.models.CheckAppUpdateRes;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
+import org.intelehealth.ekalarogya.models.dto.VisitDTO;
 import org.intelehealth.ekalarogya.models.loginModel.LoginModel;
 import org.intelehealth.ekalarogya.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
@@ -93,6 +100,7 @@ import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.OfflineLogin;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.StringEncryption;
+import org.intelehealth.ekalarogya.utilities.UnUploadedVisitsNotificationWorker;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalCallLogActivity;
@@ -128,7 +136,6 @@ import java.util.TimerTask;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -147,7 +154,7 @@ public class HomeActivity extends BaseActivity {
     int i = 5;
     CardView manualSyncButton;
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6;
+    CardView c1, c2, c3, c4, c5, c6, unUploadedVisitNotificationCV;
     Context context;
     CustomProgressDialog customProgressDialog;
     private String mindmapURL = "";
@@ -155,7 +162,7 @@ public class HomeActivity extends BaseActivity {
     ProgressDialog mProgressDialog, mSyncDialog;
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
-    TextView lastSyncTextView, lastSyncAgo, newPatient_textview, findPatients_textview, todaysVisits_textview, activeVisits_textview, videoLibrary_textview, help_textview;
+    TextView lastSyncTextView, lastSyncAgo, newPatient_textview, findPatients_textview, todaysVisits_textview, activeVisits_textview, videoLibrary_textview, help_textview, unUploadedVisitNotificationTV;
     Toolbar toolbar;
 
     private void saveToken() {
@@ -194,6 +201,7 @@ public class HomeActivity extends BaseActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        unUploadedVisitNotificationCV = findViewById(R.id.unUploadedVisitsNotificationCardView);
         findViewById(R.id.cardview_appointment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,6 +222,17 @@ public class HomeActivity extends BaseActivity {
         videoLibrary_textview.setText(R.string.video_library);
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
+        unUploadedVisitNotificationTV = findViewById(R.id.unUploadedVisitsNotificationTextView);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
+            } else {
+                UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
+                Toast.makeText(HomeActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
+        }
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
@@ -255,13 +274,6 @@ public class HomeActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-        c4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, ActivePatientActivity.class);
-                startActivity(intent);
-            }
-        });
         c5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -281,6 +293,7 @@ public class HomeActivity extends BaseActivity {
                 syncUtils.syncForeground("home");
             }
         });
+
         if (sessionManager.isFirstTimeLaunched()) {
             mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
@@ -293,11 +306,56 @@ public class HomeActivity extends BaseActivity {
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
         }
+
         Logger.logD("Yojana", sessionManager.getJalJeevanYojanaScheme());
         showProgressbar();
         HeartBitApi();
         showAppInfo();
+        try {
+            voidUnSyncedOldVisits();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         setLocale(HomeActivity.this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(HomeActivity.this, "Notification Permission Granted", Toast.LENGTH_SHORT).show();
+                UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
+            } else {
+                Toast.makeText(HomeActivity.this, "Notification Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void startActiveVisits(View view) {
+        Intent intent = new Intent(HomeActivity.this, ActivePatientActivity.class);
+        startActivity(intent);
+    }
+
+    private void voidUnSyncedOldVisits() throws ParseException {
+        VisitsDAO visitsDAO = new VisitsDAO();
+        List<VisitDTO> unSyncedOldVisitList = visitsDAO.getAllUnSyncedOldVisits();
+        final boolean[] isVisitVoid = {false};
+        if (unSyncedOldVisitList.size() > 0) {
+            for (int i = 0; i < unSyncedOldVisitList.size(); i++) {
+                try {
+                    isVisitVoid[0] = visitsDAO.voidVisit(unSyncedOldVisitList.get(i).getUuid());
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        if (isVisitVoid[0] = true) {
+            int count = getUnUploadedVisitCount();
+            unUploadedVisitNotificationTV.setText(getResources().getString(R.string.you_have_unuploaded_visits, String.valueOf(count)));
+            if (count == 0)
+                unUploadedVisitNotificationCV.setVisibility(View.GONE);
+        }
     }
 
     public void HeartBitApi() {
@@ -340,6 +398,29 @@ public class HomeActivity extends BaseActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
         }
+    }
+
+    public int getUnUploadedVisitCount() {
+        int unUploadedVisitCount = 0;
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, " +
+                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
+                "FROM tbl_visit a, tbl_patient b " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND a.voided = 0 AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.sync ASC ";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        final Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    if (cursor.getString(cursor.getColumnIndexOrThrow("sync")).equalsIgnoreCase("0"))
+                        unUploadedVisitCount++;
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return unUploadedVisitCount;
     }
 
     private void showProgressbar() {
@@ -518,7 +599,7 @@ public class HomeActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        registerReceiver(syncBroadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
     }
 
     @Override
@@ -856,6 +937,7 @@ public class HomeActivity extends BaseActivity {
             Log.d(TAG, "attempting setup");
         }
     }
+
     private void switchLocationSetup(Map.Entry<String, String> villageName) {
         ProgressDialog progress;
         progress = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);

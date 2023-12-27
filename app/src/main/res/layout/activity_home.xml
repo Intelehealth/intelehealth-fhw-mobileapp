@@ -23,6 +23,35 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/unUploadedVisitsNotificationCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="startActiveVisits"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:background="@color/lite_red"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/unUploadedVisitsNotificationTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:text="You have 10 un-uploaded visits."
+                            android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
                 <include layout="@layout/view_setup_location_info" />
 
 
@@ -81,6 +110,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/white"
+                        android:onClick="startActiveVisits"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="5dp"
@@ -266,164 +296,6 @@
 
                 </LinearLayout>
 
-                <!--<androidx.cardview.widget.CardView
-                    android:id="@+id/cardview_find_patient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="16dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="5dp"
-                    app:cardUseCompatPadding="true">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="16dp">
-
-                        <ImageView
-                            android:id="@+id/iv_find_patient"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
-                            android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_search_24dp" />
-
-                        <TextView
-                            android:id="@+id/findPatients_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/iv_find_patient"
-                            android:text="@string/find_patient"
-                            android:includeFontPadding="false"
-                            android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>-->
-
-                <!--<androidx.cardview.widget.CardView
-                    android:id="@+id/cardview_today_patient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="5dp"
-                    app:cardUseCompatPadding="true">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="16dp">
-
-                        <ImageView
-                            android:id="@+id/iv_today_patients"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
-                            android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_calendar_intele_24dp" />
-
-                        <TextView
-                            android:id="@+id/todaysVisits_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/iv_today_patients"
-                            android:text="@string/today_visits"
-                            android:includeFontPadding="false"
-                            android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>-->
-
-                <!--<androidx.cardview.widget.CardView
-                    android:id="@+id/cardview_active_patients"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="5dp"
-                    app:cardUseCompatPadding="true">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="16dp">
-
-                        <ImageView
-                            android:id="@+id/iv_active_patients"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
-                            android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_active_patients_black" />
-
-                        <TextView
-                            android:id="@+id/activeVisits_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/iv_active_patients"
-                            android:text="@string/active_visits"
-                            android:includeFontPadding="false"
-                            android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>-->
-
-                <!--<androidx.cardview.widget.CardView
-                    android:id="@+id/cardview_video_libraby"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="16dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="5dp"
-                    app:cardUseCompatPadding="true">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="16dp">
-
-                        <ImageView
-                            android:id="@+id/iv_video_library"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
-                            android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_play_circle_filled_black_24dp" />
-
-                        <TextView
-                            android:id="@+id/videoLibrary_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/iv_video_library"
-                            android:text="@string/video_library"
-                            android:includeFontPadding="false"
-                            android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>-->
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -518,128 +390,10 @@
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
-                <!-- <androidx.cardview.widget.CardView
-                     android:id="@+id/cardview_help_whatsapp"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:background="@color/white"
-                     android:foreground="?android:attr/selectableItemBackground"
-                     android:padding="16dp"
-                     app:cardCornerRadius="5dp"
-                     app:cardElevation="5dp"
-                     app:cardUseCompatPadding="true">
-
-                         <RelativeLayout
-                             android:id="@+id/help_relative"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:gravity="center_vertical"
-                             android:padding="16dp">
-
-                             <ImageView
-                                 android:id="@+id/iv_whatsapp_helpline"
-                                 android:layout_width="30dp"
-                                 android:layout_height="30dp"
-                                 android:layout_centerVertical="true"
-                                 android:contentDescription="TODO"
-                                 app:srcCompat="@drawable/ic_icons8_whatsapp" />
-
-                             <TextView
-                                 android:id="@+id/help_textview"
-                                 android:layout_width="wrap_content"
-                                 android:layout_height="wrap_content"
-                                 android:layout_marginStart="10dp"
-                                 android:layout_toEndOf="@+id/iv_whatsapp_helpline"
-                                 android:text="@string/Whatsapp_Help_Cardview"
-                                 android:includeFontPadding="false"
-                                 android:fontFamily="@font/lato_medium"
-                                 android:textSize="28sp"/>
-
-                             &lt;!&ndash; Icon Credits:- <a target="_blank" href="https://icons8.com/icons/set/whatsapp">WhatsApp icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>&ndash;&gt;
-
-
-                         </RelativeLayout>
-
-
-
-                 </androidx.cardview.widget.CardView>-->
-
-                <!--<androidx.cardview.widget.CardView
-                    android:id="@+id/cardview_home"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@color/white"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="16dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="5dp"
-                    app:cardUseCompatPadding="true">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
-
-                        <Button
-                            android:id="@+id/manualsyncbutton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:background="@drawable/button_layerlist"
-                            android:clickable="true"
-                            android:drawableLeft="@drawable/ic_baseline_refresh_24"
-                            android:drawablePadding="5dp"
-                            android:paddingHorizontal="10dp"
-                            android:text="@string/refresh"
-                            android:textColor="@color/colorPrimary"
-                            android:includeFontPadding="false"
-                            android:fontFamily="@font/lato_regular"
-                            android:textSize="15sp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toStartOf="@+id/manualsyncbutton"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/lastsynctextview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerInParent="true"
-                                android:text="@string/lastsync"
-                                android:includeFontPadding="false"
-                                android:fontFamily="@font/lato_regular"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/lastsyncago"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerInParent="true"
-                                android:layout_marginEnd="10dp"
-                                tools:text="2 hours ago"
-                                android:visibility="gone"
-                                android:includeFontPadding="false"
-                                android:fontFamily="@font/lato_regular"
-                                android:textSize="14sp" />
-
-                        </LinearLayout>
-
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>-->
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
-
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardview_appointment"
@@ -685,14 +439,6 @@
 
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/manualsyncbutton"
@@ -756,7 +502,7 @@
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
-
+                    
                 </LinearLayout>
 
                 <include layout="@layout/view_app_version_info" />

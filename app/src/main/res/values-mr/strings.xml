@@ -1042,4 +1042,7 @@
     <string name="sync_failed">सिंक अयशस्वी! कृपया पुन्हा प्रयत्न करा.</string>
     <string name="no_network_sync">तुम्ही इंटरनेटशी कनेक्ट केलेले नाही. कृपया पुन्हा प्रयत्न करा.</string>
     <string name="app_sync">अॅप सिंक करत आहे..</string>
+    <string name="title_un_uploaded_visit_reminder">अपलोड न केलेले भेट स्मरणपत्र</string>
+    <string name="title_un_uploaded_visit_reminder_desc">नमस्कार , काही भेटी आहेत ज्या अजून अपलोड कराय च्या आहेत</string>
+    <string name="you_have_unuploaded_visits">तुमच्याकडे अपलोड न केलेल्या %1$s भेटी आहेत.</string>
 </resources>

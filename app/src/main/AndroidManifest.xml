@@ -12,6 +12,8 @@
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.CAMERA" />
@@ -349,15 +351,15 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
 
-        <receiver
-            android:name=".services.firebase_services.CallRTCNotifyReceiver"
-            android:exported="false">
-            <intent-filter android:priority="100">
-                <action
-                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"
-                    android:enabled="true" />
-            </intent-filter>
-        </receiver>
+<!--        <receiver-->
+<!--            android:name=".services.firebase_services.CallRTCNotifyReceiver"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter android:priority="100">-->
+<!--                <action-->
+<!--                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"-->
+<!--                    android:enabled="true" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
         <!--        <receiver-->
         <!--            android:name=".services.firebase_services.RestartServiceReceiver"-->
         <!--            android:exported="false">-->

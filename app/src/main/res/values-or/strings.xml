@@ -1082,5 +1082,8 @@
     <string name="sync_failed">"ରିଫ୍ରେଶ କରିବା ହେଉନାହିଁ , ଦୟାକରି ପରେ ଚେଷ୍ଟା କରନ୍ତୁ "</string>
     <string name="no_network_sync">"ତୁମେ ଇଣ୍ଟରନେଟ ସହ ଯୋଗ ହୋଇ ନାହଁ, ଦୟାକରି ପରେ ଚେଷ୍ଟା କରନ୍ତୁ "</string>
     <string name="app_sync">"ରେଫ୍ରେଶ ଆପ୍ "</string>
+    <string name="title_un_uploaded_visit_reminder">ପରିଦର୍ଶନ ନ ହେବାକୁ ମନେ ପକାଇବା</string>
+    <string name="title_un_uploaded_visit_reminder_desc">ହ।ଲୋ , କିଛି ପରିଦର୍ଶନ ଅଛି ଅପଲୋଡ଼ ହେବା ପାଇଁ, ଦୟାକରି ଚେଷ୍ଟା ଜାରି ରଖ</string>
+    <string name="you_have_unuploaded_visits">ତୁମର %1$s ଅପଲୋଡ଼ ନ ହୋଇଥିବା ପରିଦର୍ଶନ</string>
 
 </resources>
