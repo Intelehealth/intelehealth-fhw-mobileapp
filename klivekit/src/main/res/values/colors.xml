@@ -74,6 +74,7 @@
     <color name="end_color_1">#AA562343</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="gray_0_0">#F3F3F3</color>
     <color name="gray_0">#F1F1F1</color>
     <color name="gray_0_trans">#55F1F1F1</color>

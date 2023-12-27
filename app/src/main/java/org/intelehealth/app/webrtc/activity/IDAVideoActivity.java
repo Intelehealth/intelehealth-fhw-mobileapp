@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.databinding.ActivityVideoCallBinding;
+import org.intelehealth.klivekit.call.ui.custom.SwipeButton;
 import org.intelehealth.klivekit.call.utils.CallType;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.call.ui.activity.CoreVideoCallActivity;
@@ -39,7 +40,7 @@ import io.livekit.android.room.track.VideoTrack;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class EkalVideoActivity extends CoreVideoCallActivity {
+public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButton.SwipeEventListener {
     public static void startVideoCallActivity(Context context, RtcArgs args) {
 
         Log.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
@@ -47,7 +48,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
         args.setCallType(CallType.VIDEO);
         args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
 
-        Intent intent = new Intent(context, EkalVideoActivity.class);
+        Intent intent = new Intent(context, IDAVideoActivity.class);
         intent.putExtra(RtcUtilsKt.RTC_ARGS, args);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -84,8 +85,10 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
         binding.videoCallView.callActionView.btnMicOnOff.setOnClickListener(view -> getVideoCallViewModel().toggleMicrophone());
         binding.videoCallView.callActionView.btnVideoOnOff.setOnClickListener(view -> getVideoCallViewModel().toggleCamera());
         binding.videoCallView.callActionView.btnFlipCamera.setOnClickListener(view -> getVideoCallViewModel().flipCamera());
-        binding.incomingCallView.fabDeclineCall.setOnClickListener(view -> declineCall());
-        binding.incomingCallView.fabAcceptCall.setOnClickListener(view -> acceptCall());
+//        binding.incomingCallView.fabDeclineCall.setOnClickListener(view -> declineCall());
+//        binding.incomingCallView.fabAcceptCall.setOnClickListener(view -> acceptCall());
+        binding.incomingCallView.fabDeclineCall.swipeEventListener = IDAVideoActivity.this;
+        binding.incomingCallView.fabAcceptCall.swipeEventListener = IDAVideoActivity.this;
     }
 
     private void initView() {
@@ -279,5 +282,33 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
                         sayBye("Call ended by you", null);
                     }
                 }).setNegativeButton(R.string.no, null).create().show();
+    }
+
+    @Override
+    public void onCompleted(@NonNull View view) {
+        Timber.tag(TAG).d("onCompleted");
+        if (view.getId() == R.id.fabDeclineCall) declineCall();
+        else acceptCall();
+    }
+
+    @Override
+    public void onSwipe(@NonNull View view) {
+
+    }
+
+    @Override
+    public void onReleased(@NonNull View view) {
+        if (view.getId() == R.id.fabAcceptCall)
+            binding.incomingCallView.fabDeclineCall.setVisibility(View.VISIBLE);
+        else
+            binding.incomingCallView.fabAcceptCall.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onTap(@NonNull View view) {
+        if (view.getId() == R.id.fabAcceptCall)
+            binding.incomingCallView.fabDeclineCall.setVisibility(View.INVISIBLE);
+        else
+            binding.incomingCallView.fabAcceptCall.setVisibility(View.INVISIBLE);
     }
 }

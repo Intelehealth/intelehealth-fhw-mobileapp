@@ -12,7 +12,7 @@ import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.webrtc.activity.EkalChatActivity;
+import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.notification.AppNotification;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.RtcArgs;
@@ -47,7 +47,7 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
             new AppNotification.Builder(this)
                     .title(title)
                     .body(chatMessage.getMessage())
-                    .pendingIntent(EkalChatActivity.getPendingIntent(this, args))
+                    .pendingIntent(IDAChatActivity.getPendingIntent(this, args))
                     .send();
 
             saveChatInfoLog(args.getVisitId(), args.getDoctorUuid());

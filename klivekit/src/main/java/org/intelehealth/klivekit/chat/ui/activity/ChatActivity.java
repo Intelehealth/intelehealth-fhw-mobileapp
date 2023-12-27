@@ -94,8 +94,6 @@ import kotlin.jvm.functions.Function1;
 
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = ChatActivity.class.getName();
-    private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
-    //    private List<JSONObject> mChatList = new ArrayList<JSONObject>();
     protected RecyclerView mRecyclerView;
     protected LinearLayoutManager mLayoutManager;
     private ChatListingAdapter mChatListingAdapter;

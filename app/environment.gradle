@@ -7,7 +7,7 @@ android {
         def realTimeFbUrl = "REAL_TIME_FB_URL"
         def liveKitUrl = "LIVE_KIT_URL"
         def socketUrl = "SOCKET_URL"
-        def fbRtDb = "FB_RT_DB"
+        def fbRtDb = "FB_RT_INSTANCE"
 
         def endPointPropertyFile = file('../endpoint.properties')
         def property = new Properties()
@@ -22,13 +22,13 @@ android {
             String devRealTimeFb = property['DEV_REAL_TIME_FB_URL'].toString()
             String devLiveKit = property['DEV_LIVE_KIT_URL'].toString()
             String devSocket = property['DEV_SOCKET_URL'].toString()
-            String devFbRtDb = property['DEV_FB_RT_DB'].toString()
+            String devFbRtDb = property['DEV_FB_RT_INSTANCE'].toString()
 
             println("DEV_SERVER_URL ----> $devServer")
             println("DEV_REAL_TIME_FB_URL ------> $devRealTimeFb")
             println("DEV_LIVE_KIT_URL ------> $devLiveKit")
             println("DEV_SOCKET_URL ------> $devLiveKit")
-            println("DEV_FB_RT_DB ------> $devFbRtDb")
+            println("DEV_FB_RT_INSTANCE ------> $devFbRtDb")
 
             buildConfigField "String", serverUrl, devServer
             buildConfigField "String", realTimeFbUrl, devRealTimeFb
@@ -45,13 +45,13 @@ android {
             String prodRealTimeFb = property['PROD_REAL_TIME_FB_URL'].toString()
             String prodLiveKit = property['PROD_LIVE_KIT_URL'].toString()
             String prodSocket = property['PROD_SOCKET_URL'].toString()
-            String prodFbRtDb = property['PROD_FB_RT_DB'].toString()
+            String prodFbRtDb = property['PROD_FB_RT_INSTANCE'].toString()
 
             println("PROD_SERVER_URL ----> $prodServer")
             println("PROD_REAL_TIME_FB_URL ------> $prodRealTimeFb")
             println("PROD_LIVE_KIT_URL ------> $prodLiveKit")
             println("PROD_SOCKET_URL ------> $prodLiveKit")
-            println("PROD_FB_RT_DB ------> $prodFbRtDb")
+            println("PROD_FB_RT_INSTANCE ------> $prodFbRtDb")
 
             buildConfigField "String", serverUrl, prodServer
             buildConfigField "String", realTimeFbUrl, prodRealTimeFb

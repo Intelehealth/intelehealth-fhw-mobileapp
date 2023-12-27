@@ -90,8 +90,7 @@
             app:layout_constraintBottom_toBottomOf="@id/etMessageInput"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/etMessageInput"
-            app:layout_constraintTop_toTopOf="@id/etMessageInput"
-            tools:ignore="UsingOnClickInXml" />
+            app:layout_constraintTop_toTopOf="@id/etMessageInput" />
 
         <LinearLayout
             android:id="@+id/loading_layout"

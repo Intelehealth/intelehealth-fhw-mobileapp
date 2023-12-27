@@ -4,7 +4,6 @@ import android.os.Bundle
 import com.google.android.material.button.MaterialButton
 import org.intelehealth.app.R
 import org.intelehealth.app.shared.BaseActivity
-import org.intelehealth.app.webrtc.activity.EkalVideoActivity
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.model.RtcArgs
 
@@ -38,7 +37,7 @@ class CallNotificationTestActivity : BaseActivity() {
         CallHandlerUtils.operateIncomingCall(
             this,
             RtcArgs.dummy().apply { patientName = "Test User" },
-            EkalVideoActivity::class.java
+            IDAVideoActivity::class.java
         )
     }
 }

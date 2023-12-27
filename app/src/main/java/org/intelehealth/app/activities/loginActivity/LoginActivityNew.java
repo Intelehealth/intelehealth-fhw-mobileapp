@@ -382,6 +382,7 @@ public class LoginActivityNew extends AppCompatActivity {
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
 
                                             provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
+                                            IntelehealthApplication.getInstance().initSocketConnection();
 //                                                success = true;
                                           /*  final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, mPassword, null);
@@ -411,7 +412,8 @@ public class LoginActivityNew extends AppCompatActivity {
                                     try {
                                         //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                         hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
-                                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                    } catch (NoSuchAlgorithmException |
+                                             UnsupportedEncodingException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                     }
 

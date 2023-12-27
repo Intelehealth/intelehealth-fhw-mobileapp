@@ -19,7 +19,7 @@ import org.intelehealth.klivekit.model.RtcArgs
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class EkalCallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClickListener {
+class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClickListener {
 
     private lateinit var binding: ActivityCallLogBinding
     private lateinit var adapter: CallLogAdapter
@@ -37,11 +37,11 @@ class EkalCallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClic
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(
                 DividerItemDecoration(
-                    this@EkalCallLogActivity, DividerItemDecoration.VERTICAL
+                    this@IDACallLogActivity, DividerItemDecoration.VERTICAL
                 )
             )
-            this@EkalCallLogActivity.adapter.updateItems(logs.toMutableList())
-            adapter = this@EkalCallLogActivity.adapter
+            this@IDACallLogActivity.adapter.updateItems(logs.toMutableList())
+            adapter = this@IDACallLogActivity.adapter
         }
     }
 
@@ -70,6 +70,6 @@ class EkalCallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClic
         args.patientName = callLog.roomName
         args.visitId = VisitsDAO().getVisitIdByPatientId(args.patientId)
         args.nurseId = callLog.calleeId
-        EkalChatActivity.startChatActivity(this, args)
+        IDAChatActivity.startChatActivity(this, args)
     }
 }

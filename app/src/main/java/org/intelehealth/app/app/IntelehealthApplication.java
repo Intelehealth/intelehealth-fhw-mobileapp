@@ -1,11 +1,9 @@
 package org.intelehealth.app.app;
 
 import android.app.Activity;
-import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
@@ -26,9 +24,9 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.webrtc.activity.EkalCallLogActivity;
-import org.intelehealth.app.webrtc.activity.EkalChatActivity;
-import org.intelehealth.app.webrtc.activity.EkalVideoActivity;
+import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
+import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
 import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.Manager;
@@ -57,9 +55,11 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     private static IntelehealthApplication sIntelehealthApplication;
     public String refreshedFCMTokenID = "";
     public String webrtcTempCallId = "";
+
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
+
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper;
 //    private RealTimeDataChangedObserver dataChangedObserver;
 
@@ -115,7 +115,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         }
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
-        startRealTimeObserverAndSocket();
+        initSocketConnection();
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree());
@@ -155,27 +155,15 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
     }
 
-    public void startRealTimeObserverAndSocket() {
-//        startRealTimeObserver();
-        initSocketConnection();
-    }
-
-    private void startRealTimeObserver() {
-//        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
-//            dataChangedObserver = new RealTimeDataChangedObserver(this);
-//            dataChangedObserver.startObserver();
-//        }
-    }
-
     /**
      * Socket should be open and close app level,
      * so when app create open it and close on app terminate
      */
-    private void initSocketConnection() {
+    public void initSocketConnection() {
         Log.d(TAG, "initSocketConnection: ");
         if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().isEmpty()) {
-            Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
-            String socketUrl = "https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
+            Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+            String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
                     + sessionManager.getProviderID()
                     + "&name=" + sessionManager.getChwname();
             if (!socketManager.isConnected()) socketManager.connect(socketUrl);
@@ -185,25 +173,24 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 
     private void initRtcConfig() {
         new RtcEngine.Builder()
-                .callUrl("wss://" + sessionManager.getServerUrl() + ":9090")
-                .socketUrl("https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
+                .callUrl(BuildConfig.LIVE_KIT_URL)
+                .socketUrl(BuildConfig.SOCKET_URL + "?userId="
                         + sessionManager.getProviderID()
                         + "&name=" + sessionManager.getChwname())
-                .callIntentClass(EkalVideoActivity.class)
-                .chatIntentClass(EkalChatActivity.class)
-                .callLogIntentClass(EkalCallLogActivity.class)
+                .callIntentClass(IDAVideoActivity.class)
+                .chatIntentClass(IDAChatActivity.class)
+                .callLogIntentClass(IDACallLogActivity.class)
                 .build().saveConfig(this);
     }
 
     @Override
     public void onTerminate() {
         Timber.tag("APP").d("onTerminate");
-        stopRealTimeObserverAndSocket();
+        disconnectSocket();
         super.onTerminate();
     }
 
-    public void stopRealTimeObserverAndSocket() {
-//        if (dataChangedObserver != null) dataChangedObserver.stopObserver();
+    public void disconnectSocket() {
         socketManager.disconnect();
     }
 }

@@ -5,5 +5,3 @@ package org.intelehealth.klivekit.chat.utils
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-
-const val ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT"

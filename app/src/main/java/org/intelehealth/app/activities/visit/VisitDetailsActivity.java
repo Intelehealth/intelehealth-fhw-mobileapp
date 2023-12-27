@@ -41,7 +41,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -82,7 +81,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.webrtc.activity.EkalChatActivity;
+import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -809,7 +808,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             args.setPatientName(patientName);
             args.setVisitId(visitID);
             args.setNurseId(encounterDTO.getProvideruuid());
-            EkalChatActivity.startChatActivity(VisitDetailsActivity.this, args);
+            IDAChatActivity.startChatActivity(VisitDetailsActivity.this, args);
         } else {
             //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
             Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
@@ -975,7 +974,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         int appointmentID = appointmentInfo.getId();
         String reason = "Visit was ended";
         String providerID = sessionManager.getProviderID();
-        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        String baseurl = sessionManager.getServerUrl() + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }

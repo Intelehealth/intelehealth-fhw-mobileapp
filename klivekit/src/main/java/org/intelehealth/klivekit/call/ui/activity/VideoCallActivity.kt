@@ -3,10 +3,10 @@ package org.intelehealth.klivekit.call.ui.activity
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import io.livekit.android.renderer.SurfaceViewRenderer
 import io.livekit.android.renderer.TextureViewRenderer
 import io.livekit.android.room.participant.ConnectionQuality
 import io.livekit.android.room.track.CameraPosition
@@ -49,6 +49,18 @@ class VideoCallActivity : CoreVideoCallActivity() {
         binding.actionView.flipImv.setOnClickListener { videoCallViewModel.flipCamera() }
         binding.callingLayout.btnCallReject.setOnClickListener { declineCall() }
         binding.callingLayout.btnCallAccept.setOnClickListener { acceptCall() }
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                MaterialAlertDialogBuilder(this@VideoCallActivity).apply {
+                    setMessage(R.string.call_end_aler_txt)
+                    setPositiveButton(R.string.yes) { _, _ ->
+                        sayBye("Call ended by you")
+                    }
+                    setNegativeButton(R.string.no, null)
+                }.create().show()
+            }
+        })
+
     }
 
     override fun onIncomingCall() {
@@ -143,15 +155,5 @@ class VideoCallActivity : CoreVideoCallActivity() {
     override fun onConnectivityChanged(it: ConnectionQuality?) {
         super.onConnectivityChanged(it)
         binding.tvPoorConnectivity.isVisible = it == ConnectionQuality.POOR
-    }
-
-    override fun onBackPressed() {
-        MaterialAlertDialogBuilder(this).apply {
-            setMessage(R.string.call_end_aler_txt)
-            setPositiveButton(R.string.yes) { _, _ ->
-                sayBye("Call ended by you")
-            }
-            setNegativeButton(R.string.no, null)
-        }.create().show()
     }
 }

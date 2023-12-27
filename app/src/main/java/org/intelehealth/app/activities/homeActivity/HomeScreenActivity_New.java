@@ -23,7 +23,6 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,7 +39,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
-import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -58,7 +56,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -74,10 +71,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.BuildConfig;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
@@ -97,7 +94,6 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -115,18 +111,12 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -174,7 +164,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private static final String TAG_HELP = "TAG_HELP";
 
     private void saveToken() {
-        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         // save fcm reg. token for chat (Video)
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }
@@ -579,7 +569,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
-            requestPermission();
+//            requestPermission();
         }
         //bottom nav
         bottomNav = findViewById(R.id.bottom_nav_home);
@@ -747,10 +737,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             alertDialog.dismiss();
             logout();
 
-            if (CallListenerBackgroundService.isInstanceCreated()) {
-                Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-                context.stopService(serviceIntent);
-            }
+//            if (CallListenerBackgroundService.isInstanceCreated()) {
+//                Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//                context.stopService(serviceIntent);
+//            }
 
         });
 
@@ -800,11 +790,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-            context.startService(serviceIntent);
-        }
+//        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
+//        if (!CallListenerBackgroundService.isInstanceCreated()) {
+//            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//            context.startService(serviceIntent);
+//        }
     }
 
     private String mLastTag = "";
@@ -862,12 +852,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                selectDrawerItem(menuItem);
-                return false;
-            }
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            selectDrawerItem(menuItem);
+            return false;
         });
     }
 
@@ -875,34 +862,28 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         Fragment fragment = null;
         Class fragmentClass = null;
         String tag = "";
-        switch (menuItem.getItemId()) {
-            case R.id.menu_my_achievements:
-                tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                tvAppLastSync.setVisibility(View.GONE);
-                ivHamburger.setVisibility(View.GONE);
-                imageViewIsInternet.setVisibility(View.VISIBLE);
-                imageViewIsNotification.setVisibility(View.GONE);
-                fragment = new MyAchievementsFragment();
-                tag = TAG_ACHIEVEMENT;
-                break;
-            case R.id.menu_video_lib:
-                tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
-                fragment = new InformativeVideosFragment_New();
-                break;
-            case R.id.menu_change_language:
-                Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.menu_about_us:
-                Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
-                startActivity(i);
-                break;
-            case R.id.menu_logout:
-                wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
-                break;
-            default:
+        int itemId = menuItem.getItemId();
+        if (itemId == R.id.menu_my_achievements) {
+            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+            tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            tvAppLastSync.setVisibility(View.GONE);
+            ivHamburger.setVisibility(View.GONE);
+            imageViewIsInternet.setVisibility(View.VISIBLE);
+            imageViewIsNotification.setVisibility(View.GONE);
+            fragment = new MyAchievementsFragment();
+            tag = TAG_ACHIEVEMENT;
+        } else if (itemId == R.id.menu_video_lib) {
+            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
+            fragment = new InformativeVideosFragment_New();
+        } else if (itemId == R.id.menu_change_language) {
+            Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (itemId == R.id.menu_about_us) {
+            Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
+            startActivity(i);
+        } else if (itemId == R.id.menu_logout) {
+            wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
         }
 
         mDrawerLayout.closeDrawers();
@@ -953,7 +934,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
-        requestPermission();
+//        requestPermission();
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
@@ -1064,7 +1045,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private void hideSyncProgressBar(boolean isSuccess) {
         mIsFirstTimeSyncDone = true;
         saveToken();
-        requestPermission();
+//        requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
@@ -1078,16 +1059,16 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     @Override
                     public void run() {
 
-                        WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                        WorkManager.getInstance(HomeScreenActivity_New.this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
                     }
                 }, 10000);
             }
         }
-        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            stopService(serviceIntent);
-        }
-        startService(serviceIntent);
+//        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//        if (!CallListenerBackgroundService.isInstanceCreated()) {
+//            stopService(serviceIntent);
+//        }
+//        startService(serviceIntent);
 
         mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
     }
@@ -1150,16 +1131,16 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
 
-    private void requestPermission() {
-        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(serviceIntent);
-            } else {
-                context.startService(serviceIntent);
-            }
-        }
-    }
+//    private void requestPermission() {
+//        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//        if (!CallListenerBackgroundService.isInstanceCreated()) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                context.startForegroundService(serviceIntent);
+//            } else {
+//                context.startService(serviceIntent);
+//            }
+//        }
+//    }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -1265,6 +1246,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     public void logout() {
         // to insert time spent by user into the db
         insertTimeSpentByUserIntoDb();
+        IntelehealthApplication.getInstance().disconnectSocket();
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
         Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);

@@ -75,8 +75,8 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
     }
 
     private void loadAllAppointments() {
-        Log.v(TAG, "loadAllAppointments" );
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        Log.v(TAG, "loadAllAppointments");
+        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
             Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_START);
