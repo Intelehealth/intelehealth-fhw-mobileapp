@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="video_call_action_btn_min_size">56dp</dimen>
+    <dimen name="video_call_action_btn_min_size">72dp</dimen>
     <dimen name="std_72dp">72dp</dimen>
     <dimen name="std_36sp">36sp</dimen>
     <dimen name="std_16dp">16dp</dimen>

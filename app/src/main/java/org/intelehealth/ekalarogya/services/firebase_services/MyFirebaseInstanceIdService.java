@@ -9,5 +9,23 @@ import androidx.annotation.NonNull;
  */
 
 public class MyFirebaseInstanceIdService {
-    private static final String TAG = MyFirebaseInstanceIdService.class.getSimpleName();
+
+//    private static final String TAG = MyFirebaseInstanceIdService.class.getSimpleName();
+//
+//    @NonNull
+//    @Override
+//    public String getId() {
+//        return null;
+//    }
+//
+//    @NonNull
+//    @Override
+//    public String getToken() {
+//        //Getting registration token
+//        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+//
+//        //Displaying token on logcat
+//        Log.d(TAG, "Refreshed token: " + refreshedToken);
+//        return null;
+//    }
 }
