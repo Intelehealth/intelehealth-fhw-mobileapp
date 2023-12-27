@@ -13,11 +13,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONException;
@@ -29,6 +31,7 @@ import java.util.Objects;
 public class TermsAndConditionsActivity_New extends AppCompatActivity {
     private static final String TAG = "TermsAndConditionsActiv";
     private int mIntentFrom;
+    private AlertDialog loadingDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,24 +45,18 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
 
 
         ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               finish();
-            }
-        });
+        ivBack.setOnClickListener(v -> finish());
         TextView tvText = findViewById(R.id.tv_term_condition);
         JSONObject obj = null;
+        loadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), getString(R.string.please_wait));
         try {
-            obj = new JSONObject(Objects.requireNonNullElse(
-                    FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
-                    String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-            String privacy_string = new SessionManager(this).getAppLanguage().equalsIgnoreCase("hi") ? obj.getString("terms_and_conditions_Hindi"):obj.getString("terms_and_conditions");
+            obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+            String privacy_string = new SessionManager(this).getAppLanguage().equalsIgnoreCase("hi") ? obj.getString("terms_and_conditions_Hindi") : obj.getString("terms_and_conditions");
             tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_LEGACY));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        loadingDialog.dismiss();
     }
 
     @Override

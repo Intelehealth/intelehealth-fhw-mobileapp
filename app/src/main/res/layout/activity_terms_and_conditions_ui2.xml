@@ -46,7 +46,6 @@
             android:layout_toEndOf="@+id/iv_back_arrow_terms"
             android:fontFamily="@font/lato_regular"
             android:justificationMode="inter_word"
-            android:text="@string/privacy_policy_content_old"
             android:textSize="14sp" />
 
 
