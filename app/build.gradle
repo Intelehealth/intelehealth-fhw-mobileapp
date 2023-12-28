@@ -21,10 +21,10 @@ android {
 
     defaultConfig {
         applicationId "org.intelehealth.nak"
-        minSdkVersion 26
-        targetSdkVersion 34
-        versionCode 64
-        versionName '4.1 - Beta'
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName '1.0-Beta'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
@@ -84,7 +84,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     implementation 'com.google.android.gms:play-services-fido:20.1.0'
@@ -141,21 +141,6 @@ dependencies {
 
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
     annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
-
-//    implementation 'com.google.firebase:firebase-crashlytics:18.6.0'
-//    implementation 'com.google.firebase:firebase-analytics:21.5.0'
-//    implementation "com.google.firebase:firebase-core:21.1.1"
-//    //Targeting S+ (version 31 and above)
-//    implementation 'com.google.firebase:firebase-messaging:23.4.0'
-//    implementation "com.google.firebase:firebase-iid:21.1.0"
-//
-//    implementation platform('com.google.firebase:firebase-bom:25.12.0')
-//    implementation 'com.google.firebase:firebase-crashlytics'
-//    implementation 'com.google.firebase:firebase-analytics'
-//
-//    api 'com.google.android.material:material:1.10.0'
-//    implementation 'com.google.firebase:firebase-database'
-//    implementation 'com.google.firebase:firebase-config'
 
     /* UI2.0*/
     //for pinview

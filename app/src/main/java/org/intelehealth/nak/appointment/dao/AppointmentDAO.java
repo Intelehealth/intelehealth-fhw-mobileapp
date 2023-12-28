@@ -920,7 +920,7 @@ public class AppointmentDAO {
         toDate = getDateInFormat(toDate);
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor idCursor;
+        Cursor idCursor = null;
 
         if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
             String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
@@ -1003,7 +1003,7 @@ public class AppointmentDAO {
     public List<AppointmentInfo> getAllCancelledAppointmentsWithFilters(String fromDate, String toDate, String finalQuery) {
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String currentDate = dateFormat1.format(new Date());
-        Cursor idCursor;
+        Cursor idCursor = null;
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -1088,7 +1088,7 @@ public class AppointmentDAO {
         toDate = getDateInFormat(toDate);
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor idCursor;
+        Cursor idCursor = null;
 
         if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
             String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
