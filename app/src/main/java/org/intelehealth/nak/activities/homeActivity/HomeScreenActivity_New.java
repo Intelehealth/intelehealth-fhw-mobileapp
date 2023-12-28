@@ -113,6 +113,7 @@ import org.intelehealth.nak.utilities.TooltipWindow;
 import org.intelehealth.nak.utilities.UrlModifiers;
 import org.intelehealth.nak.utilities.exception.DAOException;
 import org.intelehealth.nak.webrtc.activity.BaseActivity;
+import org.intelehealth.nak.webrtc.activity.NammaCallLogActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -872,34 +873,31 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         Fragment fragment = null;
         Class fragmentClass = null;
         String tag = "";
-        switch (menuItem.getItemId()) {
-            case R.id.menu_my_achievements:
-                tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                tvAppLastSync.setVisibility(View.GONE);
-                ivHamburger.setVisibility(View.GONE);
-                imageViewIsInternet.setVisibility(View.VISIBLE);
-                imageViewIsNotification.setVisibility(View.GONE);
-                fragment = new MyAchievementsFragment();
-                tag = TAG_ACHIEVEMENT;
-                break;
-            case R.id.menu_video_lib:
-                tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
-                fragment = new InformativeVideosFragment_New();
-                break;
-            case R.id.menu_change_language:
-                Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.menu_about_us:
-                Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
-                startActivity(i);
-                break;
-            case R.id.menu_logout:
-                wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
-                break;
-            default:
+        int itemId = menuItem.getItemId();
+        if (itemId == R.id.menu_my_achievements) {
+            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+            tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            tvAppLastSync.setVisibility(View.GONE);
+            ivHamburger.setVisibility(View.GONE);
+            imageViewIsInternet.setVisibility(View.VISIBLE);
+            imageViewIsNotification.setVisibility(View.GONE);
+            fragment = new MyAchievementsFragment();
+            tag = TAG_ACHIEVEMENT;
+        } else if (itemId == R.id.menu_video_lib) {
+            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
+            fragment = new InformativeVideosFragment_New();
+        } else if (itemId == R.id.menu_change_language) {
+            Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (itemId == R.id.menu_view_call_logs) {
+            Intent intent = new Intent(HomeScreenActivity_New.this, NammaCallLogActivity.class);
+            startActivity(intent);
+        } else if (itemId == R.id.menu_about_us) {
+            Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
+            startActivity(i);
+        } else if (itemId == R.id.menu_logout) {
+            wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
         }
 
         mDrawerLayout.closeDrawers();

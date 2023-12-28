@@ -99,6 +99,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.nak.BuildConfig;
 import org.intelehealth.nak.R;
 import org.intelehealth.nak.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
@@ -335,32 +336,46 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             return;
         }
         EncounterDAO encounterDAO = new EncounterDAO();
-        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUUID);
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
-        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, NammaChatActivity.class);
-        chatIntent.putExtra("patientName", patientName);
-        chatIntent.putExtra("visitUuid", visitUUID);
-        chatIntent.putExtra("patientUuid", patientUuid);
-        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-        chatIntent.putExtra("isForVideo", false);
-        if (rtcConnectionDTO != null) {
-            try {
-                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
-                    Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-                } else {
-                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-                    startActivity(chatIntent);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+        RtcArgs args = new RtcArgs();
+        if (rtcConnectionDTO != null)
+            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
+        else args.setDoctorUuid("");
+        args.setPatientId(patientUuid);
+        args.setPatientName(patientName);
+        args.setVisitId(visitUUID);
+        args.setNurseId(encounterDTO.getProvideruuid());
+        NammaChatActivity.startChatActivity(VisitSummaryActivity_New.this, args);
 
-        } else {
-            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-        }
+//        EncounterDAO encounterDAO = new EncounterDAO();
+//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUUID);
+//        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+//        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
+//        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, NammaChatActivity.class);
+//        chatIntent.putExtra("patientName", patientName);
+//        chatIntent.putExtra("visitUuid", visitUUID);
+//        chatIntent.putExtra("patientUuid", patientUuid);
+//        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+//        chatIntent.putExtra("isForVideo", false);
+//        if (rtcConnectionDTO != null) {
+//            try {
+//                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+//                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
+//                    Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+//                } else {
+//                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+//                    startActivity(chatIntent);
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//        } else {
+//            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+//            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+//        }
 
     }
 
