@@ -99,8 +99,10 @@ public class VisitReasonQuestionsFragment extends Fragment {
             view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    getActivity().setResult(Activity.RESULT_OK);
-                    getActivity().finish();
+                    if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
+                        requireActivity().setResult(Activity.RESULT_OK);
+                        requireActivity().finish();
+                    }
                 }
             });
         }

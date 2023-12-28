@@ -100,8 +100,10 @@ public class PhysicalExaminationFragment extends Fragment {
                 view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        requireActivity().setResult(Activity.RESULT_OK);
-                        requireActivity().finish();
+                        if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
+                            requireActivity().setResult(Activity.RESULT_OK);
+                            requireActivity().finish();
+                        }
                     }
                 });
             }

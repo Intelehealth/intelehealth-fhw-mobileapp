@@ -276,7 +276,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         //genericViewHolder.superNestedContainerLinearLayout.setVisibility(View.GONE);
 
 
-
         if (mIsForPhysicalExam) {
             genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", position + 1, mContext.getString(R.string.of), mPhysicalExam.getTotalNumberOfExams(), mContext.getString(R.string.questions))); //"1 of 10 questions"
 
@@ -784,6 +783,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
+                            mItemList.get(position).setDataCaptured(true);
                             mOnItemSelection.onAllAnswered(true);
 
                         }
@@ -811,11 +811,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300, mIsEditMode);
                 for (int i = 0; i < mItemList.get(position).getOptionsList().size(); i++) {
                     if (mItemList.get(position).getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
-                        mItemList.get(position).setDataCaptured(true);
+                        //if (mIsEditMode) mItemList.get(position).setDataCaptured(true);
                         mItemList.get(position).setSelected(true);
                         Log.v(TAG, "updated associate symptoms selected status");
                     }
                 }
+                AdapterUtils.setToDefault(submitButton);
                 AdapterUtils.setToDefault(holder.submitButton);
                 //VisitUtils.scrollNow(holder.recyclerView, 1000, 0, 200);
             }

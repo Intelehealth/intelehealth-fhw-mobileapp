@@ -46,6 +46,7 @@ public class FamilyHistoryFragment extends Fragment {
     }
 
     private String engineVersion;
+
     public String getEngineVersion() {
         return engineVersion;
     }
@@ -112,8 +113,10 @@ public class FamilyHistoryFragment extends Fragment {
                 view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        requireActivity().setResult(Activity.RESULT_OK);
-                        requireActivity().finish();
+                        if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
+                            requireActivity().setResult(Activity.RESULT_OK);
+                            requireActivity().finish();
+                        }
                     }
                 });
             }
@@ -134,16 +137,16 @@ public class FamilyHistoryFragment extends Fragment {
                     if (mCurrentComplainNodeOptionsIndex < mCurrentRootOptionList.size() - 1) {
                         mCurrentComplainNodeOptionsIndex++;
 
-                        mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex),getEngineVersion());
+                        mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex), getEngineVersion());
                     /*recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
                         }
                     }, 100);*/
-                        VisitUtils.scrollNow(recyclerView, 300, 0, 500,mIsEditMode);
+                        VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode);
 
-                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400,mIsEditMode);
+                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode);
 
                         mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
                     } else {
@@ -174,7 +177,7 @@ public class FamilyHistoryFragment extends Fragment {
                 }
 
                 @Override
-                public void onImageRemoved(int nodeIndex,int imageIndex, String image) {
+                public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
                 }
             });
@@ -184,7 +187,7 @@ public class FamilyHistoryFragment extends Fragment {
                 mQuestionsListingAdapter.addItemAll(mCurrentRootOptionList);
                 mCurrentComplainNodeOptionsIndex = mCurrentRootOptionList.size() - 1;
             } else {
-                mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex),getEngineVersion());
+                mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex), getEngineVersion());
 
             }
         } else {
