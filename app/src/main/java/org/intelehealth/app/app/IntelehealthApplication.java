@@ -63,7 +63,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper;
 //    private RealTimeDataChangedObserver dataChangedObserver;
 
-    private SocketManager socketManager = SocketManager.getInstance();
+    private final SocketManager socketManager = SocketManager.getInstance();
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -91,28 +91,28 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
                 .replace(' ', '0');
 
-        String url = sessionManager.getServerUrl();
-        if (url == null) {
-            Log.i(TAG, "onCreate: Parse not init");
-        } else {
-            Dispatcher dispatcher = new Dispatcher();
-            dispatcher.setMaxRequestsPerHost(1);
-            dispatcher.setMaxRequests(4);
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.dispatcher(dispatcher);
+//        String url = BuildConfig.SERVER_URL;
+//        if (url == null) {
+//            Log.i(TAG, "onCreate: Parse not init");
+//        } else {
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequestsPerHost(1);
+        dispatcher.setMaxRequests(4);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.dispatcher(dispatcher);
 
-            Parse.initialize(new Parse.Configuration.Builder(this)
-                    .clientBuilder(builder)
-                    .applicationId(AppConstants.IMAGE_APP_ID)
-                    .server("https://" + url + ":1337/parse/")
-                    .build()
-            );
-            Log.i(TAG, "onCreate: Parse init");
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .clientBuilder(builder)
+                .applicationId(AppConstants.IMAGE_APP_ID)
+                .server(BuildConfig.SERVER_URL + ":1337/parse/")
+                .build()
+        );
+        Log.i(TAG, "onCreate: Parse init");
 
-            InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
-            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-            mDbHelper.onCreate(localdb);
-        }
+        InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        mDbHelper.onCreate(localdb);
+//        }
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         initSocketConnection();
@@ -161,7 +161,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
      */
     public void initSocketConnection() {
         Log.d(TAG, "initSocketConnection: ");
-        if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().isEmpty()) {
+        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
             Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
             String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
                     + sessionManager.getProviderID()

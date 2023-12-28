@@ -64,6 +64,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.hbb20.CountryCodePicker;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -574,13 +575,12 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void createProfileAttribute(String attributeTypeUuid, String newValue) {
-        String serverUrl = "https://" + AppConstants.DEMO_URL;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         ProfileCreateAttribute inputModel = new ProfileCreateAttribute(newValue, attributeTypeUuid);
 
-        ApiClient.changeApiBaseUrl(serverUrl);
+        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResponseBody> profileAttributeCreateRequest = apiService.PROFILE_ATTRIBUTE_CREATE(sessionManager.getProviderID(),
                 inputModel, "Basic " + sessionManager.getEncoded());
@@ -604,7 +604,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void updateProfileAttribute(String attributeTypeUuid, String newValue) {
-        String serverUrl = "https://" + AppConstants.DEMO_URL + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
+        String serverUrl = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -634,13 +634,12 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void updateDOB(Integer updatedAge, String updatedDOB, String gender) {
-        String serverUrl = "https://" + AppConstants.DEMO_URL;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         ProfileUpdateAge inputModel = new ProfileUpdateAge(updatedAge, updatedDOB, gender);
 
-        ApiClient.changeApiBaseUrl(serverUrl);
+        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResponseBody> profileAgeUpdateRequest = apiService.PROFILE_AGE_UPDATE(personUuid,
                 inputModel, "Basic " + sessionManager.getEncoded());

@@ -55,6 +55,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
@@ -765,7 +766,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         request.setId(appointment_id);
         request.setReason(reason);
         request.setHwUUID(new SessionManager(AppointmentDetailsActivity.this).getProviderID()); // user id / healthworker id
-        String baseurl = sessionManager.getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .cancelAppointment(request)
                 .enqueue(new Callback<CancelResponse>() {

@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.JsonObject;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
@@ -164,7 +165,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 
     public void apiCallForChangePassword(String currentPassword, String newPassword) {
         cpd.show();
-        String serverUrl =  sessionManager.getServerUrl();
+        String serverUrl = BuildConfig.SERVER_URL;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         String encoded = "Bearer " + sessionManager.getEncoded(); //Bearer bnVyc2UyMzpEYW5pZWxDcmFpZzE=

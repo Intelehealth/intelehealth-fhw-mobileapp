@@ -38,6 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -318,7 +319,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.loading_slots));
         //api for get appointment slots for selected date and doctor speciality
 
-        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi().getSlots(mSelectedStartDate, mSelectedEndDate, speciality).enqueue(new Callback<SlotInfoResponse>() {
             @Override
             public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {

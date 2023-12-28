@@ -34,6 +34,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
@@ -219,7 +220,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     public void apiCallForRequestOTP(Context context, String username, String mobileNo) {
         buttonContinue.setEnabled(false);
         cpd.show();
-        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
+        String serverUrl = BuildConfig.SERVER_URL + ":3004";
         Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

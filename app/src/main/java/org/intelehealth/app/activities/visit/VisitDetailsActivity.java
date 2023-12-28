@@ -49,6 +49,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
@@ -974,7 +975,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         int appointmentID = appointmentInfo.getId();
         String reason = "Visit was ended";
         String providerID = sessionManager.getProviderID();
-        String baseurl = sessionManager.getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }

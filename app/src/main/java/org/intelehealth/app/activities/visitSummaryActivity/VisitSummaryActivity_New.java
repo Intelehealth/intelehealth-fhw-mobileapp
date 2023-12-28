@@ -102,6 +102,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -1835,7 +1836,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         int appointmentID = appointmentInfo.getId();
         String reason = "Visit was ended";
         String providerID = sessionManager.getProviderID();
-        String baseurl = sessionManager.getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }
@@ -4181,7 +4182,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            sign_url = "https://" + AppConstants.DEMO_URL + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
+            sign_url = BuildConfig.SERVER_URL + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 //            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
@@ -4597,7 +4598,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            sign_url = "https://" + AppConstants.DEMO_URL + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
+            sign_url = BuildConfig.SERVER_URL + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 //            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +

@@ -70,6 +70,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
@@ -1039,7 +1040,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = "https://" + AppConstants.DEMO_URL + "/ds/" + details.getUuid() + "_sign.png";
+            sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
             Log.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";
@@ -2306,7 +2307,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = "https://" + AppConstants.DEMO_URL + "/ds/" + details.getUuid() + "_sign.png";
+            sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
             Log.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";

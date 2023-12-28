@@ -11,6 +11,7 @@ import com.google.firebase.messaging.FirebaseMessaging
  * Mob   : +919727206702
  **/
 object FcmTokenGenerator {
+    @JvmStatic
     fun getDeviceToken(onNewToken: (String) -> Unit) {
         FirebaseMessaging.getInstance().isAutoInitEnabled = true
         FirebaseMessaging.getInstance().token.addOnCompleteListener {

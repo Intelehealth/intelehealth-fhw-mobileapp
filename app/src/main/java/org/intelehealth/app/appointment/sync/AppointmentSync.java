@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -30,7 +31,7 @@ public class AppointmentSync {
         String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
 
-        String baseurl = new SessionManager(context).getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
 

@@ -89,7 +89,7 @@ dependencies {
     implementation project(path: ':ihutils')
     testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.media:media:1.6.0'
+    implementation 'androidx.media:media:1.7.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
 
     //fingerprint lock
@@ -131,11 +131,11 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.6'
 
     // (Java only) Targeting S+ (version 31 and above)
-    implementation 'androidx.work:work-runtime:2.8.1'
+    implementation 'androidx.work:work-runtime:2.9.0'
     // optional - RxJava2 support
-    implementation 'androidx.work:work-rxjava2:2.8.1'
+    implementation 'androidx.work:work-rxjava2:2.9.0'
     // optional - Test helpers
-    androidTestImplementation 'androidx.work:work-testing:2.8.1'
+    androidTestImplementation 'androidx.work:work-testing:2.9.0'
 
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
     annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"

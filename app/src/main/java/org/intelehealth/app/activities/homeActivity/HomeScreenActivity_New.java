@@ -109,6 +109,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 
@@ -126,6 +127,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
 import okhttp3.ResponseBody;
 
 public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
@@ -280,6 +282,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         networkUtils = new NetworkUtils(context, this);
         DeviceInfoUtils.saveDeviceInfo(this);
+        FcmTokenGenerator.getDeviceToken(token -> {
+            IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+            saveToken();
+            return Unit.INSTANCE;
+        });
 //        catchFCMMessageData();
 
         loadFragment(new HomeFragment_New(), TAG_HOME);

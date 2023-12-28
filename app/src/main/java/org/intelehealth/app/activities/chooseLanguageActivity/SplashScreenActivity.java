@@ -108,7 +108,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         // refresh the fcm token
-        FcmTokenGenerator.INSTANCE.getDeviceToken(token -> {
+        FcmTokenGenerator.getDeviceToken(token -> {
             IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
             return Unit.INSTANCE;
         });

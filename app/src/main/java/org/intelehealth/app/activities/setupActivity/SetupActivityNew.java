@@ -168,7 +168,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             }
         });
 
-        if(isNetworkConnected()) {
+        if (isNetworkConnected()) {
             mNoInternetTextView.setVisibility(View.GONE);
             getLocationFromServer();
         }
@@ -426,7 +426,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                     sessionManager.setLocationDescription(location.getDescription());
                                                     sessionManager.setServerUrl(CLEAN_URL);
                                                     sessionManager.setServerUrlRest(BASE_URL);
-                                                    sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
+                                                    sessionManager.setServerUrlBase(CLEAN_URL + "/openmrs");
                                                     sessionManager.setBaseUrl(BASE_URL);
                                                     sessionManager.setSetupComplete(true);
                                                     sessionManager.setFirstTimeLaunch(false);
@@ -561,7 +561,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
     private void getLocationFromServer() {
         isLocationFetched = false;
-        String BASE_URL = "https://" + AppConstants.DEMO_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched) {
             ApiClient.changeApiBaseUrl(BASE_URL);
             ApiInterface apiService = ApiClient.createService(ApiInterface.class);

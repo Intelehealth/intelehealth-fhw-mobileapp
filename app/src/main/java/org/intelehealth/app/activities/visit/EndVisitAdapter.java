@@ -35,6 +35,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.checkerframework.checker.units.qual.A;
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -266,7 +267,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         int appointmentID = appointmentInfo.getId();
         String reason = "Visit was ended";
         String providerID = sessionManager.getProviderID();
-        String baseurl = sessionManager.getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitID, appointmentID, reason, providerID, baseurl);
     }

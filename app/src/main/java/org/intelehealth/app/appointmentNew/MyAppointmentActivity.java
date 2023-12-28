@@ -21,6 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
@@ -76,7 +77,7 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
 
     private void loadAllAppointments() {
         Log.v(TAG, "loadAllAppointments");
-        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
             Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_START);

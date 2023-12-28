@@ -8,6 +8,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
@@ -150,17 +151,17 @@ public class AppConstants {
 
 
     public static String getFirebaseRTDBUrl() {
-        return FIREBASE_REAL_TIME_DB_BASE_URL;
+        return BuildConfig.REAL_TIME_FB_URL;
 
     }
 
     public static String getFirebaseRTDBRootRef() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
+        return BuildConfig.FB_RT_INSTANCE.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
 
     }
 
     public static String getFirebaseRTDBRootRefForDeviceInfo() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
+        return BuildConfig.FB_RT_INSTANCE.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
 
     }
 
@@ -169,7 +170,7 @@ public class AppConstants {
     //public static final String DEMO_URL = "demo2.intelehealth.org";
     //public static final String DEMO_URL = "demo.intelehealth.org";
 
-    public static final String DEMO_URL = "dev.intelehealth.org";
+//    public static final String DEMO_URL = "dev.intelehealth.org";
 //    public static final String DEMO_URL = "revamp.intelehealth.org";
     //public static final String DEMO_URL = "testing.intelehealth.org";
 
