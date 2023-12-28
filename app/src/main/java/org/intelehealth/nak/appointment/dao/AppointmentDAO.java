@@ -231,7 +231,7 @@ public class AppointmentDAO {
 
     private String getDateInFormat(String slotDate) {
         String finalString = "";
-        if(slotDate!=null && !slotDate.trim().equalsIgnoreCase("")) {
+        if (slotDate != null && !slotDate.trim().equalsIgnoreCase("")) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date date = null;
             try {
@@ -387,7 +387,7 @@ public class AppointmentDAO {
     }
 
     public List<AppointmentInfo> getAppointmentsWithFiltersForToday(String searchPatientText, String currentDate) {
-        Log.v(TAG, "getAppointmentsWithFiltersForToday - "+currentDate);
+        Log.v(TAG, "getAppointmentsWithFiltersForToday - " + currentDate);
         String search = searchPatientText.trim().replaceAll("\\s", "");
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -400,7 +400,7 @@ public class AppointmentDAO {
 
         }
         EncounterDAO encounterDAO = new EncounterDAO();
-        Log.v(TAG, "getAppointmentsWithFiltersForToday idCursor.getCount()  - "+idCursor.getCount() );
+        Log.v(TAG, "getAppointmentsWithFiltersForToday idCursor.getCount()  - " + idCursor.getCount());
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 AppointmentInfo appointmentInfo = new AppointmentInfo();
@@ -667,7 +667,9 @@ public class AppointmentDAO {
         return requestList;
     }
 
-    public List<AppointmentInfo> getUpcomingAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate) {
+    public List<AppointmentInfo> getUpcomingAppointmentsWithFilters(String fromDate, String toDate,
+                                                                    int limit, int offset, String currentDate,
+                                                                    String searchText) {
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
 
@@ -675,7 +677,7 @@ public class AppointmentDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor;
 
-        if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+        if (!fromDate.isEmpty() && !toDate.isEmpty() ) {
             String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
                     + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
                     + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
@@ -689,7 +691,21 @@ public class AppointmentDAO {
 
 
             idCursor = db.rawQuery(selectQuery, new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
-        } else {
+        } else if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+            String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+                    + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
+                    + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "from tbl_patient p, tbl_appointments a "
+                    + "where p.uuid = a.patient_id "
+                    + "AND a.slot_date != ?"
+                    + "AND new_slot_date  BETWEEN '" + fromDate + "'  and '" + toDate + "' "
+                    + "AND a.status = 'booked'"
+                    + "AND datetime(a.slot_js_date) >= datetime('now') "
+                    + "LIMIT ? OFFSET ?";
+
+
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate, String.valueOf(limit), String.valueOf(offset)});
+        }else {
             idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
                             + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
                             + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
@@ -746,7 +762,8 @@ public class AppointmentDAO {
         idCursor.close();
         return appointmentInfos;
     }
-    public List<AppointmentInfo> getCompletedAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate) {
+
+    public List<AppointmentInfo> getCompletedAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate, String s) {
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -822,7 +839,8 @@ public class AppointmentDAO {
 
         return appointmentInfos;
     }
-    public List<AppointmentInfo> getCancelledAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate) {
+
+    public List<AppointmentInfo> getCancelledAppointmentsWithFilters(String fromDate, String toDate, int limit, int offset, String currentDate, String s) {
         Cursor idCursor;
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
@@ -893,7 +911,9 @@ public class AppointmentDAO {
         idCursor.close();
         return appointmentInfos;
     }
-    public List<AppointmentInfo> getAllUpcomingAppointmentsWithFilters(String fromDate, String toDate) {
+
+    public List<AppointmentInfo> getAllUpcomingAppointmentsWithFilters(String fromDate, String toDate, String finalQuery) {
+        Log.d(TAG, "getAllUpcomingAppointmentsWithFilters: ");
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String currentDate = dateFormat1.format(new Date());
         fromDate = getDateInFormat(fromDate);
@@ -902,7 +922,21 @@ public class AppointmentDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor;
 
-        if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+        if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
+            String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+                    + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
+                    + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "from tbl_patient p, tbl_appointments a "
+                    + "where p.uuid = a.patient_id and new_slot_date "
+                    + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
+                    + "AND a.status = 'booked'"
+                    + "AND datetime(a.slot_js_date) >= datetime('now') AND  +  a.slot_date != ?" +
+                    " and patient_name_new LIKE " + "'%" + finalQuery + "%'";
+
+            Log.d(TAG, "getAllUpcomingAppointmentsWithFilters: selectQuery ::"+selectQuery);
+
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate});
+        } else if (!fromDate.isEmpty() && !toDate.isEmpty()) {
             String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
                     + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
                     + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
@@ -913,14 +947,15 @@ public class AppointmentDAO {
                     + "AND datetime(a.slot_js_date) >= datetime('now') AND  +  a.slot_date != ?";
 
             idCursor = db.rawQuery(selectQuery, new String[]{currentDate});
-        } else {
+        } else if(!finalQuery.isEmpty()) {
             idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
                             + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
                             + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                             + "from tbl_patient p, tbl_appointments a "
                             + "where p.uuid = a.patient_id "
                             + "AND a.status = 'booked'"
-                            + "AND datetime(a.slot_js_date) >= datetime('now') AND  +  a.slot_date != ?"
+                            + "AND datetime(a.slot_js_date) >= datetime('now') AND  +  a.slot_date != ?" +
+                            "and patient_name_new LIKE " + "'%" + finalQuery + "%'"
                     , new String[]{currentDate});
         }
 
@@ -964,7 +999,8 @@ public class AppointmentDAO {
         idCursor.close();
         return appointmentInfos;
     }
-    public List<AppointmentInfo> getAllCancelledAppointmentsWithFilters(String fromDate, String toDate) {
+
+    public List<AppointmentInfo> getAllCancelledAppointmentsWithFilters(String fromDate, String toDate, String finalQuery) {
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String currentDate = dateFormat1.format(new Date());
         Cursor idCursor;
@@ -973,7 +1009,18 @@ public class AppointmentDAO {
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
-        if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+        if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
+            String selectQuery = "SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid,"
+                    + " a.appointment_id,a.slot_date, a.slot_day, substr(a.slot_js_date, 1, 10) AS new_slot_date, a.slot_duration,a.slot_duration_unit, a.slot_time, "
+                    + "a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "FROM tbl_patient p, tbl_appointments a "
+                    + "WHERE p.uuid = a.patient_id "
+                    + "AND a.status = 'cancelled' "
+                    + "AND new_slot_date BETWEEN '" + fromDate + "' AND '" + toDate + "' AND  +  a.slot_date != ?" +
+                    "and patient_name_new LIKE " + "'%" + finalQuery + "%'";
+
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate});
+        } else if (!fromDate.isEmpty() && !toDate.isEmpty()) {
             String selectQuery = "SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid,"
                     + " a.appointment_id,a.slot_date, a.slot_day, substr(a.slot_js_date, 1, 10) AS new_slot_date, a.slot_duration,a.slot_duration_unit, a.slot_time, "
                     + "a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
@@ -983,13 +1030,14 @@ public class AppointmentDAO {
                     + "AND new_slot_date BETWEEN '" + fromDate + "' AND '" + toDate + "' AND  +  a.slot_date != ?";
 
             idCursor = db.rawQuery(selectQuery, new String[]{currentDate});
-        } else {
+        } else if(!finalQuery.isEmpty()) {
             idCursor = db.rawQuery("SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, "
                     + "a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, "
                     + "a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                     + "FROM tbl_patient p, tbl_appointments a "
                     + "WHERE p.uuid = a.patient_id "
-                    + "AND a.status = 'cancelled' AND  +  a.slot_date != ?", new String[]{currentDate});
+                    + "AND a.status = 'cancelled' AND  +  a.slot_date != ? and patient_name_new LIKE "
+                    + "'%" + finalQuery + "%'", new String[]{currentDate});
         }
 
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -1032,7 +1080,8 @@ public class AppointmentDAO {
         idCursor.close();
         return appointmentInfos;
     }
-    public List<AppointmentInfo> getAllCompletedAppointmentsWithFilters(String fromDate, String toDate) {
+
+    public List<AppointmentInfo> getAllCompletedAppointmentsWithFilters(String fromDate, String toDate, String finalQuery) {
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String currentDate = dateFormat1.format(new Date());
         fromDate = getDateInFormat(fromDate);
@@ -1041,7 +1090,19 @@ public class AppointmentDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor;
 
-        if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+        if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
+            String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+                    + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
+                    + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "from tbl_patient p, tbl_appointments a "
+                    + "where p.uuid = a.patient_id and new_slot_date "
+                    + "BETWEEN '" + fromDate + "'  and '" + toDate + "' "
+                    + "AND a.status = 'booked'"
+                    + "AND datetime(a.slot_js_date) < datetime('now') AND  +  a.slot_date != ? " +
+                    "and patient_name_new LIKE " + "'%" + finalQuery + "%'";
+
+            idCursor = db.rawQuery(selectQuery, new String[]{currentDate});
+        } else if (!fromDate.isEmpty() && !toDate.isEmpty()) {
             String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
                     + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
                     + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
@@ -1052,15 +1113,16 @@ public class AppointmentDAO {
                     + "AND datetime(a.slot_js_date) < datetime('now') AND  +  a.slot_date != ?";
 
             idCursor = db.rawQuery(selectQuery, new String[]{currentDate});
-        } else {
+        } else if(!finalQuery.isEmpty()) {
             idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
                             + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
                             + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                             + "from tbl_patient p, tbl_appointments a "
                             + "where p.uuid = a.patient_id "
                             + "AND a.status = 'booked'"
-                            + "AND datetime(a.slot_js_date) < datetime('now') + a.slot_date != ?"
-                          /*  + "LIMIT ? OFFSET ?"*/ //commenting due to crash
+                            + "AND datetime(a.slot_js_date) < datetime('now') + a.slot_date != ? " +
+                            "and patient_name_new LIKE " + "'%" + finalQuery + "%'"
+                    /*  + "LIMIT ? OFFSET ?"*/ //commenting due to crash
                     , new String[]{currentDate});
 
         }
@@ -1111,6 +1173,7 @@ public class AppointmentDAO {
 
         return appointmentInfos;
     }
+
     public List<AppointmentInfo> getUpcomingAppointmentsForToday(String currentDate, int limit, int offset) {
         Cursor idCursor;
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -1167,6 +1230,7 @@ public class AppointmentDAO {
         idCursor.close();
         return appointmentInfos;
     }
+
     public List<AppointmentInfo> getCompletedAppointmentsForToday(String currentDate, int limit, int offset) {
         Cursor idCursor;
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -1223,6 +1287,7 @@ public class AppointmentDAO {
         idCursor.close();
         return appointmentInfos;
     }
+
     public List<AppointmentInfo> getCancelledAppointmentsForToday(String currentDate, int limit, int offset) {
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -1278,6 +1343,7 @@ public class AppointmentDAO {
         idCursor.close();
         return appointmentInfos;
     }
+
     public List<AppointmentInfo> getAllUpcomingAppointmentsForToday(String currentDate) {
         Cursor idCursor;
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -1334,6 +1400,7 @@ public class AppointmentDAO {
         idCursor.close();
         return appointmentInfos;
     }
+
     public List<AppointmentInfo> getAllCancelledAppointmentsForToday(String currentDate) {
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -1389,6 +1456,7 @@ public class AppointmentDAO {
         idCursor.close();
         return appointmentInfos;
     }
+
     public List<AppointmentInfo> getAllCompletedAppointmentsForToday(String currentDate) {
         Cursor idCursor;
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
@@ -1444,6 +1512,7 @@ public class AppointmentDAO {
         idCursor.close();
         return appointmentInfos;
     }
+
     public boolean doesAppointmentExistForVisit(String visitUUID) {
         boolean doesAppointmentExist = false;
         String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ?";
@@ -1463,6 +1532,7 @@ public class AppointmentDAO {
         db.endTransaction();
         return doesAppointmentExist;
     }
+
     public String getTimeAndDateForAppointment(String visitUUID) {
         String appointmentDateTime = "";
         String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ?";
@@ -1481,6 +1551,7 @@ public class AppointmentDAO {
         db.endTransaction();
         return appointmentDateTime;
     }
+
     public boolean isAppointmentCancelled(String visitUUID) {
         boolean isAppointmentCancelled = false;
         String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ? and status = 'cancelled'";
@@ -1500,6 +1571,7 @@ public class AppointmentDAO {
         db.endTransaction();
         return isAppointmentCancelled;
     }
+
     public boolean isAppointmentBooked(String visitUUID) {
         boolean isAppointmentCancelled = false;
         String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ? and status = 'booked'";

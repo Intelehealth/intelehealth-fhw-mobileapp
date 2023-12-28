@@ -156,13 +156,14 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
 
         SessionManager sessionManager = new SessionManager(context);
 //        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
+        String serverUrl = BuildConfig.SERVER_URL+":3004";
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         ///, "Basic YWRtaW46QWRtaW4xMjM="
         ChangePasswordParamsModel_New inputModel = new ChangePasswordParamsModel_New(newPassword/*, otp*/);
 
-        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
+        ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResetPasswordResModel_New> loginModelObservable = apiService.RESET_PASSWORD_OBSERVABLE(userUuid,
                 inputModel);

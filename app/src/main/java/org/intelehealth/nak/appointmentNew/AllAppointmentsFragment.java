@@ -220,7 +220,11 @@ public class AllAppointmentsFragment extends Fragment {
                     toDate = "";
                     whichAppointment = "";
                    // getAppointments();
-                    resetData();
+                    if(!autotvSearch.getText().toString().isEmpty()){
+                        searchOperation(autotvSearch.getText().toString());
+                    }else{
+                        resetData();
+                    }
                 }
             });
         }
@@ -678,8 +682,8 @@ public class AllAppointmentsFragment extends Fragment {
     private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
         tvUpcomingAppsCount.setText("0");
-        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        upcomingAppointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate);
+        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming_0));
+        upcomingAppointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate,autotvSearch.getText().toString());
 
         if (upcomingAppointmentInfoList.size() > 0) {
             rvUpcomingApp.setVisibility(View.VISIBLE);
@@ -707,7 +711,7 @@ public class AllAppointmentsFragment extends Fragment {
         //recyclerview for getCancelledAppointments appointments
         tvCancelledAppsCount.setText("0");
         tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled_0));
-        cancelledAppointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate);
+        cancelledAppointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate, autotvSearch.getText().toString());
 
         if (cancelledAppointmentInfoList.size() > 0) {
             rvCancelledApp.setVisibility(View.VISIBLE);
@@ -735,7 +739,7 @@ public class AllAppointmentsFragment extends Fragment {
     private void getCompletedAppointments() {
         tvCompletedAppsCount.setText("0");
         tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        completedAppointmentInfoList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate);
+        completedAppointmentInfoList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate, autotvSearch.getText().toString());
 
         if (completedAppointmentInfoList.size() > 0) {
             rvCompletedApp.setVisibility(View.VISIBLE);
@@ -836,12 +840,14 @@ public class AllAppointmentsFragment extends Fragment {
             getUpcomingAppointments();
             getCompletedAppointments();
             getCancelledAppointments();
+           /// resetData();
 
         } else if (whichAppointment.isEmpty() && !fromDate.isEmpty() && !toDate.isEmpty()) {
             //all
             getUpcomingAppointments();
             getCompletedAppointments();
             getCancelledAppointments();
+            //resetData();
 
         } else if (whichAppointment.equals("upcoming") && !fromDate.isEmpty() && !toDate.isEmpty()) {
             //upcoming
@@ -928,7 +934,7 @@ public class AllAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate);
+        List<AppointmentInfo> tempList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate, autotvSearch.getText().toString());
         if (tempList.size() > 0) {
             upcomingAppointmentInfoList.addAll(tempList);
             upcomingAllAppointmentsAdapter.notifyDataSetChanged();
@@ -949,7 +955,7 @@ public class AllAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate);
+        List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate, autotvSearch.getText().toString());
         if (tempList.size() > 0) {
             cancelledAppointmentInfoList.addAll(tempList);
             cancelledAllAppointmentsAdapter.notifyDataSetChanged();
@@ -970,7 +976,7 @@ public class AllAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate);
+        List<AppointmentInfo> tempList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate, autotvSearch.getText().toString());
         if (tempList.size() > 0) {
             getDataForCompletedAppointments(tempList);
             completedAppointmentInfoList.addAll(tempList);
@@ -987,12 +993,18 @@ public class AllAppointmentsFragment extends Fragment {
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
         String finalQuery = query;
-        Log.d(TAG, "searchOperation: queryafter :: "+query);
 
         new Thread(() -> {
-            List<AppointmentInfo> allUpcomingList = new AppointmentDAO().getAllUpcomingAppointmentsWithFilters(fromDate, toDate);
-            List<AppointmentInfo> allCancelledList = new AppointmentDAO().getAllCancelledAppointmentsWithFilters(fromDate, toDate);
-            List<AppointmentInfo> allCompletedList = new AppointmentDAO().getAllCompletedAppointmentsWithFilters(fromDate, toDate);
+            List<AppointmentInfo> allUpcomingList = new AppointmentDAO().getAllUpcomingAppointmentsWithFilters(fromDate, toDate, finalQuery);
+            List<AppointmentInfo> allCancelledList = new AppointmentDAO().getAllCancelledAppointmentsWithFilters(fromDate, toDate, finalQuery);
+            List<AppointmentInfo> allCompletedList = new AppointmentDAO().getAllCompletedAppointmentsWithFilters(fromDate, toDate, finalQuery);
+            upcomingSearchList.clear();
+            cancelledSearchList.clear();
+            completedSearchList.clear();
+          /*  upcomingSearchList.addAll(allUpcomingList);
+            cancelledSearchList.addAll(allCancelledList);
+            completedSearchList.addAll(allCompletedList);*/
+
 
             if (!finalQuery.isEmpty()) {
                 upcomingSearchList.clear();
@@ -1026,6 +1038,8 @@ public class AllAppointmentsFragment extends Fragment {
                         }
                     }
                 }
+
+
                 //set counts to the textviews
                 setCountsToTextviews();
 
@@ -1044,10 +1058,8 @@ public class AllAppointmentsFragment extends Fragment {
                     rvCompletedApp.setAdapter(completedAllAppointmentsAdapter);
                 });
             }
-
-
-        }).start();
-    }
+            }).start();
+        }
 
     private void setCountsToTextviews() {
         tvUpcomingAppsCountTitle.setText("");

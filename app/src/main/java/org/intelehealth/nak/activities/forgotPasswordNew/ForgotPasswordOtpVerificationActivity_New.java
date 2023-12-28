@@ -150,11 +150,12 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
 
     private void verifyOTP(Context context, String otp) {
 //        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
+        String baseUrl = BuildConfig.SERVER_URL + ":3004";
         Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + BuildConfig.SERVER_URL);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         OTPVerificationParamsModel_New inputModel = new OTPVerificationParamsModel_New("password", userName, userPhoneNum, 91, "", otp);
-        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
+        ApiClient.changeApiBaseUrl(baseUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ForgotPasswordApiResponseModel_New> loginModelObservable = apiService.VERFIY_OTP_OBSERVABLE(inputModel);
         loginModelObservable.subscribe(new Observer<ForgotPasswordApiResponseModel_New>() {
@@ -199,11 +200,13 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     public void apiCallForRequestOTP(Context context, String username, String mobileNo) {
         tvResendOtp.setEnabled(false);
 //        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
+        String baseUrl = BuildConfig.SERVER_URL + ":3004";
+
         Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + BuildConfig.SERVER_URL);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New("password", username, mobileNo, 91, "");
-        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
+        ApiClient.changeApiBaseUrl(baseUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ForgotPasswordApiResponseModel_New> loginModelObservable = apiService.REQUEST_OTP_OBSERVABLE(inputModel);
         loginModelObservable.subscribe(new Observer<ForgotPasswordApiResponseModel_New>() {

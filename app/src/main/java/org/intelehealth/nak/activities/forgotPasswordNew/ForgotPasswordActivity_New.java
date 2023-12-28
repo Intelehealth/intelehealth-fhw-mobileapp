@@ -171,6 +171,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         etMobileNo.addTextChangedListener(new MyWatcher(etMobileNo));
         setMobileNumberLimit();
     }
+
     private int mSelectedMobileNumberValidationLength = 0;
     private String mSelectedCountryCode = "";
 
@@ -189,6 +190,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
         etMobileNo.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(mSelectedMobileNumberValidationLength)});
     }
+
     private class MyWatcher implements TextWatcher {
         EditText editText;
 
@@ -197,10 +199,12 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         }
 
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
         @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
         @Override
         public void afterTextChanged(Editable editable) {
@@ -214,11 +218,12 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         buttonContinue.setEnabled(false);
         cpd.show();
 //        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
+        String serverUrl = BuildConfig.SERVER_URL + ":3004";
         Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + BuildConfig.SERVER_URL);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New("password", username, mobileNo, 91, "");
-        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
+        ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ForgotPasswordApiResponseModel_New> loginModelObservable = apiService.REQUEST_OTP_OBSERVABLE(inputModel);
         loginModelObservable.subscribe(new Observer<ForgotPasswordApiResponseModel_New>() {
@@ -226,10 +231,11 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             public void onSubscribe(Disposable d) {
 
             }
+
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
-                   snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), true);
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), true);
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -256,6 +262,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                 }
                 buttonContinue.setEnabled(true);
             }
+
             @Override
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
@@ -279,7 +286,9 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
         etUsername.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
@@ -301,9 +310,13 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
         etMobileNo.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
                 if (TextUtils.isEmpty(etMobileNo.getText().toString())) {
@@ -333,7 +346,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
         } else if (!optionSelected.isEmpty() && optionSelected.equals("mobile")) {
             String code = countryCodePicker.getSelectedCountryCode();
-            mobile = mobile.replace(" ","");
+            mobile = mobile.replace(" ", "");
             Log.v(TAG, code);
             Log.v(TAG, mobile);
             if (TextUtils.isEmpty(mobile)) {
