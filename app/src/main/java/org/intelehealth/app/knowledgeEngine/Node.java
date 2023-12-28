@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -23,11 +24,13 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -2348,15 +2351,15 @@ public class Node implements Serializable {
                         .load(new File(imagePath))
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .listener(new RequestListener<File, GlideDrawable>() {
+                        .listener(new RequestListener<Drawable>() {
                             @Override
-                            public boolean onException(Exception e, File file, Target<GlideDrawable> target, boolean b) {
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                 progressBar.setVisibility(View.GONE);
                                 return false;
                             }
 
                             @Override
-                            public boolean onResourceReady(GlideDrawable glideDrawable, File file, Target<GlideDrawable> target, boolean b, boolean b1) {
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                 progressBar.setVisibility(View.GONE);
                                 return false;
                             }
@@ -2728,7 +2731,17 @@ public class Node implements Serializable {
                     if (isAssociateSymptomsType) {
                         question = right_pointing + " " + mOptions.get(i).findDisplay();
                     } else {
-                        question = bullet + " " + mOptions.get(i).findDisplay();
+
+                        if (mOptions.get(i).isTerminal()) {
+                            question = bullet + " " + mOptions.get(i).findDisplay();
+                        } else {
+                            if (level >= 1) {
+                                question = right_pointing + " " + mOptions.get(i).findDisplay();
+                            } else {
+                                question = bullet + " " + mOptions.get(i).findDisplay();
+                            }
+                            //question = right_pointing + " " + mOptions.get(i).findDisplay();
+                        }
                     }
                 }
                 question = question.replaceAll("\\[(.*?)\\]", "");
@@ -2739,6 +2752,7 @@ public class Node implements Serializable {
                 Log.i(TAG, "ipt: findDisplay " + mOptions.get(i).findDisplay());
                 Log.i(TAG, "ipt: getText " + mOptions.get(i).getText());
                 Log.i(TAG, "ipt: -------------------answer " + answer);
+                Log.i(TAG, "ipt: -------------------question " + question);
                 if (mOptions.get(i).isTerminal()) {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
 
@@ -2761,7 +2775,7 @@ public class Node implements Serializable {
                                     } else if (answer.substring(0, 1).equals("%")) {
                                         stringsList.add(bullet_hollow + answer.substring(1) + next_line);
                                     } else {
-                                        stringsList.add(bullet_hollow + answer + next_line);
+                                        stringsList.add((level > 1 ? right_pointing : bullet_hollow) + answer + next_line);
                                     }
                                 }
                             }
@@ -2779,8 +2793,8 @@ public class Node implements Serializable {
                             if (level == 0) {
                                 stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                             } else {
-                               stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + "," + next_line);
-
+                                //stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + "," + next_line);
+                                stringsList.add((level > 1 ? right_pointing : bullet_hollow) + mOptions.get(i).findDisplay() + next_line);
 
                             }
 
@@ -2788,9 +2802,33 @@ public class Node implements Serializable {
 
                     }
                 } else {
-
+                    Log.i(TAG, "ipt: nested question " + question);
+                    Log.i(TAG, "ipt: nested question level - " + level);
+                    if (level > 0 && level % 2 != 0)
+                        if (question.startsWith("▻"))
+                            question = bullet_hollow + " " + question.substring(1);
                     stringsList.add(question + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                    Log.i(TAG, "ipt: nested question " + question);
+                    Log.i(TAG, "ipt: nested answer stringsList" + stringsList);
+                    String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
+
+                    Log.i(TAG, "ipt: nested answer " + temp1);
+                    temp1 = temp1.replaceAll("<br/>•", ",");
+                    if (level == 0)
+                        if (temp1.startsWith("▻") && temp1.chars().filter(ch -> ch == '▻').count() > 1)
+                            temp1 = bullet_hollow + " " + temp1.substring(1);
+                    Log.v(TAG, "ipt: nested answer " + temp1);
+                    stringsList.add(temp1);
+                    // cleanup duplicate text
+                    String lastVal = "";
+                    /*for (int j = 0; j < stringsList.size(); j++) {
+                        String v = stringsList.get(j).replaceAll(right_pointing, "").trim().replaceAll(bullet_hollow, "").trim();
+                        Log.v(TAG, "ipt: nested answer v" + v);
+                        if (!lastVal.isEmpty() && v.startsWith(lastVal)) {
+                            stringsList.get(j).replace(lastVal, "");
+                        }
+                        lastVal = v;
+                    }*/
                     Log.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
@@ -2848,14 +2886,14 @@ public class Node implements Serializable {
             }
 
         }
-        mLanguage = mLanguage.replaceAll(",<br/>•",",");
-        if(mLanguage.endsWith(",")){
-            mLanguage =  mLanguage.substring(0, mLanguage.length()-1);
+        mLanguage = mLanguage.replaceAll(",<br/>•", ",");
+        if (mLanguage.endsWith(",")) {
+            mLanguage = mLanguage.substring(0, mLanguage.length() - 1);
         }
         Log.i(TAG, "ipt: formQuestionAnswer: " + mLanguage);
 
         if (mLanguage.equalsIgnoreCase("")) {
-            mLanguage = bullet_hollow + "Question not answered" + next_line;
+            mLanguage = (level == 0 ? bullet_hollow : right_pointing) + "Question not answered" + next_line;
         }
 
         return mLanguage;
@@ -3442,8 +3480,14 @@ public class Node implements Serializable {
 
     public boolean isUserInputsTypeNode() {
         boolean result = false;
-        String type = getInputType();
-        Log.v(TAG, "isUserInputsTypeNode - type : " + type);
+        String type = "";
+        if (isHavingNestedQuestion()) {
+            type = getOptionsList() != null && getOptionsList().size() == 1 && getOptionsList().get(0).getOptionsList() != null && getOptionsList().get(0).getOptionsList().size() == 1 ? getOptionsList().get(0).getOptionsList().get(0).getInputType() : getInputType();
+        } else {
+            type = getOptionsList() != null && getOptionsList().size() == 1 ? getOptionsList().get(0).getInputType() : getInputType();
+        }
+
+        Log.v(TAG, "isUserInputsTypeNode - type : " + getText() + "\t=" + type);
         if (type.equals("text") || type.equals("date") || type.equals("location") || type.equals("number") || type.equals("area") || type.equals("duration") || type.equals("range") || type.equals("frequency")) {
             result = true;
         }
@@ -3673,6 +3717,18 @@ public class Node implements Serializable {
     public void setImagePathListWithSectionTag(HashMap<String, String> imagePathListWithSectionTag) {
         this.imagePathListWithSectionTag = imagePathListWithSectionTag;
     }
+
+    public boolean isFoundCompareAttribute() {
+        Log.v(TAG, "isFoundCompareAttribute - " + getText());
+        if (compareDuplicateNode != null && !compareDuplicateNode.isEmpty()) return true;
+        if (optionsList != null) {
+            for (int i = 0; i < optionsList.size(); i++) {
+                optionsList.get(i).isFoundCompareAttribute();
+            }
+        }
+        return false;
+    }
+
     /*End*/
 }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,9 @@ public class PastMedicalHistoryFragment extends Fragment {
     public PastMedicalHistoryFragment() {
         // Required empty public constructor
     }
+
     private String engineVersion;
+
     public String getEngineVersion() {
         return engineVersion;
     }
@@ -85,7 +88,7 @@ public class PastMedicalHistoryFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setStackFromEnd(!mIsEditMode);
         linearLayoutManager.setReverseLayout(false);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -116,7 +119,7 @@ public class PastMedicalHistoryFragment extends Fragment {
             });
         }
 
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, false, null, 0, mRootComplainBasicInfoHashMap,mIsEditMode, new OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, false, null, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
             @Override
             public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                 // avoid the scroll for old data change
@@ -133,25 +136,37 @@ public class PastMedicalHistoryFragment extends Fragment {
                     mCurrentComplainNodeOptionsIndex++;
 
 
-                    mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex),getEngineVersion());
+                    mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex), getEngineVersion());
                     /*recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
                         }
                     }, 100);*/
-                    VisitUtils.scrollNow(recyclerView, 300, 0, 500);
+                    VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode);
 
-                    VisitUtils.scrollNow(recyclerView, 1400, 0, 1000);
+                    VisitUtils.scrollNow(recyclerView, 1400, 0, 1000, mIsEditMode);
 
                     mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
                 } else {
                     if (!mIsEditMode)
                         mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_FAMILY_HISTORY, mIsEditMode, null);
-                    else
-                        Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
+                    else {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Toast.makeText(requireActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
+                                } catch (IllegalStateException ignored) {
+
+                                }
+
+                            }
+                        }, 1000);
+                    }
                 }
-                linearLayoutManager.setStackFromEnd(false);
+                if (!mIsEditMode)
+                    linearLayoutManager.setStackFromEnd(false);
             }
 
             @Override
@@ -173,7 +188,7 @@ public class PastMedicalHistoryFragment extends Fragment {
             }
 
             @Override
-            public void onImageRemoved(int nodeIndex,int imageIndex, String image) {
+            public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
             }
         });
@@ -183,7 +198,7 @@ public class PastMedicalHistoryFragment extends Fragment {
             mQuestionsListingAdapter.addItemAll(mCurrentRootOptionList);
             mCurrentComplainNodeOptionsIndex = mCurrentRootOptionList.size() - 1;
         } else {
-            mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex),getEngineVersion());
+            mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex), getEngineVersion());
 
         }
         return view;

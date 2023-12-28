@@ -731,7 +731,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         public void onSelect(Node node, boolean isLoadingForNestedEditData) {
                             Log.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
                             if (!isLoadingForNestedEditData)
-                                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
+                                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode);
                             if (!isLoadingForNestedEditData) {
                                 mItemList.get(index).setSelected(false);
                                 mItemList.get(index).setDataCaptured(false);
@@ -768,6 +768,20 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             Log.v(TAG, "node - " + node.findDisplay());
                             Log.v(TAG, "Type - " + type);
                             Log.v(TAG, "isLoadingForNestedEditData - " + isLoadingForNestedEditData);
+
+
+                            boolean foundUserInputs = false;
+                            for (int i = 0; i < options.size(); i++) {
+                                if (options.get(i).isSelected()) {
+                                    foundUserInputs = options.get(i).isUserInputsTypeNode();
+                                    if (foundUserInputs)
+                                        break;
+                                }
+                            }
+                            Log.v(TAG, "foundUserInputs - " + foundUserInputs);
+                            if (!foundUserInputs) {
+                                holder.singleComponentContainer.removeAllViews();
+                            }
                             if (!node.isSelected()) {
                                 node.unselectAllNestedNode();
 
@@ -942,7 +956,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             return;
                         }*/
                 }
-                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
+                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400,mIsEditMode);
                 Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
 
                 boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
@@ -1052,7 +1066,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             return;
                         }*/
                     }
-                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400,mIsEditMode);
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
 
                     boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
@@ -1127,7 +1141,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 @Override
                 public void onSelect(Node node, boolean isLoadingForNestedEditData) {
                     if (!isLoadingForNestedEditData)
-                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
+                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300,mIsEditMode);
                     if (!isLoadingForNestedEditData) {
                         mItemList.get(index).setSelected(false);
                         mItemList.get(index).setDataCaptured(false);
@@ -1887,7 +1901,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 String dateString = simpleDateFormat.format(date);
                 displayDateButton.setText(simpleDateFormatLocal.format(date));
                 displayDateButton.setTag(dateString);
-                VisitUtils.scrollNow(mRootRecyclerView, 400, 0, 400);
+                VisitUtils.scrollNow(mRootRecyclerView, 400, 0, 400,mIsEditMode);
                 AdapterUtils.setToDefault(submitButton);
                 AdapterUtils.setToDefault(skipButton);
             }
@@ -2046,6 +2060,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     if (mItemList.get(index).isSelected()) {
                         mItemList.get(index).setSkipped(false);
                         AdapterUtils.setToDisable(skipButton);
+                        mItemList.get(index).setSelected(true);
+                        mItemList.get(index).setDataCaptured(true);
                         AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                             @Override
                             public void onFinish() {

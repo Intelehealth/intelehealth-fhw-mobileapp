@@ -107,7 +107,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setStackFromEnd(!mIsEditMode);
         linearLayoutManager.setReverseLayout(false);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -133,7 +133,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 // avoid the scroll for old data change
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     Log.v("onSelect", "Scrolling index - " + index);
-                    VisitUtils.scrollNow(recyclerView, 100, 0, 1000);
+                    VisitUtils.scrollNow(recyclerView, 100, 0, 1000, mIsEditMode);
                     return;
                 }
                 if (isSkipped) {
@@ -179,13 +179,13 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
                 }
 
-                VisitUtils.scrollNow(recyclerView, 300, 0, 500);
+                VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode);
 
-                VisitUtils.scrollNow(recyclerView, 1400, 0, 1400);
+                VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode);
 
 
                 mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
-                linearLayoutManager.setStackFromEnd(false);
+                if (!mIsEditMode) linearLayoutManager.setStackFromEnd(false);
             }
 
             @Override

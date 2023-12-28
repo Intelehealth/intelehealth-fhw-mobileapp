@@ -294,7 +294,7 @@
                         android:background="@drawable/edittext_border"
                         android:textAllCaps="true"
                         android:hint="@string/enter_village_town_city"
-                        android:inputType="text"
+                        android:inputType="textCapWords"
                         android:maxLines="1"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"

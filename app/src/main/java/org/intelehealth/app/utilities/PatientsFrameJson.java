@@ -1,18 +1,12 @@
 package org.intelehealth.app.utilities;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
@@ -39,6 +33,9 @@ import org.intelehealth.app.models.pushRequestApiCall.Provider;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushRequestApiCall.Visit;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientsFrameJson {
     private static final String TAG = "PatientsFrameJson";

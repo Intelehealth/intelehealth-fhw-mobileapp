@@ -2,25 +2,11 @@
 manifest
 ADDED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:2:1-68:12
 INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:2:1-68:12
-INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:2:1-68:12
-INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:2:1-68:12
-INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:2:1-68:12
-INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:2:1-68:12
-INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:2:1-68:12
 	package
 		ADDED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:4:5-38
 		INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
-		INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
-	android:versionName
-		INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
-		ADDED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:2:1-68:12
-		INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
 	xmlns:tools
 		ADDED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:3:5-51
-	android:versionCode
-		INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
-		ADDED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:2:1-68:12
-		INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
 	xmlns:android
 		ADDED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml:2:11-69
 uses-feature#android.hardware.camera
@@ -121,13 +107,7 @@ uses-sdk
 INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
 INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
-INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
-INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
 	android:targetSdkVersion
 		INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
-		ADDED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
-		INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
-		ADDED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml
 		INJECTED from /Users/prajwalwaingankar/AndroidStudioProjects/Android-Mobile-Client/webrtc/src/main/AndroidManifest.xml

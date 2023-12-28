@@ -105,7 +105,6 @@
                         style="@style/label_misc_txt_14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_question"
                         android:lineSpacingExtra="1sp"
                         android:text="@string/select_any_one" />
 
@@ -114,15 +113,14 @@
                         style="@style/label_misc_txt_14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_question"
                         android:layout_marginStart="@dimen/margin_24"
-                        android:drawableEnd="@drawable/info_blue_svg"
                         android:drawablePadding="@dimen/margin_8"
                         android:lineSpacingExtra="1sp"
                         android:text="@string/know_more_txt"
                         android:textColor="@color/colorPrimary"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:drawableEndCompat="@drawable/info_blue_svg" />
                 </LinearLayout>
 
 
