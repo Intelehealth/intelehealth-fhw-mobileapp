@@ -129,6 +129,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
+import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -309,8 +310,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         if (intent_exit != null) {
             String intentTag = intent_exit.getStringExtra("intentTag");
             if (intentTag != null) {
-                if (intentTag.equalsIgnoreCase("Feedback screen with feedback")) showSnackBarAndRemoveLater(getResources().getString(R.string.thank_you_for_feedback));
-                else if (intentTag.equalsIgnoreCase("profile updated")) showSnackBarAndRemoveLater(getResources().getString(R.string.profile_details_updated_new));
+                if (intentTag.equalsIgnoreCase("Feedback screen with feedback"))
+                    showSnackBarAndRemoveLater(getResources().getString(R.string.thank_you_for_feedback));
+                else if (intentTag.equalsIgnoreCase("profile updated"))
+                    showSnackBarAndRemoveLater(getResources().getString(R.string.profile_details_updated_new));
                 else survey_snackbar_cv.setVisibility(View.GONE);
             }
         }
@@ -339,8 +342,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     showSnackBarAndRemoveLater(getString(R.string.this_feature_is_not_available_in_offline_mode));
                 }
@@ -574,7 +576,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         });
         if (sessionManager.isFirstTimeLaunched()) {
             showRefreshInProgressDialog();
-            syncUtils.initialSync("home");
+            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home"));
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
@@ -927,7 +929,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         loadLastSelectedFragment();
         //toolbarHome.setVisibility(View.VISIBLE);
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             lastSync = StringUtils.en__hi_dob(lastSync);
         tvAppLastSync.setText(lastSync);
 
@@ -1043,7 +1045,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
             String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
             String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
-            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 lastSync = StringUtils.en__hi_dob(lastSync);
             tvAppLastSync.setText(lastSync);
 

@@ -45,7 +45,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terms_and_conditions_ui2);
-      //  mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
+        //  mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
@@ -55,40 +55,27 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
         tvText = findViewById(R.id.tv_term_condition);
         sessionManager = new SessionManager(context);
 
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               finish();
-            }
-        });
+        loadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), getString(R.string.please_wait));
+        ivBack.setOnClickListener(v -> finish());
 
         if (privacy_string.isEmpty()) {
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // bg task
-                    try {
-                        obj = new JSONObject(Objects.requireNonNullElse(
-                                FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
-                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-                        privacy_string = sessionManager.getAppLanguage().equalsIgnoreCase("hi") ?
-                                obj.getString("terms_and_conditions_Hindi") : obj.getString("terms_and_conditions");
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // ui task
-                            tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT));
-                        }
-                    });
+            new Thread(() -> {
+                // bg task
+                try {
+                    obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                    privacy_string = sessionManager.getAppLanguage().equalsIgnoreCase("hi") ? obj.getString("terms_and_conditions_Hindi") : obj.getString("terms_and_conditions");
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
+                runOnUiThread(() -> {
+                    // ui task
+                    tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT));
+                });
             }).start();
-        }
-        else
+        } else {
             tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT));
+        }
         loadingDialog.dismiss();
     }
 
