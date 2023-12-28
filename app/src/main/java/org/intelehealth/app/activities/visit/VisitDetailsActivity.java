@@ -41,7 +41,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,6 +49,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
@@ -69,6 +69,7 @@ import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
@@ -81,7 +82,8 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -99,7 +101,7 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 
-public class VisitDetailsActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private String patientName, patientUuid, gender, age, dob, openmrsID,
             visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
@@ -797,33 +799,21 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             return;
         }
         EncounterDAO encounterDAO = new EncounterDAO();
-        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitID);
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitID);
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
         RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
-        Intent chatIntent = new Intent(VisitDetailsActivity.this, ChatActivity.class);
-        chatIntent.putExtra("patientName", patientName);
-        chatIntent.putExtra("visitUuid", visitID);
-        chatIntent.putExtra("patientUuid", patientUuid);
-        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-        chatIntent.putExtra("isForVideo", false);
+        RtcArgs args = new RtcArgs();
         if (rtcConnectionDTO != null) {
-            try {
-                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
-                    Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-                } else {
-                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-                    startActivity(chatIntent);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
+            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
+            args.setPatientId(patientUuid);
+            args.setPatientName(patientName);
+            args.setVisitId(visitID);
+            args.setNurseId(encounterDTO.getProvideruuid());
+            IDAChatActivity.startChatActivity(VisitDetailsActivity.this, args);
         } else {
             //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
             Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void startVideoChat(View view) {
@@ -985,7 +975,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         int appointmentID = appointmentInfo.getId();
         String reason = "Visit was ended";
         String providerID = sessionManager.getProviderID();
-        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }

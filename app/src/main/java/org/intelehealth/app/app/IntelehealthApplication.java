@@ -1,11 +1,9 @@
 package org.intelehealth.app.app;
 
 import android.app.Activity;
-import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
@@ -13,22 +11,32 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
+import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
+import org.intelehealth.klivekit.RtcEngine;
+import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.Manager;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
-public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
+public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
@@ -47,10 +55,16 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     private static IntelehealthApplication sIntelehealthApplication;
     public String refreshedFCMTokenID = "";
     public String webrtcTempCallId = "";
+
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
+
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper;
+//    private RealTimeDataChangedObserver dataChangedObserver;
+
+    private final SocketManager socketManager = SocketManager.getInstance();
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -77,29 +91,35 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
                 .replace(' ', '0');
 
-        String url = sessionManager.getServerUrl();
-        if (url == null) {
-            Log.i(TAG, "onCreate: Parse not init");
-        } else {
-            Dispatcher dispatcher = new Dispatcher();
-            dispatcher.setMaxRequestsPerHost(1);
-            dispatcher.setMaxRequests(4);
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.dispatcher(dispatcher);
+//        String url = BuildConfig.SERVER_URL;
+//        if (url == null) {
+//            Log.i(TAG, "onCreate: Parse not init");
+//        } else {
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequestsPerHost(1);
+        dispatcher.setMaxRequests(4);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.dispatcher(dispatcher);
 
-            Parse.initialize(new Parse.Configuration.Builder(this)
-                    .clientBuilder(builder)
-                    .applicationId(AppConstants.IMAGE_APP_ID)
-                    .server("https://" + url + ":1337/parse/")
-                    .build()
-            );
-            Log.i(TAG, "onCreate: Parse init");
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .clientBuilder(builder)
+                .applicationId(AppConstants.IMAGE_APP_ID)
+                .server(BuildConfig.SERVER_URL + ":1337/parse/")
+                .build()
+        );
+        Log.i(TAG, "onCreate: Parse init");
 
-            InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
-            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-            mDbHelper.onCreate(localdb);
+        InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        mDbHelper.onCreate(localdb);
+//        }
+
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+        initSocketConnection();
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree());
         }
-        registerActivityLifecycleCallbacks(this);
     }
 
     private void configureCrashReporting() {
@@ -109,41 +129,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-
-    }
-
-    @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public void onActivityStarted(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityResumed(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityPaused(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityStopped(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-    }
-
-    @Override
-    public void onActivityDestroyed(Activity activity) {
 
     }
 
@@ -168,5 +153,44 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button1.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
+    }
+
+    /**
+     * Socket should be open and close app level,
+     * so when app create open it and close on app terminate
+     */
+    public void initSocketConnection() {
+        Log.d(TAG, "initSocketConnection: ");
+        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
+            Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+            String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
+                    + sessionManager.getProviderID()
+                    + "&name=" + sessionManager.getChwname();
+            if (!socketManager.isConnected()) socketManager.connect(socketUrl);
+            initRtcConfig();
+        }
+    }
+
+    private void initRtcConfig() {
+        new RtcEngine.Builder()
+                .callUrl(BuildConfig.LIVE_KIT_URL)
+                .socketUrl(BuildConfig.SOCKET_URL + "?userId="
+                        + sessionManager.getProviderID()
+                        + "&name=" + sessionManager.getChwname())
+                .callIntentClass(IDAVideoActivity.class)
+                .chatIntentClass(IDAChatActivity.class)
+                .callLogIntentClass(IDACallLogActivity.class)
+                .build().saveConfig(this);
+    }
+
+    @Override
+    public void onTerminate() {
+        Timber.tag("APP").d("onTerminate");
+        disconnectSocket();
+        super.onTerminate();
+    }
+
+    public void disconnectSocket() {
+        socketManager.disconnect();
     }
 }

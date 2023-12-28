@@ -31,6 +31,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.NotificationModel;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -51,7 +52,7 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 
-public class NotificationActivity extends AppCompatActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
+public class NotificationActivity extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private SessionManager sessionManager;
     private SQLiteDatabase db;
     private ImageButton backbtn, clearAll_btn, refresh, filter, arrow_right;

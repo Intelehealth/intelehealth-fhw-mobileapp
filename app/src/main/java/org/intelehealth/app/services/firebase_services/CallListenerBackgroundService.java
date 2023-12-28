@@ -28,7 +28,6 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.apprtc.CompleteActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -136,12 +135,12 @@ public class CallListenerBackgroundService extends Service {
                     v.vibrate(500);
                 }*/
                     if (value == null) return;
-                    if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
-                        Intent broadcast = new Intent();
-                        broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
-                        sendBroadcast(broadcast);
-                        return;
-                    }
+//                    if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
+//                        Intent broadcast = new Intent();
+//                        broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
+//                        sendBroadcast(broadcast);
+//                        return;
+//                    }
                     String callID = value.containsKey("id") ? String.valueOf(value.get("id")) : "";
                     Log.d(TAG, "callID is: " + callID);
                     Log.d(TAG, "webrtcTempCallId is: " + IntelehealthApplication.getInstance().webrtcTempCallId);

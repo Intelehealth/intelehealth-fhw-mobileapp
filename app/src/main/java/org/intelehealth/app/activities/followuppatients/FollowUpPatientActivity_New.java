@@ -40,6 +40,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -62,7 +63,7 @@ import java.util.concurrent.Executors;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class FollowUpPatientActivity_New extends AppCompatActivity {
+public class FollowUpPatientActivity_New extends BaseActivity {
     public static final String TAG = FollowUpPatientActivity_New.class.getName();
     RecyclerView rv_today, rv_week, rv_month;
     FollowUpPatientAdapter_New adapter_new;

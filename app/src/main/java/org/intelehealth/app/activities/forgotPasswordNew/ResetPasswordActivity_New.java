@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.help.activities.ChatSupportHelpActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -166,7 +167,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         cpd.show();
 
         SessionManager sessionManager = new SessionManager(context);
-        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
+        String serverUrl = BuildConfig.SERVER_URL + ":3004";
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 

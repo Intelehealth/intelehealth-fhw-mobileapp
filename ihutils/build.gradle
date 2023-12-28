@@ -5,13 +5,11 @@ plugins {
 android {
     compileSdk 34
 
-    namespace 'org.intelehealth.ihutils'
+//    namespace 'org.intelehealth.ihutils'
 
     defaultConfig {
-        minSdk 21
+        minSdk 23
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,6 +24,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+    namespace 'org.intelehealth.ihutils'
 }
 
 dependencies {

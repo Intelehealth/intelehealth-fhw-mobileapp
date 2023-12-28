@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.IDA.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <style name="Theme.IDA.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+</resources>

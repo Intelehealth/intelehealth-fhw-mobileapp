@@ -22,8 +22,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.utilities.OfflineLogin;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
+import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,7 +55,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().containsKey("actionType")) {
             if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
                 Log.d(TAG, "actionType : VIDEO_CALL");
-                Intent in = new Intent(this, CompleteActivity.class);
+                Intent in = new Intent(this, IDAVideoActivity.class);
                 String roomId = remoteMessage.getData().get("roomId");
                 String doctorName = remoteMessage.getData().get("doctorName");
                 String nurseId = remoteMessage.getData().get("nurseId");
@@ -88,7 +88,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     connectionInfoObject.put("patientUUID", patientUUid);
 
 
-                    Intent chatIntent = new Intent(this, ChatActivity.class);
+                    Intent chatIntent = new Intent(this, IDAChatActivity.class);
 
 
                     chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

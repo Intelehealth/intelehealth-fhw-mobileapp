@@ -31,6 +31,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -599,7 +600,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     }
 
     private void getSlots() {
-        String serverUrl = "https://" + sessionManager.getServerUrl() + ":3004";
+        String serverUrl = BuildConfig.SERVER_URL + ":3004";
 
         ApiClientAppointment.getInstance(serverUrl).getApi().getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid()).enqueue(new Callback<AppointmentListingResponse>() {
             @Override

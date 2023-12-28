@@ -44,6 +44,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -167,7 +168,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             }
         });
 
-        if(isNetworkConnected()) {
+        if (isNetworkConnected()) {
             mNoInternetTextView.setVisibility(View.GONE);
             getLocationFromServer();
         }
@@ -365,7 +366,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
         if (location != null) {
             Log.i(TAG, location.getDisplay());
-            TestSetup(AppConstants.DEMO_URL, userName, password, admin_password, location);
+            TestSetup(BuildConfig.SERVER_URL, userName, password, admin_password, location);
             Log.d(TAG, "attempting setup");
         }
     }
@@ -425,12 +426,13 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                     sessionManager.setLocationDescription(location.getDescription());
                                                     sessionManager.setServerUrl(CLEAN_URL);
                                                     sessionManager.setServerUrlRest(BASE_URL);
-                                                    sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
+                                                    sessionManager.setServerUrlBase(CLEAN_URL + "/openmrs");
                                                     sessionManager.setBaseUrl(BASE_URL);
                                                     sessionManager.setSetupComplete(true);
                                                     sessionManager.setFirstTimeLaunch(false);
                                                     sessionManager.setFirstProviderLoginTime(AppConstants.dateAndTimeUtils.currentDateTime());
 
+                                                    IntelehealthApplication.getInstance().initSocketConnection();
                                                     Log.d(TAG, "onNext: 11");
                                                     // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                                     AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
@@ -559,7 +561,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
     private void getLocationFromServer() {
         isLocationFetched = false;
-        String BASE_URL = "https://" + AppConstants.DEMO_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched) {
             ApiClient.changeApiBaseUrl(BASE_URL);
             ApiInterface apiService = ApiClient.createService(ApiInterface.class);

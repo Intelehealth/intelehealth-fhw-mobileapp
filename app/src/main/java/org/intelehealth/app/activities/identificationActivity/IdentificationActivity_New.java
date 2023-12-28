@@ -34,6 +34,7 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -48,7 +49,7 @@ import java.util.Locale;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class IdentificationActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class IdentificationActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     // ActivityIdentificationNewBinding binding;
     Button nxt_btn_main, btn_back_firstscreen, btn_nxt_firstscreen;
     RelativeLayout relativeLayout;

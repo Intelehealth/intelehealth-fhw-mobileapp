@@ -1,7 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
-
+apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply from: "resdir.gradle"
+apply from: "environment.gradle"
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -10,11 +13,13 @@ static def getDateTime() {
     return df.format(new Date());
 }
 android {
+    namespace 'org.intelehealth.app'
     compileSdk 34
+
     defaultConfig {
         applicationId "org.intelehealth.app"
-        minSdkVersion 26
-        targetSdkVersion 34
+        minSdk 23
+        targetSdk 34
         versionCode 64
         versionName '4.1 - Beta'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -60,19 +65,24 @@ android {
         }
     }
 
-    buildFeatures{
-        dataBinding true // for data binding
+    buildFeatures {
+        viewBinding true
+        dataBinding true
         buildConfig true
     }
-    namespace 'org.intelehealth.app'
-}
 
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+}
 dependencies {
-    implementation project(':webrtc')
+    implementation project(':klivekit')
+    implementation project(':fcm')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     implementation 'com.google.android.gms:play-services-fido:20.1.0'
@@ -130,18 +140,13 @@ dependencies {
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
     annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
 
-    implementation 'com.google.firebase:firebase-crashlytics:18.6.0'
-    implementation 'com.google.firebase:firebase-analytics:21.5.0'
-    implementation "com.google.firebase:firebase-core:21.1.1"
-    //Targeting S+ (version 31 and above)
-    implementation 'com.google.firebase:firebase-messaging:23.3.1'
-    implementation "com.google.firebase:firebase-iid:21.1.0"
-
-    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+    implementation platform('com.google.firebase:firebase-bom:30.3.1')
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation "com.google.firebase:firebase-iid"
+    implementation "com.google.firebase:firebase-core"
 
-    api 'com.google.android.material:material:1.10.0'
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-config'
 
