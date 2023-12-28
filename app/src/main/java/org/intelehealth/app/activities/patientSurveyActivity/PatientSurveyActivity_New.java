@@ -32,6 +32,7 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -47,7 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class PatientSurveyActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class PatientSurveyActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientSurveyActivity_New.class.getSimpleName();
     String patientUuid;
     String visitUuid;

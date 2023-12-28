@@ -37,11 +37,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
+import org.intelehealth.app.shared.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -66,7 +68,7 @@ import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
-public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
+public class PastMedicalHistoryActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
 
     String patient = "patient";
     String patientUuid;

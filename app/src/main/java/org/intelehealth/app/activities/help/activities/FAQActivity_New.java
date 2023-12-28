@@ -21,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.help.adapter.FAQExpandableAdapter;
 import org.intelehealth.app.activities.help.models.QuestionModel;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class FAQActivity_New extends AppCompatActivity {
+public class FAQActivity_New extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

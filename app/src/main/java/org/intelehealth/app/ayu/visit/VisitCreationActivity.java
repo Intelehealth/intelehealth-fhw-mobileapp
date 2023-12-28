@@ -58,6 +58,7 @@ import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -83,7 +84,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-public class VisitCreationActivity extends AppCompatActivity implements VisitCreationActionListener {
+public class VisitCreationActivity extends BaseActivity implements VisitCreationActionListener {
 
     private static final String TAG = VisitCreationActivity.class.getSimpleName();
     private static final String VITAL_FRAGMENT = "VITAL";

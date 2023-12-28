@@ -41,6 +41,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.ui2.calendarviewcustom.CalendarViewDemoActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.BitmapUtils;
@@ -55,7 +56,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class ChatHelpActivity_New extends AppCompatActivity implements ClickListenerInterface {
+public class ChatHelpActivity_New extends BaseActivity implements ClickListenerInterface {
     private static final String TAG = "ChatHelpActivity_New";
     TextInputEditText etSendMessage;
     TextInputLayout telSendMessage;

@@ -28,6 +28,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -40,7 +41,7 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class MyAppointmentActivity extends AppCompatActivity implements UpdateAppointmentsCount, NetworkUtils.InternetCheckUpdateInterface {
+public class MyAppointmentActivity extends BaseActivity implements UpdateAppointmentsCount, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyAppointmentActivity";
     BottomNavigationView bottomNav;
     TabLayout tabLayout;

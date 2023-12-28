@@ -52,6 +52,7 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
@@ -67,7 +68,7 @@ import java.util.Locale;
  * Github: prajwalmw
  */
 
-public class SearchPatientActivity_New extends AppCompatActivity {
+public class SearchPatientActivity_New extends BaseActivity {
     RecyclerView search_recycelview;
     SearchPatientAdapter_New adapter;
     EditText mSearchEditText;

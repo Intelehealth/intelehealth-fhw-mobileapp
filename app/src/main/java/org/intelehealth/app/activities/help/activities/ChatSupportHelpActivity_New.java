@@ -16,12 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.help.adapter.ChatSupportAdapter_New;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Locale;
 
-public class ChatSupportHelpActivity_New extends AppCompatActivity {
+public class ChatSupportHelpActivity_New extends BaseActivity {
 
     ImageView ivBackArrow, ivIsInternet;
 
