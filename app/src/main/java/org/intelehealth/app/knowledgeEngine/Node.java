@@ -3314,6 +3314,50 @@ public class Node implements Serializable {
         return allAnswered;
     }
 
+
+    public boolean isNestedMandatoryOptionsAnswered() {
+        Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered - " + findDisplay());
+        boolean allAnswered = isSelected();
+        if(isMultiChoice() && !isDataCaptured()){
+            allAnswered = false;
+        }
+        /*if(node.isSelected() && node.isRequired() && node.optionsList.size()==1){
+            if(!node.optionsList.get(0).isSelected()){
+                return  false;
+            }
+        }*/
+        if (optionsList != null && !optionsList.isEmpty()) {
+            int countSelected = 0;
+            for (int i = 0; i < optionsList.size(); i++) {
+                Node innerNode = optionsList.get(i);
+                if (innerNode.isSelected()) {
+                    Log.v(TAG, innerNode.isRequired() + " = isNestedMandatory - " + innerNode.findDisplay() + " innerNode.isDataCaptured() - " + innerNode.isDataCaptured());
+                    countSelected++;
+                    if (innerNode.isRequired()) {
+                        //if (innerNode.optionsList != null && !innerNode.optionsList.isEmpty()) {
+                        if (!innerNode.isTerminal()) {
+                            if (!innerNode.isNestedMandatoryOptionsAnswered()) {
+                                allAnswered = false;
+                                break;
+                            }
+                        }else {
+                            if(innerNode.isUserInputsTypeNode() && !innerNode.isDataCaptured){
+                                allAnswered = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (isSelected() && countSelected == 0) {
+                allAnswered = false;
+            }
+
+        }
+        Log.v(TAG, "isNestedMandatory allAnswered result - " + allAnswered + "\t" + findDisplay());
+        return allAnswered;
+    }
+
     public boolean isOptional() {
         return optional;
     }

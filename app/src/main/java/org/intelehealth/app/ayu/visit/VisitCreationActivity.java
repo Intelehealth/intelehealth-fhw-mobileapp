@@ -1114,6 +1114,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private String generateFamilyHistoryAns(boolean isLocale) {
         String familyHistory = "";
         ArrayList<String> familyInsertionList = new ArrayList<>();
+        if(!mFamilyHistoryNode.getOptionsList().get(0).isNestedMandatoryOptionsAnswered()){
+            return null;
+        }
         if (mFamilyHistoryNode.anySubSelected()) {
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
