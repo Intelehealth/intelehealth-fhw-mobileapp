@@ -30,7 +30,7 @@ public class ProviderAttributeLIstDAO {
             throws DAOException {
 
         boolean isInserted = true;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             for (ProviderAttributeListDTO providerAttributeListDTO : providerAttributeListDTOS) {

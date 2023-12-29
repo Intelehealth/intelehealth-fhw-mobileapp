@@ -19,7 +19,7 @@ public class LocationDAO {
     public boolean insertLocations(List<LocationDTO> locationDTOS) throws DAOException {
 
         boolean isInserted = true;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             for (LocationDTO location : locationDTOS) {
