@@ -5,9 +5,12 @@ import static org.intelehealth.app.utilities.UuidDictionary.OBS_ADMINISTER_MEDIC
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_DISPENSE_AID;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_DISPENSE_MEDICATION;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.IntentCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -90,7 +93,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     private float float_ageYear_Month;
     private Boolean isPastVisit = false;
 
-            /*encounterDispense = "", encounterAdminister = ""*/;
+    /*encounterDispense = "", encounterAdminister = ""*/;
     private ObsDTO obsDTOMedication, obsDTOAid;
     //    private List<ObsDTO> obsDTOList_Medication, obsDTOList_Aid;
     private ArrayList<String> fileuuidList = new ArrayList<>();
@@ -118,7 +121,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         tie_medNotes.setHint(getString(R.string.enter_details_here));
         tie_aidNotes.setHint(getString(R.string.enter_details_here));
-     //   registerBroadcastReceiverDynamically();
+        //   registerBroadcastReceiverDynamically();
 
         tie_medNotes.addTextChangedListener(new TextWatcher() {
             @Override
@@ -217,7 +220,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         intentTag = intent.getStringExtra("tag");
         isPastVisit = intent.getBooleanExtra("pastVisit", false);
 
-      //  encounterDisenseAdminister = intent.getStringExtra("encounterDisenseAdminister");
+        //  encounterDisenseAdminister = intent.getStringExtra("encounterDisenseAdminister");
 
        /* encounterDispense = intent.getStringExtra("encounterDispense");
         encounterAdminister = intent.getStringExtra("encounterAdminister");*/
@@ -266,8 +269,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }*/
 
-     //   additionalDocumentImagesDownload();
-     //   setImagesToRV();
+        //   additionalDocumentImagesDownload();
+        //   setImagesToRV();
         // TODO: here max 4 images will only come.
 
         if (medList != null && medList.size() > 0) {
@@ -412,9 +415,9 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
                 Log.d(TAG, "img btn onClick: " + encounterDisenseAdminister);
                 docIntent.putExtra("encounterDispenseAdminister", encounterDisenseAdminister);
-
-               // startActivity(docIntent);
-                startActivityForResult(docIntent, IMAGE_LIST_INTENT);
+                documentResult.launch(docIntent);
+                // startActivity(docIntent);
+//                startActivityForResult(docIntent, IMAGE_LIST_INTENT);
             }
         });
 
@@ -422,6 +425,29 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             checkValidation();
         });
     }
+
+    private final ActivityResultLauncher<Intent> documentResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), o -> {
+                Log.e(TAG, ": documentResult =>" + o.getResultCode());
+                if (o.getData() != null) {
+                    Log.e(TAG, ": documentResult =>RESULT_OK::" + new Gson().toJson(o.getData()));
+                    List<DocumentObject> rowListItem = new ArrayList<>();
+                    rowListItem = (List<DocumentObject>) o.getData().getSerializableExtra("rowListItem");
+
+                    fileuuidList = new ArrayList<>();
+                    if (rowListItem.size() > 0) {
+                        HashSet<String> hashSet = new HashSet<>();
+                        for (int i = 0; i < rowListItem.size(); i++) {
+                            hashSet.add(StringUtils.getFileNameWithoutExtensionString(rowListItem.get(i).getDocumentName()));
+                            // Log.d("TAG", "onActivityResult fileuuidList: " + fileuuidList.get(i));
+                        }
+
+
+                        fileuuidList.addAll(hashSet);
+                        setImagesToRV();
+                    }
+                }
+            });
 
     private void setAidValues() throws DAOException {
        /* String encounterId = encounterDispense;
@@ -521,23 +547,23 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
     private void setImagesToRV() {
         ImagesDAO imagesDAO = new ImagesDAO();
-      //  fileuuidList = new ArrayList<String>();
+        //  fileuuidList = new ArrayList<String>();
         fileList = new ArrayList<File>();
-      //  try {
+        //  try {
 
-         //   fileuuidList = imagesDAO.getImageUuid(encounterDisenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);
-            Log.d("TAG", "setImagesToRV: count: " + String.valueOf(fileuuidList.size()));
+        //   fileuuidList = imagesDAO.getImageUuid(encounterDisenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);
+        Log.d("TAG", "setImagesToRV: count: " + String.valueOf(fileuuidList.size()));
 
-            for (String fileuuid : fileuuidList) {
-                String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
-                if (new File(filename).exists()) {
-                    fileList.add(new File(filename));
-                }
+        for (String fileuuid : fileuuidList) {
+            String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+            if (new File(filename).exists()) {
+                fileList.add(new File(filename));
             }
-            horizontalAdapter = new HorizontalAdapter(fileList, this);
-            docsLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-            rv_docs.setLayoutManager(docsLayoutManager);
-            rv_docs.setAdapter(horizontalAdapter);
+        }
+        horizontalAdapter = new HorizontalAdapter(fileList, this);
+        docsLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        rv_docs.setLayoutManager(docsLayoutManager);
+        rv_docs.setAdapter(horizontalAdapter);
        /* } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {
@@ -546,7 +572,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     }
 
     private void checkValidation() {
-        
+
         if (medList != null && medList.size() > 0) {
             if (tie_medNotes.getText().toString().isEmpty()) {
                 tie_medNotes.requestFocus();
@@ -582,7 +608,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 return;
             }
         }
-        
+
         if (horizontalAdapter != null && horizontalAdapter.getItemCount() == 0) {
             Toast.makeText(context, R.string.please_add_at_least_one_image, Toast.LENGTH_SHORT).show();
             return;
@@ -621,8 +647,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             }
 
             Toast.makeText(this, getString(R.string.dispense_data_saved), Toast.LENGTH_SHORT).show();
-        }
-        else if (tag.equalsIgnoreCase("administer")) {
+        } else if (tag.equalsIgnoreCase("administer")) {
 
             createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_ADMINISTER);
 
@@ -665,7 +690,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         if (encounterDisenseAdminister.equalsIgnoreCase("") || encounterDisenseAdminister == null)
             encounterDisenseAdminister = UUID.randomUUID().toString();
 
-      //  encounterDisenseAdminister = UUID.randomUUID().toString();
+        //  encounterDisenseAdminister = UUID.randomUUID().toString();
         isEncounterCreated = false;
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
@@ -852,7 +877,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setImagesToRV();
+//        setImagesToRV();
     }
 
     private void additionalDocumentImagesDownload() {
@@ -889,7 +914,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("encounterUuidVitals", encounterVitals);
-       // intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+        // intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
         intent.putExtra("encounterUuidAdultIntial", encounterDisenseAdminister);
         intent.putExtra("ImageType", imageType);
         startService(intent);
@@ -910,7 +935,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-      //  unregisterReceiver(broadcastReceiverForIamgeDownlaod);
+        //  unregisterReceiver(broadcastReceiverForIamgeDownlaod);
         super.onDestroy();
 
     }
@@ -929,7 +954,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
                 HashSet<String> hashSet = new HashSet<>();
                 for (int i = 0; i < rowListItem.size(); i++) {
                     hashSet.add(StringUtils.getFileNameWithoutExtensionString(rowListItem.get(i).getDocumentName()));
-                   // Log.d("TAG", "onActivityResult fileuuidList: " + fileuuidList.get(i));
+                    // Log.d("TAG", "onActivityResult fileuuidList: " + fileuuidList.get(i));
                 }
 
 

@@ -4727,7 +4727,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             return "";
 
         Log.d(TAG, "getValueTimeStamp: " + created_date);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.z", Locale.ENGLISH);
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = null;
         try {

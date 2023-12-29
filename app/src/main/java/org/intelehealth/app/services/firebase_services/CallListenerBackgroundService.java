@@ -27,6 +27,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.utilities.NotificationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.apprtc.CompleteActivity;
 
@@ -86,7 +87,7 @@ public class CallListenerBackgroundService extends Service {
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, HomeActivity.class);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, notificationIntent, 0);
+                PendingIntent.getActivity(this, 0, notificationIntent, NotificationUtils.getPendingIntentFlag());
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getText(R.string.notification_title))

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="org.intelehealth.app">
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
@@ -20,7 +19,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -218,6 +218,7 @@
             android:name=".activities.searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_search_patient"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -257,6 +258,7 @@
             android:name=".activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_home"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -273,6 +275,7 @@
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -326,7 +329,8 @@
         <service android:name=".services.MyIntentService" />
         <service android:name=".services.LastSyncIntentService" />
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
-        <service android:name=".services.firebase_services.MyFirebaseMessagingService">
+        <service android:name=".services.firebase_services.MyFirebaseMessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

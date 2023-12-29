@@ -10,9 +10,12 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -99,8 +102,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                     intent.putExtra("rowListItem", (Serializable) rowListItem);
                     setResult(IMAGE_LIST_INTENT, intent);
                     finish();
-                }
-                else {
+                } else {
                     onBackPressed();
                 }
 
@@ -200,8 +202,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
 
 
-        }
-        else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
+        } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
             if (resultCode == RESULT_OK) {
 
 
@@ -222,11 +223,12 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 compressImageAndSave(finalFilePath);
 
             }
-        if (resultCode == RESULT_CANCELED) {
+            if (resultCode == RESULT_CANCELED) {
 
-        }
+            }
         }
     }
+
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
@@ -242,18 +244,16 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_docs:
-                selectImage();
+        if (item.getItemId() == R.id.action_add_docs) {
+            selectImage();
 //                Intent cameraIntent = new Intent(this, CameraActivity.class);
 //                String imageName = UUID.randomUUID().toString();
 //                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
 //                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
 //                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -267,7 +267,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     }
 
     /**
-     *   Open dialog to Select douments from Image and Camera as Per the Choices
+     * Open dialog to Select douments from Image and Camera as Per the Choices
      */
     private void selectImage() {
         if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty()) {
@@ -280,31 +280,59 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(AdditionalDocumentsActivity.this);
         builder.setTitle(R.string.additional_doc_image_picker_title);
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (item == 0) {
-                    Intent cameraIntent = new Intent(AdditionalDocumentsActivity.this, CameraActivity.class);
-                    String imageName = UUID.randomUUID().toString();
-                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
-                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+        builder.setItems(options, (dialog, item) -> {
+            if (item == 0) {
+                Intent cameraIntent = new Intent(AdditionalDocumentsActivity.this, CameraActivity.class);
+                String imageName = UUID.randomUUID().toString();
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
+                resultCameraContract.launch(cameraIntent);
+//                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
 
-                } else if (item == 1) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
-                } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
+            } else if (item == 1) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                resultGalleryContract.launch(intent);
+//                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+            } else if (options[item].equals("Cancel")) {
+                dialog.dismiss();
             }
         });
         builder.show();
     }
 
-/**
- * @param filePath Final Image path to compress.
- *
- * */
+    private final ActivityResultLauncher<Intent> resultCameraContract = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), o -> {
+                if (o.getData() != null) {
+                    String mCurrentPhotoPath = o.getData().getStringExtra("RESULT");
+                    saveImage(mCurrentPhotoPath);
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> resultGalleryContract = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), o -> {
+                if (o.getData() != null) {
+                    Uri selectedImage = o.getData().getData();
+                    String[] filePath = {MediaStore.Images.Media.DATA};
+                    Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                    c.moveToFirst();
+                    int columnIndex = c.getColumnIndex(filePath[0]);
+                    String picturePath = c.getString(columnIndex);
+                    c.close();
+                    //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                    Log.v("path", picturePath + "");
+
+                    // copy & rename the file
+                    String finalImageName = UUID.randomUUID().toString();
+                    final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                    BitmapUtils.copyFile(picturePath, finalFilePath);
+                    compressImageAndSave(finalFilePath);
+                }
+            });
+
+
+    /**
+     * @param filePath Final Image path to compress.
+     */
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(new Runnable() {
             @Override
@@ -324,6 +352,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         });
 
     }
+
     private void saveImage(String picturePath) {
         Log.v("AdditionalDocuments", "picturePath = " + picturePath);
         File photo = new File(picturePath);
@@ -351,8 +380,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             intent.putExtra("rowListItem", (Serializable) rowListItem);
             setResult(IMAGE_LIST_INTENT, intent);
             finish();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
 
