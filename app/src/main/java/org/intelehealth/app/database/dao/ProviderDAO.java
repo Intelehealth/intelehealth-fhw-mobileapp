@@ -27,7 +27,7 @@ public class ProviderDAO {
     public boolean insertProviders(List<ProviderDTO> providerDTOS) throws DAOException {
 
         boolean isInserted = true;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             for (ProviderDTO provider : providerDTOS) {

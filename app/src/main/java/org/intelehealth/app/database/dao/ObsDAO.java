@@ -38,7 +38,7 @@ public class ObsDAO {
     public boolean insertObsTemp(List<ObsDTO> obsDTOS) throws DAOException {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         boolean isInserted = true;
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         try {
             db.beginTransaction();
             Logger.logD("insert", " insert obs");
