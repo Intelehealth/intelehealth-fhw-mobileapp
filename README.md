@@ -17,6 +17,8 @@ Intelehealth is an open source telemedicine platform that empowers local communi
 * The CHW uploads the gathered clinical data to a cloud server which houses the patients Electronic Health Record (EHR) system
 * The remote doctor reviews uploaded data, offer medical advice and prescription, and refer patient if required
 
+  [Disclaimer](https://github.com/Intelehealth/Intelehealth-FHW-MobileApp/blob/master-2.0/Healthcare%20disclaimer.md)
+
 ## Credits
 ### Icons used:
 * Happy by Alina Oleynik from the Noun Project
