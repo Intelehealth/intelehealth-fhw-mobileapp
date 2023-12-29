@@ -102,6 +102,9 @@ public class FamilyHistoryFragment extends Fragment {
 
             if (mIsEditMode) {
                 view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
+                if (!((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
+                    view.findViewById(R.id.btn_cancel).setVisibility(View.INVISIBLE);
+                }
                 view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

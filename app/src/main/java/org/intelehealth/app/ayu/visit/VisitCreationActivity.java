@@ -180,14 +180,14 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             String[] temp = String.valueOf(float_ageYear_Month).split("\\.");
             mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
             if (Integer.parseInt(temp[0]) == 0) {
-                mAgeAndMonth = temp[1] + " "  + getResources().getString(R.string.months);
+                mAgeAndMonth = temp[1] + " " + getResources().getString(R.string.months);
             } else if (Integer.parseInt(temp[0]) == 0) {
-                mAgeAndMonth = temp[0] + " "  + getResources().getString(R.string.years);
+                mAgeAndMonth = temp[0] + " " + getResources().getString(R.string.years);
             } else {
-                mAgeAndMonth = temp[0] + " "  + getResources().getString(R.string.years) + " " + temp[1] + " "  + getResources().getString(R.string.months);
+                mAgeAndMonth = temp[0] + " " + getResources().getString(R.string.years) + " " + temp[1] + " " + getResources().getString(R.string.months);
             }
 
-        if (intentTag.equalsIgnoreCase("edit")) {
+            if (intentTag.equalsIgnoreCase("edit")) {
                 mIsEditMode = true;
                 mIsEditTriggerFromVisitSummary = true;
             }
@@ -501,7 +501,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Node node = mChiefComplainRootNodeList.get(i);
             Log.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
             boolean isAssociateSymptomsType = i == mChiefComplainRootNodeList.size() - 1;
-            String val = formatComplainRecord(node,isAssociateSymptomsType );
+            String val = formatComplainRecord(node, isAssociateSymptomsType);
             Log.v(TAG, "val- " + val);
             String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
             Log.v(TAG, "answerInLocale- " + answerInLocale);
@@ -580,7 +580,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             /*if (i == 0) {
                 optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(0).getOptionsList().get(0));
             }*/
-            if (map.containsKey(filterNode.getOptionsList().get(i).getText()) && filterNode.getOptionsList().get(i).getOptionsList()!=null) {
+            if (map.containsKey(filterNode.getOptionsList().get(i).getText()) && filterNode.getOptionsList().get(i).getOptionsList() != null) {
                 for (int j = 0; j < filterNode.getOptionsList().get(i).getOptionsList().size(); j++) {
                     optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(j).getOptionsList().get(0));
                 }
@@ -982,7 +982,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     if (imagePathList != null) {
                         for (String imagePath : imagePathList) {
                             String comments = l2Node.getImagePathListWithSectionTag().get(imagePath);
-                            String fileName = imagePath.substring(imagePath.lastIndexOf("/")+1).split("\\.")[0];
+                            String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1).split("\\.")[0];
                             updateImageDatabase(fileName, comments);
                         }
                     }
@@ -1031,13 +1031,25 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
         //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
-        patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0 , false);
-        while (patientHistory!=null && patientHistory.contains("[Describe"))
+        patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0, false);
+        while (patientHistory != null && patientHistory.contains("[Describe"))
             patientHistory = patientHistory.replace("[Describe]", "");
 
         //familyHistory = mFamilyHistoryNode.generateLanguage();
 
         familyHistory = generateFamilyHistoryAns(false);
+        Log.v(TAG, "familyHistory - " + familyHistory);
+        if (familyHistory == null || familyHistory.trim().isEmpty()) {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showCommonDialog(VisitCreationActivity.this, 0, getString(R.string.alert_label_txt), getString(R.string.you_missed_the_compulsory_questions_please_answer_them), true, getResources().getString(R.string.generic_ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+                @Override
+                public void onDialogActionDone(int action) {
+
+                }
+            });
+
+            return false;
+        }
         familyHistoryLocale = generateFamilyHistoryAns(true);
 
         familyHistory = familyHistory.replaceAll("null.", "");
@@ -1050,7 +1062,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         if (imagePathList != null) {
             for (String imagePath : imagePathList) {
                 String comments = mFamilyHistoryNode.getImagePathListWithSectionTag().get(imagePath);
-                updateImageDatabase(imagePath,comments);
+                updateImageDatabase(imagePath, comments);
             }
         }
 
@@ -1206,7 +1218,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
-            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE,comments);
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE, comments);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -1319,7 +1331,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private AlertDialog mImagePickerAlertDialog;
 
     private void selectImage() {
-        if(mImagePickerAlertDialog!=null && mImagePickerAlertDialog.isShowing()){
+        if (mImagePickerAlertDialog != null && mImagePickerAlertDialog.isShowing()) {
             mImagePickerAlertDialog.dismiss();
         }
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.add_image_by), new DialogUtils.ImagePickerDialogListener() {
