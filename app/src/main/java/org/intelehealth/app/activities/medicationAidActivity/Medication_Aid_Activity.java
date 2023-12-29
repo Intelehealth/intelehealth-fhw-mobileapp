@@ -32,12 +32,13 @@ import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Medication_Aid_Activity extends AppCompatActivity {
+public class Medication_Aid_Activity extends BaseActivity {
     private RecyclerView rv_medication, rv_aid;
     public final String TAG = Medication_Aid_Activity.this.getClass().getName();
     public static final String MEDICATION = "medication";

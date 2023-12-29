@@ -12,6 +12,7 @@ import androidx.work.PeriodicWorkRequest;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.syncModule.LastSyncWork;
@@ -134,15 +135,15 @@ public class AppConstants {
     }
 
     public static String getFirebaseRTDBRootRef() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
+        return BuildConfig.SERVER_URL.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
     }
 
     public static String getFirebaseRTDBRootRefForTextChatConnInfo() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_TEXT_CHAT_CONN_INFO;
+        return BuildConfig.SERVER_URL.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_TEXT_CHAT_CONN_INFO;
     }
 
     public static String getFirebaseRTDBRootRefForDeviceInfo() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
+        return BuildConfig.SERVER_URL.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
     }
 }
 

@@ -29,6 +29,7 @@ import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -37,7 +38,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class  DraftSurveyActivity extends AppCompatActivity {
+public class  DraftSurveyActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private SearchPatientAdapter draftSurveyAdapter;
     private Context context = DraftSurveyActivity.this;

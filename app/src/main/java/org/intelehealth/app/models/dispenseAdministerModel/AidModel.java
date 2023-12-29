@@ -3,6 +3,7 @@ package org.intelehealth.app.models.dispenseAdministerModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -121,7 +122,7 @@ public class AidModel {
         List<String> withWebUrlDocList = new ArrayList<>();
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         for (String doc : documentsList) {
-            withWebUrlDocList.add("https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/obs/" + doc + "/value");
+            withWebUrlDocList.add(BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/obs/" + doc + "/value");
         }
         this.documentsList = withWebUrlDocList;
 //        https://training.sila.care/openmrs/ws/rest/v1/obs/

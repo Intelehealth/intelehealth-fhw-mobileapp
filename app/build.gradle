@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply from: "resdir.gradle"
 apply from: "environment.gradle"
 import java.text.DateFormat
@@ -10,15 +12,14 @@ static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     return df.format(new Date());
 }
+
 android {
     namespace 'org.intelehealth.app'
     compileSdk 34
-    dataBinding {
-        enabled = true
-    }
+
     defaultConfig {
         applicationId "syriana.intelehealth.org"
-        minSdk 19
+        minSdk 21
         targetSdk 34
         versionCode 10
         versionName "1.1.3"
@@ -44,7 +45,8 @@ android {
         }
 
         debug {
-            versionNameSuffix("_debug") // Added to keep track of which variant of apk is been used when a issue is faced.
+            versionNameSuffix("_debug")
+            // Added to keep track of which variant of apk is been used when a issue is faced.
         }
 
     }
@@ -63,7 +65,7 @@ android {
             enableSplit = false
         }
         density {
-           enableSplit = true
+            enableSplit = true
         }
         abi {
             enableSplit = true
@@ -76,9 +78,13 @@ android {
         buildConfig true
     }
 
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 }
 dependencies {
-    implementation project(':webrtc')
+    implementation project(':klivekit')
+    implementation project(':fcm')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation files('libs/printer_library.jar') // Thermal Printer
     implementation 'androidx.appcompat:appcompat:1.6.1'

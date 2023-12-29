@@ -28,6 +28,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ import java.util.List;
  * Mobile: +917304154312
  **/
 
-public class PastNotesDispenseAdministerActivity extends AppCompatActivity {
+public class PastNotesDispenseAdministerActivity extends BaseActivity {
     public final String TAG = PastNotesDispenseAdministerActivity.this.getClass().getName();
     ActivityPastNotesDispenseAdministerBinding binding;
     private Context context;

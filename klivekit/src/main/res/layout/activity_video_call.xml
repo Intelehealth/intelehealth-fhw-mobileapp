@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_0"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:id="@+id/videoContainer_ll"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="2">
+
+            <View
+                android:id="@+id/center_ll"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dip"
+                android:layout_centerVertical="true"
+                android:background="@color/white" />
+
+            <View
+                android:id="@+id/center_vertical_ll"
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/incoming_surface_view_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/center_ll">
+
+                <io.livekit.android.renderer.TextureViewRenderer
+                    android:id="@+id/incoming_surface_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPoorConnectivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@color/gray_4_trans"
+                    android:gravity="center"
+                    android:padding="@dimen/normal_padding"
+                    android:text="@string/poor_connection"
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
+
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/ivRemoteMicStatus"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_gravity="bottom|end"-->
+                <!--                    android:contentDescription="@string/remote_participant_mic_off_status"-->
+                <!--                    android:padding="@dimen/normal_padding"-->
+                <!--                    android:src="@drawable/ic_mic_off"-->
+                <!--                    android:visibility="gone" />-->
+
+                <RelativeLayout
+                    android:id="@+id/remote_video_off_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="128dip"
+                        android:layout_height="128dip"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/default_doct_icon" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_doctor_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Dr. Roshan Jha"
+                        android:textColor="#fff"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/tv_timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_doctor_name"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/round_corner_16_gray_light"
+                        android:padding="8dip"
+                        android:text="00.00"
+                        android:textColor="#2E1E91"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/remote_voice_status_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="16dip"
+                        android:layout_marginTop="16dip"
+                        android:layout_marginEnd="16dip"
+                        android:layout_marginBottom="16dip"
+                        android:background="@drawable/rounded_icon_white_bg"
+                        android:src="@drawable/selector_active_speaker" />
+                </RelativeLayout>
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:id="@+id/self_surface_view_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/center_ll"
+                android:layout_alignParentEnd="true"
+                android:background="@color/colorPrimaryDark">
+
+                <io.livekit.android.renderer.TextureViewRenderer
+                    android:id="@+id/self_surface_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <RelativeLayout
+                    android:id="@+id/self_video_off_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="128dip"
+                        android:layout_height="128dip"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/default_nurse_icon" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:layout_margin="16dp"
+                        android:text="@string/you"
+                        android:textColor="#fff"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/self_voice_status_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="16dip"
+                        android:layout_marginTop="16dip"
+                        android:layout_marginEnd="16dip"
+                        android:layout_marginBottom="16dip"
+                        android:background="@drawable/rounded_icon_white_bg"
+                        android:src="@drawable/selector_active_speaker" />
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <include
+                android:id="@+id/actionView"
+                layout="@layout/view_call_action_btns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true" />
+
+            <TextView
+                android:id="@+id/status_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/connecting"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/calling_layout"
+                layout="@layout/view_incoming_call"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</layout>
+
+

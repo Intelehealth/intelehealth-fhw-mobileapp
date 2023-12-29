@@ -21,6 +21,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.utilities.LocaleHelper;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +35,7 @@ import org.intelehealth.app.utilities.SessionManager;
 
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 
-public class PrivacyNotice_Activity extends AppCompatActivity implements View.OnClickListener {
+public class PrivacyNotice_Activity extends BaseActivity implements View.OnClickListener {
     TextView privacy_textview;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;

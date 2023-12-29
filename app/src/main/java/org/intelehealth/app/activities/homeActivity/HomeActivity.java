@@ -51,6 +51,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -84,7 +87,6 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -95,11 +97,11 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
-import org.intelehealth.apprtc.data.Manager;
-import org.intelehealth.apprtc.utils.FirebaseUtils;
+import org.intelehealth.fcm.utils.FcmTokenGenerator;
+import org.intelehealth.klivekit.utils.FirebaseUtils;
+import org.intelehealth.klivekit.utils.Manager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -121,12 +123,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 /**
  * Home Screen
  */
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
@@ -169,7 +173,7 @@ public class HomeActivity extends AppCompatActivity {
     MenuItem bluetoothCheck = null;
 
     private void saveToken() {
-        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         // save fcm reg. token for chat (Video)
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }
@@ -178,103 +182,13 @@ public class HomeActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.v(TAG, "onNewIntent");
-        catchFCMMessageData();
-    }
-
-    private void catchFCMMessageData() {
-        // get the chat notification click info
-        if (getIntent().getExtras() != null) {
-            //Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
-            Bundle remoteMessage = getIntent().getExtras();
-            try {
-                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
-                    //Log.d(TAG, "actionType : TEXT_CHAT");
-                    String fromUUId = remoteMessage.getString("toUser");
-                    String toUUId = remoteMessage.getString("fromUser");
-                    String patientUUid = remoteMessage.getString("patientId");
-                    String visitUUID = remoteMessage.getString("visitId");
-                    String patientName = remoteMessage.getString("patientName");
-                    JSONObject connectionInfoObject = new JSONObject();
-                    connectionInfoObject.put("fromUUID", fromUUId);
-                    connectionInfoObject.put("toUUID", toUUId);
-                    connectionInfoObject.put("patientUUID", patientUUid);
-
-                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                    String packageName = pInfo.packageName;
-
-                    Intent intent = new Intent(ACTION_NAME);
-                    intent.putExtra("visit_uuid", visitUUID);
-                    intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
-                    getApplicationContext().sendBroadcast(intent);
-
-                    Intent chatIntent = new Intent(this, ChatActivity.class);
-                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    chatIntent.putExtra("patientName", patientName);
-                    chatIntent.putExtra("visitUuid", visitUUID);
-                    chatIntent.putExtra("patientUuid", patientUUid);
-                    chatIntent.putExtra("fromUuid", fromUUId);
-                    chatIntent.putExtra("toUuid", toUUId);
-                    startActivity(chatIntent);
-
-                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
-                    //Log.d(TAG, "actionType : VIDEO_CALL");
-                    Intent in = new Intent(this, CompleteActivity.class);
-                    String roomId = remoteMessage.getString("roomId");
-                    String doctorName = remoteMessage.getString("doctorName");
-                    String nurseId = remoteMessage.getString("nurseId");
-                    boolean isOldNotification = false;
-                    if (remoteMessage.containsKey("timestamp")) {
-                        String timestamp = remoteMessage.getString("timestamp");
-
-                        Date date = new Date();
-                        if (timestamp != null) {
-                            date.setTime(Long.parseLong(timestamp));
-                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
-                            dateFormatter.setTimeZone(TimeZone.getDefault());
-
-                            try {
-                                Date ourDate = dateFormatter.parse(dateFormatter.format(date));
-                                long seconds = 0;
-                                if (ourDate != null) {
-                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
-                                }
-                                Log.v(TAG, "Current time - " + new Date());
-                                Log.v(TAG, "Notification time - " + ourDate);
-                                Log.v(TAG, "seconds - " + seconds);
-                                if (seconds >= 10) {
-                                    isOldNotification = true;
-                                }
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-
-                    in.putExtra("roomId", roomId);
-                    in.putExtra("isInComingRequest", true);
-                    in.putExtra("doctorname", doctorName);
-                    in.putExtra("nurseId", nurseId);
-
-                    int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                    if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
-                        startActivity(in);
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        getOnBackPressedDispatcher().addCallback(backPressedCallback);
         sessionManager = new SessionManager(this);
 //        setLocale(sessionManager.getAppLanguage());
 
@@ -284,7 +198,6 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         DeviceInfoUtils.saveDeviceInfo(this);
 
-        catchFCMMessageData();
         //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
         String language = sessionManager.getAppLanguage();
         //In case of crash still the unicef should hold the current lang fix.
@@ -505,8 +418,14 @@ public class HomeActivity extends AppCompatActivity {
         if (sessionManager.isReturningUser()) {
             syncUtils.syncForeground("");
         }*/
-        requestPermission();
+//        requestPermission();
         showProgressbar();
+
+        FcmTokenGenerator.getDeviceToken(token -> {
+            IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+            saveToken();
+            return Unit.INSTANCE;
+        });
     }
 
     //function for handling the video library feature...
@@ -896,7 +815,7 @@ public class HomeActivity extends AppCompatActivity {
     public void logout() {
 
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
-
+        IntelehealthApplication.getInstance().disconnectSocket();
 //        parseLogOut();
 
        /* AccountManager manager = AccountManager.get(HomeActivity.this);
@@ -999,50 +918,37 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        /*new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to EXIT ?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        moveTaskToBack(true);
-                        finish();
+    private final OnBackPressedCallback backPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(HomeActivity.this);
 
-                    }
+            // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+            alertdialogBuilder.setMessage(R.string.sure_to_exit);
+            alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    moveTaskToBack(true);
+                    // curPrinterInterface = null;
+                    // finish();
+                }
+            });
+            alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
 
-                })
-                .setNegativeButton("No", null)
-                .show();
-*/
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+            AlertDialog alertDialog = alertdialogBuilder.create();
+            alertDialog.show();
 
-        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        alertdialogBuilder.setMessage(R.string.sure_to_exit);
-        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                moveTaskToBack(true);
-                // curPrinterInterface = null;
-                // finish();
-            }
-        });
-        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+            Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+            Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-
-    }
+            negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
+        }
+    };
 
 
     private void getMindmapDownloadURL(String url, String key) {
@@ -1280,7 +1186,6 @@ public class HomeActivity extends AppCompatActivity {
     private void hideSyncProgressBar(boolean isSuccess) {
         mIsFirstTimeSyncDone = true;
         saveToken();
-        requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
             mSyncProgressDialog.dismiss();
@@ -1304,33 +1209,33 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
 
-    private void requestPermission() {
-        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-        if (CallListenerBackgroundService.isInstanceCreated()) {
-            CallListenerBackgroundService.getInstance().stopSelf();
-
-        }
-        ContextCompat.startForegroundService(this, serviceIntent);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + this.getPackageName()));
-                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
-            } else {
-                //Permission Granted-System will work
-            }
-        }
-
-    }
+//    private void requestPermission() {
+//        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//        if (CallListenerBackgroundService.isInstanceCreated()) {
+//            CallListenerBackgroundService.getInstance().stopSelf();
+//
+//        }
+//        ContextCompat.startForegroundService(this, serviceIntent);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (!Settings.canDrawOverlays(this)) {
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                        Uri.parse("package:" + this.getPackageName()));
+//                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+//            } else {
+//                //Permission Granted-System will work
+//            }
+//        }
+//
+//    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-            ContextCompat.startForegroundService(this, serviceIntent);
-        }
+//        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
+//        if (!CallListenerBackgroundService.isInstanceCreated()) {
+//            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//            ContextCompat.startForegroundService(this, serviceIntent);
+//        }
 
        /* if (mService != null)
             mService.stopScan();*/
@@ -1458,6 +1363,9 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
+    private final ActivityResultLauncher<Intent> resultScanBluetooth = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), o -> startStopScan());
+
     public void startStopScan() {
 
         // checking for permission
@@ -1468,8 +1376,7 @@ public class HomeActivity extends AppCompatActivity {
         // checking if bluetooth is enabled
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, 101);
-            return;
+            resultScanBluetooth.launch(enableIntent);
         } else { // Bluetooth is turned ON.
 
         }
@@ -1491,27 +1398,27 @@ public class HomeActivity extends AppCompatActivity {
         }*/
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == 101 && resultCode == RESULT_OK) {
+//            startStopScan();
+//        }
 
-        if (requestCode == 101 && resultCode == RESULT_OK) {
-            startStopScan();
-        }
-
-        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
-            if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
-                mSyncProgressDialog.dismiss();
-            }
-            mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
-            mSyncProgressDialog.setTitle(R.string.syncInProgress);
-            mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setProgress(i);
-            mSyncProgressDialog.show();
-
-            syncUtils.initialSync("home");
-        }
-    }
+//        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
+//            if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+//                mSyncProgressDialog.dismiss();
+//            }
+//            mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
+//            mSyncProgressDialog.setTitle(R.string.syncInProgress);
+//            mSyncProgressDialog.setCancelable(false);
+//            mSyncProgressDialog.setProgress(i);
+//            mSyncProgressDialog.show();
+//
+//            syncUtils.initialSync("home");
+//        }
+//    }
 
     private void showBluetoothDeviceChooseDialog() {
         /*if(mService != null) {

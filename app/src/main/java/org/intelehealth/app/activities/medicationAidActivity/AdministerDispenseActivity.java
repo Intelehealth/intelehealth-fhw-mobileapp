@@ -64,6 +64,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-public class AdministerDispenseActivity extends AppCompatActivity {
+public class AdministerDispenseActivity extends BaseActivity {
     private TextInputEditText tie_medNotes, tie_aidNotes,
             tie_totalCost, tie_vendorDiscount, tie_coveredCost, tie_outOfPocket, tie_others;
 

@@ -40,8 +40,9 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
-public class PatientSurveyActivity extends AppCompatActivity {
+public class PatientSurveyActivity extends BaseActivity {
     private static final String TAG = PatientSurveyActivity.class.getSimpleName();
     String patientUuid;
     String visitUuid;

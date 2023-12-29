@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.appointment.adapter.AppointmentListingAdapter;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -24,6 +25,7 @@ import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +35,7 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class AppointmentListingActivity extends AppCompatActivity {
+public class AppointmentListingActivity extends BaseActivity {
     RecyclerView rvAppointments;
     private String mSelectedStartDate = "";
     private String mSelectedEndDate = "";
@@ -87,7 +89,7 @@ public class AppointmentListingActivity extends AppCompatActivity {
 
     private void getSlots() {
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(mSelectedStartDate, mSelectedEndDate, new SessionManager(this).getLocationUuid())
 

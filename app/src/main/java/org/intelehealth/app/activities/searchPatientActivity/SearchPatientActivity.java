@@ -53,6 +53,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,7 +64,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SearchPatientActivity extends AppCompatActivity {
+public class SearchPatientActivity extends BaseActivity {
     SearchView searchView;
     String query;
     private SearchPatientAdapter recycler;

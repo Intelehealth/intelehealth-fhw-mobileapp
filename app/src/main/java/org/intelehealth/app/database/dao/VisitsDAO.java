@@ -449,4 +449,17 @@ public class VisitsDAO {
         return isDownloaded;
     }
 
+    public String getVisitIdByPatientId(String patientId) {
+        String visitId = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ? ", new String[]{patientId});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                visitId = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        cursor.close();
+
+        return visitId;
+    }
 }

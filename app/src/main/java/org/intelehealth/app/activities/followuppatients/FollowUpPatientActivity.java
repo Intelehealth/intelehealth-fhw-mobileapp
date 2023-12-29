@@ -31,6 +31,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -45,7 +46,7 @@ import java.util.Locale;
  * Github : @nishitagoyal
  */
 
-public class FollowUpPatientActivity extends AppCompatActivity {
+public class FollowUpPatientActivity extends BaseActivity {
 
     private FollowUpPatientAdapter recycler;
     RecyclerView recyclerView;

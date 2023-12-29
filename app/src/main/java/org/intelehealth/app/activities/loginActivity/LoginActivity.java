@@ -16,6 +16,7 @@ import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
@@ -41,6 +42,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -57,6 +59,7 @@ import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.utilities.NetworkConnection;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -73,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
             "username:password", "admin:nimda"
     };
     private final String TAG = LoginActivity.class.getSimpleName();
-//    protected AccountManager manager;
+    //    protected AccountManager manager;
 //    Account Manager is commented....
 //    ProgressDialog progress;
     Context context;
@@ -90,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
     String encoded = null;
     // UI references.
     private EditText mUsernameView;
-//    private AutoCompleteTextView mUsernameView;
+    //    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private ImageView icLogo;
 
@@ -185,7 +188,7 @@ public class LoginActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile("/data/data/" + context.getPackageName() + "/files/logo/ic_logo.png");
             icLogo.setImageBitmap(bitmap);
         } else {
-            Log.e("SetLogo","No Logo Found in Mindmap Folder");
+            Log.e("SetLogo", "No Logo Found in Mindmap Folder");
         }
     }
 
@@ -246,7 +249,7 @@ public class LoginActivity extends AppCompatActivity {
         final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
-      MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setMessage(getApplicationContext().getText(R.string.contact_whatsapp))
                 .setNegativeButton(R.string.contact, new DialogInterface.OnClickListener() {
                     @Override
@@ -277,8 +280,8 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .setPositiveButton(R.string.close_button, null);
 
-      AlertDialog alertDialog = builder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        AlertDialog alertDialog = builder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         //prajwal_changes
     }
@@ -295,7 +298,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void UserLoginTask(String mEmail, String mPassword) {
         cpd.show();
-        String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
+        String urlString = urlModifiers.loginUrl(BuildConfig.SERVER_URL);
         Logger.logD(TAG, "username and password" + mEmail + mPassword);
         encoded = base64Utils.encoded(mEmail, mPassword);
         sessionManager.setEncoded(encoded);
@@ -317,15 +320,15 @@ public class LoginActivity extends AppCompatActivity {
                 Logger.logD(TAG, "success" + gson.toJson(loginModel));
                 sessionManager.setChwname(loginModel.getUser().getDisplay());
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                Log.d("SESSOO","SESSOO_creator: "+loginModel.getUser().getUuid());
+                Log.d("SESSOO", "SESSOO_creator: " + loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
-                Log.d("SESSOO","SESSOO: "+sessionManager.getSessionID());
+                Log.d("SESSOO", "SESSOO: " + sessionManager.getSessionID());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO","SESSOO_PROVIDER: "+loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO","SESSOO_PROVIDER_session: "+sessionManager.getProviderID());
+                Log.d("SESSOO", "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
+                Log.d("SESSOO", "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
 
                 UrlModifiers urlModifiers = new UrlModifiers();
-                String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
+                String url = urlModifiers.loginUrlProvider(BuildConfig.SERVER_URL, loginModel.getUser().getUuid());
                 if (authencated) {
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
                     loginProviderModelObservable
@@ -338,15 +341,13 @@ public class LoginActivity extends AppCompatActivity {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
-
+                                            IntelehealthApplication.getInstance().initSocketConnection();
                                             provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
 //                                                success = true;
                                           /*  final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, mPassword, null);
                                             Log.d("MANAGER", "MANAGER " + account);*/
                                             //offlineLogin.invalidateLoginCredentials();
-
-
 
 
                                         }
@@ -371,7 +372,8 @@ public class LoginActivity extends AppCompatActivity {
                                     try {
                                         //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                         hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
-                                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                    } catch (NoSuchAlgorithmException |
+                                             UnsupportedEncodingException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                     }
 
@@ -379,7 +381,7 @@ public class LoginActivity extends AppCompatActivity {
                                         values.put("username", mEmail);
                                         values.put("password", hash_password);
                                         values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                        values.put("chwname",loginModel.getUser().getDisplay());
+                                        values.put("chwname", loginModel.getUser().getDisplay());
                                         values.put("provider_uuid_cred", sessionManager.getProviderID());
                                         createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                                         sqLiteDatabase.setTransactionSuccessful();
@@ -400,7 +402,7 @@ public class LoginActivity extends AppCompatActivity {
 //                startJobDispatcherService(LoginActivity.this);
                                     startActivity(intent);
                                     finish();
-                                  //  showProgress(false);
+                                    //  showProgress(false);
 
                                     sessionManager.setReturningUser(true);
                                     sessionManager.setLogout(false);

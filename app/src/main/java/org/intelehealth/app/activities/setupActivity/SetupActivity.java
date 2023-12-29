@@ -66,6 +66,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -127,7 +128,7 @@ public class SetupActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mAdminPasswordView;
-    private EditText mUrlField;
+//    private EditText mUrlField;
     private Button mLoginButton;
     //    private Spinner mDropdownLocation;
     private Spinner spinner_state, spinner_district, /*spinner_sanch,*/
@@ -187,7 +188,7 @@ public class SetupActivity extends AppCompatActivity {
         mPasswordView = findViewById(R.id.password);
 
         mAdminPasswordView = findViewById(R.id.admin_password);
-        mUrlField = findViewById(R.id.editText_URL);
+//        mUrlField = findViewById(R.id.editText_URL);
 
         mLoginButton = findViewById(R.id.setup_submit_button);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -241,60 +242,60 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
-        if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
-            if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                String BASE_URL = "https://" + mUrlField.getText().toString() + ":3004/api/openmrs/";
-                if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
-                    value = getLocationFromServer(BASE_URL); //state wise locations...
-                else
-                    Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-            }
-        }
+//        if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
+//            if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+//                String BASE_URL = "https://" + mUrlField.getText().toString() + ":3004/api/openmrs/";
+//                if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
+//                    value = getLocationFromServer(BASE_URL); //state wise locations...
+//                else
+//                    Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+//            }
+//        }
 
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
-        mUrlField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                isLocationFetched = false;
-                mEmailView.setError(null);
-                state_count = 0;
-                district_count = 0;
-//                sanch_count = 0;
-                village_count = 0;
-                empty_spinner("url");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mHandler.removeCallbacksAndMessages(null);
-                mHandler.postDelayed(userStoppedTyping, 1500); // 1.5 second
-            }
-
-            Runnable userStoppedTyping = new Runnable() {
-
-                @Override
-                public void run() {
-                    // user didn't typed for 1.5 seconds, do whatever you want
-                    if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
-                        if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                            String BASE_URL = "https://" + mUrlField.getText().toString() + ":3004/api/openmrs/";
-                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
-                                value = getLocationFromServer(BASE_URL); //state wise locations...
-                            else
-                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            };
-
-        });
+//        mUrlField.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                isLocationFetched = false;
+//                mEmailView.setError(null);
+//                state_count = 0;
+//                district_count = 0;
+////                sanch_count = 0;
+//                village_count = 0;
+//                empty_spinner("url");
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                mHandler.removeCallbacksAndMessages(null);
+//                mHandler.postDelayed(userStoppedTyping, 1500); // 1.5 second
+//            }
+//
+//            Runnable userStoppedTyping = new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    // user didn't typed for 1.5 seconds, do whatever you want
+//                    if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
+//                        if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+//                            String BASE_URL = "https://" + mUrlField.getText().toString() + ":3004/api/openmrs/";
+//                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
+//                                value = getLocationFromServer(BASE_URL); //state wise locations...
+//                            else
+//                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                }
+//            };
+//
+//        });
 
         spinner_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -591,13 +592,13 @@ public class SetupActivity extends AppCompatActivity {
     private void attemptLogin() {
 
         // Reset errors.
-        mUrlField.setError(null);
+//        mUrlField.setError(null);
         mEmailView.setError(null);
         mPasswordView.setError(null);
         mAdminPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String url = mUrlField.getText().toString();
+//        String url = mUrlField.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String admin_password = mAdminPasswordView.getText().toString();
@@ -606,10 +607,10 @@ public class SetupActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(url)) {
-            focusView = mUrlField;
-            cancel = true;
-        }
+//        if (TextUtils.isEmpty(url)) {
+//            focusView = mUrlField;
+//            cancel = true;
+//        }
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
@@ -672,21 +673,21 @@ public class SetupActivity extends AppCompatActivity {
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
-            if (focusView != null) {
-                if (TextUtils.isEmpty(url)) {
-                    mUrlField.requestFocus();
-                    mUrlField.setError(getString(R.string.enter_url));
-                }
-
-                focusView.requestFocus();
-            }
+//            if (focusView != null) {
+//                if (TextUtils.isEmpty(url)) {
+//                    mUrlField.requestFocus();
+//                    mUrlField.setError(getString(R.string.enter_url));
+//                }
+//
+//                focusView.requestFocus();
+//            }
         } else {
 
             if (village_name != null) {
-                String urlString = mUrlField.getText().toString();
+//                String urlString = mUrlField.getText().toString();
                 mLoginButton.setText(getString(R.string.please_wait_progress));
                 mLoginButton.setEnabled(false);
-                TestSetup(urlString, email, password, admin_password, village_name);
+                TestSetup(BuildConfig.SERVER_URL, email, password, admin_password, village_name);
                 Log.d(TAG, "attempting setup");
             }
         }
@@ -998,7 +999,7 @@ public class SetupActivity extends AppCompatActivity {
                     });*/
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            mUrlField.setError(getString(R.string.url_invalid));
+//            mUrlField.setError(getString(R.string.url_invalid));
             customProgressDialog.dismiss();
         }
         return value;
@@ -1296,9 +1297,9 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setLocationName(location.getValue());
                                             sessionManager.setLocationUuid(location.getKey());
                                             //  sessionManager.setLocationDescription(location.getDescription());
-                                            sessionManager.setServerUrl(CLEAN_URL);
+                                            sessionManager.setServerUrl(BuildConfig.SERVER_URL);
                                             sessionManager.setServerUrlRest(BASE_URL);
-                                            sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
+                                            sessionManager.setServerUrlBase(BuildConfig.SERVER_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
 
@@ -1307,7 +1308,7 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setStateName(selectedState);
                                             sessionManager.setDistrictName(selectedDistrict);
                                             sessionManager.setVillageName(selectedVillage);
-
+                                            IntelehealthApplication.getInstance().initSocketConnection();
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 

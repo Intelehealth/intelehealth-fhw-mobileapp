@@ -48,6 +48,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,7 +78,7 @@ import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 
-public class FamilyHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
+public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
 
     String patientUuid;

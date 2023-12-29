@@ -41,6 +41,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +49,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class HouseholdSurveyActivity extends AppCompatActivity implements View.OnClickListener {
+public class HouseholdSurveyActivity extends BaseActivity implements View.OnClickListener {
     public static List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
     private List<Questions> mItemList = new ArrayList<Questions>();
@@ -215,8 +216,8 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                 Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
                 Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-                positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
-                negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 //IntelehealthApplication.setAlertDialogCustomTheme(this, aler
             } else {

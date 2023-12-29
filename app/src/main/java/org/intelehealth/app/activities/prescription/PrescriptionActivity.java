@@ -48,6 +48,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
@@ -68,6 +69,7 @@ import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,7 +83,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class PrescriptionActivity extends AppCompatActivity {
+public class PrescriptionActivity extends BaseActivity {
 
     private static final String TAG = PrescriptionActivity.class.getSimpleName();
 
@@ -143,7 +145,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         appLanguage = sessionManager.getAppLanguage();
 
-        OBSURL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/obs";
+        OBSURL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/obs";
 
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -496,7 +498,7 @@ public class PrescriptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Here, prescription is given just need to pass the Visit Complete encounter to update the status of the visit on webapp...
-                String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
+                String url = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/encounter";
                 visitCompleteStatus = getVisitCompleteDataModel();
                 // String encoded = sessionManager.getEncoded();
                 String encoded = base64Utils.encoded("sysnurse", "Nurse123");

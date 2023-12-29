@@ -59,6 +59,7 @@ import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.LocaleHelper;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -133,7 +134,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_ru_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
-public class PatientDetailActivity extends AppCompatActivity {
+public class PatientDetailActivity extends BaseActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
     String mGender;

@@ -35,6 +35,7 @@ import android.view.animation.DecelerateInterpolator;
 
 
 import org.intelehealth.app.utilities.LocaleHelper;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,7 +73,7 @@ import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
 
-public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
+public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
     final String TAG = "Question Node Activity";
     String patientUuid;
     String visitUuid;

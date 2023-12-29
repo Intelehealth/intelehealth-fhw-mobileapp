@@ -56,8 +56,9 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
-public class TodayPatientActivity extends AppCompatActivity {
+public class TodayPatientActivity extends BaseActivity {
     private static final String TAG = TodayPatientActivity.class.getSimpleName();
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;

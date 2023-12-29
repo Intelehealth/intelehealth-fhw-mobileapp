@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -29,6 +30,7 @@ import org.intelehealth.app.appointment.model.SlotInfoResponse;
 import org.intelehealth.app.appointment.utils.MyDatePicker;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,7 +40,7 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class ScheduleListingActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class ScheduleListingActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
 
     String visitUuid;
     String patientUuid;
@@ -170,7 +172,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
             request.setReason("Patient not available");
         }
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .bookAppointment(url, request)
@@ -202,7 +204,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     private void getSlots() {
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlots(mSelectedStartDate, mSelectedEndDate, speciality)
                 .enqueue(new Callback<SlotInfoResponse>() {

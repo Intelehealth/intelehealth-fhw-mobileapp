@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.setupActivity.LocationArrayAdapter;
@@ -61,7 +62,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.apprtc.data.Manager;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -114,7 +114,7 @@ public class IntroActivity extends AppCompatActivity {
 
         btnNext.setText(R.string.next);
 
-        BASE_URL = "https://training.sila.care:3004/api/openmrs/";
+        BASE_URL = BuildConfig.SERVER_URL + ":3004/api/openmrs/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -574,9 +574,9 @@ public class IntroActivity extends AppCompatActivity {
                                             sessionManager.setLocationName(location.getValue());
                                             sessionManager.setLocationUuid(location.getKey());
                                             //  sessionManager.setLocationDescription(location.getDescription());
-                                            sessionManager.setServerUrl(CLEAN_URL);
+                                            sessionManager.setServerUrl(BuildConfig.SERVER_URL);
                                             sessionManager.setServerUrlRest(BASE_URL);
-                                            sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
+                                            sessionManager.setServerUrlBase(BuildConfig.SERVER_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
 
@@ -615,7 +615,8 @@ public class IntroActivity extends AppCompatActivity {
                                             try {
                                                 //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                                 hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
-                                            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                            } catch (NoSuchAlgorithmException |
+                                                     UnsupportedEncodingException e) {
                                                 FirebaseCrashlytics.getInstance().recordException(e);
                                             }
 

@@ -82,6 +82,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -96,7 +97,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-public class IdentificationActivity extends AppCompatActivity /*implements SurveyCallback, ViewPagerCallback, PregnancyOutcomeCallback*/ {
+public class IdentificationActivity extends BaseActivity /*implements SurveyCallback, ViewPagerCallback, PregnancyOutcomeCallback*/ {
     //Following variables have been commented out as they belongs originally to NAS project and are no longer required for Syriana: By Nishita
     /*private LinearLayout pregnancyQuestionsLinearLayout;
     //    private ArrayAdapter<CharSequence> economicStatusAdapter;

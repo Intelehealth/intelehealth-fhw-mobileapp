@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -32,14 +33,18 @@ import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.dataMigration.SmoothUpgrade;
-import org.intelehealth.app.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.fcm.utils.FcmRemoteConfig;
+import org.intelehealth.fcm.utils.FcmTokenGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -64,8 +69,12 @@ public class SplashActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         // refresh the fcm token
-        TokenRefreshUtils.refreshToken(this);
-        initFirebaseRemoteConfig();
+        FcmTokenGenerator.getDeviceToken(token -> {
+            IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+            return Unit.INSTANCE;
+        });
+
+        FcmRemoteConfig.getRemoteConfig(this, fcmConfigExecutor);
     }
 
     @Override
@@ -73,46 +82,75 @@ public class SplashActivity extends AppCompatActivity {
         super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
-    private void initFirebaseRemoteConfig() {
-        FirebaseApp.initializeApp(this);
-        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(0)
-                .build();
-        instance.setConfigSettingsAsync(configSettings);
+    private final Function1<FirebaseRemoteConfig, Unit> fcmConfigExecutor = firebaseRemoteConfig -> {
+        checkLatestVersionUpdate(firebaseRemoteConfig);
+        return Unit.INSTANCE;
+    };
 
-        instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
-            @Override
-            public void onComplete(@NonNull Task<Boolean> task) {
-                if (task.isSuccessful() && !isFinishing()) {
-                    long force_update_version_code = instance.getLong("force_update_version_code");
-                    if (force_update_version_code > BuildConfig.VERSION_CODE && false) {
-                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
-                        alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
-                        alertDialogBuilder.setCancelable(false);
-                        alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-                                } catch (android.content.ActivityNotFoundException anfe) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-                                }
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-                        alertDialogBuilder.show();
-                    } else {
-                        checkPerm();
+    private void checkLatestVersionUpdate(FirebaseRemoteConfig config) {
+        long force_update_version_code = config.getLong("force_update_version_code");
+        if (force_update_version_code > BuildConfig.VERSION_CODE) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
+            alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
+            alertDialogBuilder.setCancelable(false);
+            alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
                     }
+                    dialog.dismiss();
+                    finish();
                 }
-                else {
-                    checkPerm();
-                }
-            }
-        });
+            });
+            alertDialogBuilder.show();
+        } else {
+            checkPerm();
+        }
     }
+
+//    private void initFirebaseRemoteConfig() {
+//
+//        FirebaseApp.initializeApp(this);
+//        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
+//        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+//                .setMinimumFetchIntervalInSeconds(0)
+//                .build();
+//        instance.setConfigSettingsAsync(configSettings);
+//
+//        instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Boolean> task) {
+//                if (task.isSuccessful() && !isFinishing()) {
+//                    long force_update_version_code = instance.getLong("force_update_version_code");
+//                    if (force_update_version_code > BuildConfig.VERSION_CODE && false) {
+//                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
+//                        alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
+//                        alertDialogBuilder.setCancelable(false);
+//                        alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                try {
+//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+//                                } catch (android.content.ActivityNotFoundException anfe) {
+//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+//                                }
+//                                dialog.dismiss();
+//                                finish();
+//                            }
+//                        });
+//                        alertDialogBuilder.show();
+//                    } else {
+//                        checkPerm();
+//                    }
+//                } else {
+//                    checkPerm();
+//                }
+//            }
+//        });
+//    }
 
     private void checkPerm() {
         if (checkAndRequestPermissions()) {
@@ -217,28 +255,32 @@ public class SplashActivity extends AppCompatActivity {
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private boolean checkAndRequestPermissions() {
-        int cameraPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
-        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int bluetoothPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH);
         int bluetoothAdminPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN);
         int coarseLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
         int fineLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+            int notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS);
+            if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
+        int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
 
-
-
-        List<String> listPermissionsNeeded = new ArrayList<>();
 
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
@@ -247,12 +289,17 @@ public class SplashActivity extends AppCompatActivity {
             listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
         }
         if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+            } else {
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
         }
         if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
         }
+
         if (bluetoothPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.BLUETOOTH);
         }
@@ -265,12 +312,8 @@ public class SplashActivity extends AppCompatActivity {
         if (fineLocationPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
-
-
-
         if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),
-                    GROUP_PERMISSION_REQUEST);
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[0]), GROUP_PERMISSION_REQUEST);
             return false;
         }
         return true;

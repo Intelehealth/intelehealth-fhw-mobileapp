@@ -52,8 +52,9 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
-public class AdditionalDocumentsActivity extends AppCompatActivity {
+public class AdditionalDocumentsActivity extends BaseActivity {
 
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private Context context;
@@ -173,61 +174,61 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CameraActivity.TAKE_IMAGE) {
-            if (resultCode == RESULT_OK) {
-                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                saveImage(mCurrentPhotoPath);
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == CameraActivity.TAKE_IMAGE) {
+//            if (resultCode == RESULT_OK) {
 //                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-//                File photo = new File(mCurrentPhotoPath);
-//                if (photo.exists()) {
-//                    try{
+//                saveImage(mCurrentPhotoPath);
+////                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+////                File photo = new File(mCurrentPhotoPath);
+////                if (photo.exists()) {
+////                    try{
+////
+////                        long length = photo.length();
+////                        length = length/1024;
+////                        Log.e("------->>>>",length+"");
+////                    }catch(Exception e){
+////                        System.out.println("File not found : " + e.getMessage() + e);
+////                    }
+////
+////                    recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
+////                    updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
+////                }
+//            }
+//            if (resultCode == RESULT_CANCELED) {
 //
-//                        long length = photo.length();
-//                        length = length/1024;
-//                        Log.e("------->>>>",length+"");
-//                    }catch(Exception e){
-//                        System.out.println("File not found : " + e.getMessage() + e);
-//                    }
+//            }
 //
-//                    recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
-//                    updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
-//                }
-            }
-            if (resultCode == RESULT_CANCELED) {
-
-            }
-
-
-        } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
-            if (resultCode == RESULT_OK) {
-
-
-                Uri selectedImage = data.getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.v("path", picturePath + "");
-
-                // copy & rename the file
-                String finalImageName = UUID.randomUUID().toString();
-                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                BitmapUtils.copyFile(picturePath, finalFilePath);
-                compressImageAndSave(finalFilePath);
-
-            }
-            if (resultCode == RESULT_CANCELED) {
-
-            }
-        }
-    }
+//
+//        } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
+//            if (resultCode == RESULT_OK) {
+//
+//
+//                Uri selectedImage = data.getData();
+//                String[] filePath = {MediaStore.Images.Media.DATA};
+//                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+//                c.moveToFirst();
+//                int columnIndex = c.getColumnIndex(filePath[0]);
+//                String picturePath = c.getString(columnIndex);
+//                c.close();
+//                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+//                Log.v("path", picturePath + "");
+//
+//                // copy & rename the file
+//                String finalImageName = UUID.randomUUID().toString();
+//                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+//                BitmapUtils.copyFile(picturePath, finalFilePath);
+//                compressImageAndSave(finalFilePath);
+//
+//            }
+//            if (resultCode == RESULT_CANCELED) {
+//
+//            }
+//        }
+//    }
 
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();

@@ -62,6 +62,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,7 +74,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
+public class PastMedicalHistoryActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
 
     String patient = "patient";
     String patientUuid;

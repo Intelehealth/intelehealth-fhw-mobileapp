@@ -42,6 +42,7 @@ import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.utilities.LocaleHelper;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,7 +68,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class VitalsActivity extends AppCompatActivity {
+public class VitalsActivity extends BaseActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
     private String patientName = "";

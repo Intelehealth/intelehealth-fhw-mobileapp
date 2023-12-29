@@ -18,9 +18,10 @@ import java.io.File;
 import org.intelehealth.app.R;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 
 
-public class VideoLibraryActivity extends AppCompatActivity implements VideoLibraryFragment.OnFragmentInteractionListener {
+public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFragment.OnFragmentInteractionListener {
     private static final String TAG = VideoLibraryActivity.class.getSimpleName();
     final String LOG_TAG = VideoLibraryActivity.class.getSimpleName();
     Toolbar mToolbar;

@@ -82,6 +82,7 @@ import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.TimeRecordUtils;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -93,7 +94,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class TextPrintESCActivity extends AppCompatActivity implements View.OnClickListener,
+public class TextPrintESCActivity extends BaseActivity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, PrinterObserver {
 
     private WebView mWebView;

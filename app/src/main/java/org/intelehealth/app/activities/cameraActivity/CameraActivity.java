@@ -40,6 +40,8 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -48,7 +50,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class CameraActivity extends AppCompatActivity {
+public class CameraActivity extends BaseActivity {
 
     public static final int TAKE_IMAGE = 205;
     /**

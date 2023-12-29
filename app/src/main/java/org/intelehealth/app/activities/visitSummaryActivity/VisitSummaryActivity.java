@@ -11,14 +11,11 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -91,15 +88,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
@@ -156,7 +149,9 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.app.webrtc.activity.BaseActivity;
+import org.intelehealth.app.webrtc.activity.SilaChatActivity;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -184,7 +179,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VisitSummaryActivity extends AppCompatActivity implements View.OnClickListener /*implements PrinterObserver*/ {
+public class VisitSummaryActivity extends BaseActivity implements View.OnClickListener /*implements PrinterObserver*/ {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
@@ -300,7 +295,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
     NotificationCompat.Builder mBuilder;
 
     RelativeLayout uploadButton, rl_med_aid;
-    private TextView tvDispense_1, tvDispense_2,tvAdminister_1, tvAdminister_2;
+    private TextView tvDispense_1, tvDispense_2, tvAdminister_1, tvAdminister_2;
 
     RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
@@ -468,13 +463,6 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         registerReceiver(downloadPrescriptionService, filter);
     }
 
-
-    @Override
-    public void onBackPressed() {
-        //do nothing
-        //Use the buttons on the screen to navigate
-    }
-
     @Override
     protected void onDestroy() {
         unregisterReceiver(broadcastReceiverForIamgeDownlaod);
@@ -551,49 +539,49 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
 
-    private void collectChatConnectionInfoFromFirebase() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
-        DatabaseReference chatDatabaseReference = database.getReference(AppConstants.getFirebaseRTDBRootRefForTextChatConnInfo() + "/" + visitUuid);
-        chatDatabaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                HashMap value = (HashMap) snapshot.getValue();
-                if (value != null) {
-                    try {
-                        String fromUUId = String.valueOf(value.get("toUser"));
-                        String toUUId = String.valueOf(value.get("fromUser"));
-                        String patientUUid = String.valueOf(value.get("patientId"));
-                        String visitUUID = String.valueOf(value.get("visitId"));
-                        String patientName = String.valueOf(value.get("patientName"));
-                        JSONObject connectionInfoObject = new JSONObject();
-                        connectionInfoObject.put("fromUUID", fromUUId);
-                        connectionInfoObject.put("toUUID", toUUId);
-                        connectionInfoObject.put("patientUUID", patientUUid);
-
-                        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                        String packageName = pInfo.packageName;
-
-                        Intent intent = new Intent(ACTION_NAME);
-                        intent.putExtra("visit_uuid", visitUUID);
-                        intent.putExtra("connection_info", connectionInfoObject.toString());
-                        intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
-                        getApplicationContext().sendBroadcast(intent);
-
-                        Log.v(TAG, "collectChatConnectionInfoFromFirebase, onDataChange : " + connectionInfoObject.toString());
-                    } catch (JSONException | PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "collectChatConnectionInfoFromFirebase - Failed to read value.", error.toException());
-            }
-        });
-    }
+//    private void collectChatConnectionInfoFromFirebase() {
+//        FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
+//        DatabaseReference chatDatabaseReference = database.getReference(AppConstants.getFirebaseRTDBRootRefForTextChatConnInfo() + "/" + visitUuid);
+//        chatDatabaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                HashMap value = (HashMap) snapshot.getValue();
+//                if (value != null) {
+//                    try {
+//                        String fromUUId = String.valueOf(value.get("toUser"));
+//                        String toUUId = String.valueOf(value.get("fromUser"));
+//                        String patientUUid = String.valueOf(value.get("patientId"));
+//                        String visitUUID = String.valueOf(value.get("visitId"));
+//                        String patientName = String.valueOf(value.get("patientName"));
+//                        JSONObject connectionInfoObject = new JSONObject();
+//                        connectionInfoObject.put("fromUUID", fromUUId);
+//                        connectionInfoObject.put("toUUID", toUUId);
+//                        connectionInfoObject.put("patientUUID", patientUUid);
+//
+//                        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+//                        String packageName = pInfo.packageName;
+//
+//                        Intent intent = new Intent(ACTION_NAME);
+//                        intent.putExtra("visit_uuid", visitUUID);
+//                        intent.putExtra("connection_info", connectionInfoObject.toString());
+//                        intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
+//                        getApplicationContext().sendBroadcast(intent);
+//
+//                        Log.v(TAG, "collectChatConnectionInfoFromFirebase, onDataChange : " + connectionInfoObject.toString());
+//                    } catch (JSONException | PackageManager.NameNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.w(TAG, "collectChatConnectionInfoFromFirebase - Failed to read value.", error.toException());
+//            }
+//        });
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -602,7 +590,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         appLanguage = sessionManager1.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
             setLocale(appLanguage);
-        }        final Intent intent = this.getIntent(); // The intent was passed to the activity
+        }
+        final Intent intent = this.getIntent(); // The intent was passed to the activity
 
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -623,7 +612,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             if (selectedExams != null && !selectedExams.isEmpty()) {
                 physicalExams.addAll(selectedExams);
             }
-            collectChatConnectionInfoFromFirebase();
+//            collectChatConnectionInfoFromFirebase();
         }
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
@@ -666,33 +655,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EncounterDAO encounterDAO = new EncounterDAO();
-                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
-                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-                Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);
-                chatIntent.putExtra("patientName", patientName);
-                chatIntent.putExtra("visitUuid", visitUuid);
-                chatIntent.putExtra("patientUuid", patientUuid);
-                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-
-                if (rtcConnectionDTO != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-                }
-                startActivity(chatIntent);
-            }
-        });
+        fab.setOnClickListener(view -> startChat());
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
         mDoctorAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBooking);
@@ -731,7 +694,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
-      //  fl_DispenseAdminister = findViewById(R.id.fl_DispenseAdminister);
+        //  fl_DispenseAdminister = findViewById(R.id.fl_DispenseAdminister);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
         frameLayout_doctor.setVisibility(View.GONE);
         saveButton = findViewById(R.id.card_save);
@@ -836,7 +799,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         speciality_spinner = findViewById(R.id.speciality_spinner);
         second_speciality_spinner = findViewById(R.id.second_speciality_spinner);
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
-     //   prescriptionTextView = findViewById(R.id.textView_content_rx);
+        //   prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
@@ -978,7 +941,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
-      //  rl_med_aid = findViewById(R.id.rl_med_aid);
+        //  rl_med_aid = findViewById(R.id.rl_med_aid);
 
         layout_dispense_1 = findViewById(R.id.layout_dispense_1);
         layout_dispense_2 = findViewById(R.id.layout_dispense_2);
@@ -1872,9 +1835,25 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
         doQuery();
         isVisitUploaded();
-     //   queryData(String.valueOf(patientUuid));
-      //  downloadPrescriptionDefault();
+        //   queryData(String.valueOf(patientUuid));
+        //  downloadPrescriptionDefault();
         getAppointmentDetails(visitUuid);
+    }
+
+    private void startChat() {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+        RtcArgs args = new RtcArgs();
+        if (rtcConnectionDTO != null)
+            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
+        else args.setDoctorUuid("");
+        args.setPatientId(patientUuid);
+        args.setPatientName(patientName);
+        args.setVisitId(visitUuid);
+        args.setNurseId(encounterDTO.getProvideruuid());
+        SilaChatActivity.startChatActivity(VisitSummaryActivity.this, args);
     }
 
     private void admininisterIntent(EncounterDAO encounterStartVisitNoteDAO) {
@@ -3816,7 +3795,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
                                 + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"+
+                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>" +
                                 disaidformattedvalue;
                 }
 
@@ -3825,23 +3804,23 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newMedicalEquipLoanAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" +
                                 disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"+
+                        newMedicalEquipLoanAidOrder = getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>" +
                                 disaidformattedvalue;
 
                     if (newMedicalEquipLoanAidOrder != null && !newMedicalEquipLoanAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                      //  textView.setText(getString(R.string.show_details));
+                        //  textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
                         if (aidOrderType1TableRow.getChildCount() == 1)
                             aidOrderType1TableRow.addView(textView);
 
                         // ie. value is present for this Aid_1 field.
-                       // if (newMedicalEquipLoanAidOrder.contains("Added By")) {
-                            String a[] = newMedicalEquipLoanAidOrder.split("<br>");
-                            aid1 = a[0];
-                            Log.d(TAG, "parseData: " + aid1);
-                           // aid1 = newMedicalEquipLoanAidOrder;
-                     //   }
+                        // if (newMedicalEquipLoanAidOrder.contains("Added By")) {
+                        String a[] = newMedicalEquipLoanAidOrder.split("<br>");
+                        aid1 = a[0];
+                        Log.d(TAG, "parseData: " + aid1);
+                        // aid1 = newMedicalEquipLoanAidOrder;
+                        //   }
                         fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
                     }
 
@@ -3927,18 +3906,18 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                     if (newFreeMedicalEquipAidOrder != null && !newFreeMedicalEquipAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                      //  textView.setText(getString(R.string.show_details));
+                        //  textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
                         if (aidOrderType2TableRow.getChildCount() == 1)
                             aidOrderType2TableRow.addView(textView);
 
                         // ie. value is present for this Aid_1 field.
-                      //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
-                            String a[] = newFreeMedicalEquipAidOrder.split("<br>");
-                            aid2 = a[0];
-                            Log.d(TAG, "parseData: " + aid2);
-                            // aid2 = newMedicalEquipLoanAidOrder;
-                       // }
+                        //  if (newFreeMedicalEquipAidOrder.contains("Added By")) {
+                        String a[] = newFreeMedicalEquipAidOrder.split("<br>");
+                        aid2 = a[0];
+                        Log.d(TAG, "parseData: " + aid2);
+                        // aid2 = newMedicalEquipLoanAidOrder;
+                        // }
                         fetchDispensed_MedicationAndAid();    // so that it runs only the first time and fetches all the values at once.
                     }
 
@@ -3973,7 +3952,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder.replace("||", " ");
                 }
 
-              //  aidOrderType2TextView.setText(Html.fromHtml(newFreeMedicalEquipAidOrder));
+                //  aidOrderType2TextView.setText(Html.fromHtml(newFreeMedicalEquipAidOrder));
                 aidOrderType2TextView.setText(Html.fromHtml(aid2));
                 textView.setOnClickListener(v -> {
                     if (textView.getTag() != null) {
@@ -4010,7 +3989,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                                 + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
                         newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
-                                + disaidformattedvalue ;
+                                + disaidformattedvalue;
                 }
 
                 if (newCoverMedicalExpenseAidOrder.isEmpty()) {
@@ -4019,11 +3998,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                                 + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
                         newCoverMedicalExpenseAidOrder = getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
-                                + disaidformattedvalue ;
+                                + disaidformattedvalue;
 
                     if (newCoverMedicalExpenseAidOrder != null && !newCoverMedicalExpenseAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                      //  textView.setText(getString(R.string.show_details));
+                        //  textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
                         if (aidOrderType3TableRow.getChildCount() == 1)
                             aidOrderType3TableRow.addView(textView);
@@ -4065,7 +4044,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder.replace("Others||", "Others - ");
                 }
 
-              //  aidOrderType3TextView.setText(Html.fromHtml(newCoverMedicalExpenseAidOrder));
+                //  aidOrderType3TextView.setText(Html.fromHtml(newCoverMedicalExpenseAidOrder));
                 aidOrderType3TextView.setText(Html.fromHtml(aid3));
                 textView.setOnClickListener(v -> {
                     if (textView.getTag() != null) {
@@ -4102,7 +4081,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                                 + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
                         newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
-                                + disaidformattedvalue ;
+                                + disaidformattedvalue;
                 }
 
                 if (newCoverSurgicalExpenseAidOrder.isEmpty()) {
@@ -4111,11 +4090,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                                 + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
                         newCoverSurgicalExpenseAidOrder = getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
-                                + disaidformattedvalue ;
+                                + disaidformattedvalue;
 
                     if (newCoverSurgicalExpenseAidOrder != null && !newCoverSurgicalExpenseAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                      //  textView.setText(getString(R.string.show_details));
+                        //  textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
                         if (aidOrderType4TableRow.getChildCount() == 1)
                             aidOrderType4TableRow.addView(textView);
@@ -4157,7 +4136,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder.replace("Others||", "Others - ");
                 }
 
-              //  aidOrderType4TextView.setText(Html.fromHtml(newCoverSurgicalExpenseAidOrder));
+                //  aidOrderType4TextView.setText(Html.fromHtml(newCoverSurgicalExpenseAidOrder));
                 aidOrderType4TextView.setText(Html.fromHtml(aid4));
                 textView.setOnClickListener(v -> {
                     if (textView.getTag() != null) {
@@ -4194,7 +4173,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                                 + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
                         newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
-                                + disaidformattedvalue ;
+                                + disaidformattedvalue;
                 }
 
                 if (newCashAssistanceExpenseAidOrder.isEmpty()) {
@@ -4203,11 +4182,11 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                                 + disaidformattedvalue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
                         newCashAssistanceExpenseAidOrder = getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>"
-                                + disaidformattedvalue ;
+                                + disaidformattedvalue;
 
                     if (newCashAssistanceExpenseAidOrder != null && !newCashAssistanceExpenseAidOrder.isEmpty()) {
                         // ie. there is atleast one item. so add a textview -> show more.
-                      //  textView.setText(getString(R.string.show_details));
+                        //  textView.setText(getString(R.string.show_details));
                         textView.setTag(0);
                         if (aidOrderType5TableRow.getChildCount() == 1)
                             aidOrderType5TableRow.addView(textView);
@@ -4248,7 +4227,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder.replace("Others||", "Others - ");
                 }
 
-              //  aidOrderType5TextView.setText(Html.fromHtml(newCashAssistanceExpenseAidOrder));
+                //  aidOrderType5TextView.setText(Html.fromHtml(newCashAssistanceExpenseAidOrder));
                 aidOrderType5TextView.setText(Html.fromHtml(aid5));
                 textView.setOnClickListener(v -> {
                     if (textView.getTag() != null) {
@@ -4273,8 +4252,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             case UuidDictionary.JSV_MEDICATIONS: {
 
                 Log.e(TAG, "parseData: JSV_MEDICATIONS=>" + value);
-                if(value.contains("\n"))
-                    value = value.replace("\n","<br>");
+                if (value.contains("\n"))
+                    value = value.replace("\n", "<br>");
 
                 fetchDispensed_MedicationAndAid();
                 fetchAdministered_Medication();
@@ -4345,7 +4324,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     tl_prescribed_medications.addView(showDividerLine());
                 tl_prescribed_medications.addView(textView);
                 tl_prescribed_medications.addView(show_textView);
-              //  tl_prescribed_medications.removeViewAt(tl_prescribed_medications.getChildCount()-1);
+                //  tl_prescribed_medications.removeViewAt(tl_prescribed_medications.getChildCount()-1);
 
                 Log.d(TAG, "parseData: med: " + tl_prescribed_medications.getChildCount() + "\n" + textView.getText().toString());
                 break;
@@ -4363,7 +4342,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     if (comment != null && !comment.trim().isEmpty())
                         newAdviceReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty()) {
-                            newAdviceReturned = newAdviceReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newAdviceReturned = newAdviceReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
                     }
                 }
 
@@ -4527,7 +4506,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         View view = new View(VisitSummaryActivity.this);
         view.setBackgroundColor(getResources().getColor(R.color.divider));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2);
-    //    params.setMargins(0, 20, 0, 0);
+        //    params.setMargins(0, 20, 0, 0);
         params.topMargin = 50;
         view.setLayoutParams(params);
         return view;
@@ -4543,8 +4522,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             contentTextView.setText(Html.fromHtml((String) contentTextView.getTag()));
             contentTextView.setTag(a[0]);
             tag = 1;
-        }
-        else {
+        } else {
             contentTextView.setText(Html.fromHtml(a[0].substring(0, a[0].lastIndexOf("<br>"))));
             contentTextView.setTag(value);
             tag = 0;
@@ -4656,6 +4634,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
         return obsformat;
     }
+
     private String formatDispensedByDetails(String uuid, boolean isDispense) {
         String obsAddedByString = "";
 
@@ -4663,7 +4642,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             for (int i = 0; i < update_aidUuidList.size(); i++) {
                 AidModel aidModel = new Gson().fromJson(update_aidUuidList.get(i).getValue(), AidModel.class);
                 if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(uuid)) {
-                   // String creator_name = getCreatorName(creator);
+                    // String creator_name = getCreatorName(creator);
                     String valueTimeStamp = "";
                     if (update_aidUuidList.get(i).getCreatedDate() != null)
                         valueTimeStamp = getValueTimeStamp(update_aidUuidList.get(i).getCreatedDate());
@@ -4681,7 +4660,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             for (int i = 0; i < update_medUuidDispenseList.size(); i++) {
                 MedicationModel medicationModel = new Gson().fromJson(update_medUuidDispenseList.get(i).getValue(), MedicationModel.class);
                 if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(uuid)) {
-                   // String creator_name = getCreatorName(creator);
+                    // String creator_name = getCreatorName(creator);
                     String valueTimeStamp = "";
                     if (update_medUuidDispenseList.get(i).getCreatedDate() != null)
                         valueTimeStamp = getValueTimeStamp(update_medUuidDispenseList.get(i).getCreatedDate());
@@ -4709,7 +4688,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             if (stringarray[4].contains(" ")) {
                 String[] names = stringarray[4].split(" ");
                 String fname = String.valueOf(names[0].toCharArray()[0]);
-                doctorName = fname + " " + names[names.length-1];
+                doctorName = fname + " " + names[names.length - 1];
             }
             if (stringarray[5].equalsIgnoreCase("NA") || stringarray[5].equalsIgnoreCase("null"))
                 obsAddedByString = getResources().getString(R.string.added_by) + " " + doctorName + "<br>" + valueTimeStamp;
@@ -4737,8 +4716,8 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             e.printStackTrace();
             created_date = formatDateFromOnetoAnother(created_date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "yyyy-MM-dd HH:mm:ss");
             try {
-                  df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                  date = df.parse(created_date);
+                df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                date = df.parse(created_date);
             } catch (ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -4779,13 +4758,13 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
             } while (providerCursor.moveToNext());
         }
 
-        if(providerCursor != null && !providerCursor.isClosed())
+        if (providerCursor != null && !providerCursor.isClosed())
             providerCursor.close();
 
         db.setTransactionSuccessful();
         db.endTransaction();
         String creatorDetails = creator_name;
-        if(!creator_reg_num.equalsIgnoreCase("NA"))
+        if (!creator_reg_num.equalsIgnoreCase("NA"))
             creatorDetails = creator_name + " (" + creator_reg_num + ")";
         return creatorDetails;
     }
@@ -4804,7 +4783,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                     registrationNum = value;
             } while (providerCursor.moveToNext());
         }
-        if(providerCursor != null && !providerCursor.isClosed())
+        if (providerCursor != null && !providerCursor.isClosed())
             providerCursor.close();
 
         db.setTransactionSuccessful();
@@ -4822,7 +4801,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         if (stringarray[2].contains(" ")) {
             String[] names = stringarray[2].split(" ");
             String fname = String.valueOf(names[0].toCharArray()[0]);
-            doctorName = fname + " " + names[names.length-1];
+            doctorName = fname + " " + names[names.length - 1];
         }
 
         if (stringarray[3].equalsIgnoreCase("NA") || stringarray[5].equalsIgnoreCase("null"))
@@ -4870,7 +4849,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
         // Dispense & Administer - START
         if (!isPastVisit) {
-          //  fl_DispenseAdminister.setVisibility(View.VISIBLE);
+            //  fl_DispenseAdminister.setVisibility(View.VISIBLE);
             layout_dispense_1.setVisibility(View.VISIBLE);
             layout_dispense_2.setVisibility(View.VISIBLE);
         }
@@ -5091,7 +5070,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void startvisitnoteApiCall() {
-        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
+        String url = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/encounter";
         endVisitEncounterPrescription = getEndVisitDataModel();
         //  String encoded = sessionManager.getEncoded();
         String encoded = base64Utils.encoded("sysnurse", "Nurse123");
@@ -5348,8 +5327,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                 }
 
-                if(visitnote.equalsIgnoreCase(""))
-                {
+                if (visitnote.equalsIgnoreCase("")) {
                     Toast.makeText(context, getResources().getString(R.string.no_presc_available), Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -5365,7 +5343,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                 if (!rxReturned.isEmpty()) {
                     rxReturned = "";
                     tl_prescribed_medications.removeAllViews();
-                 //   prescriptionTextView.setText("");
+                    //   prescriptionTextView.setText("");
                     prescriptionCard.setVisibility(View.GONE);
 
                 }
@@ -5413,7 +5391,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                         // Dispense & Administer - START
                         if (!isPastVisit) {
-                          //  fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                            //  fl_DispenseAdminister.setVisibility(View.VISIBLE);
                             layout_dispense_1.setVisibility(View.VISIBLE);
                             layout_dispense_2.setVisibility(View.VISIBLE);
                         }
@@ -5426,8 +5404,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                             parseData(uuid, dbConceptID, dbValue, comment, creator, created_date);
                         }
                     } while (visitCursor.moveToNext());
-                }
-                else {
+                } else {
                     // here presc is not present now we will check for visitUUID present or not if present than show presc pending...
                     isVisitUploaded();
                 }
@@ -5509,7 +5486,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                 // Dispense & Administer - START
                 if (!isPastVisit) {
-                 //   fl_DispenseAdminister.setVisibility(View.VISIBLE);
+                    //   fl_DispenseAdminister.setVisibility(View.VISIBLE);
                     layout_dispense_1.setVisibility(View.VISIBLE);
                     layout_dispense_2.setVisibility(View.VISIBLE);
                 }
@@ -5523,8 +5500,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
 
                 }
             } while (visitCursor.moveToNext());
-        }
-        else {
+        } else {
             // here presc is not present now we will check for visitUUID present or not if present than show presc pending...
             isVisitUploaded();
         }
@@ -5762,7 +5738,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
         mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
         mInfoAppointmentBookingTextView.setText(getString(R.string.please_wait));
         Log.v("VisitSummary", "getAppointmentDetails");
-        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi().getAppointmentDetails(visitUUID).enqueue(new Callback<AppointmentDetailsResponse>() {
             @Override
             public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
@@ -5832,7 +5808,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements View.OnCl
                         request.setId(mAppointmentDetailsResponse.getData().getId());
                         request.setHwUuid((new SessionManager(VisitSummaryActivity.this).getProviderID()));
                         request.setReason("Patient not available");
-                        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+                        String baseurl = BuildConfig.SERVER_URL + ":3004";
                         ApiClientAppointment.getInstance(baseurl).getApi().cancelAppointment(request).enqueue(new Callback<CancelResponse>() {
                             @Override
                             public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
