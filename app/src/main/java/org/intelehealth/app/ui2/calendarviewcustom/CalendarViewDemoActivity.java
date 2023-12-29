@@ -31,6 +31,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 import java.text.ParseException;
@@ -43,7 +44,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarViewDemoActivity extends AppCompatActivity implements SendSelectedDateInterface{
+public class CalendarViewDemoActivity extends BaseActivity implements SendSelectedDateInterface{
     private static final String TAG = "CalendarViewDemoActivit";
     RecyclerView rvCalendarView;
     Spinner spinnerMonths, spinnerYear;

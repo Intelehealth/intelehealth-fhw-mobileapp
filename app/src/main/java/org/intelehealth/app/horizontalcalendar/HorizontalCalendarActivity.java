@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -24,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class HorizontalCalendarActivity extends AppCompatActivity {
+public class HorizontalCalendarActivity extends BaseActivity {
     private static final String TAG = "HorizontalCalendarActiv";
     RecyclerView rvHorizontalCal;
     int currentMonth;

@@ -47,6 +47,7 @@ import org.intelehealth.app.adapter.SimpleItemData;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -63,7 +64,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class Language_ProtocolsActivity extends AppCompatActivity {
+public class Language_ProtocolsActivity extends BaseActivity {
     private Spinner lang_spinner;
     private ImageButton btRefresh;
     private RelativeLayout reset_btn, update_protocols_btn;

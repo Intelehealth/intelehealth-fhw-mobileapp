@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.help.adapter.MostSearchedVideosAdapter_New;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -35,7 +36,7 @@ import java.util.Locale;
  * Created by: Prajwal Waingankar On: 25/Nov/2022
  * Github: prajwalmw
  */
-public class AboutUsActivity extends AppCompatActivity {
+public class AboutUsActivity extends BaseActivity {
     private RecyclerView images_recyclerview;
     private AboutUsAdapter adapter;
     private TextView globe_link, info_link;

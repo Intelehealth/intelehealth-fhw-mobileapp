@@ -49,16 +49,26 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
     TextView tvTermsAndPrivacy;
     CustomDialog customDialog;
     private CardView cardNoteSnack;
+    private Context context = SetupPrivacyNoteActivity_New.this;
+    private int startingPositionTC, endingPositionTC, startingPositionPP, endingPositionPP;
+    private Button btnSetup;
+    private ImageView ivBack;
+    private CheckBox chkBoxPrivacyPolicy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_privacy_note_ui2);
         tvTermsAndPrivacy = findViewById(R.id.tv_privacy_notice_link_1);
-        termsAndPrivacyPolicy();
-        Button btnSetup = findViewById(R.id.btn_setup);
+        tvTermsAndPrivacy.setMovementMethod(LinkMovementMethod.getInstance());
+        tvTermsAndPrivacy.setSelected(true);
+        tvTermsAndPrivacy.setClickable(true);
+
+        btnSetup = findViewById(R.id.btn_setup);
         cardNoteSnack = findViewById(R.id.card_note_snack_policy);
-        ImageView ivBack = findViewById(R.id.iv_setup_privacy_back);
+        ivBack = findViewById(R.id.iv_setup_privacy_back);
+        termsAndPrivacyPolicy();
+
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,8 +76,9 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         btnSetup.getBackground().setAlpha(60);
-        CheckBox chkBoxPrivacyPolicy = findViewById(R.id.checkbox_privacy_policy);
+        chkBoxPrivacyPolicy = findViewById(R.id.checkbox_privacy_policy);
         btnSetup.setEnabled(false);
 
         chkBoxPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +122,7 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         ClickableSpan termsAndCondition = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, TermsAndConditionsActivity_New.class);
+                Intent mIntent = new Intent(context, TermsAndConditionsActivity_New.class);
                 mIntent.putExtra("isTermsAndCondition", true);
                 startActivity(mIntent);
             }
@@ -119,23 +130,22 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         ClickableSpan privacy = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, PrivacyPolicyActivity_New.class);
+                Intent mIntent = new Intent(context, PrivacyPolicyActivity_New.class);
                 mIntent.putExtra("intentType", "doNotNavigateFurther");
                 mIntent.putExtra("isPrivacyPolicy", true);
                 startActivity(mIntent);
             }
         };
 
-        int startingPositionTC = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.terms_and_conditions));
-        int endingPositionTC = startingPositionTC + getResources().getString(R.string.terms_and_conditions).length();
-        int startingPositionPP = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.privacy_policy));
-        int endingPositionPP = startingPositionPP + getResources().getString(R.string.privacy_policy).length();
+        startingPositionTC = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.terms_and_conditions));
+        endingPositionTC = startingPositionTC + getResources().getString(R.string.terms_and_conditions).length();
+        startingPositionPP = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.privacy_policy));
+        endingPositionPP = startingPositionPP + getResources().getString(R.string.privacy_policy).length();
+
         SpanString.setSpan(termsAndCondition, startingPositionTC, endingPositionTC, 0);
         SpanString.setSpan(privacy, startingPositionPP, endingPositionPP, 0);
-        tvTermsAndPrivacy.setMovementMethod(LinkMovementMethod.getInstance());
+
         tvTermsAndPrivacy.setText(SpanString, TextView.BufferType.SPANNABLE);
-        tvTermsAndPrivacy.setSelected(true);
-        tvTermsAndPrivacy.setClickable(true);
     }
 
     ActivityResultLauncher<Intent> mStartForResultTCPP = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

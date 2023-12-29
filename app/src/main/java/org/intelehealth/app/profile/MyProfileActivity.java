@@ -64,6 +64,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.hbb20.CountryCodePicker;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -82,6 +83,7 @@ import org.intelehealth.app.models.hwprofile.ProfileUpdateAge;
 import org.intelehealth.app.models.hwprofile.ProfileUpdateAttribute;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -109,7 +111,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
+public class MyProfileActivity extends BaseActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etEmail, etMobileNo;
     TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob,
@@ -574,13 +576,12 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void createProfileAttribute(String attributeTypeUuid, String newValue) {
-        String serverUrl = "https://" + AppConstants.DEMO_URL;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         ProfileCreateAttribute inputModel = new ProfileCreateAttribute(newValue, attributeTypeUuid);
 
-        ApiClient.changeApiBaseUrl(serverUrl);
+        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResponseBody> profileAttributeCreateRequest = apiService.PROFILE_ATTRIBUTE_CREATE(sessionManager.getProviderID(),
                 inputModel, "Basic " + sessionManager.getEncoded());
@@ -604,7 +605,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void updateProfileAttribute(String attributeTypeUuid, String newValue) {
-        String serverUrl = "https://" + AppConstants.DEMO_URL + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
+        String serverUrl = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -634,13 +635,12 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void updateDOB(Integer updatedAge, String updatedDOB, String gender) {
-        String serverUrl = "https://" + AppConstants.DEMO_URL;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         ProfileUpdateAge inputModel = new ProfileUpdateAge(updatedAge, updatedDOB, gender);
 
-        ApiClient.changeApiBaseUrl(serverUrl);
+        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResponseBody> profileAgeUpdateRequest = apiService.PROFILE_AGE_UPDATE(personUuid,
                 inputModel, "Basic " + sessionManager.getEncoded());
@@ -1054,10 +1054,10 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }

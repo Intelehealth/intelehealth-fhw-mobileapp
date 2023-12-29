@@ -29,6 +29,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.help.activities.ChatSupportHelpActivity_New;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
@@ -153,7 +154,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     }
 
     private void verifyOTP(Context context, String otp) {
-        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
+        String serverUrl = BuildConfig.SERVER_URL + ":3004";
         Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -202,7 +203,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
 
     public void apiCallForRequestOTP(Context context, String username, String mobileNo) {
         tvResendOtp.setEnabled(false);
-        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
+        String serverUrl = BuildConfig.SERVER_URL + ":3004";
         Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

@@ -16,10 +16,11 @@ import android.widget.Toast;
 import java.io.File;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.Logger;
 
 
-public class VideoLibraryActivity extends AppCompatActivity implements VideoLibraryFragment.OnFragmentInteractionListener {
+public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFragment.OnFragmentInteractionListener {
     private static final String TAG = VideoLibraryActivity.class.getSimpleName();
     final String LOG_TAG = VideoLibraryActivity.class.getSimpleName();
     Toolbar mToolbar;

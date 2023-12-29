@@ -38,6 +38,7 @@ import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -45,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class EndVisitActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     RecyclerView recycler_recent, recycler_older, recycler_month;
     NestedScrollView nestedscrollview;
     private static SQLiteDatabase db;

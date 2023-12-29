@@ -33,6 +33,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -331,7 +332,7 @@ public class LoginActivityNew extends AppCompatActivity {
      */
     public void UserLoginTask(String mEmail, String mPassword) {
         cpd.show();
-        String urlString = urlModifiers.loginUrl(AppConstants.DEMO_URL);
+        String urlString = urlModifiers.loginUrl(BuildConfig.SERVER_URL);
 
         Log.d(TAG, "UserLoginTask: urlString : " + urlString);
         Logger.logD(TAG, "username and password" + mEmail + mPassword);
@@ -366,7 +367,7 @@ public class LoginActivityNew extends AppCompatActivity {
 
                 UrlModifiers urlModifiers = new UrlModifiers();
                 // String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
-                String url = urlModifiers.loginUrlProvider(AppConstants.DEMO_URL, loginModel.getUser().getUuid());
+                String url = urlModifiers.loginUrlProvider(BuildConfig.SERVER_URL, loginModel.getUser().getUuid());
                 Log.d(TAG, "onNext: url : " + url);
                 if (authencated) {
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
@@ -382,6 +383,7 @@ public class LoginActivityNew extends AppCompatActivity {
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
 
                                             provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
+                                            IntelehealthApplication.getInstance().initSocketConnection();
 //                                                success = true;
                                           /*  final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, mPassword, null);
@@ -411,7 +413,8 @@ public class LoginActivityNew extends AppCompatActivity {
                                     try {
                                         //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                         hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
-                                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                    } catch (NoSuchAlgorithmException |
+                                             UnsupportedEncodingException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                     }
 

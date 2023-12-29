@@ -19,11 +19,12 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Locale;
 
-public class PrivacyPolicyActivity_New extends AppCompatActivity {
+public class PrivacyPolicyActivity_New extends BaseActivity {
     private static final String TAG = "PrivacyPolicyActivityNe";
     private Button btn_accept_privacy;
     private int mIntentFrom;

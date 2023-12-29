@@ -20,12 +20,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.help.adapter.HelpVideosAdapterVerticle_New;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Locale;
 
-public class MostSearchedVideosActivity_New extends AppCompatActivity {
+public class MostSearchedVideosActivity_New extends BaseActivity {
     private static final String TAG = "MostSearchedVideosActivity";
 
     @Override

@@ -38,6 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -47,6 +48,7 @@ import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
 import org.intelehealth.app.horizontalcalendar.CalendarModel;
 import org.intelehealth.app.horizontalcalendar.HorizontalCalendarViewAdapter;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -70,7 +72,7 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class ScheduleAppointmentActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class ScheduleAppointmentActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "ScheduleAppointmentActi";
     RecyclerView rvMorningSlots, rvAfternoonSlots, rvEveningSlots;
     RecyclerView rvHorizontalCal;
@@ -103,6 +105,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     private ObjectAnimator syncAnimator;
     private SessionManager sessionManager;
     private BroadcastReceiver mBroadcastReceiver;
+    private boolean isRescheduled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,18 +151,19 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             app_start_time = getIntent().getStringExtra("app_start_time");
             app_start_day = getIntent().getStringExtra("app_start_day");
             rescheduleReason = getIntent().getStringExtra("rescheduleReason");
-
             String prevDetails = app_start_day + ", " + DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date) + " " + getResources().getString(R.string.at) + " " + app_start_time;
             tvPrevSelectedAppDetails.setText(prevDetails);
         } else if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("new_schedule")) {
-
             visitUuid = getIntent().getStringExtra("visitUuid");
             patientUuid = getIntent().getStringExtra("patientUuid");
             patientName = getIntent().getStringExtra("patientName");
             appointmentId = getIntent().getIntExtra("appointmentId", 0);
             openMrsId = getIntent().getStringExtra("openMrsId");
             speciality = getIntent().getStringExtra("speciality");
+        }
 
+        if (app_start_date != null && app_start_time != null) {
+            isRescheduled = true;
         }
 
         if (speciality != null) {
@@ -178,12 +182,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 if (mIsPendingForAppointmentSave) {
                     mStatusCount = mStatusCount + intent.getIntExtra("JOB", -1);
                     if (mStatusCount == AppConstants.SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE) {
-                        if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing())
+                        if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing()) {
                             mSyncAlertDialog.dismiss();
-                        ScheduleAppointmentActivity_New.this.setResult(Activity.RESULT_OK);
+                        }
+                        ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
                         finish();
                     }
-
                 } else {
                     Log.v(TAG, "Sync Done!");
                     if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing())
@@ -274,7 +278,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         yearToCompare = String.valueOf(currentYear);
         SimpleDateFormat month_date = new SimpleDateFormat("MMMM", Locale.ENGLISH);
         String month_name = month_date.format(calendarInstance.getTime());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             month_name = StringUtils.en__hi_dob(month_name);
         tvSelectedMonthYear.setText(month_name + ", " + currentYear);
         currentMonth = calendarInstance.get(Calendar.MONTH) + 1;
@@ -318,12 +322,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.loading_slots));
         //api for get appointment slots for selected date and doctor speciality
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi().getSlots(mSelectedStartDate, mSelectedEndDate, speciality).enqueue(new Callback<SlotInfoResponse>() {
             @Override
             public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                 SlotInfoResponse slotInfoResponse = response.body();
-                if (app_start_date != null && app_start_time != null && slotInfoResponse != null) {
+                if (isRescheduled && slotInfoResponse != null) {
                     removePreviousAppointmentDateTime(slotInfoResponse);
                 }
 
@@ -388,14 +392,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 findViewById(R.id.tv_afternoon_label).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
                 findViewById(R.id.rv_afternoon_time_slots).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
-                if (isSlotNotAvailable)
-                    isSlotNotAvailable = slotInfoAfternoonList.isEmpty();
+                if (isSlotNotAvailable) isSlotNotAvailable = slotInfoAfternoonList.isEmpty();
 
                 findViewById(R.id.tv_evening_label).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
                 findViewById(R.id.rv_evening_time_slots).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForEveningAppointments(slotInfoEveningList);
-                if (isSlotNotAvailable)
-                    isSlotNotAvailable = slotInfoEveningList.isEmpty();
+                if (isSlotNotAvailable) isSlotNotAvailable = slotInfoEveningList.isEmpty();
 
                 ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.slot_empty_message));
                 findViewById(R.id.empty_tv).setVisibility(isSlotNotAvailable ? View.VISIBLE : View.GONE);
@@ -411,11 +413,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
     }
 
-    private SlotInfoResponse removePreviousAppointmentDateTime(SlotInfoResponse slotInfoResponse) {
+    private void removePreviousAppointmentDateTime(SlotInfoResponse slotInfoResponse) {
         List<SlotInfo> slots = slotInfoResponse.getDates();
         slots.removeIf(slotInfo -> slotInfo.getSlotDate().equalsIgnoreCase(app_start_date) && slotInfo.getSlotTime().equalsIgnoreCase(app_start_time));
         slotInfoResponse.setDates(slots);
-        return slotInfoResponse;
     }
 
     private void sortByTime(List<SlotInfo> slotInfoList) {
@@ -569,7 +570,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             if (monthYear.length > 0) {
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     selectedPrevMonth = StringUtils.en__hi_dob(selectedPrevMonth);
                 tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear) {
@@ -610,7 +611,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 selectedNextMonth = monthYear[0];
                 selectedMonthYear = monthYear[1];
                 String[] dateSplit = formateDate.split("/");
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     selectedNextMonth = StringUtils.en__hi_dob(selectedNextMonth);
                 tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
                 getAllDatesOfSelectedMonth(calendarInstance, calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear, selectedNextMonth, selectedMonthYear, dateSplit[1]);
@@ -648,7 +649,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
         String infoText = getResources().getString(R.string.sure_to_book_appointment, selectedDateTime);
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             infoText = StringUtils.en__hi_dob(infoText);
         tvInfo.setText(Html.fromHtml(infoText));
 
@@ -707,7 +708,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 mIsPendingForAppointmentSave = true;
             }, 100);
         } else {
-            ScheduleAppointmentActivity_New.this.setResult(Activity.RESULT_OK);
+            ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
             finish();
         }
     }

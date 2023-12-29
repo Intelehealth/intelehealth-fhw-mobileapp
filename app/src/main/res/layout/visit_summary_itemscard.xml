@@ -35,7 +35,7 @@
                     android:layout_margin="@dimen/fu_card_margin_sides">
 
                     <ImageView
-                        android:id="@+id/vs_icon"
+                        android:id="@+id/ivVitalIcon"
                         android:layout_width="@dimen/edittext_height_44dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:src="@drawable/vitals_icon" />
@@ -46,7 +46,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/vs_icon"
+                        android:layout_toEndOf="@+id/ivVitalIcon"
                         android:text="@string/visit_summary_vitals" />
 
                     <ImageButton
@@ -67,7 +67,7 @@
                     android:layout_below="@+id/vitals_header_relative">
 
                     <View
-                        android:id="@+id/divider"
+                        android:id="@+id/divider1"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -80,7 +80,7 @@
                         android:id="@+id/vitals_details_relative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider"
+                        android:layout_below="@+id/divider1"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
@@ -437,7 +437,7 @@
                     android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <ImageView
-                        android:id="@+id/vs_icon"
+                        android:id="@+id/ivNoteIcon"
                         android:layout_width="@dimen/edittext_height_44dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:src="@drawable/visit_reason_icon" />
@@ -448,7 +448,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/vs_icon"
+                        android:layout_toEndOf="@+id/ivNoteIcon"
                         android:text="@string/complaint_dialog_title" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -469,7 +469,7 @@
                     android:layout_below="@+id/chiefcomplaint_header_relative">
 
                     <View
-                        android:id="@+id/divider1"
+                        android:id="@+id/divider2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -482,7 +482,7 @@
                         android:id="@+id/cc_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider1"
+                        android:layout_below="@+id/divider2"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
@@ -952,7 +952,7 @@
                     android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <ImageView
-                        android:id="@+id/vs_icon"
+                        android:id="@+id/ivSummeryMedIcon"
                         android:layout_width="@dimen/edittext_height_44dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:src="@drawable/med_history_icon" />
@@ -963,7 +963,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/vs_icon"
+                        android:layout_toEndOf="@+id/ivSummeryMedIcon"
                         android:text="@string/visit_summary_medical_history" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"

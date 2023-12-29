@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.myhexaville.androidwebrtc.com.shivam.androidwebrtc.tutorial.MediaStreamActivity">
+
+        <include
+            android:id="@+id/videoCallView"
+            layout="@layout/content_video_call" />
+
+        <include
+            android:id="@+id/incomingCallView"
+            layout="@layout/view_incoming_call_ringing"
+            android:visibility="gone" />
+    </RelativeLayout>
+</layout>
+
+

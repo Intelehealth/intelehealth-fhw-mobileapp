@@ -593,8 +593,8 @@ public class VisitsDAO {
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id," +
                         " v.startdate " +
-                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                "v.voided = 0 AND" +
+                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                        "v.voided = 0 AND" +
 //                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
                         " v.startdate > DATETIME('now', '-4 day')" +
                         " AND v.enddate IS NULL ORDER BY v.startdate DESC",
@@ -646,7 +646,7 @@ public class VisitsDAO {
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id," +
                         " v.startdate " +
                         "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                "v.voided = 0 AND " +
+                        "v.voided = 0 AND " +
 //                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
 //                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
                         " v.startdate < DATETIME('now', '-4 day') AND " +
@@ -935,5 +935,17 @@ public class VisitsDAO {
         return count;
     }
 
+    public String getVisitIdByPatientId(String patientId) {
+        String visitId = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ? ", new String[]{patientId});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                visitId = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        cursor.close();
 
+        return visitId;
+    }
 }

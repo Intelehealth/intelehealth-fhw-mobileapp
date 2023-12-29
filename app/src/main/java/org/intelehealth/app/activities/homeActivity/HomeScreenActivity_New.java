@@ -23,7 +23,6 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,7 +39,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
-import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -58,7 +56,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -74,10 +71,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.BuildConfig;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
@@ -97,8 +94,8 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -112,23 +109,17 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
-import org.intelehealth.apprtc.data.Manager;
-import org.intelehealth.apprtc.utils.FirebaseUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.intelehealth.fcm.utils.FcmTokenGenerator;
+import org.intelehealth.klivekit.utils.FirebaseUtils;
+import org.intelehealth.klivekit.utils.Manager;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.UUID;
+import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -137,9 +128,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
 import okhttp3.ResponseBody;
 
-public class HomeScreenActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HomeScreenActivity";
     ImageView imageViewIsInternet, ivHamburger, imageview_notifications_home;
     private boolean isConnected = false;
@@ -175,7 +167,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private static final String TAG_HELP = "TAG_HELP";
 
     private void saveToken() {
-        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         // save fcm reg. token for chat (Video)
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }
@@ -184,96 +176,96 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.v(TAG, "onNewIntent");
-        catchFCMMessageData();
+//        catchFCMMessageData();
     }
 
-    private void catchFCMMessageData() {
-        // get the chat notification click info
-        if (getIntent().getExtras() != null) {
-            Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
-            Bundle remoteMessage = getIntent().getExtras();
-            try {
-                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
-                    //Log.d(TAG, "actionType : TEXT_CHAT");
-                    String fromUUId = remoteMessage.getString("toUser");
-                    String toUUId = remoteMessage.getString("fromUser");
-                    String patientUUid = remoteMessage.getString("patientId");
-                    String visitUUID = remoteMessage.getString("visitId");
-                    String patientName = remoteMessage.getString("patientName");
-                    JSONObject connectionInfoObject = new JSONObject();
-                    connectionInfoObject.put("fromUUID", fromUUId);
-                    connectionInfoObject.put("toUUID", toUUId);
-                    connectionInfoObject.put("patientUUID", patientUUid);
-
-                    Intent intent = new Intent(ACTION_NAME);
-                    intent.putExtra("visit_uuid", visitUUID);
-                    intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
-                    getApplicationContext().sendBroadcast(intent);
-
-                    Intent chatIntent = new Intent(this, ChatActivity.class);
-                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    chatIntent.putExtra("patientName", patientName);
-                    chatIntent.putExtra("visitUuid", visitUUID);
-                    chatIntent.putExtra("patientUuid", patientUUid);
-                    chatIntent.putExtra("fromUuid", fromUUId);
-                    chatIntent.putExtra("toUuid", toUUId);
-                    startActivity(chatIntent);
-
-                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
-                    //Log.d(TAG, "actionType : VIDEO_CALL");
-                    Intent in = new Intent(this, CompleteActivity.class);
-                    String roomId = remoteMessage.getString("roomId");
-                    String doctorName = remoteMessage.getString("doctorName");
-                    String nurseId = remoteMessage.getString("nurseId");
-                    String visitId = remoteMessage.getString("visitId");
-                    String doctorId = remoteMessage.getString("doctorId");
-                    boolean isOldNotification = false;
-                    if (remoteMessage.containsKey("timestamp")) {
-                        String timestamp = remoteMessage.getString("timestamp");
-
-                        Date date = new Date();
-                        if (timestamp != null) {
-                            date.setTime(Long.parseLong(timestamp));
-                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
-                            dateFormatter.setTimeZone(TimeZone.getDefault());
-
-                            try {
-                                Date ourDate = dateFormatter.parse(dateFormatter.format(date));
-                                long seconds = 0;
-                                if (ourDate != null) {
-                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
-                                }
-                                Log.v(TAG, "Current time - " + new Date());
-                                Log.v(TAG, "Notification time - " + ourDate);
-                                Log.v(TAG, "seconds - " + seconds);
-                                if (seconds >= 30) {
-                                    isOldNotification = true;
-                                }
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-
-                    in.putExtra("roomId", roomId);
-                    in.putExtra("isInComingRequest", true);
-                    in.putExtra("doctorname", doctorName);
-                    in.putExtra("nurseId", nurseId);
-                    in.putExtra("visitId", visitId);
-                    in.putExtra("doctorId", doctorId);
-
-                    //int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                    //if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
-                    startActivity(in);
-                    //}
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    private void catchFCMMessageData() {
+//        // get the chat notification click info
+//        if (getIntent().getExtras() != null) {
+//            Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
+//            Bundle remoteMessage = getIntent().getExtras();
+//            try {
+//                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
+//                    //Log.d(TAG, "actionType : TEXT_CHAT");
+//                    String fromUUId = remoteMessage.getString("toUser");
+//                    String toUUId = remoteMessage.getString("fromUser");
+//                    String patientUUid = remoteMessage.getString("patientId");
+//                    String visitUUID = remoteMessage.getString("visitId");
+//                    String patientName = remoteMessage.getString("patientName");
+//                    JSONObject connectionInfoObject = new JSONObject();
+//                    connectionInfoObject.put("fromUUID", fromUUId);
+//                    connectionInfoObject.put("toUUID", toUUId);
+//                    connectionInfoObject.put("patientUUID", patientUUid);
+//
+//                    Intent intent = new Intent(ACTION_NAME);
+//                    intent.putExtra("visit_uuid", visitUUID);
+//                    intent.putExtra("connection_info", connectionInfoObject.toString());
+//                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
+//                    getApplicationContext().sendBroadcast(intent);
+//
+//                    Intent chatIntent = new Intent(this, ChatActivity.class);
+//                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    chatIntent.putExtra("patientName", patientName);
+//                    chatIntent.putExtra("visitUuid", visitUUID);
+//                    chatIntent.putExtra("patientUuid", patientUUid);
+//                    chatIntent.putExtra("fromUuid", fromUUId);
+//                    chatIntent.putExtra("toUuid", toUUId);
+//                    startActivity(chatIntent);
+//
+//                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
+//                    //Log.d(TAG, "actionType : VIDEO_CALL");
+//                    Intent in = new Intent(this, CompleteActivity.class);
+//                    String roomId = remoteMessage.getString("roomId");
+//                    String doctorName = remoteMessage.getString("doctorName");
+//                    String nurseId = remoteMessage.getString("nurseId");
+//                    String visitId = remoteMessage.getString("visitId");
+//                    String doctorId = remoteMessage.getString("doctorId");
+//                    boolean isOldNotification = false;
+//                    if (remoteMessage.containsKey("timestamp")) {
+//                        String timestamp = remoteMessage.getString("timestamp");
+//
+//                        Date date = new Date();
+//                        if (timestamp != null) {
+//                            date.setTime(Long.parseLong(timestamp));
+//                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
+//                            dateFormatter.setTimeZone(TimeZone.getDefault());
+//
+//                            try {
+//                                Date ourDate = dateFormatter.parse(dateFormatter.format(date));
+//                                long seconds = 0;
+//                                if (ourDate != null) {
+//                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
+//                                }
+//                                Log.v(TAG, "Current time - " + new Date());
+//                                Log.v(TAG, "Notification time - " + ourDate);
+//                                Log.v(TAG, "seconds - " + seconds);
+//                                if (seconds >= 30) {
+//                                    isOldNotification = true;
+//                                }
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//
+//
+//                    in.putExtra("roomId", roomId);
+//                    in.putExtra("isInComingRequest", true);
+//                    in.putExtra("doctorname", doctorName);
+//                    in.putExtra("nurseId", nurseId);
+//                    in.putExtra("visitId", visitId);
+//                    in.putExtra("doctorId", doctorId);
+//
+//                    //int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+//                    //if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
+//                    startActivity(in);
+//                    //}
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     private UpdateFragmentOnEvent mUpdateFragmentOnEvent;
 
@@ -291,7 +283,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
         networkUtils = new NetworkUtils(context, this);
         DeviceInfoUtils.saveDeviceInfo(this);
-        catchFCMMessageData();
+        FcmTokenGenerator.getDeviceToken(token -> {
+            IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+            saveToken();
+            return Unit.INSTANCE;
+        });
+//        catchFCMMessageData();
 
         loadFragment(new HomeFragment_New(), TAG_HOME);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -309,8 +306,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         if (intent_exit != null) {
             String intentTag = intent_exit.getStringExtra("intentTag");
             if (intentTag != null) {
-                if (intentTag.equalsIgnoreCase("Feedback screen with feedback")) showSnackBarAndRemoveLater(getResources().getString(R.string.thank_you_for_feedback));
-                else if (intentTag.equalsIgnoreCase("profile updated")) showSnackBarAndRemoveLater(getResources().getString(R.string.profile_details_updated_new));
+                if (intentTag.equalsIgnoreCase("Feedback screen with feedback"))
+                    showSnackBarAndRemoveLater(getResources().getString(R.string.thank_you_for_feedback));
+                else if (intentTag.equalsIgnoreCase("profile updated"))
+                    showSnackBarAndRemoveLater(getResources().getString(R.string.profile_details_updated_new));
                 else survey_snackbar_cv.setVisibility(View.GONE);
             }
         }
@@ -339,8 +338,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     showSnackBarAndRemoveLater(getString(R.string.this_feature_is_not_available_in_offline_mode));
                 }
@@ -574,12 +572,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         });
         if (sessionManager.isFirstTimeLaunched()) {
             showRefreshInProgressDialog();
-            syncUtils.initialSync("home");
+            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home"));
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
-            requestPermission();
+//            requestPermission();
         }
         //bottom nav
         bottomNav = findViewById(R.id.bottom_nav_home);
@@ -618,6 +616,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         //HomeFragment_New
         //MyAchievementsFragmentNew
 
+        super.onBackPressed();
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
         Log.v(TAG, "backStackEntryCount - " + backStackEntryCount);
         String topFragmentTag = getTopFragmentTag();
@@ -746,10 +745,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             alertDialog.dismiss();
             logout();
 
-            if (CallListenerBackgroundService.isInstanceCreated()) {
-                Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-                context.stopService(serviceIntent);
-            }
+//            if (CallListenerBackgroundService.isInstanceCreated()) {
+//                Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//                context.stopService(serviceIntent);
+//            }
 
         });
 
@@ -768,12 +767,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         dialogRefreshInProgress.show();
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dialogRefreshInProgress.dismiss();
-            }
-        }, 3000);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                dialogRefreshInProgress.dismiss();
+//            }
+//        }, 3000);
     }
 
     public void showRefreshFailedDialog() {
@@ -799,11 +798,11 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-            context.startService(serviceIntent);
-        }
+//        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
+//        if (!CallListenerBackgroundService.isInstanceCreated()) {
+//            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//            context.startService(serviceIntent);
+//        }
     }
 
     private String mLastTag = "";
@@ -861,12 +860,9 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                selectDrawerItem(menuItem);
-                return false;
-            }
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            selectDrawerItem(menuItem);
+            return false;
         });
     }
 
@@ -874,34 +870,28 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         Fragment fragment = null;
         Class fragmentClass = null;
         String tag = "";
-        switch (menuItem.getItemId()) {
-            case R.id.menu_my_achievements:
-                tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                tvAppLastSync.setVisibility(View.GONE);
-                ivHamburger.setVisibility(View.GONE);
-                imageViewIsInternet.setVisibility(View.VISIBLE);
-                imageViewIsNotification.setVisibility(View.GONE);
-                fragment = new MyAchievementsFragment();
-                tag = TAG_ACHIEVEMENT;
-                break;
-            case R.id.menu_video_lib:
-                tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
-                fragment = new InformativeVideosFragment_New();
-                break;
-            case R.id.menu_change_language:
-                Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.menu_about_us:
-                Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
-                startActivity(i);
-                break;
-            case R.id.menu_logout:
-                wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
-                break;
-            default:
+        int itemId = menuItem.getItemId();
+        if (itemId == R.id.menu_my_achievements) {
+            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+            tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            tvAppLastSync.setVisibility(View.GONE);
+            ivHamburger.setVisibility(View.GONE);
+            imageViewIsInternet.setVisibility(View.VISIBLE);
+            imageViewIsNotification.setVisibility(View.GONE);
+            fragment = new MyAchievementsFragment();
+            tag = TAG_ACHIEVEMENT;
+        } else if (itemId == R.id.menu_video_lib) {
+            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
+            fragment = new InformativeVideosFragment_New();
+        } else if (itemId == R.id.menu_change_language) {
+            Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (itemId == R.id.menu_about_us) {
+            Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
+            startActivity(i);
+        } else if (itemId == R.id.menu_logout) {
+            wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
         }
 
         mDrawerLayout.closeDrawers();
@@ -927,7 +917,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         loadLastSelectedFragment();
         //toolbarHome.setVisibility(View.VISIBLE);
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             lastSync = StringUtils.en__hi_dob(lastSync);
         tvAppLastSync.setText(lastSync);
 
@@ -952,7 +942,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
-        requestPermission();
+//        requestPermission();
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
@@ -1043,7 +1033,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
             String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
             String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
-            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 lastSync = StringUtils.en__hi_dob(lastSync);
             tvAppLastSync.setText(lastSync);
 
@@ -1063,7 +1053,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private void hideSyncProgressBar(boolean isSuccess) {
         mIsFirstTimeSyncDone = true;
         saveToken();
-        requestPermission();
+//        requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
@@ -1077,16 +1067,16 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     @Override
                     public void run() {
 
-                        WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                        WorkManager.getInstance(HomeScreenActivity_New.this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
                     }
                 }, 10000);
             }
         }
-        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            stopService(serviceIntent);
-        }
-        startService(serviceIntent);
+//        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//        if (!CallListenerBackgroundService.isInstanceCreated()) {
+//            stopService(serviceIntent);
+//        }
+//        startService(serviceIntent);
 
         mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
     }
@@ -1149,16 +1139,16 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
 
-    private void requestPermission() {
-        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(serviceIntent);
-            } else {
-                context.startService(serviceIntent);
-            }
-        }
-    }
+//    private void requestPermission() {
+//        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//        if (!CallListenerBackgroundService.isInstanceCreated()) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                context.startForegroundService(serviceIntent);
+//            } else {
+//                context.startService(serviceIntent);
+//            }
+//        }
+//    }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -1264,6 +1254,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     public void logout() {
         // to insert time spent by user into the db
         insertTimeSpentByUserIntoDb();
+        IntelehealthApplication.getInstance().disconnectSocket();
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
         Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);

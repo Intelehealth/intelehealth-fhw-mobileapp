@@ -29,6 +29,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -41,7 +42,7 @@ import java.util.Locale;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitActivity extends FragmentActivity implements
+public class VisitActivity extends BaseActivity implements
         NetworkUtils.InternetCheckUpdateInterface, VisitCountInterface {
     private static final String TAG = VisitActivity.class.getName();
     private ImageButton ibBack, refresh;
