@@ -379,6 +379,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mBpSysErrorTextView.setVisibility(View.VISIBLE);
                 mBpSysErrorTextView.setText(getString(R.string.error_field_required));
                 mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                mBpDiaErrorTextView.setVisibility(View.GONE);
+                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
                 return false;
             }
         } else {
@@ -390,6 +394,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mBpSysErrorTextView.setVisibility(View.VISIBLE);
                 mBpSysEditText.requestFocus();
                 mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                mBpDiaErrorTextView.setVisibility(View.GONE);
+                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
                 return false;
                 //return;
             }
@@ -404,6 +412,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mBpSysErrorTextView.setVisibility(View.VISIBLE);
                     mBpSysErrorTextView.setText(getString(R.string.bp_validation_sys));
                     mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                    mBpDiaErrorTextView.setVisibility(View.GONE);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
                     return false;
                 } else {
                     mBpSysErrorTextView.setVisibility(View.GONE);

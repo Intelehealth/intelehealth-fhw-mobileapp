@@ -204,15 +204,15 @@ public class CameraActivity extends AppCompatActivity {
 
                     float ratioX = actualWidth / (float) options.outWidth;
                     float ratioY = actualHeight / (float) options.outHeight;
-                    float middleX = actualWidth / 2.0f;
-                    float middleY = actualHeight / 2.0f;
+                    float middleX = actualWidth / 3.0f;
+                    float middleY = actualHeight / 3.0f;
 
                     Matrix scaleMatrix = new Matrix();
                     scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
 
                     Canvas canvas = new Canvas(scaledBitmap);
                     canvas.setMatrix(scaleMatrix);
-                    canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(
+                    canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 3, middleY - bmp.getHeight() / 3, new Paint(
                             Paint.FILTER_BITMAP_FLAG));
 
                     ExifInterface exif;
