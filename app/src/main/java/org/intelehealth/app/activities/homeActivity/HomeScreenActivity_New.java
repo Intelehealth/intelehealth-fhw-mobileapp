@@ -767,12 +767,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         dialogRefreshInProgress.show();
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dialogRefreshInProgress.dismiss();
-            }
-        }, 3000);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                dialogRefreshInProgress.dismiss();
+//            }
+//        }, 3000);
     }
 
     public void showRefreshFailedDialog() {
