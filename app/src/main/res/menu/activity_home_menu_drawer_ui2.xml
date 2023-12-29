@@ -19,6 +19,11 @@
             android:title="@string/change_lang" />
 
         <item
+            android:id="@+id/menu_view_call_log"
+            android:icon="@drawable/ic_call_log_video"
+            android:title="@string/call_logs" />
+
+        <item
             android:id="@+id/menu_about_us"
             android:icon="@drawable/ui2_ic_icon_about_us"
             android:title="@string/about_us" />
