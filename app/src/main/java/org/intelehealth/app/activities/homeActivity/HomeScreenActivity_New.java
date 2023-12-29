@@ -109,6 +109,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
@@ -887,6 +888,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
             startActivity(intent);
             finish();
+        } else if (itemId == R.id.menu_view_call_log) {
+            Intent intent = new Intent(HomeScreenActivity_New.this, IDACallLogActivity.class);
+            startActivity(intent);
         } else if (itemId == R.id.menu_about_us) {
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
             startActivity(i);

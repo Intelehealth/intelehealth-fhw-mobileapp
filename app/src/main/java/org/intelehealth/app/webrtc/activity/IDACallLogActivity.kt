@@ -51,6 +51,7 @@ class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClick
         supportActionBar?.let {
             it.setHomeButtonEnabled(true)
             it.setDisplayHomeAsUpEnabled(true)
+            it.title = getString(R.string.call_logs)
         }
         binding.callLogAppBar.toolbar.title = getString(R.string.call_logs)
         binding.callLogAppBar.toolbar.setNavigationOnClickListener { finishAfterTransition() }
