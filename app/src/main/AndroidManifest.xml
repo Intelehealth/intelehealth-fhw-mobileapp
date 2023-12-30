@@ -4,9 +4,11 @@
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -21,8 +23,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_PRIVILEGED"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -34,6 +42,12 @@
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
 
     <application
         android:name=".app.IntelehealthApplication"
@@ -53,7 +67,7 @@
             android:name=".activities.medicationAidActivity.PastNotesDispenseAdministerActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.medicationAidActivity.AdministerDispenseActivity"
             android:exported="false"
@@ -212,8 +226,8 @@
         <activity
             android:name=".activities.searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"
-            android:label="@string/title_activity_search_patient"
             android:exported="false"
+            android:label="@string/title_activity_search_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -252,8 +266,8 @@
         <activity
             android:name=".activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
-            android:label="@string/title_activity_home"
             android:exported="false"
+            android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -269,8 +283,8 @@
         <activity
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -346,12 +360,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew" />
         <!-- Firebase Services -->
-<!--        <service android:name=".services.firebase_services.MyFirebaseMessagingService"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </service> -->
+        <!--        <service android:name=".services.firebase_services.MyFirebaseMessagingService"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+        <!--            </intent-filter>-->
+        <!--        </service> -->
         <!-- <receiver -->
         <!-- android:name="org.intelehealth.app.utilities.NetworkChangeListener" -->
         <!-- android:label="NetworkChangeReceiver"> -->
@@ -391,34 +405,34 @@
             </intent-filter>
         </receiver>
         <!-- Firebase Realdb -->
-<!--        <receiver-->
-<!--            android:name=".services.firebase_services.CallRTCNotifyReceiver"-->
-<!--            android:exported="false">-->
-<!--            <intent-filter android:priority="100">-->
-<!--                <action-->
-<!--                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"-->
-<!--                    android:enabled="true" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
-<!--        <receiver-->
-<!--            android:name=".services.firebase_services.RestartServiceReceiver"-->
-<!--            android:exported="false">-->
-<!--            <intent-filter android:priority="99">-->
-<!--                <action-->
-<!--                    android:name="org.intelehealth.app.RTC_SERVICE_START"-->
-<!--                    android:enabled="true" />-->
-<!--            </intent-filter>-->
-<!--            <intent-filter android:priority="99">-->
-<!--                <action-->
-<!--                    android:name="android.intent.action.BOOT_COMPLETED"-->
-<!--                    android:enabled="true" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
+        <!--        <receiver-->
+        <!--            android:name=".services.firebase_services.CallRTCNotifyReceiver"-->
+        <!--            android:exported="false">-->
+        <!--            <intent-filter android:priority="100">-->
+        <!--                <action-->
+        <!--                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"-->
+        <!--                    android:enabled="true" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
+        <!--        <receiver-->
+        <!--            android:name=".services.firebase_services.RestartServiceReceiver"-->
+        <!--            android:exported="false">-->
+        <!--            <intent-filter android:priority="99">-->
+        <!--                <action-->
+        <!--                    android:name="org.intelehealth.app.RTC_SERVICE_START"-->
+        <!--                    android:enabled="true" />-->
+        <!--            </intent-filter>-->
+        <!--            <intent-filter android:priority="99">-->
+        <!--                <action-->
+        <!--                    android:name="android.intent.action.BOOT_COMPLETED"-->
+        <!--                    android:enabled="true" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
 
-<!--        <service-->
-<!--            android:name=".services.firebase_services.CallListenerBackgroundService"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="true" />-->
+        <!--        <service-->
+        <!--            android:name=".services.firebase_services.CallListenerBackgroundService"-->
+        <!--            android:enabled="true"-->
+        <!--            android:exported="true" />-->
     </application>
 
 </manifest>

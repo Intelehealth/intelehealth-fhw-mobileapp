@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -214,6 +215,10 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        for (String perm : permissions) {
+            Log.e("SplashActivity", "onRequestPermissionsResult: " + perm);
+        }
+
         if (requestCode == GROUP_PERMISSION_REQUEST) {
             boolean allGranted = grantResults.length != 0;
             for (int grantResult : grantResults) {
@@ -269,6 +274,7 @@ public class SplashActivity extends AppCompatActivity {
         int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
         int bluetoothPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH);
         int bluetoothAdminPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN);
+
         int coarseLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
         int fineLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -279,6 +285,7 @@ public class SplashActivity extends AppCompatActivity {
                 listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS);
             }
         }
+
         int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
 
 
@@ -300,12 +307,26 @@ public class SplashActivity extends AppCompatActivity {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
         }
 
-        if (bluetoothPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.BLUETOOTH);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            int bluetoothScanPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
+            int bluetoothConnectPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT);
+            if (bluetoothScanPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_SCAN);
+            }
+            if (bluetoothConnectPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_CONNECT);
+            }
+        } else {
+            if (bluetoothPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.BLUETOOTH);
+            }
+            if (bluetoothAdminPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_ADMIN);
+            }
         }
-        if (bluetoothAdminPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_ADMIN);
-        }
+
+
         if (coarseLocationPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         }

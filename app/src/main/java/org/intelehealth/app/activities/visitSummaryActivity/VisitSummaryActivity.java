@@ -4702,11 +4702,11 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     }
 
     private String getValueTimeStamp(String created_date) {
-        if (created_date == null)
+        if (created_date == null || created_date.isEmpty())
             return "";
 
         Log.d(TAG, "getValueTimeStamp: " + created_date);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.z", Locale.ENGLISH);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = null;
         try {
