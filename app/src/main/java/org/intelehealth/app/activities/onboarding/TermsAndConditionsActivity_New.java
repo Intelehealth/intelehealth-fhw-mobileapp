@@ -56,6 +56,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
         sessionManager = new SessionManager(context);
 
         loadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), getString(R.string.please_wait));
+        loadingDialog.show();
         ivBack.setOnClickListener(v -> finish());
 
         if (privacy_string.isEmpty()) {
@@ -71,12 +72,13 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
                 runOnUiThread(() -> {
                     // ui task
                     tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT));
+                    loadingDialog.dismiss();
                 });
             }).start();
         } else {
             tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT));
+            loadingDialog.dismiss();
         }
-        loadingDialog.dismiss();
     }
 
     @Override
