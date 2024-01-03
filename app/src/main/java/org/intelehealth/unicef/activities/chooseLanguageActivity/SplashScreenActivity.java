@@ -267,11 +267,6 @@ public class SplashScreenActivity extends LocalConfigActivity implements SplashL
             if (readExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
             }
-
-            int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            }
         }
 
 
