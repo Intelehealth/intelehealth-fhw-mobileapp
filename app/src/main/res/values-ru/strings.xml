@@ -1550,4 +1550,6 @@
     <string name="splash_desc">Оказывать качественную медицинскую помощь там, где нет врача</string>
     <string name="no_postal_code_added">Почтовый адрес не добавлен</string>
 
+    <string name="call_logs">Журнал звонков</string>
+
 </resources>

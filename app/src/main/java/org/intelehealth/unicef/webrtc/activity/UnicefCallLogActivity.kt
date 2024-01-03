@@ -1,11 +1,11 @@
 package org.intelehealth.unicef.webrtc.activity
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.intelehealth.unicef.webrtc.adapter.CallLogAdapter
 import org.intelehealth.klivekit.call.model.RtcCallLog
 import org.intelehealth.klivekit.call.ui.activity.CoreCallLogActivity
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
@@ -13,6 +13,9 @@ import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.unicef.R
 import org.intelehealth.unicef.database.dao.VisitsDAO
 import org.intelehealth.unicef.databinding.ActivityCallLogBinding
+import org.intelehealth.unicef.utilities.SessionManager
+import org.intelehealth.unicef.webrtc.adapter.CallLogAdapter
+import java.util.Locale
 
 /**
  * Created by Vaghela Mithun R. on 23-10-2023 - 14:44.
@@ -23,8 +26,10 @@ class UnicefCallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderCl
 
     private lateinit var binding: ActivityCallLogBinding
     private lateinit var adapter: CallLogAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityCallLogBinding.inflate(layoutInflater, null, false)
+        setLanguage()
         setContentView(binding.root)
         super.onCreate(savedInstanceState)
         adapter = CallLogAdapter(this, arrayListOf())
@@ -72,5 +77,18 @@ class UnicefCallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderCl
         args.visitId = VisitsDAO().getVisitIdByPatientId(args.patientId)
         args.nurseId = callLog.calleeId
         UnicefChatActivity.startChatActivity(this, args)
+    }
+
+    private fun setLanguage() {
+        val sessionManager = SessionManager(this)
+        val language: String = sessionManager.appLanguage
+        if (language != "") {
+            val locale = Locale(language)
+            Locale.setDefault(locale)
+            val config = Configuration()
+            config.locale = locale
+            resources.updateConfiguration(config, resources.displayMetrics)
+        }
+        sessionManager.currentLang = resources.configuration.locale.toString()
     }
 }
