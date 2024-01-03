@@ -1,5 +1,6 @@
 package org.intelehealth.unicef.activities.visit;
 
+import static org.intelehealth.unicef.database.dao.EncounterDAO.fetchEncounterModifiedDateForPrescGiven;
 import static org.intelehealth.unicef.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.unicef.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.unicef.database.dao.EncounterDAO.getChiefComplaint;
@@ -78,6 +79,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Prajwal Waingankar on 16/09/2022.
@@ -86,18 +88,13 @@ import java.util.Locale;
  */
 
 public class VisitDetailsActivity extends LocalConfigActivity implements NetworkUtils.InternetCheckUpdateInterface {
-    private String patientName, patientUuid, gender, age, openmrsID,
-            visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
+    private String patientName, patientUuid, gender, age, openmrsID, visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
-    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
-            visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text, priorityTag;
+    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text, priorityTag;
     private ImageView profile_image, icon_presc_details;
     public static final String TAG = "VisitDetailsActivity";
-    private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
-            followup_relative_block, followup_start_card, yes_no_followup_relative,
-            vs_card, presc_relative;
-    private ImageButton presc_arrowRight, vs_arrowRight, backArrow, refresh,
-            pat_call_btn, pat_whatsapp_btn;
+    private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block, followup_relative_block, followup_start_card, yes_no_followup_relative, vs_card, presc_relative;
+    private ImageButton presc_arrowRight, vs_arrowRight, backArrow, refresh, pat_call_btn, pat_whatsapp_btn;
     private ImageView dr_call_btn, dr_whatsapp_btn;
     ;
     private String vitalsUUID, adultInitialUUID, obsservermodifieddate, pat_phoneno, dr_MobileNo, dr_WhatsappNo, drDetails;
@@ -137,8 +134,7 @@ public class VisitDetailsActivity extends LocalConfigActivity implements Network
             visit_speciality = intent.getStringExtra("visit_speciality");
 
             followupDate = intent.getStringExtra("followup_date");
-            if (followupDate == null)
-                followupDate = getFollowupDataForVisitUUID(visitID);
+            if (followupDate == null) followupDate = getFollowupDataForVisitUUID(visitID);
             isEmergency = intent.getBooleanExtra("priority_tag", false);
             hasPrescription = intent.getBooleanExtra("hasPrescription", false);
             patient_photo_path = intent.getStringExtra("patient_photo");
@@ -202,13 +198,7 @@ public class VisitDetailsActivity extends LocalConfigActivity implements Network
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
         if (patient_photo_path != null) {
-            Glide.with(this)
-                    .load(patient_photo_path)
-                    .thumbnail(0.3f)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(profile_image);
+            Glide.with(this).load(patient_photo_path).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
         } else {
             profile_image.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
         }
@@ -260,7 +250,6 @@ public class VisitDetailsActivity extends LocalConfigActivity implements Network
             presc_relative.setClickable(true);
             presc_remind_block.setVisibility(View.GONE);
             if (!obsservermodifieddate.equalsIgnoreCase("")) {
-                //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
                 String modifiedDate = obsservermodifieddate;
                 modifiedDate = timeAgoFormat(modifiedDate);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("ru") && modifiedDate.contains("ago")) {
@@ -268,6 +257,21 @@ public class VisitDetailsActivity extends LocalConfigActivity implements Network
                 }
                 presc_time.setText(getString(R.string.received) + " " + modifiedDate);
                 icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_icon));
+            } else {
+                Executors.newSingleThreadExecutor().execute(() -> {
+                    String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
+                    modifiedDate = DateAndTimeUtils.formatDateFromOnetoAnother(modifiedDate, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "yyyy-MM-dd HH:mm:ss");
+                    modifiedDate = timeAgoFormat(modifiedDate);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ru") && modifiedDate.contains("ago")) {
+                        modifiedDate = modifiedDate.replace("ago", "назад");
+                    }
+
+                    String finalModifiedDate = modifiedDate;
+                    runOnUiThread(() -> {
+                        presc_time.setText(getString(R.string.received) + " " + finalModifiedDate);
+                        icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_icon));
+                    });
+                });
             }
 
 /*
@@ -344,10 +348,8 @@ public class VisitDetailsActivity extends LocalConfigActivity implements Network
 
         // priority - start
         priorityTag = findViewById(R.id.priority_tag);
-        if (isEmergency)
-            priorityTag.setVisibility(View.VISIBLE);
-        else
-            priorityTag.setVisibility(View.GONE);
+        if (isEmergency) priorityTag.setVisibility(View.VISIBLE);
+        else priorityTag.setVisibility(View.GONE);
         // priority - end
 
         chief_complaint_txt = findViewById(R.id.chief_complaint_txt);
@@ -469,8 +471,7 @@ public class VisitDetailsActivity extends LocalConfigActivity implements Network
                     }
                 }
 
-                VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, finalFollowUpDate,
-                        vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
+                VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, finalFollowUpDate, vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
             });
         } else {
             endvisit_relative_block.setVisibility(View.GONE);
@@ -659,10 +660,7 @@ public class VisitDetailsActivity extends LocalConfigActivity implements Network
     // TODO: check with Sagar for this message to be passed...
     private void whatsapp_feature(String phoneno) {
         if (phoneno != null) {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(
-                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                    phoneno, getResources().getString(R.string.nurse_whatsapp_message)))));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneno, getResources().getString(R.string.nurse_whatsapp_message)))));
         } else {
             Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
         }
@@ -727,8 +725,7 @@ public class VisitDetailsActivity extends LocalConfigActivity implements Network
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
         RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
         RtcArgs args = new RtcArgs();
-        if (rtcConnectionDTO != null)
-            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
+        if (rtcConnectionDTO != null) args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
         else args.setDoctorUuid("");
         args.setPatientId(patientUuid);
         args.setPatientName(patientName);
@@ -796,10 +793,7 @@ public class VisitDetailsActivity extends LocalConfigActivity implements Network
         PatientDTO patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {patientUuid};
-        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "patient_photo"};
         SQLiteDatabase db = db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
