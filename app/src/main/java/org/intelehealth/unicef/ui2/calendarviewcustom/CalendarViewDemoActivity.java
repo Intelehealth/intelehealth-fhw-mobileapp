@@ -24,7 +24,7 @@ import android.widget.TextView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
 
@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class CalendarViewDemoActivity extends BaseActivity implements SendSelectedDateInterface {
+public class CalendarViewDemoActivity extends LocalConfigActivity implements SendSelectedDateInterface {
     private static final String TAG = "CalendarViewDemoActivit";
     RecyclerView rvCalendarView;
     Spinner spinnerMonths, spinnerYear;

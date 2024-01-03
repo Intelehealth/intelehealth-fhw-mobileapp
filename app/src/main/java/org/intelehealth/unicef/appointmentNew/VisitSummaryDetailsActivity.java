@@ -3,9 +3,9 @@ package org.intelehealth.unicef.appointmentNew;
 import android.os.Bundle;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 
-public class VisitSummaryDetailsActivity extends BaseActivity {
+public class VisitSummaryDetailsActivity extends LocalConfigActivity {
     private static final String TAG = "VisitSummaryDetailsActi";
 
     @Override

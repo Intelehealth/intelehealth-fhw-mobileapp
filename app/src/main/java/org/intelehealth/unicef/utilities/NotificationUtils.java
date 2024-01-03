@@ -3,7 +3,10 @@ package org.intelehealth.unicef.utilities;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.os.Build;
+
 import androidx.core.app.NotificationCompat;
 
 import org.intelehealth.unicef.R;
@@ -125,5 +128,10 @@ public class NotificationUtils {
                 .setContentText(text).build();
         mNotifyManager.notify(mId, mBuilder.build());
 
+    }
+
+    public static int getPendingIntentFlag() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT : PendingIntent.FLAG_UPDATE_CURRENT;
     }
 }

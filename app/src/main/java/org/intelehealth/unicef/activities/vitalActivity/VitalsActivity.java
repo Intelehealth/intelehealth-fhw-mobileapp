@@ -5,14 +5,11 @@ import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.appcompat.widget.Toolbar;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +33,6 @@ import java.util.Objects;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.complaintNodeActivity.ComplaintNodeActivity;
-import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.database.dao.ObsDAO;
@@ -49,7 +45,7 @@ import org.intelehealth.unicef.utilities.UuidDictionary;
 
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
-public class VitalsActivity extends BaseActivity {
+public class VitalsActivity extends LocalConfigActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
     private String patientName = "";

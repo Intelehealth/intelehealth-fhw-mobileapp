@@ -32,7 +32,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
@@ -65,7 +65,7 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class ScheduleAppointmentActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class ScheduleAppointmentActivity_New extends LocalConfigActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "ScheduleAppointmentActi";
     RecyclerView rvMorningSlots, rvAfternoonSlots, rvEveningSlots;
     RecyclerView rvHorizontalCal;
@@ -342,7 +342,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.loading_slots));
         //api for get appointment slots for selected date and doctor speciality
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi().getSlots(mSelectedStartDate, mSelectedEndDate, speciality).enqueue(new Callback<SlotInfoResponse>() {
             @Override
             public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
@@ -762,7 +762,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
     private AlertDialog mSyncAlertDialog;
     private boolean mIsPendingForAppointmentSave = false;
 
-//        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+//        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
 //        String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
 //        ApiClientAppointment.getInstance(baseurl).getApi().bookAppointment(url, request).enqueue(new Callback<AppointmentDetailsResponse>() {
 //            @Override

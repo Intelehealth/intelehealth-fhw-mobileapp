@@ -14,13 +14,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.utilities.Logger;
 
 import java.io.File;
 
 
-public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFragment.OnFragmentInteractionListener {
+public class VideoLibraryActivity extends LocalConfigActivity implements VideoLibraryFragment.OnFragmentInteractionListener {
     private static final String TAG = VideoLibraryActivity.class.getSimpleName();
     final String LOG_TAG = VideoLibraryActivity.class.getSimpleName();
     Toolbar mToolbar;

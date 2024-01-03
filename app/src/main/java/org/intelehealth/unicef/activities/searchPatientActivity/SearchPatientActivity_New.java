@@ -37,10 +37,9 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.unicef.activities.searchPatientActivity.adapter.SearchChipsPreviewGridAdapter;
-import org.intelehealth.unicef.activities.visit.VisitAdapter;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.database.dao.PatientsDAO;
@@ -61,7 +60,7 @@ import java.util.List;
  * Github: prajwalmw
  */
 
-public class SearchPatientActivity_New extends BaseActivity {
+public class SearchPatientActivity_New extends LocalConfigActivity {
     RecyclerView search_recycelview;
     SearchPatientAdapter_New adapter;
     EditText mSearchEditText;

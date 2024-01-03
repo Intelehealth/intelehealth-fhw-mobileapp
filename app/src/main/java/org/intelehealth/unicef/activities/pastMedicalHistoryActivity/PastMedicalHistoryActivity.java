@@ -36,7 +36,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.unicef.activities.questionNodeActivity.QuestionsAdapter;
 import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -62,7 +62,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class PastMedicalHistoryActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
+public class PastMedicalHistoryActivity extends LocalConfigActivity implements QuestionsAdapter.FabClickListener {
 
     String patient = "patient";
     String patientUuid;

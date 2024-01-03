@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.help.activities.ChatSupportHelpActivity_New;
 import org.intelehealth.unicef.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.unicef.app.AppConstants;
@@ -35,7 +35,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 
-public class ForgotPasswordOtpVerificationActivity_New extends BaseActivity {
+public class ForgotPasswordOtpVerificationActivity_New extends LocalConfigActivity {
     private static final String TAG = "OtpVerificationActivity";
     //temporary OTP is hardcode
     String OTP = "111111";

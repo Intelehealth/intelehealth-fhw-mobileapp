@@ -206,7 +206,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         } else {
             Log.d(TAG, "clickListeners: iv_hamburger null");
         }*/
-        mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
+        mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.tvUpcomingAppoinments);
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(sessionManager.getLocationName());
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ui2_ic_location_home, 0);

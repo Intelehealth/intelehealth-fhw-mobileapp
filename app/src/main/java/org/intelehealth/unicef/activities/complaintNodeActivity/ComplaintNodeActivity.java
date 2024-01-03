@@ -37,7 +37,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.questionNodeActivity.QuestionNodeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -57,7 +57,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class ComplaintNodeActivity extends BaseActivity {
+public class ComplaintNodeActivity extends LocalConfigActivity {
     final String TAG = "Complaint Node Activity";
 
     String patientUuid;

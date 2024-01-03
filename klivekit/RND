@@ -1,0 +1,34 @@
+Call notification like whatsapp
+https://stackoverflow.com/questions/59861734/android-10-incoming-call-notification-like-whats-app-when-we-are-in-another-app
+https://forasoft.com/blog/article/how-to-make-a-custom-android-call-notification-455
+
+VoIP
+https://www.spiceworks.com/collaboration/telephony/articles/what-is-voip/
+https://github.com/developerspace-samples/VoIP-Call-Sample
+
+Service
+https://medium.com/@Codeible/understanding-and-using-services-in-android-background-foreground-services-8130f6bbf2a5
+https://medium.com/oceanize-geeks/background-services-in-android-o-a38a7c624391
+https://medium.com/@mesibo/create-a-scalable-real-time-communication-app-like-whatsapp-with-messaging-video-and-voice-calls-5d6a6dffba72
+
+https://android.stackexchange.com/questions/43970/how-is-whatsapp-able-to-receive-messages-when-not-in-use
+
+https://medium.com/simform-engineering/how-to-manage-incoming-video-call-for-every-android-os-version-with-fcm-notifications-68b8f2e3c9eb
+
+Restricted activity to start on background
+https://developer.android.com/guide/components/activities/background-starts
+
+Whatsapp Architecture
+https://www.cometchat.com/blog/whatsapps-architecture-and-system-design
+https://stackoverflow.com/questions/52276210/how-do-whatsapp-and-instant-messaging-apps-work-in-background-without-persistent
+https://stackoverflow.com/questions/25743476/how-does-whatsapp-overcome-the-gcm-push-notifications-delay
+https://stackoverflow.com/questions/50989523/how-whatsapp-facebook-and-skype-messaging-works-in-the-background
+
+whitelist app
+https://stackoverflow.com/questions/51289236/continually-running-background-service
+
+FCM data and notification
+https://stackoverflow.com/questions/48375380/what-is-the-difference-between-notification-node-and-data-node-in-fcm
+
+Notification
+https://developer.android.com/develop/ui/views/notifications/call-style

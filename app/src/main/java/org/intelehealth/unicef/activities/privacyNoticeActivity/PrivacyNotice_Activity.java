@@ -17,7 +17,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.utilities.FileUtils;
@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.Locale;
 import java.util.Objects;
 
-public class PrivacyNotice_Activity extends BaseActivity implements View.OnClickListener {
+public class PrivacyNotice_Activity extends LocalConfigActivity implements View.OnClickListener {
     TextView privacy_textview;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;

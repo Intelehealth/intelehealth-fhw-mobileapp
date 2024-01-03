@@ -39,7 +39,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.ui2.calendarviewcustom.CalendarViewDemoActivity;
@@ -55,7 +55,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class ChatHelpActivity_New extends BaseActivity implements ClickListenerInterface {
+public class ChatHelpActivity_New extends LocalConfigActivity implements ClickListenerInterface {
     private static final String TAG = "ChatHelpActivity_New";
     TextInputEditText etSendMessage;
     TextInputLayout telSendMessage;
@@ -471,10 +471,10 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.appointment.adapter.AppointmentListingAdapter;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
@@ -33,7 +33,7 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class AppointmentListingActivity extends BaseActivity {
+public class AppointmentListingActivity extends LocalConfigActivity {
     RecyclerView rvAppointments;
     private String mSelectedStartDate = "";
     private String mSelectedEndDate = "";
@@ -84,7 +84,7 @@ public class AppointmentListingActivity extends BaseActivity {
 
     private void getSlots() {
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(mSelectedStartDate, mSelectedEndDate, new SessionManager(this).getLocationUuid())
 

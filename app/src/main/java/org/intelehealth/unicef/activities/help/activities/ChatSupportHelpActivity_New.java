@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.help.adapter.ChatSupportAdapter_New;
 import org.intelehealth.unicef.ui2.utils.CheckInternetAvailability;
 
-public class ChatSupportHelpActivity_New extends BaseActivity {
+public class ChatSupportHelpActivity_New extends LocalConfigActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

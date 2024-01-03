@@ -22,16 +22,16 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.unicef.BuildConfig;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.IntroActivity.IntroActivity;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.activities.loginActivity.LoginActivity;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.dataMigration.SmoothUpgrade;
-import org.intelehealth.unicef.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.SessionManager;
 
@@ -39,8 +39,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import kotlin.Unit;
 
-public class SplashActivity extends BaseActivity {
+
+public class SplashActivity extends LocalConfigActivity {
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     SessionManager sessionManager = null;
     //    ProgressDialog TempDialog;
@@ -62,7 +64,10 @@ public class SplashActivity extends BaseActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         // refresh the fcm token
-        TokenRefreshUtils.refreshToken(this);
+        FcmTokenGenerator.INSTANCE.getDeviceToken(token -> {
+            IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+            return Unit.INSTANCE;
+        });
         initFirebaseRemoteConfig();
     }
 
@@ -209,10 +214,10 @@ public class SplashActivity extends BaseActivity {
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }

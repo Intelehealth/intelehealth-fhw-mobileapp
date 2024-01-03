@@ -26,7 +26,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.models.ForgotPasswordApiResponseModel_New;
 import org.intelehealth.unicef.models.RequestOTPParamsModel_New;
@@ -41,7 +41,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class ForgotPasswordActivity_New extends BaseActivity {
+public class ForgotPasswordActivity_New extends LocalConfigActivity {
     private static final String TAG = ForgotPasswordActivity_New.class.getSimpleName();
     TextInputEditText etUsername, etMobileNo;
     CustomProgressDialog cpd;

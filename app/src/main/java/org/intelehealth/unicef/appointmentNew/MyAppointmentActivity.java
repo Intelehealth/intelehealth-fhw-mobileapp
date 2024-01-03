@@ -21,7 +21,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
@@ -39,7 +39,7 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class MyAppointmentActivity extends BaseActivity implements UpdateAppointmentsCount, NetworkUtils.InternetCheckUpdateInterface {
+public class MyAppointmentActivity extends LocalConfigActivity implements UpdateAppointmentsCount, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyAppointmentActivity";
     BottomNavigationView bottomNav;
     TabLayout tabLayout;
@@ -76,7 +76,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
 
     private void loaAllAppointments() {
         String startDate = "01/01/1970";
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
             Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_START);

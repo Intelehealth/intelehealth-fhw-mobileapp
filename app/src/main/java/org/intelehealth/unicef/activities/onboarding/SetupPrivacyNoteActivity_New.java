@@ -2,16 +2,12 @@ package org.intelehealth.unicef.activities.onboarding;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -28,12 +24,12 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.chooseLanguageActivity.SplashScreenActivity;
 import org.intelehealth.unicef.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.unicef.app.AppConstants;
 
-public class SetupPrivacyNoteActivity_New extends BaseActivity {
+public class SetupPrivacyNoteActivity_New extends LocalConfigActivity {
     private static final String TAG = "SetupPrivacyNoteActivit";
     TextView tvTermsAndPrivacy;
     CustomDialog customDialog;

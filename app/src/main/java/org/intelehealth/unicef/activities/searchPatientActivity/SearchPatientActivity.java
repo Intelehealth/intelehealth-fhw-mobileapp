@@ -39,7 +39,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.unicef.activities.privacyNoticeActivity.PrivacyNotice_Activity;
@@ -57,7 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SearchPatientActivity extends BaseActivity {
+public class SearchPatientActivity extends LocalConfigActivity {
     SearchView searchView;
     String query;
     private SearchPatientAdapter recycler;

@@ -4,10 +4,8 @@ import static org.intelehealth.unicef.database.dao.EncounterDAO.getStartVisitNot
 import static org.intelehealth.unicef.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parseYYYYMMDDDateToddMMyyyy;
 import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
-import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.unicef.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
-import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -55,7 +53,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
@@ -65,7 +62,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
@@ -100,10 +97,8 @@ import java.io.Serializable;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -112,7 +107,7 @@ import java.util.Objects;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class PrescriptionActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class PrescriptionActivity extends LocalConfigActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private String patientName, patientUuid, gender, age, openmrsID, vitalsUUID, adultInitialUUID, intentTag, visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
     private ImageButton btn_up_header, btnup_drdetails_header, btnup_diagnosis_header, btnup_medication_header, btnup_test_header, btnup_speciality_header, btnup_followup_header, no_btn, yes_btn, downloadBtn;
     private LinearLayout presc_profile_header;
@@ -477,9 +472,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 

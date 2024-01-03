@@ -26,7 +26,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.notification.AdapterInterface;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.ImagesDAO;
@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class AdditionalDocumentsActivity extends BaseActivity implements AdapterInterface {
+public class AdditionalDocumentsActivity extends LocalConfigActivity implements AdapterInterface {
 
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private String patientUuid;

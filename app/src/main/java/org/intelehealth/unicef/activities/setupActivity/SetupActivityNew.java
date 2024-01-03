@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +38,7 @@ import com.google.gson.Gson;
 import com.parse.Parse;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
@@ -79,7 +78,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class SetupActivityNew extends BaseActivity {
+public class SetupActivityNew extends LocalConfigActivity {
     private static final String TAG = "SetupActivityNew";
     private List<Location> mLocations = new ArrayList<>();
     private boolean isLocationFetched;
@@ -470,7 +469,7 @@ public class SetupActivityNew extends BaseActivity {
                                             sessionManager.setSetupComplete(true);
                                             sessionManager.setFirstTimeLaunch(false);
                                             sessionManager.setFirstProviderLoginTime(AppConstants.dateAndTimeUtils.currentDateTime());
-
+                                            IntelehealthApplication.getInstance().initSocketConnection();
                                             Log.d(TAG, "onNext: 11");
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);

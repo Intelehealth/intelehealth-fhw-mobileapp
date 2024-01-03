@@ -48,7 +48,7 @@ import com.google.gson.Gson;
 import com.parse.Parse;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -87,7 +87,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class SetupActivity extends BaseActivity {
+public class SetupActivity extends LocalConfigActivity {
 
     private static final String TAG = SetupActivity.class.getSimpleName();
     private boolean isLocationFetched;

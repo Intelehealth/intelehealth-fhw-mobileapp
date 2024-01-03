@@ -38,7 +38,7 @@
                     android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <ImageView
-                        android:id="@+id/vs_icon"
+                        android:id="@+id/vsVitalsIcon"
                         android:layout_width="@dimen/edittext_height_44dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:src="@drawable/vitals_icon" />
@@ -49,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/vs_icon"
+                        android:layout_toEndOf="@+id/vsVitalsIcon"
                         android:text="@string/visit_summary_vitals" />
 
                     <ImageButton
@@ -70,7 +70,7 @@
                     android:layout_below="@+id/vitals_header_relative">
 
                     <View
-                        android:id="@+id/divider"
+                        android:id="@+id/dividerVitals"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -83,12 +83,12 @@
                         android:id="@+id/vitals_details_relative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider"
+                        android:layout_below="@+id/dividerVitals"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
+                            android:id="@+id/tvVitalsDetailLbl"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -434,7 +434,7 @@
                     android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <ImageView
-                        android:id="@+id/vs_icon"
+                        android:id="@+id/vsReasonIcon"
                         android:layout_width="@dimen/edittext_height_44dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:src="@drawable/visit_reason_icon" />
@@ -445,7 +445,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/vs_icon"
+                        android:layout_toEndOf="@+id/vsReasonIcon"
                         android:text="@string/complaint_dialog_title" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -466,7 +466,7 @@
                     android:layout_below="@+id/chiefcomplaint_header_relative">
 
                     <View
-                        android:id="@+id/divider"
+                        android:id="@+id/dividerReason"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -479,12 +479,12 @@
                         android:id="@+id/cc_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider"
+                        android:layout_below="@+id/dividerReason"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
+                            android:id="@+id/tvReasonDetailLbl"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -607,7 +607,7 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
+                            android:id="@+id/tvAssociateSympDetailLbl"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -636,7 +636,7 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/pat_reports_txtview"
+                            android:id="@+id/tvPatientReportLbl"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/patient_reports"
@@ -648,7 +648,7 @@
                             android:id="@+id/patientReports_txtview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/pat_reports_txtview"
+                            android:layout_below="@+id/tvPatientReportLbl"
                             android:layout_marginStart="@dimen/margin_10"
                             android:layout_marginTop="4dp"
                             android:text="Test: Nausea, Anorexia, Constipation, Abdominal distinction / bloating, passing GAS, Restlessness, Injury, Breathlessness, Wheezing, Shortness of breath, Pain/Tightness of chest, Hemoptysis, Hoarseness, Naval congestion/Stuffy nose, Runny nose, Recurrent Diarrhea."
@@ -721,7 +721,7 @@
                     android:layout_margin="@dimen/fu_card_margin_sides">
 
                     <ImageView
-                        android:id="@+id/vs_icon"
+                        android:id="@+id/vsPhysicalExamIcon"
                         android:layout_width="@dimen/edittext_height_44dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:src="@drawable/phys_exam_icon" />
@@ -732,7 +732,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/vs_icon"
+                        android:layout_toEndOf="@+id/vsPhysicalExamIcon"
                         android:text="@string/physical_examination" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
@@ -753,7 +753,7 @@
                     android:layout_below="@+id/physExam_header_relative">
 
                     <View
-                        android:id="@+id/divider"
+                        android:id="@+id/dividerPhysicalExam"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -766,12 +766,12 @@
                         android:id="@+id/physexam_details_relative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider"
+                        android:layout_below="@+id/dividerPhysicalExam"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
+                            android:id="@+id/tvPhysicalExamDetailLbl"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -925,7 +925,7 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
+                            android:id="@+id/tvPatientHistoryLbl"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -981,7 +981,7 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
+                            android:id="@+id/tvFamilyHistoryLbl"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

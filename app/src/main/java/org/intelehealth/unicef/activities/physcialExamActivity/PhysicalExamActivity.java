@@ -39,7 +39,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.questionNodeActivity.QuestionsAdapter;
 import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
@@ -69,7 +69,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
-public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
+public class PhysicalExamActivity extends LocalConfigActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
     // private SectionsPagerAdapter mSectionsPagerAdapter;
 

@@ -10,22 +10,20 @@ buildscript {
 android {
     sourceSets.main {
         jniLibs.srcDir 'libs'
-        jni.srcDirs = [] //disable automatic ndk-build call
+        //disable automatic ndk-build call
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    compileSdkVersion 31
+    compileSdk 34
     dataBinding {
         enabled true
     }
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
-        minSdkVersion 19
-        targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        minSdk 26
+        targetSdk 34
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,6 +33,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'org.intelehealth.apprtc'
 }
 
 dependencies {

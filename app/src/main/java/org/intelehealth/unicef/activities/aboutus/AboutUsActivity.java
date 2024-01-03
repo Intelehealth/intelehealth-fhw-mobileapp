@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.syncModule.SyncUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
 
@@ -26,7 +26,7 @@ import org.intelehealth.unicef.utilities.SessionManager;
  * Created by: Prajwal Waingankar On: 25/Nov/2022
  * Github: prajwalmw
  */
-public class AboutUsActivity extends BaseActivity {
+public class AboutUsActivity extends LocalConfigActivity {
     private RecyclerView images_recyclerview;
     private AboutUsAdapter adapter;
     private TextView globe_link, info_link;

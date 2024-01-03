@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.IntroActivity.IntroActivity;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.SessionManager;
@@ -23,7 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-public class ChooseLanguageActivity extends BaseActivity {
+public class ChooseLanguageActivity extends LocalConfigActivity {
 
 
     Button SaveButton;

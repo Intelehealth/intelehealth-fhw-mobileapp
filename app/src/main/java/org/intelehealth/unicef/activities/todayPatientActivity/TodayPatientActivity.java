@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -53,7 +53,7 @@ import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
-public class TodayPatientActivity extends BaseActivity {
+public class TodayPatientActivity extends LocalConfigActivity {
     private static final String TAG = TodayPatientActivity.class.getSimpleName();
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;

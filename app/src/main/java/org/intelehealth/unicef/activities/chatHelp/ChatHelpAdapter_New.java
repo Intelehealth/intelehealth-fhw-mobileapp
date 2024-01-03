@@ -128,9 +128,8 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
                 //holder.ivSelectedImage.setImageBitmap(createVideoThumbNail(chatHelpModel.getOutgoingMediaPath()));
 
                 Glide.with(context).load(chatHelpModel.getOutgoingMediaPath())
-                        .asBitmap()
                         .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
                         .into(holder.ivSelectedImage);
 
             } catch (Exception e) {

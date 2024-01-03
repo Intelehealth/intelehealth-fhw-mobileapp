@@ -21,7 +21,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.models.DocumentObject;
 import org.intelehealth.unicef.models.NotificationModel;
@@ -45,7 +45,7 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 
-public class NotificationActivity extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
+public class NotificationActivity extends LocalConfigActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private SessionManager sessionManager;
     private SQLiteDatabase db;
     private ImageButton backbtn, clearAll_btn, refresh, filter, arrow_right;

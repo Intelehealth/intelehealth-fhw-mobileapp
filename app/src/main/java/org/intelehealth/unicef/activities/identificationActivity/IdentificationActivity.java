@@ -87,7 +87,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.unicef.activities.setupActivity.SetupActivity;
@@ -125,7 +125,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-public class IdentificationActivity extends BaseActivity {
+public class IdentificationActivity extends LocalConfigActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;

@@ -19,7 +19,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.database.dao.ImagesDAO;
 import org.intelehealth.unicef.database.dao.PatientsDAO;
 import org.intelehealth.unicef.models.Patient;
@@ -38,7 +38,7 @@ import java.util.Locale;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class IdentificationActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class IdentificationActivity_New extends LocalConfigActivity implements NetworkUtils.InternetCheckUpdateInterface {
     // ActivityIdentificationNewBinding binding;
     Button nxt_btn_main, btn_back_firstscreen, btn_nxt_firstscreen;
     RelativeLayout relativeLayout;

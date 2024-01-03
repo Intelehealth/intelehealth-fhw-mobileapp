@@ -93,11 +93,11 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.ihutils.ui.CameraActivity;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.unicef.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
@@ -105,7 +105,6 @@ import org.intelehealth.unicef.activities.identificationActivity.IdentificationA
 import org.intelehealth.unicef.activities.notification.AdapterInterface;
 import org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.unicef.activities.visit.EndVisitActivity;
 import org.intelehealth.unicef.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -149,6 +148,7 @@ import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
+import org.intelehealth.unicef.webrtc.activity.UnicefChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -166,8 +166,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -179,7 +177,7 @@ import okhttp3.ResponseBody;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
+public class VisitSummaryActivity_New extends LocalConfigActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     SQLiteDatabase db;
@@ -331,32 +329,45 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             return;
         }
         EncounterDAO encounterDAO = new EncounterDAO();
-        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUUID);
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
-        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, ChatActivity.class);
-        chatIntent.putExtra("patientName", patientName);
-        chatIntent.putExtra("visitUuid", visitUUID);
-        chatIntent.putExtra("patientUuid", patientUuid);
-        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-        chatIntent.putExtra("isForVideo", false);
-        if (rtcConnectionDTO != null) {
-            try {
-                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
-                    Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-                } else {
-                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-                    startActivity(chatIntent);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-        }
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+        RtcArgs args = new RtcArgs();
+        if (rtcConnectionDTO != null)
+            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
+        else args.setDoctorUuid("");
+        args.setPatientId(patientUuid);
+        args.setPatientName(patientName);
+        args.setVisitId(visitUuid);
+        args.setNurseId(encounterDTO.getProvideruuid());
+        UnicefChatActivity.startChatActivity(VisitSummaryActivity_New.this, args);
+//        EncounterDAO encounterDAO = new EncounterDAO();
+//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUUID);
+//        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+//        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
+//        Intent chatIntent = new Intent(VisitSummaryActivity_New.this, ChatActivity.class);
+//        chatIntent.putExtra("patientName", patientName);
+//        chatIntent.putExtra("visitUuid", visitUUID);
+//        chatIntent.putExtra("patientUuid", patientUuid);
+//        chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+//        chatIntent.putExtra("isForVideo", false);
+//        if (rtcConnectionDTO != null) {
+//            try {
+//                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+//                if (jsonObject.getString("toUUID").equalsIgnoreCase("null") || jsonObject.getString("toUUID").isEmpty()) {
+//                    Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+//                } else {
+//                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+//                    startActivity(chatIntent);
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//        } else {
+//            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+//            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+//        }
 
     }
 
@@ -2025,9 +2036,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 

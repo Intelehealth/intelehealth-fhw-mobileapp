@@ -25,9 +25,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
-import org.intelehealth.apprtc.data.Manager;
+import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.activities.setupActivity.SetupActivity;
 import org.intelehealth.unicef.app.AppConstants;
@@ -59,7 +59,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class IntroActivity extends BaseActivity {
+public class IntroActivity extends LocalConfigActivity {
 
     Context context;
 

@@ -5,10 +5,10 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.base.LocalConfigActivity;
 
 
-public class ActivitySync extends BaseActivity {
+public class ActivitySync extends LocalConfigActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
