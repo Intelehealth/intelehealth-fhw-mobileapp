@@ -249,6 +249,27 @@ public class SplashScreenActivity extends LocalConfigActivity implements SplashL
         if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
         }
+
+
+        // POST NOTIFICATIONS permission & READ MEDIA IMAGES is required only after API 33
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            int notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS);
+            if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS);
+            }
+
+            int readMediaImagesPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+            if (readMediaImagesPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+            }
+        } else {
+            int readExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (readExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+        }
+
+
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
