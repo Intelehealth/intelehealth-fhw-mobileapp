@@ -76,7 +76,7 @@ public class MyAppointmentActivity extends LocalConfigActivity implements Update
 
     private void loaAllAppointments() {
         String startDate = "01/01/1970";
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
             Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_START);

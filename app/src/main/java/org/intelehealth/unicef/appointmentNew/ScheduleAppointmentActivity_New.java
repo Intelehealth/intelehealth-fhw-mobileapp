@@ -342,7 +342,7 @@ public class ScheduleAppointmentActivity_New extends LocalConfigActivity impleme
         ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.loading_slots));
         //api for get appointment slots for selected date and doctor speciality
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi().getSlots(mSelectedStartDate, mSelectedEndDate, speciality).enqueue(new Callback<SlotInfoResponse>() {
             @Override
             public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
@@ -762,7 +762,7 @@ public class ScheduleAppointmentActivity_New extends LocalConfigActivity impleme
     private AlertDialog mSyncAlertDialog;
     private boolean mIsPendingForAppointmentSave = false;
 
-//        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+//        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
 //        String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
 //        ApiClientAppointment.getInstance(baseurl).getApi().bookAppointment(url, request).enqueue(new Callback<AppointmentDetailsResponse>() {
 //            @Override

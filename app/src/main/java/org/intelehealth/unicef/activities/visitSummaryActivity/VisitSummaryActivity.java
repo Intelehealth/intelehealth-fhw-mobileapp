@@ -4391,7 +4391,7 @@ public class VisitSummaryActivity extends LocalConfigActivity {
         mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
         mInfoAppointmentBookingTextView.setText(getString(R.string.please_wait));
         Log.v("VisitSummary", "getAppointmentDetails");
-        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        String baseurl = sessionManager.getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getAppointmentDetails(visitUUID)
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
@@ -4484,7 +4484,7 @@ public class VisitSummaryActivity extends LocalConfigActivity {
         request.setId(mAppointmentDetailsResponse.getData().getId());
         request.setReason(reason);
         request.setHwUUID(new SessionManager(VisitSummaryActivity.this).getProviderID()); // user id / healthworker id
-        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        String baseurl = sessionManager.getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .cancelAppointment(request)
                 .enqueue(new Callback<CancelResponse>() {
