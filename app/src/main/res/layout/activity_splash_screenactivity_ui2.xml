@@ -28,7 +28,7 @@
             android:layout_marginStart="@dimen/iv_intele_logo_margin_start"
             android:layout_marginTop="@dimen/iv_intele_logo_margin_top"
             android:layout_marginEnd="@dimen/iv_intele_logo_margin_end"
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/ic_telemed_kg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
