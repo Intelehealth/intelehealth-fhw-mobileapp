@@ -14,6 +14,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
@@ -159,6 +160,8 @@ public class AdditionalDocumentsActivity extends BaseActivity {
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
+
+        getOnBackPressedDispatcher().addCallback(callback);
     }
 
 
@@ -372,19 +375,15 @@ public class AdditionalDocumentsActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
-
-        if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty()) {
-            Intent intent = new Intent();
-            intent.putExtra("rowListItem", (Serializable) rowListItem);
-            setResult(IMAGE_LIST_INTENT, intent);
-            finish();
-        } else {
-            super.onBackPressed();
+    private final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty()) {
+                Intent intent = new Intent();
+                intent.putExtra("rowListItem", (Serializable) rowListItem);
+                setResult(IMAGE_LIST_INTENT, intent);
+                finish();
+            } else finish();
         }
-
-
-    }
+    };
 }
