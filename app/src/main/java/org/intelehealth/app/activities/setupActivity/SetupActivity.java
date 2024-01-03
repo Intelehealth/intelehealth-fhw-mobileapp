@@ -128,7 +128,7 @@ public class SetupActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mAdminPasswordView;
-//    private EditText mUrlField;
+    //    private EditText mUrlField;
     private Button mLoginButton;
     //    private Spinner mDropdownLocation;
     private Spinner spinner_state, spinner_district, /*spinner_sanch,*/
@@ -242,11 +242,12 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
+        getLocationFromServer(BuildConfig.SERVER_URL + ":3004/api/openmrs/");
 //        if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
 //            if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-//                String BASE_URL = "https://" + mUrlField.getText().toString() + ":3004/api/openmrs/";
+//                String BASE_URL = ;
 //                if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
-//                    value = getLocationFromServer(BASE_URL); //state wise locations...
+//                    value =  //state wise locations...
 //                else
 //                    Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
 //            }
@@ -1338,7 +1339,8 @@ public class SetupActivity extends AppCompatActivity {
                                             try {
                                                 //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                                 hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
-                                            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                            } catch (NoSuchAlgorithmException |
+                                                     UnsupportedEncodingException e) {
                                                 FirebaseCrashlytics.getInstance().recordException(e);
                                             }
 
