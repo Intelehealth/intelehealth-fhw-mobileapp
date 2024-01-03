@@ -120,7 +120,6 @@ public class AidModel {
 
     public void setDocumentsList(List<String> documentsList) {
         List<String> withWebUrlDocList = new ArrayList<>();
-        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         for (String doc : documentsList) {
             withWebUrlDocList.add(BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/obs/" + doc + "/value");
         }
