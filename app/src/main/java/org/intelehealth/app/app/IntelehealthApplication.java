@@ -29,6 +29,7 @@ import org.intelehealth.app.webrtc.activity.SilaChatActivity;
 import org.intelehealth.app.webrtc.activity.SilaVideoActivity;
 import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
 
 import io.reactivex.plugins.RxJavaPlugins;
@@ -97,23 +98,23 @@ public class IntelehealthApplication extends MultiDexApplication {
 //        if (url == null) {
 //            Log.i(TAG, "onCreate: Parse not init");
 //        } else {
-            Dispatcher dispatcher = new Dispatcher();
-            dispatcher.setMaxRequestsPerHost(1);
-            dispatcher.setMaxRequests(4);
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.dispatcher(dispatcher);
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequestsPerHost(1);
+        dispatcher.setMaxRequests(4);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.dispatcher(dispatcher);
 
-            Parse.initialize(new Parse.Configuration.Builder(this)
-                    .clientBuilder(builder)
-                    .applicationId(AppConstants.IMAGE_APP_ID)
-                    .server(BuildConfig.SERVER_URL + ":1337/parse/")
-                    .build()
-            );
-            Log.i(TAG, "onCreate: Parse init");
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .clientBuilder(builder)
+                .applicationId(AppConstants.IMAGE_APP_ID)
+                .server(BuildConfig.SERVER_URL + ":1337/parse/")
+                .build()
+        );
+        Log.i(TAG, "onCreate: Parse init");
 
-            InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
-            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-            mDbHelper.onCreate(localdb);
+        InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        mDbHelper.onCreate(localdb);
 //        }
 
         initSocketConnection();
@@ -175,6 +176,7 @@ public class IntelehealthApplication extends MultiDexApplication {
      * so when app create open it and close on app terminate
      */
     public void initSocketConnection() {
+        DateTimeResource.build(this);
         Log.d(TAG, "initSocketConnection: ");
         if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
             Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
