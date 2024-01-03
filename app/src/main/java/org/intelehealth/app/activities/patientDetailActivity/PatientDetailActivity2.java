@@ -76,7 +76,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -643,11 +642,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     }
                                     if (!visitValue.isEmpty()) {
                                         visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
-                                        visitValue = visitValue.replaceAll("<br/>", "");
+                                        visitValue = visitValue.replaceAll("<br/>", ",");
                                         visitValue = visitValue.replaceAll("Associated symptoms", "");
                                         //visitValue = visitValue.substring(0, visitValue.length() - 2);
                                         visitValue = visitValue.replaceAll("<b>", "");
                                         visitValue = visitValue.replaceAll("</b>", "");
+                                        while (visitValue.endsWith(",")){
+                                            visitValue = visitValue.substring(0, visitValue.length()-1).trim();
+                                        }
                                     }
                                 }
                             } else {
@@ -660,17 +662,24 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 String[] spt = visitValue.split("►");
                                 List<String> list = new ArrayList<>();
 
+                                StringBuilder stringBuilder = new StringBuilder();
                                 for (String s : spt) {
+                                    String complainName = "";
                                     if (s.isEmpty()) continue;
                                     //String s1 =  new String(s.getBytes(), "UTF-8");
                                     System.out.println(s);
+                                    String[] spt1 = s.split("::●");
+                                    complainName = spt1[0];
+
                                     //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                    if (!s.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                                        list.add(s);
+                                    if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                                        System.out.println(complainName);
+                                        if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+                                        stringBuilder.append(complainName);
                                     }
 
                                 }
-                                StringBuilder stringBuilder = new StringBuilder();
+                                /*StringBuilder stringBuilder = new StringBuilder();
                                 int size = list.size() == 1 ? list.size() : list.size() - 1;
                                 for (int i = 0; i < size; i++) {
                                     String complainName = "";
@@ -684,9 +693,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                             System.out.println(complainName);
                                             stringBuilder.append(complainName);
                                         }
-                                    }
-                                }
+                                    }*/
                                 visitValue = stringBuilder.toString();
+
                             }
                             SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                             try {
