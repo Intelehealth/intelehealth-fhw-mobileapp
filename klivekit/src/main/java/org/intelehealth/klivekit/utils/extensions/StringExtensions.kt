@@ -27,7 +27,7 @@ fun String.toLocalDateFormat(format: String): String {
 }
 
 fun String.milliToLogTime(format: String): String {
-    val resource = DateTimeResource.getInstance();
+    val resource = DateTimeResource.getInstance()
     val different = System.currentTimeMillis() - this.toLong()
     val days = TimeUnit.MILLISECONDS.toDays(different)
     val hours = TimeUnit.MILLISECONDS.toHours(different)
@@ -51,7 +51,7 @@ fun String.milliToLogTime(format: String): String {
 }
 
 fun Date.toWeekDays(format: String): String {
-    val resource = DateTimeResource.getInstance();
+    val resource = DateTimeResource.getInstance()
     return if (DateTimeUtils.isToday(this)) {
         resource?.getResourceString(R.string.today) ?: "Today"
     } else if (DateTimeUtils.isYesterday(this)) {
@@ -60,7 +60,7 @@ fun Date.toWeekDays(format: String): String {
 }
 
 fun Date.toWeekDaysWithTime(format: String): String {
-    val resource = DateTimeResource.getInstance();
+    val resource = DateTimeResource.getInstance()
     val time = DateTimeUtils.formatToLocalDate(this, DateTimeUtils.TIME_FORMAT)
     return if (DateTimeUtils.isToday(this)) {
         resource?.getResourceString(R.string.today_at, time) ?: "Today at $time"

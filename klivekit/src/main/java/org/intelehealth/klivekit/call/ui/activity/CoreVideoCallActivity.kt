@@ -150,10 +150,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.localCameraMirrorStatus.observe(this) {}
         videoCallViewModel.remoteParticipantDisconnected.observe(this) {
             if (it && isDeclined.not()) sayBye(
-                getString(
-                    R.string.left_the_call,
-                    args.doctorName
-                )
+                getString(R.string.left_the_call, args.doctorName)
             )
         }
         videoCallViewModel.cameraPosition.observe(this) { onCameraPositionChanged(it) }

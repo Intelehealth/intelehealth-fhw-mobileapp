@@ -22,6 +22,7 @@ import com.parse.Parse;
 
 import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.unicef.BuildConfig;
 import org.intelehealth.unicef.R;
@@ -111,6 +112,7 @@ public class IntelehealthApplication extends MultiDexApplication {
         }
 
         initSocketConnection();
+        DateTimeResource.build(this);
     }
 
     private void configureCrashReporting() {
