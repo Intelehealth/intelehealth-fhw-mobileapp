@@ -98,7 +98,6 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
-import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -642,11 +641,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     }
                                     if (!visitValue.isEmpty()) {
                                         visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
-                                        visitValue = visitValue.replaceAll("<br/>", ",");
+                                        visitValue = visitValue.replaceAll("<br/>", ", ");
                                         visitValue = visitValue.replaceAll("Associated symptoms", "");
                                         //visitValue = visitValue.substring(0, visitValue.length() - 2);
                                         visitValue = visitValue.replaceAll("<b>", "");
                                         visitValue = visitValue.replaceAll("</b>", "");
+                                        visitValue = visitValue.trim();
                                         while (visitValue.endsWith(",")){
                                             visitValue = visitValue.substring(0, visitValue.length()-1).trim();
                                         }
@@ -1791,6 +1791,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             if (visitValue != null && !visitValue.isEmpty()) {
 
                                 if (needToShowCoreValue) {
+
                                     visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
 
                                     String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
@@ -1806,11 +1807,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                         }
                                         if (!visitValue.isEmpty()) {
                                             visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
-                                            visitValue = visitValue.replaceAll("<br/>", "");
+                                            visitValue = visitValue.replaceAll("<br/>", ", ");
                                             visitValue = visitValue.replaceAll("Associated symptoms", "");
                                             //visitValue = visitValue.substring(0, visitValue.length() - 2);
                                             visitValue = visitValue.replaceAll("<b>", "");
                                             visitValue = visitValue.replaceAll("</b>", "");
+                                            visitValue = visitValue.trim();
+                                            while (visitValue.endsWith(",")){
+                                                visitValue = visitValue.substring(0, visitValue.length()-1).trim();
+                                            }
                                         }
                                     }
                                 } else {
@@ -1823,33 +1828,40 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     String[] spt = visitValue.split("►");
                                     List<String> list = new ArrayList<>();
 
+                                    StringBuilder stringBuilder = new StringBuilder();
                                     for (String s : spt) {
+                                        String complainName = "";
                                         if (s.isEmpty()) continue;
                                         //String s1 =  new String(s.getBytes(), "UTF-8");
                                         System.out.println(s);
+                                        String[] spt1 = s.split("::●");
+                                        complainName = spt1[0];
+
                                         //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                        if (!s.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                                            list.add(s);
+                                        if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                                            System.out.println(complainName);
+                                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+                                            stringBuilder.append(complainName);
                                         }
 
                                     }
-                                    StringBuilder stringBuilder = new StringBuilder();
-                                    int size = list.size() == 1 ? list.size() : list.size() - 1;
-                                    for (int i = 0; i < size; i++) {
-                                        String complainName = "";
-                                        List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
-                                        String[] spt1 = list.get(i).split("●");
-                                        for (String value : spt1) {
-                                            if (value.contains("::")) {
-                                                if (!stringBuilder.toString().isEmpty())
-                                                    stringBuilder.append(",");
-                                                complainName = value.replace("::", "");
-                                                System.out.println(complainName);
-                                                stringBuilder.append(complainName);
-                                            }
+                                /*StringBuilder stringBuilder = new StringBuilder();
+                                int size = list.size() == 1 ? list.size() : list.size() - 1;
+                                for (int i = 0; i < size; i++) {
+                                    String complainName = "";
+                                    List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+                                    String[] spt1 = list.get(i).split("●");
+                                    for (String value : spt1) {
+                                        if (value.contains("::")) {
+                                            if (!stringBuilder.toString().isEmpty())
+                                                stringBuilder.append(",");
+                                            complainName = value.replace("::", "");
+                                            System.out.println(complainName);
+                                            stringBuilder.append(complainName);
                                         }
-                                    }
+                                    }*/
                                     visitValue = stringBuilder.toString();
+
                                 }
                                 SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                                 try {

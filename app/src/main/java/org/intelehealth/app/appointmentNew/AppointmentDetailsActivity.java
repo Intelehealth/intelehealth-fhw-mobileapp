@@ -311,11 +311,12 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                     }
                     if (!chief_complaint_value.isEmpty()) {
                         chief_complaint_value = chief_complaint_value.replaceAll(Node.bullet_arrow, "");
-                        chief_complaint_value = chief_complaint_value.replaceAll("<br/>", ",");
+                        chief_complaint_value = chief_complaint_value.replaceAll("<br/>", ", ");
                         chief_complaint_value = chief_complaint_value.replaceAll("Associated symptoms", "");
                         //visitValue = visitValue.substring(0, visitValue.length() - 2);
                         chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
                         chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");
+                        chief_complaint_value = chief_complaint_value.trim();
                         while (chief_complaint_value.endsWith(",")){
                             chief_complaint_value = chief_complaint_value.substring(0, chief_complaint_value.length()-1).trim();
                         }
