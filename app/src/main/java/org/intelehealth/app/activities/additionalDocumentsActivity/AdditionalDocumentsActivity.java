@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.additionalDocumentsActivity;
 
 import static org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity.IMAGE_LIMIT;
 import static org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity.IMAGE_LIST_INTENT;
+import static org.intelehealth.klivekit.utils.DateTimeUtils.ADD_DOC_IMAGE_FORMAT;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,6 +38,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -44,6 +46,7 @@ import java.util.UUID;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
@@ -54,6 +57,7 @@ import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.BaseActivity;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 public class AdditionalDocumentsActivity extends BaseActivity {
 
@@ -67,6 +71,7 @@ public class AdditionalDocumentsActivity extends BaseActivity {
     private AdditionalDocumentAdapter recyclerViewAdapter;
     SessionManager sessionManager = null;
     private Handler mBackgroundHandler;
+    private boolean isDispenseAdminister = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +128,7 @@ public class AdditionalDocumentsActivity extends BaseActivity {
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             encounterDispenseAdminister = intent.getStringExtra("encounterDispenseAdminister");
             fileuuidList = (ArrayList<String>) intent.getSerializableExtra("fileuuidList");
+            isDispenseAdminister = intent.getBooleanExtra("isDispenseAdminister", false);
 
             try {
                /* if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty())
@@ -287,7 +293,13 @@ public class AdditionalDocumentsActivity extends BaseActivity {
         builder.setItems(options, (dialog, item) -> {
             if (item == 0) {
                 Intent cameraIntent = new Intent(AdditionalDocumentsActivity.this, CameraActivity.class);
-                String imageName = UUID.randomUUID().toString();
+
+                String imageName = "";
+                if (isDispenseAdminister)
+                    imageName = filename_openmrsid_datetime_format();
+                else
+                    imageName = UUID.randomUUID().toString();
+
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
                 resultCameraContract.launch(cameraIntent);
@@ -326,7 +338,12 @@ public class AdditionalDocumentsActivity extends BaseActivity {
                     Log.v("path", picturePath + "");
 
                     // copy & rename the file
-                    String finalImageName = UUID.randomUUID().toString();
+                    String finalImageName = "";
+                    if (isDispenseAdminister)
+                        finalImageName = filename_openmrsid_datetime_format();
+                    else
+                        finalImageName = UUID.randomUUID().toString();
+
                     final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
                     BitmapUtils.copyFile(picturePath, finalFilePath);
                     compressImageAndSave(finalFilePath);
@@ -386,4 +403,21 @@ public class AdditionalDocumentsActivity extends BaseActivity {
             } else finish();
         }
     };
+
+    private String filename_openmrsid_datetime_format() {
+        String value = "";
+
+        try {
+            String openmrsID = new PatientsDAO().getOpenmrsId(patientUuid);
+            String currentDateTime = DateTimeUtils.formatToLocalDate(new Date(), ADD_DOC_IMAGE_FORMAT);
+            value = openmrsID + "_" + currentDateTime;
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        Log.d("TAG", "filename_openmrsid_datetime_format: " + value);
+        return value;
+    }
+
+
 }

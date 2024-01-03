@@ -392,12 +392,6 @@ public class AdministerDispenseActivity extends BaseActivity {
         imgbtn_uploadDocs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*
-                if (fileuuidList != null && fileuuidList.size() >= IMAGE_LIMIT) {
-                    Toast.makeText(context, getString(R.string.max_4_images_is_allowed), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-*/
 
                 if (tag.equalsIgnoreCase("dispense")) {
                     createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_DISPENSE);
@@ -413,6 +407,7 @@ public class AdministerDispenseActivity extends BaseActivity {
                 docIntent.putExtra("encounterUuidVitals", encounterVitals);
                 docIntent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                 docIntent.putExtra("fileuuidList", fileuuidList);
+                docIntent.putExtra("isDispenseAdminister", true);
 
                 Log.d(TAG, "img btn onClick: " + encounterDisenseAdminister);
                 docIntent.putExtra("encounterDispenseAdminister", encounterDisenseAdminister);
