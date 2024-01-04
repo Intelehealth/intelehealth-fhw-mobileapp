@@ -1,6 +1,9 @@
 package org.intelehealth.klivekit.provider
 
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioManager
+import com.twilio.audioswitch.AudioDevice
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.livekit.android.AudioOptions
 import io.livekit.android.LiveKit
@@ -85,8 +88,10 @@ object LiveKitProvider {
         overrides = LiveKitOverrides(
             okHttpClient = RetrofitProvider.getOkHttpClient(),
             audioOptions = AudioOptions(
-                audioHandler = audioSwitchHandler,
-                audioOutputType = io.livekit.android.AudioType.MediaAudioType()
+                audioHandler = audioSwitchHandler.apply {
+                    updateAudioSetting(AudioType.SPEAKER_PHONE)
+                },
+                audioOutputType = io.livekit.android.AudioType.CallAudioType()
             ),
             videoEncoderFactory = HardwareVideoEncoderFactory(
                 EglBase.create().eglBaseContext,
@@ -95,5 +100,13 @@ object LiveKitProvider {
             )
         )
     )
+
+    private fun AudioSwitchHandler.updateAudioSetting(audioType: AudioType) {
+        selectDevice(getAudioDevice(this, audioType))
+        start()
+    }
+
+    private fun getAudioDevice(audioHandler: AudioSwitchHandler, audioType: AudioType) =
+        audioHandler.availableAudioDevices.find { it.name == audioType.value }
 
 }

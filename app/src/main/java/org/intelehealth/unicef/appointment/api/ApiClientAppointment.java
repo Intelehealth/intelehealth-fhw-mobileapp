@@ -1,8 +1,6 @@
 package org.intelehealth.unicef.appointment.api;
 
 
-
-
 import android.util.Log;
 
 import org.intelehealth.unicef.BuildConfig;
@@ -37,7 +35,7 @@ public class ApiClientAppointment {
     public static synchronized ApiClientAppointment getInstance(String baseUrl) {
         Log.d("TAG", "getInstance: ");
         if (instance == null) {
-            instance = new ApiClientAppointment(baseUrl);
+            instance = new ApiClientAppointment("https://" + baseUrl);
         }
         return instance;
     }
