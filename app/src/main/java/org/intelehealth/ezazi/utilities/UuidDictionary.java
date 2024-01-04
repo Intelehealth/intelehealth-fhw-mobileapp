@@ -132,10 +132,11 @@ public class UuidDictionary {
     public static final String MOTHER_DECEASED = "91c94e0b-b967-4dd0-9eec-75d770af7f5b"; //newly added
 
     public static final String OUT_OF_TIME = "893b3d20-171b-4023-a6f5-3d3bdf81a094"; //newly added
-//    public static final String MOTHER_DECEASED_FLAG = "9d31f9f8-538f-11e6-9cfe-86f436325720"; //newly added
+    //    public static final String MOTHER_DECEASED_FLAG = "9d31f9f8-538f-11e6-9cfe-86f436325720"; //newly added
     public static final String MOTHER_DECEASED_FLAG = "0a3d26ec-bdb8-4a27-badb-937f730bf89d";
     public static final String LABOUR_OTHER = "ac99754c-d3a9-4736-a8b8-276c78953315";
 
     public static final String END_2ND_STAGE_OTHER = "d319ebbc-5260-4eff-aa3f-2af11b177ec4";
 
+    public static final String DECISION_PENDING = "2bfbfd6c-7714-4432-a7e8-b0130889c2ff";
 }
