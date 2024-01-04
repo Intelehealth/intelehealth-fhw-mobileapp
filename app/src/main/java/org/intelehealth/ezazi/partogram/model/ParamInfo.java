@@ -43,7 +43,16 @@ public class ParamInfo implements Serializable {
 
     private List<Medicine> medicines;
 
+    public boolean isFiveHourField() {
+        return isFiveHourField;
+    }
+
+    public void setFiveHourField(boolean fiveHourField) {
+        isFiveHourField = fiveHourField;
+    }
+
     private List<Medicine> deletedMedicines;
+    private boolean isFiveHourField;
 
     public enum RadioOptions {
         YES, NO, NO_VALUE

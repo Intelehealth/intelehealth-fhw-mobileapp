@@ -242,7 +242,7 @@ public class CardGenerationEngine {
         int hourNumber = Integer.parseInt(parts[1]);
         int cardNumber = Integer.parseInt(parts[2]);
 
-        return stageNumber == 2 && hourNumber == 3 && cardNumber == 4;
+        return stageNumber == 2 && hourNumber == 5 && cardNumber == 4;
     }
 
     private static void closeReachToLimitVisit(String visitId) {

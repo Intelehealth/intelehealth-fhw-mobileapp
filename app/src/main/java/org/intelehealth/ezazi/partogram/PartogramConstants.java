@@ -163,6 +163,7 @@ public class PartogramConstants {
                 "M++ (Meconium stained fluid-Medium)", "M+++ (Meconium stained fluid-Thick)", "B (Blood stained)"});
         paramInfo.setValues(new String[]{"I", "C", "M+", "M++", "M+++", "B"});
         paramInfo.setConceptUUID("9d3160a6-538f-11e6-9cfe-86f436325720");
+        paramInfo.setFiveHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -172,6 +173,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"A (Occiput anterior)", "P (Occiput posterior)", "T (Occiput transverse)"});
         paramInfo.setValues(new String[]{"A", "P", "T"});
         paramInfo.setConceptUUID("9d316387-538f-11e6-9cfe-86f436325720");
+        paramInfo.setFiveHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -181,6 +183,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"0 (None)", "+", "++", "+++ (Marked)"});
         paramInfo.setValues(new String[]{"0", "+", "++", "+++"});
         paramInfo.setConceptUUID("9d316761-538f-11e6-9cfe-86f436325720");
+        paramInfo.setFiveHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -191,6 +194,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"0 (None)", "+ (Sutures apposed)", "++ (Sutures overlapped but reducible)", "+++ (Sutures overlapped but not reducible)"});
         paramInfo.setValues(new String[]{"0", "+", "++", "+++"});
         paramInfo.setConceptUUID("9d316823-538f-11e6-9cfe-86f436325720");
+        paramInfo.setFiveHourField(true);
         stringList.add(paramInfo);
 
         sectionParamInfoMap.put(SECTION_LIST[1], stringList); //BABY
@@ -203,6 +207,7 @@ public class PartogramConstants {
         paramInfo.setParamName(Params.PULSE.value);
         paramInfo.setParamDateType(INPUT_INT_3_DIG_TYPE);
         paramInfo.setConceptUUID("5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        paramInfo.setFiveHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -210,6 +215,7 @@ public class PartogramConstants {
         paramInfo.setParamName(Params.SYSTOLIC_BP.value);
         paramInfo.setParamDateType(INPUT_INT_3_DIG_TYPE);
         paramInfo.setConceptUUID("5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        paramInfo.setFiveHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -217,6 +223,7 @@ public class PartogramConstants {
         paramInfo.setParamName(Params.DIASTOLIC_BP.value);
         paramInfo.setParamDateType(INPUT_INT_3_DIG_TYPE);
         paramInfo.setConceptUUID("5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        paramInfo.setFiveHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -224,6 +231,7 @@ public class PartogramConstants {
         paramInfo.setParamName(Params.TEMPERATURE.value); // in centigrade i.e. C
         paramInfo.setParamDateType(INPUT_DOUBLE_4_DIG_TYPE);
         paramInfo.setConceptUUID("5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        paramInfo.setFiveHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -234,6 +242,7 @@ public class PartogramConstants {
 //        paramInfo.setValues(new String[]{"P-", "P", "P1", "P2", "P3"});
         paramInfo.setValues(new String[]{"Negative", "Trace", "P1+", "P2+", "P3+", "P4+"});
         paramInfo.setConceptUUID("9d3168a7-538f-11e6-9cfe-86f436325720");
+        paramInfo.setFiveHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -243,6 +252,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"No Acetonuria (A-)", "Trace of Acetonuria (A Trace)", "A1+", "A2+", "A3+", "A4+"});
         paramInfo.setValues(new String[]{"Negative", "Trace", "A1+", "A2+", "A3+", "A4+"});
         paramInfo.setConceptUUID("968f9bc2-b33d-4daf-b59f-79d9a899e018");
+        paramInfo.setFiveHourField(true);
         stringList.add(paramInfo);
 
         sectionParamInfoMap.put(SECTION_LIST[2], stringList);//Woman
@@ -277,9 +287,12 @@ public class PartogramConstants {
         if (stage == STAGE_2) {
             paramInfo.setOptions(new String[]{"10"});
             paramInfo.setValues(new String[]{"P"});
+            paramInfo.setFifteenMinField(true);
+        } else {
+            paramInfo.setFiveHourField(true);
         }
         paramInfo.setConceptUUID("9d316ab5-538f-11e6-9cfe-86f436325720");
-        paramInfo.setFifteenMinField(true);
+        //paramInfo.setFifteenMinField(true); //as per WHO LCG
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -290,7 +303,12 @@ public class PartogramConstants {
         paramInfo.setValues(new String[]{"5", "4", "3", "2", "1", "0"});
         paramInfo.setConceptUUID("9d316d41-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
+        if (stage == STAGE_2) {
+            paramInfo.setFifteenMinField(true);
 
+        } else {
+            paramInfo.setFiveHourField(true);
+        }
         sectionParamInfoMap.put(SECTION_LIST[3], stringList);//Labour Progress
 
         //Medication
@@ -358,6 +376,7 @@ public class PartogramConstants {
         paramInfo.setParamName("Supervisor Doctor");
         paramInfo.setParamDateType(INPUT_TXT_TYPE);
         paramInfo.setConceptUUID("7a9cb7bc-9ab9-4ff0-ae82-7a1bd2cca93e");
+        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
 
         sectionParamInfoMap.put(SECTION_LIST[5], stringList);//Shared Decision Making

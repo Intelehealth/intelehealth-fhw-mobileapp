@@ -452,6 +452,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             i1.putExtra("encounterUuid", encounterDTOList.get(getAbsoluteAdapterPosition()).getUuid());
             i1.putExtra("type", type);
             i1.putExtra("stage", stage);
+            i1.putExtra("encounterName", encounterDTOList.get(getAbsoluteAdapterPosition()).getEncounterTypeName());
+
             i1.putExtra(TIMELINE_MODE, mode);
             context.startActivity(i1);
         }
