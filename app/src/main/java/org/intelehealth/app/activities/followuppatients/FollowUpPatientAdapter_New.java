@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.followuppatients;
 
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -86,6 +88,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             final FollowUpModel model = patients.get(position);
             holder.setIsRecyclable(false);
 
+            setGenderAgeLocal(context, holder.search_gender, model.getDate_of_birth(), model.getGender(), sessionManager);
+
             if (model != null) {
 
                 // Patient Photo
@@ -109,13 +113,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 }
 
                 if (model.getPatient_photo() != null) {
-                    Glide.with(context)
-                            .load(model.getPatient_photo())
-                            .thumbnail(0.3f)
-                            .centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true)
-                            .into(holder.profile_image);
+                    Glide.with(context).load(model.getPatient_photo()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.profile_image);
                 } else {
                     holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
                 }
@@ -155,7 +153,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                             holder.fu_date_txtview.setTextColor(context.getColor(R.color.red));
                         }
                         String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "dd MMMM, hh:mm a");
-                        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             followupDate = StringUtils.en__hi_dob(followupDate);
                         holder.fu_date_txtview.setText(context.getString(R.string.follow_up_on) + "\n" + followupDate);
                     } catch (ParseException e) {
@@ -164,10 +162,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 }
 
                 // Emergency/Priority tag code.
-                if (model.isEmergency())
-                    holder.fu_priority_tag.setVisibility(View.VISIBLE);
-                else
-                    holder.fu_priority_tag.setVisibility(View.GONE);
+                if (model.isEmergency()) holder.fu_priority_tag.setVisibility(View.VISIBLE);
+                else holder.fu_priority_tag.setVisibility(View.GONE);
             }
 
             // Patient Age
@@ -215,7 +211,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     class Myholder extends RecyclerView.ViewHolder {
         CardView cardView;
         private View rootView;
-        TextView fu_patname_txtview, fu_date_txtview;
+        TextView fu_patname_txtview, fu_date_txtview, search_gender;
         ImageView profile_image;
         LinearLayout fu_priority_tag;
 
@@ -227,9 +223,10 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             fu_priority_tag = itemView.findViewById(R.id.llPriorityTagFollowUpListItem1);
             profile_image = itemView.findViewById(R.id.profile_image);
+            search_gender = itemView.findViewById(R.id.search_gender);
             rootView = itemView;
 
-         //   fu_date_txtview.setText("22 June"); // todo: testing.
+            //   fu_date_txtview.setText("22 June"); // todo: testing.
         }
 
         public View getRootView() {
@@ -241,57 +238,46 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientuuid());
         Logger.logD("TAG", "profileimage url" + url);
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
-                (url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, model.getPatientuuid());
-                        Logger.logD("TAG", file.toString());
-                    }
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody file) {
+                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                downloadFilesUtils.saveToDisk(file, model.getPatientuuid());
+                Logger.logD("TAG", file.toString());
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD("TAG", e.getMessage());
-                    }
+            @Override
+            public void onError(Throwable e) {
+                Logger.logD("TAG", e.getMessage());
+            }
 
-                    @Override
-                    public void onComplete() {
-                        Logger.logD("TAG", "complete" + model.getPatient_photo());
-                        PatientsDAO patientsDAO = new PatientsDAO();
-                        boolean updated = false;
-                        try {
-                            updated = patientsDAO.updatePatientPhoto(model.getPatientuuid(),
-                                    AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg");
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (updated) {
-                            Glide.with(context)
-                                    .load(AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg")
-                                    .thumbnail(0.3f)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(holder.profile_image);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(
-                                    AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg", model.getPatientuuid());
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
+            @Override
+            public void onComplete() {
+                Logger.logD("TAG", "complete" + model.getPatient_photo());
+                PatientsDAO patientsDAO = new PatientsDAO();
+                boolean updated = false;
+                try {
+                    updated = patientsDAO.updatePatientPhoto(model.getPatientuuid(), AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg");
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (updated) {
+                    Glide.with(context).load(AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.profile_image);
+                }
+                ImagesDAO imagesDAO = new ImagesDAO();
+                boolean isImageDownloaded = false;
+                try {
+                    isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg", model.getPatientuuid());
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
 //                        if (isImageDownloaded)
 //                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
 //                        else
 //                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
-                    }
-                });
+            }
+        });
     }
 
 
