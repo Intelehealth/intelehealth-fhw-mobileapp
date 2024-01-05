@@ -169,7 +169,7 @@ public class AppConstants {
     //public static final String DEMO_URL = "demo2.intelehealth.org";
 //    public static final String DEMO_URL = "demo.intelehealth.org";
 
-    public static final String DEMO_URL = "kf.intelehealth.org";
+    public static final String DEMO_URL = "muhs.intelehealth.org";
 //    public static final String DEMO_URL = "revamp.intelehealth.org";
     //public static final String DEMO_URL = "testing.intelehealth.org";
 
