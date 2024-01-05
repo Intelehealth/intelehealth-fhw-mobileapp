@@ -871,7 +871,8 @@ public class HomeActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_EXPORTED);
+//        registerReceiver(syncBroadcastReceiver, filter);
 
        /* // bluetooth receiver register in oncreate
         IntentFilter b_filter = new IntentFilter();
