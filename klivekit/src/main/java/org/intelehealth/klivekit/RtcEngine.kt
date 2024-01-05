@@ -5,6 +5,7 @@ import android.content.Context
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.livekit.android.ConnectOptions
+import io.livekit.android.audio.AudioSwitchHandler
 import io.livekit.android.room.Room
 import org.intelehealth.klivekit.call.ui.activity.CallLogActivity
 import org.intelehealth.klivekit.call.ui.activity.VideoCallActivity
@@ -84,6 +85,10 @@ class RtcEngine private constructor(
         @SuppressLint("StaticFieldLeak")
         @Volatile
         var room: Room? = null
+
+//        @SuppressLint("StaticFieldLeak")
+//        @JvmStatic
+//        val audioHandler: AudioSwitchHandler? = null
 
         fun getConfig(context: Context): RtcEngine? {
             val preferenceHelper = PreferenceHelper(context)

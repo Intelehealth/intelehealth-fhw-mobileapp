@@ -119,18 +119,18 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     private fun setAudioHighVolume() {
-        audioManager.setStreamVolume(
-            AudioManager.MODE_IN_COMMUNICATION,
-            audioManager.getStreamMaxVolume(AudioManager.MODE_IN_COMMUNICATION),
-            0
-        )
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            audioManager.availableCommunicationDevices.firstOrNull { it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER }
-                ?.let { audioManager.setCommunicationDevice(it) }
-        } else {
-            audioManager.isSpeakerphoneOn = true
-        }
+//        audioManager.setStreamVolume(
+//            AudioManager.MODE_IN_COMMUNICATION,
+//            audioManager.getStreamMaxVolume(AudioManager.MODE_IN_COMMUNICATION),
+//            0
+//        )
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//            audioManager.availableCommunicationDevices.firstOrNull { it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER }
+//                ?.let { audioManager.setCommunicationDevice(it) }
+//        } else {
+//            audioManager.isSpeakerphoneOn = true
+//        }
     }
 
     private fun initView() {

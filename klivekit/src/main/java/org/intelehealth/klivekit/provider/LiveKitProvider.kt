@@ -73,8 +73,6 @@ object LiveKitProvider {
     ) = RoomOptions(
         audioTrackCaptureDefaults = localAudioTrackOptions,
         audioTrackPublishDefaults = audioTrackPublishDefaults,
-        videoTrackPublishDefaults = videoTrackPublishDefaults,
-        videoTrackCaptureDefaults = localVideoTrackOptions,
         adaptiveStream = true
     )
 
