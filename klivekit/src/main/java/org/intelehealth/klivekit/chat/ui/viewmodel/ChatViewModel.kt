@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import io.socket.emitter.Emitter
 import org.intelehealth.klivekit.chat.ChatClient
@@ -31,7 +32,12 @@ class ChatViewModel(private val chatClient: ChatClient) : ViewModel() {
     fun registerReceivers(context: Context) {
         IntentFilter().apply {
             addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE)
-            context.registerReceiver(fileUploadBroadcastReceiver, this)
+            ContextCompat.registerReceiver(
+                context,
+                fileUploadBroadcastReceiver,
+                this,
+                ContextCompat.RECEIVER_EXPORTED
+            )
         }
     }
 

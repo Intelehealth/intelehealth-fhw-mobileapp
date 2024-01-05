@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import org.intelehealth.app.R;
@@ -107,7 +108,8 @@ public class BluetoothDeviceChooseDialog extends DialogFragment {
                     mBluetoothIntentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
                     mSearchInited = true;
                 }
-                mContext.registerReceiver(mBluetoothReceiver, mBluetoothIntentFilter);
+                ContextCompat.registerReceiver(mContext, mBluetoothReceiver, mBluetoothIntentFilter, ContextCompat.RECEIVER_EXPORTED);
+//                mContext.registerReceiver(mBluetoothReceiver, mBluetoothIntentFilter);
                 mRegistered = true;
                 mBluetoothAdapter.startDiscovery();
             }
