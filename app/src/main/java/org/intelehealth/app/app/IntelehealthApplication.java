@@ -117,6 +117,7 @@ public class IntelehealthApplication extends MultiDexApplication {
         mDbHelper.onCreate(localdb);
 //        }
 
+        Timber.plant(Timber.DebugTree());
         initSocketConnection();
     }
 
