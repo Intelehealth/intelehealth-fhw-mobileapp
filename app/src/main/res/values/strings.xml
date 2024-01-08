@@ -1671,5 +1671,7 @@
     <string name="hide_details">Hide Details</string>
     <string name="dispensed_by">Dispensed by</string>
     <string name="administered_by">Administered by</string>
+    <string name="collected_by">Collected By</string>
+    <string name="received_by">Received By</string>
 
 </resources>

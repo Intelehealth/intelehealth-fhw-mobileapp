@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary"
-    tools:layout_marginTop="-1500dp"
     >
     <!-- TODO: Replace hard-coded strings with @string resources-->
 
@@ -21,10 +21,6 @@
         android:layout_marginRight="@dimen/padding_visit_summary_screen"
         android:animateLayoutChanges="true"
         android:orientation="vertical">
-
-
-
-
 
 
         <androidx.cardview.widget.CardView
@@ -1014,6 +1010,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -1034,16 +1031,23 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
-                <TableLayout
+                <include
+                    android:id="@+id/layout_test"
+                    layout="@layout/view_dispense_administer_button"
+                    android:layout_below="@+id/textView_heading_tests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textView_heading_tests"
-                    android:padding="@dimen/padding_card">
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
 
-                    <!--Requsted Tests-->
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/ll_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@id/layout_test"
+                    android:padding="@dimen/padding_card">
 
                         <TextView
                             android:id="@+id/textView_content_tests"
@@ -1055,8 +1059,8 @@
                             android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
-                    </TableRow>
-                </TableLayout>
+                </LinearLayout>
+
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 

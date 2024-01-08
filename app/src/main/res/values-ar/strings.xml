@@ -1664,6 +1664,8 @@
     <string name="hide_details">إخفاء التفاصيل</string>
     <string name="dispensed_by">اسم صارف الدواء/الدعم</string>
     <string name="administered_by">اسم معطي الدواء/الدعم</string>
+    <string name="collected_by">Collected By</string>
+    <string name="received_by">Received By</string>
 
 
 </resources>
