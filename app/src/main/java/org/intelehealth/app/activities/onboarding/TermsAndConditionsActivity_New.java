@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.LocaleList;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
@@ -71,6 +72,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
                 }
                 runOnUiThread(() -> {
                     // ui task
+                    tvText.setAutoLinkMask(Linkify.ALL);
                     tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT));
                     loadingDialog.dismiss();
                 });
