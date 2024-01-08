@@ -43,9 +43,9 @@ public class Medication_Aid_Activity extends BaseActivity {
     public final String TAG = Medication_Aid_Activity.this.getClass().getName();
     public static final String MEDICATION = "medication";
     public static final String AID = "aid";
-    private MedicationAidAdapter med_adapter, aid_adapter;
+    private MedicationAidAdapter med_adapter, aid_adapter, test_adapter;
     private Context context = Medication_Aid_Activity.this;
-    private List<MedicationAidModel> med_list, aid_list;
+    private List<MedicationAidModel> med_list, aid_list, test_list;
     private TextView tvDispense, tvAdminister, tvDispenseAdminister;
     private String tag = "", medData = "", aidData = "";
     private FrameLayout fl_med, fl_aid;
@@ -58,6 +58,8 @@ public class Medication_Aid_Activity extends BaseActivity {
     private String appLanguage;
     private List<MedicationAidModel> update_medUuidList = new ArrayList<>();
     private List<MedicationAidModel> update_aidUuidList = new ArrayList<>();
+    private List<MedicationAidModel> update_test_collectedby_UuidList = new ArrayList<>();  // todo
+    private List<MedicationAidModel> update_test_receivedby_UuidList = new ArrayList<>();   // todo
 
 
     @Override
@@ -152,6 +154,9 @@ public class Medication_Aid_Activity extends BaseActivity {
         tvDispense = findViewById(R.id.tvDispense);
         tvAdminister = findViewById(R.id.tvAdminister);
 
+        TextView tv_test_title = findViewById(R.id.tv_medication);
+        TextView tv_test_notesTitle = findViewById(R.id.tv_medication_pastnotes);
+
         Intent intent = getIntent();
         tag = intent.getStringExtra("mtag");
         medData = intent.getStringExtra("medicineData");
@@ -176,7 +181,25 @@ public class Medication_Aid_Activity extends BaseActivity {
             tvDispenseAdminister.setText(getString(R.string.administer));
             findViewById(R.id.tv_aid).setVisibility(View.GONE);
             findViewById(R.id.tv_aid_pastnotes).setVisibility(View.GONE);
-        } else {  // Dispense
+        }
+        else if (tag.equalsIgnoreCase("collected") || tag.equalsIgnoreCase("received")) {
+            tv_test_title.setText("Test");
+            fl_aid.setVisibility(View.GONE);
+            findViewById(R.id.tv_aid).setVisibility(View.GONE);
+            findViewById(R.id.tv_aid_pastnotes).setVisibility(View.GONE);
+
+            if (tag.equalsIgnoreCase("collected")) {
+                getSupportActionBar().setTitle("Collected Tests");
+                tv_test_notesTitle.setText("View collected test notes");
+                tvDispenseAdminister.setText("Collect");
+            }
+            else {
+                getSupportActionBar().setTitle("Received Tests");
+                tv_test_notesTitle.setText("View received test notes");
+                tvDispenseAdminister.setText("Receive");
+            }
+        }
+        else {  // Dispense
             getSupportActionBar().setTitle(getString(R.string.dispense_medication_and_aid));
             fl_aid.setVisibility(View.VISIBLE);
             tvDispenseAdminister.setText(getString(R.string.dispense));
@@ -187,17 +210,34 @@ public class Medication_Aid_Activity extends BaseActivity {
 
         med_list = new ArrayList<>();
         aid_list = new ArrayList<>();
+        test_list = new ArrayList<>();
 
-        // medication
-        try {
-            med_list = ObsDAO.getObsDispenseAdministerData(encounterVisitNote, UuidDictionary.JSV_MEDICATIONS);
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
+        if (tag.equalsIgnoreCase("administer") || tag.equalsIgnoreCase("dispense")) {
+            // medication
+            try {
+                med_list = ObsDAO.getObsDispenseAdministerData(encounterVisitNote, UuidDictionary.JSV_MEDICATIONS);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (med_list != null && med_list.size() > 0)
+                fl_med.setVisibility(View.VISIBLE);
+            else fl_med.setVisibility(View.GONE);
         }
 
-        if (med_list != null && med_list.size() > 0)
-            fl_med.setVisibility(View.VISIBLE);
-        else fl_med.setVisibility(View.GONE);
+        if (tag.equalsIgnoreCase("collected") || tag.equalsIgnoreCase("received")) {
+            // test - start
+            try {
+                test_list = ObsDAO.getObsDispenseAdministerData(encounterVisitNote, UuidDictionary.REQUESTED_TESTS);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (test_list != null && test_list.size() > 0)
+                fl_med.setVisibility(View.VISIBLE);
+            else fl_med.setVisibility(View.GONE);
+            // test -end
+        }
 
 
         // aid
@@ -354,6 +394,19 @@ public class Medication_Aid_Activity extends BaseActivity {
             med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList, "administer");
             rv_medication.setAdapter(med_adapter);
         }
+        else if (tag.equalsIgnoreCase("collected") || tag.equalsIgnoreCase("received")) {
+            RecyclerView.LayoutManager test_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+            rv_medication.setLayoutManager(test_LayoutManager);
+            rv_medication.setNestedScrollingEnabled(false);
+
+            if (tag.equalsIgnoreCase("collected"))
+                test_adapter = new MedicationAidAdapter(context, test_list, LocaleHelper.isArabic(context), update_medUuidList, "collected");
+            else
+                test_adapter = new MedicationAidAdapter(context, test_list, LocaleHelper.isArabic(context), update_medUuidList, "received");
+
+            rv_medication.setAdapter(test_adapter);
+        }
+
     }
 
     @Override

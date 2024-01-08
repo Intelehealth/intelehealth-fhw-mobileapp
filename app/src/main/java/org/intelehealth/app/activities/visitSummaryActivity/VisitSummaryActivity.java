@@ -262,7 +262,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     ImageButton editAddDocs;
 
     FrameLayout frameLayout_doctor, fl_DispenseAdminister;
-    View layout_dispense_1, layout_dispense_2;
+    View layout_dispense_1, layout_dispense_2, layout_test;
     TextView nameView;
     TextView ageView;
     TextView genderView;
@@ -296,7 +296,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     NotificationCompat.Builder mBuilder;
 
     RelativeLayout uploadButton, rl_med_aid;
-    private TextView tvDispense_1, tvDispense_2, tvAdminister_1, tvAdminister_2;
+    private TextView tvDispense_1, tvDispense_2, tvAdminister_1, tvAdminister_2, tvCollectedBy, tvReceivedBy;
 
     RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
@@ -946,6 +946,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
 
         layout_dispense_1 = findViewById(R.id.layout_dispense_1);
         layout_dispense_2 = findViewById(R.id.layout_dispense_2);
+        layout_test = findViewById(R.id.layout_test);
 
         tvDispense_1 = layout_dispense_1.findViewById(R.id.tvDispense);
         tvDispense_2 = layout_dispense_2.findViewById(R.id.tvDispense);
@@ -953,6 +954,11 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         tvAdminister_1 = layout_dispense_1.findViewById(R.id.tvAdminister);
         tvAdminister_2 = layout_dispense_2.findViewById(R.id.tvAdminister);
         tvAdminister_2.setVisibility(View.GONE);
+
+        tvCollectedBy = layout_test.findViewById(R.id.tvDispense);
+        tvCollectedBy.setText(R.string.collected_by);
+        tvReceivedBy = layout_test.findViewById(R.id.tvAdminister);
+        tvReceivedBy.setText(R.string.received_by);
 
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
@@ -1025,6 +1031,18 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         tvAdminister_1.setTag(encounterStartVisitNoteDAO);
         tvAdminister_2.setOnClickListener(this);
         tvAdminister_2.setTag(encounterStartVisitNoteDAO);
+
+        tvCollectedBy.setTag(encounterStartVisitNoteDAO);
+        tvCollectedBy.setOnClickListener(v -> {
+            EncounterDAO tag = (EncounterDAO) v.getTag();
+            collected_received_Intent(tag, "collected");
+        });
+
+        tvReceivedBy.setTag(encounterStartVisitNoteDAO);
+        tvReceivedBy.setOnClickListener(v -> {
+            EncounterDAO tag = (EncounterDAO) v.getTag();
+            collected_received_Intent(tag, "received");
+        });
 
 /*
         rl_med_aid.setOnClickListener(v -> {
@@ -1872,6 +1890,27 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         Intent i = new Intent(context, Medication_Aid_Activity.class);
         i.putExtra("mtag", "administer");
         i.putExtra("medicineData", med);
+        i = sendCommonIntentToMedicationActivity(i);
+
+        startActivity(i);
+    }
+
+    private void collected_received_Intent(EncounterDAO encounterStartVisitNoteDAO, String screenTag) {
+        String test = getTestsData();
+
+        //get from encountertbl from the encounter
+        if (visitnoteencounteruuid.isEmpty()) {
+            visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+        }
+
+        if (test.trim().isEmpty()) {
+            Toast.makeText(context, "No test data found.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent i = new Intent(context, Medication_Aid_Activity.class);
+        i.putExtra("mtag", screenTag);  // ie. collected or received
+        i.putExtra("testData", test);
         i = sendCommonIntentToMedicationActivity(i);
 
         startActivity(i);
@@ -4853,6 +4892,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
             //  fl_DispenseAdminister.setVisibility(View.VISIBLE);
             layout_dispense_1.setVisibility(View.VISIBLE);
             layout_dispense_2.setVisibility(View.VISIBLE);
+            layout_test.setVisibility(View.VISIBLE);
         }
         // Dispense & Administer - END
 
@@ -5395,6 +5435,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                             //  fl_DispenseAdminister.setVisibility(View.VISIBLE);
                             layout_dispense_1.setVisibility(View.VISIBLE);
                             layout_dispense_2.setVisibility(View.VISIBLE);
+                            layout_test.setVisibility(View.VISIBLE);
                         }
                         // Dispense & Administer - END
 
@@ -5490,6 +5531,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                     //   fl_DispenseAdminister.setVisibility(View.VISIBLE);
                     layout_dispense_1.setVisibility(View.VISIBLE);
                     layout_dispense_2.setVisibility(View.VISIBLE);
+                    layout_test.setVisibility(View.VISIBLE);
                 }
                 // Dispense & Administer - END
 
@@ -6418,6 +6460,10 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
 
     public String getMedicationData() {
         return rxReturned;
+    }
+
+    public String getTestsData() {
+        return testsReturned;
     }
 
     public String getAidData() {
