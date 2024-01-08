@@ -83,6 +83,14 @@ public class UuidDictionary {
     public static final String OBS_ADMINISTER_MEDICATION = "e56b6d72-9a58-4c1b-aa72-36822ebb691f";
     public static final String OBS_ADMINISTER_AID = "99c51b56-b9d3-4449-98b9-63945097f385";
 
+    // test - start
+    public static final String ENCOUNTER_TEST_COLLECT = "7995ae0d-701b-4886-b513-70dc1577af85";
+    public static final String ENCOUNTER_TEST_RECEIVE = "d56a980a-0e63-4d21-832b-29580f0feded";
+    public static final String OBS_TEST_COLLECT = "4476c831-0dd7-4677-94e2-509ddda03f01";
+    public static final String OBS_TEST_RECEIVE = "769ef1e2-9e3d-439a-a3d7-d0190636110e";
+
+    // test - end
+
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";
 
