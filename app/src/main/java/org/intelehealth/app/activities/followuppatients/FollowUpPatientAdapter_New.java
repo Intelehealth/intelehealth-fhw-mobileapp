@@ -122,12 +122,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 // Patient Name section
                 Log.v("Followup", new Gson().toJson(model));
                 String fullName = model.getFirst_name() + " " + model.getLast_name();
-                String displayName = fullName.length() > 10 ? fullName.substring(0, 10) : fullName;
-                if (model.getOpenmrs_id() != null) {
-                    holder.fu_patname_txtview.setText(String.format("%s, %s", displayName, model.getOpenmrs_id()));
-                } else {
-                    holder.fu_patname_txtview.setText(displayName);
-                }
+//                String displayName = fullName.length() > 10 ? fullName.substring(0, 10) : fullName;
+                holder.fu_patname_txtview.setText(fullName);
 
                 // Followup Date section
                 if (!model.getFollowup_date().equalsIgnoreCase("null") && !model.getFollowup_date().isEmpty()) {
