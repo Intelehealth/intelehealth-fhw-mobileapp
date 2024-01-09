@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -393,7 +394,7 @@ public class PatientDetailActivity extends BaseActivity {
         intent2.putExtra("encounterUuidAdultIntial", "");
         intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
         intent2.putExtra("name", fullName);
-        intent2.putExtra("age",age);
+        intent2.putExtra("age", age);
         intent2.putExtra("tag", "new");
         if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
             intent2.putExtra("advicefrom", "Sevika");
@@ -451,7 +452,7 @@ public class PatientDetailActivity extends BaseActivity {
 
     @Override
     protected void onStart() {
-        registerReceiver(reMyreceive, filter, RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(this, reMyreceive, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
         super.onStart();
     }
 
@@ -659,7 +660,7 @@ public class PatientDetailActivity extends BaseActivity {
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             String dob_text = en__or_dob(dob); //to show text of English into Odiya...
             dobView.setText(dob_text);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
             String dob_text = en__bn_dob(dob); //to show text of English into bengali...
             dobView.setText(dob_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -1310,7 +1311,7 @@ public class PatientDetailActivity extends BaseActivity {
                             UuidDictionary.RHK_FAMILY_HISTORY_BLURB, UuidDictionary.FAMHIST_REG_LANG_VALUE};
                     String[] famHistColumns = {"value", " conceptuuid"};
                     Cursor famHistCursor = db.query("tbl_obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
-                  //  famHistCursor.moveToLast();
+                    //  famHistCursor.moveToLast();
                     String famHistValue = "", famHistValue_REG = "";
 
                     if (famHistCursor != null && famHistCursor.moveToFirst()) {
@@ -1318,8 +1319,7 @@ public class PatientDetailActivity extends BaseActivity {
                             String famConceptID = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("conceptuuid"));
                             if (famConceptID.equalsIgnoreCase(UuidDictionary.RHK_FAMILY_HISTORY_BLURB)) {
                                 famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-                            }
-                            else if (famConceptID.equalsIgnoreCase(UuidDictionary.FAMHIST_REG_LANG_VALUE)) {
+                            } else if (famConceptID.equalsIgnoreCase(UuidDictionary.FAMHIST_REG_LANG_VALUE)) {
                                 famHistValue_REG = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
                             }
                         }
@@ -1399,7 +1399,7 @@ public class PatientDetailActivity extends BaseActivity {
                             UuidDictionary.RHK_MEDICAL_HISTORY_BLURB, UuidDictionary.PASTHIST_REG_LANG_VALUE};
                     String[] medHistColumms = {"value", " conceptuuid"};
                     Cursor medHistCursor = db.query("tbl_obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
-                  //  medHistCursor.moveToLast();
+                    //  medHistCursor.moveToLast();
 
                     String medHistValue = "", medHistValue_REG = "";
                     if (medHistCursor != null && medHistCursor.moveToFirst()) {
@@ -1407,8 +1407,7 @@ public class PatientDetailActivity extends BaseActivity {
                             String medHistConceptID = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("conceptuuid"));
                             if (medHistConceptID.equalsIgnoreCase(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB)) {
                                 medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-                            }
-                            else if (medHistConceptID.equalsIgnoreCase(UuidDictionary.PASTHIST_REG_LANG_VALUE)) {
+                            } else if (medHistConceptID.equalsIgnoreCase(UuidDictionary.PASTHIST_REG_LANG_VALUE)) {
                                 medHistValue_REG = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
                             }
                         }

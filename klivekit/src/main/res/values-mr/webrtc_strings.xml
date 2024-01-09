@@ -19,7 +19,8 @@
     <string name="call_outgoing">जाणारे कॉल</string>
     <string name="call_ongoing">चालू कॉल</string>
     <string name="call_unknown">अनोळखी</string>
-    <string name="call_incoming">Incoming Call</string>
+    <string name="call_incoming">येणारे कॉल</string>
+    <string name="call_logs">कॉल इतिहास</string>
     <string name="calling">कॉल करत आहे</string>
 
     <string name="an_hour_ago">एक तासापूर्वी</string>
@@ -29,8 +30,8 @@
     <string name="a_second_ago">एक सेकंदापूर्वी</string>
     <string name="seconds_ago">%1$s सेकंदापूर्वी</string>
     <string name="today">आज</string>
-    <string name="today_at">आज येथे</string>
+    <string name="today_at">आज %1$s येथे</string>
     <string name="yesterday">काल</string>
-    <string name="yesterday_at">काल येथे</string>
+    <string name="yesterday_at">काल %1$s येथे</string>
     <string name="now">आता</string>
 </resources>

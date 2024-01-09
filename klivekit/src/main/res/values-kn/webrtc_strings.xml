@@ -19,7 +19,8 @@
     <string name="call_outgoing">ಹೊರಹೋಗುವ ಕರೆ</string>
     <string name="call_ongoing">ನಡೆಯುತ್ತಿರುವ ಕರೆ</string>
     <string name="call_unknown">ಅಪರಿಚಿತ ಕರೆ</string>
-    <string name="call_incoming">Incoming Call</string>
+    <string name="call_incoming">ಒಳಬರುವ ಕರೆ</string>
+    <string name="call_logs">ಕರೆ ದಾಖಲೆಗಳು</string>
     <string name="calling">ಕರೆಯುತ್ತಿದೆ</string>
 
     <string name="an_hour_ago">ಒಂದು ಗಂಟೆ ಹಿಂದೆ</string>
@@ -29,8 +30,8 @@
     <string name="a_second_ago">ಒಂದು ಸೆಕೆಂಡ್ ಹಿಂದೆ</string>
     <string name="seconds_ago">%1$s ಸೆಕೆಂಡುಗಳ ಹಿಂದೆ</string>
     <string name="today">ಇಂದು</string>
-    <string name="today_at">ಈ ದಿನ</string>
+    <string name="today_at">ಈ ದಿನ %1$s</string>
     <string name="yesterday">ನಿನ್ನೆ</string>
-    <string name="yesterday_at">ನಿನ್ನೆಯ ದಿನ</string>
+    <string name="yesterday_at">ನಿನ್ನೆಯ ದಿನ %1$s</string>
     <string name="now">ಈಗ</string>
 </resources>

@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/caller_name_tv"
             android:layout_centerHorizontal="true"
-            android:text="Calling"
+            android:text="@string/calling"
             android:textColor="@color/gray_3"
             android:textSize="14sp"
             android:textStyle="normal" />

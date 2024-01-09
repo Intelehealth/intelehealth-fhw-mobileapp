@@ -52,7 +52,7 @@ class EkalCallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClic
             it.setHomeButtonEnabled(true)
             it.setDisplayHomeAsUpEnabled(true)
         }
-        binding.callLogAppBar.toolbar.title = getString(R.string.call_logs)
+        binding.callLogAppBar.toolbar.title = getString(org.intelehealth.klivekit.R.string.call_logs)
         binding.callLogAppBar.toolbar.setNavigationOnClickListener { finishAfterTransition() }
     }
 

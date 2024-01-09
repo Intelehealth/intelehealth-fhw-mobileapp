@@ -1196,7 +1196,7 @@
     <string name="exit_vitals_warning_dialog">एक बार जब आप इस स्क्रीन से बाहर निकल जाएंगे, तो इस विज़िट का डेटा सहेजा नहीं जाएगा और इस क्रिया को पूर्ववत नहीं किया जा सकता है। \n\n क्या आप निश्चित हैं, आप जारी रखना चाहते हैं?</string>
     <string name="type_to_search">खोजने के लिए लिखें...</string>
     <string name="na">लागू नहीं</string>
-    <string name="call_logs">कॉल लॉग्स</string>
+
     <string name="switch_location">स्थान बदलें</string>
     <string name="confirm_to_setup">आपने \n• प्राथमिक गांव को \'%1$s\' के रूप में चुना है और, \n• माध्यमिक गांव को \'%2$s\' के रूप में चुना है \nक्या आप वाकई सेटअप जारी रखना चाहते हैं?</string>
     <string name="confirm_switch_location">आप वर्तमान में \'%1$s\' गांव में लॉग इन हैं। क्या आप वाकई \'%2$s\' गांव में जाना चाहते हैं?</string>

@@ -45,6 +45,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -317,6 +318,8 @@ public class HomeActivity extends BaseActivity {
             throw new RuntimeException(e);
         }
         setLocale(HomeActivity.this);
+
+        getOnBackPressedDispatcher().addCallback(backPressedCallback);
     }
 
     @Override
@@ -548,7 +551,9 @@ public class HomeActivity extends BaseActivity {
     private void showConfirmationDialog() {
         mSyncDialog.dismiss();
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-        alertdialogBuilder.setMessage(getString(R.string.confirm_switch_location, sessionManager.getCurrentLocationName(), sessionManager.getSecondaryLocationName()));
+        alertdialogBuilder.setMessage(getString(R.string.confirm_switch_location,
+                sessionManager.getCurrentLocationName(),
+                sessionManager.getSecondaryLocationName()));
         alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -599,7 +604,7 @@ public class HomeActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     @Override
@@ -612,8 +617,14 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
+    private final OnBackPressedCallback backPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            backPressEvent();
+        }
+    };
+
+    public void backPressEvent() {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
         alertdialogBuilder.setMessage(R.string.sure_to_exit);
         alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {

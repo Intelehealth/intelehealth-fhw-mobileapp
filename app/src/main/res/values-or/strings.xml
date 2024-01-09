@@ -1075,7 +1075,7 @@
     <string name="exit_vitals_warning_dialog">ଥରେ ଏହି ପରଦା ଠାରୁ ତୁମେ ଯଦି ପ୍ରସ୍ଥାନ ହେବ, ଏହି ଭିଯିଟ / ପରିଦର୍ଶନ ର ତଥ୍ୟ ସେଭ୍ / ସଞ୍ଚୟ ହୋଇ ପାରିବ ନାହିଁ , ଏବଂ ଏହି କାର୍ଯ୍ୟ ପ୍ରତ୍ୟାବର୍ତ୍ତନ ମଧ୍ୟ ହେବ ନାହିଁ , ଆପଣ ନିଶ୍ଚିନ୍ତ କି, ଆପଣ ଏହାକୁ ଚାଲୁ ରଖିବେ ?</string>
     <string name="type_to_search">ଖୋଜିବାକୁ ଟାଇପ୍ କରନ୍ତୁ ...</string>
     <string name="na">ଦରକାର ନାହିଁ</string>
-    <string name="call_logs">"କଲ ଲଗ୍ଇନ୍ ସବୁ "</string>
+
     <string name="switch_location">"ଅବସ୍ଥିତି ବଦଳାଇ ଦିଅ "</string>
     <string name="confirm_to_setup">ତୁମେ ଚୟନ କରିଛ, ପ୍ରଥମ ଗ୍ରାମ  , ଏବଂ ଦ୍ୱିତୀୟ ଗ୍ରାମ  , ଆପଣ ନିଶ୍ଚିନ୍ତ କି ଏହାକୁ ଜାରି ରଖିବେ ?</string>
     <string name="confirm_switch_location">"ତୁମେ ଏବେ ଲଗ୍ କରିଛ ପ୍ରଥମ ଗ୍ରାମ , ତୁମେ ନିଶ୍ଚିନ୍ତ କି ତୁମେ ଚାଲୁ ରଖିବ ନାହିଁ ଦ୍ଵିତୀୟ ଗ୍ରାମ "</string>

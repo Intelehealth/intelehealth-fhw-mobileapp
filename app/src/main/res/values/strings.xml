@@ -1185,7 +1185,7 @@
     <string name="exit_vitals_warning_dialog">Once you will exit this screen, the data of this visit will not be saved and this action cannot be reverted. \n\n Are you sure, you want to continue?</string>
     <string name="type_to_search">Type to Search..</string>
     <string name="na">NA</string>
-    <string name="call_logs">Call Logs</string>
+
     <string name="switch_location">Switch Location</string>
     <string name="confirm_to_setup">You have selected the \n • Primary Village as \'%1$s\' and, \n  • Secondary Village as \'%2$s\' \n\n   Are you sure you want to continue with setup?</string>
     <string name="confirm_switch_location">You are currently logged into the \'%1$s\' village. Are you sure that you wish to switch to the \'%2$s\' village?</string>

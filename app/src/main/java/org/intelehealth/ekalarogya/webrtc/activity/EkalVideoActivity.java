@@ -102,7 +102,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity implements SwipeBut
             CallMode callMode = CallMode.OUTGOING;
             if (args.isIncomingCall()) callMode = CallMode.INCOMING;
             showPatientName();
-            binding.incomingCallView.callingHintsTv.setText(callMode.getValue());
+            binding.incomingCallView.callingHintsTv.setText(getString(callMode.getResourceValue()));
             binding.incomingCallView.callerNameTv.setText(doctorName);
             binding.incomingCallView.tvCallerIdentity.setText(String.valueOf(args.getDoctorName().toCharArray()[0]));
             binding.videoCallView.tvVideoCallDoctorName.setText(doctorName);

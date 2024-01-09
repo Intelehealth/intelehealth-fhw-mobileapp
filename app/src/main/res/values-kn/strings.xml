@@ -1182,7 +1182,7 @@
     <string name="exit_vitals_warning_dialog">ಒಮ್ಮೆ ನೀವು ಈ ಪರದೆಯಿಂದ ನಿರ್ಗಮಿಸಿದರೆ, ಈ ಭೇಟಿಯ ಡೇಟಾವನ್ನು ಉಳಿಸಲಾಗುವುದಿಲ್ಲ ಮತ್ತು ಈ ಕ್ರಿಯೆಯನ್ನು ಹಿಂತಿರುಗಿಸಲಾಗುವುದಿಲ್ಲ. \n\n ಮತ್ತು ನೀವು ಖಚಿತವಾಗಿ, ನೀವು ಮುಂದುವರಿಸಲು ಬಯಸುವಿರಾ?</string>
     <string name="type_to_search">ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಿ...</string>
     <string name="na">"ಅನ್ವಯಿಸುವುದಿಲ್ಲ "</string>
-    <string name="call_logs">ಕರೆ ದಾಖಲೆಗಳು</string>
+
     <string name="switch_location">ಸ್ಥಳ ಬದಲಿಸಿ</string>
     <string name="confirm_to_setup">ನೀವು ಪ್ರಾಥಮಿಕ ಗ್ರಾಮವನ್ನು ಮತ್ತು ದ್ವಿತೀಯ ಗ್ರಾಮವನ್ನು ಆಯ್ಕೆ ಮಾಡಿದ್ದೀರಿ. \n\n ನೀವು ಮುಂದುವರಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ</string>
     <string name="confirm_switch_location">ನೀವು ಪ್ರಸ್ತುತ ಗ್ರಾಮಕ್ಕೆ ಲಾಗ್ ಇನ್ ಆಗಿರುವಿರಿ. ನೀವು ಹಳ್ಳಿಗೆ ಬದಲಾಯಿಸಲು ಬಯಸುತ್ತೀರಿ ಎಂದು ನಿಮಗೆ ಖಚಿತವಾಗಿದೆಯೇ?</string>

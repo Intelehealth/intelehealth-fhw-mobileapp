@@ -1185,7 +1185,6 @@
     <string name="exit_vitals_warning_dialog">એકવાર તમે આ સક્રીનમાંથી બહાર નીકળી જશો તો આ મુલાકાતની વિગતો સેવ થશે નહિ અને તેને ફરીથી મેળવી શકાશે નહી. \n\n શું તમે ખરેખર ચાલુ રાખવા માંગો છો?</string>
     <string name="type_to_search">શોધવા માટે ટાઇપ કરો...</string>
     <string name="na">લાગુ નથી</string>
-    <string name="call_logs">કોલ લોગ</string>
     <string name="switch_location">"લોકેશન બદલો "</string>
     <string name="confirm_to_setup">તમે \n• પ્રાથમિક ગામ તરીકે \'%1$s\' ને પસંદ કર્યું છે અને \n• સંપર્કિત ગામ તરીકે \'%2$s\' ને પસંદ કર્યું છે. \n\n શું તમે ખરેખર આ સેટઅપ સાથે ચાલુ રાખવા માંગો છો?</string>
     <string name="confirm_switch_location">તમે વર્તમાનમાં \'%1$s\' ગામમાં લોગીન છો. શું તમે ખરેખર \'%2$s\' ગામમાં લોગીન થવા માંગો છો.</string>

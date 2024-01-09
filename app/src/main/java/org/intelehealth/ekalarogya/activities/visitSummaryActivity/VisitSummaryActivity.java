@@ -97,6 +97,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -217,9 +218,9 @@ public class VisitSummaryActivity extends BaseActivity {
     String diagnosisReturned = "", rxReturned = "", testsReturned = "", adviceReturned = "", doctorName = "", additionalReturned = "", followUpDate = "";
     ImageButton editVitals, editComplaint, editPhysical, editFamHist, editMedHist, editAddDocs;
     FrameLayout frameLayout_doctor;
-    TextView nameView,idView, visitView, heightView, weightView, pulseView, bpView,tempView,spO2View, hemoglobinView, bloodView, sugarRandomView, sugarFastAndMealView, bmiView;
+    TextView nameView, idView, visitView, heightView, weightView, pulseView, bpView, tempView, spO2View, hemoglobinView, bloodView, sugarRandomView, sugarFastAndMealView, bmiView;
     TableRow bmiTR;
-    TextView complaintView,famHistView,patHistView,physFindingsView, mDoctorTitle,mDoctorName, mCHWname,respiratory, respiratoryText, tempfaren, tempcel;
+    TextView complaintView, famHistView, patHistView, physFindingsView, mDoctorTitle, mDoctorName, mCHWname, respiratory, respiratoryText, tempfaren, tempcel;
     String medHistory, medHistory_REG, baseDir;
     File obsImgdir;
     NotificationManager mNotificationManager;
@@ -227,15 +228,15 @@ public class VisitSummaryActivity extends BaseActivity {
     RelativeLayout uploadButton, downloadButton;
     ArrayList<String> physicalExams;
     CardView diagnosisCard, prescriptionCard, medicalAdviceCard, requestedTestsCard, additionalCommentsCard, followUpDateCard, card_print, card_share, speciality_card, flaggedDetails;
-    TextView diagnosisTextView,prescriptionTextView, medicalAdviceTextView, requestedTestsTextView, additionalCommentsTextView, followUpDateTextView;
+    TextView diagnosisTextView, prescriptionTextView, medicalAdviceTextView, requestedTestsTextView, additionalCommentsTextView, followUpDateTextView;
     CheckBox flag;
     Boolean isPastVisit = false, isVisitSpecialityExists = false, isReceiverRegistered = false;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
     NetworkChangeReceiver receiver;
     private boolean isConnected = false;
     MenuItem internetCheck = null;
-    private RecyclerView mAdditionalDocsRecyclerView,mPhysicalExamsRecyclerView;
-    private RecyclerView.LayoutManager mAdditionalDocsLayoutManager,mPhysicalExamsLayoutManager;
+    private RecyclerView mAdditionalDocsRecyclerView, mPhysicalExamsRecyclerView;
+    private RecyclerView.LayoutManager mAdditionalDocsLayoutManager, mPhysicalExamsLayoutManager;
     SharedPreferences mSharedPreference;
     boolean hasLicense = false;
     public static String prescription1, prescription2, prescriptionHeader1, prescriptionHeader2;
@@ -326,20 +327,13 @@ public class VisitSummaryActivity extends BaseActivity {
     public void registerBroadcastReceiverDynamically() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        registerReceiver(broadcastReceiverForIamgeDownlaod, filter, RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        registerReceiver(downloadPrescriptionService, filter, RECEIVER_EXPORTED);
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        //do nothing
-        //Use the buttons on the screen to navigate
+        ContextCompat.registerReceiver(this, downloadPrescriptionService, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     @Override
@@ -1110,8 +1104,7 @@ public class VisitSummaryActivity extends BaseActivity {
                 if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
                     tempView.setText(convertCtoF(temperature.getValue()));
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
-                }
-                else tempView.setText(getResources().getString(R.string.na));
+                } else tempView.setText(getResources().getString(R.string.na));
             }
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -1910,20 +1903,15 @@ public class VisitSummaryActivity extends BaseActivity {
             Double bmi = Double.valueOf(bmiValue);
             if (bmi < Double.valueOf(BMI_ORANGE_MAX)) {   // red
                 bmiView.setTextColor(getResources().getColor(R.color.orange));
-            }
-            else if (bmi < Double.valueOf(BMI_YELLOW_MAX) && bmi >= Double.valueOf(BMI_YELLOW_MIN)) {   // red
+            } else if (bmi < Double.valueOf(BMI_YELLOW_MAX) && bmi >= Double.valueOf(BMI_YELLOW_MIN)) {   // red
                 bmiView.setTextColor(getResources().getColor(R.color.dark_yellow));
-            }
-            else if (bmi >= Double.valueOf(BMI_LIGHT_RED_MIN) && (bmi < Double.valueOf(BMI_LIGHT_RED_MAX))){
+            } else if (bmi >= Double.valueOf(BMI_LIGHT_RED_MIN) && (bmi < Double.valueOf(BMI_LIGHT_RED_MAX))) {
                 bmiView.setTextColor(getResources().getColor(R.color.lite_red));
-            }
-            else if (bmi >= Double.valueOf(BMI_GREEN_MIN) && (bmi < Double.valueOf(BMI_GREEN_MAX))){
+            } else if (bmi >= Double.valueOf(BMI_GREEN_MIN) && (bmi < Double.valueOf(BMI_GREEN_MAX))) {
                 bmiView.setTextColor(getResources().getColor(R.color.green));
-            }
-            else if (bmi >= Double.valueOf(BMI_DARK_RED_MIN)) {   // red
+            } else if (bmi >= Double.valueOf(BMI_DARK_RED_MIN)) {   // red
                 bmiView.setTextColor(getResources().getColor(R.color.scale_1));
-            }
-            else
+            } else
                 bmiView.setTextColor(null);
         }
     }
@@ -2487,45 +2475,37 @@ public class VisitSummaryActivity extends BaseActivity {
     }
 
     private String bpSysColorCode(String bpSysValue) {
-        if (bpSysValue!=null && !bpSysValue.isEmpty() && !bpSysValue.equalsIgnoreCase(getResources().getString(R.string.na))) {
+        if (bpSysValue != null && !bpSysValue.isEmpty() && !bpSysValue.equalsIgnoreCase(getResources().getString(R.string.na))) {
             Double bpSys = Double.valueOf(bpSysValue);
             if (bpSys < Double.valueOf(MINIMUM_BP_SYS) || bpSys > Double.valueOf(MAXIMUM_BP_SYS)) {   // red
-                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpSysValue +"</font>";
-            }
-            else if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys >= Double.valueOf(SYS_RED_MAX)) {   // red
-                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpSysValue +"</font>";
-            }
-            else if (bpSys >= Double.valueOf(SYS_YELLOW_MIN) && (bpSys <= Double.valueOf(SYS_YELLOW_MAX))){
-                    return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpSysValue +"</font>";
-            }
-            else if (bpSys >= Double.valueOf(SYS_GREEN_MIN) && (bpSys < Double.valueOf(SYS_GREEN_MAX))){
-                    return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpSysValue +"</font>";
-            }
-            else
-                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpSysValue +"</font>";
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpSysValue + "</font>";
+            } else if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys >= Double.valueOf(SYS_RED_MAX)) {   // red
+                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpSysValue + "</font>";
+            } else if (bpSys >= Double.valueOf(SYS_YELLOW_MIN) && (bpSys <= Double.valueOf(SYS_YELLOW_MAX))) {
+                return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpSysValue + "</font>";
+            } else if (bpSys >= Double.valueOf(SYS_GREEN_MIN) && (bpSys < Double.valueOf(SYS_GREEN_MAX))) {
+                return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpSysValue + "</font>";
+            } else
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpSysValue + "</font>";
         }
-        return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + "" +"</font>";
+        return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + "" + "</font>";
     }
 
     private String bpDiaColorCode(String bpDiaValue) {
-        if (bpDiaValue!=null && !bpDiaValue.isEmpty() && !bpDiaValue.equalsIgnoreCase(getResources().getString(R.string.na))) {
+        if (bpDiaValue != null && !bpDiaValue.isEmpty() && !bpDiaValue.equalsIgnoreCase(getResources().getString(R.string.na))) {
             Double bpDia = Double.valueOf(bpDiaValue);
             if (bpDia < Double.valueOf(MINIMUM_BP_DSYS) || bpDia > Double.valueOf(MAXIMUM_BP_DSYS)) {  // black
-                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpDiaValue +"</font>";
-            }
-            else if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
-                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpDiaValue +"</font>";
-            }
-            else if (bpDia >= Double.valueOf(DIA_YELLOW_MIN) && (bpDia < Double.valueOf(DIA_YELLOW_MAX))){
-                    return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpDiaValue +"</font>";
-            }
-            else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
-                return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpDiaValue +"</font>";
-            }
-            else
-                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpDiaValue +"</font>";
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpDiaValue + "</font>";
+            } else if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
+                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpDiaValue + "</font>";
+            } else if (bpDia >= Double.valueOf(DIA_YELLOW_MIN) && (bpDia < Double.valueOf(DIA_YELLOW_MAX))) {
+                return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpDiaValue + "</font>";
+            } else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
+                return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpDiaValue + "</font>";
+            } else
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpDiaValue + "</font>";
         }
-        return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + "" +"</font>";
+        return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + "" + "</font>";
     }
 
     //print button end
@@ -3169,18 +3149,17 @@ public class VisitSummaryActivity extends BaseActivity {
     }
 
     public String ConvertHeightIntoFeets(String height) {
-        if(height!=null && !height.isEmpty()) { //validation added for crash fix.
+        if (height != null && !height.isEmpty()) { //validation added for crash fix.
             int val = Integer.parseInt(height);
             double centemeters = val / 2.54;
             int inche = (int) centemeters % 12;
             int feet = (int) centemeters / 12;
             String heightVal = feet + "ft " + inche + "in"; //keeping strings static as the prescription is available only in english language.
             System.out.println("value of height=" + val);
-            if(heightVal.equalsIgnoreCase("0ft 0in"))
+            if (heightVal.equalsIgnoreCase("0ft 0in"))
                 heightVal = "NA"; //making this change for prescription
             return heightVal;
-        }
-        else return "";
+        } else return "";
     }
 
     private void endVisit() {
@@ -3750,7 +3729,7 @@ public class VisitSummaryActivity extends BaseActivity {
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            registerReceiver(receiver, filter);
+            ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
             isReceiverRegistered = true;
         }
     }
@@ -4068,7 +4047,10 @@ public class VisitSummaryActivity extends BaseActivity {
     protected void onStart() {
         registerDownloadPrescription();
         callBroadcastReceiver();
-        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
+        ContextCompat.registerReceiver(this,
+                mMessageReceiver,
+                new IntentFilter(FILTER),
+                ContextCompat.RECEIVER_NOT_EXPORTED);
         super.onStart();
     }
 

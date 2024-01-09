@@ -67,7 +67,7 @@ object CallNotificationHandler {
         context: Context, messageBody: RtcArgs
     ) = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
-        ACTION_DECLINE.span(android.R.color.holo_red_light, context),
+        context.getString(R.string.decline).span(android.R.color.holo_red_light, context),
         IntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
             callAction = CallAction.DECLINE
         })
@@ -83,7 +83,7 @@ object CallNotificationHandler {
         context: Context, messageBody: RtcArgs
     ) = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
-        ACTION_ACCEPT.span(android.R.color.holo_green_dark, context),
+        context.getString(R.string.accept).span(android.R.color.holo_green_dark, context),
         IntentUtils.getPendingActivityIntent(context, messageBody.apply {
             callAction = CallAction.ACCEPT
         })
