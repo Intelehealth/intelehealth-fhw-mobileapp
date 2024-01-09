@@ -12,10 +12,12 @@ import io.livekit.android.RoomOptions
 import io.livekit.android.audio.AudioSwitchHandler
 import io.livekit.android.room.Room
 import io.livekit.android.room.participant.AudioTrackPublishDefaults
+import io.livekit.android.room.participant.BackupVideoCodec
 import io.livekit.android.room.participant.VideoTrackPublishDefaults
 import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalVideoTrackOptions
+import io.livekit.android.room.track.VideoCodec
 import io.livekit.android.room.track.VideoPreset169
 import io.livekit.android.room.track.VideoPreset43
 import org.intelehealth.klivekit.utils.AudioType
@@ -60,9 +62,9 @@ object LiveKitProvider {
     )
 
     private fun provideVideoPublishTrack() = VideoTrackPublishDefaults(
-        videoEncoding = VideoPreset43.H480.encoding
+        videoEncoding = VideoPreset43.H540.encoding,
 //        videoEncoding = VideoPreset169.VGA.encoding,
-//            videoCodec = VideoCodec.VP8.codecName
+//        videoCodec = VideoCodec.H264.codecName
     )
 
     private fun provideRoomOptions(
@@ -73,6 +75,8 @@ object LiveKitProvider {
     ) = RoomOptions(
         audioTrackCaptureDefaults = localAudioTrackOptions,
         audioTrackPublishDefaults = audioTrackPublishDefaults,
+        videoTrackCaptureDefaults = localVideoTrackOptions,
+        videoTrackPublishDefaults = videoTrackPublishDefaults,
         adaptiveStream = true
     )
 

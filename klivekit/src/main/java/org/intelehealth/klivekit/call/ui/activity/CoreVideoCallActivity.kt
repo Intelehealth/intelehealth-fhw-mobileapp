@@ -125,12 +125,12 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 //            0
 //        )
 //
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//            audioManager.availableCommunicationDevices.firstOrNull { it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER }
-//                ?.let { audioManager.setCommunicationDevice(it) }
-//        } else {
-//            audioManager.isSpeakerphoneOn = true
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            audioManager.availableCommunicationDevices.firstOrNull { it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER }
+                ?.let { audioManager.setCommunicationDevice(it) }
+        } else {
+            audioManager.isSpeakerphoneOn = true
+        }
     }
 
     private fun initView() {
@@ -334,7 +334,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     open fun stopRingtone() {
 //        Timber.e { "stopRingtone ${mediaPlayer.isPlaying}" }
 //        if (mediaPlayer.isPlaying) mediaPlayer.stop()
-        Timber.e { "stopRingtone ${ringtone.isPlaying}" }
+//        Timber.e { "stopRingtone ${ringtone.isPlaying}" }
         if (ringtone.isPlaying) ringtone.stop()
     }
 

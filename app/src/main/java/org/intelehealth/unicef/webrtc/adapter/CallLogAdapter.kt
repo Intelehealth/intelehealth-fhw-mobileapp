@@ -3,7 +3,7 @@ package org.intelehealth.unicef.webrtc.adapter
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.intelehealth.unicef.webrtc.viewholder.EkalCallLogViewHolder
+import org.intelehealth.unicef.webrtc.viewholder.UnicefCallLogViewHolder
 import org.intelehealth.klivekit.call.model.RtcCallLog
 import org.intelehealth.klivekit.chat.ui.adapter.BaseRecyclerViewAdapter
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
@@ -20,11 +20,11 @@ class CallLogAdapter(context: Context, list: List<RtcCallLog>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = RowItemEkalCallLogBinding.inflate(inflater, parent, false)
-        return EkalCallLogViewHolder(binding)
+        return UnicefCallLogViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is EkalCallLogViewHolder) {
+        if (holder is UnicefCallLogViewHolder) {
             if(::clickListener.isInitialized) holder.setViewClickListener(clickListener)
             holder.bind(getItem(position))
         }
