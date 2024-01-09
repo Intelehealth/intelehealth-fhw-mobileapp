@@ -57,7 +57,7 @@ object LiveKitProvider {
     )
 
     private fun provideVideoPublishTrack() = VideoTrackPublishDefaults(
-        videoEncoding = VideoPreset43.H480.encoding
+        videoEncoding = VideoPreset43.H540.encoding
 //        videoEncoding = VideoPreset169.VGA.encoding,
 //            videoCodec = VideoCodec.VP8.codecName
     )

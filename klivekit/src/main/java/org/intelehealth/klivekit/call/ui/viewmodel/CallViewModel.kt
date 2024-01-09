@@ -84,7 +84,7 @@ open class CallViewModel(
 //        adaptiveStream = true
 //    )
 
-    val audioHandler = AudioSwitchHandler(application)
+    var audioHandler = AudioSwitchHandler(application)
 //    val room = LiveKit.create(
 //        appContext = application.applicationContext,
 //        options = options,
@@ -494,6 +494,9 @@ open class CallViewModel(
                 )
             )
 
+            if (room.audioHandler is AudioSwitchHandler) {
+                audioHandler = room.audioHandler as AudioSwitchHandler;
+            }
             Timber.e { "Before Selected audio => ${audioHandler.selectedAudioDevice?.name}" }
             updateAudioSetting(SPEAKER_PHONE)
             Timber.e { "After Selected audio => ${audioHandler.selectedAudioDevice?.name}" }
