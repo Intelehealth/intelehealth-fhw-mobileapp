@@ -118,6 +118,7 @@ public class Medication_Aid_Activity extends BaseActivity {
                 intent.putExtra("aid", (Serializable) aidCheckedList);
             if (testCheckedList.size() > 0)
                 intent.putExtra("test", (Serializable) testCheckedList);
+
             intent = sendCommonIntentToMedicationActivity(intent);
             startActivity(intent);
 
@@ -140,7 +141,6 @@ public class Medication_Aid_Activity extends BaseActivity {
         intent.putExtra("float_ageYear_Month", float_ageYear_Month);
         intent.putExtra("tag", intentTag);
         intent.putExtra("pastVisit", isPastVisit);
-
         return intent;
     }
 
@@ -477,7 +477,7 @@ public class Medication_Aid_Activity extends BaseActivity {
 
     public void showPastNotes(View view) {
         String viewTag = null;
-        if (view.getTag().equals(MEDICATION)) {
+        if (view.getTag().equals(MEDICATION)) { // this is in xml tag is given and this function is called in xml directly.
             if (tag.equalsIgnoreCase(COLLECTED))
                 viewTag = COLLECTED;
             else if (tag.equalsIgnoreCase(RECEIVED))

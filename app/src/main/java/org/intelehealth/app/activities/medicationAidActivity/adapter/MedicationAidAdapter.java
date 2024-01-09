@@ -1,5 +1,8 @@
 package org.intelehealth.app.activities.medicationAidActivity.adapter;
 
+import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.COLLECTED;
+import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.RECEIVED;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,44 +70,48 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
         Log.d("TAG", "medication adapter: " + value + "\n");
         holder.tvMedAidName.setText(value);
 
-        // med - start
-        if (updateUUID_List != null && updateUUID_List.size() > 0) {
-            for (int i = 0; i < updateUUID_List.size(); i++) {
-                MedicationModel medicationModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), MedicationModel.class);
-                if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(list.get(position).getUuid())) {
-                    if (tag.equalsIgnoreCase("dispense")) {
+        if (tag.equalsIgnoreCase(COLLECTED) || tag.equalsIgnoreCase(RECEIVED)) {
+            // test - start
+            if (updateUUID_List != null && updateUUID_List.size() > 0) {
+                for (int i = 0; i < updateUUID_List.size(); i++) {
+                    MedicationModel medicationModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), MedicationModel.class);
+                    if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(list.get(position).getUuid())) {
                         holder.cb_value.setChecked(true);
                         holder.cb_value.setEnabled(false);
                     }
-
-                  //  checkedList.add(model);
-                }
-                else {
-                   // holder.cb_value.setChecked(false);
-                  //  checkedList.remove(model);
                 }
             }
+            // test - end
         }
-        // med - start
-
-        // aid - start
-        if (updateUUID_List != null && updateUUID_List.size() > 0) {
-            for (int i = 0; i < updateUUID_List.size(); i++) {
-                AidModel aidModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), AidModel.class);
-                if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(list.get(position).getUuid())) {
-                    if (tag.equalsIgnoreCase("dispense")) {
-                        holder.cb_value.setChecked(true);
-                        holder.cb_value.setEnabled(false);
+        else {
+            // med - start
+            if (updateUUID_List != null && updateUUID_List.size() > 0) {
+                for (int i = 0; i < updateUUID_List.size(); i++) {
+                    MedicationModel medicationModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), MedicationModel.class);
+                    if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(list.get(position).getUuid())) {
+                        if (tag.equalsIgnoreCase("dispense")) {
+                            holder.cb_value.setChecked(true);
+                            holder.cb_value.setEnabled(false);
+                        }
                     }
-                  //  checkedList.add(model);
                 }
-                else {
-                   // holder.cb_value.setChecked(false);
-                  //  checkedList.remove(model);
+            }
+            // med - end
+
+            // aid - start
+            if (updateUUID_List != null && updateUUID_List.size() > 0) {
+                for (int i = 0; i < updateUUID_List.size(); i++) {
+                    AidModel aidModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), AidModel.class);
+                    if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(list.get(position).getUuid())) {
+                        if (tag.equalsIgnoreCase("dispense")) {
+                            holder.cb_value.setChecked(true);
+                            holder.cb_value.setEnabled(false);
+                        }
+                    }
                 }
             }
         }
-        // aid - start
+        // aid - end
     }
 
     @Override
@@ -132,23 +139,6 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
                     checkedList.remove(list.get(getAdapterPosition()));
                 }
             });
-
-/*
-            cb_value.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (compoundButton.isChecked()) {
-                        list.get(getAdapterPosition()).setChecked(b);
-                        checkedList.add(list.get(getAdapterPosition()));
-                    }
-                    else {
-                        list.get(getAdapterPosition()).setChecked(b);
-                        checkedList.remove(list.get(getAdapterPosition()));
-                    }
-
-                }
-            });
-*/
         }
     }
 
