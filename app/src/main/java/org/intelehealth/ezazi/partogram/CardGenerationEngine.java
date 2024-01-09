@@ -30,25 +30,17 @@ import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
-import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
-import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class CardGenerationEngine {
     private static final String TAG = CardGenerationEngine.class.getName();
@@ -246,23 +238,33 @@ public class CardGenerationEngine {
     }
 
     private static void closeReachToLimitVisit(String visitId) {
-        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        ObsDAO obsDAO = new ObsDAO();
-        try {
-            String encounterUuid = new EncounterDAO().insertVisitCompleteEncounterToDb(visitId, sessionManager.getProviderID());
-            if (encounterUuid != null && encounterUuid.length() > 0) {
-                boolean isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value(), CompletedVisitStatus.OutOfTime.OUT_OF_TIME.uuid());
-                if (isInserted) {
-                    VisitsDAO visitsDAO = new VisitsDAO();
-                    visitsDAO.updateVisitEnddate(visitId, AppConstants.dateAndTimeUtils.currentDateTime());
-                    new VisitAttributeListDAO().markVisitAsRead(visitId);
-                    Intent intent = new Intent(AppConstants.VISIT_OUT_OF_TIME_ACTION);
-                    IntelehealthApplication.getAppContext().sendBroadcast(intent);
-                }
+        long updated = new VisitAttributeListDAO().updateVisitAttribute(visitId, UuidDictionary.DECISION_PENDING, "1");
+        if (updated > 0) {
+            try {
+                VisitsDAO visitsDAO = new VisitsDAO();
+                visitsDAO.updateVisitSync(visitId, "false");
+                Intent intent = new Intent(AppConstants.VISIT_DECISION_PENDING_ACTION);
+                IntelehealthApplication.getAppContext().sendBroadcast(intent);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
             }
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
         }
+//        ObsDAO obsDAO = new ObsDAO();
+//        try {
+//            String encounterUuid = new EncounterDAO().insertVisitCompleteEncounterToDb(visitId, sessionManager.getProviderID());
+//            if (encounterUuid != null && encounterUuid.length() > 0) {
+//                boolean isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value(), CompletedVisitStatus.OutOfTime.OUT_OF_TIME.uuid());
+//                if (isInserted) {
+//                    VisitsDAO visitsDAO = new VisitsDAO();
+//                    visitsDAO.updateVisitEnddate(visitId, AppConstants.dateAndTimeUtils.currentDateTime());
+//                    new VisitAttributeListDAO().markVisitAsRead(visitId);
+//                    Intent intent = new Intent(AppConstants.VISIT_OUT_OF_TIME_ACTION);
+//                    IntelehealthApplication.getAppContext().sendBroadcast(intent);
+//                }
+//            }
+//        } catch (DAOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     private static String getNextEncounterTypeName(String encounterTypeName) {

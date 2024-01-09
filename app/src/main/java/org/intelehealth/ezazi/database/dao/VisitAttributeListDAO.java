@@ -10,6 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -40,9 +41,10 @@ public class VisitAttributeListDAO {
         db.beginTransaction();
         try {
             Log.d("SPECI", "SIZEVISTATTR: Total attr => " + visitAttributeDTOS.size());
-            for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
-                if (checkVisitAttributesExist(visitDTO, db)) updateVisitAttributes(visitDTO, db);
-                else createVisitAttributeList(visitDTO, db);
+            for (VisitAttributeDTO visitAttribute : visitAttributeDTOS) {
+                if (checkVisitAttributesExist(visitAttribute, db))
+                    updateVisitAttributes(visitAttribute, db);
+                else createVisitAttributeList(visitAttribute, db);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -192,28 +194,27 @@ public class VisitAttributeListDAO {
         return isInserted;
     }
 
-    public boolean updateVisitTypeAttributeUuid(String visitUUid, String providerUuid) throws DAOException {
-        boolean isUpdated = true;
-        long createdRecordsCount1 = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        ContentValues values = new ContentValues();
-        String whereclause = "visit_uuid=? AND visit_attribute_type_uuid=?";
-        db.beginTransaction();
-        try {
-            values.put("value", providerUuid);
-            values.put("voided", "0");
-            values.put("sync", "0");
-            createdRecordsCount1 = db.update("tbl_visit_attribute", values, whereclause, new String[]{visitUUid, VISIT_HOLDER});
-            db.setTransactionSuccessful();
-            Logger.logD("created records", "created records count" + createdRecordsCount1);
-        } catch (SQLException e) {
-            isUpdated = false;
-            throw new DAOException(e.getMessage(), e);
-        } finally {
-            db.endTransaction();
-        }
-        return isUpdated;
+    public void updateVisitTypeAttributeUuid(String visitUUid, String providerUuid) throws DAOException {
+//        boolean isUpdated = true;
+//        long createdRecordsCount1 = 0;
+//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+//        ContentValues values = new ContentValues();
+//        String whereclause = "visit_uuid=? AND visit_attribute_type_uuid=?";
+//        db.beginTransaction();
+//        try {
+//            values.put("value", providerUuid);
+//            values.put("voided", "0");
+//            values.put("sync", "0");
+//            createdRecordsCount1 = db.update("tbl_visit_attribute", values, whereclause, new String[]{visitUUid, VISIT_HOLDER});
+//            db.setTransactionSuccessful();
+//            Logger.logD("created records", "created records count" + createdRecordsCount1);
+//        } catch (SQLException e) {
+//            throw new DAOException(e.getMessage(), e);
+//        } finally {
+//            db.endTransaction();
+//        }
 
+        updateVisitAttribute(visitUUid, VISIT_HOLDER, providerUuid);
     }
 
     public void markVisitAsRead(String visitUUid) throws DAOException {
@@ -236,8 +237,27 @@ public class VisitAttributeListDAO {
         } finally {
             db.endTransaction();
         }
-
     }
 
+    public long updateVisitAttribute(String visitId, String attributeId, String value) {
+        long createdRecordsCount1 = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        String whereclause = "visit_uuid=? AND visit_attribute_type_uuid=?";
+        db.beginTransaction();
+        try {
+            values.put("value", value);
+            values.put("voided", "0");
+            values.put("sync", "0");
+            createdRecordsCount1 = db.update("tbl_visit_attribute", values, whereclause, new String[]{visitId, attributeId});
+            db.setTransactionSuccessful();
+            Logger.logD("created records", "created records count" + createdRecordsCount1);
+        } catch (SQLException e) {
+            Timber.tag(TAG).e(e);
+        } finally {
+            db.endTransaction();
+        }
 
+        return createdRecordsCount1;
+    }
 }

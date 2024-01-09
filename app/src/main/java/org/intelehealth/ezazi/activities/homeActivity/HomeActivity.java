@@ -1,9 +1,7 @@
 package org.intelehealth.ezazi.activities.homeActivity;
 
 import static org.intelehealth.ezazi.app.AppConstants.EVENT_SHIFT_CHANGED;
-import static org.intelehealth.ezazi.app.AppConstants.FROM_HW;
 import static org.intelehealth.ezazi.app.AppConstants.SHIFTED_DATA;
-import static org.intelehealth.ezazi.app.AppConstants.TO_HW_USER_UUID;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__gu_dob;
@@ -42,7 +40,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
@@ -100,7 +97,6 @@ import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
-import org.intelehealth.ezazi.partogram.CardGenerationEngine;
 import org.intelehealth.ezazi.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.ezazi.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;
@@ -143,7 +139,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -1621,7 +1616,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     private final BroadcastReceiver visitOutOfTimeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null && intent.getAction().equalsIgnoreCase(AppConstants.VISIT_OUT_OF_TIME_ACTION)) {
+            if (intent != null && intent.getAction().equalsIgnoreCase(AppConstants.VISIT_DECISION_PENDING_ACTION)) {
                 loadVisits();
 //                sync();
             }
@@ -1726,7 +1721,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
             mActivePatientAdapter.notifyDataSetChanged();
 
         registerReceiver(mCardMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
-        registerReceiver(visitOutOfTimeReceiver, new IntentFilter(AppConstants.VISIT_OUT_OF_TIME_ACTION));
+        registerReceiver(visitOutOfTimeReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION));
         loadVisits();
         //        sync();
 //        recreate();

@@ -35,7 +35,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
@@ -46,12 +45,9 @@ import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
-import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.databinding.DialogOutOfTimeEzaziBinding;
-import org.intelehealth.ezazi.databinding.DialogReferHospitalEzaziBinding;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
-import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
@@ -65,7 +61,6 @@ import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.visit.activity.VisitLabourActivity;
 import org.intelehealth.ezazi.ui.visit.dialog.CompleteVisitOnEnd2StageDialog;
 import org.intelehealth.ezazi.ui.visit.dialog.CompleteVisitOnEndStage1Dialog;
-import org.intelehealth.ezazi.ui.visit.dialog.ReferTypeHelper;
 import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
 import org.intelehealth.ezazi.ui.visit.model.VisitOutcome;
 import org.intelehealth.ezazi.utilities.Logger;
@@ -73,19 +68,16 @@ import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
-import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -143,7 +135,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_OUT_OF_TIME_ACTION));
+        registerReceiver(visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION));
         registerReceiver(mMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
         registerReceiver(syncBroadcastReceiver, new IntentFilter(AppConstants.SYNC_INTENT_ACTION));
     }

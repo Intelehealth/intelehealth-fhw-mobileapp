@@ -12,6 +12,13 @@
     - Labour completed
     - Refer to other
     - All
+
 - Decision Pending
     - Stage 2
     - Stage 1
+
+SELECT V.uuid, V.patientuuid, V.locationuuid, V.startdate, V.enddate, V.creator,
+V.visit_type_uuid FROM tbl_visit V  LEFT OUTER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid
+WHERE V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE encounter_type_uuid ='bd1fbfaa-f5fb-4ebd-b75c-564506fc309e' )
+AND V.voided = '0' AND VA.value = '0c812a8b-a65e-4891-9a5c-ebb9d401344b'
+AND (V.enddate IS NULL OR  V.enddate = '')   GROUP BY V.uuid  ORDER BY V.startdate DESC

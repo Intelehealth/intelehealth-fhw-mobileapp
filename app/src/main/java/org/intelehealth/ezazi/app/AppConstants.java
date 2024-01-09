@@ -1,8 +1,6 @@
 package org.intelehealth.ezazi.app;
 
 
-import static org.intelehealth.klivekit.utils.Constants.NOTIFICATION_RECEIVER;
-
 import android.os.Environment;
 
 import androidx.work.Constraints;
@@ -19,7 +17,6 @@ import org.intelehealth.ezazi.syncModule.SyncWorkManager;
 import org.intelehealth.ezazi.syncModule.VisitSummaryWork;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
-import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidGenerator;
 
 import java.io.File;
@@ -117,7 +114,7 @@ public class AppConstants {
     /*@Lincon*/
     public static final String NEW_CARD_INTENT_ACTION = "org.intelehealth.app.NEW_CARD";
 
-    public static final String VISIT_OUT_OF_TIME_ACTION = "org.intelehealth.app.VISIT_OUT_OF_TIME";
+    public static final String VISIT_DECISION_PENDING_ACTION = "org.intelehealth.app.VISIT_OUT_OF_TIME";
 
     public static final String SYNC_INTENT_ACTION = "org.intelehealth.app.LAST_SYNC";
     public static final String SYNC_INTENT_DATA_KEY = "SYNC_JOB_TYPE";
