@@ -531,14 +531,16 @@ public class ChatActivity extends AppCompatActivity {
                     new JSONObject(chatMessage.toJson()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    Log.v(TAG, "postMessages - response - " + response.toString());
+                    Timber.tag(TAG).v("postMessages - response - " + response.toString());
                     try {
-                        ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
-                        mMessageEditText.setText("");
+                        if (response.has("data")) {
+                            ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
+                            mMessageEditText.setText("");
 //                        getAllMessages(false);
-                        msg.setMessageStatus(MessageStatus.SENT.getValue());
-                        mChatListingAdapter.updatedMessage(msg);
-                        mLoadingLinearLayout.setVisibility(View.GONE);
+                            msg.setMessageStatus(MessageStatus.SENT.getValue());
+                            mChatListingAdapter.updatedMessage(msg);
+                            mLoadingLinearLayout.setVisibility(View.GONE);
+                        } else Timber.tag(TAG).e("onResponse: data key not found");
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
