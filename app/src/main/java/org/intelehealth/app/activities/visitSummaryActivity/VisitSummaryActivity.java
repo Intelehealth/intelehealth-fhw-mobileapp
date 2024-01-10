@@ -4432,7 +4432,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                     value = value.replace("\n", "<br>");
 
                 fetchTest_Collected_Received_Data(ENCOUNTER_TEST_COLLECT);
-              //  fetchTest_Collected_Received_Data(ENCOUNTER_TEST_RECEIVE);
+                fetchTest_Collected_Received_Data(ENCOUNTER_TEST_RECEIVE);
 
                 String collectedByValue = (!format_TestCollectReceive_Details(uuid, true).isEmpty())
                         ? "<br><font color=\'#2F1E91\'>" + format_TestCollectReceive_Details(uuid, true) + "</font>" : "";
