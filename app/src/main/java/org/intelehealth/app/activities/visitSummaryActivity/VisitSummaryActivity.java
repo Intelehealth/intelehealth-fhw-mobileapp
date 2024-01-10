@@ -327,7 +327,8 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     private List<MedicationAidModel> update_medUuidAdministeredList = new ArrayList<>();
     private String encounterDispense, encounterAdminister;
 
-    LinearLayout aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow, aidOrderType4TableRow, aidOrderType5TableRow, tl_prescribed_medications;
+    LinearLayout aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow,
+            aidOrderType4TableRow, aidOrderType5TableRow, tl_prescribed_medications, ll_test;
     TextView followUpDateTextView;
     //added checkbox flag .m
     CheckBox flag;
@@ -802,7 +803,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
         //   prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
-        requestedTestsTextView = findViewById(R.id.textView_content_tests);
+     //   requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         dischargeOrderTextView = findViewById(R.id.textView_content_discharge_order);
         aidOrderType1TextView = findViewById(R.id.textView_content_aid_order_type1);
@@ -820,6 +821,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         aidhl_3 = findViewById(R.id.aidhl_3);
         aidhl_4 = findViewById(R.id.aidhl_4);
         tl_prescribed_medications = findViewById(R.id.tl_prescribed_medications);
+        ll_test = findViewById(R.id.ll_test);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -4334,6 +4336,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
 
+                // show details option - start
                 TextView textView = createTextView();
                 textView.setTag(R.id.tl_prescribed_medications, newRxReturned);
                 textView.setTag(newRxReturned);
@@ -4347,7 +4350,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                 show_textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int c = showMoreAndHideContent((TextView) view.getTag());
+                        int c = showMoreAndHideContent((TextView) view.getTag(), R.id.tl_prescribed_medications);
                         if (c == 1)
                             show_textView.setText(getString(R.string.hide_details));
                         else
@@ -4362,11 +4365,13 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
 
                 if (tl_prescribed_medications.getChildCount() > 0)
                     tl_prescribed_medications.addView(showDividerLine());
+
                 tl_prescribed_medications.addView(textView);
                 tl_prescribed_medications.addView(show_textView);
-                //  tl_prescribed_medications.removeViewAt(tl_prescribed_medications.getChildCount()-1);
 
                 Log.d(TAG, "parseData: med: " + tl_prescribed_medications.getChildCount() + "\n" + textView.getText().toString());
+                // show details option - end
+
                 break;
             }
             case UuidDictionary.MEDICAL_ADVICE: {
@@ -4419,11 +4424,14 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                 break;
             }
             case UuidDictionary.REQUESTED_TESTS: {
+                if (value.contains("\n"))
+                    value = value.replace("\n", "<br>");
+
                 if (!newTestsReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newTestsReturned = newTestsReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newTestsReturned = /*newTestsReturned + "<br>" +*/ "<br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newTestsReturned = newTestsReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newTestsReturned = /*newTestsReturned + "<br>" +*/ "<br>" + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
                 }
 
                 if (newTestsReturned.isEmpty()) {
@@ -4442,10 +4450,49 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                 if (requestedTestsCard.getVisibility() != View.VISIBLE) {
                     requestedTestsCard.setVisibility(View.VISIBLE);
                 }
+
+                // show details option - start
+                TextView textView = createTextView();
+                textView.setTag(R.id.ll_test, newTestsReturned);
+                textView.setTag(newTestsReturned);
+
+                String a[] = textView.getTag().toString().split(getResources().getString(R.string.added_by));
+                textView.setText(Html.fromHtml(a[0].substring(0, a[0].lastIndexOf("<br>"))));
+                Log.d(TAG, "parseData: test_txt: \n" + newTestsReturned + "\n -------- \n" + textView.getText().toString());
+
+                TextView show_textView = createShowTextView();
+                show_textView.setTag(textView);
+                show_textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int c = showMoreAndHideContent((TextView) view.getTag(), R.id.ll_test);
+                        if (c == 1)
+                            show_textView.setText(getString(R.string.hide_details));
+                        else
+                            show_textView.setText(getString(R.string.show_details));
+                    }
+                });
+
                 if (LocaleHelper.isArabic(this)) {
+                    textView.setGravity(Gravity.END);
+                    textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);  // Had to add this as the text direction was breaking for some text.
+                }
+
+                if (ll_test.getChildCount() > 0)
+                    ll_test.addView(showDividerLine());
+
+                ll_test.addView(textView);
+                ll_test.addView(show_textView);
+
+                Log.d(TAG, "parseData: test: " + ll_test.getChildCount() + "\n" + textView.getText().toString());
+
+               /* if (LocaleHelper.isArabic(this)) {
                     requestedTestsTextView.setGravity(Gravity.END);
                 }
-                requestedTestsTextView.setText(Html.fromHtml(newTestsReturned));
+
+                requestedTestsTextView.setText(Html.fromHtml(newTestsReturned));*/
+                // show details option - end
+
                 //checkForDoctor();
                 break;
             }
@@ -4546,16 +4593,15 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         View view = new View(VisitSummaryActivity.this);
         view.setBackgroundColor(getResources().getColor(R.color.divider));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2);
-        //    params.setMargins(0, 20, 0, 0);
         params.topMargin = 50;
         view.setLayoutParams(params);
         return view;
     }
 
-    private int showMoreAndHideContent(TextView contentTextView) {
+    private int showMoreAndHideContent(TextView contentTextView, int id) {
         int tag = 0;
-        String value = contentTextView.getTag(R.id.tl_prescribed_medications).toString();
-        String a[] = contentTextView.getTag().toString().split(getResources().getString(R.string.added_by));
+        String value = contentTextView.getTag(id).toString();
+        String[] a = contentTextView.getTag().toString().split(getResources().getString(R.string.added_by));
         Log.d(TAG, "showMoreAndHideContent: " + value + "\n" + a[0] + "\n" + "--------------");
 
         if (contentTextView.getTag().toString().contains(getResources().getString(R.string.added_by))) {
@@ -5395,7 +5441,8 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                 }
                 if (!testsReturned.isEmpty()) {
                     testsReturned = "";
-                    requestedTestsTextView.setText("");
+                    ll_test.removeAllViews();
+                  //  requestedTestsTextView.setText("");
                     requestedTestsCard.setVisibility(View.GONE);
                 }
 

@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary"
+    tools:layout_marginTop="-200dp"
     >
     <!-- TODO: Replace hard-coded strings with @string resources-->
 
@@ -1049,6 +1050,7 @@
                     android:layout_below="@id/layout_test"
                     android:padding="@dimen/padding_card">
 
+<!--
                         <TextView
                             android:id="@+id/textView_content_tests"
                             android:layout_width="match_parent"
@@ -1058,6 +1060,7 @@
                             android:text="@string/visit_summary_height_heading"
                             android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
+-->
 
                 </LinearLayout>
 
