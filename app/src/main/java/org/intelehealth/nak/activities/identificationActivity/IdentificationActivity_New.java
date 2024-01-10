@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.nak.R;
@@ -246,7 +247,8 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         super.onStart();
         //register receiver for internet check
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        //registerReceiver(syncBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(this.context, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_EXPORTED); //changed because previous code not working on android 14 and above
         networkUtils.callBroadcastReceiver();
     }
 

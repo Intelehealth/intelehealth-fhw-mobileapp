@@ -398,6 +398,7 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
             public void onNext(LoginModel loginModel) {
                 if (loginModel != null) {
                     Boolean authencated = loginModel.getAuthenticated();
+                    Log.d(TAG, "onNext: authencatedkk : "+authencated);
                     Gson gson = new Gson();
                     sessionManager.setChwname(loginModel.getUser().getDisplay());
                     sessionManager.setCreatorID(loginModel.getUser().getUuid());

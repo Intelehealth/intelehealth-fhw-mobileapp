@@ -2975,13 +2975,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void registerBroadcastReceiverDynamically() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
+        ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_EXPORTED); //changed because previous code not working on android 14 and above
+        //registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
     }
 
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        registerReceiver(downloadPrescriptionService, filter);
+        //registerReceiver(downloadPrescriptionService, filter);
+        ContextCompat.registerReceiver(this, downloadPrescriptionService, filter, ContextCompat.RECEIVER_EXPORTED);
+
     }
 
     @Override
@@ -3505,7 +3508,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            registerReceiver(receiver, filter);
+            //registerReceiver(receiver, filter);
+            ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_EXPORTED);
             isReceiverRegistered = true;
         }
     }
@@ -3515,7 +3519,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         super.onStart();
         registerDownloadPrescription();
         callBroadcastReceiver();
-        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
+        ContextCompat.registerReceiver(this, mMessageReceiver, new IntentFilter(FILTER), ContextCompat.RECEIVER_EXPORTED);
+        //LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }

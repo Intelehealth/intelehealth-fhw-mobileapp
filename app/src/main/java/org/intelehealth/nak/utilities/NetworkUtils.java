@@ -8,6 +8,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
+
 public class NetworkUtils {
     Boolean isReceiverRegistered = false;
     Context context;
@@ -30,7 +32,8 @@ public class NetworkUtils {
             if (!isReceiverRegistered) {
                 IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
                 receiver = new NetworkChangeReceiver();
-                context.registerReceiver(receiver, filter);
+                //context.registerReceiver(receiver, filter);
+                ContextCompat.registerReceiver(this.context, receiver, filter, ContextCompat.RECEIVER_EXPORTED);
                 isReceiverRegistered = true;
             }
         }else{

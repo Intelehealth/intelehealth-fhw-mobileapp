@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.os.CountDownTimer
 import android.telephony.TelephonyManager
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.utils.AwsS3Utils
@@ -85,15 +86,21 @@ class VideoCallViewModel(url: String, token: String, application: Application) :
 
         IntentFilter().apply {
             addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE)
-            context.registerReceiver(imageUrlFormatBroadcastReceiver, this)
+            //context.registerReceiver(imageUrlFormatBroadcastReceiver, this)
+            ContextCompat.registerReceiver(context, imageUrlFormatBroadcastReceiver, this, ContextCompat.RECEIVER_EXPORTED); //changed because previous code not working on android 14 and above
+
         }
 
         IntentFilter(Intent.ACTION_HEADSET_PLUG).apply {
-            context.registerReceiver(microphonePluggedStatusReceiver, this)
+            //context.registerReceiver(microphonePluggedStatusReceiver, this)
+            ContextCompat.registerReceiver(context, microphonePluggedStatusReceiver, this, ContextCompat.RECEIVER_EXPORTED);
+
+
         }
 
         IntentFilter("android.intent.action.PHONE_STATE").apply {
-            context.registerReceiver(phoneStateBroadcastReceiver, this)
+            ContextCompat.registerReceiver(context, phoneStateBroadcastReceiver, this, ContextCompat.RECEIVER_EXPORTED);
+            // context.registerReceiver(phoneStateBroadcastReceiver, this)
         }
 
     }

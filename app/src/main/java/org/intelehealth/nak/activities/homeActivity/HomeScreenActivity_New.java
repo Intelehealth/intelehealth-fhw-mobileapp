@@ -421,14 +421,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
             Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
             if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
-                networkFailureDialog.dismiss();
+                if (!isFinishing() || getWindow() != null) {
+                    networkFailureDialog.dismiss();
+                }
                 checkNetworkConnectionAndPerformSync();
             });
         }
     }
 
     private void showResetProgressbar() {
-        resetDialog.dismiss();
+        if (!isFinishing() || getWindow() != null) {
+            resetDialog.dismiss();
+        }
         MaterialAlertDialogBuilder resetDialogBuilder = new MaterialAlertDialogBuilder(context);
         showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset), getResources().getDrawable(R.drawable.ui2_icon_logging_in));
     }
@@ -463,7 +467,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void clearAppData() {
-        resetDialog.dismiss();
+        if (!isFinishing() || getWindow() != null) {
+            resetDialog.dismiss();
+        }
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
@@ -947,7 +953,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        //registerReceiver(syncBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_EXPORTED); //changed because previous code not working on android 14 and above
 //        requestPermission();
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();

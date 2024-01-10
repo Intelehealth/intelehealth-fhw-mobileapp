@@ -105,6 +105,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
     private int getCurrentMonthsVisits(boolean isForReceivedPrescription) {
         int count = 0;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        if (!db.isOpen()) return 0;
+
         db.beginTransactionNonExclusive();
         //as per ticket NAK-72 query condition on v.startdate
 
@@ -363,6 +366,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
+
     }
 
     @Override
@@ -420,6 +424,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             } else {
                 totalUpcomingApps = 0;
             }
+            Log.d(TAG, "getUpcomingAppointments: totalUpcomingApps :: "+totalUpcomingApps);
             mUpcomingAppointmentCountTextView.setText(totalUpcomingApps + " " + getResources().getString(R.string.upcoming));
 
         } catch (

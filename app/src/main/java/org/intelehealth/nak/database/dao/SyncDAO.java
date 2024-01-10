@@ -113,6 +113,7 @@ public class SyncDAO {
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
                 // AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
                 if (response.body() != null && response.body().getData() != null) {
+                    Log.d(TAG, "kkonResponse: not nullkk");
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                 }
                 if (response.isSuccessful()) {

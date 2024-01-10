@@ -77,6 +77,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -351,7 +352,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        registerReceiver(mBroadcastReceiver, filterSend);
+        //registerReceiver(mBroadcastReceiver, filterSend);
+        ContextCompat.registerReceiver(this, mBroadcastReceiver, filterSend, ContextCompat.RECEIVER_EXPORTED); //changed because previous code not working on android 14 and above
 
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -1560,7 +1562,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     protected void onStart() {
         super.onStart();
-        registerReceiver(reMyreceive, filter);
+        //registerReceiver(reMyreceive, filter);
+        ContextCompat.registerReceiver(this, reMyreceive, filter, ContextCompat.RECEIVER_EXPORTED); //changed because previous code not working on android 14 and above
+
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }

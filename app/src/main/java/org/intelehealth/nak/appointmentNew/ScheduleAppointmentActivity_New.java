@@ -204,7 +204,8 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        registerReceiver(mBroadcastReceiver, filterSend);
+        ContextCompat.registerReceiver(this, mBroadcastReceiver, filterSend, ContextCompat.RECEIVER_EXPORTED); //changed because previous code not working on android 14 and above
+        //registerReceiver(mBroadcastReceiver, filterSend);
     }
 
     private int mStatusCount = 0;
