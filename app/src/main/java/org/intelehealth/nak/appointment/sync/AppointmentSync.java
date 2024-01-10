@@ -26,12 +26,12 @@ public class AppointmentSync {
     private static final String TAG = "AppointmentSync";
 
     public static void getAppointments(Context context) {
-        Log.v(TAG, "getAppointments");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
 
-        String baseUrl = BuildConfig.SERVER_URL + ":3004";
+        //String baseUrl = BuildConfig.SERVER_URL + ":3004";
+        String baseUrl = new SessionManager(context).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseUrl).getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
 

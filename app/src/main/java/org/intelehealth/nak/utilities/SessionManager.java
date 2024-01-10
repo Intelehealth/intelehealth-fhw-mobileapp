@@ -512,6 +512,7 @@ public class SessionManager {
         editor.putString(key, valueJson);
         editor.commit();
     }
+
     // get the visit edit cache data as json string
     public String getVisitEditCache(String key) {
         return pref.getString(key, "");

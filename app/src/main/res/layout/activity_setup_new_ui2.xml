@@ -100,6 +100,68 @@
 
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:id="@+id/linear_occupation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@string/server"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textColor="@null"
+                        android:textSize="@null" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_server"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <RadioButton
+                            android:id="@+id/rb_production"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:text="@string/production"
+                            android:textSize="@dimen/radio_server"
+                            android:theme="@style/RadioButtonStyleSelection" />
+
+                        <RadioButton
+                            android:id="@+id/rb_testing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/gender_margin"
+                            android:layout_marginEnd="@dimen/gender_margin"
+                            android:layout_weight="1"
+                            android:text="@string/testing"
+                            android:textSize="@dimen/radio_server"
+                            android:theme="@style/RadioButtonStyleSelection" />
+
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/server_option_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/this_field_is_mandatory"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
 
                 <TextView
                     style="@style/TextviewInputTitleStyle"

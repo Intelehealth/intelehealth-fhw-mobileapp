@@ -396,7 +396,8 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         String reason = "Visit was ended";
         String providerID = sessionManager.getProviderID();
         //String baseurl = BuildConfig.SERVER_URL;
-        String baseUrl = BuildConfig.SERVER_URL + ":3004";
+        // String baseUrl = BuildConfig.SERVER_URL + ":3004";
+        String baseUrl = sessionManager.getServerUrl() + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitID, appointmentID, reason, providerID, baseUrl);
     }

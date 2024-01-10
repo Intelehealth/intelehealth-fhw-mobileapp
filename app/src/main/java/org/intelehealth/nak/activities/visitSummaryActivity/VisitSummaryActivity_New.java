@@ -4193,7 +4193,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            sign_url = BuildConfig.SERVER_URL + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
+            //sign_url = BuildConfig.SERVER_URL + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
+            sign_url = sessionManager.getServerUrl() + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 //            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
@@ -4603,7 +4604,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            sign_url = BuildConfig.SERVER_URL + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
+            //sign_url = BuildConfig.SERVER_URL + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
+            sign_url = sessionManager.getServerUrl() + "/ds/" + objClsDoctorDetails.getUuid() + "_sign.png";
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 //            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +

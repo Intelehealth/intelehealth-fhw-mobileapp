@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ import org.intelehealth.nak.models.DownloadMindMapRes;
 import org.intelehealth.nak.models.Location;
 import org.intelehealth.nak.models.Results;
 import org.intelehealth.nak.models.loginModel.LoginModel;
+import org.intelehealth.nak.models.loginModel.Privilege;
 import org.intelehealth.nak.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.nak.networkApiCalls.ApiClient;
 import org.intelehealth.nak.networkApiCalls.ApiInterface;
@@ -113,7 +115,9 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
     TooltipWindow tipWindow;
     Button btnSetup;
     NetworkUtils networkUtils;
-
+    private RadioGroup mRadioGroupServer;
+    private RadioButton mRbProduction, mRbTesting;
+    private TextView tvServerError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +196,24 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
                     return true;
                 }
                 return false;
+            }
+        });
+
+        saveUrlAsPerServerSelection();
+    }
+
+    private void saveUrlAsPerServerSelection() {
+        mRadioGroupServer = findViewById(R.id.rg_server);
+        mRbProduction = findViewById(R.id.rb_production);
+        mRbTesting = findViewById(R.id.rb_testing);
+        tvServerError = findViewById(R.id.server_option_error);
+        sessionManager.setServerUrl("");
+
+        mRadioGroupServer.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rb_production) {
+                sessionManager.setServerUrl(AppConstants.PRODUCTION_SERVER_URL);
+            } else if (checkedId == R.id.rb_testing) {
+                sessionManager.setServerUrl(AppConstants.TEST_SERVER_URL);
             }
         });
     }
@@ -307,6 +329,15 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
         boolean cancel = false;
         View focusView = null;
 
+        if (mRadioGroupServer.getCheckedRadioButtonId() != -1) {
+            //rb selected
+            tvServerError.setVisibility(View.GONE);
+        } else {
+            tvServerError.setVisibility(View.VISIBLE);
+            tvServerError.setText(getString(R.string.error_field_required));
+            return;
+        }
+
         if (TextUtils.isEmpty(autotvLocations.getText().toString())) {
             autotvLocations.requestFocus();
 
@@ -367,7 +398,9 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
 
         if (location != null) {
             Log.i(TAG, location.getDisplay());
-            TestSetup(BuildConfig.SERVER_URL, userName, password, admin_password, location);
+            //TestSetup(BuildConfig.SERVER_URL, userName, password, admin_password, location);
+            TestSetup(sessionManager.getServerUrl(), userName, password, admin_password, location);
+
             Log.d(TAG, "attempting setup");
         }
     }
@@ -398,7 +431,7 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
             public void onNext(LoginModel loginModel) {
                 if (loginModel != null) {
                     Boolean authencated = loginModel.getAuthenticated();
-                    Log.d(TAG, "onNext: authencatedkk : "+authencated);
+                    Log.d(TAG, "onNext: authencatedkk : " + authencated);
                     Gson gson = new Gson();
                     sessionManager.setChwname(loginModel.getUser().getDisplay());
                     sessionManager.setCreatorID(loginModel.getUser().getUuid());
@@ -562,7 +595,9 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
 
     private void getLocationFromServer() {
         isLocationFetched = false;
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        //String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+
         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched) {
             ApiClient.changeApiBaseUrl(BASE_URL);
             ApiInterface apiService = ApiClient.createService(ApiInterface.class);

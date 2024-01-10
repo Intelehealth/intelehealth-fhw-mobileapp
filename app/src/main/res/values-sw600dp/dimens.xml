@@ -917,6 +917,7 @@
     <dimen name="icons_appoint_height">60dp</dimen>
     <dimen name="empty_view_spalsh">170dp</dimen>
     <dimen name="margin_visit_summary">30dp</dimen>
+    <dimen name="radio_server">20sp</dimen>
 
 
 </resources>

@@ -167,7 +167,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private static final String TAG_HELP = "TAG_HELP";
 
     private void saveToken() {
-        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+       // Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+        Manager.getInstance().setBaseUrl(sessionManager.getServerUrl());
+
         // save fcm reg. token for chat (Video)
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }

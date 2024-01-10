@@ -322,7 +322,8 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         //api for get appointment slots for selected date and doctor speciality
 
 //        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
-        String baseUrl = BuildConfig.SERVER_URL + ":3004";
+        //String baseUrl = BuildConfig.SERVER_URL + ":3004";
+        String baseUrl = sessionManager.getServerUrl() + ":3004";
 
         ApiClientAppointment.getInstance(baseUrl).getApi().getSlots(mSelectedStartDate, mSelectedEndDate, speciality).enqueue(new Callback<SlotInfoResponse>() {
             @Override

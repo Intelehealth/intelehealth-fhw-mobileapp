@@ -1083,7 +1083,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
+            //sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
+            sign_url = sessionManager.getServerUrl() + "/ds/" + details.getUuid() + "_sign.png";
+
             Log.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?
@@ -2454,7 +2456,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
+           // sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
+            sign_url = sessionManager.getServerUrl() + "/ds/" + details.getUuid() + "_sign.png";
+
             Log.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?

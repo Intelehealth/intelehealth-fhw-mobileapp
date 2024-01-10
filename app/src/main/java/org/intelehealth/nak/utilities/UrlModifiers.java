@@ -27,7 +27,9 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "personimage/" + patientUuid;
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        //String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+
         return BASE_URL + provider;
     }
 
@@ -35,7 +37,9 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "personimage";
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        //String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+
         return BASE_URL + provider;
     }
 
@@ -44,7 +48,9 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "obs/" + obsUuid + "/value";
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        //String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+
         return BASE_URL + provider;
     }
 
@@ -52,7 +58,9 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "obs/" + obsUuid;
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        //String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+
         return BASE_URL + provider;
     }
 
@@ -60,7 +68,9 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "obs";
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        //String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+
         return BASE_URL + provider;
     }
 
@@ -70,14 +80,18 @@ public class UrlModifiers {
     public String setwhatsappPresciptionUrl() {
         //https://uiux.intelehealth.org/intelehealth/index.html#/i/7d
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        String BASE_URL = BuildConfig.SERVER_URL +
+     /*   String BASE_URL = BuildConfig.SERVER_URL +
+                "/intelehealth/index.html";*/
+        String BASE_URL = sessionManager.getServerUrl() +
                 "/intelehealth/index.html";
         return BASE_URL;
     }
 
     public String setDeletePrescItemUrl(String obsUuid) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        //String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+
         String endpoint = "obs/" + obsUuid;
 
         return BASE_URL + endpoint;
@@ -88,27 +102,33 @@ public class UrlModifiers {
     public String setProviderProfileImageUrl() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/uploaddocimage";
+       // String BASE_URL = BuildConfig.SERVER_URL + "/uploaddocimage";
+        String BASE_URL = sessionManager.getServerUrl() + "/uploaddocimage";
+
         return BASE_URL;
     }
     //ui2.0 for provider profile download
     public String getProviderProfileImageUrl(String providerUuid) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        String BASE_URL = BuildConfig.SERVER_URL + "/di/";
+        //String BASE_URL = BuildConfig.SERVER_URL + "/di/";
+        String BASE_URL = sessionManager.getServerUrl() + "/di/";
         String urlFinal = BASE_URL + providerUuid + "_image.png";
         return urlFinal;
     }
 
     public String profileAgeUpdateUrl(String USER_UUID) {
         String provider = "person/" + USER_UUID;
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        //String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+
         return BASE_URL + provider;
     }
 
     public String getHWProfileDetails(String USER_UUID)
     {
         String provider = "provider?user=" + USER_UUID + "&v=custom:(uuid,person:(uuid,display,gender,age,birthdate,preferredName),attributes)";
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        //String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 }

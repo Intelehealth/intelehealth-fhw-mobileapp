@@ -198,7 +198,7 @@ public class AppConstants {
    // public static final String NAMMA_AAROGYA_DOCTOR_SPECIALITY = "Obstetrician & Gynecologist";
     public static final String NAMMA_AAROGYA_DOCTOR_SPECIALITY = IntelehealthApplication.getAppContext().getResources().getString(R.string.obgyn);
     public static final String NAMMA_AAROGYA_CHIEF_COMPLAINT = IntelehealthApplication.getAppContext().getResources().getString(R.string.obgyn);
-
-
+    public static final String PRODUCTION_SERVER_URL = "https://nak.intelehealth.org";
+    public static final String TEST_SERVER_URL = "https://naktraining.intelehealth.org";
 }
 

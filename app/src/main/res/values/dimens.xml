@@ -1008,5 +1008,6 @@
     <dimen name="empty_view_spalsh">150dp</dimen>
     <dimen name="iv_health_for_her_logo_height">145dp</dimen>
     <dimen name="margin_visit_summary">25dp</dimen>
+    <dimen name="radio_server">16sp</dimen>
 
 </resources>

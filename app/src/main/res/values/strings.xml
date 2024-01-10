@@ -1896,5 +1896,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="confirm_cancel_appointment_message">This visit has an associated appointment and ending the visit will also cancel the appointment. Are you sure that you want to proceed?</string>
     <string name="appointment_exist">Appointment is already booked for this visit</string>
     <string name="working_label">Working*</string>
+    <string name="production">Production</string>
+    <string name="testing">Testing</string>
+    <string name="server">Server</string>
 
 </resources>

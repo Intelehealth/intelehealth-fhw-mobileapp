@@ -581,7 +581,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         ProfileCreateAttribute inputModel = new ProfileCreateAttribute(newValue, attributeTypeUuid);
 
-        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
+        //ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
+        ApiClient.changeApiBaseUrl(sessionManager.getServerUrl());
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResponseBody> profileAttributeCreateRequest = apiService.PROFILE_ATTRIBUTE_CREATE(sessionManager.getProviderID(),
                 inputModel, "Basic " + sessionManager.getEncoded());
@@ -605,7 +606,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
     private void updateProfileAttribute(String attributeTypeUuid, String newValue) {
-        String serverUrl = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
+        //String serverUrl = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
+        String serverUrl = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -641,7 +643,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         ProfileUpdateAge inputModel = new ProfileUpdateAge(updatedAge, updatedDOB, gender);
 
-        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
+        // ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
+        ApiClient.changeApiBaseUrl(sessionManager.getServerUrl());
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResponseBody> profileAgeUpdateRequest = apiService.PROFILE_AGE_UPDATE(personUuid,
                 inputModel, "Basic " + sessionManager.getEncoded());

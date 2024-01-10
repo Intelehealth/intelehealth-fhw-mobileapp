@@ -330,8 +330,8 @@ public class LoginActivityNew extends AppCompatActivity {
      */
     public void UserLoginTask(String mEmail, String mPassword) {
         cpd.show();
-        String urlString = urlModifiers.loginUrl(BuildConfig.SERVER_URL);
-
+        //String urlString = urlModifiers.loginUrl(BuildConfig.SERVER_URL);
+        String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
         Log.d(TAG, "UserLoginTask: urlString : " + urlString);
         Logger.logD(TAG, "username and password" + mEmail + mPassword);
         encoded = base64Utils.encoded(mEmail, mPassword);
@@ -365,7 +365,9 @@ public class LoginActivityNew extends AppCompatActivity {
 
                 UrlModifiers urlModifiers = new UrlModifiers();
                 // String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
-                String url = urlModifiers.loginUrlProvider(BuildConfig.SERVER_URL, loginModel.getUser().getUuid());
+                //String url = urlModifiers.loginUrlProvider(BuildConfig.SERVER_URL, loginModel.getUser().getUuid());
+                String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
+
                 Log.d(TAG, "onNext: url : " + url);
                 if (authencated) {
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);

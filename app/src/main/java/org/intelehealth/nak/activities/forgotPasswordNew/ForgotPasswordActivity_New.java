@@ -218,8 +218,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         buttonContinue.setEnabled(false);
         cpd.show();
 //        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
-        String serverUrl = BuildConfig.SERVER_URL + ":3004";
-        Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + BuildConfig.SERVER_URL);
+        //String serverUrl = BuildConfig.SERVER_URL + ":3004";
+        String serverUrl = sessionManager.getServerUrl() + ":3004";
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New("password", username, mobileNo, 91, "");

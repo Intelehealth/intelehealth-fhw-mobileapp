@@ -101,7 +101,7 @@ public class IntelehealthApplication extends MultiDexApplication {
             Parse.initialize(new Parse.Configuration.Builder(this)
                     .clientBuilder(builder)
                     .applicationId(AppConstants.IMAGE_APP_ID)
-                    .server(BuildConfig.SERVER_URL + ":1337/parse/")
+                    .server(sessionManager.getServerUrl() + ":1337/parse/")
                     .build()
             );
             Log.i(TAG, "onCreate: Parse init");
@@ -148,8 +148,9 @@ public class IntelehealthApplication extends MultiDexApplication {
     public void initSocketConnection() {
         Log.d(TAG, "initSocketConnection: ");
         if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
-            Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
-            String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
+            //Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+            Manager.getInstance().setBaseUrl(sessionManager.getServerUrl());
+            String socketUrl = sessionManager.getServerUrl() + ":3004" + "?userId="
                     + sessionManager.getProviderID()
                     + "&name=" + sessionManager.getChwname();
             if (!socketManager.isConnected()) socketManager.connect(socketUrl);

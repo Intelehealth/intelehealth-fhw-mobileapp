@@ -82,7 +82,8 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
             Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_START);
-        String baseUrl = BuildConfig.SERVER_URL + ":3004";
+        //String baseUrl = BuildConfig.SERVER_URL + ":3004";
+        String baseUrl = new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseUrl).getApi()
                 .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
                         DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),

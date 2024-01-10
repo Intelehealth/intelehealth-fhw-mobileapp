@@ -156,7 +156,9 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
 
         SessionManager sessionManager = new SessionManager(context);
 //        String serverUrl = "https://" + AppConstants.DEMO_URL + ":3004";
-        String serverUrl = BuildConfig.SERVER_URL+":3004";
+        //String serverUrl = BuildConfig.SERVER_URL+":3004";
+        String serverUrl = sessionManager.getServerUrl() + ":3004";
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 

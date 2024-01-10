@@ -104,8 +104,10 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        //String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
 //        String url = "https://" + sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
@@ -134,8 +136,7 @@ public class SyncDAO {
                         context.sendBroadcast(broadcast);
                         Log.d(TAG, "onResponse: sync : " + sync);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
-                    }
-                    else {
+                    } else {
                         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
                     }
@@ -198,7 +199,9 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        // String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+
 //        String url = "https://" + sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
@@ -239,11 +242,11 @@ public class SyncDAO {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
                         if (fromActivity.equalsIgnoreCase("home")) {
-                           // Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
                             //Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
-                           // Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
                         }
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
@@ -378,7 +381,9 @@ public class SyncDAO {
         Log.d(TAG, "pushDataApi: encoded : " + encoded);
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
-        String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/push/pushdata";
+       // String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/push/pushdata";
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
+
         Logger.logD(TAG, "push request url - " + url);
         Logger.logD(TAG, "push request encoded - " + encoded);
         if (!pushRequestApiCall.getVisits().isEmpty()
@@ -433,7 +438,7 @@ public class SyncDAO {
                                 }
 
                                 //ui2.0 for provider profile details
-                                if(pushResponseApiCall.getData().getProviderlist()!=null) {
+                                if (pushResponseApiCall.getData().getProviderlist() != null) {
                                     Log.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());
                                     for (int i = 0; i < pushResponseApiCall.getData().getProviderlist().size(); i++) {
                                         try {
