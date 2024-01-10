@@ -7,6 +7,8 @@ import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
 import static org.intelehealth.app.utilities.StringUtils.getLocaleGender;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_TEST_COLLECT;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_TEST_RECEIVE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.app.NotificationManager;
@@ -325,7 +327,9 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     private List<MedicationAidModel> update_aidUuidList = new ArrayList<>();
     private List<MedicationAidModel> update_medUuidDispenseList = new ArrayList<>();
     private List<MedicationAidModel> update_medUuidAdministeredList = new ArrayList<>();
-    private String encounterDispense, encounterAdminister;
+    private List<MedicationAidModel> update_collectedTest_UUIDList = new ArrayList<>();
+    private List<MedicationAidModel> update_receivedTest_UUIDList = new ArrayList<>();
+    private String encounterDispense, encounterAdminister, encounterTestCollect, encounterTestReceive;
 
     LinearLayout aidOrderType1TableRow, aidOrderType2TableRow, aidOrderType3TableRow,
             aidOrderType4TableRow, aidOrderType5TableRow, tl_prescribed_medications, ll_test;
@@ -4427,18 +4431,36 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                 if (value.contains("\n"))
                     value = value.replace("\n", "<br>");
 
+                fetchTest_Collected_Received_Data(ENCOUNTER_TEST_COLLECT);
+              //  fetchTest_Collected_Received_Data(ENCOUNTER_TEST_RECEIVE);
+
+                String collectedByValue = (!format_TestCollectReceive_Details(uuid, true).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + format_TestCollectReceive_Details(uuid, true) + "</font>" : "";
+
+                String receiveByValue = (!format_TestCollectReceive_Details(uuid, false).isEmpty())
+                        ? "<br><font color=\'#2F1E91\'>" + format_TestCollectReceive_Details(uuid, false) + "</font>" : "";
+
                 if (!newTestsReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newTestsReturned = /*newTestsReturned + "<br>" +*/ "<br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newTestsReturned = /*newTestsReturned + "<br>" +*/ "<br>" + "<strike><font color=\\'#000000\\'>" + value +
+                                "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>"
+                                + collectedByValue + receiveByValue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+
                     else if (comment == null || comment.trim().isEmpty())
-                        newTestsReturned = /*newTestsReturned + "<br>" +*/ "<br>" + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newTestsReturned = /*newTestsReturned + "<br>" +*/ "<br>" + value + "<br><font color=\'#2F1E91\'>" +
+                                formatCreatorDetails(creator, created_date, "") + "</font>" +
+                                collectedByValue + receiveByValue;
                 }
 
                 if (newTestsReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newTestsReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+                        newTestsReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" +
+                                formatCreatorDetails(creator, created_date, comment) + "</font>" +
+                                collectedByValue + receiveByValue + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
+
                     else if (comment == null || comment.trim().isEmpty())
-                        newTestsReturned = value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                        newTestsReturned = value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>" +
+                                collectedByValue + receiveByValue;
                 }
 
                 if (!testsReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4693,7 +4715,104 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
             }
         }
     }
+    private void fetchTest_Collected_Received_Data(String ENCOUNTER_TYPE_UUID) {
+        Log.d(TAG, "fetchTest_Collected_Received_Data: " + visitUuid);
+        List<String> encounterListByVisitUUID = getEncounterListByVisitUUID(visitUuid, ENCOUNTER_TYPE_UUID);
 
+        if (encounterListByVisitUUID.size() > 0) {
+            // collected test - start
+            if (ENCOUNTER_TYPE_UUID.equalsIgnoreCase(ENCOUNTER_TEST_COLLECT)) {
+                if (update_collectedTest_UUIDList != null && update_collectedTest_UUIDList.size() > 0)
+                    update_collectedTest_UUIDList.clear();
+
+                for (int i = 0; i < encounterListByVisitUUID.size(); i++) {
+                    encounterTestCollect = encounterListByVisitUUID.get(i);
+                    Log.d(TAG, "encounterTestCollect: " + encounterTestCollect);
+
+                    if (!encounterTestCollect.isEmpty()) {
+                        try {
+                            update_collectedTest_UUIDList.addAll(ObsDAO.getObsDispenseAdministerData
+                                    (encounterTestCollect, UuidDictionary.OBS_TEST_COLLECT));    // COLLECT = 4476c831-0dd7-4677-94e2-509ddda03f01
+                        } catch (DAOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+            // collected test - end
+
+            // received test - start
+            if (ENCOUNTER_TYPE_UUID.equalsIgnoreCase(ENCOUNTER_TEST_RECEIVE)) {
+                if (update_receivedTest_UUIDList != null && update_receivedTest_UUIDList.size() > 0)
+                    update_receivedTest_UUIDList.clear();
+
+                for (int i = 0; i < encounterListByVisitUUID.size(); i++) {
+                    encounterTestReceive = encounterListByVisitUUID.get(i);
+                    Log.d(TAG, "encounterTestReceive: " + encounterTestReceive);
+
+                    if (!encounterTestReceive.isEmpty()) {
+                        try {
+                            update_receivedTest_UUIDList.addAll(ObsDAO.getObsDispenseAdministerData
+                                    (encounterTestReceive, UuidDictionary.OBS_TEST_RECEIVE));    // RECEIVE = 769ef1e2-9e3d-439a-a3d7-d0190636110e
+                        } catch (DAOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+            // receive test - end
+
+        }
+    }
+
+    private String format_TestCollectReceive_Details(String uuid, boolean isTestCollectBy) {
+        String obsformat = "";
+
+        if (isTestCollectBy) {  // TEST COLLECTED BY
+            if (update_collectedTest_UUIDList != null && update_collectedTest_UUIDList.size() > 0) {
+                for (int i = 0; i < update_collectedTest_UUIDList.size(); i++) {
+                    MedicationModel medicationModel = new Gson().fromJson(update_collectedTest_UUIDList.get(i).getValue(), MedicationModel.class);
+                    if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(uuid)) {
+                        String valueTimeStamp = "";
+                        if (update_collectedTest_UUIDList.get(i).getCreatedDate() != null)
+                            valueTimeStamp = getValueTimeStamp(update_collectedTest_UUIDList.get(i).getCreatedDate());
+                        else {
+                            AidModel aidModel = new Gson().fromJson(update_collectedTest_UUIDList.get(i).getValue(), AidModel.class);
+                            valueTimeStamp = getValueTimeStamp(aidModel.getDateTime());
+                        }
+                        Log.d(TAG, "format_TestCollectReceive_Details: collect: " + valueTimeStamp);
+                        if (!obsformat.isEmpty())
+                            obsformat = obsformat + "<br>" + "Collected By" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                        else
+                            obsformat = "Collected By" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                    }
+                }
+            }
+        }
+        else {  // TEST_RECEIVE_BY
+            if (update_receivedTest_UUIDList != null && update_receivedTest_UUIDList.size() > 0) {
+                for (int i = 0; i < update_receivedTest_UUIDList.size(); i++) {
+                    MedicationModel medicationModel = new Gson().fromJson(update_receivedTest_UUIDList.get(i).getValue(), MedicationModel.class);
+                    if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(uuid)) {
+                        String valueTimeStamp = "";
+                        if (update_receivedTest_UUIDList.get(i).getCreatedDate() != null)
+                            valueTimeStamp = getValueTimeStamp(update_receivedTest_UUIDList.get(i).getCreatedDate());
+                        else {
+                            AidModel aidModel = new Gson().fromJson(update_receivedTest_UUIDList.get(i).getValue(), AidModel.class);
+                            valueTimeStamp = getValueTimeStamp(aidModel.getDateTime());
+                        }
+                        Log.d(TAG, "format_TestCollectReceive_Details: receive: " + valueTimeStamp);
+                        if (!obsformat.isEmpty())
+                            obsformat = obsformat + "<br>" + "Received By" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                        else
+                            obsformat = "Received By" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                    }
+                }
+            }
+        }
+
+        return obsformat;
+    }
     private String formatAdministeredByDetails(String uuid, boolean isDispense) {
         String obsformat = "";
 
