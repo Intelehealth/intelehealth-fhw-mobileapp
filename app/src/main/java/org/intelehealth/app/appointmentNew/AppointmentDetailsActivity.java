@@ -535,7 +535,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             tvAppointmentTime.setVisibility(View.GONE);
             stateAppointmentPrescription.setVisibility(View.GONE);
 
-            mScheduleAppointmentTextView.setVisibility(View.VISIBLE);
+            mScheduleAppointmentTextView.setVisibility(View.GONE);
         } else {
             btnCancelAppointment.setVisibility(View.VISIBLE);
             btnRescheduleAppointment.setVisibility(View.VISIBLE);
