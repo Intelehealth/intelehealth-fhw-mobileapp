@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
+import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.COLLECTED;
+import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.RECEIVED;
 import static org.intelehealth.app.database.dao.ObsDAO.getObsPastNotes;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -58,6 +61,7 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
         tag = intent.getStringExtra("mtag");
         visitUUID = intent.getStringExtra("visitUUID");
         if (tag != null && viewtag != null && visitUUID != null) {
+            Log.d(TAG, "pastnotes Intent: " + viewtag + " : " + tag + " : " + visitUUID);
             try {
                 toolBarSetup();
                 initUI();
@@ -76,8 +80,8 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
         // todo: Fetch notes and datetime for both medication and aid -- Dispense/Admininster ENCOUNTERS.
         String encounterTypeUUID = null;
         String obsConceptUUID = null;
-
         Gson gson = new Gson();
+
         if (tag.equalsIgnoreCase("dispense")) {
             encounterTypeUUID = UuidDictionary.ENCOUNTER_DISPENSE;
             if (viewtag.equalsIgnoreCase("medication")) {
@@ -96,18 +100,26 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
                 obsConceptUUID = UuidDictionary.OBS_ADMINISTER_AID;
             }
         }
+        else if (tag.equalsIgnoreCase(COLLECTED)) {
+            encounterTypeUUID = UuidDictionary.ENCOUNTER_TEST_COLLECT;
+            obsConceptUUID = UuidDictionary.OBS_TEST_COLLECT;
+        }
+        else if (tag.equalsIgnoreCase(RECEIVED)) {
+            encounterTypeUUID = UuidDictionary.ENCOUNTER_TEST_RECEIVE;
+            obsConceptUUID = UuidDictionary.OBS_TEST_RECEIVE;
+        }
 
         if (encounterTypeUUID != null && obsConceptUUID != null) {
             List<PastNotesModel> list = getObsPastNotes(visitUUID, encounterTypeUUID, obsConceptUUID);
-            if (list != null && list.size() > 0) {
+            if (list.size() > 0) {
                 for (int i = 0; i < list.size(); i++) {
                     PastNotesModel model = gson.fromJson(list.get(i).getValue(), PastNotesModel.class);
-                    String dateTime = DateAndTimeUtils.formatDateFromOnetoAnother(
-                            model.getDateTime(),
+                    String dateTime = DateAndTimeUtils.formatDateFromOnetoAnother
+                            (model.getDateTime(),
                             "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                             "dd MMM, yyyy HH:mm a");
 
-                    if (viewtag.equalsIgnoreCase("medication"))
+                    if (viewtag.equalsIgnoreCase("medication") || viewtag.equalsIgnoreCase(COLLECTED) || viewtag.equalsIgnoreCase(RECEIVED))
                         pastNotesModelList.add(new PastNotesModel(model.getMedicationNotesList().get(0), dateTime));
                     else if (viewtag.equalsIgnoreCase("aid")) {
                         pastNotesModelList.add(new PastNotesModel(model.getAidNotesList().get(0), dateTime));
@@ -116,7 +128,7 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
             }
         }
 
-        if (pastNotesModelList != null && pastNotesModelList.size() > 0) {
+        if (pastNotesModelList.size() > 0) {
             binding.tvNodatafound.setVisibility(View.GONE);
             binding.rvPastnotes.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
             adapter = new PastNotesAdapter(context, pastNotesModelList);
@@ -138,6 +150,11 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
             title = getString(R.string.medicine_past_notes);
         else if (viewtag.equalsIgnoreCase(Medication_Aid_Activity.AID))
             title = getString(R.string.aid_past_notes);
+        else if (viewtag.equalsIgnoreCase(COLLECTED))
+            title = "Collected Past Notes";
+        else if (viewtag.equalsIgnoreCase(RECEIVED))
+            title = "Received Past Notes";
+
         getSupportActionBar().setTitle(title);
     }
 
