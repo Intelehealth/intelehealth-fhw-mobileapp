@@ -118,6 +118,7 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
     private RadioGroup mRadioGroupServer;
     private RadioButton mRbProduction, mRbTesting;
     private TextView tvServerError;
+    private List<String> items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,16 +174,18 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
             }
         });
 
-        if (isNetworkConnected()) {
+        //due to server selection
+       /* if (isNetworkConnected()) {
             mNoInternetTextView.setVisibility(View.GONE);
             getLocationFromServer();
-        }
+        }*/
 
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(btnSetup.getWindowToken(), 0);
+
                 attemptLogin();
             }
         });
@@ -199,6 +202,18 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
             }
         });
 
+        autotvLocations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (items != null && items.size() > 0) {
+                    tvServerError.setVisibility(View.GONE);
+                } else {
+                    tvServerError.setVisibility(View.VISIBLE);
+                    tvServerError.setText(getString(R.string.select_server));
+                }
+
+            }
+        });
         saveUrlAsPerServerSelection();
     }
 
@@ -207,13 +222,23 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
         mRbProduction = findViewById(R.id.rb_production);
         mRbTesting = findViewById(R.id.rb_testing);
         tvServerError = findViewById(R.id.server_option_error);
-        sessionManager.setServerUrl("");
+        //sessionManager.setServerUrl(null);
 
         mRadioGroupServer.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rb_production) {
+                tvServerError.setVisibility(View.GONE);
                 sessionManager.setServerUrl(AppConstants.PRODUCTION_SERVER_URL);
+                if (isNetworkConnected()) {
+                    mNoInternetTextView.setVisibility(View.GONE);
+                    getLocationFromServer();
+                }
             } else if (checkedId == R.id.rb_testing) {
+                tvServerError.setVisibility(View.GONE);
                 sessionManager.setServerUrl(AppConstants.TEST_SERVER_URL);
+                if (isNetworkConnected()) {
+                    mNoInternetTextView.setVisibility(View.GONE);
+                    getLocationFromServer();
+                }
             }
         });
     }
@@ -334,7 +359,7 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
             tvServerError.setVisibility(View.GONE);
         } else {
             tvServerError.setVisibility(View.VISIBLE);
-            tvServerError.setText(getString(R.string.error_field_required));
+            tvServerError.setText(getString(R.string.select_server));
             return;
         }
 
@@ -460,6 +485,8 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
                                                     sessionManager.setLocationUuid(location.getUuid());
                                                     sessionManager.setLocationDescription(location.getDescription());
                                                     sessionManager.setServerUrl(CLEAN_URL);
+                                                    Log.d(TAG, "kzonCreate: urlselected in setup kk :: " + sessionManager.getServerUrl());
+
                                                     sessionManager.setServerUrlRest(BASE_URL);
                                                     sessionManager.setServerUrlBase(CLEAN_URL + "/openmrs");
                                                     sessionManager.setBaseUrl(BASE_URL);
@@ -613,7 +640,9 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
                                     Results<Location> locationList = locationResults;
                                     Log.d(TAG, "11onNext: locations list size : " + locationList.getResults().size());
                                     mLocations = locationList.getResults();
-                                    List<String> items = getLocationStringList(locationList.getResults());
+                                    // List<String> items = getLocationStringList(locationList.getResults());
+                                    items = getLocationStringList(locationList.getResults());
+
                                     Log.d(TAG, "11onNext: items size : " + items.size());
                                     LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivityNew.this, items);
                                     autotvLocations.setAdapter(adapter);
@@ -656,8 +685,11 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
 
-        } else
-            Toast.makeText(SetupActivityNew.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+        } else {
+            //commented bcz server selection is there now
+            // Toast.makeText(SetupActivityNew.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+
+        }
 
 
     }
@@ -944,5 +976,6 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
         super.onResume();
         //temporary added
         sessionManager.setIsLoggedIn(false);
+        sessionManager.setServerUrl(null);
     }
 }

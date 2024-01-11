@@ -104,7 +104,7 @@
                     android:id="@+id/linear_occupation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_24"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
                     android:orientation="vertical">
 
                     <TextView
@@ -167,7 +167,7 @@
                     style="@style/TextviewInputTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/tv_location_margin_top"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
                     android:text="@string/location_new"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
@@ -410,7 +410,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="@dimen/layout_setup_padding_start"
-        android:layout_marginTop="@dimen/button_setup1_margin_top"
+        android:layout_marginTop="@dimen/setup_button_margin_top_bottom"
         android:layout_marginEnd="@dimen/layout_setup_padding_end"
         android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
         android:orientation="vertical">

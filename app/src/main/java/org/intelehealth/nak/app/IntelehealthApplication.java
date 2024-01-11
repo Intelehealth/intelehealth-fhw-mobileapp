@@ -89,7 +89,8 @@ public class IntelehealthApplication extends MultiDexApplication {
                 .replace(' ', '0');
 
         String url = sessionManager.getServerUrl();
-        if (url == null) {
+        Log.d(TAG, "onCreate: appurl kk :: "+url);
+        if (url == null || url.isEmpty()) {
             Log.i(TAG, "onCreate: Parse not init");
         } else {
             Dispatcher dispatcher = new Dispatcher();

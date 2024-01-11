@@ -299,6 +299,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         }
         sessionManager = new SessionManager(this);
+        Log.d(TAG, "onCreate: urlselected in setup kk :: "+sessionManager.getServerUrl());
         initUI();
         clickListeners();
     }

@@ -1009,5 +1009,6 @@
     <dimen name="iv_health_for_her_logo_height">145dp</dimen>
     <dimen name="margin_visit_summary">25dp</dimen>
     <dimen name="radio_server">16sp</dimen>
+    <dimen name="setup_button_margin_top_bottom">80dp</dimen>
 
 </resources>

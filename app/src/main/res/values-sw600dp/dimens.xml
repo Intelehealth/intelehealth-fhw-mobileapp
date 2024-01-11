@@ -918,6 +918,7 @@
     <dimen name="empty_view_spalsh">170dp</dimen>
     <dimen name="margin_visit_summary">30dp</dimen>
     <dimen name="radio_server">20sp</dimen>
+    <dimen name="setup_button_margin_top_bottom">90dp</dimen>
 
 
 </resources>
