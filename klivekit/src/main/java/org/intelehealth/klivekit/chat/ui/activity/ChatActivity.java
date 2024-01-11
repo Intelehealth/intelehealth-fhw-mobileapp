@@ -362,7 +362,12 @@ public class ChatActivity extends AppCompatActivity {
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
-        registerReceiver(mBroadcastReceiver, filterSend);
+        ContextCompat.registerReceiver(
+                this,
+                mBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     private void showCharLimitToast() {
@@ -375,7 +380,8 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() > 0 && charSequence.length() >= 1000) {
-                    Toast.makeText(ChatActivity.this, "You reach to max limit of 1000 chars", Toast.LENGTH_LONG).show();
+                    String alertMsg = getString(R.string.chat_text_reach_to_limit);
+                    Toast.makeText(ChatActivity.this, alertMsg, Toast.LENGTH_SHORT).show();
                 }
             }
 

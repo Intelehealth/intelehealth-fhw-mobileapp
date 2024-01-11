@@ -275,7 +275,12 @@ public class CompleteActivity extends AppCompatActivity {
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(CALL_END_FROM_WEB_INTENT_ACTION);
-        registerReceiver(mCallEndBroadcastReceiver, filterSend);
+        ContextCompat.registerReceiver(
+                this,
+                mCallEndBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
 
         mImageUrlFormatBroadcastReceiver = new BroadcastReceiver() {
             @Override

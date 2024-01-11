@@ -62,6 +62,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
@@ -1533,14 +1534,24 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        registerReceiver(downloadPrescriptionService, filter);
+        ContextCompat.registerReceiver(
+                this,
+                downloadPrescriptionService,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     public void callBroadcastReceiver() {
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            registerReceiver(receiver, filter);
+            ContextCompat.registerReceiver(
+                    this,
+                    receiver,
+                    filter,
+                    ContextCompat.RECEIVER_NOT_EXPORTED
+            );
             isReceiverRegistered = true;
         }
     }
@@ -1550,7 +1561,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         super.onStart();
         registerDownloadPrescription();
         callBroadcastReceiver();
-        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
+        ContextCompat.registerReceiver(
+                this,
+                mMessageReceiver,
+                new IntentFilter(FILTER),
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
 
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
