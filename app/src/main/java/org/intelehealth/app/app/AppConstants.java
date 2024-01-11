@@ -193,5 +193,9 @@ public class AppConstants {
 
     public static final int EVENT_APPOINTMENT_BOOKING = 3992;
 
+    //status of appointment
+    public static final String CANCELLED = "cancelled";
+    public static final String BOOKED = "booked";
+
 }
 

@@ -662,7 +662,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             editAddDocs.setVisibility(View.VISIBLE);
         }
 
-        if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
+        //here we changing the appointment button behavior
+        //based on appointment status
+        if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.CANCELLED)) {
+            btnAppointment.setText(getString(R.string.appointment));
+        }else if(new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.BOOKED)){
             btnAppointment.setText(getString(R.string.reschedule));
             doesAppointmentExist = true;
         }
