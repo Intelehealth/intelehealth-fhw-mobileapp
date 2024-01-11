@@ -89,7 +89,6 @@ public class AppConstants {
     public static final String DIA_RED_MAX = "99";
 
 
-
     //functions constants
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
@@ -97,7 +96,7 @@ public class AppConstants {
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
     public static String NEW_UUID = new UuidGenerator().generateUuid();
     public static NotificationUtils notificationUtils = new NotificationUtils();
-    public static final String DOCTOR_NOT_NEEDED="Specialist doctor not needed";
+    public static final String DOCTOR_NOT_NEEDED = "Specialist doctor not needed";
 
     //  Image Conversion Ratio
     public static int IMAGE_JPG_QUALITY = 70;
@@ -115,7 +114,6 @@ public class AppConstants {
             new PeriodicWorkRequest.Builder(SyncWorkManager.class, REPEAT_INTERVAL, TimeUnit.MINUTES)
                     .setConstraints(MY_CONSTRAINTS)
                     .build();
-
 
 
     // Added by Venu to make the Sync Issue Solutions as intele_safe.
@@ -159,6 +157,6 @@ public class AppConstants {
         return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
     }
 
-
+    public static final String DOCTOR_ROLE = "Organizational: Doctor";
 }
 
