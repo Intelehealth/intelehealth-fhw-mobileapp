@@ -361,7 +361,12 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".webrtc.activity.IDAVideoActivity"
+            android:excludeFromRecents="true"
             android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
+            android:taskAffinity=""
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity

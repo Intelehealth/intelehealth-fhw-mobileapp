@@ -49,6 +49,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                         patientName = get(0).name
                     }
                 }.also { arg ->
+                    Timber.tag(TAG).d("onMessageReceived: $arg")
                     if (isAppInForeground()) {
                         arg.callMode = CallMode.INCOMING
                         arg.className = IDAVideoActivity::class.java.name
