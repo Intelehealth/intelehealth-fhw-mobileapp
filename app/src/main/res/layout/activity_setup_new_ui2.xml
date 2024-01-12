@@ -101,9 +101,10 @@
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/linear_occupation"
+                    android:id="@+id/layout_server_selection"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/common_title_margin_top"
                     android:orientation="vertical">
 

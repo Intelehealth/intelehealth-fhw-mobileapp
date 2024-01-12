@@ -1060,6 +1060,78 @@ public class AllAppointmentsFragment extends Fragment {
             }
             }).start();
         }
+    private void searchOperationOld(String query) {
+        Log.d(TAG, "searchOperation: query :: "+query);
+        query = query.toLowerCase().trim();
+        query = query.replaceAll(" {2}", " ");
+        String finalQuery = query;
+
+        new Thread(() -> {
+            List<AppointmentInfo> allUpcomingList = new AppointmentDAO().getAllUpcomingAppointmentsWithFilters(fromDate, toDate, finalQuery);
+            List<AppointmentInfo> allCancelledList = new AppointmentDAO().getAllCancelledAppointmentsWithFilters(fromDate, toDate, finalQuery);
+            List<AppointmentInfo> allCompletedList = new AppointmentDAO().getAllCompletedAppointmentsWithFilters(fromDate, toDate, finalQuery);
+            upcomingSearchList.clear();
+            cancelledSearchList.clear();
+            completedSearchList.clear();
+          /*  upcomingSearchList.addAll(allUpcomingList);
+            cancelledSearchList.addAll(allCancelledList);
+            completedSearchList.addAll(allCompletedList);*/
+
+
+            if (!finalQuery.isEmpty()) {
+                upcomingSearchList.clear();
+                cancelledSearchList.clear();
+                completedSearchList.clear();
+
+
+                if (allUpcomingList.size() > 0) {
+                    for (AppointmentInfo info : allUpcomingList) {
+                        String patientName = info.getPatientName().toLowerCase();
+                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
+                            upcomingSearchList.add(info);
+                        }
+                    }
+                }
+
+                if (allCancelledList.size() > 0) {
+                    for (AppointmentInfo info : allCancelledList) {
+                        String patientName = info.getPatientName().toLowerCase();
+                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
+                            cancelledSearchList.add(info);
+                        }
+                    }
+                }
+
+                if (allCompletedList.size() > 0) {
+                    for (AppointmentInfo info : allCompletedList) {
+                        String patientName = info.getPatientName().toLowerCase();
+                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
+                            completedSearchList.add(info);
+                        }
+                    }
+                }
+
+
+                //set counts to the textviews
+                setCountsToTextviews();
+
+                requireActivity().runOnUiThread(() -> {
+                    Log.d(TAG, "searchOperation: ");
+                    upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), upcomingSearchList, "upcoming");
+                    rvUpcomingApp.setNestedScrollingEnabled(true);
+                    rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
+
+                    cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledSearchList, "cancelled");
+                    rvCancelledApp.setNestedScrollingEnabled(true);
+                    rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
+
+                    completedAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedSearchList, "completed");
+                    rvCompletedApp.setNestedScrollingEnabled(true);
+                    rvCompletedApp.setAdapter(completedAllAppointmentsAdapter);
+                });
+            }
+        }).start();
+    }
 
     private void setCountsToTextviews() {
         tvUpcomingAppsCountTitle.setText("");

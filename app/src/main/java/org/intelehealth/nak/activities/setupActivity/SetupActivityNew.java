@@ -127,6 +127,9 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
         sessionManager = new SessionManager(this);
         context = SetupActivityNew.this;
         networkUtils = new NetworkUtils(context, this);
+
+        //temp- bcz of direct prodcution point
+        sessionManager.setServerUrl(AppConstants.PRODUCTION_SERVER_URL);
         questionIV = findViewById(R.id.setup_info_question_mark);
         customProgressDialog = new CustomProgressDialog(context);
         autotvLocations = findViewById(R.id.autotv_select_location);
@@ -175,10 +178,10 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
         });
 
         //due to server selection
-       /* if (isNetworkConnected()) {
+        if (isNetworkConnected()) {
             mNoInternetTextView.setVisibility(View.GONE);
             getLocationFromServer();
-        }*/
+        }
 
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,15 +356,15 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
         String admin_password = etAdminPassword.getText().toString();
         boolean cancel = false;
         View focusView = null;
-
-        if (mRadioGroupServer.getCheckedRadioButtonId() != -1) {
+        //temp comment
+       /* if (mRadioGroupServer.getCheckedRadioButtonId() != -1) {
             //rb selected
             tvServerError.setVisibility(View.GONE);
         } else {
             tvServerError.setVisibility(View.VISIBLE);
             tvServerError.setText(getString(R.string.select_server));
             return;
-        }
+        }*/
 
         if (TextUtils.isEmpty(autotvLocations.getText().toString())) {
             autotvLocations.requestFocus();
@@ -424,6 +427,7 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
         if (location != null) {
             Log.i(TAG, location.getDisplay());
             //TestSetup(BuildConfig.SERVER_URL, userName, password, admin_password, location);
+            sessionManager.setServerUrl(AppConstants.PRODUCTION_SERVER_URL);
             TestSetup(sessionManager.getServerUrl(), userName, password, admin_password, location);
 
             Log.d(TAG, "attempting setup");
@@ -436,11 +440,11 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
     }
 
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
-        Log.d(TAG, "TestSetup: ");
+        Log.d(TAG, "TestSetup: CLEAN_URL: "+CLEAN_URL);
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
-        Log.d(TAG, "TestSetup: urlString : " + urlString);
+        Log.d(TAG, "c urlString : " + urlString);
         Log.d(TAG, "TestSetup: encoded : " + encoded);
         Log.d(TAG, "TestSetup: encodednew : " + "Basic " + encoded);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
