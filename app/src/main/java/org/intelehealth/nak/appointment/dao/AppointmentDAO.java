@@ -912,7 +912,7 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
-    public List<AppointmentInfo> getAllUpcomingAppointmentsWithFilters(String fromDate, String toDate, String finalQuery) {
+    public List<AppointmentInfo> getAllUpcomingAppointmentsWithFilters(String fromDate, String toDate, String finalQuery, int limit, int offset) {
         Log.d(TAG, "getAllUpcomingAppointmentsWithFilters: ");
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String currentDate = dateFormat1.format(new Date());
@@ -929,6 +929,7 @@ public class AppointmentDAO {
         } else if (!finalQuery.isEmpty()) {
             whereClause = "AND patient_name_new LIKE " + "'%" + finalQuery + "%'";
         }
+        Log.d(TAG, "getAllUpcomingAppointmentsWithFilters: whereClause : "+whereClause);
 
         String finalQueryNew = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
                 + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
@@ -936,8 +937,9 @@ public class AppointmentDAO {
                 + "from tbl_patient p, tbl_appointments a "
                 + "where  a.status = 'booked' AND p.uuid = a.patient_id  AND datetime(a.slot_js_date) >= datetime('now') AND  a.slot_date != ? "
                 + whereClause;
-        idCursor = db.rawQuery(finalQueryNew, new String[]{currentDate});
+        Log.d(TAG, "getAllUpcomingAppointmentsWithFilters: finalQueryNew cckckkc : "+finalQueryNew);
 
+        idCursor = db.rawQuery(finalQueryNew, new String[]{currentDate});
        /* if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
             String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
                     + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
@@ -1016,7 +1018,7 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
-    public List<AppointmentInfo> getAllCancelledAppointmentsWithFilters(String fromDate, String toDate, String finalQuery) {
+    public List<AppointmentInfo> getAllCancelledAppointmentsWithFilters(String fromDate, String toDate, String finalQuery, int limit, int offset) {
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String currentDate = dateFormat1.format(new Date());
         Cursor idCursor = null;
@@ -1024,17 +1026,25 @@ public class AppointmentDAO {
         toDate = getDateInFormat(toDate);
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        String whereClause = "";
 
-        /*if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
+        if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
             whereClause = "AND new_slot_date BETWEEN '" + fromDate + "'  and '" + toDate + "'   and patient_name_new LIKE " + "'%" + finalQuery + "%'";
         } else if (!fromDate.isEmpty() && !toDate.isEmpty()) {
             whereClause = "AND new_slot_date BETWEEN '" + fromDate + "'  and '" + toDate + "'";
         } else if (!finalQuery.isEmpty()) {
             whereClause = "AND patient_name_new LIKE " + "'%" + finalQuery + "%'";
-        }*/
+        }
+        String finalQueryNew = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+                + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
+                + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                + "from tbl_patient p, tbl_appointments a "
+                + "where  a.status = 'cancelled' AND p.uuid = a.patient_id AND a.slot_date != ? "
+                + whereClause;
+        idCursor = db.rawQuery(finalQueryNew, new String[]{currentDate});
 
 
-        if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
+       /* if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
             String selectQuery = "SELECT p.patient_photo, p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid,"
                     + " a.appointment_id,a.slot_date, a.slot_day, substr(a.slot_js_date, 1, 10) AS new_slot_date, a.slot_duration,a.slot_duration_unit, a.slot_time, "
                     + "a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
@@ -1063,7 +1073,7 @@ public class AppointmentDAO {
                     + "WHERE p.uuid = a.patient_id "
                     + "AND a.status = 'cancelled' AND  +  a.slot_date != ? and patient_name_new LIKE "
                     + "'%" + finalQuery + "%'", new String[]{currentDate});
-        }
+        }*/
 
         EncounterDAO encounterDAO = new EncounterDAO();
 
@@ -1106,7 +1116,7 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
-    public List<AppointmentInfo> getAllCompletedAppointmentsWithFilters(String fromDate, String toDate, String finalQuery) {
+    public List<AppointmentInfo> getAllCompletedAppointmentsWithFilters(String fromDate, String toDate, String finalQuery, int limit, int offset) {
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String currentDate = dateFormat1.format(new Date());
         fromDate = getDateInFormat(fromDate);
@@ -1115,7 +1125,24 @@ public class AppointmentDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = null;
 
+        String whereClause = "";
         if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
+            whereClause = "AND new_slot_date BETWEEN '" + fromDate + "'  and '" + toDate + "'   and patient_name_new LIKE " + "'%" + finalQuery + "%'";
+        } else if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+            whereClause = "AND new_slot_date BETWEEN '" + fromDate + "'  and '" + toDate + "'";
+        } else if (!finalQuery.isEmpty()) {
+            whereClause = "AND patient_name_new LIKE " + "'%" + finalQuery + "%'";
+        }
+
+        String finalQueryNew = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+                + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
+                + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                + "from tbl_patient p, tbl_appointments a "
+                + "where  a.status = 'booked' AND p.uuid = a.patient_id  AND datetime(a.slot_js_date) < datetime('now') AND  a.slot_date != ? "
+                + whereClause;
+        idCursor = db.rawQuery(finalQueryNew, new String[]{currentDate});
+
+      /*  if (!fromDate.isEmpty() && !toDate.isEmpty() && !finalQuery.isEmpty()) {
             String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
                     + "a.slot_date, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_day, a.slot_js_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, "
                     + "a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
@@ -1147,10 +1174,10 @@ public class AppointmentDAO {
                             + "AND a.status = 'booked'"
                             + "AND datetime(a.slot_js_date) < datetime('now') + a.slot_date != ? " +
                             "and patient_name_new LIKE " + "'%" + finalQuery + "%'"
-                    /*  + "LIMIT ? OFFSET ?"*/ //commenting due to crash
+                    *//*  + "LIMIT ? OFFSET ?"*//* //commenting due to crash
                     , new String[]{currentDate});
 
-        }
+        }*/
         EncounterDAO encounterDAO = new EncounterDAO();
 
         if (idCursor.getCount() != 0) {

@@ -233,6 +233,7 @@
                     <!--Associated symp - start-->
                     <RelativeLayout
                         android:id="@+id/associ_sym_relative"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textView_content_complaint"
@@ -1126,6 +1127,7 @@
                     <RelativeLayout
                         android:id="@+id/famhist_details_relative"
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textView_content_pathist"
                         android:layout_marginStart="@dimen/fu_margin_start"

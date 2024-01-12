@@ -188,7 +188,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription2);
-
+        context = PrescriptionActivity.this;
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -482,13 +482,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     // permission code - start
     private void checkPerm() {
-       /// if (checkAndRequestPermissions()) {
-            try {
-                doWebViewPrint_downloadBtn();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-      //  }
+        /// if (checkAndRequestPermissions()) {
+        try {
+            doWebViewPrint_downloadBtn();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //  }
     }
 
     @Override
@@ -836,6 +836,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private void doWebViewPrint_downloadBtn() throws ParseException {
         // Create a WebView object specifically for printing
         WebView webView = new WebView(this);
+        webView.getSettings().setJavaScriptEnabled(true);
+
         webView.setWebViewClient(new WebViewClient() {
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -1145,7 +1147,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             pat_hist, fam_hist,
                             mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
-            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument1 : "+htmlDocument);
+            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument1 : " + htmlDocument);
 
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -1192,7 +1194,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             /*pat_hist, fam_hist,*/
                             /*mComplaint*/ "",
                             diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
-            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument2 : "+htmlDocument);
+            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument2 : " + htmlDocument);
 
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
@@ -1681,7 +1683,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         super.onStart();
         registerDownloadPrescription();
         callBroadcastReceiver();
-       // LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
+        // LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
         ContextCompat.registerReceiver(this, mMessageReceiver, new IntentFilter(FILTER), ContextCompat.RECEIVER_EXPORTED); //changed because previous code not working on android 14 and above
 
         //register receiver for internet check
@@ -1710,13 +1712,15 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     @Override
     public void onPause() {
         super.onPause();
-        if (receiver != null) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
-            receiver = null;
-        }
-        if (downloadPrescriptionService != null) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
-            downloadPrescriptionService = null;
+        if(context!=null){
+            if (receiver != null) {
+                LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+                receiver = null;
+            }
+            if (downloadPrescriptionService != null) {
+                LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+                downloadPrescriptionService = null;
+            }
         }
         isReceiverRegistered = false;
     }
@@ -2109,6 +2113,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private void doWebViewPrint_Button() throws ParseException {
         // Create a WebView object specifically for printing
         WebView webView = new WebView(this);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -2456,7 +2461,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-           // sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
+            // sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
             sign_url = sessionManager.getServerUrl() + "/ds/" + details.getUuid() + "_sign.png";
 
             Log.v("signurl", "signurl: " + sign_url);
@@ -2518,7 +2523,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 //                            pat_hist, fam_hist,
                             mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
-            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument3 : "+htmlDocument);
+            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument3 : " + htmlDocument);
 
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -2565,7 +2570,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             /*pat_hist, fam_hist,*/
                             /*mComplaint*/ "",
                             diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
-            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument4 : "+htmlDocument);
+            Log.d("TAG", "kaveridoWebViewPrint_Button: htmlDocument4 : " + htmlDocument);
 
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }

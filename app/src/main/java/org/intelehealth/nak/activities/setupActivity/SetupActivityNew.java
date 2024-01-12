@@ -128,7 +128,7 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
         context = SetupActivityNew.this;
         networkUtils = new NetworkUtils(context, this);
 
-        //temp- bcz of direct prodcution point
+        //temp- bcz of direct pro point
         sessionManager.setServerUrl(AppConstants.PRODUCTION_SERVER_URL);
         questionIV = findViewById(R.id.setup_info_question_mark);
         customProgressDialog = new CustomProgressDialog(context);
@@ -440,7 +440,7 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
     }
 
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
-        Log.d(TAG, "TestSetup: CLEAN_URL: "+CLEAN_URL);
+        Log.d(TAG, "TestSetup: CLEAN_URL: " + CLEAN_URL);
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
@@ -980,6 +980,7 @@ public class SetupActivityNew extends BaseActivity implements NetworkUtils.Inter
         super.onResume();
         //temporary added
         sessionManager.setIsLoggedIn(false);
-        sessionManager.setServerUrl(null);
+        sessionManager.setServerUrl(AppConstants.PRODUCTION_SERVER_URL);
+        // sessionManager.setServerUrl(null);
     }
 }

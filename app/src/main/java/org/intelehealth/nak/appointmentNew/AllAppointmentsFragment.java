@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -94,9 +95,9 @@ public class AllAppointmentsFragment extends Fragment {
     int totalCompleted = 0;
     SessionManager sessionManager;
     String currentDate = "";
-    private final List<AppointmentInfo> upcomingSearchList = new ArrayList<>();
-    private final List<AppointmentInfo> completedSearchList = new ArrayList<>();
-    private final List<AppointmentInfo> cancelledSearchList = new ArrayList<>();
+    private List<AppointmentInfo> upcomingSearchList = new ArrayList<>();
+    private List<AppointmentInfo> completedSearchList = new ArrayList<>();
+    private List<AppointmentInfo> cancelledSearchList = new ArrayList<>();
     private List<AppointmentInfo> upcomingAppointmentInfoList;
     private List<AppointmentInfo> completedAppointmentInfoList;
     private List<AppointmentInfo> cancelledAppointmentInfoList;
@@ -113,6 +114,7 @@ public class AllAppointmentsFragment extends Fragment {
     private int upcomingStart = 0, upcomingEnd = upcomingStart + upcomingLimit;
     private int completedStart = 0, completedEnd = completedStart + completedLimit;
     private NestedScrollView nsvToday;
+    private String finalQuery = "";
 
     @Override
     public void onResume() {
@@ -219,10 +221,10 @@ public class AllAppointmentsFragment extends Fragment {
                     fromDate = "";
                     toDate = "";
                     whichAppointment = "";
-                   // getAppointments();
-                    if(!autotvSearch.getText().toString().isEmpty()){
+                    // getAppointments();
+                    if (!autotvSearch.getText().toString().isEmpty()) {
                         searchOperation(autotvSearch.getText().toString());
-                    }else{
+                    } else {
                         resetData();
                     }
                 }
@@ -281,6 +283,7 @@ public class AllAppointmentsFragment extends Fragment {
         ivClearText.setOnClickListener(v -> {
             autotvSearch.setText("");
             searchPatientText = "";
+            finalQuery = "";
             // getAppointments();
             resetData();
 
@@ -679,67 +682,95 @@ public class AllAppointmentsFragment extends Fragment {
 
     }
 
-    private void getUpcomingAppointments() {
+    private List<AppointmentInfo> getUpcomingAppointments() {
         //recyclerview for upcoming appointments
         tvUpcomingAppsCount.setText("0");
         tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming_0));
-        upcomingAppointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate,autotvSearch.getText().toString());
+        //upcomingAppointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate, autotvSearch.getText().toString());
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                upcomingAppointmentInfoList = new AppointmentDAO().getAllUpcomingAppointmentsWithFilters(fromDate, toDate, finalQuery, upcomingLimit, upcomingStart);
+                if (upcomingAppointmentInfoList.size() > 0) {
+                    rvUpcomingApp.setVisibility(View.VISIBLE);
+                    noDataFoundForUpcoming.setVisibility(View.GONE);
 
-        if (upcomingAppointmentInfoList.size() > 0) {
-            rvUpcomingApp.setVisibility(View.VISIBLE);
-            noDataFoundForUpcoming.setVisibility(View.GONE);
+                    upcomingAppointmentInfoList.forEach(appointmentInfo -> {
+                        String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
+                        appointmentInfo.setPatientProfilePhoto(patientProfilePath);
+                    });
 
-            upcomingAppointmentInfoList.forEach(appointmentInfo -> {
-                String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
-                appointmentInfo.setPatientProfilePhoto(patientProfilePath);
-            });
+                    upcomingSearchList.clear();
+                    upcomingSearchList.addAll(upcomingAppointmentInfoList);
+                    upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), upcomingSearchList, "upcoming");
+                    rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
+                    upcomingStart = upcomingEnd;
+                    upcomingEnd += upcomingLimit;
+                } else {
+                    upcomingSearchList.clear();
+                    rvUpcomingApp.setVisibility(View.GONE);
+                    noDataFoundForUpcoming.setVisibility(View.VISIBLE);
+                }
 
-            upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), upcomingAppointmentInfoList, "upcoming");
-            rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
-            upcomingStart = upcomingEnd;
-            upcomingEnd += upcomingLimit;
-        } else {
-            rvUpcomingApp.setVisibility(View.GONE);
-            noDataFoundForUpcoming.setVisibility(View.VISIBLE);
-        }
+               /* tvUpcomingAppsCount.setText(upcomingSearchList.size() + "");
+                tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingSearchList.size() + ")");*/
+                setCountsToTextviews();
+            }
+        });
 
-        tvUpcomingAppsCount.setText(upcomingAppointmentInfoList.size() + "");
-        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentInfoList.size() + ")");
+        return upcomingSearchList;
     }
 
-    private void getCancelledAppointments() {
+    private List<AppointmentInfo> getCancelledAppointments() {
         //recyclerview for getCancelledAppointments appointments
         tvCancelledAppsCount.setText("0");
         tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled_0));
-        cancelledAppointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate, autotvSearch.getText().toString());
+        // cancelledAppointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate, autotvSearch.getText().toString());
+        cancelledAppointmentInfoList = new AppointmentDAO().getAllCancelledAppointmentsWithFilters(fromDate, toDate, finalQuery, cancelledLimit, cancelledStart);
 
-        if (cancelledAppointmentInfoList.size() > 0) {
-            rvCancelledApp.setVisibility(View.VISIBLE);
-            noDataFoundForCancelled.setVisibility(View.GONE);
 
-            cancelledAppointmentInfoList.forEach(appointmentInfo -> {
-                String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
-                appointmentInfo.setPatientProfilePhoto(patientProfilePath);
-            });
+        Handler mainHandler = new Handler(Looper.getMainLooper());
 
-            cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledAppointmentInfoList, "cancelled");
-            rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
-            cancelledStart = cancelledEnd;
-            cancelledEnd += cancelledLimit;
-        } else {
-            rvCancelledApp.setVisibility(View.GONE);
-            noDataFoundForCancelled.setVisibility(View.VISIBLE);
-        }
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (cancelledAppointmentInfoList.size() > 0) {
+                    rvCancelledApp.setVisibility(View.VISIBLE);
+                    noDataFoundForCancelled.setVisibility(View.GONE);
 
-        tvCancelledAppsCount.setText(cancelledAppointmentInfoList.size() + "");
-        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentInfoList.size() + ")");
+                    cancelledAppointmentInfoList.forEach(appointmentInfo -> {
+                        String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
+                        appointmentInfo.setPatientProfilePhoto(patientProfilePath);
+                    });
+
+                    cancelledSearchList.clear();
+                    cancelledSearchList.addAll(cancelledAppointmentInfoList);
+                    cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledSearchList, "cancelled");
+                    rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
+                   /* tvCancelledAppsCount.setText(cancelledAppointmentInfoList.size() + "");
+                    tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentInfoList.size() + ")");
+*/
+                    setCountsToTextviews();
+                    cancelledStart = cancelledEnd;
+                    cancelledEnd += cancelledLimit;
+                } else {
+                    cancelledSearchList.clear();
+                    rvCancelledApp.setVisibility(View.GONE);
+                    noDataFoundForCancelled.setVisibility(View.VISIBLE);
+                }
+                setCountsToTextviews();
+            }
+        });
+        return cancelledSearchList;
     }
 
 
-    private void getCompletedAppointments() {
+    private List<AppointmentInfo> getCompletedAppointments() {
         tvCompletedAppsCount.setText("0");
         tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        completedAppointmentInfoList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate, autotvSearch.getText().toString());
+        //completedAppointmentInfoList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate, autotvSearch.getText().toString());
+        completedAppointmentInfoList = new AppointmentDAO().getAllCompletedAppointmentsWithFilters(fromDate, toDate, finalQuery, completedLimit, completedStart);
 
         if (completedAppointmentInfoList.size() > 0) {
             rvCompletedApp.setVisibility(View.VISIBLE);
@@ -751,11 +782,16 @@ public class AllAppointmentsFragment extends Fragment {
             completedEnd += completedLimit;
         } else {
             //no data found
+            completedSearchList.clear();
             rvCompletedApp.setVisibility(View.GONE);
             noDataFoundForCompleted.setVisibility(View.VISIBLE);
-            tvCompletedAppsCount.setText(completedAppointmentInfoList.size() + "");
-            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");
+           /* tvCompletedAppsCount.setText(completedAppointmentInfoList.size() + "");
+            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");*/
+
         }
+        setCountsToTextviews();
+
+        return completedAppointmentInfoList;
     }
 
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
@@ -782,9 +818,19 @@ public class AllAppointmentsFragment extends Fragment {
                 }
             }
         }
-        AllAppointmentsAdapter allAppointmentsFragment = new
-                AllAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
-        rvCompletedApp.setAdapter(allAppointmentsFragment);
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                completedSearchList.clear();
+                completedSearchList.addAll(appointmentsDaoList);
+                AllAppointmentsAdapter allAppointmentsFragment = new
+                        AllAppointmentsAdapter(getActivity(), completedSearchList, "completed");
+                rvCompletedApp.setAdapter(allAppointmentsFragment);
+            }
+        });
+
     }
 
     private String getPatientProfile(String patientUuid) {
@@ -840,7 +886,7 @@ public class AllAppointmentsFragment extends Fragment {
             getUpcomingAppointments();
             getCompletedAppointments();
             getCancelledAppointments();
-           /// resetData();
+            /// resetData();
 
         } else if (whichAppointment.isEmpty() && !fromDate.isEmpty() && !toDate.isEmpty()) {
             //all
@@ -934,15 +980,21 @@ public class AllAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate, autotvSearch.getText().toString());
+        //List<AppointmentInfo> tempList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate, autotvSearch.getText().toString());
+        List<AppointmentInfo> tempList = new AppointmentDAO().getAllUpcomingAppointmentsWithFilters(fromDate, toDate, finalQuery, upcomingLimit, upcomingStart);
+
         if (tempList.size() > 0) {
             upcomingAppointmentInfoList.addAll(tempList);
             upcomingAllAppointmentsAdapter.notifyDataSetChanged();
             upcomingStart = upcomingEnd;
             upcomingEnd += upcomingLimit;
-            tvUpcomingAppsCount.setText(upcomingAppointmentInfoList.size() + "");
-            tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentInfoList.size() + ")");
+            //tvUpcomingAppsCount.setText(upcomingAppointmentInfoList.size() + "");
+            //tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentInfoList.size() + ")");
+        }else{
+            upcomingSearchList.clear();
         }
+        setCountsToTextviews();
+
     }
 
     private void setMoreDataIntoCancelledRecyclerView() {
@@ -955,15 +1007,21 @@ public class AllAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate, autotvSearch.getText().toString());
+        // List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate, autotvSearch.getText().toString());
+        List<AppointmentInfo> tempList = new AppointmentDAO().getAllCancelledAppointmentsWithFilters(fromDate, toDate, finalQuery, cancelledLimit, cancelledStart);
+
         if (tempList.size() > 0) {
             cancelledAppointmentInfoList.addAll(tempList);
             cancelledAllAppointmentsAdapter.notifyDataSetChanged();
             cancelledStart = cancelledEnd;
             cancelledEnd += cancelledLimit;
-            tvCancelledAppsCount.setText(cancelledAppointmentInfoList.size() + "");
-            tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentInfoList.size() + ")");
+            //tvCancelledAppsCount.setText(cancelledAppointmentInfoList.size() + "");
+            //tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentInfoList.size() + ")");
+        }else{
+            cancelledSearchList.clear();
         }
+        setCountsToTextviews();
+
     }
 
     private void setMoreDataIntoCompletedRecyclerView() {
@@ -976,90 +1034,41 @@ public class AllAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate, autotvSearch.getText().toString());
+        //List<AppointmentInfo> tempList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate, autotvSearch.getText().toString());
+        List<AppointmentInfo> tempList = new AppointmentDAO().getAllCompletedAppointmentsWithFilters(fromDate, toDate, finalQuery, completedLimit, completedStart);
+
         if (tempList.size() > 0) {
             getDataForCompletedAppointments(tempList);
             completedAppointmentInfoList.addAll(tempList);
             completedAllAppointmentsAdapter.notifyDataSetChanged();
             upcomingStart = upcomingEnd;
             upcomingEnd += upcomingLimit;
-            tvCompletedAppsCount.setText(completedAppointmentInfoList.size() + "");
-            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");
+            //tvCompletedAppsCount.setText(completedAppointmentInfoList.size() + "");
+            // tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");
+        }else{
+            completedSearchList.clear();
         }
+        setCountsToTextviews();
+
     }
 
     private void searchOperation(String query) {
-        Log.d(TAG, "searchOperation: query :: "+query);
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
-        String finalQuery = query;
-
-        new Thread(() -> {
-            List<AppointmentInfo> allUpcomingList = new AppointmentDAO().getAllUpcomingAppointmentsWithFilters(fromDate, toDate, finalQuery);
-            List<AppointmentInfo> allCancelledList = new AppointmentDAO().getAllCancelledAppointmentsWithFilters(fromDate, toDate, finalQuery);
-            List<AppointmentInfo> allCompletedList = new AppointmentDAO().getAllCompletedAppointmentsWithFilters(fromDate, toDate, finalQuery);
+        finalQuery = query;
+        getUpcomingAppointments();
+        getCancelledAppointments();
+        getCompletedAppointments();
+        /*new Thread(() -> {
             upcomingSearchList.clear();
             cancelledSearchList.clear();
             completedSearchList.clear();
-          /*  upcomingSearchList.addAll(allUpcomingList);
-            cancelledSearchList.addAll(allCancelledList);
-            completedSearchList.addAll(allCompletedList);*/
-
-
-            if (!finalQuery.isEmpty()) {
-                upcomingSearchList.clear();
-                cancelledSearchList.clear();
-                completedSearchList.clear();
-
-
-                if (allUpcomingList.size() > 0) {
-                    for (AppointmentInfo info : allUpcomingList) {
-                        String patientName = info.getPatientName().toLowerCase();
-                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
-                            upcomingSearchList.add(info);
-                        }
-                    }
-                }
-
-                if (allCancelledList.size() > 0) {
-                    for (AppointmentInfo info : allCancelledList) {
-                        String patientName = info.getPatientName().toLowerCase();
-                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
-                            cancelledSearchList.add(info);
-                        }
-                    }
-                }
-
-                if (allCompletedList.size() > 0) {
-                    for (AppointmentInfo info : allCompletedList) {
-                        String patientName = info.getPatientName().toLowerCase();
-                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
-                            completedSearchList.add(info);
-                        }
-                    }
-                }
-
-
-                //set counts to the textviews
-                setCountsToTextviews();
-
-                requireActivity().runOnUiThread(() -> {
-                    Log.d(TAG, "searchOperation: ");
-                    upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), upcomingSearchList, "upcoming");
-                    rvUpcomingApp.setNestedScrollingEnabled(true);
-                    rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
-
-                    cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledSearchList, "cancelled");
-                    rvCancelledApp.setNestedScrollingEnabled(true);
-                    rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
-
-                    completedAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedSearchList, "completed");
-                    rvCompletedApp.setNestedScrollingEnabled(true);
-                    rvCompletedApp.setAdapter(completedAllAppointmentsAdapter);
-                });
-            }
-            }).start();
-        }
+            upcomingSearchList = getUpcomingAppointments();
+            cancelledSearchList = getCancelledAppointments();
+            completedSearchList = getCompletedAppointments();
+        }).start();*/
+    }
+/*
     private void searchOperationOld(String query) {
         Log.d(TAG, "searchOperation: query :: "+query);
         query = query.toLowerCase().trim();
@@ -1073,9 +1082,11 @@ public class AllAppointmentsFragment extends Fragment {
             upcomingSearchList.clear();
             cancelledSearchList.clear();
             completedSearchList.clear();
-          /*  upcomingSearchList.addAll(allUpcomingList);
+          */
+/*  upcomingSearchList.addAll(allUpcomingList);
             cancelledSearchList.addAll(allCancelledList);
-            completedSearchList.addAll(allCompletedList);*/
+            completedSearchList.addAll(allCompletedList);*//*
+
 
 
             if (!finalQuery.isEmpty()) {
@@ -1132,6 +1143,7 @@ public class AllAppointmentsFragment extends Fragment {
             }
         }).start();
     }
+*/
 
     private void setCountsToTextviews() {
         tvUpcomingAppsCountTitle.setText("");
