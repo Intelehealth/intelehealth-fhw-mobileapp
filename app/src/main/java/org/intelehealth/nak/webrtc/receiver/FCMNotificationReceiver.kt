@@ -43,7 +43,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
                     nurseName = sessionManager.chwname
                     val liveKitUrl = "wss://${sessionManager.serverUrl}:9090"
-                    val socketUrl1 = "https://${sessionManager.serverUrl}:3004"
+                    val socketUrl1 = "${sessionManager.serverUrl}:3004"
                     val liveKitCleanedUrl = liveKitUrl.replace("wss://https://", "wss://")
 
                     callType = CallType.VIDEO
@@ -59,7 +59,11 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                         CallHandlerUtils.saveIncomingCall(context, arg)
                         context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
                     } else {
-                        CallHandlerUtils.operateIncomingCall(it, arg, NammaVideoActivity::class.java)
+                        CallHandlerUtils.operateIncomingCall(
+                            it,
+                            arg,
+                            NammaVideoActivity::class.java
+                        )
                     }
                 }
             } else {
