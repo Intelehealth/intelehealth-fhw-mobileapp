@@ -1000,7 +1000,7 @@ public class SetupActivity extends AppCompatActivity {
 
             @Override
             public void onNext(LoginModel loginModel) {
-                if (areDoctorCredentialsUsed(loginModel)) {
+                if (!areDoctorCredentialsUsed(loginModel)) {
                     Boolean authencated = loginModel.getAuthenticated();
                     Gson gson = new Gson();
                     sessionManager.setChwname(loginModel.getUser().getDisplay());
@@ -1112,7 +1112,11 @@ public class SetupActivity extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(context, getString(R.string.doctor_credentials_are_not_valid), Toast.LENGTH_LONG).show();
-                }
+                    progress.dismiss();
+                    mEmailView.requestFocus();
+                    mPasswordView.requestFocus();
+                    mLoginButton.setText(getString(R.string.action_sign_in));
+                    mLoginButton.setEnabled(true);   }
             }
 
             @Override
