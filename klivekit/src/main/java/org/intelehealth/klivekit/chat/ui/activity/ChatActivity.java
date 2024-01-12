@@ -116,9 +116,11 @@ public class ChatActivity extends AppCompatActivity {
 
 
     protected void setupActionBar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(mPatientName);
-//        getSupportActionBar().setSubtitle(m);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(mPatientName);
+            getSupportActionBar().setSubtitle(openMrsId);
+        }
     }
 
     protected void initiateView() {

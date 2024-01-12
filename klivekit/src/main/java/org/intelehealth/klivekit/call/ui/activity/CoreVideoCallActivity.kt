@@ -101,9 +101,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.addFlags(
-            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
         )
         super.onCreate(savedInstanceState)
         videoCallViewModel.room.initVideoRenderer(getLocalVideoRender())
@@ -151,8 +149,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.remoteParticipantDisconnected.observe(this) {
             if (it && isDeclined.not()) sayBye(
                 getString(
-                    R.string.left_the_call,
-                    args.doctorName
+                    R.string.left_the_call, args.doctorName
                 )
             )
         }
@@ -160,15 +157,14 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         socketViewModel.eventCallRejectByDoctor.observe(this) {
             if (it && isDeclined.not()) sayBye(
                 getString(
-                    R.string.call_rejected_by,
-                    args.doctorName
+                    R.string.call_rejected_by, args.doctorName
                 )
             )
         }
         socketViewModel.eventCallCancelByDoctor.observe(this) {
             Timber.e { "args ${args.toJson()}" }
-            if (it && args.isIncomingCall() && isDeclined.not()
-                && args.isCallAccepted().not() && args.isMissedCall().not()
+            if (it && args.isIncomingCall() && isDeclined.not() && args.isCallAccepted()
+                    .not() && args.isMissedCall().not()
             ) {
                 args.callStatus = CallStatus.MISSED
                 CallHandlerUtils.notifyCallNotification(args, this)
@@ -198,6 +194,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             Timber.e { "Call time up ${Calendar.getInstance().time}" }
             videoCallViewModel.stopCallTimeoutTimer()
             showToast(getString(R.string.call_time_up))
+            if (args.isIncomingCall()) {
+                args.callStatus = CallStatus.MISSED
+                CallHandlerUtils.notifyCallNotification(args, this@CoreVideoCallActivity)
+            }
         }
     }
 
@@ -286,12 +286,12 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             CallHandlerUtils.notifyCallNotification(args, this)
         } else if (args.isIncomingCall()) {
             onIncomingCall()
-            stopService(
-                Intent(
-                    this@CoreVideoCallActivity,
-                    HeadsUpNotificationService::class.java
-                )
-            )
+//            stopService(
+//                Intent(
+//                    this@CoreVideoCallActivity,
+//                    HeadsUpNotificationService::class.java
+//                )
+//            )
         } else onGoingCall()
     }
 
@@ -307,7 +307,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     open fun playRingtone() {
 //        mediaPlayer.prepare()
 //        mediaPlayer.start()
-        if (!ringtone.isPlaying) {
+        if (!ringtone.isPlaying && args.sound) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 ringtone.isLooping = true
             }
