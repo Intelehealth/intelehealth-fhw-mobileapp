@@ -113,6 +113,7 @@ public class IntelehealthApplication extends MultiDexApplication {
 
         initSocketConnection();
         DateTimeResource.build(this);
+        Timber.plant(Timber.DebugTree());
     }
 
     private void configureCrashReporting() {

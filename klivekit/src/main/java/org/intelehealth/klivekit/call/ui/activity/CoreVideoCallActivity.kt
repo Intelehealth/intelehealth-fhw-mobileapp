@@ -1,7 +1,10 @@
 package org.intelehealth.klivekit.call.ui.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.Ringtone
 import android.media.RingtoneManager
@@ -88,9 +91,9 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         RingtoneManager.getRingtone(applicationContext, notification)
     }
 
-//    private val audioManager: AudioManager by lazy {
-//        applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-//    }
+    private val audioManager: AudioManager by lazy {
+        applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    }
 
 //    private val mediaPlayer: MediaPlayer by lazy {
 //        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
@@ -112,6 +115,22 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         initView()
 //        observeLiveData()
 //        observerSocketEvent()
+        setAudioHighVolume()
+    }
+
+    private fun setAudioHighVolume() {
+//        audioManager.setStreamVolume(
+//            AudioManager.MODE_IN_COMMUNICATION,
+//            audioManager.getStreamMaxVolume(AudioManager.MODE_IN_COMMUNICATION),
+//            0
+//        )
+//
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            audioManager.availableCommunicationDevices.firstOrNull { it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER }
+                ?.let { audioManager.setCommunicationDevice(it) }
+        } else {
+            audioManager.isSpeakerphoneOn = true
+        }
     }
 
     private fun initView() {
@@ -315,7 +334,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     open fun stopRingtone() {
 //        Timber.e { "stopRingtone ${mediaPlayer.isPlaying}" }
 //        if (mediaPlayer.isPlaying) mediaPlayer.stop()
-        Timber.e { "stopRingtone ${ringtone.isPlaying}" }
+//        Timber.e { "stopRingtone ${ringtone.isPlaying}" }
         if (ringtone.isPlaying) ringtone.stop()
     }
 

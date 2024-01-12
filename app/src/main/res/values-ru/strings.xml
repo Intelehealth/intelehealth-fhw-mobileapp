@@ -1551,5 +1551,5 @@
     <string name="no_postal_code_added">Почтовый адрес не добавлен</string>
 
     <string name="call_logs">Журнал звонков</string>
-
+    <string name="no_network_tooltip">Нет сети</string>
 </resources>

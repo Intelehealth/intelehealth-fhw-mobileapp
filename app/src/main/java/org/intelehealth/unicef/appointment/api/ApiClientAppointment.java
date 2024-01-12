@@ -1,8 +1,6 @@
 package org.intelehealth.unicef.appointment.api;
 
 
-
-
 import android.util.Log;
 
 import org.intelehealth.unicef.BuildConfig;

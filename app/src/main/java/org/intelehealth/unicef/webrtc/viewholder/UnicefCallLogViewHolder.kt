@@ -9,7 +9,7 @@ import org.intelehealth.unicef.databinding.RowItemEkalCallLogBinding
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class EkalCallLogViewHolder(private val binding: RowItemEkalCallLogBinding) :
+class UnicefCallLogViewHolder(private val binding: RowItemEkalCallLogBinding) :
     BaseViewHolder(binding.root) {
     fun bind(callLog: RtcCallLog) {
         binding.callLog = callLog

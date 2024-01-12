@@ -535,6 +535,7 @@
         <activity
             android:name=".webrtc.activity.UnicefVideoActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
             <meta-data
@@ -545,6 +546,7 @@
         <activity
             android:name=".webrtc.activity.UnicefChatActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
             <meta-data
@@ -555,6 +557,7 @@
         <activity
             android:name=".webrtc.activity.UnicefCallLogActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
             <meta-data
