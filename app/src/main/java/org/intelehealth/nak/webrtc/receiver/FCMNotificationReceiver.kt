@@ -48,7 +48,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 
                     callType = CallType.VIDEO
                     url = liveKitCleanedUrl
-                    socketUrl = socketUrl1 + "?userId=" + nurseId + "&name=" + nurseName
+                    socketUrl = "$socketUrl1?userId=$nurseId&name=$nurseName"
                     PatientsDAO().getPatientName(roomId).apply {
                         patientName = get(0).name
                     }

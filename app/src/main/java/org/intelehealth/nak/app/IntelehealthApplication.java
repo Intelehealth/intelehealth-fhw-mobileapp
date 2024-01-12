@@ -147,7 +147,7 @@ public class IntelehealthApplication extends MultiDexApplication {
      */
     public void initSocketConnection() {
         Log.d(TAG, "initSocketConnection: ");
-        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
+        if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().isEmpty()) {
             //Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
             Manager.getInstance().setBaseUrl(sessionManager.getServerUrl());
             String socketUrl = sessionManager.getServerUrl() + ":3004" + "?userId="
