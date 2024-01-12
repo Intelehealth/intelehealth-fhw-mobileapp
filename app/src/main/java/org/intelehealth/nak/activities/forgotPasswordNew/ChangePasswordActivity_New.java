@@ -27,7 +27,6 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.intelehealth.nak.BuildConfig;
 import org.intelehealth.nak.R;
 import org.intelehealth.nak.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.nak.activities.loginActivity.LoginActivityNew;

@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-import org.intelehealth.nak.BuildConfig;
 import org.intelehealth.nak.app.AppConstants;
 import org.intelehealth.nak.app.IntelehealthApplication;
 import org.intelehealth.nak.appointment.api.ApiClientAppointment;

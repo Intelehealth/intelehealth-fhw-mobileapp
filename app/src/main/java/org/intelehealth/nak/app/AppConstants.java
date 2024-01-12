@@ -161,13 +161,15 @@ public class AppConstants {
     }
 
     public static String getFirebaseRTDBRootRef() {
-        return BuildConfig.FB_RT_INSTANCE.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
-
+      //  return BuildConfig.FB_RT_INSTANCE.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
+        String cleanedUrl = new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replace("https://", "");
+        return cleanedUrl.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
     }
 
     public static String getFirebaseRTDBRootRefForDeviceInfo() {
-        return BuildConfig.FB_RT_INSTANCE.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
-
+       // return BuildConfig.FB_RT_INSTANCE.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
+        String cleanedUrl = new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replace("https://", "");
+        return cleanedUrl.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
     }
 
     //UI2.0 Constants

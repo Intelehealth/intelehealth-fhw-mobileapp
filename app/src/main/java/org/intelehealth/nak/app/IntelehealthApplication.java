@@ -21,7 +21,6 @@ import com.parse.Parse;
 import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.Manager;
-import org.intelehealth.nak.BuildConfig;
 import org.intelehealth.nak.R;
 import org.intelehealth.nak.database.InteleHealthDatabaseHelper;
 import org.intelehealth.nak.utilities.SessionManager;
@@ -89,7 +88,7 @@ public class IntelehealthApplication extends MultiDexApplication {
                 .replace(' ', '0');
 
         String url = sessionManager.getServerUrl();
-        Log.d(TAG, "onCreate: appurl kk :: "+url);
+        Log.d(TAG, "onCreate: appurl kk :: " + url);
         if (url == null || url.isEmpty()) {
             Log.i(TAG, "onCreate: Parse not init");
         } else {
@@ -160,9 +159,33 @@ public class IntelehealthApplication extends MultiDexApplication {
     }
 
     private void initRtcConfig() {
-        new RtcEngine.Builder()
+      /*  new RtcEngine.Builder()
                 .callUrl(BuildConfig.LIVE_KIT_URL)
                 .socketUrl(BuildConfig.SOCKET_URL + "?userId="
+                        + sessionManager.getProviderID()
+                        + "&name=" + sessionManager.getChwname())
+                .callIntentClass(NammaVideoActivity.class)
+                .chatIntentClass(NammaChatActivity.class)
+                .callLogIntentClass(NammaCallLogActivity.class)
+                .build().saveConfig(this);*/
+        // DEV_LIVE_KIT_URL="wss://naktraining.intelehealth.org:9090"
+        // PROD_LIVE_KIT_URL="wss://nak.intelehealth.org:9090"
+        //DEV_SOCKET_URL="https://naktraining.intelehealth.org:3004"
+        //PROD_SOCKET_URL="https://nak.intelehealth.org:3004"
+        String liveKitUrl = "wss://" + sessionManager.getServerUrl() + ":9090";
+        String socket_url = sessionManager.getServerUrl() + ":3004";
+        String liveKitCleanedUrl = liveKitUrl.replace("wss://https://", "wss://");
+
+        Log.d(TAG, "kzzzzinitRtcConfig: old livekiturl : wss://naktraining.intelehealth.org:9090");
+        Log.d(TAG, "kzzzzinitRtcConfig: old socket_url : https://naktraining.intelehealth.org:3004");
+        Log.d(TAG, "kzzzzinitRtcConfig: new livekiturl : " + liveKitUrl);
+        Log.d(TAG, "kzzzzinitRtcConfig: new liveKitCleanedUrl : " + liveKitCleanedUrl);
+        Log.d(TAG, "kzzzzinitRtcConfig: new socket_url : " + socket_url);
+        Log.d(TAG, "initRtcConfig: sessionmanager url : " + sessionManager.getServerUrl());
+
+        new RtcEngine.Builder()
+                .callUrl(liveKitCleanedUrl)
+                .socketUrl(socket_url + "?userId="
                         + sessionManager.getProviderID()
                         + "&name=" + sessionManager.getChwname())
                 .callIntentClass(NammaVideoActivity.class)

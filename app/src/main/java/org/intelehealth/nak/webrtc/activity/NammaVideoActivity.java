@@ -25,9 +25,10 @@ import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.call.ui.activity.CoreVideoCallActivity;
 import org.intelehealth.klivekit.call.utils.CallMode;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
-import org.intelehealth.nak.BuildConfig;
 import org.intelehealth.nak.R;
+import org.intelehealth.nak.app.IntelehealthApplication;
 import org.intelehealth.nak.databinding.ActivityVideoCallBinding;
+import org.intelehealth.nak.utilities.SessionManager;
 
 import io.livekit.android.renderer.TextureViewRenderer;
 import io.livekit.android.room.participant.ConnectionQuality;
@@ -44,9 +45,13 @@ public class NammaVideoActivity extends CoreVideoCallActivity implements SwipeBu
     public static void startVideoCallActivity(Context context, RtcArgs args) {
 
         Log.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
-        args.setUrl(BuildConfig.LIVE_KIT_URL);
+        String liveKitUrl = "wss://"+ new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl()+":9090";
+        String socketUrl = new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl()+":3004";
+        String liveKitCleanedUrl = liveKitUrl.replace("wss://https://", "wss://");
+
+        args.setUrl(liveKitCleanedUrl);
         args.setCallType(CallType.VIDEO);
-        args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
+        args.setSocketUrl(socketUrl + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
 
         Intent intent = new Intent(context, NammaVideoActivity.class);
         intent.putExtra(RtcUtilsKt.RTC_ARGS, args);

@@ -14,7 +14,6 @@ import org.intelehealth.klivekit.call.utils.CallType
 import org.intelehealth.klivekit.call.utils.IntentUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.extensions.fromJson
-import org.intelehealth.nak.BuildConfig
 import org.intelehealth.nak.R
 import org.intelehealth.nak.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.nak.database.dao.PatientsDAO
@@ -43,9 +42,13 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 
                 Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
                     nurseName = sessionManager.chwname
+                    val liveKitUrl = "wss://${sessionManager.serverUrl}:9090"
+                    val socketUrl1 = "https://${sessionManager.serverUrl}:3004"
+                    val liveKitCleanedUrl = liveKitUrl.replace("wss://https://", "wss://")
+
                     callType = CallType.VIDEO
-                    url = BuildConfig.LIVE_KIT_URL
-                    socketUrl = BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
+                    url = liveKitCleanedUrl
+                    socketUrl = socketUrl1 + "?userId=" + nurseId + "&name=" + nurseName
                     PatientsDAO().getPatientName(roomId).apply {
                         patientName = get(0).name
                     }
