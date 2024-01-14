@@ -22,6 +22,7 @@ import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
+import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
 import org.intelehealth.app.utilities.PatientsFrameJson;
@@ -86,6 +87,8 @@ public class SyncDAO {
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setPullExcutedTime(sessionManager.isPulled());
             sessionManager.setFirstTimeSyncExecute(false);
+            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE));
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE(TAG, "Exception", e);
@@ -213,7 +216,7 @@ public class SyncDAO {
                 if (response.isSuccessful()) {
 
                     // SyncDAO syncDAO = new SyncDAO();
-                    boolean sync = false;
+                    /*boolean sync = false;
                     try {
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
@@ -236,7 +239,8 @@ public class SyncDAO {
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
 //                        }
-                    } else {
+                    }
+                    else {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
                         if (fromActivity.equalsIgnoreCase("home")) {
@@ -251,7 +255,21 @@ public class SyncDAO {
 //                        }
                         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
-                    }
+                    }*/
+
+
+                    ResponseDTO responseDTO = response.body();
+                    //Large amount of data passing not possible with intent
+                    //we passing data through static function
+                    InitialSyncIntentService.setData(responseDTO);
+
+                    //Inserting huge data to database is a heavy operation
+                    //that's why we using service here for initial data push
+                    Intent intent = new Intent(context, InitialSyncIntentService.class);
+                    intent.putExtra("from",fromActivity);
+                    context.startService(intent);
+
+
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
                         if (response.body().getData() != null) {

@@ -1033,6 +1033,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                         mTempSyncHelperList.contains(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)) {
                     hideSyncProgressBar(true);
                 }
+
+                //if all data push is completed then this type will be call
+                if (flagType == AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE) {
+                    //ui2.0 update user details in  nav header
+                    updateNavHeaderUserDetails();
+                    hideSyncProgressBar(true);
+                }
             }
 
             String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
@@ -1041,8 +1048,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 lastSync = StringUtils.en__hi_dob(lastSync);
             tvAppLastSync.setText(lastSync);
 
-            //ui2.0 update user details in  nav header
-            updateNavHeaderUserDetails();
 
 //            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
