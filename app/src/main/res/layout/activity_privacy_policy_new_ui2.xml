@@ -62,6 +62,7 @@
         android:layout_marginTop="@dimen/common_title_margin_top"
         android:layout_marginBottom="20dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:weightSum="2">
 
         <Button
