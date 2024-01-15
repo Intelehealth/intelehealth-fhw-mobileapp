@@ -433,7 +433,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         // follow up - yes - start
         yes_btn.setOnClickListener(v -> {
             Drawable drawable = ContextCompat.getDrawable(PrescriptionActivity.this, R.drawable.dialog_visit_sent_success_icon);
-            followupScheduledSuccess(drawable),
+            followupScheduledSuccess(drawable,
                     getResources().getString(R.string.follow_up_scheduled),
                     getResources().getString(R.string.follow_up_scheduled_successfully),
                     getResources().getString(R.string.okay));
