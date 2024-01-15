@@ -23,20 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.35" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnPrescription"
-        style="@style/Theme.EZazi.Button.Icon.Blue"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:contentDescription="@string/content_view_more"
-        app:icon="@drawable/ic_vector_prescription"
-        app:iconTint="?colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/btnEndStage"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btnEndStage" />
+        app:layout_constraintWidth_percent="0.4" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnFlipCamera"
@@ -47,8 +34,7 @@
         app:icon="@drawable/ic_chat"
         app:layout_constraintBottom_toBottomOf="@id/btnEndStage"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@id/btnPrescription"
-        app:layout_constraintStart_toEndOf="@id/btnVideoOnOff"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/btnEndStage" />
 
     <com.google.android.material.button.MaterialButton
@@ -70,7 +56,6 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:contentDescription="@string/emergency_call"
-        android:paddingHorizontal="@dimen/std_20dp"
         android:text="@string/lbl_sos"
         app:layout_constraintBottom_toBottomOf="@id/btnEndStage"
         app:layout_constraintEnd_toStartOf="@id/btnVideoOnOff"
