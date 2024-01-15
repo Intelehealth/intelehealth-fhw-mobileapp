@@ -102,11 +102,12 @@ public class UrlModifiers {
     public String setProviderProfileImageUrl() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
 
-       // String BASE_URL = BuildConfig.SERVER_URL + "/uploaddocimage";
+        // String BASE_URL = BuildConfig.SERVER_URL + "/uploaddocimage";
         String BASE_URL = sessionManager.getServerUrl() + "/uploaddocimage";
 
         return BASE_URL;
     }
+
     //ui2.0 for provider profile download
     public String getProviderProfileImageUrl(String providerUuid) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -124,8 +125,8 @@ public class UrlModifiers {
         return BASE_URL + provider;
     }
 
-    public String getHWProfileDetails(String USER_UUID)
-    {
+    public String getHWProfileDetails(String USER_UUID) {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "provider?user=" + USER_UUID + "&v=custom:(uuid,person:(uuid,display,gender,age,birthdate,preferredName),attributes)";
         //String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
         String BASE_URL = sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";

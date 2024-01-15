@@ -1712,6 +1712,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     @Override
     public void onPause() {
         super.onPause();
+        context = PrescriptionActivity.this;
         if(context!=null){
             if (receiver != null) {
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
