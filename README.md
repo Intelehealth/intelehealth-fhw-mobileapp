@@ -1,5 +1,5 @@
 
-# Intelehealth Android Client
+# Intelehealth FHW MobileApp
 
 ## About
 
