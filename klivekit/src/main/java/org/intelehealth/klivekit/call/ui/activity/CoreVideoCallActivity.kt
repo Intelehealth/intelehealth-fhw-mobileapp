@@ -200,6 +200,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             Timber.e { "Call time up ${Calendar.getInstance().time}" }
             videoCallViewModel.stopCallTimeoutTimer()
             showToast(getString(R.string.call_time_up))
+            if (args.isIncomingCall()) {
+                args.callStatus = CallStatus.MISSED
+                CallHandlerUtils.notifyCallNotification(args, this)
+            }
         }
     }
 
