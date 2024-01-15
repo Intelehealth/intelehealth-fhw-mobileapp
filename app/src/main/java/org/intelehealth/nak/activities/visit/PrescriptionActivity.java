@@ -10,6 +10,7 @@ import static org.intelehealth.nak.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -58,6 +59,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -122,6 +124,7 @@ import java.util.Objects;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
+@SuppressLint("Range")
 public class PrescriptionActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private String patientName, patientUuid, gender, age, openmrsID, vitalsUUID, adultInitialUUID, intentTag,
             visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
@@ -148,7 +151,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     String encounterUuid;
     DownloadPrescriptionService downloadPrescriptionService;
     Boolean isReceiverRegistered = false;
-    Context context;
     NetworkChangeReceiver receiver;
     private boolean isConnected = false;
     boolean uploaded = false;
@@ -188,7 +190,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription2);
-        context = PrescriptionActivity.this;
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -431,7 +432,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         // follow up - yes - start
         yes_btn.setOnClickListener(v -> {
-            followupScheduledSuccess(PrescriptionActivity.this, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
+            Drawable drawable = ContextCompat.getDrawable(PrescriptionActivity.this, R.drawable.dialog_visit_sent_success_icon);
+            followupScheduledSuccess(drawable),
                     getResources().getString(R.string.follow_up_scheduled),
                     getResources().getString(R.string.follow_up_scheduled_successfully),
                     getResources().getString(R.string.okay));
@@ -604,7 +606,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                             @Override
                             public void onFailure() {
-                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
 
                         });
@@ -620,7 +622,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                                 @Override
                                 public void onFailure() {
-                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 }
 
                             });
@@ -666,7 +668,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                             @Override
                             public void onFailure() {
-                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
 
                         });
@@ -682,7 +684,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                                 @Override
                                 public void onFailure() {
-                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 }
 
                             });
@@ -728,7 +730,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                             @Override
                             public void onFailure() {
-                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
 
                         });
@@ -744,7 +746,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                                 @Override
                                 public void onFailure() {
-                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 }
 
                             });
@@ -793,7 +795,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                             @Override
                             public void onFailure() {
-                                Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
 
                         });
@@ -809,7 +811,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                                 @Override
                                 public void onFailure() {
-                                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 }
 
                             });
@@ -1215,11 +1217,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     // presc pdf downlaod - end
 
-    private void followupScheduledSuccess(Context context, Drawable drawable, String title, String subTitle,
+    private void followupScheduledSuccess(Drawable drawable, String title, String subTitle,
                                           String neutral) {
 
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
-        final LayoutInflater inflater = LayoutInflater.from(context);
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(PrescriptionActivity.this);
+        final LayoutInflater inflater = LayoutInflater.from(PrescriptionActivity.this);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
         alertdialogBuilder.setView(convertView);
         ImageView icon = convertView.findViewById(R.id.dialog_icon);
@@ -1237,7 +1239,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
 
@@ -1694,7 +1696,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     protected void onStop() {
         super.onStop();
         if (downloadPrescriptionService != null) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+            LocalBroadcastManager.getInstance(PrescriptionActivity.this).unregisterReceiver(downloadPrescriptionService);
         }
         if (receiver != null) {
             unregisterReceiver(receiver);
@@ -1711,19 +1713,18 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     @Override
     public void onPause() {
-        super.onPause();
-        context = PrescriptionActivity.this;
-        if(context!=null){
-            if (receiver != null) {
-                LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
-                receiver = null;
-            }
-            if (downloadPrescriptionService != null) {
-                LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
-                downloadPrescriptionService = null;
-            }
+//        if(context!=null){
+        if (receiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+            receiver = null;
         }
+        if (downloadPrescriptionService != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadPrescriptionService);
+            downloadPrescriptionService = null;
+        }
+//        }
         isReceiverRegistered = false;
+        super.onPause();
     }
 
     @Override
@@ -1745,7 +1746,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     @Override
     protected void onDestroy() {
         if (downloadPrescriptionService != null) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+            LocalBroadcastManager.getInstance(PrescriptionActivity.this).unregisterReceiver(downloadPrescriptionService);
         }
         super.onDestroy();
 
@@ -1807,7 +1808,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private void isNetworkAvailable(Context context) {
         int flag = 0;
 
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
             NetworkInfo[] info = connectivity.getAllNetworkInfo();
             if (info != null) {
