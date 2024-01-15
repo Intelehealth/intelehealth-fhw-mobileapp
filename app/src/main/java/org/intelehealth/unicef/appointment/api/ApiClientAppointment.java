@@ -33,7 +33,7 @@ public class ApiClientAppointment {
     }
 
     public static synchronized ApiClientAppointment getInstance(String baseUrl) {
-        Log.d("TAG", "getInstance: ");
+        Log.d("TAG", "getInstance: baseUrl=>" + baseUrl);
         if (instance == null) {
             instance = new ApiClientAppointment(baseUrl);
         }

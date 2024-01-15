@@ -84,7 +84,7 @@ public class AppointmentListingActivity extends LocalConfigActivity {
 
     private void getSlots() {
 
-        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(mSelectedStartDate, mSelectedEndDate, new SessionManager(this).getLocationUuid())
 

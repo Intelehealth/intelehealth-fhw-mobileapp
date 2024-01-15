@@ -72,7 +72,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(0,new UpdateFragmentOnEvent() {
+        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(0, new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
                 Log.v(TAG, "onStart");
@@ -311,7 +311,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
                     appointmentInfo.setPatientProfilePhoto(patientProfilePath);
                     Log.v(TAG, new Gson().toJson(appointmentInfo));
-                    if (appointmentInfo.getStatus()!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
+                    if (appointmentInfo.getStatus() != null && appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
                         upcomingAppointmentsList.add(appointmentInfo);
                     }
                 }
@@ -514,7 +514,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     }
 
     private void getSlots() {
-        String serverUrl = sessionManager.getServerUrl() + ":3004";
+        String serverUrl = "https://" + sessionManager.getServerUrl() + ":3004";
 
         ApiClientAppointment.getInstance(serverUrl).getApi()
                 .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid())

@@ -232,7 +232,7 @@ public class ScheduleListingActivity extends LocalConfigActivity implements Date
         request.setLocationUuid(new SessionManager(ScheduleListingActivity.this).getLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleListingActivity.this).getProviderID()); // user id / healthworker id
 
-        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .bookAppointment(url, request)
@@ -264,7 +264,7 @@ public class ScheduleListingActivity extends LocalConfigActivity implements Date
 
     private void getSlots() {
 
-        String baseurl = new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlots(mSelectedStartDate, mSelectedEndDate, speciality)
                 .enqueue(new Callback<SlotInfoResponse>() {
