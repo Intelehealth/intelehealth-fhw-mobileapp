@@ -156,6 +156,7 @@ import org.intelehealth.ekalarogya.utilities.DialogUtils;
 import org.intelehealth.ekalarogya.utilities.FileUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
+import org.intelehealth.ekalarogya.utilities.ResponseChecker;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
 import org.intelehealth.ekalarogya.utilities.UuidDictionary;
@@ -4250,6 +4251,12 @@ public class VisitSummaryActivity extends BaseActivity {
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                        ResponseChecker<AppointmentDetailsResponse> responseChecker = new ResponseChecker<>(response);
+                        if (responseChecker.isNotAuthorized()) {
+                            //TODO: redirect to login screen
+                            return;
+                        }
+
                         if (response == null || response.body() == null) return;
                         mAppointmentDetailsResponse = response.body();
                         if (!mAppointmentDetailsResponse.isStatus()) {
@@ -4344,6 +4351,12 @@ public class VisitSummaryActivity extends BaseActivity {
                 .enqueue(new Callback<CancelResponse>() {
                     @Override
                     public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
+                        ResponseChecker<CancelResponse> responseChecker = new ResponseChecker<>(response);
+                        if (responseChecker.isNotAuthorized()) {
+                            //TODO: redirect to login screen
+                            return;
+                        }
+
                         if (response.body() == null) return;
                         CancelResponse cancelResponse = response.body();
                         if (cancelResponse.isStatus()) {

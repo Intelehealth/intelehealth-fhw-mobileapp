@@ -31,6 +31,7 @@ import org.intelehealth.ekalarogya.appointment.model.BookAppointmentRequest;
 import org.intelehealth.ekalarogya.appointment.model.SlotInfo;
 import org.intelehealth.ekalarogya.appointment.model.SlotInfoResponse;
 import org.intelehealth.ekalarogya.appointment.utils.MyDatePicker;
+import org.intelehealth.ekalarogya.utilities.ResponseChecker;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 
 import java.text.SimpleDateFormat;
@@ -40,6 +41,7 @@ import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ScheduleListingActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -273,6 +275,12 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                        ResponseChecker<AppointmentDetailsResponse> responseChecker = new ResponseChecker<>(response);
+                        if (responseChecker.isNotAuthorized()) {
+                            //TODO: redirect to login screen
+                            return;
+                        }
+
                         AppointmentDetailsResponse appointmentDetailsResponse = response.body();
 
                         if (appointmentDetailsResponse == null || !appointmentDetailsResponse.isStatus()) {
@@ -296,6 +304,11 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     }
 
+    private boolean isAuthorised(Response<AppointmentDetailsResponse> response) {
+        int responseCode = response.code();
+        return responseCode != 401;
+    }
+
     private void getSlots() {
         String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
 
@@ -305,6 +318,12 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                 .enqueue(new Callback<SlotInfoResponse>() {
                     @Override
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
+                        ResponseChecker<SlotInfoResponse> responseChecker = new ResponseChecker<>(response);
+                        if (responseChecker.isNotAuthorized()) {
+                            //TODO: redirect to login screen
+                            return;
+                        }
+
                         SlotInfoResponse slotInfoResponse = response.body();
                         if (slotInfoResponse == null) { // AEAT-460
                             Toast.makeText(ScheduleListingActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();

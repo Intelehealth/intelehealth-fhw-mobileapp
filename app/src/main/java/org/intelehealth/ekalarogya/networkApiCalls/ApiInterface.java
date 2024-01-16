@@ -30,6 +30,7 @@ import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -122,20 +123,26 @@ public interface ApiInterface {
                                                   @Header("Authorization") String authHeader);
 
     @GET
-    Observable<MainProfileModel> PERSON_PROFILE_INFO(@Url String url,
-                                                     @Header("Authorization") String authHeader);
+    Observable<Response<MainProfileModel>> PERSON_PROFILE_INFO(
+            @Url String url,
+            @Header("Authorization") String authHeader
+    );
 
     @Headers({"Accept: application/json"})
     @POST
-    Single<ResponseBody> UserStatus_API_CALL_OBSERVABLE(@Url String url,
-                                                        @Header("Authorization") String authHeader,
-                                                        @Body UserStatusUpdateApiCall userStatusUpdateApiCall);
+    Single<Response<ResponseBody>> UserStatus_API_CALL_OBSERVABLE(
+            @Url String url,
+            @Header("Authorization") String authHeader,
+            @Body UserStatusUpdateApiCall userStatusUpdateApiCall
+    );
 
     @Headers({"Accept: application/json"})
     @PUT
-    Single<UserInfoUpdateModel> HwUpdateInfo_API_CALL_OBSERVABLE(@Url String url,
-                                                                 @Header("Authorization") String authHeader,
-                                                                 @Body UserAttributeModel obj);
+    Single<Response<UserInfoUpdateModel>> HwUpdateInfo_API_CALL_OBSERVABLE(
+            @Url String url,
+            @Header("Authorization") String authHeader,
+            @Body UserAttributeModel obj
+    );
 
     @POST
     Observable<AuthJWTResponse> AUTH_LOGIN_JWT_API(

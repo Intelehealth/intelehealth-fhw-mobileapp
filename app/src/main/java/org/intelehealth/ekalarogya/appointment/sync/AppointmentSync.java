@@ -7,6 +7,7 @@ import android.util.Log;
 import org.intelehealth.ekalarogya.appointment.api.ApiClientAppointment;
 import org.intelehealth.ekalarogya.appointment.dao.AppointmentDAO;
 import org.intelehealth.ekalarogya.appointment.model.AppointmentListingResponse;
+import org.intelehealth.ekalarogya.utilities.ResponseChecker;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
@@ -28,10 +29,15 @@ public class AppointmentSync {
         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, sessionManager.getCurrentLocationUuid(), authHeader)
-
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                        ResponseChecker<AppointmentListingResponse> responseChecker = new ResponseChecker<>(response);
+                        if (responseChecker.isNotAuthorized()) {
+                            //TODO: redirect to login screen
+                            return;
+                        }
+
                         if (response.body() == null) return;
                         AppointmentListingResponse slotInfoResponse = response.body();
                         AppointmentDAO appointmentDAO = new AppointmentDAO();

@@ -31,6 +31,7 @@ import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.appointment.model.AppointmentListingResponse;
 import org.intelehealth.ekalarogya.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalarogya.models.ActivePatientModel;
 import org.intelehealth.ekalarogya.models.UserStatusUpdateApiCall;
@@ -41,6 +42,7 @@ import org.intelehealth.ekalarogya.models.pushResponseApiCall.PushResponseApiCal
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NotificationID;
 import org.intelehealth.ekalarogya.utilities.PatientsFrameJson;
+import org.intelehealth.ekalarogya.utilities.ResponseChecker;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
@@ -498,20 +500,24 @@ public class SyncDAO {
             Gson gson = new Gson();
             String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/createUpdateStatus";
 
-            Single<ResponseBody> userStatusUpdateApiCallObservable =
-                    AppConstants.apiInterface.UserStatus_API_CALL_OBSERVABLE(url, authHeader, userStatusUpdateApiCall);
+            Single<Response<ResponseBody>> userStatusUpdateApiCallObservable = AppConstants.apiInterface.UserStatus_API_CALL_OBSERVABLE(url, authHeader, userStatusUpdateApiCall);
             userStatusUpdateApiCallObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                    .subscribe(new DisposableSingleObserver<>() {
                         @Override
-                        public void onSuccess(ResponseBody responseBody) {
-                            Logger.logD(TAG, "success" + responseBody);
-
+                        public void onSuccess(Response<ResponseBody> responseBodyResponse) {
+                            ResponseChecker<ResponseBody> responseChecker = new ResponseChecker<>(responseBodyResponse);
+                            if (responseChecker.isNotAuthorized()) {
+                                //TODO: redirect to login screen
+                                return;
+                            }
+                            Logger.logD(TAG, "success" + responseBodyResponse);
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Logger.logD(TAG, "Onerror " + e.getMessage());
+
                         }
                     });
         }

@@ -20,6 +20,7 @@ import org.intelehealth.ekalarogya.utilities.Base64Utils;
 import org.intelehealth.ekalarogya.utilities.DownloadFilesUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
+import org.intelehealth.ekalarogya.utilities.ResponseChecker;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
 
@@ -71,6 +72,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 public class HwProfileActivity extends AppCompatActivity {
     public static String TAG = "HwProfileUpdate";
@@ -131,17 +133,24 @@ public class HwProfileActivity extends AppCompatActivity {
         progressDialog.setContentView(view);
         progressDialog.show();
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/" + sessionManager.getCreatorID() + "?type=hw";
-        Logger.logD("Profile", "get profile Info url" + url);
-        Observable<MainProfileModel> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_INFO(url, authHeader);
-        profilePicDownload.subscribeOn(Schedulers.io())
+        Observable<Response<MainProfileModel>> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_INFO(url, authHeader);
+
+        profilePicDownload
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<MainProfileModel>() {
+                .subscribe(new DisposableObserver<>() {
                     @Override
-                    public void onNext(MainProfileModel mainProfileModel1) {
-                        String response = mainProfileModel1.toString();
-                        if (mainProfileModel1 != null && mainProfileModel1.getStatus() == true) {
+                    public void onNext(Response<MainProfileModel> mainProfileModelResponse) {
+                        ResponseChecker<MainProfileModel> responseChecker = new ResponseChecker<>(mainProfileModelResponse);
+                        if (responseChecker.isNotAuthorized()) {
+                            //TODO: redirect to login screen
+                            return;
+                        }
+
+                        MainProfileModel responseBody = mainProfileModelResponse.body();
+                        if (responseBody != null && responseBody.getStatus()) {
                             Gson gson = new Gson();
-                            String userprofile = gson.toJson(mainProfileModel1);
+                            String userprofile = gson.toJson(responseBody);
                             sessionManager.setUserProfileDetail(userprofile);
                             DisplayUserDetail();
                         }
@@ -522,17 +531,24 @@ public class HwProfileActivity extends AppCompatActivity {
         String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
 
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/" + sessionManager.getCreatorID();
-        Single<UserInfoUpdateModel> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, authHeader, obj);
-        hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
+        Single<Response<UserInfoUpdateModel>> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, authHeader, obj);
+        hwUpdateApiCallObservable
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<UserInfoUpdateModel>() {
+                .subscribe(new DisposableSingleObserver<>() {
                     @Override
-                    public void onSuccess(UserInfoUpdateModel responseBody) {
-                        Logger.logD(TAG, "success" + responseBody.toString());
-                        Gson gson = new Gson();
-                        String response = gson.toJson(responseBody);
-                        Toast.makeText(HwProfileActivity.this, getString(R.string.update_hw_profile), Toast.LENGTH_SHORT).show();
-                        setEnabledProfile();
+                    public void onSuccess(Response<UserInfoUpdateModel> userInfoUpdateModelResponse) {
+                        ResponseChecker<UserInfoUpdateModel> responseChecker = new ResponseChecker<>(userInfoUpdateModelResponse);
+                        if (responseChecker.isNotAuthorized()) {
+                            //TODO: redirect to login screen
+                            return;
+                        }
+
+                        UserInfoUpdateModel responseBody = userInfoUpdateModelResponse.body();
+                        if (responseBody != null) {
+                            Toast.makeText(HwProfileActivity.this, getString(R.string.update_hw_profile), Toast.LENGTH_SHORT).show();
+                            setEnabledProfile();
+                        }
                     }
 
                     @Override

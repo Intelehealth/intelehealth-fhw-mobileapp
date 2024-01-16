@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +22,7 @@ import org.intelehealth.ekalarogya.appointment.dao.AppointmentDAO;
 import org.intelehealth.ekalarogya.appointment.model.AppointmentInfo;
 import org.intelehealth.ekalarogya.appointment.model.AppointmentListingResponse;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
+import org.intelehealth.ekalarogya.utilities.ResponseChecker;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
@@ -93,6 +93,12 @@ public class AppointmentListingActivity extends BaseActivity {
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                        ResponseChecker<AppointmentListingResponse> responseChecker = new ResponseChecker<>(response);
+                        if (responseChecker.isNotAuthorized()) {
+                            //TODO: redirect to login screen
+                            return;
+                        }
+
                         if (response.body() == null) return;
                         AppointmentListingResponse slotInfoResponse = response.body();
                         AppointmentDAO appointmentDAO = new AppointmentDAO();
