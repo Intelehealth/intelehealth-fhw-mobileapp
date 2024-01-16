@@ -85,6 +85,8 @@ import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.StringEncryption;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
+import org.intelehealth.ekalarogya.utilities.authJWT_API.AuthJWTBody;
+import org.intelehealth.ekalarogya.utilities.authJWT_API.AuthJWTResponse;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDialog;
 
@@ -135,9 +137,7 @@ public class SetupActivity extends AppCompatActivity {
     int state_count = 0, district_count = 0, sanch_count = 0, primary_village_count = 0, secondary_village_count = 0;
     private String selectedState = "", selectedDistrict = "", selectedSanch = "", selectedPriamryVillage = "", selectedSecondaryVillage = "";
     NewLocationDao newLocationDao = null;
-    private RadioGroup subCentreRadioGroup, primaryCentreRadioGroup, communityHealthCentreRadioGroup, districtHospitalRadioGroup,
-            medicalStoreRadioGroup, pathologicalLabRadioGroup, privateClinicWithMbbsDoctorRadioGroup, privateClinicWithAlternateMedicalRadioGroup,
-            jalJeevanYojanaSchemeRadioGroup;
+    private RadioGroup subCentreRadioGroup, primaryCentreRadioGroup, communityHealthCentreRadioGroup, districtHospitalRadioGroup, medicalStoreRadioGroup, pathologicalLabRadioGroup, privateClinicWithMbbsDoctorRadioGroup, privateClinicWithAlternateMedicalRadioGroup, jalJeevanYojanaSchemeRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,8 +293,7 @@ public class SetupActivity extends AppCompatActivity {
                     selectedState = spinner_state.getSelectedItem().toString();
                     List<String> district_locations = newLocationDao.getDistrictList(selectedState, context);
                     if (district_locations.size() > 1) {
-                        LocationArrayAdapter locationArrayAdapter =
-                                new LocationArrayAdapter(SetupActivity.this, district_locations);
+                        LocationArrayAdapter locationArrayAdapter = new LocationArrayAdapter(SetupActivity.this, district_locations);
 
                         spinner_district.setEnabled(true);
                         spinner_district.setAlpha(1);
@@ -323,8 +322,7 @@ public class SetupActivity extends AppCompatActivity {
                     selectedDistrict = spinner_district.getSelectedItem().toString();
                     List<String> sanch_locations = newLocationDao.getSanchList(selectedState, selectedDistrict, context);
                     if (sanch_locations.size() > 1) {
-                        LocationArrayAdapter locationArrayAdapter =
-                                new LocationArrayAdapter(SetupActivity.this, sanch_locations);
+                        LocationArrayAdapter locationArrayAdapter = new LocationArrayAdapter(SetupActivity.this, sanch_locations);
 
                         spinner_sanch.setEnabled(true);
                         spinner_sanch.setAlpha(1);
@@ -355,8 +353,7 @@ public class SetupActivity extends AppCompatActivity {
                     selectedSanch = spinner_sanch.getSelectedItem().toString();
                     List<String> primary_village_locations = newLocationDao.getVillageList(selectedState, selectedDistrict, selectedSanch, context, "primary");
                     if (primary_village_locations.size() > 1) {
-                        LocationArrayAdapter locationArrayAdapter =
-                                new LocationArrayAdapter(SetupActivity.this, primary_village_locations);
+                        LocationArrayAdapter locationArrayAdapter = new LocationArrayAdapter(SetupActivity.this, primary_village_locations);
 
                         spinner_primary_village.setEnabled(true);
                         spinner_primary_village.setAlpha(1);
@@ -396,8 +393,7 @@ public class SetupActivity extends AppCompatActivity {
                         List<String> secondary_village_locations = newLocationDao.getVillageList(selectedState, selectedDistrict, selectedSanch, context, "secondary");
                         secondary_village_locations.remove(secondary_village_locations.indexOf(selectedPriamryVillage));
                         if (secondary_village_locations.size() > 1) {
-                            LocationArrayAdapter locationArrayAdapter =
-                                    new LocationArrayAdapter(SetupActivity.this, secondary_village_locations);
+                            LocationArrayAdapter locationArrayAdapter = new LocationArrayAdapter(SetupActivity.this, secondary_village_locations);
 
                             spinner_secondary_village.setEnabled(true);
                             spinner_secondary_village.setAlpha(1);
@@ -775,63 +771,59 @@ public class SetupActivity extends AppCompatActivity {
 
         try {
             Observable<Setup_LocationModel> locationObservable = apiService.SETUP_LOCATIONOBSERVABLE();
-            locationObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<Setup_LocationModel>() {
-                        @Override
-                        public void onNext(@NonNull Setup_LocationModel location) {
-                            if (location.getStates() != null) {
-                                try {
-                                    newLocationDao = new NewLocationDao();
-                                    newLocationDao.insertSetupLocations(location);
-                                    customProgressDialog.dismiss();
-
-                                    List<String> state_locations = newLocationDao.getStateList(context);
-
-                                    if (state_locations.size() != 0) {
-                                        LocationArrayAdapter locationArrayAdapter =
-                                                new LocationArrayAdapter(SetupActivity.this, state_locations);
-
-                                        spinner_state.setEnabled(true);
-                                        spinner_state.setAlpha(1);
-                                        spinner_state.setAdapter(locationArrayAdapter);
-                                        isLocationFetched = true;
-                                    } else {
-                                        empty_spinner("state");
-                                    }
-
-                                    value = true;
-                                } catch (DAOException e) {
-                                    e.printStackTrace();
-                                    customProgressDialog.dismiss();
-                                    value = false;
-                                }
-                            } else {
-                                customProgressDialog.dismiss();
-                                value = false;
-                                isLocationFetched = false;
-                                Toast.makeText(SetupActivity.this, "Unable to fetch State", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            value = false;
-                            if (e.getLocalizedMessage().contains("Unable to resolve host")) {
-                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                            }
+            locationObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<Setup_LocationModel>() {
+                @Override
+                public void onNext(@NonNull Setup_LocationModel location) {
+                    if (location.getStates() != null) {
+                        try {
+                            newLocationDao = new NewLocationDao();
+                            newLocationDao.insertSetupLocations(location);
                             customProgressDialog.dismiss();
-                        }
 
-                        @Override
-                        public void onComplete() {
+                            List<String> state_locations = newLocationDao.getStateList(context);
+
+                            if (state_locations.size() != 0) {
+                                LocationArrayAdapter locationArrayAdapter = new LocationArrayAdapter(SetupActivity.this, state_locations);
+
+                                spinner_state.setEnabled(true);
+                                spinner_state.setAlpha(1);
+                                spinner_state.setAdapter(locationArrayAdapter);
+                                isLocationFetched = true;
+                            } else {
+                                empty_spinner("state");
+                            }
+
                             value = true;
+                        } catch (DAOException e) {
+                            e.printStackTrace();
                             customProgressDialog.dismiss();
+                            value = false;
                         }
-                    });
+                    } else {
+                        customProgressDialog.dismiss();
+                        value = false;
+                        isLocationFetched = false;
+                        Toast.makeText(SetupActivity.this, "Unable to fetch State", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    value = false;
+                    if (e.getLocalizedMessage().contains("Unable to resolve host")) {
+                        Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    customProgressDialog.dismiss();
+                }
+
+                @Override
+                public void onComplete() {
+                    value = true;
+                    customProgressDialog.dismiss();
+                }
+            });
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             mUrlField.setError(getString(R.string.url_invalid));
@@ -868,8 +860,7 @@ public class SetupActivity extends AppCompatActivity {
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
 
 
-                    dialog.setTitle(getString(R.string.enter_license_key))
-                            .setView(promptsView)
+                    dialog.setTitle(getString(R.string.enter_license_key)).setView(promptsView)
 
                             .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                 @Override
@@ -989,6 +980,8 @@ public class SetupActivity extends AppCompatActivity {
         sessionManager.setEncoded(encoded);
         getDataFromRadioButtons();
 
+        getJWTToken(CLEAN_URL, USERNAME, PASSWORD);
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
@@ -1013,102 +1006,95 @@ public class SetupActivity extends AppCompatActivity {
 
                     if (authencated) {
                         Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
-                        loginProviderModelObservable
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new DisposableObserver<LoginProviderModel>() {
-                                    @Override
-                                    public void onNext(LoginProviderModel loginProviderModel) {
-                                        if (loginProviderModel.getResults().size() != 0) {
-                                            for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
-                                                Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
-                                                sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
-                                                sessionManager.setCurrentLocationName(location.getValue());
-                                                sessionManager.setCurrentLocationUuid(location.getKey());
-                                                sessionManager.setServerUrl(CLEAN_URL);
-                                                sessionManager.setServerUrlRest(BASE_URL);
-                                                sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
-                                                sessionManager.setBaseUrl(BASE_URL);
-                                                sessionManager.setSetupComplete(true);
+                        loginProviderModelObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<LoginProviderModel>() {
+                            @Override
+                            public void onNext(LoginProviderModel loginProviderModel) {
+                                if (loginProviderModel.getResults().size() != 0) {
+                                    for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                        Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                        sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+                                        sessionManager.setCurrentLocationName(location.getValue());
+                                        sessionManager.setCurrentLocationUuid(location.getKey());
+                                        sessionManager.setServerUrl(CLEAN_URL);
+                                        sessionManager.setServerUrlRest(BASE_URL);
+                                        sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
+                                        sessionManager.setBaseUrl(BASE_URL);
+                                        sessionManager.setSetupComplete(true);
 
-                                                //Storing State Name
-                                                sessionManager.setCountryName("India");
-                                                sessionManager.setStateName(selectedState);
-                                                sessionManager.setDistrictName(selectedDistrict);
-                                                sessionManager.setSanchName(selectedSanch);
-                                                sessionManager.setVillageName(selectedPriamryVillage);
-                                                saveToken();
-                                                IntelehealthApplication.getInstance().startRealTimeObserverAndSocket();
-                                                AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
+                                        //Storing State Name
+                                        sessionManager.setCountryName("India");
+                                        sessionManager.setStateName(selectedState);
+                                        sessionManager.setDistrictName(selectedDistrict);
+                                        sessionManager.setSanchName(selectedSanch);
+                                        sessionManager.setVillageName(selectedPriamryVillage);
+                                        saveToken();
+                                        IntelehealthApplication.getInstance().startRealTimeObserverAndSocket();
+                                        AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
-                                                Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                                                        .applicationId(AppConstants.IMAGE_APP_ID)
-                                                        .server("https://" + CLEAN_URL + ":1337/parse/")
-                                                        .build()
-                                                );
+                                        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext()).applicationId(AppConstants.IMAGE_APP_ID).server("https://" + CLEAN_URL + ":1337/parse/").build());
 
-                                                SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-                                                sqLiteDatabase.beginTransaction();
-                                                ContentValues values = new ContentValues();
-                                                String random_salt = getSalt_DATA();
-                                                String hash_password = null;
-                                                try {
-                                                    hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
-                                                } catch (NoSuchAlgorithmException |
-                                                         UnsupportedEncodingException e) {
-                                                    FirebaseCrashlytics.getInstance().recordException(e);
-                                                }
+                                        SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+                                        sqLiteDatabase.beginTransaction();
+                                        ContentValues values = new ContentValues();
+                                        String random_salt = getSalt_DATA();
+                                        String hash_password = null;
+                                        try {
+                                            hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
+                                        } catch (NoSuchAlgorithmException |
+                                                 UnsupportedEncodingException e) {
+                                            FirebaseCrashlytics.getInstance().recordException(e);
+                                        }
 
-                                                try {
-                                                    values.put("username", USERNAME);
-                                                    values.put("password", hash_password);
-                                                    values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                                    values.put("chwname", loginModel.getUser().getDisplay());
-                                                    values.put("provider_uuid_cred", sessionManager.getProviderID());
-                                                    createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                                                    sqLiteDatabase.setTransactionSuccessful();
-                                                    Logger.logD("values", "values" + values);
-                                                    Logger.logD("created user credentials", "create user records" + createdRecordsCount);
-                                                } catch (SQLException e) {
-                                                    Log.d("SQL", "SQL user credentials: " + e);
-                                                } finally {
-                                                    sqLiteDatabase.endTransaction();
-                                                }
+                                        try {
+                                            values.put("username", USERNAME);
+                                            values.put("password", hash_password);
+                                            values.put("creator_uuid_cred", loginModel.getUser().getUuid());
+                                            values.put("chwname", loginModel.getUser().getDisplay());
+                                            values.put("provider_uuid_cred", sessionManager.getProviderID());
+                                            createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                                            sqLiteDatabase.setTransactionSuccessful();
+                                            Logger.logD("values", "values" + values);
+                                            Logger.logD("created user credentials", "create user records" + createdRecordsCount);
+                                        } catch (SQLException e) {
+                                            Log.d("SQL", "SQL user credentials: " + e);
+                                        } finally {
+                                            sqLiteDatabase.endTransaction();
+                                        }
 
-                                                Log.i(TAG, "onPostExecute: Parse init");
-                                                progress.dismiss();
-                                                Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
-                                                intent.putExtra("setup", true);
-                                                if (r2.isChecked()) { // License protocol chosen
-                                                    if (!sessionManager.getLicenseKey().isEmpty()) {
-                                                        sessionManager.setTriggerNoti("no");
-                                                        startActivity(intent);
-                                                        finish();
-                                                    } else {
-                                                        Toast.makeText(SetupActivity.this, R.string.please_enter_valid_license_key, Toast.LENGTH_LONG).show();
-                                                    }
-                                                } else { // demo protocol chosen
-                                                    sessionManager.setTriggerNoti("no");
-                                                    startActivity(intent);
-                                                    finish();
-                                                }
-
+                                        Log.i(TAG, "onPostExecute: Parse init");
+                                        progress.dismiss();
+                                        Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
+                                        intent.putExtra("setup", true);
+                                        if (r2.isChecked()) { // License protocol chosen
+                                            if (!sessionManager.getLicenseKey().isEmpty()) {
+                                                sessionManager.setTriggerNoti("no");
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                Toast.makeText(SetupActivity.this, R.string.please_enter_valid_license_key, Toast.LENGTH_LONG).show();
                                             }
+                                        } else { // demo protocol chosen
+                                            sessionManager.setTriggerNoti("no");
+                                            startActivity(intent);
+                                            finish();
                                         }
 
                                     }
+                                }
 
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Logger.logD(TAG, "handle provider error" + e.getMessage());
-                                        progress.dismiss();
-                                    }
+                            }
 
-                                    @Override
-                                    public void onComplete() {
+                            @Override
+                            public void onError(Throwable e) {
+                                Logger.logD(TAG, "handle provider error" + e.getMessage());
+                                progress.dismiss();
+                            }
 
-                                    }
-                                });
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
                     }
                 } else {
                     Toast.makeText(context, getString(R.string.doctor_credentials_are_not_valid), Toast.LENGTH_LONG).show();
@@ -1116,7 +1102,8 @@ public class SetupActivity extends AppCompatActivity {
                     mEmailView.requestFocus();
                     mPasswordView.requestFocus();
                     mLoginButton.setText(getString(R.string.action_sign_in));
-                    mLoginButton.setEnabled(true);   }
+                    mLoginButton.setEnabled(true);
+                }
             }
 
             @Override
@@ -1139,6 +1126,35 @@ public class SetupActivity extends AppCompatActivity {
 
     }
 
+    private void getJWTToken(String urlString, String username, String password) {
+        String finalURL = urlString.concat(":3030/auth/login");
+        AuthJWTBody authBody = new AuthJWTBody(username, password, true);
+        Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
+        authJWTResponseObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AuthJWTResponse authJWTResponse) {
+                        sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     private boolean areDoctorCredentialsUsed(LoginModel loginModel) {
         List<Role> roleList = loginModel.getUser().getRoles();
         for (Role role : roleList) {
@@ -1154,8 +1170,7 @@ public class SetupActivity extends AppCompatActivity {
         BufferedReader reader = null;
         String salt = null;
         try {
-            reader = new BufferedReader(
-                    new InputStreamReader(getAssets().open("salt.env")));
+            reader = new BufferedReader(new InputStreamReader(getAssets().open("salt.env")));
             // do reading, usually loop until end of file reading
             String mLine;
             while ((mLine = reader.readLine()) != null) {
@@ -1184,42 +1199,39 @@ public class SetupActivity extends AppCompatActivity {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
-            resultsObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
-                        @Override
-                        public void onNext(DownloadMindMapRes res) {
-                            customProgressDialog.dismiss();
-                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<DownloadMindMapRes>() {
+                @Override
+                public void onNext(DownloadMindMapRes res) {
+                    customProgressDialog.dismiss();
+                    if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
-                                Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog);
-                                mindmapURL = res.getMindmap().trim();
-                                sessionManager.setLicenseKey(key);
-                                checkExistingMindMaps();
+                        Log.e("MindMapURL", "Successfully get MindMap URL");
+                        mTask = new DownloadMindMaps(context, mProgressDialog);
+                        mindmapURL = res.getMindmap().trim();
+                        sessionManager.setLicenseKey(key);
+                        checkExistingMindMaps();
 
-                            } else {
-                                Toast.makeText(SetupActivity.this, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
-                            }
-                        }
+                    } else {
+                        Toast.makeText(SetupActivity.this, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
+                    }
+                }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            customProgressDialog.dismiss();
-                            Log.e("MindMapURL", " " + e);
-                            if (e.getLocalizedMessage().contains("Unable to resolve host")) {
-                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
-                            }
-                        }
+                @Override
+                public void onError(Throwable e) {
+                    customProgressDialog.dismiss();
+                    Log.e("MindMapURL", " " + e);
+                    if (e.getLocalizedMessage().contains("Unable to resolve host")) {
+                        Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
+                    }
+                }
 
-                        @Override
-                        public void onComplete() {
+                @Override
+                public void onComplete() {
 
-                        }
-                    });
+                }
+            });
         } catch (IllegalArgumentException e) {
             Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
             Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
@@ -1270,84 +1282,39 @@ public class SetupActivity extends AppCompatActivity {
         configuration.setLocale(new Locale("en"));
         Context updatedContext = SetupActivity.this.createConfigurationContext(configuration);
 
-        String subCenterDistance = getDistanceStrings(
-                ((RadioButton) subCentreRadioGroup.findViewById(subCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                context,
-                updatedContext,
-                sessionManager.getAppLanguage()
-        );
+        String subCenterDistance = getDistanceStrings(((RadioButton) subCentreRadioGroup.findViewById(subCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(), context, updatedContext, sessionManager.getAppLanguage());
 
         sessionManager.setSubCentreDistance(subCenterDistance);
 
-        String primaryHealthCenterDistance = getDistanceStrings(
-                ((RadioButton) primaryCentreRadioGroup.findViewById(primaryCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                context,
-                updatedContext,
-                sessionManager.getAppLanguage()
-        );
+        String primaryHealthCenterDistance = getDistanceStrings(((RadioButton) primaryCentreRadioGroup.findViewById(primaryCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(), context, updatedContext, sessionManager.getAppLanguage());
 
         sessionManager.setPrimaryHealthCentreDistance(primaryHealthCenterDistance);
 
-        String communityHealthCenterDistance = getDistanceStrings(
-                ((RadioButton) communityHealthCentreRadioGroup.findViewById(communityHealthCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                context,
-                updatedContext,
-                sessionManager.getAppLanguage()
-        );
+        String communityHealthCenterDistance = getDistanceStrings(((RadioButton) communityHealthCentreRadioGroup.findViewById(communityHealthCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(), context, updatedContext, sessionManager.getAppLanguage());
 
         sessionManager.setCommunityHealthCentreDistance(communityHealthCenterDistance);
 
-        String districtHospital = getDistanceStrings(
-                ((RadioButton) districtHospitalRadioGroup.findViewById(districtHospitalRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                context,
-                updatedContext,
-                sessionManager.getAppLanguage()
-        );
+        String districtHospital = getDistanceStrings(((RadioButton) districtHospitalRadioGroup.findViewById(districtHospitalRadioGroup.getCheckedRadioButtonId())).getText().toString(), context, updatedContext, sessionManager.getAppLanguage());
 
         sessionManager.setDistrictHospitalDistance(districtHospital);
 
-        String medicalStore = getDistanceStrings(
-                ((RadioButton) medicalStoreRadioGroup.findViewById(medicalStoreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                context,
-                updatedContext,
-                sessionManager.getAppLanguage()
-        );
+        String medicalStore = getDistanceStrings(((RadioButton) medicalStoreRadioGroup.findViewById(medicalStoreRadioGroup.getCheckedRadioButtonId())).getText().toString(), context, updatedContext, sessionManager.getAppLanguage());
 
         sessionManager.setMedicalStoreDistance(medicalStore);
 
-        String pathologicalLab = getDistanceStrings(
-                ((RadioButton) pathologicalLabRadioGroup.findViewById(pathologicalLabRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                context,
-                updatedContext,
-                sessionManager.getAppLanguage()
-        );
+        String pathologicalLab = getDistanceStrings(((RadioButton) pathologicalLabRadioGroup.findViewById(pathologicalLabRadioGroup.getCheckedRadioButtonId())).getText().toString(), context, updatedContext, sessionManager.getAppLanguage());
 
         sessionManager.setPathologicalLabDistance(pathologicalLab);
 
-        String privateClinicWithMbbsDoctorDistance = getDistanceStrings(
-                ((RadioButton) privateClinicWithMbbsDoctorRadioGroup.findViewById(privateClinicWithMbbsDoctorRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                context,
-                updatedContext,
-                sessionManager.getAppLanguage()
-        );
+        String privateClinicWithMbbsDoctorDistance = getDistanceStrings(((RadioButton) privateClinicWithMbbsDoctorRadioGroup.findViewById(privateClinicWithMbbsDoctorRadioGroup.getCheckedRadioButtonId())).getText().toString(), context, updatedContext, sessionManager.getAppLanguage());
 
         sessionManager.setPrivateClinicWithMbbsDoctorDistance(privateClinicWithMbbsDoctorDistance);
 
-        String privateClinicWithAlternateDoctorDistance = getDistanceStrings(
-                ((RadioButton) privateClinicWithAlternateMedicalRadioGroup.findViewById(privateClinicWithAlternateMedicalRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                context,
-                updatedContext,
-                sessionManager.getAppLanguage()
-        );
+        String privateClinicWithAlternateDoctorDistance = getDistanceStrings(((RadioButton) privateClinicWithAlternateMedicalRadioGroup.findViewById(privateClinicWithAlternateMedicalRadioGroup.getCheckedRadioButtonId())).getText().toString(), context, updatedContext, sessionManager.getAppLanguage());
 
         sessionManager.setPrivateClinicWithAlternateDoctorDistance(privateClinicWithAlternateDoctorDistance);
 
-        String jalJeevanYojana = getDistanceStrings(
-                ((RadioButton) jalJeevanYojanaSchemeRadioGroup.findViewById(jalJeevanYojanaSchemeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                context,
-                updatedContext,
-                sessionManager.getAppLanguage()
-        );
+        String jalJeevanYojana = getDistanceStrings(((RadioButton) jalJeevanYojanaSchemeRadioGroup.findViewById(jalJeevanYojanaSchemeRadioGroup.getCheckedRadioButtonId())).getText().toString(), context, updatedContext, sessionManager.getAppLanguage());
 
         sessionManager.setJalJeevanYojanaScheme(jalJeevanYojana);
     }

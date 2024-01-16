@@ -108,18 +108,18 @@ public interface ApiInterface {
     Observable<Void> DELETE_OBS_IMAGE(@Url String url, @Header("Authorization") String authHeader);
 
 
-  /*  @GET("/v2/node/api/mindmap/download")
-    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey, @Header("Authorization") String authHeader);
-*/
-  @GET("/api/mindmap/download")
-  Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey);
+    /*  @GET("/v2/node/api/mindmap/download")
+      Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey, @Header("Authorization") String authHeader);
+  */
+    @GET("/api/mindmap/download")
+    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey);
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
 
     @GET
     Observable<ResponseBody> PERSON_PROFILE_INFO1(@Url String url,
-                                                     @Header("Authorization") String authHeader);
+                                                  @Header("Authorization") String authHeader);
 
     @GET
     Observable<MainProfileModel> PERSON_PROFILE_INFO(@Url String url,
@@ -128,15 +128,18 @@ public interface ApiInterface {
     @Headers({"Accept: application/json"})
     @POST
     Single<ResponseBody> UserStatus_API_CALL_OBSERVABLE(@Url String url,
-                                                                  @Header("Authorization") String authHeader,
-                                                                  @Body UserStatusUpdateApiCall userStatusUpdateApiCall);
+                                                        @Header("Authorization") String authHeader,
+                                                        @Body UserStatusUpdateApiCall userStatusUpdateApiCall);
 
     @Headers({"Accept: application/json"})
     @PUT
     Single<UserInfoUpdateModel> HwUpdateInfo_API_CALL_OBSERVABLE(@Url String url,
                                                                  @Header("Authorization") String authHeader,
                                                                  @Body UserAttributeModel obj);
-   /* @POST
-    Observable<AuthJWTResponse> AUTH_LOGIN_JWT_API(@Url String url,
-                                                   @Body AuthJWTBody authJWTBody);*/
+
+    @POST
+    Observable<AuthJWTResponse> AUTH_LOGIN_JWT_API(
+            @Url String url,
+            @Body AuthJWTBody authJWTBody
+    );
 }

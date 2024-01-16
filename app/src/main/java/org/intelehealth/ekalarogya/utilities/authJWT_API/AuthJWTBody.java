@@ -1,4 +1,5 @@
 package org.intelehealth.ekalarogya.utilities.authJWT_API;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,6 +14,12 @@ public class AuthJWTBody {
     @SerializedName("rememberme")
     @Expose
     private Boolean rememberme;
+
+    public AuthJWTBody(String username, String password, Boolean rememberme) {
+        this.username = username;
+        this.password = password;
+        this.rememberme = rememberme;
+    }
 
     public String getUsername() {
         return username;
