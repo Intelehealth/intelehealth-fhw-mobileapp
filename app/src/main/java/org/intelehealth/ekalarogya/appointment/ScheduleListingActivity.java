@@ -182,6 +182,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         res.updateConfiguration(conf, dm);
         return context;
     }
+
     private String mEngReason = "";
 
     private void askReason(final SlotInfo slotInfo) {
@@ -241,6 +242,8 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
 
     private void bookAppointment(SlotInfo slotInfo, String reason) {
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
+
         BookAppointmentRequest request = new BookAppointmentRequest();
         if (appointmentId != 0) {
             request.setAppointmentId(appointmentId);
@@ -266,7 +269,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .bookAppointment(url, request)
+                .bookAppointment(url, request, authHeader)
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
@@ -294,10 +297,11 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
     }
 
     private void getSlots() {
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlots(mSelectedStartDate, mSelectedEndDate, speciality)
+                .getSlots(mSelectedStartDate, mSelectedEndDate, speciality, authHeader)
                 .enqueue(new Callback<SlotInfoResponse>() {
                     @Override
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {

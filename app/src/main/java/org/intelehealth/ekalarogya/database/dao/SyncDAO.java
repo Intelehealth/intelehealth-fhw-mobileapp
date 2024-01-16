@@ -247,7 +247,8 @@ public class SyncDAO {
                             Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
                             Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
-                        } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {}
+                        } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
+                        }
                     } else {
                         if (fromActivity.equalsIgnoreCase("home")) {
                             Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
@@ -440,8 +441,7 @@ public class SyncDAO {
             String userName = sessionManager.getChwname();
             ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 
-            if(am == null || am.getRunningTasks(1)==null || am.getRunningTasks(1).size()==0)
-            {
+            if (am == null || am.getRunningTasks(1) == null || am.getRunningTasks(1).size() == 0) {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {  // AEAT-459
                     @Override
                     public void run() {
@@ -494,15 +494,12 @@ public class SyncDAO {
             userStatusUpdateApiCall.setVillage(sessionManager.getCurrentLocationName());
             userStatusUpdateApiCall.setSanch(sessionManager.getSanchName());
 
-            String encoded = sessionManager.getEncoded();
+            String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
             Gson gson = new Gson();
-            Logger.logD(TAG, "push request model" + gson.toJson(userStatusUpdateApiCall));
-            Log.e(TAG, "push request model" + gson.toJson(userStatusUpdateApiCall));
-            String request = gson.toJson(userStatusUpdateApiCall);
             String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/createUpdateStatus";
 
             Single<ResponseBody> userStatusUpdateApiCallObservable =
-                    AppConstants.apiInterface.UserStatus_API_CALL_OBSERVABLE(url, "Basic " + encoded, userStatusUpdateApiCall);
+                    AppConstants.apiInterface.UserStatus_API_CALL_OBSERVABLE(url, authHeader, userStatusUpdateApiCall);
             userStatusUpdateApiCallObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<ResponseBody>() {

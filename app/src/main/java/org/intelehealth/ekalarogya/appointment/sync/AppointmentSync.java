@@ -19,12 +19,15 @@ import retrofit2.Callback;
 
 public class AppointmentSync {
     public static void getAppointments(Context context) {
+        SessionManager sessionManager = new SessionManager(context);
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
-        String baseurl = "https://" + new SessionManager(context).getServerUrl() + ":3004";
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getCurrentLocationUuid())
+                .getSlotsAll(selectedStartDate, selectedEndDate, sessionManager.getCurrentLocationUuid(), authHeader)
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override

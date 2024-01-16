@@ -83,10 +83,12 @@ public class AppointmentListingActivity extends BaseActivity {
     }
 
     private void getSlots() {
+        SessionManager sessionManager = new SessionManager(this);
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(mSelectedStartDate, mSelectedEndDate, new SessionManager(this).getCurrentLocationUuid())
+                .getSlotsAll(mSelectedStartDate, mSelectedEndDate, sessionManager.getCurrentLocationUuid(), authHeader)
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override

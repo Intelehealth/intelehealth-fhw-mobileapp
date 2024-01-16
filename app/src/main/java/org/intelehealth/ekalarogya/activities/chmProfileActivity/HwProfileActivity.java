@@ -123,6 +123,7 @@ public class HwProfileActivity extends AppCompatActivity {
     }
 
     public void getHw_Information() {
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
         Dialog progressDialog = new Dialog(this, android.R.style.Theme_Black);
         View view = LayoutInflater.from(HwProfileActivity.this).inflate(R.layout.custom_progress_dialog, null);
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -131,7 +132,7 @@ public class HwProfileActivity extends AppCompatActivity {
         progressDialog.show();
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/" + sessionManager.getCreatorID() + "?type=hw";
         Logger.logD("Profile", "get profile Info url" + url);
-        Observable<MainProfileModel> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_INFO(url, "Basic " + sessionManager.getEncoded());
+        Observable<MainProfileModel> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_INFO(url, authHeader);
         profilePicDownload.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<MainProfileModel>() {
@@ -146,11 +147,13 @@ public class HwProfileActivity extends AppCompatActivity {
                         }
                         progressDialog.dismiss();
                     }
+
                     @Override
                     public void onError(Throwable e) {
                         Logger.logD("ProfileInfo", e.getMessage());
                         progressDialog.dismiss();
                     }
+
                     @Override
                     public void onComplete() {
                         Logger.logD("ProfileInfo", "complete");
@@ -321,8 +324,7 @@ public class HwProfileActivity extends AppCompatActivity {
                         .skipMemoryCache(true)
                         .into(hw_profile_image);
                 UploadHW_ProfileImage();
-            }
-            else if (resultCode == RESULT_CANCELED) {
+            } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -345,6 +347,7 @@ public class HwProfileActivity extends AppCompatActivity {
                     public void onSuccess(ResponseBody responseBody) {
                         Logger.logD("HwProfileImage", "success" + responseBody);
                     }
+
                     @Override
                     public void onError(Throwable e) {
                         Logger.logD("HwProfileImage", "Onerror " + e.getMessage());
@@ -368,6 +371,7 @@ public class HwProfileActivity extends AppCompatActivity {
                         DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
                         downloadFilesUtils.saveToDisk(file, sessionManager.getHwID());
                     }
+
                     @Override
                     public void onError(Throwable e) {
                         Logger.logD("Error", e.getMessage());
@@ -380,6 +384,7 @@ public class HwProfileActivity extends AppCompatActivity {
                                 .skipMemoryCache(true)
                                 .into(hw_profile_image);
                     }
+
                     @Override
                     public void onComplete() {
                         Glide.with(HwProfileActivity.this)
@@ -405,27 +410,27 @@ public class HwProfileActivity extends AppCompatActivity {
         String name = hw_gender_value.getText().toString().trim();
         Log.v("lang", "langModel: " + name);
 
-        if(name.equalsIgnoreCase("ପୁରୁଷ"))
+        if (name.equalsIgnoreCase("ପୁରୁଷ"))
             name = "Male";
-        else if(name.equalsIgnoreCase("पुरुष"))
+        else if (name.equalsIgnoreCase("पुरुष"))
             name = "Male";
-        else if(name.equalsIgnoreCase("પુરુષ"))
+        else if (name.equalsIgnoreCase("પુરુષ"))
             name = "Male";
-        else if(name.equalsIgnoreCase("পুৰুষ"))
+        else if (name.equalsIgnoreCase("পুৰুষ"))
             name = "Male";
 
-        if(name.equalsIgnoreCase("ମହିଳା"))
+        if (name.equalsIgnoreCase("ମହିଳା"))
             name = "Female";
-        else if(name.equalsIgnoreCase("महिला"))
+        else if (name.equalsIgnoreCase("महिला"))
             name = "Female";
-        else if(name.equalsIgnoreCase("સ્ત્રી"))
+        else if (name.equalsIgnoreCase("સ્ત્રી"))
             name = "Female";
-        else if(name.equalsIgnoreCase("মহিলা"))
+        else if (name.equalsIgnoreCase("মহিলা"))
             name = "Female";
 
-        if(name.length()>0){
-            if(!name.equalsIgnoreCase("Male") &&
-                    !name.equalsIgnoreCase("Female")){
+        if (name.length() > 0) {
+            if (!name.equalsIgnoreCase("Male") &&
+                    !name.equalsIgnoreCase("Female")) {
                 hw_gender_value.requestFocus();
                 SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(getString(R.string.enter_valid_gender));
                 spannableStringBuilder.setSpan(foregroundColorSpan, 0, getString(R.string.enter_valid_gender).length(), 0);
@@ -466,8 +471,7 @@ public class HwProfileActivity extends AppCompatActivity {
         updateHwDetail();
     }
 
-    public boolean emailValidation(String email)
-    {
+    public boolean emailValidation(String email) {
         Pattern pattern;
         Matcher matcher;
         final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -476,59 +480,61 @@ public class HwProfileActivity extends AppCompatActivity {
         return matcher.matches();
     }
 
-    public void updateHwDetail(){
-        try{
-            if(mainProfileModel!=null){
+    public void updateHwDetail() {
+        try {
+            if (mainProfileModel != null) {
                 HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
                 UserAttributeModel userAttributeModel = new UserAttributeModel();
-                if(hwProfileModel!=null) {
-                    if (!hw_designation_value.getText().toString().equalsIgnoreCase(hwProfileModel.getDesignation())){
+                if (hwProfileModel != null) {
+                    if (!hw_designation_value.getText().toString().equalsIgnoreCase(hwProfileModel.getDesignation())) {
                         userAttributeModel.setQualification(hw_designation_value.getText().toString().trim());
                     }
-                    if (!hw_aboutme_value.getText().toString().equalsIgnoreCase(hwProfileModel.getAboutMe())){
+                    if (!hw_aboutme_value.getText().toString().equalsIgnoreCase(hwProfileModel.getAboutMe())) {
                         userAttributeModel.setAboutMe(hw_aboutme_value.getText().toString());
                     }
                     HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
-                    if(personalInformationModel!=null) {
-                        if (!hw_gender_value.getText().toString().equalsIgnoreCase(personalInformationModel.getGender())){
+                    if (personalInformationModel != null) {
+                        if (!hw_gender_value.getText().toString().equalsIgnoreCase(personalInformationModel.getGender())) {
                             userAttributeModel.setGender(hw_gender_value.getText().toString().trim());
                         }
-                        if (!hw_mobile_value.getText().toString().equalsIgnoreCase(personalInformationModel.getMobile())){
+                        if (!hw_mobile_value.getText().toString().equalsIgnoreCase(personalInformationModel.getMobile())) {
                             userAttributeModel.setPhoneNumber(hw_mobile_value.getText().toString().trim());
                             sessionManager.setHwPhone(hw_mobile_value.getText().toString().trim());
                         }
-                        if (!hw_whatsapp_value.getText().toString().equalsIgnoreCase(personalInformationModel.getWhatsApp())){
+                        if (!hw_whatsapp_value.getText().toString().equalsIgnoreCase(personalInformationModel.getWhatsApp())) {
                             userAttributeModel.setWhatsapp(hw_whatsapp_value.getText().toString().trim());
                             sessionManager.setHwWhatsApp(hw_whatsapp_value.getText().toString().trim());
                         }
-                        if (!hw_email_value.getText().toString().equalsIgnoreCase(personalInformationModel.getEmail())){
+                        if (!hw_email_value.getText().toString().equalsIgnoreCase(personalInformationModel.getEmail())) {
                             userAttributeModel.setEmailId(hw_email_value.getText().toString().trim());
                         }
                     }
-                    if(userAttributeModel!=null)
+                    if (userAttributeModel != null)
                         updateOnServer(userAttributeModel);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void updateOnServer(UserAttributeModel obj){
-        String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getCreatorID();
-        String encoded = sessionManager.getEncoded();
-        Single<UserInfoUpdateModel> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, obj);
+    public void updateOnServer(UserAttributeModel obj) {
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
+
+        String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/" + sessionManager.getCreatorID();
+        Single<UserInfoUpdateModel> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, authHeader, obj);
         hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableSingleObserver<UserInfoUpdateModel>() {
+                .subscribe(new DisposableSingleObserver<UserInfoUpdateModel>() {
                     @Override
                     public void onSuccess(UserInfoUpdateModel responseBody) {
                         Logger.logD(TAG, "success" + responseBody.toString());
-                        Gson gson=new Gson();
-                        String response= gson.toJson(responseBody);
-                        Toast.makeText(HwProfileActivity.this,getString(R.string.update_hw_profile),Toast.LENGTH_SHORT).show();
+                        Gson gson = new Gson();
+                        String response = gson.toJson(responseBody);
+                        Toast.makeText(HwProfileActivity.this, getString(R.string.update_hw_profile), Toast.LENGTH_SHORT).show();
                         setEnabledProfile();
                     }
+
                     @Override
                     public void onError(Throwable e) {
                         Logger.logD(TAG, "Onerror " + e.getMessage());
@@ -536,7 +542,7 @@ public class HwProfileActivity extends AppCompatActivity {
                 });
     }
 
-    public void setEnabledProfile(){
+    public void setEnabledProfile() {
         hw_gender_value.setClickable(false);
         hw_gender_value.setFocusable(false);
         hw_gender_value.setCursorVisible(false);

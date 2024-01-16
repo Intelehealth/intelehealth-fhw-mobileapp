@@ -4239,12 +4239,14 @@ public class VisitSummaryActivity extends BaseActivity {
     private int mAppointmentId = 0;
 
     private void getAppointmentDetails(String visitUUID) {
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
+
         mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
         mInfoAppointmentBookingTextView.setText(getString(R.string.please_wait));
         Log.v("VisitSummary", "getAppointmentDetails");
         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getAppointmentDetails(visitUUID)
+                .getAppointmentDetails(visitUUID, authHeader)
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
@@ -4329,6 +4331,8 @@ public class VisitSummaryActivity extends BaseActivity {
     }
 
     private void cancelAppointmentRequest(String reason) {
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
+
         CancelRequest request = new CancelRequest();
         request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
         request.setId(mAppointmentDetailsResponse.getData().getId());
@@ -4336,7 +4340,7 @@ public class VisitSummaryActivity extends BaseActivity {
         request.setHwUUID(new SessionManager(VisitSummaryActivity.this).getProviderID()); // user id / healthworker id
         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .cancelAppointment(request)
+                .cancelAppointment(request, authHeader)
                 .enqueue(new Callback<CancelResponse>() {
                     @Override
                     public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
