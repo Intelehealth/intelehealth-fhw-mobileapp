@@ -216,7 +216,7 @@ public class SyncDAO {
                 if (response.isSuccessful()) {
 
                     // SyncDAO syncDAO = new SyncDAO();
-                    /*boolean sync = false;
+                    boolean sync = false;
                     try {
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
@@ -239,8 +239,7 @@ public class SyncDAO {
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
 //                        }
-                    }
-                    else {
+                    } else {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
                         if (fromActivity.equalsIgnoreCase("home")) {
@@ -255,9 +254,88 @@ public class SyncDAO {
 //                        }
                         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
-                    }*/
+                    }
+
+                    if (sessionManager.getTriggerNoti().equals("yes")) {
+                        if (response.body().getData() != null) {
+                            ArrayList<String> listPatientUUID = new ArrayList<String>();
+                            List<VisitDTO> listVisitDTO = new ArrayList<>();
+                            ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+
+                            for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
+                                if (response.body().getData().getEncounterDTO().get(i)
+                                        .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
+                                    encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
+                                }
+                            }
+                            listVisitDTO.addAll(response.body().getData().getVisitDTO());
+                            for (int i = 0; i < encounterVisitUUID.size(); i++) {
+                                for (int j = 0; j < listVisitDTO.size(); j++) {
+                                    if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
+                                        listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+                                    }
+                                }
+                            }
+
+                            if (listPatientUUID.size() > 0) {
+                                triggerVisitNotification(listPatientUUID);
+                            }
+                        }
+                    } else {
+                        sessionManager.setTriggerNoti("yes");
+                    }
+                }
+
+                Logger.logD("End Pull request", "Ended");
+                sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
+
+                //Workmanager request is used in ForeGround sync in place of this as per the intele_Safe
+               /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
+                IntelehealthApplication.getAppContext().startService(intent);*/
+                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDTO> call, Throwable t) {
+                Logger.logD("pull data", "exception" + t.getMessage());
+                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+            }
+        });
+        sessionManager.setPullSyncFinished(true);
+        return true;
+    }
 
 
+    /**
+     * this method for syncing data first time with background service
+     * we starting background service here
+     * @param context
+     * @param fromActivity
+     * @return
+     */
+    public boolean pullDataBackgroundService(final Context context, String fromActivity) {
+
+        mDbHelper = new InteleHealthDatabaseHelper(context);
+        if (db == null) {
+            db = mDbHelper.getWriteDb();
+        }
+        sessionManager = new SessionManager(context);
+        String encoded = sessionManager.getEncoded();
+        String oldDate = sessionManager.getPullExcutedTime();
+        String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+//        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
+        Logger.logD("Start pull request", "Started");
+        middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
+            @Override
+            public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
+//                AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
+                if (response.body() != null && response.body().getData() != null) {
+                    sessionManager.setPulled(response.body().getData().getPullexecutedtime());
+                }
+                if (response.isSuccessful()) {
                     ResponseDTO responseDTO = response.body();
                     //Large amount of data passing not possible with intent
                     //we passing data through static function

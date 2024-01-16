@@ -6,33 +6,48 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent" >
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:padding="10dp" >
+        android:padding="10dp">
 
-        <org.intelehealth.app.widget.materialprogressbar.CircleProgressBar
+        <!--<org.intelehealth.app.widget.materialprogressbar.CircleProgressBar
             android:id="@+id/ivAnim"
             android:layout_width="55dp"
             android:layout_height="55dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:mlpb_arrow_height="5dp"
             app:mlpb_arrow_width="10dp"
             app:mlpb_progress_color="@color/colorPrimaryDark"
             app:mlpb_progress_stoke_width="50dp"
-            app:mlpb_show_arrow="true" />
+            app:mlpb_show_arrow="true" />-->
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/tvProgressTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivAnim"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical|center"
-            android:textColor="@color/primary_text"
+            android:layout_below="@+id/progressbar"
             android:fontFamily="@font/lato_medium"
+            android:gravity="center_vertical|center"
+            android:text="@string/_appointment"
+            android:textColor="@color/white"
             android:textSize="14sp"
-            android:visibility="gone" />
-    </RelativeLayout>
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/margin_10"
+            app:layout_constraintTop_toBottomOf="@+id/progressbar"
+            tools:layout_editor_absoluteX="10dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.intelehealth.app.R;
@@ -20,6 +21,8 @@ public class CustomProgressDialog extends Dialog {
 
     private TextView mTvProgressTitle;
     private CircleProgressBar mIvAnimation;
+
+    private ProgressBar progressBar;
     private AnimationDrawable mCloverAnimation;
 
     public CustomProgressDialog(Context context) {
@@ -29,7 +32,8 @@ public class CustomProgressDialog extends Dialog {
         mTvProgressTitle = (TextView) this.findViewById(R.id.tvProgressTitle);
         mTvProgressTitle.setVisibility(View.GONE);
         this.setCancelable(false);
-        mIvAnimation = (CircleProgressBar) findViewById(R.id.ivAnim);
+        //mIvAnimation = (CircleProgressBar) findViewById(R.id.ivAnim);
+        progressBar = findViewById(R.id.progressbar);
 
     }
 
@@ -65,7 +69,7 @@ public class CustomProgressDialog extends Dialog {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mIvAnimation.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
 
             }
         }, 10);

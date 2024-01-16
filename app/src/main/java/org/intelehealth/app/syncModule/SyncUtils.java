@@ -35,7 +35,7 @@ public class SyncUtils {
 
         SyncDAO syncDAO = new SyncDAO();
         Logger.logD(TAG, "Pull Started");
-        syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+        syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity);
         Logger.logD(TAG, "Pull ended");
         // sync data
         AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());

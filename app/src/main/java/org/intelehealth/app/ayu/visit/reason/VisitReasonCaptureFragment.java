@@ -84,7 +84,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         super.onAttach(context);
         mActionListener = (VisitCreationActionListener) context;
         sessionManager = new SessionManager(context);
-        mRawReasonDataList = getVisitReasonFilesNamesOnly();
+          mRawReasonDataList = getVisitReasonFilesNamesOnly();
     }
 
     public static VisitReasonCaptureFragment newInstance(Intent intent, boolean isEditMode, boolean cleanEdit) {

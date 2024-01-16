@@ -331,7 +331,7 @@ public class LoginActivityNew extends AppCompatActivity {
      * This class also uses SharedPreferences to store session ID
      */
     public void UserLoginTask(String mEmail, String mPassword) {
-        cpd.show();
+        cpd.show(getString(R.string.please_wait));
         String urlString = urlModifiers.loginUrl(BuildConfig.SERVER_URL);
 
         Log.d(TAG, "UserLoginTask: urlString : " + urlString);
@@ -343,7 +343,10 @@ public class LoginActivityNew extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
-        loginModelObservable.subscribe(new Observer<LoginModel>() {
+        loginModelObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LoginModel>() {
             @Override
             public void onSubscribe(Disposable d) {
 

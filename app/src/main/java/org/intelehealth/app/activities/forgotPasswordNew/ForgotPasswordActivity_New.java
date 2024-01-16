@@ -55,7 +55,10 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ForgotPasswordActivity_New extends AppCompatActivity {
     private static final String TAG = ForgotPasswordActivity_New.class.getSimpleName();
@@ -218,8 +221,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     }
 
     public void apiCallForRequestOTP(Context context, String username, String mobileNo) {
+        cpd.show(getString(R.string.otp_sending));
         buttonContinue.setEnabled(false);
-        cpd.show();
         String serverUrl = BuildConfig.SERVER_URL + ":3004";
         Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -228,7 +231,10 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ForgotPasswordApiResponseModel_New> loginModelObservable = apiService.REQUEST_OTP_OBSERVABLE(inputModel);
-        loginModelObservable.subscribe(new Observer<ForgotPasswordApiResponseModel_New>() {
+        loginModelObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ForgotPasswordApiResponseModel_New>() {
             @Override
             public void onSubscribe(Disposable d) {
 

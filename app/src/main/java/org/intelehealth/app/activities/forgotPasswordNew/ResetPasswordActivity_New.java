@@ -54,7 +54,9 @@ import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -164,7 +166,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
     }
 
     public void apiCallForResetPassword(Context context, String newPassword, String otp) {
-        cpd.show();
+        cpd.show(getString(R.string.please_wait));
 
         SessionManager sessionManager = new SessionManager(context);
         String serverUrl = BuildConfig.SERVER_URL + ":3004";
@@ -178,7 +180,10 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResetPasswordResModel_New> loginModelObservable = apiService.RESET_PASSWORD_OBSERVABLE(userUuid,
                 inputModel);
-        loginModelObservable.subscribe(new Observer<ResetPasswordResModel_New>() {
+        loginModelObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ResetPasswordResModel_New>() {
             @Override
             public void onSubscribe(Disposable d) {
 
