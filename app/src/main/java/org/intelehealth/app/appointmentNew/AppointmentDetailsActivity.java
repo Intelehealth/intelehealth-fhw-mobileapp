@@ -757,7 +757,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         request.setId(appointment_id);
         request.setReason(reason);
         request.setHwUUID(new SessionManager(AppointmentDetailsActivity.this).getProviderID()); // user id / healthworker id
-        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi().cancelAppointment(request).enqueue(new Callback<CancelResponse>() {
             @Override
             public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {

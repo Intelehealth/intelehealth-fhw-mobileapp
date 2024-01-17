@@ -533,31 +533,26 @@ public class ChatActivity extends AppCompatActivity {
 //        mChatListingAdapter.refresh(response.getData());
         Log.v(TAG, "postMessages - inputJsonObject - " + chatMessage.toJson());
         try {
+            Log.d(TAG, "postMessages: URL=>" + Constants.SEND_MESSAGE_URL);
             JsonObjectRequest objectRequest = new JsonObjectRequest(
                     Request.Method.POST,
                     Constants.SEND_MESSAGE_URL,
-                    new JSONObject(chatMessage.toJson()), new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Log.v(TAG, "postMessages - response - " + response.toString());
-                    try {
-                        ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
-                        mMessageEditText.setText("");
-//                        getAllMessages(false);
-                        msg.setMessageStatus(MessageStatus.SENT.getValue());
-                        mChatListingAdapter.updatedMessage(msg);
-                        mLoadingLinearLayout.setVisibility(View.GONE);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.v(TAG, "postMessages - onErrorResponse - " + error.getMessage());
+                    new JSONObject(chatMessage.toJson()), response -> {
+                Log.v(TAG, "postMessages - response - " + response.toString());
+                try {
+                    ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
+                    mMessageEditText.setText("");
+                    //                        getAllMessages(false);
+                    msg.setMessageStatus(MessageStatus.SENT.getValue());
+                    mChatListingAdapter.updatedMessage(msg);
                     mLoadingLinearLayout.setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
+
+            }, error -> {
+                Log.e(TAG, "postMessages - onErrorResponse - " + error.getMessage());
+                mLoadingLinearLayout.setVisibility(View.GONE);
             });
             mRequestQueue.add(objectRequest);
         } catch (JSONException e) {
