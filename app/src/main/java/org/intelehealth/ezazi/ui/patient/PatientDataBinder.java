@@ -71,4 +71,46 @@ public class PatientDataBinder {
 
         return patients;
     }
+
+    public List<PatientDTO> completedVisits(Cursor searchCursor) {
+        List<PatientDTO> patients = new ArrayList<>();
+        if (searchCursor.moveToFirst()) {
+            do {
+                PatientDTO model = new PatientDTO();
+                model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setFullName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("fullName")));
+                model.setVisitUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("visitId")));
+                model.setCreatedAt(searchCursor.getString(searchCursor.getColumnIndexOrThrow("dateCreated")));
+                String birthStatus = searchCursor.getString(searchCursor.getColumnIndexOrThrow("birthStatus"));
+                String motherDeceased = searchCursor.getString(searchCursor.getColumnIndexOrThrow("motherDeceased"));
+                if (motherDeceased != null && motherDeceased.equals(VisitOutcome.MotherDeceased.YES.name())) {
+                    motherDeceased = CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_REASON.sortValue();
+                    birthStatus = birthStatus != null ? birthStatus + "\n" + motherDeceased : motherDeceased;
+                }
+
+                if (birthStatus != null) model.setStage(birthStatus);
+
+                patients.add(model);
+            } while (searchCursor.moveToNext());
+        }
+
+        return patients;
+    }
+
+    public List<PatientDTO> outcomePendingVisits(Cursor searchCursor) {
+        List<PatientDTO> patients = new ArrayList<>();
+        if (searchCursor.moveToFirst()) {
+            do {
+                PatientDTO model = new PatientDTO();
+                model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setFullName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("fullName")));
+                model.setVisitUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("visitId")));
+                model.setCreatedAt(searchCursor.getString(searchCursor.getColumnIndexOrThrow("dateCreated")));
+                model.setStage(searchCursor.getString(searchCursor.getColumnIndexOrThrow("stage")));
+                patients.add(model);
+            } while (searchCursor.moveToNext());
+        }
+
+        return patients;
+    }
 }

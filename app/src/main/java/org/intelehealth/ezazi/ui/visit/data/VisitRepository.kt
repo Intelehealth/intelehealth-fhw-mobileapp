@@ -11,11 +11,14 @@ import org.intelehealth.ezazi.ui.patient.PatientDataBinder
  * Mob   : +919727206702
  **/
 class VisitRepository(val database: SQLiteDatabase) {
-    fun getAllOutcomePendingVisits() {
-
+    fun getOutcomePendingVisits(offset: Int, limit: Int, providerId: String): List<PatientDTO> {
+        PatientQueryBuilder().outcomePendingPatientQuery(offset, limit, providerId).apply {
+            val cursor = database.rawQuery(this, null)
+            return PatientDataBinder().outcomePendingVisits(cursor)
+        }
     }
 
-    fun getAllUpcomingVisits(): List<PatientDTO> {
+    fun getUpcomingVisits(): List<PatientDTO> {
         PatientQueryBuilder().upcomingPatientQuery(0, 10).apply {
             val cursor = database.rawQuery(this, null)
             return PatientDataBinder().upcomingPatients(cursor)
@@ -25,7 +28,7 @@ class VisitRepository(val database: SQLiteDatabase) {
     fun getCompletedVisits(offset: Int, limit: Int, providerId: String): List<PatientDTO> {
         PatientQueryBuilder().completedVisitPatientQuery(offset, limit, providerId).apply {
             val cursor = database.rawQuery(this, null)
-            return PatientDataBinder().retrieveDataFromCursor(cursor)
+            return PatientDataBinder().completedVisits(cursor)
         }
     }
 }
