@@ -3,7 +3,6 @@ package org.intelehealth.ekalarogya.activities.setupActivity;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getDistanceStrings;
 
 import android.accounts.Account;
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,7 +32,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.URLUtil;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -69,14 +67,10 @@ import org.intelehealth.ekalarogya.models.Location;
 import org.intelehealth.ekalarogya.models.loginModel.LoginModel;
 import org.intelehealth.ekalarogya.models.loginModel.Role;
 import org.intelehealth.ekalarogya.models.loginProviderModel.LoginProviderModel;
-import org.intelehealth.ekalarogya.models.statewise_location.ChildLocation;
-import org.intelehealth.ekalarogya.models.statewise_location.District_Sanch_Village;
-import org.intelehealth.ekalarogya.models.statewise_location.Result;
 import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiClient;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiInterface;
 import org.intelehealth.ekalarogya.utilities.AdminPassword;
-import org.intelehealth.ekalarogya.utilities.authJWT_API.ApiCallUtils;
 import org.intelehealth.ekalarogya.utilities.Base64Utils;
 import org.intelehealth.ekalarogya.utilities.DialogUtils;
 import org.intelehealth.ekalarogya.utilities.DownloadMindMaps;
@@ -727,7 +721,7 @@ public class SetupActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 mLoginButton.setText(getString(R.string.please_wait_progress));
                 mLoginButton.setEnabled(false);
-                TestSetup(urlString, email, password, admin_password, village_name);
+                getJWTToken(urlString, email, password, admin_password, village_name);
             }
         });
         alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
@@ -980,8 +974,6 @@ public class SetupActivity extends AppCompatActivity {
         sessionManager.setEncoded(encoded);
         getDataFromRadioButtons();
 
-        getJWTToken(CLEAN_URL, USERNAME, PASSWORD);
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
@@ -1099,22 +1091,13 @@ public class SetupActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(context, getString(R.string.doctor_credentials_are_not_valid), Toast.LENGTH_LONG).show();
                     progress.dismiss();
-                    mEmailView.requestFocus();
-                    mPasswordView.requestFocus();
-                    mLoginButton.setText(getString(R.string.action_sign_in));
-                    mLoginButton.setEnabled(true);
+                    resetViews();
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                Logger.logD(TAG, "Login Failure" + e.getMessage());
-                progress.dismiss();
-                DialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_str), getString(R.string.error_incorrect_password), "ok");
-                mEmailView.requestFocus();
-                mPasswordView.requestFocus();
-                mLoginButton.setText(getString(R.string.action_sign_in));
-                mLoginButton.setEnabled(true);
+                triggerIncorrectPasswordFlow(progress);
             }
 
             @Override
@@ -1126,12 +1109,33 @@ public class SetupActivity extends AppCompatActivity {
 
     }
 
-    private void getJWTToken(String urlString, String username, String password) {
-        String finalURL = urlString.concat(":3030/auth/login");
+    private void resetViews() {
+        mEmailView.requestFocus();
+        mPasswordView.requestFocus();
+        mLoginButton.setText(getString(R.string.action_sign_in));
+        mLoginButton.setEnabled(true);
+    }
+
+    private void triggerIncorrectPasswordFlow(ProgressDialog progress) {
+        progress.dismiss();
+        DialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_str), getString(R.string.error_incorrect_password), "ok");
+        resetViews();
+    }
+
+    private void getJWTToken(String urlString, String username, String password, String admin_password, Map.Entry<String, String> village_name) {
+        ProgressDialog progress;
+        progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
+        progress.setTitle(getString(R.string.please_wait_progress));
+        progress.setMessage(getString(R.string.logging_in));
+
+        progress.show();
+        String finalURL = "https://" + urlString.concat(":3030/auth/login");
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
-        authJWTResponseObservable.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(AndroidSchedulers.mainThread())
+
+        authJWTResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -1140,12 +1144,19 @@ public class SetupActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(AuthJWTResponse authJWTResponse) {
+                        // in case of error password
+                        if (!authJWTResponse.getStatus()) {
+                            triggerIncorrectPasswordFlow(progress);
+                            return;
+                        }
+
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        TestSetup(urlString, username, password, admin_password, village_name);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        resetViews();
                     }
 
                     @Override

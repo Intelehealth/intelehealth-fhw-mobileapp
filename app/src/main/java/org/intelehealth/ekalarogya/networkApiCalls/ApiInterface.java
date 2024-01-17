@@ -144,6 +144,7 @@ public interface ApiInterface {
             @Body UserAttributeModel obj
     );
 
+    @Headers({"Accept: application/json"})
     @POST
     Observable<AuthJWTResponse> AUTH_LOGIN_JWT_API(
             @Url String url,
