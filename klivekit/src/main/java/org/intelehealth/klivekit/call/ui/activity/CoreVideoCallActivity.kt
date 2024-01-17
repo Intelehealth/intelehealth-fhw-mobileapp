@@ -286,12 +286,12 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             CallHandlerUtils.notifyCallNotification(args, this)
         } else if (args.isIncomingCall()) {
             onIncomingCall()
-//            stopService(
-//                Intent(
-//                    this@CoreVideoCallActivity,
-//                    HeadsUpNotificationService::class.java
-//                )
-//            )
+            stopService(
+                Intent(
+                    this@CoreVideoCallActivity,
+                    HeadsUpNotificationService::class.java
+                )
+            )
         } else onGoingCall()
     }
 

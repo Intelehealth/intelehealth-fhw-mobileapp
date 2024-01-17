@@ -59,6 +59,7 @@
             android:layout_width="@dimen/image_home_toolbar_icon_width"
             android:layout_height="@dimen/image_home_toolbar_icon_height"
             android:layout_marginEnd="@dimen/image_home_toolbar_icon_marginend"
+            android:src="@drawable/ic_sync_now"
             android:foregroundGravity="center_horizontal"
             android:tooltipText="Tooltip" />
 
