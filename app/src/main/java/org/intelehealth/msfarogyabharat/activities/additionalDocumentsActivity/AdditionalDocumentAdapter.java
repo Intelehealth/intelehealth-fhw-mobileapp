@@ -1,12 +1,15 @@
 package org.intelehealth.msfarogyabharat.activities.additionalDocumentsActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +20,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -77,7 +80,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     }
 
     @Override
-    public void onBindViewHolder(final AdditionalDocumentViewHolder holder, final int position) {
+    public void onBindViewHolder(final AdditionalDocumentViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
 //        holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
         /*holder.getDocumentNameTextView().setText
@@ -165,9 +168,9 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                             .load(file)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .listener(new RequestListener<File, GlideDrawable>() {
+                            .listener(new RequestListener<Drawable>() {
                                 @Override
-                                public boolean onException(Exception e, File file, Target<GlideDrawable> target, boolean b) {
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                     if (progressBar != null) {
                                         progressBar.setVisibility(View.GONE);
                                     }
@@ -175,8 +178,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                                 }
 
                                 @Override
-                                public boolean onResourceReady(GlideDrawable glideDrawable, File file, Target<GlideDrawable> target,
-                                                               boolean b, boolean b1) {
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                     if (progressBar != null) {
                                         progressBar.setVisibility(View.GONE);
                                     }

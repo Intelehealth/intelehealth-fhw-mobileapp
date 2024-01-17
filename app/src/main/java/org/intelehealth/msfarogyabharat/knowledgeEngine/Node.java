@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-
-import androidx.appcompat.app.AlertDialog;
-
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -21,28 +19,36 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.msfarogyabharat.R;
+import org.intelehealth.msfarogyabharat.activities.cameraActivity.CameraActivity;
+import org.intelehealth.msfarogyabharat.activities.complaintNodeActivity.CustomArrayAdapter;
+import org.intelehealth.msfarogyabharat.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
+import org.intelehealth.msfarogyabharat.utilities.InputFilterMinMax;
+import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.Serializable;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,17 +58,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
-import org.intelehealth.msfarogyabharat.R;
-import org.intelehealth.msfarogyabharat.activities.questionNodeActivity.QuestionsAdapter;
-import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
-import org.intelehealth.msfarogyabharat.utilities.InputFilterMinMax;
-import org.intelehealth.msfarogyabharat.utilities.SessionManager;
-
-import org.intelehealth.msfarogyabharat.activities.cameraActivity.CameraActivity;
-import org.intelehealth.msfarogyabharat.activities.complaintNodeActivity.CustomArrayAdapter;
-
-import io.reactivex.functions.Action;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.
@@ -340,7 +335,7 @@ public class Node implements Serializable {
                 this.pop_up_hindi = this.pop_up;
             }
 
-            if(pop_up.isEmpty() && pop_up_hindi.isEmpty())
+            if (pop_up.isEmpty() && pop_up_hindi.isEmpty())
                 this.hasPopUp = false;
             else
                 this.hasPopUp = true;
@@ -441,24 +436,21 @@ public class Node implements Serializable {
                 }
 
                 if (node.optionsList != null && !node.optionsList.isEmpty() && node.isMultiChoice) {
-                    if(currentNode.isExcludedFromMultiChoice) {
+                    if (currentNode.isExcludedFromMultiChoice) {
 
-                        if(currentNode.isSelected()) {
+                        if (currentNode.isSelected()) {
                             for (int i = 0; i < node.optionsList.size(); i++) {
                                 Node innerNode = node.optionsList.get(i);
                                 innerNode.setUnselected();
                             }
                             currentNode.setSelected(true);
-                        }
-                        else
+                        } else
                             currentNode.setUnselected();
 
-                    }
-                    else
-                    {
+                    } else {
                         for (int i = 0; i < node.optionsList.size(); i++) {
                             Node innerNode = node.optionsList.get(i);
-                            if(innerNode.isExcludedFromMultiChoice)
+                            if (innerNode.isExcludedFromMultiChoice)
                                 innerNode.setUnselected();
                         }
                     }
@@ -483,9 +475,9 @@ public class Node implements Serializable {
                 sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
                 String locale = sessionManager.getCurrentLang();
 
-                if(node.generateLanguage()!=null){
-                node.setText(node.generateLanguage());
-                }else{
+                if (node.generateLanguage() != null) {
+                    node.setText(node.generateLanguage());
+                } else {
                     node.setText("");
                 }
 
@@ -1061,15 +1053,14 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
                     if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_",  dialogEditText.getText().toString()));
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                     } else {
                         node.addLanguage(dialogEditText.getText().toString());
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
-                }
-                else {
+                } else {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -1086,15 +1077,14 @@ public class Node implements Serializable {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if(!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                     } else {
                         node.addLanguage(dialogEditText.getText().toString());
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
-                }
-                else {
+                } else {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -1320,7 +1310,7 @@ public class Node implements Serializable {
                         Calendar cal = Calendar.getInstance();
                         cal.setTimeInMillis(0);
                         cal.set(year, monthOfYear, dayOfMonth);
-                        Log.v("main", "date: "+ year + ":" + monthOfYear + ":" + dayOfMonth);
+                        Log.v("main", "date: " + year + ":" + monthOfYear + ":" + dayOfMonth);
                         Date date = cal.getTime();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
@@ -1329,14 +1319,13 @@ public class Node implements Serializable {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
-                            if(!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
+                            if (!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
                                 String pregnancy_week = pregnancy_calculator(dayOfMonth, monthOfYear, year);
                                 node.addLanguage(" " + dateString + ", Pregnancy Week: " + pregnancy_week);
-                            }
-                            else {
+                            } else {
                                 node.addLanguage(" " + dateString);
                             }
-                            
+
                             node.setText(node.getLanguage());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
@@ -1359,9 +1348,9 @@ public class Node implements Serializable {
             for (Node node_opt : mOptions) {
                 if (node_opt.isSelected() && node_opt.hasPopUp) {
 
-                    if(locale.equalsIgnoreCase("en"))
+                    if (locale.equalsIgnoreCase("en"))
                         messages.add(node_opt.pop_up);
-                    else if(locale.equalsIgnoreCase("hi"))
+                    else if (locale.equalsIgnoreCase("hi"))
                         messages.add(node_opt.pop_up_hindi);
                     else
                         messages.add(node_opt.pop_up);
@@ -1929,8 +1918,8 @@ public class Node implements Serializable {
         return unit;
     }
 
-   
-private static String te_en(String unit) {
+
+    private static String te_en(String unit) {
         switch (unit) {
             case "గంటలు":
                 unit = "Hours";
@@ -1960,7 +1949,7 @@ private static String te_en(String unit) {
     }
 
 
-private static String bn_en(String unit) {
+    private static String bn_en(String unit) {
         switch (unit) {
             case "ঘন্টার":
                 unit = "Hours";
@@ -1990,8 +1979,8 @@ private static String bn_en(String unit) {
     }
 
 
-private static String ml_en(String unit) {
-    
+    private static String ml_en(String unit) {
+
         switch (unit) {
             case "മണിക്കൂറുകൾ":
                 unit = "Hours";
@@ -2063,17 +2052,16 @@ private static String ml_en(String unit) {
                         cal.setTimeInMillis(0);
                         cal.set(year, monthOfYear, dayOfMonth);
                         Date date = cal.getTime();
-                        Log.v("main", "date: "+ year + ":" + monthOfYear + ":" + dayOfMonth);
+                        Log.v("main", "date: " + year + ":" + monthOfYear + ":" + dayOfMonth);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
-                            if(!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
+                            if (!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
                                 String pregnancy_week = pregnancy_calculator(dayOfMonth, monthOfYear, year);
                                 node.addLanguage(" " + dateString + ", Pregnancy Week: " + pregnancy_week);
-                            }
-                            else {
+                            } else {
                                 node.addLanguage(" " + dateString);
                             }
 
@@ -2103,10 +2091,10 @@ private static String ml_en(String unit) {
         Calendar today = Calendar.getInstance();
         Date todayDate = today.getTime();
         String todays_date = simpleDateFormat.format(todayDate);
-        Log.v("date", "stringdate: "+ user_date + " " + todays_date);
+        Log.v("date", "stringdate: " + user_date + " " + todays_date);
 
         long different = todayDate.getTime() - userDate.getTime();
-        Log.v("date", "today::: "+ todayDate.getTime() + " : "+ userDate.getTime());
+        Log.v("date", "today::: " + todayDate.getTime() + " : " + userDate.getTime());
 
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;
@@ -2114,11 +2102,11 @@ private static String ml_en(String unit) {
         long daysInMilli = hoursInMilli * 24;
 
         long elapsedDays = different / daysInMilli;
-        Log.v("date", "time::: "+ elapsedDays);
+        Log.v("date", "time::: " + elapsedDays);
 
         //divide number of days difference with 7 to get no of weeks
         long weeks = elapsedDays / 7;
-        Log.v("date", "weeks::: "+ weeks);
+        Log.v("date", "weeks::: " + weeks);
 
         return weeks + " week";
     }
@@ -2546,29 +2534,26 @@ private static String ml_en(String unit) {
                             stringsList.add(test.substring(1));
                         } else {
                             // stringsList.add(test);
-                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
                                     .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
 
-                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
                                     if (language.equalsIgnoreCase("hi"))
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     else
                                         stringsList.add(mOptions.get(i).findDisplay());
-                                }
-                                else {
+                                } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
                                 }
-                            }
-                            else {
-                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
                                     if (language.equalsIgnoreCase("hi") && !mOptions.get(i).getDisplay_hindi().startsWith("["))
                                         stringsList.add(mOptions.get(i).getDisplay_hindi());
                                     else
                                         stringsList.add(mOptions.get(i).getLanguage());
-                                }
-                                else {
+                                } else {
                                     stringsList.add(mOptions.get(i).findDisplay(language));
                                 }
 
@@ -2615,7 +2600,7 @@ private static String ml_en(String unit) {
             }
         }
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
         return mLanguage;
     }
@@ -2668,16 +2653,20 @@ private static String ml_en(String unit) {
                         .load(new File(imagePath))
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .listener(new RequestListener<File, GlideDrawable>() {
+                        .listener(new RequestListener<Drawable>() {
                             @Override
-                            public boolean onException(Exception e, File file, Target<GlideDrawable> target, boolean b) {
-                                progressBar.setVisibility(View.GONE);
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                if (progressBar != null) {
+                                    progressBar.setVisibility(View.GONE);
+                                }
                                 return false;
                             }
 
                             @Override
-                            public boolean onResourceReady(GlideDrawable glideDrawable, File file, Target<GlideDrawable> target, boolean b, boolean b1) {
-                                progressBar.setVisibility(View.GONE);
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                if (progressBar != null) {
+                                    progressBar.setVisibility(View.GONE);
+                                }
                                 return false;
                             }
                         })
@@ -2748,16 +2737,16 @@ private static String ml_en(String unit) {
     public String getDisplay_telugu() {
         return display_telugu;
     }
+
     public String getDisplay_bengali() {
         return display_bengali;
     }
 
-    public String getDisplay_tamil()
-    {
+    public String getDisplay_tamil() {
         return display_tamil;
     }
-    public void setDisplay_tamil(String display_tamil)
-    {
+
+    public void setDisplay_tamil(String display_tamil) {
         this.display_tamil = display_tamil;
     }
 
@@ -2936,6 +2925,7 @@ private static String ml_en(String unit) {
     public boolean isMultiChoice() {
         return isMultiChoice;
     }
+
     public void setMultiChoice(boolean multiChoice) {
         isMultiChoice = multiChoice;
     }
@@ -2943,6 +2933,7 @@ private static String ml_en(String unit) {
     public boolean isExcludedFromMultiChoice() {
         return isExcludedFromMultiChoice;
     }
+
     public void setExcludedFromMultiChoice(boolean excludedFromMultiChoice) {
         isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
@@ -3459,7 +3450,6 @@ private static String ml_en(String unit) {
     }
 
 
-
     public String generateLanguageResolution() {
 
         String raw = "";
@@ -3497,8 +3487,7 @@ private static String ml_en(String unit) {
                                 SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
                                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                                     raw = raw + bullet + " " + node_opt.formLanguageHindi() + next_line;
-                                }
-                                else {
+                                } else {
                                     raw = raw + bullet + " " + node_opt.formLanguage() + next_line;
                                 }
                             } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
@@ -3565,27 +3554,24 @@ private static String ml_en(String unit) {
                             stringsList.add(test.substring(1));
                         } else {
                             // stringsList.add(test);
-                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
                                     .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
-                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
                                     // stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
                                     if (language.equalsIgnoreCase("hi"))
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     else
                                         stringsList.add(mOptions.get(i).findDisplay());
-                                }
-                                else {
+                                } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
                                 }
-                            }
-                            else {
-                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
                                     stringsList.add(mOptions.get(i).getLanguage());
-                                }
-                                else {
-                                   // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                } else {
+                                    // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
                                     if (language.equalsIgnoreCase("hi"))
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     else
@@ -3635,7 +3621,7 @@ private static String ml_en(String unit) {
             }
         }
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
         return mLanguage;
     }
@@ -3653,23 +3639,20 @@ private static String ml_en(String unit) {
                         } else if (test.substring(0, 1).equals("%")) {
                             stringsList.add(test.substring(1));
                         } else {
-                           // stringsList.add(test);
-                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                            // stringsList.add(test);
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
                                     .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
-                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
                                     stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
-                                }
-                                else {
+                                } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
                                 }
-                            }
-                            else {
-                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
                                     stringsList.add(mOptions.get(i).getLanguage());
-                                }
-                                else {
+                                } else {
                                     stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
                                 }
 
@@ -3716,8 +3699,8 @@ private static String ml_en(String unit) {
             }
         }
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-        mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
         return mLanguage;
     }
 }
