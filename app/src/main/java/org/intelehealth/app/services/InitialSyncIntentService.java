@@ -10,6 +10,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.dto.ResponseDTO;
+import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -39,33 +40,48 @@ public class InitialSyncIntentService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         boolean sync = false;
+        SyncDAO syncDAO = new SyncDAO();
         String fromActivity = intent.getStringExtra("from");
         try {
-            sync = new SyncDAO().SyncData(responseDTO);
+            sync = syncDAO.SyncData(responseDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         if (sync) {
-            sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
-            Intent broadcast = new Intent();
-            broadcast.putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE);
-            broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-            sendBroadcast(broadcast);
-            if (fromActivity.equalsIgnoreCase("home")) {
-                //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
-            } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                //Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
-            } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
+            int nextPageNo = responseDTO.getData().getPageNo();
+            int totalCount = responseDTO.getData().getTotalCount();
+            int percentage = 0; // this should be only in initialSync....
+
+            if (nextPageNo != -1) {
+                percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0/totalCount);
+                Logger.logD(SyncDAO.MSF_PULL_ISSUE, "percentage: " + percentage);
+                SyncDAO.setProgress(percentage);
+                syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, nextPageNo);
+            }else {
+                percentage = 100;
+                Logger.logD(SyncDAO.MSF_PULL_ISSUE, "percentage page -1: " + percentage);
+                SyncDAO.setProgress(percentage);
+
+                sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
+                Intent broadcast = new Intent();
+                broadcast.putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE);
+                broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                sendBroadcast(broadcast);
+                if (fromActivity.equalsIgnoreCase("home")) {
+                    //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
+                } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
+                    //Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
+                } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
 //                            AppConstants.notificationUtils.DownloadDone(context.getString(R.string.download_from_doctor), context.getString(R.string.prescription_downloaded), 3, context);
 //                            Toast.makeText(context, context.getString(R.string.prescription_downloaded), Toast.LENGTH_LONG).show();
-            }
+                }
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
 //                        }
+            }
         }
         else {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
-
             if (fromActivity.equalsIgnoreCase("home")) {
                 // Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
             } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
