@@ -1196,4 +1196,5 @@
     <string name="title_un_uploaded_visit_reminder_desc">Hello, there are some visits which are yet to be uploaded, kindly take action.</string>
     <string name="you_have_unuploaded_visits">You have %1$s un-uploaded visits.</string>
     <string name="doctor_credentials_are_not_valid">Doctor credentials are not valid for the mobile app.</string>
+    <string name="session_expired_please_sign_in_again">Your session has expired. Please log in again.</string>
 </resources>

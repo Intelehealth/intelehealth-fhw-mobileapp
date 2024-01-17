@@ -22,6 +22,7 @@ import org.intelehealth.ekalarogya.appointment.dao.AppointmentDAO;
 import org.intelehealth.ekalarogya.appointment.model.AppointmentInfo;
 import org.intelehealth.ekalarogya.appointment.model.AppointmentListingResponse;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
+import org.intelehealth.ekalarogya.utilities.NavigationUtils;
 import org.intelehealth.ekalarogya.utilities.ResponseChecker;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
@@ -94,8 +95,11 @@ public class AppointmentListingActivity extends BaseActivity {
                     @Override
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
                         ResponseChecker<AppointmentListingResponse> responseChecker = new ResponseChecker<>(response);
+
                         if (responseChecker.isNotAuthorized()) {
-                            //TODO: redirect to login screen
+                            sessionManager.setJwtAuthToken(null);
+                            NavigationUtils navigationUtils = new NavigationUtils();
+                            navigationUtils.triggerSignOutOn401Response(AppointmentListingActivity.this);
                             return;
                         }
 

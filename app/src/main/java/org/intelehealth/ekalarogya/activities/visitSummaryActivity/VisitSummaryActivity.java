@@ -155,6 +155,7 @@ import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
 import org.intelehealth.ekalarogya.utilities.DialogUtils;
 import org.intelehealth.ekalarogya.utilities.FileUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
+import org.intelehealth.ekalarogya.utilities.NavigationUtils;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.ResponseChecker;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
@@ -4252,8 +4253,11 @@ public class VisitSummaryActivity extends BaseActivity {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
                         ResponseChecker<AppointmentDetailsResponse> responseChecker = new ResponseChecker<>(response);
+
                         if (responseChecker.isNotAuthorized()) {
-                            //TODO: redirect to login screen
+                            sessionManager.setJwtAuthToken(null);
+                            NavigationUtils navigationUtils = new NavigationUtils();
+                            navigationUtils.triggerSignOutOn401Response(VisitSummaryActivity.this);
                             return;
                         }
 
@@ -4352,8 +4356,11 @@ public class VisitSummaryActivity extends BaseActivity {
                     @Override
                     public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
                         ResponseChecker<CancelResponse> responseChecker = new ResponseChecker<>(response);
+
                         if (responseChecker.isNotAuthorized()) {
-                            //TODO: redirect to login screen
+                            sessionManager.setJwtAuthToken(null);
+                            NavigationUtils navigationUtils = new NavigationUtils();
+                            navigationUtils.triggerSignOutOn401Response(VisitSummaryActivity.this);
                             return;
                         }
 

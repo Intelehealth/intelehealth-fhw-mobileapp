@@ -40,6 +40,7 @@ import org.intelehealth.ekalarogya.models.dto.VisitDTO;
 import org.intelehealth.ekalarogya.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.ekalarogya.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.ekalarogya.utilities.Logger;
+import org.intelehealth.ekalarogya.utilities.NavigationUtils;
 import org.intelehealth.ekalarogya.utilities.NotificationID;
 import org.intelehealth.ekalarogya.utilities.PatientsFrameJson;
 import org.intelehealth.ekalarogya.utilities.ResponseChecker;
@@ -509,7 +510,9 @@ public class SyncDAO {
                         public void onSuccess(Response<ResponseBody> responseBodyResponse) {
                             ResponseChecker<ResponseBody> responseChecker = new ResponseChecker<>(responseBodyResponse);
                             if (responseChecker.isNotAuthorized()) {
-                                //TODO: redirect to login screen
+                                sessionManager.setJwtAuthToken(null);
+                                NavigationUtils navigationUtils = new NavigationUtils();
+                                navigationUtils.triggerSignOutOn401Response(context);
                                 return;
                             }
                             Logger.logD(TAG, "success" + responseBodyResponse);

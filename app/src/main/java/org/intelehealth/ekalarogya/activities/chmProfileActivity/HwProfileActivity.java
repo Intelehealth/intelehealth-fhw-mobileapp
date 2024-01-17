@@ -19,6 +19,7 @@ import org.intelehealth.ekalarogya.models.patientImageModelRequest.PatientProfil
 import org.intelehealth.ekalarogya.utilities.Base64Utils;
 import org.intelehealth.ekalarogya.utilities.DownloadFilesUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
+import org.intelehealth.ekalarogya.utilities.NavigationUtils;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.ResponseChecker;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
@@ -142,8 +143,11 @@ public class HwProfileActivity extends AppCompatActivity {
                     @Override
                     public void onNext(Response<MainProfileModel> mainProfileModelResponse) {
                         ResponseChecker<MainProfileModel> responseChecker = new ResponseChecker<>(mainProfileModelResponse);
+
                         if (responseChecker.isNotAuthorized()) {
-                            //TODO: redirect to login screen
+                            sessionManager.setJwtAuthToken(null);
+                            NavigationUtils navigationUtils = new NavigationUtils();
+                            navigationUtils.triggerSignOutOn401Response(HwProfileActivity.this);
                             return;
                         }
 
@@ -539,8 +543,11 @@ public class HwProfileActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Response<UserInfoUpdateModel> userInfoUpdateModelResponse) {
                         ResponseChecker<UserInfoUpdateModel> responseChecker = new ResponseChecker<>(userInfoUpdateModelResponse);
+
                         if (responseChecker.isNotAuthorized()) {
-                            //TODO: redirect to login screen
+                            sessionManager.setJwtAuthToken(null);
+                            NavigationUtils navigationUtils = new NavigationUtils();
+                            navigationUtils.triggerSignOutOn401Response(HwProfileActivity.this);
                             return;
                         }
 
