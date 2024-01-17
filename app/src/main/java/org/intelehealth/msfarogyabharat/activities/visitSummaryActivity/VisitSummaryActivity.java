@@ -32,7 +32,15 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultRegistry;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -273,7 +281,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     //for new visit case allow......
 
     private String encounterAdultIntialsForNew = "";
-    String privacy_value_selected="";
+    String privacy_value_selected = "";
     EncounterDTO encounterDTO = new EncounterDTO();
     private boolean returning;
 
@@ -492,7 +500,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         sessionManager1 = new SessionManager(VisitSummaryActivity.this);
 
         String language = sessionManager.getAppLanguage();
-       // In case of crash still the app should hold the current lang fix.
+        // In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
@@ -620,11 +628,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         physexamList_adapter = new ArrayList<>();
 
         String a = sessionManager1.getFacilityResolution();
-        if(sessionManager1.getFacilityResolution().equalsIgnoreCase(latestVisitUuid)) {
+        if (sessionManager1.getFacilityResolution().equalsIgnoreCase(latestVisitUuid)) {
             button_resolution.setVisibility(View.GONE);
-        }
-        else {
-           // button_resolution.setVisibility(View.VISIBLE);
+        } else {
+            // button_resolution.setVisibility(View.VISIBLE);
         }
 
         card_print.setOnClickListener(new View.OnClickListener() {
@@ -914,6 +921,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 } while (encounterCursor.moveToNext());
             }
+            assert encounterCursor != null;
             encounterCursor.close();
 
             //complaint obs - start
@@ -984,15 +992,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(facilityText)) {
                         if (facilityText == null) {
 
-                        }
-                        else if(facilityText.equalsIgnoreCase("-")) {
+                        } else if (facilityText.equalsIgnoreCase("-")) {
                             autocompleteState.setText("");
                             autocompleteDistrict.setText("");
                             txtViewFacility.setText("");
-                            mFacilityValue="";
-                        }
-
-                        else {
+                            mFacilityValue = "";
+                        } else {
                             String[] arrayString = facilityText.split(",", 3);
 
 
@@ -1006,12 +1011,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|", "\n\n"));
 
                         }
-                    }
-                    else{
+                    } else {
                         autocompleteState.setText("");
                         autocompleteDistrict.setText("");
                         txtViewFacility.setText("");
-                        mFacilityValue="";
+                        mFacilityValue = "";
                     }
 //                    medHistCursor.close();
                 } catch (CursorIndexOutOfBoundsException e) {
@@ -1562,7 +1566,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     speciality_spinner.setEnabled(false);
 
                             } else {
-                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                                AppConstants.notificationUtils.DownloadDone(patientName + " "
+                                        + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
                             }
                             uploaded = true;
@@ -2273,7 +2278,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 idCursor.close();
 
-                if (visitUUID != null && !visitUUID.isEmpty() && synced) {
+                if (visitUUID != null && !visitUUID.isEmpty() && synced && !complaintList_adapter.isEmpty()) {
                     Intent intent1 = new Intent(VisitSummaryActivity.this, ResolutionActivity.class);
                     intent1.putExtra("patientUuid", patientUuid);
                     intent1.putExtra("visitUuid", latestVisitUuid);
@@ -2296,7 +2301,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("resolutionViolence", value);
                     }
 
-                    startActivityForResult(intent1, 100);
+                    launcher.launch(intent1);
+//                    startActivityForResult(intent1, 100);
                 } else {
                     Toast.makeText(VisitSummaryActivity.this, R.string.resolution_upload_reminder,
                             Toast.LENGTH_SHORT).show();
@@ -2309,16 +2315,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 100 && resultCode == RESULT_OK) {
-            /*button_resolution.setEnabled(false);
-            button_resolution.setBackgroundColor(getResources().getColor(R.color.font_black_4));*/
-            button_resolution.setVisibility(View.GONE);
-        }
-    }
+    private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), o -> button_resolution.setVisibility(View.GONE)
+    );
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == 100 && resultCode == RESULT_OK) {
+//            /*button_resolution.setEnabled(false);
+//            button_resolution.setBackgroundColor(getResources().getColor(R.color.font_black_4));*/
+//
+//        }
+//    }
 
     private void shareEmail() {
         String to = "";
@@ -4149,14 +4158,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //Toast.makeText(this,"fa=== "+facilityText,Toast.LENGTH_LONG).show();
                 if (facilityText == null) {
 
-                }
-                else if(facilityText.equalsIgnoreCase("-")){
+                } else if (facilityText.equalsIgnoreCase("-")) {
                     autocompleteState.setText("");
                     autocompleteDistrict.setText("");
                     txtViewFacility.setText("");
-                    mFacilityValue="";
-                }
-                else {
+                    mFacilityValue = "";
+                } else {
                     String[] arrayString = facilityText.split(",", 3);
 
 
@@ -4174,12 +4181,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                do {
 //                    medHistory = medHistory.replace("  ", "");
 //                } while (medHistory.contains("  "));
-            }
-            else{
+            } else {
                 autocompleteState.setText("");
                 autocompleteDistrict.setText("");
                 txtViewFacility.setText("");
-                mFacilityValue="";
+                mFacilityValue = "";
             }
             medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
@@ -4890,44 +4896,42 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isFollowUpOrClosed() {
         boolean flag = false;
 
-        if(complaintList_adapter.size() > 0) {
-        String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
-        if (complaintView != null) {
-            String i = complaintData.toLowerCase().replaceAll("\\s+", "");
-            Log.v("main", "vi: " + i);
-            if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("b.domesticviolence-follow-up:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("घरेलूहिंसा-फ़ॉलो-अप:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("घरेलूहिंसा-केसबंद:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("e.safeabortion-follow-up:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-फ़ॉलो-अप:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("f.safeabortion-querybyrelativesorothers:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-रिश्तेदारोंयाअन्यलोगोंद्वारापूछताछ:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-केसबंद:")) {
-                flag = true;
-            } else {
-                flag = false;
+        if (complaintList_adapter.size() > 0) {
+            String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
+            if (complaintView != null) {
+                String i = complaintData.toLowerCase().replaceAll("\\s+", "");
+                Log.v("main", "vi: " + i);
+                if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("b.domesticviolence-follow-up:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("घरेलूहिंसा-फ़ॉलो-अप:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("घरेलूहिंसा-केसबंद:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("e.safeabortion-follow-up:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-फ़ॉलो-अप:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("f.safeabortion-querybyrelativesorothers:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-रिश्तेदारोंयाअन्यलोगोंद्वारापूछताछ:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-केसबंद:")) {
+                    flag = true;
+                } else {
+                    flag = false;
+                }
             }
-        }
         }
         return flag;
     }
 
     private boolean isCaseClosed() {
         boolean flag = false;
-        String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
-        if (complaintView != null) {
-            String i = complaintData.toLowerCase().replaceAll("\\s+", "");
-            Log.v("main", "vi: " + i);
+        if (!complaintList_adapter.isEmpty()) {
+            String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
+            if (complaintView != null) {
+                String i = complaintData.toLowerCase().replaceAll("\\s+", "");
+                Log.v("main", "vi: " + i);
 
-            if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("घरेलूहिंसा-केसबंद:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-केसबंद:")) {
-                flag = true;
-            } else {
-                flag = false;
+                flag = complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("घरेलूहिंसा-केसबंद:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-केसबंद:");
             }
         }
         return flag;
@@ -5052,7 +5056,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
 
                 String finalFacility = "";
-                if (!TextUtils.isEmpty(mFacilityValue) && !mFacilityValue.equalsIgnoreCase("") ) {
+                if (!TextUtils.isEmpty(mFacilityValue) && !mFacilityValue.equalsIgnoreCase("")) {
                     finalFacility = mState + "," + mDistrict + "," + mFacilityValue;
 
                 } else {
@@ -5198,7 +5202,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //        }
 //        else
 //        {
-            newVisitStart(sqLiteDatabase,cols);
+        newVisitStart(sqLiteDatabase, cols);
 
 //        }
 
@@ -5236,8 +5240,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (visitUuid != null && !visitUuid.isEmpty()) {
 //            CardView histCardView = findViewById(R.id.cardView_history);
 //            histCardView.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             // no use here looping...
             visitUuidList = new ArrayList<>();
             String visitIDSelection = "patientuuid = ?";
@@ -5279,7 +5282,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             pastMedicalHistory(famHistView, patientUuid, encounterAdultIntialsForNew);
             // pastVisits(patientUuid);
         }
-
 
 
         Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
@@ -5351,6 +5353,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         startActivity(intent2);
 
     }
+
     public void familyHistory(TextView famHistView, String patientuuid,
                               String EncounterAdultInitials_LatestVisit) {
         //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";

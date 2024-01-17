@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -39,7 +40,7 @@ import org.intelehealth.msfarogyabharat.activities.loginActivity.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
-//    ProgressDialog TempDialog;
+    //    ProgressDialog TempDialog;
     int i = 5;
 
     @Override
@@ -49,7 +50,7 @@ public class SplashActivity extends AppCompatActivity {
 //        Getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
 
-      //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+        //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
 
 
@@ -97,8 +98,7 @@ public class SplashActivity extends AppCompatActivity {
                     } else {
                         checkPerm();
                     }
-                }
-                else {
+                } else {
                     checkPerm();
                 }
             }
@@ -125,7 +125,7 @@ public class SplashActivity extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                                nextActivity();
+                            nextActivity();
                         }
                     }, 2000);
                 } else {
@@ -163,10 +163,16 @@ public class SplashActivity extends AppCompatActivity {
                         Manifest.permission.ACCESS_NETWORK_STATE,
 //                        Manifest.permission.GET_ACCOUNTS,
                         Manifest.permission.CAMERA,
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-//                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        getVersionAccordingMediaPermission()
                 )
                 .check();
+    }
+
+    private String getVersionAccordingMediaPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return Manifest.permission.READ_MEDIA_IMAGES;
+        }
+        return Manifest.permission.READ_EXTERNAL_STORAGE;
     }
 
     private void nextActivity() {
