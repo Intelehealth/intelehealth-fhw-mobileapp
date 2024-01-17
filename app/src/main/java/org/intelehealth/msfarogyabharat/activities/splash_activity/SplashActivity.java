@@ -24,6 +24,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -159,20 +160,20 @@ public class SplashActivity extends AppCompatActivity {
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage(R.string.reject_permission_results)
-                .setPermissions(Manifest.permission.INTERNET,
-                        Manifest.permission.ACCESS_NETWORK_STATE,
-//                        Manifest.permission.GET_ACCOUNTS,
-                        Manifest.permission.CAMERA,
-                        getVersionAccordingMediaPermission()
-                )
+                .setPermissions(getVersionAccordingMediaPermission())
                 .check();
     }
 
-    private String getVersionAccordingMediaPermission() {
+    private String[] getVersionAccordingMediaPermission() {
+        ArrayList<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.INTERNET);
+        permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
+        permissions.add(Manifest.permission.CAMERA);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            return Manifest.permission.READ_MEDIA_IMAGES;
-        }
-        return Manifest.permission.READ_EXTERNAL_STORAGE;
+            permissions.add(Manifest.permission.READ_MEDIA_IMAGES);
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        } else permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        return permissions.toArray(new String[0]);
     }
 
     private void nextActivity() {
