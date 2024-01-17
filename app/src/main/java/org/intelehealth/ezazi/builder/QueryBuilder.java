@@ -38,6 +38,11 @@ public class QueryBuilder {
         return this;
     }
 
+    public QueryBuilder joinPlus(String join) {
+        this.join = this.join + join;
+        return this;
+    }
+
     public QueryBuilder orderBy(String orderBy) {
         this.orderBy = orderBy;
         return this;

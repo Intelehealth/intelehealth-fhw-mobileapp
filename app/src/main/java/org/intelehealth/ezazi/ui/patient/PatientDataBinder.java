@@ -55,4 +55,20 @@ public class PatientDataBinder {
 
         return patients;
     }
+
+    public List<PatientDTO> upcomingPatients(Cursor cursor) {
+        List<PatientDTO> patients = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                PatientDTO model = new PatientDTO();
+                model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setFullName(cursor.getString(cursor.getColumnIndexOrThrow("fullName")));
+                model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setCreatedAt(cursor.getString(cursor.getColumnIndexOrThrow("dateCreated")));
+                patients.add(model);
+            } while (cursor.moveToNext());
+        }
+
+        return patients;
+    }
 }

@@ -72,6 +72,8 @@ public class PatientDTO implements Serializable {
 
     private String patientPhoto;
 
+    private String fullName;
+
     private List<PatientAttributesDTO> patientAttributesDTOList;
 
     public void setAlternateNo(String alternateNo) {
@@ -280,6 +282,7 @@ public class PatientDTO implements Serializable {
     }
 
     public String getFullName() {
+        if (fullName != null && !fullName.isEmpty()) return fullName;
         return firstname + " " + lastname;
     }
 
@@ -301,5 +304,9 @@ public class PatientDTO implements Serializable {
 
     public String regDate() {
         return DateTimeUtils.utcToLocalDate(createdAt, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }
