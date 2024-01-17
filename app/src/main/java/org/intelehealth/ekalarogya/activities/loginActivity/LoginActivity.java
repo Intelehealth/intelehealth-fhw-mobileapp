@@ -454,38 +454,41 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getJWTToken(String username, String password) {
-        String finalURL = "https://" + sessionManager.getJwtAuthToken().concat(":3030/auth/login");
+        String finalURL = "https://" + sessionManager.getServerUrl().concat(":3030/auth/login");
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
 
-        authJWTResponseObservable.observeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<>() {
-            @Override
-            public void onSubscribe(Disposable d) {
+        authJWTResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-            }
+                    }
 
-            @Override
-            public void onNext(AuthJWTResponse authJWTResponse) {
-                // in case of error password
-                if (!authJWTResponse.getStatus()) {
-                    triggerIncorrectCredentialsFlow();
-                    return;
-                }
+                    @Override
+                    public void onNext(AuthJWTResponse authJWTResponse) {
+                        // in case of error password
+                        if (!authJWTResponse.getStatus()) {
+                            triggerIncorrectCredentialsFlow();
+                            return;
+                        }
 
-                sessionManager.setJwtAuthToken(authJWTResponse.getToken());
-                UserLoginTask(username, password);
-            }
+                        sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        UserLoginTask(username, password);
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                resetViews();
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        resetViews();
+                    }
 
-            @Override
-            public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-            }
-        });
+                    }
+                });
     }
 
 }
