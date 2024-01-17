@@ -50,6 +50,10 @@ public class UserStatusUpdateApiCall {
     @Expose
     private String village;
 
+    @SerializedName("secondaryVillage")
+    @Expose
+    private String secondaryVillage;
+
     @SerializedName("sanch")
     @Expose
     private String sanch;
@@ -148,5 +152,13 @@ public class UserStatusUpdateApiCall {
 
     public void setSanch(String sanch) {
         this.sanch = sanch;
+    }
+
+    public String getSecondaryVillage() {
+        return secondaryVillage;
+    }
+
+    public void setSecondaryVillage(String secondaryVillage) {
+        this.secondaryVillage = secondaryVillage;
     }
 }

@@ -494,6 +494,7 @@ public class SyncDAO {
             userStatusUpdateApiCall.setName(userName);
             userStatusUpdateApiCall.setStatus("Active");
             userStatusUpdateApiCall.setVillage(sessionManager.getCurrentLocationName());
+            userStatusUpdateApiCall.setSecondaryVillage(sessionManager.getSecondaryLocationName());
             userStatusUpdateApiCall.setSanch(sessionManager.getSanchName());
 
             String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
