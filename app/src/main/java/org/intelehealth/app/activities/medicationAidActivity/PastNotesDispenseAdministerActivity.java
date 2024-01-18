@@ -151,9 +151,9 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
         else if (viewtag.equalsIgnoreCase(Medication_Aid_Activity.AID))
             title = getString(R.string.aid_past_notes);
         else if (viewtag.equalsIgnoreCase(COLLECTED))
-            title = "Collected Past Notes";
+            title = getString(R.string.view_past_test_notes);
         else if (viewtag.equalsIgnoreCase(RECEIVED))
-            title = "Received Past Notes";
+            title = getString(R.string.view_resulted_by_past_notes);
 
         getSupportActionBar().setTitle(title);
     }

@@ -964,7 +964,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         tvCollectedBy = layout_test.findViewById(R.id.tvDispense);
         tvCollectedBy.setText(R.string.collected_by);
         tvReceivedBy = layout_test.findViewById(R.id.tvAdminister);
-        tvReceivedBy.setText(R.string.received_by);
+        tvReceivedBy.setText(R.string.resulted_by);
 
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
@@ -4782,9 +4782,9 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                         }
                         Log.d(TAG, "format_TestCollectReceive_Details: collect: " + valueTimeStamp);
                         if (!obsformat.isEmpty())
-                            obsformat = obsformat + "<br>" + "Collected By" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                            obsformat = obsformat + "<br>" + getString(R.string.collected_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
                         else
-                            obsformat = "Collected By" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                            obsformat = getString(R.string.collected_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
                     }
                 }
             }
@@ -4803,9 +4803,9 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                         }
                         Log.d(TAG, "format_TestCollectReceive_Details: receive: " + valueTimeStamp);
                         if (!obsformat.isEmpty())
-                            obsformat = obsformat + "<br>" + "Received By" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                            obsformat = obsformat + "<br>" + getString(R.string.resulted_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
                         else
-                            obsformat = "Received By" + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
+                            obsformat = getString(R.string.resulted_by) + " " + medicationModel.getHwName() + "<br>" + valueTimeStamp;
                     }
                 }
             }

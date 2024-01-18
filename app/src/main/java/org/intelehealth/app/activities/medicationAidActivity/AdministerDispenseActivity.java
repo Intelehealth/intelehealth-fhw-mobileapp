@@ -299,7 +299,7 @@ public class AdministerDispenseActivity extends BaseActivity {
         }
         else if (testList != null && testList.size() > 0) {
             fl_med.setVisibility(View.VISIBLE);
-            tv_medication.setText("Test");
+            tv_medication.setText(getString(R.string.test));
 
             StringBuilder testData = new StringBuilder();
             for (MedicationAidModel test : testList) {
@@ -323,11 +323,11 @@ public class AdministerDispenseActivity extends BaseActivity {
             fl_aid.setVisibility(View.GONE);
         }
         else if (tag.equalsIgnoreCase(COLLECTED)) {
-            getSupportActionBar().setTitle("Test Collected");
+            getSupportActionBar().setTitle(getString(R.string.collected_test));
             fl_aid.setVisibility(View.GONE);
         }
         else if (tag.equalsIgnoreCase(RECEIVED)) {
-            getSupportActionBar().setTitle("Test Received");
+            getSupportActionBar().setTitle(getString(R.string.results_received));
             fl_aid.setVisibility(View.GONE);
         }
         else {  // ie. dispense
@@ -679,7 +679,7 @@ public class AdministerDispenseActivity extends BaseActivity {
                 }
             }
 
-            Toast.makeText(this, "Test Collection Data Saved.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Test Collection Data Saved", Toast.LENGTH_SHORT).show();
         }
         else if (tag.equalsIgnoreCase(RECEIVED)) {
             createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_TEST_RECEIVE);
@@ -690,7 +690,7 @@ public class AdministerDispenseActivity extends BaseActivity {
                 }
             }
 
-            Toast.makeText(this, "Test Received Data Saved.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Test Resulted Data Saved.", Toast.LENGTH_SHORT).show();
         }
 
         if (NetworkConnection.isOnline(getApplication())) {
