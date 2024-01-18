@@ -15,7 +15,7 @@
     <string name="reason_join_failure">تم قطع المكالمة بسبب الفشل في الانضمام إلى الغرفة</string>
     <string name="reason_unknown">تم قطع الاتصال لسبب غير معروف</string>
 
-    <string name="call_missed">Missed Call</string>
+    <string name="call_missed">مكالمة فائتة</string>
     <string name="call_outgoing">مكالمة خارجية</string>
     <string name="call_ongoing">مكالمة جارية</string>
     <string name="call_unknown">مجهول</string>

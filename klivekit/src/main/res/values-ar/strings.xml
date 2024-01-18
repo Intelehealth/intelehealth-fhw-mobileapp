@@ -14,12 +14,12 @@
     <string name="camera2_texture_only_error">يدعم Camera2 فقط التقاط الملمس. قم إما بتعطيل Camera2 أو تمكين التقاط النسيج في الخيارات.</string>
     <string name="ok">نعم</string>
     <string name="switch_camera">تبديل الكاميرا الأمامية/الخلفية</string>
-    <string name="capture_format_change_text">Slide to change capture format</string>
+    <string name="capture_format_change_text">قم بالتمرير لتغيير تنسيق الالتقاط</string>
     <string name="muted">كتم الصوت</string>
-    <string name="toggle_debug">Toggle debug view</string>
+    <string name="toggle_debug">تبديل عرض التصحيح</string>
     <string name="toggle_mic">تبديل تشغيل/إيقاف الميكروفون</string>
     <string name="action_settings">إعدادات</string>
-    <string name="action_loopback">Loopback connection</string>
+    <string name="action_loopback">اتصال الاسترجاع</string>
     <string name="connect_description">الاتصال بالغرفة</string>
     <string name="add_favorite_description">أضف تفضيل</string>
     <string name="format_description">%1$dx%2$d @ %3$d fps</string>
@@ -50,7 +50,7 @@
     <string name="no">لا</string>
     <string name="type_text_here_str">أكتب هنا…</string>
     <string name="take_photo_lbl">تصوير</string>
-    <string name="choose_from_gallery_lbl">Choose from Gallery</string>
+    <string name="choose_from_gallery_lbl">اختر من المعرض</string>
     <string name="cancel_lbl">يلغي</string>
     <string name="max_doc_size_toast">الحد الأقصى لحجم المستند هو 512 كيلو بايت</string>
     <string name="choose_documents">اختر المستندات</string>
@@ -62,7 +62,7 @@
     <string name="max_2_image">الحد الأقصى 2 صور يمكنك إرسالها لكل حالة</string>
     <string name="select">يختار</string>
     <string name="camera_permission_denied">تم رفض إذن الكاميرا!</string>
-    <string name="unable_to_pick_data">Unable to pick the gallery data!</string>
+    <string name="unable_to_pick_data">غير قادر على اختيار بيانات المعرض!</string>
     <string name="max_doc_size_toast_mb">الحد الأقصى لحجم المستند هو 1 ميغابايت</string>
     <string name="doctor_annotation">دكتور.</string>
     <string name="disconnected">انقطع الاتصال!</string>

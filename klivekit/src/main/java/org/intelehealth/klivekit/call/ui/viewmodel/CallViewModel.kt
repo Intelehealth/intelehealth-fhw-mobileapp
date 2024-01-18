@@ -497,6 +497,7 @@ open class CallViewModel(
             if (room.audioHandler is AudioSwitchHandler) {
                 audioHandler = room.audioHandler as AudioSwitchHandler;
             }
+
             Timber.e { "Before Selected audio => ${audioHandler.selectedAudioDevice?.name}" }
             updateAudioSetting(SPEAKER_PHONE)
             Timber.e { "After Selected audio => ${audioHandler.selectedAudioDevice?.name}" }

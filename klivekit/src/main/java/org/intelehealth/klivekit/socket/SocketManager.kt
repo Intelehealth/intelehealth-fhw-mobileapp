@@ -119,7 +119,6 @@ open class SocketManager @Inject constructor() {
     private fun notifyIfNotActiveRoom(jsonArray: JSONArray, block: (ChatMessage) -> Unit) {
         if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("nameValuePairs")) {
             val json = jsonArray.getJSONObject(0).getJSONObject("nameValuePairs").toString()
-            Timber.d { json }
             Gson().fromJson(json, ChatMessage::class.java)?.let {
                 Timber.e { "activeRoomId => $activeRoomId" }
                 Timber.e { "roomId => ${it.roomId}" }

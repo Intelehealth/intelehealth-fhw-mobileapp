@@ -139,8 +139,7 @@ object CallNotificationHandler {
     ): NotificationCompat.Builder {
         com.github.ajalt.timberkt.Timber.d { "getIncomingNotificationBuilder -> url = ${messageBody.url}" }
         val lockScreenIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
-
-//        val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
+        val notificationIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
 
         return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -150,7 +149,7 @@ object CallNotificationHandler {
             .setSmallIcon(messageBody.notificationIcon)
 //            .setSound(getDefaultRingtoneUrl(), AudioManager.STREAM_RING)
 //            .setDefaults(Notification.DEFAULT_ALL)
-            .setCategory(NotificationCompat.CATEGORY_CALL).setContentIntent(lockScreenIntent)
+            .setCategory(NotificationCompat.CATEGORY_CALL).setContentIntent(notificationIntent)
             .setFullScreenIntent(lockScreenIntent, true)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .addAction(getAcceptAction(context, messageBody))

@@ -7,10 +7,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.CountDownTimer
 import android.telephony.TelephonyManager
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
-import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.utils.AwsS3Utils
 import org.intelehealth.klivekit.utils.extensions.hide
 
@@ -81,20 +79,40 @@ class VideoCallViewModel(url: String, token: String, application: Application) :
     fun registerReceivers(context: Context) {
         IntentFilter().apply {
             addAction(CALL_END_FROM_WEB_INTENT_ACTION)
-            ContextCompat.registerReceiver(context, callEndBroadcastReceiver, this, ContextCompat.RECEIVER_EXPORTED)
+            ContextCompat.registerReceiver(
+                context,
+                callEndBroadcastReceiver,
+                this,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
         }
 
         IntentFilter().apply {
             addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE)
-            ContextCompat.registerReceiver(context, imageUrlFormatBroadcastReceiver, this, ContextCompat.RECEIVER_EXPORTED)
+            ContextCompat.registerReceiver(
+                context,
+                imageUrlFormatBroadcastReceiver,
+                this,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
         }
 
         IntentFilter(Intent.ACTION_HEADSET_PLUG).apply {
-            ContextCompat.registerReceiver(context, microphonePluggedStatusReceiver, this, ContextCompat.RECEIVER_EXPORTED)
+            ContextCompat.registerReceiver(
+                context,
+                microphonePluggedStatusReceiver,
+                this,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
         }
 
         IntentFilter("android.intent.action.PHONE_STATE").apply {
-            ContextCompat.registerReceiver(context, phoneStateBroadcastReceiver, this, ContextCompat.RECEIVER_EXPORTED)
+            ContextCompat.registerReceiver(
+                context,
+                phoneStateBroadcastReceiver,
+                this,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
         }
 
     }

@@ -2,6 +2,7 @@ package org.intelehealth.klivekit.provider
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.livekit.android.AudioOptions
 import io.livekit.android.LiveKit
 import io.livekit.android.LiveKitOverrides
 import io.livekit.android.RoomOptions
@@ -12,7 +13,9 @@ import io.livekit.android.room.participant.VideoTrackPublishDefaults
 import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalVideoTrackOptions
+import io.livekit.android.room.track.VideoPreset169
 import io.livekit.android.room.track.VideoPreset43
+import org.intelehealth.klivekit.utils.AudioType
 import org.webrtc.EglBase
 import org.webrtc.HardwareVideoEncoderFactory
 
@@ -45,7 +48,7 @@ object LiveKitProvider {
     private fun provideLocalVideoTrackOptions() = LocalVideoTrackOptions(
         deviceId = "",
         position = CameraPosition.FRONT,
-        captureParams = VideoPreset43.FHD.capture,
+        captureParams = VideoPreset43.H1440.capture,
     )
 
     private fun provideAudioPublishDefault() = AudioTrackPublishDefaults(
@@ -54,7 +57,7 @@ object LiveKitProvider {
     )
 
     private fun provideVideoPublishTrack() = VideoTrackPublishDefaults(
-        videoEncoding = VideoPreset43.VGA.encoding
+        videoEncoding = VideoPreset43.H480.encoding
 //        videoEncoding = VideoPreset169.VGA.encoding,
 //            videoCodec = VideoCodec.VP8.codecName
     )
@@ -67,8 +70,6 @@ object LiveKitProvider {
     ) = RoomOptions(
         audioTrackCaptureDefaults = localAudioTrackOptions,
         audioTrackPublishDefaults = audioTrackPublishDefaults,
-//        videoTrackCaptureDefaults = localVideoTrackOptions,
-//        videoTrackPublishDefaults = videoTrackPublishDefaults,
         adaptiveStream = true
     )
 
@@ -83,7 +84,10 @@ object LiveKitProvider {
         options = options,
         overrides = LiveKitOverrides(
             okHttpClient = RetrofitProvider.getOkHttpClient(),
-            audioHandler = audioSwitchHandler,
+            audioOptions = AudioOptions(
+                audioHandler = audioSwitchHandler,
+                audioOutputType = io.livekit.android.AudioType.MediaAudioType()
+            ),
             videoEncoderFactory = HardwareVideoEncoderFactory(
                 EglBase.create().eglBaseContext,
                 true,

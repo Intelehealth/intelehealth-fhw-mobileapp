@@ -116,9 +116,11 @@ public class ChatActivity extends AppCompatActivity {
 
 
     protected void setupActionBar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(mPatientName);
-//        getSupportActionBar().setSubtitle(m);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(mPatientName);
+            getSupportActionBar().setSubtitle(openMrsId);
+        }
     }
 
     protected void initiateView() {
@@ -362,7 +364,12 @@ public class ChatActivity extends AppCompatActivity {
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
-        ContextCompat.registerReceiver(this, mBroadcastReceiver, filterSend, ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(
+                this,
+                mBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     private void showCharLimitToast() {
@@ -375,7 +382,8 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() > 0 && charSequence.length() >= 1000) {
-                    Toast.makeText(ChatActivity.this, "You reach to max limit of 1000 chars", Toast.LENGTH_LONG).show();
+                    String alertMsg = getString(R.string.chat_text_reach_to_limit);
+                    Toast.makeText(ChatActivity.this, alertMsg, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -525,33 +533,26 @@ public class ChatActivity extends AppCompatActivity {
 //        mChatListingAdapter.refresh(response.getData());
         Log.v(TAG, "postMessages - inputJsonObject - " + chatMessage.toJson());
         try {
+            Log.d(TAG, "postMessages: URL=>" + Constants.SEND_MESSAGE_URL);
             JsonObjectRequest objectRequest = new JsonObjectRequest(
                     Request.Method.POST,
                     Constants.SEND_MESSAGE_URL,
-                    new JSONObject(chatMessage.toJson()), new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Timber.tag(TAG).v("postMessages - response - " + response.toString());
-                    try {
-                        if (response.has("data")) {
-                            ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
-                            mMessageEditText.setText("");
-//                        getAllMessages(false);
-                            msg.setMessageStatus(MessageStatus.SENT.getValue());
-                            mChatListingAdapter.updatedMessage(msg);
-                            mLoadingLinearLayout.setVisibility(View.GONE);
-                        } else Timber.tag(TAG).e("onResponse: data key not found");
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.v(TAG, "postMessages - onErrorResponse - " + error.getMessage());
+                    new JSONObject(chatMessage.toJson()), response -> {
+                Log.v(TAG, "postMessages - response - " + response.toString());
+                try {
+                    ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
+                    mMessageEditText.setText("");
+                    //                        getAllMessages(false);
+                    msg.setMessageStatus(MessageStatus.SENT.getValue());
+                    mChatListingAdapter.updatedMessage(msg);
                     mLoadingLinearLayout.setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
+
+            }, error -> {
+                Log.e(TAG, "postMessages - onErrorResponse - " + error.getMessage());
+                mLoadingLinearLayout.setVisibility(View.GONE);
             });
             mRequestQueue.add(objectRequest);
         } catch (JSONException e) {
