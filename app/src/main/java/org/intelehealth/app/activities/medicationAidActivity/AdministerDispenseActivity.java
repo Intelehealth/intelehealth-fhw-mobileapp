@@ -106,7 +106,7 @@ public class AdministerDispenseActivity extends BaseActivity {
     private AidModel aidModel = new AidModel();
     private TextView additionalImageDownloadText;
     private boolean isEncounterCreated = false;
-    private HorizontalAdapter horizontalAdapter;
+    private HorizontalAdapter horizontalAdapter = new HorizontalAdapter();
 
 
     @Override

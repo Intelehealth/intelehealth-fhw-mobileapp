@@ -49,7 +49,14 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if (list == null)
+            return 0;
+        else
+            return list.size();
+    }
+
+    public HorizontalAdapter() {
+
     }
 
     public HorizontalAdapter(List<File> list, Context context) {
