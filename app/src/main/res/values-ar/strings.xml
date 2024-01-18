@@ -1664,8 +1664,18 @@
     <string name="hide_details">إخفاء التفاصيل</string>
     <string name="dispensed_by">اسم صارف الدواء/الدعم</string>
     <string name="administered_by">اسم معطي الدواء/الدعم</string>
-    <string name="collected_by">Collected By</string>
+    <string name="collected_by">أخذ العينة</string>
     <string name="received_by">Received By</string>
+    <string name="resulted_by">تحميل النتيجة</string>
+    <string name="collected_tests">Collected Tests</string>
+    <string name="results_received">استلم النتائ</string>
+    <string name="view_past_test_notes">جمع العينة</string>
+    <string name="collect">Collect</string>
+    <string name="receive">Receive</string>
+    <string name="requested_tests">الفحوصات المطلوبة</string>
+    <string name="collected_test">الفحوصات التي يتم جمع عيناتها</string>
+    <string name="view_resulted_by_past_notes">تحميل النتائج</string>
+
 
 
 </resources>

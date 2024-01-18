@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary"
-    tools:layout_marginTop="-200dp"
+    tools:layout_marginTop="-1500dp"
     >
     <!-- TODO: Replace hard-coded strings with @string resources-->
 

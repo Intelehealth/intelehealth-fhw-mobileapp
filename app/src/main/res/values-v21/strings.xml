@@ -36,4 +36,14 @@
     <string name="administered_by">Administered by</string>
     <string name="collected_by">Collected By</string>
     <string name="received_by">Received By</string>
+    <string name="resulted_by">Resulted By</string>
+    <string name="collected_tests">Collected Tests</string>
+    <string name="results_received">Result received by</string>
+    <string name="view_past_test_notes">View \'Collected by\' past notes</string>
+    <string name="collect">Collect</string>
+    <string name="receive">Receive</string>
+    <string name="requested_tests">Requested tests</string>
+    <string name="collected_test">Collected test</string>
+    <string name="view_resulted_by_past_notes">View \'Resulted by\' past notes</string>
+
 </resources>

@@ -193,20 +193,20 @@ public class Medication_Aid_Activity extends BaseActivity {
             findViewById(R.id.tv_aid_pastnotes).setVisibility(View.GONE);
         }
         else if (tag.equalsIgnoreCase(COLLECTED) || tag.equalsIgnoreCase(RECEIVED)) {
-            tv_test_title.setText("Test");
+            tv_test_title.setText(getString(R.string.test));    // Test
             fl_aid.setVisibility(View.GONE);
             findViewById(R.id.tv_aid).setVisibility(View.GONE);
             findViewById(R.id.tv_aid_pastnotes).setVisibility(View.GONE);
 
             if (tag.equalsIgnoreCase(COLLECTED)) {
-                getSupportActionBar().setTitle("Collected Tests");
-                tv_test_notesTitle.setText("View collected test notes");
-                tvDispenseAdminister.setText("Collect");
+                getSupportActionBar().setTitle(getString(R.string.requested_tests));
+                tv_test_notesTitle.setText(getString(R.string.view_past_test_notes));
+                tvDispenseAdminister.setText(getString(R.string.collect));
             }
             else {
-                getSupportActionBar().setTitle("Received Tests");
-                tv_test_notesTitle.setText("View received test notes");
-                tvDispenseAdminister.setText("Receive");
+                getSupportActionBar().setTitle(getString(R.string.results_received));
+                tv_test_notesTitle.setText(getString(R.string.view_resulted_by_past_notes));
+                tvDispenseAdminister.setText(getString(R.string.receive));
             }
         }
         else {  // Dispense
