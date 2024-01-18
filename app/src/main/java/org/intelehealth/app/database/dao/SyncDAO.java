@@ -90,7 +90,6 @@ public class SyncDAO {
 
             Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
-            sessionManager.setPullExcutedTime(sessionManager.isPulled());
             sessionManager.setFirstTimeSyncExecute(false);
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE));
@@ -144,6 +143,7 @@ public class SyncDAO {
                             pullData_Background(context, nextPageNo);
                             return;
                         }else {
+                            sessionManager.setPullExcutedTime(sessionManager.isPulled());
                             Intent broadcast = new Intent();
                             broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                             broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
@@ -251,6 +251,7 @@ public class SyncDAO {
                             return;
                         }else {
                             percentage = 100;
+                            sessionManager.setPullExcutedTime(sessionManager.isPulled());
                             Logger.logD(MSF_PULL_ISSUE, "percentage page -1: " + percentage);
                             setProgress(percentage);
                             Intent broadcast = new Intent();

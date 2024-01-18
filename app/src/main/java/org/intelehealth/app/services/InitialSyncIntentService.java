@@ -62,6 +62,7 @@ public class InitialSyncIntentService extends IntentService {
                 Logger.logD(SyncDAO.MSF_PULL_ISSUE, "percentage page -1: " + percentage);
                 SyncDAO.setProgress(percentage);
 
+                sessionManager.setPullExcutedTime(sessionManager.isPulled());
                 sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
                 Intent broadcast = new Intent();
                 broadcast.putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE);

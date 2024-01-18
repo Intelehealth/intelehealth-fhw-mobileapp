@@ -574,15 +574,15 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
-            /*mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setMax(100);
             mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mSyncProgressDialog.setIndeterminate(false);
-            mSyncProgressDialog.show();*/
+            mSyncProgressDialog.show();
 
-            //SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
+            SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
             Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home"));
         } else {
@@ -1075,6 +1075,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         saveToken();
 //        requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
+        if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
+
         if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
             if (isSuccess) {
@@ -1440,15 +1442,21 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         @Override
         public void onChanged(Integer progress) {
             Logger.logD(SyncDAO.MSF_PULL_ISSUE, "onchanged of livedata again called up");
-            /*if (mSyncProgressDialog != null) {
+            if (mSyncProgressDialog != null) {
                 mSyncProgressDialog.setProgress(progress);
                 Logger.logD(SyncDAO.MSF_PULL_ISSUE, "% -> " + String.valueOf(progress));
 
                 if (progress == 100) {
                     SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
                     Logger.logD(SyncDAO.MSF_PULL_ISSUE, "progress is 100 so close");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mSyncProgressDialog.dismiss();
+                        }
+                    },2000);
                 }
-            }*/
+            }
         }
     };
 }
