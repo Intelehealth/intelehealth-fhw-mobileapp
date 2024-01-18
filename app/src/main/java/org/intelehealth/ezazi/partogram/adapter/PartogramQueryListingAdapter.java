@@ -87,6 +87,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     public void setAccessMode(PartogramConstants.AccessMode accessMode) {
+        Log.d(TAG, "setAccessMode: accessMode :: kk :: "+accessMode);
         this.accessMode = accessMode;
     }
 

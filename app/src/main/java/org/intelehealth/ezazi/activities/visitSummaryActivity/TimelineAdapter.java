@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
@@ -58,13 +59,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     private EncounterDTO.Status submitted = EncounterDTO.Status.PENDING;
 
     private boolean nurseHasEditAccess = true;
-
+    private boolean isNewEncounterCreated = false;
+    private String encounterType = "";
     public TimelineAdapter(Context context, Intent intent, ArrayList<EncounterDTO> encounterDTOList,
-                           SessionManager sessionManager, String isVCEPresent) {
+                           SessionManager sessionManager, String isVCEPresent,boolean isNewEncounterCreated) {
         this.context = context;
         this.encounterDTOList = encounterDTOList;
         this.sessionManager = sessionManager;
         this.isVCEPresent = isVCEPresent;
+        this.isNewEncounterCreated = isNewEncounterCreated;
 
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -353,7 +356,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
                     long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
                     Log.v("timeline", "minutes : " + minutes);
-                    int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
+                    /*int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
                     if (minutes <= limit) {
                         holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
                         holder.ivEdit.setVisibility(View.VISIBLE);
@@ -362,7 +365,20 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         holder.ivEdit.setVisibility(View.GONE);
                         holder.cardview.setClickable(true); // added by Mithun
                         holder.cardview.setEnabled(true);
+                    }*/
+
+                    if (!isNewEncounterCreated && position == 0) {
+                        holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
+                        holder.ivEdit.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.cardview.setTag(PartogramConstants.AccessMode.READ);
+                        holder.ivEdit.setVisibility(View.GONE);
+                        holder.cardview.setClickable(true); // added by Mithun
+                        holder.cardview.setEnabled(true);
                     }
+
+                    //holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
+                    //holder.ivEdit.setVisibility(View.VISIBLE);
                 }
 
                 if (!isVCEPresent.equalsIgnoreCase("")) { // If visit complete than disable all the cards.
@@ -375,6 +391,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
             }
         }
+         encounterType = encounterDTOList.get(position).getEncounterType().toString();
+        Log.d("TAG", "onBindViewHolder: encounterType : "+encounterType);
         updateEditIconVisibility(holder.ivEdit);
         if (!nurseHasEditAccess) holder.cardview.setOnClickListener(null);
     }
@@ -423,7 +441,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
         void nextIntent(PartogramConstants.AccessMode mode) {
             Log.v("nextIntent", "nextIntent isEditMode - " + mode);
-            String encounterType = encounterDTOList.get(getAbsoluteAdapterPosition()).getEncounterTypeName();
+            String encounterType = encounterDTOList.get(getAbsoluteAdapterPosition()).getEncounterType().toString();
             Log.v("nextIntent", "encounterType - " + encounterType);
             int type = 10;
             int stage = 1;
@@ -434,17 +452,22 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             } else if (encounterDTOList.get(getAbsoluteAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage2")) {
                 stage = 2;
                 //type = FIFTEEN_MIN; // card clicked is 15mins.
-                //Stage2_Hour1_1
+                //Stage2_Hour1_1   --> 2 3 4
                 if (Integer.parseInt(name[2]) == 1) {
+                    type = HOURLY;
+                } else if (Integer.parseInt(name[2]) == 2 || Integer.parseInt(name[2]) == 3 || Integer.parseInt(name[2]) == 4) {
+                    type = FIFTEEN_MIN;
+                }
+                /*if (Integer.parseInt(name[2]) == 1) {
                     type = HOURLY;
                 } else if (Integer.parseInt(name[2]) == 3) {
                     type = HALF_HOUR;
                 } else {
                     type = FIFTEEN_MIN;
-                }
+                }*/
             }
-
-
+            Log.d("final list print", "nextIntent: whole list : "+new Gson().toJson(encounterDTOList));
+            Log.d("final", "nextIntent: encountertype : "+encounterType);
             Intent i1 = new Intent(context, PartogramDataCaptureActivity.class);
             i1.putExtra("patientUuid", patientUuid);
             i1.putExtra("name", patientName);
@@ -453,6 +476,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             i1.putExtra("type", type);
             i1.putExtra("stage", stage);
             i1.putExtra("encounterName", encounterDTOList.get(getAbsoluteAdapterPosition()).getEncounterTypeName());
+            i1.putExtra("encounterType", encounterType);
 
             i1.putExtra(TIMELINE_MODE, mode);
             context.startActivity(i1);

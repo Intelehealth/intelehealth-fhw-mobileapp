@@ -78,6 +78,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     private Context context;
     private static final int FIVE_HOURLY = 4;
     private String encounterName = "";
+    private String encounterType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         mStageNumber = getIntent().getIntExtra("stage", STAGE_1);
         mQueryFor = getIntent().getIntExtra("type", 0);
         encounterName = getIntent().getStringExtra("encounterName");
+        encounterType = getIntent().getStringExtra("encounterType");
+
+
         accessMode = (PartogramConstants.AccessMode) getIntent().getSerializableExtra(TIMELINE_MODE);
         context = PartogramDataCaptureActivity.this;
         if (accessMode != PartogramConstants.AccessMode.WRITE) {
@@ -101,18 +105,20 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             mSaveTextView.setText(accessMode == PartogramConstants.AccessMode.EDIT ? "Update" : "Save");
         }
 
-        Log.v("visitUuid", mVisitUUID);
-        Log.v("EncounterUUID", mEncounterUUID);
-        Log.v("StageNumber", String.valueOf(mStageNumber));
-        Log.v("QueryFor", String.valueOf(mQueryFor));
-        Log.d(TAG, "onCreate: kz encountername : "+encounterName);
+        Log.v("k2visitUuid", mVisitUUID);
+        Log.v("k2EncounterUUID", mEncounterUUID);
+        Log.v("k2StageNumber", String.valueOf(mStageNumber));
+        Log.v("k2QueryFor", String.valueOf(mQueryFor));
+        Log.d(TAG, "k2onCreate: kz encountername : " + encounterName);
+        Log.d(TAG, "k2onCreate: kz encounterType : " + encounterType);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         if (mQueryFor == HOURLY) {
             prepareDataForHourly();
         } else if (mQueryFor == HALF_HOUR) {
             prepareDataForHalfHourly();
         } else if (mQueryFor == FIFTEEN_MIN) {
-                prepareDataForFifteenMins();
+            prepareDataForFifteenMins();
         }
 
         mSaveTextView.setOnClickListener(v -> {
@@ -509,23 +515,31 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     }
 
     private void prepareDataForHourly() {
+        Log.d(TAG, "checkhour prepareDataForHourly: ");
         mItemList.clear();
         for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
             String section = PartogramConstants.SECTION_LIST[i];
             List<ParamInfo> paramInfoList = new ArrayList<>();
             for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
-                if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isOnlyOneHourField() || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isHalfHourField() || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
-                }
-                if (checkFiveHourField(encounterName)){
-                    if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
+                boolean isFiveHourField = checkFiveHourField(encounterName);
+
+                if (!encounterType.isEmpty() && encounterType.equalsIgnoreCase("normal")) {
+
+                    if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isOnlyOneHourField()
+                            || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isHalfHourField()
+                            || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()
+                            || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isEachEncounterField()
+                            || isFiveHourField && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
                         paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
                     }
+                } else if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isOnlyOneHourField()
+                        || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isHalfHourField()
+                        || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()
+                        || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isEachEncounterField()
+                        || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
+                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
                 }
 
-             /*   if (mStageNumber == STAGE_2 && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
-                }*/
             }
             if (!paramInfoList.isEmpty()) {
                 PartogramItemData partogramItemData = new PartogramItemData();
@@ -533,18 +547,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 partogramItemData.setParamInfoList(paramInfoList);
                 mItemList.add(partogramItemData);
             }
-
-
         }
-
-      /*  for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
-            String section = PartogramConstants.SECTION_LIST[i];
-            List<ParamInfo> paramInfoList = PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section);
-            PartogramItemData partogramItemData = new PartogramItemData();
-            partogramItemData.setParamSectionName(section);
-            partogramItemData.setParamInfoList(paramInfoList);
-            mItemList.add(partogramItemData);
-        }*/
 
         setEditData();
 
@@ -556,6 +559,8 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     }
 
     private void prepareDataForHalfHourly() {
+        Log.d(TAG, "checkhour prepareDataForHalfHourly: ");
+
         mItemList.clear();
         for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
             String section = PartogramConstants.SECTION_LIST[i];
@@ -563,15 +568,13 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
                 ParamInfo paramInfo = PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j);
                 paramInfo.setCurrentStage(mStageNumber);
-                if (mStageNumber == STAGE_1 && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isHalfHourField()) {
+
+                if (mStageNumber == STAGE_1
+                        && !PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()
+                        && (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isHalfHourField()
+                        || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isEachEncounterField())) {
                     paramInfoList.add(paramInfo);
-                } else if (mStageNumber == STAGE_2
-                        && !PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isOnlyOneHourField()
-                        && !PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
-                    paramInfoList.add(paramInfo);
-                }
-                else if (mStageNumber == STAGE_2 && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
+
                 }
             }
             if (!paramInfoList.isEmpty()) {
@@ -580,7 +583,6 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 partogramItemData.setParamInfoList(paramInfoList);
                 mItemList.add(partogramItemData);
             }
-
 
         }
         setEditData();
@@ -590,25 +592,30 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
             }
         });
+        partogramQueryListingAdapter.setAccessMode(accessMode);
         mRecyclerView.setAdapter(partogramQueryListingAdapter);
     }
 
+
     private void prepareDataForFifteenMins() {
         // TODO: Add logic here for 15mins section... @Lincoln
+        Log.d(TAG, "checkhour prepareDataForFifteenMins: ");
+
         mItemList.clear();
         for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
             String section = PartogramConstants.SECTION_LIST[i];
             List<ParamInfo> paramInfoList = new ArrayList<>();
             for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
-                if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
+                boolean isFiveHourField = checkFiveHourField(encounterName);
+                if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()
+                        || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isEachEncounterField()) {
                     paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
                 }
-                if (checkFiveHourField(encounterName)){
-                    if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
+                if (!encounterType.isEmpty() && encounterType.equalsIgnoreCase("normal")) {
+                    if (isFiveHourField && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
                         paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
                     }
                 }
-
             }
             if (!paramInfoList.isEmpty()) {
                 PartogramItemData partogramItemData = new PartogramItemData();
@@ -616,12 +623,11 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 partogramItemData.setParamInfoList(paramInfoList);
                 mItemList.add(partogramItemData);
             }
-
-
         }
         setEditData();
         PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, partogramItemData -> {
         });
+        partogramQueryListingAdapter.setAccessMode(accessMode);
         mRecyclerView.setAdapter(partogramQueryListingAdapter);
     }
 
@@ -656,4 +662,136 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
         return listOfFiveHoursFields.contains(encounterName);
     }
+
+/*
+    private void prepareDataForHalfHourlyOld() {
+        mItemList.clear();
+        for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
+            String section = PartogramConstants.SECTION_LIST[i];
+            List<ParamInfo> paramInfoList = new ArrayList<>();
+            for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
+                ParamInfo paramInfo = PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j);
+                paramInfo.setCurrentStage(mStageNumber);
+                if (mStageNumber == STAGE_1 && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isHalfHourField()) {
+                    paramInfoList.add(paramInfo);
+                } else if (mStageNumber == STAGE_2
+                        && !PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isOnlyOneHourField()
+                        && !PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
+                    paramInfoList.add(paramInfo);
+                } else if (mStageNumber == STAGE_2 && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
+                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
+                } else if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isEachEncounterField()) {
+                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
+                }
+            }
+            if (!paramInfoList.isEmpty()) {
+                PartogramItemData partogramItemData = new PartogramItemData();
+                partogramItemData.setParamSectionName(section);
+                partogramItemData.setParamInfoList(paramInfoList);
+                mItemList.add(partogramItemData);
+            }
+
+        }
+        setEditData();
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
+            @Override
+            public void onSelect(PartogramItemData partogramItemData) {
+
+            }
+        });
+        mRecyclerView.setAdapter(partogramQueryListingAdapter);
+    }
+*/
+/*
+private void prepareDataForFifteenMinsOld() {
+    // TODO: Add logic here for 15mins section... @Lincoln
+    mItemList.clear();
+    for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
+        String section = PartogramConstants.SECTION_LIST[i];
+        List<ParamInfo> paramInfoList = new ArrayList<>();
+        for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
+            if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
+                paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
+            }
+            if (checkFiveHourField(encounterName)) {
+                if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
+                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
+                }
+            }
+            if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isEachEncounterField()) {
+                paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
+            }
+
+        }
+        if (!paramInfoList.isEmpty()) {
+            PartogramItemData partogramItemData = new PartogramItemData();
+            partogramItemData.setParamSectionName(section);
+            partogramItemData.setParamInfoList(paramInfoList);
+            mItemList.add(partogramItemData);
+        }
+
+
+    }
+    setEditData();
+    PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, partogramItemData -> {
+    });
+    mRecyclerView.setAdapter(partogramQueryListingAdapter);
+}
+*/
+/*
+private void prepareDataForHourlyOld() {
+    mItemList.clear();
+    for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
+        String section = PartogramConstants.SECTION_LIST[i];
+        List<ParamInfo> paramInfoList = new ArrayList<>();
+        for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
+            if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isOnlyOneHourField()
+                    || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isHalfHourField()
+                    || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()
+                    || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isEachEncounterField()) {
+                paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
+            }
+            if (checkFiveHourField(encounterName)) {
+                if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
+                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
+                }
+            }
+
+             */
+/*   if (mStageNumber == STAGE_2 && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
+                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
+                }*//*
+
+        }
+        if (!paramInfoList.isEmpty()) {
+            PartogramItemData partogramItemData = new PartogramItemData();
+            partogramItemData.setParamSectionName(section);
+            partogramItemData.setParamInfoList(paramInfoList);
+            mItemList.add(partogramItemData);
+        }
+
+
+    }
+
+      */
+/*  for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
+            String section = PartogramConstants.SECTION_LIST[i];
+            List<ParamInfo> paramInfoList = PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section);
+            PartogramItemData partogramItemData = new PartogramItemData();
+            partogramItemData.setParamSectionName(section);
+            partogramItemData.setParamInfoList(paramInfoList);
+            mItemList.add(partogramItemData);
+        }*//*
+
+
+    setEditData();
+
+    PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, partogramItemData -> {
+
+    });
+    partogramQueryListingAdapter.setAccessMode(accessMode);
+    mRecyclerView.setAdapter(partogramQueryListingAdapter);
+}
+*/
+
 }

@@ -76,7 +76,7 @@
             android:id="@+id/includeLayoutPartoOxytocin"
             layout="@layout/oxytocin_details"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/list_container_padding"
             android:paddingVertical="@dimen/list_container_padding"
             android:visibility="gone"

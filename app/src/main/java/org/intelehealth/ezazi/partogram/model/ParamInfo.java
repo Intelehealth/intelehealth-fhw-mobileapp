@@ -34,10 +34,18 @@ public class ParamInfo implements Serializable {
 
     private String[] radioOptions;
     private String[] status;
-
+    private boolean eachEncounterField;
 //    private HashMap<String, String> jsonMap;
 
     private Medication medication;
+
+    public boolean isEachEncounterField() {
+        return eachEncounterField;
+    }
+
+    public void setEachEncounterField(boolean eachEncounterField) {
+        this.eachEncounterField = eachEncounterField;
+    }
 
     private RadioOptions checkedRadioOption = RadioOptions.NO_VALUE;
 
@@ -239,7 +247,7 @@ public class ParamInfo implements Serializable {
     }
 
     public void convertToMedicine(String obsUuid, String value) {
-        Log.d("TAG", "convertToMedicine: value :: "+value);
+        Log.d("TAG", "convertToMedicine: value :: " + value);
         Medicine medicine = new Medicine();
         medicine.setObsUuid(obsUuid);
         medicine.dbFormatToMedicineObject(value);
@@ -283,7 +291,7 @@ public class ParamInfo implements Serializable {
             if (getCapturedValue() == null) return true;
             else if (checkedRadioOption == RadioOptions.NO_VALUE) return true;
             else {
-             if (checkedRadioOption != null && getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
+                if (checkedRadioOption != null && getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
                     return getMedication().isValidOxytocin();
                 }
             }

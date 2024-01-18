@@ -7,10 +7,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvQuery"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/screen_padding"
         app:layout_constraintBottom_toTopOf="@id/includeBottomActionView"
         app:layout_constraintEnd_toEndOf="parent"
+        android:paddingVertical="@dimen/screen_padding"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
