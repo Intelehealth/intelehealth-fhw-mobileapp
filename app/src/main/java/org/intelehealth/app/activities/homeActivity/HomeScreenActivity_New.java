@@ -1441,14 +1441,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private final Observer<Integer> syncLiveData = new Observer<Integer>() {
         @Override
         public void onChanged(Integer progress) {
-            Logger.logD(SyncDAO.MSF_PULL_ISSUE, "onchanged of livedata again called up");
+            Logger.logD(SyncDAO.PULL_ISSUE, "onchanged of livedata again called up");
             if (mSyncProgressDialog != null) {
                 mSyncProgressDialog.setProgress(progress);
-                Logger.logD(SyncDAO.MSF_PULL_ISSUE, "% -> " + String.valueOf(progress));
+                Logger.logD(SyncDAO.PULL_ISSUE, "% -> " + String.valueOf(progress));
 
                 if (progress == 100) {
                     SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
-                    Logger.logD(SyncDAO.MSF_PULL_ISSUE, "progress is 100 so close");
+                    Logger.logD(SyncDAO.PULL_ISSUE, "progress is 100 so close");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {

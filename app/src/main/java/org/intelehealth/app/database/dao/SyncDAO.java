@@ -47,7 +47,7 @@ import retrofit2.Response;
 
 public class SyncDAO {
     public static String TAG = "SyncDAO";
-    public static final String MSF_PULL_ISSUE = "MSF_PULL_ISSUE";
+    public static final String PULL_ISSUE = "PULL_ISSUE";
     SessionManager sessionManager = null;
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
@@ -245,14 +245,14 @@ public class SyncDAO {
 
                         if (nextPageNo != -1) {
                             percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0/totalCount);
-                            Logger.logD(MSF_PULL_ISSUE, "percentage: " + percentage);
+                            Logger.logD(PULL_ISSUE, "percentage: " + percentage);
                             setProgress(percentage);
                             pullData(context, fromActivity, nextPageNo);
                             return;
                         }else {
                             percentage = 100;
                             sessionManager.setPullExcutedTime(sessionManager.isPulled());
-                            Logger.logD(MSF_PULL_ISSUE, "percentage page -1: " + percentage);
+                            Logger.logD(PULL_ISSUE, "percentage page -1: " + percentage);
                             setProgress(percentage);
                             Intent broadcast = new Intent();
                             broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
@@ -359,7 +359,7 @@ public class SyncDAO {
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime()+
                 "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
-        Logger.logD(MSF_PULL_ISSUE, url);
+        Logger.logD(PULL_ISSUE, url);
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
