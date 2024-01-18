@@ -82,4 +82,5 @@
     <string name="select_spinner">Выберите</string>
     <string name="call_swipe_up">Проведите вверх</string>
     <string name="release_now">Освободить сейчас</string>
+    <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
 </resources>
