@@ -679,7 +679,7 @@ public class AdministerDispenseActivity extends BaseActivity {
                 }
             }
 
-            Toast.makeText(this, "Test Collection Data Saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.test_collection_data_saved), Toast.LENGTH_SHORT).show();
         }
         else if (tag.equalsIgnoreCase(RECEIVED)) {
             createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_TEST_RECEIVE);
@@ -690,7 +690,7 @@ public class AdministerDispenseActivity extends BaseActivity {
                 }
             }
 
-            Toast.makeText(this, "Test Resulted Data Saved.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.test_result_data_saved), Toast.LENGTH_SHORT).show();
         }
 
         if (NetworkConnection.isOnline(getApplication())) {
