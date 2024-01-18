@@ -1670,12 +1670,13 @@
     <string name="collected_tests">Collected Tests</string>
     <string name="results_received">استلم النتائ</string>
     <string name="view_past_test_notes">جمع العينة</string>
-    <string name="collect">Collect</string>
-    <string name="receive">Receive</string>
+    <string name="collect">. جمع عينة</string>
+    <string name="receive">استلام نتيجة</string>
     <string name="requested_tests">الفحوصات المطلوبة</string>
     <string name="collected_test">الفحوصات التي يتم جمع عيناتها</string>
     <string name="view_resulted_by_past_notes">تحميل النتائج</string>
-
+    <string name="test_collection_data_saved"> تم حفظ بيانات جمع العينات</string>
+    <string name="test_result_data_saved">. تم حفظ بيانات تحميل النتائج</string>
 
 
 </resources>

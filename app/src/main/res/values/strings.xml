@@ -1682,6 +1682,8 @@
     <string name="requested_tests">Requested tests</string>
     <string name="collected_test">Collected test</string>
     <string name="view_resulted_by_past_notes">View \'Resulted by\' past notes</string>
+    <string name="test_collection_data_saved">Test Collection Data Saved</string>
+    <string name="test_result_data_saved">Test Result Data Saved.</string>
 
 
 </resources>
