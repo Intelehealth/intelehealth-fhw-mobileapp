@@ -52,14 +52,12 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 }.also { arg ->
                     if (isAppInForeground()) {
                         arg.callMode = CallMode.INCOMING
-                        arg.className = SilaVideoActivity::class.java.name
                         CallHandlerUtils.saveIncomingCall(context, arg)
                         context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
                     } else {
                         CallHandlerUtils.operateIncomingCall(
                             it,
-                            arg,
-                            SilaVideoActivity::class.java
+                            arg
                         )
                     }
                 }
