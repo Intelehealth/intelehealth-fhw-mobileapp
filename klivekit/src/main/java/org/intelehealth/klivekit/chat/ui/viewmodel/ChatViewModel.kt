@@ -8,8 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import io.socket.emitter.Emitter
 import org.intelehealth.klivekit.chat.ChatClient
-import org.intelehealth.klivekit.socket.SocketManager
-import org.intelehealth.klivekit.call.ui.viewmodel.VideoCallViewModel
 import org.intelehealth.klivekit.utils.AwsS3Utils
 
 /**
@@ -36,7 +34,7 @@ class ChatViewModel(private val chatClient: ChatClient) : ViewModel() {
                 context,
                 fileUploadBroadcastReceiver,
                 this,
-                ContextCompat.RECEIVER_EXPORTED
+                ContextCompat.RECEIVER_NOT_EXPORTED
             )
         }
     }

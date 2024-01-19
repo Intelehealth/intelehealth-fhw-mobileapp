@@ -62,10 +62,9 @@ object CallHandlerUtils {
      * @param callArgs an instance of RtcArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun operateIncomingCall(context: Context, callArgs: RtcArgs, clazz: Class<*>) {
+    fun operateIncomingCall(context: Context, callArgs: RtcArgs, ) {
         Timber.d { "operateIncomingCall ->Url = ${callArgs.url}" }
         callArgs.callMode = CallMode.INCOMING
-        callArgs.className = clazz.name
         getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
         notifyCallNotification(callArgs, context)
     }

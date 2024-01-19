@@ -77,6 +77,7 @@
     <string name="remote_participant_mic_off_status">દૂરના સહભાગીનું માઇક બંધ સ્તિથી</string>
     <string name="sender_image">પ્રેષક છબી</string>
     <string name="select_spinner">પસંદ કરો</string>
-    <string name="call_swipe_up">ઉપર સરકાવો</string>
-    <string name="release_now">હવે છોડો</string>
+    <string name="call_swipe_up">Swipe Up</string>
+    <string name="release_now">Release Now</string>
+    <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
 </resources>

@@ -47,7 +47,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     url = BuildConfig.LIVE_KIT_URL
                     socketUrl = BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
                     PatientsDAO().getPatientName(roomId).apply {
-                        patientName = get(0).name
+                        if (size > 0) patientName = get(0).name
                     }
                 }.also { arg ->
                     if (isAppInForeground()) {

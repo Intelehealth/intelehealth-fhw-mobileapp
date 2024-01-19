@@ -75,6 +75,7 @@
     <string name="remote_participant_mic_off_status">ರಿಮೋಟ್/ಪರೋಕ್ಷವಾಗಿ ಭಾಗವಹಿಸುವವರ ಮೈಕ್/ಧ್ವನಿವರ್ಧಕ ಆಫ್ ಸ್ಥಿತಿ</string>
     <string name="sender_image">ಕಳುಹಿಸುವವರ ಚಿತ್ರ</string>
     <string name="select_spinner">ಆಯ್ಕೆ ಮಾಡಿ</string>
-    <string name="call_swipe_up">ಮೇಲಕ್ಕೆ ಎಳಿ</string>
-    <string name="release_now">ಅದನ್ನು ಬಿಡುಗಡೆ ಮಾಡು</string>
+    <string name="call_swipe_up">Swipe Up</string>
+    <string name="release_now">Release Now</string>
+    <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
 </resources>

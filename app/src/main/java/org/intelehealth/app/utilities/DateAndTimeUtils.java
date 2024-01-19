@@ -348,19 +348,15 @@ public class DateAndTimeUtils {
     public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
 
         String result = "";
-        SimpleDateFormat sdf;
-        SimpleDateFormat sdf1;
-
+        SimpleDateFormat sdf = new SimpleDateFormat(sourceFormat, Locale.ENGLISH);
+        SimpleDateFormat sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
         try {
-            sdf = new SimpleDateFormat(sourceFormat, Locale.ENGLISH);
-            sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
             result = sdf1.format(sdf.parse(date));
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             return "";
         } finally {
-            sdf = null;
-            sdf1 = null;
+            result = sdf1.format(new Date());
         }
         return result;
     }
