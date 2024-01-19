@@ -2,24 +2,39 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <include
             android:id="@+id/viewStrength"
-            layout="@layout/parto_lbl_etv_view_ezazi" />
+            layout="@layout/parto_lbl_etv_view_ezazi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <include
             android:id="@+id/viewInfusionRate"
-            layout="@layout/parto_lbl_etv_view_ezazi" />
+            layout="@layout/parto_lbl_etv_view_ezazi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewStrength" />
 
         <include
             android:id="@+id/viewInfusionStatus"
-            layout="@layout/parto_lbl_dropdown_view_ezazi" />
+            layout="@layout/parto_lbl_dropdown_view_ezazi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewInfusionRate" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--
        <androidx.constraintlayout.widget.ConstraintLayout

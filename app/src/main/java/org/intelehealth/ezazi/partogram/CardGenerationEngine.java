@@ -115,6 +115,7 @@ public class CardGenerationEngine {
                         }
                     } else if (latestEncounterName.toLowerCase().contains("stage2")) {
                         if (minutes >= 15) {
+                            //out of time
                             if (checkVisitEncounterReachToLimit(latestEncounterName)) {
                                 closeReachToLimitVisit(visitUid);
                             } else {
@@ -146,7 +147,14 @@ public class CardGenerationEngine {
 //                SyncUtils syncUtils = new SyncUtils();
 //                syncUtils.syncBackground();
             alertToCollectHistoryData();
+            isNewEncounterCreated();
         }
+    }
+
+    private static void isNewEncounterCreated() {
+        Intent intent = new Intent(AppConstants.CURRENT_ENC_EDIT_INTENT_ACTION);
+        intent.putExtra("newEncounter", true);
+        IntelehealthApplication.getAppContext().sendBroadcast(intent);
     }
 
     private static boolean insertEncounters() throws DAOException {

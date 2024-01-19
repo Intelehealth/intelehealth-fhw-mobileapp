@@ -106,6 +106,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private boolean isVisitCompleted = false;
 
     private boolean hwHasEditAccess = true;
+    private boolean isNewEncounterCreated = false;
 
     private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -123,6 +124,19 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //            checkInternetAndUploadVisitEncounter(false);
         }
     };
+    private final BroadcastReceiver checkEncounterEditMode = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action != null && action.equals(AppConstants.CURRENT_ENC_EDIT_INTENT_ACTION)) {
+                isNewEncounterCreated = intent.getBooleanExtra("newEncounter", false);
+                Log.d(TAG, "kkencounter edit onReceive: isNewEncounterCreated : " + isNewEncounterCreated);
+                fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
+                //TimelineAdapter timelineAdapter = new TimelineAdapter();
+                //timelineAdapter.setEditMode(isNewEncounterCreated);
+            }
+        }
+    };
 
     @Override
     protected void onPause() {
@@ -130,6 +144,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         unregisterReceiver(mMessageReceiver);
         unregisterReceiver(visitTimeOutReceiver);
         unregisterReceiver(syncBroadcastReceiver);
+        unregisterReceiver(checkEncounterEditMode);
     }
 
     @Override
@@ -138,6 +153,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         registerReceiver(visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION));
         registerReceiver(mMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
         registerReceiver(syncBroadcastReceiver, new IntentFilter(AppConstants.SYNC_INTENT_ACTION));
+        registerReceiver(checkEncounterEditMode, new IntentFilter(AppConstants.CURRENT_ENC_EDIT_INTENT_ACTION));
     }
 
     @Override
@@ -270,7 +286,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
             String encounterUuid = UUID.randomUUID().toString();
             new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.SOS.name(), sessionManager.getCreatorID(), TAG);
-            createNewEncounter(encounterUuid, visitUuid, nextEncounterTypeName);
+            isNewEncounterCreated = createNewEncounter(encounterUuid, visitUuid, nextEncounterTypeName);
             fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
         }
     }
@@ -701,7 +717,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         }
     };
 
-    private static void createNewEncounter(String encounterUuid, String visit_UUID, String nextEncounterTypeName) {
+    private static boolean createNewEncounter(String encounterUuid, String visit_UUID, String nextEncounterTypeName) {
+        boolean isCreated = false;
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
         String typeUuid = encounterDAO.getEncounterTypeUuid(nextEncounterTypeName);
@@ -716,11 +733,12 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             encounterDTO.setPrivacynotice_value("true");
 
             try {
-                encounterDAO.createEncountersToDB(encounterDTO);
+                isCreated = encounterDAO.createEncountersToDB(encounterDTO);
             } catch (DAOException e) {
                 e.printStackTrace();
             }
         }
+        return isCreated;
     }
 
 
@@ -862,8 +880,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             encounterListDTO.get(i).setEncounterType(type);
         }
         isVCEPresent = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
-
-        adapter = new TimelineAdapter(context, intent, encounterListDTO, sessionManager, isVCEPresent);
+        Log.d(TAG, "fetchAllEncountersFromVisitForTimelineScreen: isNewEncounterCreated : " + isNewEncounterCreated);
+        adapter = new TimelineAdapter(context, intent, encounterListDTO, sessionManager, isVCEPresent, isNewEncounterCreated);
         Collections.reverse(encounterListDTO);
         recyclerView.setAdapter(adapter);
     }

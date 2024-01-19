@@ -324,7 +324,8 @@ public class PartogramConstants {
         paramInfo.setParamDateType(RADIO_SELECT_TYPE);
         paramInfo.setStatus(new String[]{"Started", "Continued", "Stopped"});
         paramInfo.setConceptUUID("9d316d82-538f-11e6-9cfe-86f436325720");
-        paramInfo.setOnlyOneHourField(true);
+        //paramInfo.setOnlyOneHourField(true);
+        paramInfo.setEachEncounterField(true);
         stringList.add(paramInfo);
 
 
@@ -335,7 +336,8 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"Yes", "No"});
         //paramInfo.setValues(new String[]{"Y", "N"});
         paramInfo.setConceptUUID("c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca");
-        paramInfo.setOnlyOneHourField(true);
+        //paramInfo.setOnlyOneHourField(true);
+        paramInfo.setEachEncounterField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -347,7 +349,8 @@ public class PartogramConstants {
         paramInfo.setValues(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", AppConstants.OTHER_OPTION});
         paramInfo.setStatus(new String[]{"Started", "Continued", "Stopped"});
         paramInfo.setConceptUUID("98c5881f-b214-4597-83d4-509666e9a7c9");
-        paramInfo.setOnlyOneHourField(true);
+        //paramInfo.setOnlyOneHourField(true);
+        paramInfo.setEachEncounterField(true);
         stringList.add(paramInfo);
 
         sectionParamInfoMap.put(SECTION_LIST[4], stringList);//Medication
@@ -360,7 +363,8 @@ public class PartogramConstants {
         paramInfo.setParamName("Assessment");
         paramInfo.setParamDateType(INPUT_TXT_TYPE);
         paramInfo.setConceptUUID("67a050c1-35e5-451c-a4ab-fff9d57b0db1");
-        paramInfo.setOnlyOneHourField(true);
+        //paramInfo.setOnlyOneHourField(true);
+        paramInfo.setEachEncounterField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -368,7 +372,8 @@ public class PartogramConstants {
         paramInfo.setParamName("Plan");
         paramInfo.setParamDateType(INPUT_TXT_TYPE);
         paramInfo.setConceptUUID("162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        paramInfo.setOnlyOneHourField(true);
+        //paramInfo.setOnlyOneHourField(true);
+        paramInfo.setEachEncounterField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -376,9 +381,9 @@ public class PartogramConstants {
         paramInfo.setParamName("Supervisor Doctor");
         paramInfo.setParamDateType(INPUT_TXT_TYPE);
         paramInfo.setConceptUUID("7a9cb7bc-9ab9-4ff0-ae82-7a1bd2cca93e");
-        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
-
+        //paramInfo.setOnlyOneHourField(true);
+        paramInfo.setEachEncounterField(true);
         sectionParamInfoMap.put(SECTION_LIST[5], stringList);//Shared Decision Making
 
         //Initials
