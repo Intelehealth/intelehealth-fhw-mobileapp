@@ -35,8 +35,7 @@ class CallNotificationTestActivity : BaseActivity() {
     private fun startCall() {
         CallHandlerUtils.operateIncomingCall(
             this,
-            RtcArgs.dummy().apply { patientName = "Test User" },
-            SilaVideoActivity::class.java
+            RtcArgs.dummy().apply { patientName = "Test User" }
         )
     }
 }
