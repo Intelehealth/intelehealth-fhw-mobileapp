@@ -238,7 +238,7 @@ public class CardGenerationEngine {
     }
 
     private static void closeReachToLimitVisit(String visitId) {
-        long updated = new VisitAttributeListDAO().updateVisitAttribute(visitId, UuidDictionary.DECISION_PENDING, "1");
+        long updated = new VisitAttributeListDAO().updateVisitAttribute(visitId, UuidDictionary.DECISION_PENDING, "true");
         if (updated > 0) {
             try {
                 VisitsDAO visitsDAO = new VisitsDAO();
