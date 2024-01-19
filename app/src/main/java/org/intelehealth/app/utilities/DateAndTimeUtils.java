@@ -348,6 +348,23 @@ public class DateAndTimeUtils {
     public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
 
         String result = "";
+        SimpleDateFormat sdf;
+        SimpleDateFormat sdf1;
+
+        try {
+            sdf = new SimpleDateFormat(sourceFormat, Locale.ENGLISH);
+            sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
+            result = sdf1.format(sdf.parse(date));
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return "";
+        } finally {
+            sdf = null;
+            sdf1 = null;
+        }
+        return result;
+        
+      /*  String result = "";
         SimpleDateFormat sdf = new SimpleDateFormat(sourceFormat, Locale.ENGLISH);
         SimpleDateFormat sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
         try {
@@ -358,7 +375,7 @@ public class DateAndTimeUtils {
         } finally {
             result = sdf1.format(new Date());
         }
-        return result;
+        return result;*/
     }
 
     public static void assignDatePickerMin2yrsMaxToday(Context context, EditText etFollowUpDate, SessionManager sessionManager) {
