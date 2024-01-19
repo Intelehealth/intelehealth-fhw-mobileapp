@@ -1,5 +1,7 @@
 package org.intelehealth.app.webrtc.activity;
 
+import static org.intelehealth.klivekit.call.utils.CallConstants.MAX_INT;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +17,8 @@ import org.intelehealth.fcm.utils.NotificationHandler;
 import org.intelehealth.klivekit.chat.ui.activity.ChatActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
 
+import java.util.Random;
+
 /**
  * Created by Vaghela Mithun R. on 25-08-2023 - 16:43.
  * Email : mithun@intelehealth.org
@@ -29,7 +33,8 @@ public class SilaChatActivity extends ChatActivity {
     public static PendingIntent getPendingIntent(Context context, RtcArgs args) {
         Intent chatIntent = new Intent(context, SilaChatActivity.class);
         chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return PendingIntent.getActivity(context, 0, buildExtra(chatIntent, args, context),
+        int requestCode = new Random().nextInt(MAX_INT);
+        return PendingIntent.getActivity(context, requestCode, buildExtra(chatIntent, args, context),
                 NotificationHandler.getPendingIntentFlag());
     }
 
