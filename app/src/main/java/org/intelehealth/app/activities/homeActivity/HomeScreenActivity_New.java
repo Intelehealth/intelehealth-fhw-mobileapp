@@ -63,6 +63,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -90,6 +91,7 @@ import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
+import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
@@ -572,6 +574,15 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
+            /*mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog.setTitle(R.string.syncInProgress);
+            mSyncProgressDialog.setCancelable(false);
+            mSyncProgressDialog.setMax(100);
+            mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mSyncProgressDialog.setIndeterminate(false);
+            mSyncProgressDialog.show();*/
+
+            //SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
             Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home"));
         } else {
@@ -1421,4 +1432,23 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         }
     }
+
+    /**
+     * observing sync status here
+     */
+    private final Observer<Integer> syncLiveData = new Observer<Integer>() {
+        @Override
+        public void onChanged(Integer progress) {
+            Logger.logD(SyncDAO.MSF_PULL_ISSUE, "onchanged of livedata again called up");
+            /*if (mSyncProgressDialog != null) {
+                mSyncProgressDialog.setProgress(progress);
+                Logger.logD(SyncDAO.MSF_PULL_ISSUE, "% -> " + String.valueOf(progress));
+
+                if (progress == 100) {
+                    SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
+                    Logger.logD(SyncDAO.MSF_PULL_ISSUE, "progress is 100 so close");
+                }
+            }*/
+        }
+    };
 }
