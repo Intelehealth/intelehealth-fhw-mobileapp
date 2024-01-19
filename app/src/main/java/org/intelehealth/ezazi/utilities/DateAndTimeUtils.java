@@ -273,7 +273,7 @@ public class DateAndTimeUtils {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+        LocalDate birthdate = new LocalDate(year, month + 1, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
 
