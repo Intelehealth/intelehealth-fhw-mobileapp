@@ -20,6 +20,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -84,7 +85,12 @@ public class VisitActivity extends BaseActivity implements
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        registerReceiver(mBroadcastReceiver, filterSend);
+        ContextCompat.registerReceiver(
+                this,
+                mBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
 
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);

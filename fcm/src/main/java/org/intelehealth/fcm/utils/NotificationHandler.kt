@@ -7,11 +7,11 @@ import android.content.Intent
 import android.os.Build
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.google.firebase.messaging.RemoteMessage.Notification
+import com.google.gson.Gson
 import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.fcm.FcmNotification
 import org.intelehealth.fcm.model.NotificationBuilderParam
-import com.google.firebase.messaging.RemoteMessage.Notification
-import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -129,12 +129,12 @@ object NotificationHandler {
     @JvmStatic
     fun getPendingIntentFlag() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_MUTABLE
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         } else {
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_UPDATE_CURRENT
         }
     } else {
-        PendingIntent.FLAG_CANCEL_CURRENT
+        PendingIntent.FLAG_UPDATE_CURRENT
     }
 
     fun getLocalNotificationBroadcast(

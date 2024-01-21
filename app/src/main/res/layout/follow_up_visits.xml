@@ -134,8 +134,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="@dimen/margin_24"
-            android:layout_marginRight="@dimen/margin_24"
+            android:layout_marginLeft="@dimen/margin_12"
+            android:layout_marginRight="@dimen/margin_12"
             android:orientation="vertical">
 
             <!-- You can add all acco -->

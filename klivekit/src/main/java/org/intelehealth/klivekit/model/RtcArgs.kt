@@ -38,13 +38,13 @@ data class RtcArgs(
     @SerializedName("device_token")
     var deviceToken: String? = "",
     var timestamp: Long = 0,
+    var sound: Boolean = true,
 
     // call arguments
     var callType: CallType = CallType.NONE,
     var callStatus: CallStatus = CallStatus.NONE,
     var callAction: CallAction = CallAction.NONE,
     var callMode: CallMode = CallMode.NONE,
-    var className: String? = null,
     var notificationChannelName: String? = null,
     var notificationChannelId: String? = null,
     var notificationId: Int = 0,
@@ -107,7 +107,6 @@ data class RtcArgs(
         callStatus = this.callStatus,
         callAction = this.callAction,
         callMode = this.callMode,
-        className = this.className,
         notificationChannelName = this.notificationChannelName,
         notificationChannelId = this.notificationChannelId,
         notificationId = this.notificationId,

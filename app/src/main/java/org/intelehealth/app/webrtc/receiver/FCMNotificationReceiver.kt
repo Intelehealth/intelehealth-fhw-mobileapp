@@ -49,13 +49,13 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                         patientName = get(0).name
                     }
                 }.also { arg ->
+                    Timber.tag(TAG).d("onMessageReceived: $arg")
                     if (isAppInForeground()) {
                         arg.callMode = CallMode.INCOMING
-                        arg.className = IDAVideoActivity::class.java.name
                         CallHandlerUtils.saveIncomingCall(context, arg)
                         context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
                     } else {
-                        CallHandlerUtils.operateIncomingCall(it, arg, IDAVideoActivity::class.java)
+                        CallHandlerUtils.operateIncomingCall(it, arg)
                     }
                 }
             } else {

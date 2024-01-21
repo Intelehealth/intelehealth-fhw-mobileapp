@@ -12,7 +12,6 @@ import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -40,13 +39,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -55,9 +51,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -68,9 +62,8 @@ import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
-import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.PatientDTO;
@@ -303,10 +296,32 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             }
 
             if (needToShowCoreValue) {
-                int first = chief_complaint_value.indexOf("<b>");
-                int last = chief_complaint_value.indexOf("</b>");
-                Log.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
-                chief_complaint_value = chief_complaint_value.substring(first, last + 4);
+                chief_complaint_value = chief_complaint_value.replace("?<b>", Node.bullet_arrow);
+
+                String[] complaints = org.apache.commons.lang3.StringUtils.split(chief_complaint_value, Node.bullet_arrow);
+
+                chief_complaint_value = "";
+                String colon = ":";
+                if (complaints != null) {
+                    for (String comp : complaints) {
+                        if (!comp.trim().isEmpty()) {
+                            chief_complaint_value = chief_complaint_value + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                        }
+                    }
+                    if (!chief_complaint_value.isEmpty()) {
+                        chief_complaint_value = chief_complaint_value.replaceAll(Node.bullet_arrow, "");
+                        chief_complaint_value = chief_complaint_value.replaceAll("<br/>", ", ");
+                        chief_complaint_value = chief_complaint_value.replaceAll("Associated symptoms", "");
+                        //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                        chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
+                        chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");
+                        chief_complaint_value = chief_complaint_value.trim();
+                        while (chief_complaint_value.endsWith(",")){
+                            chief_complaint_value = chief_complaint_value.substring(0, chief_complaint_value.length()-1).trim();
+                        }
+                    }
+                }
                 tvChiefComplaintTxt.setText(Html.fromHtml(chief_complaint_value));
             } else {
                 chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
@@ -316,32 +331,25 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
 
                 String[] spt = chief_complaint_value.split("►");
                 List<String> list = new ArrayList<>();
-
+                StringBuilder stringBuilder = new StringBuilder();
                 for (String s : spt) {
+                    String complainName = "";
                     if (s.isEmpty()) continue;
                     //String s1 =  new String(s.getBytes(), "UTF-8");
                     System.out.println(s);
+                    String[] spt1 = s.split("::●");
+                    complainName = spt1[0];
+
                     //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                    if (!s.trim().contains(org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                        list.add(s);
+                    if (!complainName.trim().contains(org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                        System.out.println(complainName);
+                        if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+                        stringBuilder.append(complainName);
                     }
 
                 }
-                StringBuilder stringBuilder = new StringBuilder();
-                int size = list.size() == 1 ? list.size() : list.size() - 1;
-                for (int i = 0; i < size; i++) {
-                    String complainName = "";
-                    List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
-                    String[] spt1 = list.get(i).split("●");
-                    for (String value : spt1) {
-                        if (value.contains("::")) {
-                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(",");
-                            complainName = value.replace("::", "");
-                            System.out.println(complainName);
-                            stringBuilder.append(complainName);
-                        }
-                    }
-                }
+
+
                 tvChiefComplaintTxt.setText(stringBuilder.toString());
             }
         }
@@ -749,7 +757,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         request.setId(appointment_id);
         request.setReason(reason);
         request.setHwUUID(new SessionManager(AppointmentDetailsActivity.this).getProviderID()); // user id / healthworker id
-        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi().cancelAppointment(request).enqueue(new Callback<CancelResponse>() {
             @Override
             public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {

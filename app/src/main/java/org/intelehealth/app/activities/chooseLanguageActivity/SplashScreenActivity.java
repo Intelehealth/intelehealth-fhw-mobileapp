@@ -29,6 +29,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.ComponentActivity;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -76,6 +80,7 @@ import kotlin.Unit;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String TAG = "SplashScreenActivity";
+    private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 2774;
     RecyclerView rvSelectLanguage;
     View layoutLanguage;
     ViewGroup layoutParent;
@@ -88,6 +93,29 @@ public class SplashScreenActivity extends AppCompatActivity {
     String LOG_TAG = "SplashActivity";
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
+
+    ActivityResultLauncher<Intent> usageAccessPermission = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
+        if (customDialog.isVisible()) {
+            customDialog.dismiss();
+        }
+    });
+
+    ActivityResultLauncher<Intent> drawOverlayPermission = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
+        try {
+            PackageManager packageManager = getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
+            AppOpsManager appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+
+            if (mode != AppOpsManager.MODE_ALLOWED) {
+                customDialog = new CustomDialog(this);
+                customDialog.showDialog1(usageAccessPermission);
+            }
+        } catch (PackageManager.NameNotFoundException ignored) {
+            // Control shouldn't reach at this point of the code
+            //
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,9 +224,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void initFirebaseRemoteConfig() {
         FirebaseApp.initializeApp(this);
         FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(0)
-                .build();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build();
         instance.setConfigSettingsAsync(configSettings);
 
         instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
@@ -271,22 +297,16 @@ public class SplashScreenActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
-        try {
-            PackageManager packageManager = getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
-            AppOpsManager appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
 
-            if (mode != AppOpsManager.MODE_ALLOWED) {
-                customDialog = new CustomDialog(this);
-                customDialog.showDialog1();
-            }
-        } catch (PackageManager.NameNotFoundException ignored) {
-            // Control shouldn't reach at this point of the code
-            //
-        }
-
+        checkOverlayPermission();
         return true;
+    }
+
+    private void checkOverlayPermission() {
+        if (!Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+            drawOverlayPermission.launch(intent);
+        }
     }
 
     private void checkPerm() {
@@ -326,10 +346,8 @@ public class SplashScreenActivity extends AppCompatActivity {
             finish();
         } else {
             if (setup) {
-                if (sessionManager.isEnableAppLock())
-                    fingerPrintAuthenticate();
-                else
-                    navigateToNextActivity();
+                if (sessionManager.isEnableAppLock()) fingerPrintAuthenticate();
+                else navigateToNextActivity();
 
             } else {
                 Logger.logD(LOG_TAG, "Starting setup");
@@ -346,8 +364,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Animation translateAnim = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.ui2_new_center_to_top);
+                Animation translateAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.ui2_new_center_to_top);
                 translateAnim.setFillAfter(true);
                 translateAnim.setFillEnabled(true);
                 translateAnim.setFillBefore(false);
@@ -472,8 +489,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ta"));
             itemList.add(jsonObject);*/
 
-            ChooseLanguageAdapterNew languageListAdapter = new ChooseLanguageAdapterNew(SplashScreenActivity.this,
-                    itemList, new ItemSelectionListener() {
+            ChooseLanguageAdapterNew languageListAdapter = new ChooseLanguageAdapterNew(SplashScreenActivity.this, itemList, new ItemSelectionListener() {
                 @Override
                 public void onSelect(JSONObject jsonObject, int index) {
                     try {
@@ -544,11 +560,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         });
 
-        promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle(getResources().getString(R.string.intelehealth_login))
-                .setSubtitle(getResources().getString(R.string.touch_fingerprint))
-                .setDeviceCredentialAllowed(true)
-                .build();
+        promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle(getResources().getString(R.string.intelehealth_login)).setSubtitle(getResources().getString(R.string.touch_fingerprint)).setDeviceCredentialAllowed(true).build();
 
         biometricPrompt.authenticate(promptInfo);
 
@@ -602,18 +614,17 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void showPermissionDeniedAlert(String[] permissions) {
         DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(this, 0, getString(R.string.permission_denied), getString(R.string.reject_permission_results), false, getString(R.string.retry_again),
-                getString(R.string.ok_close_now), new DialogUtils.CustomDialogListener() {
-                    @Override
-                    public void onDialogActionDone(int action) {
-                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                            checkPerm();
+        dialogUtils.showCommonDialog(this, 0, getString(R.string.permission_denied), getString(R.string.reject_permission_results), false, getString(R.string.retry_again), getString(R.string.ok_close_now), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    checkPerm();
 
-                        } else {
-                            finish();
-                        }
-                    }
-                });
+                } else {
+                    finish();
+                }
+            }
+        });
     }
 
     public static class CustomDialog extends DialogFragment {
@@ -623,9 +634,8 @@ public class SplashScreenActivity extends AppCompatActivity {
             this.activityContext = activity;
         }
 
-        public void showDialog1() {
-            AlertDialog.Builder builder
-                    = new AlertDialog.Builder(activityContext);
+        public void showDialog1(ActivityResultLauncher<Intent> resultLauncher) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
             builder.setCancelable(false);
             LayoutInflater inflater = LayoutInflater.from(activityContext);
             View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_enable_permissions, null);
@@ -642,7 +652,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             btnOkay.setOnClickListener(v -> {
                 dialog.dismiss();
                 Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                ((ComponentActivity) activityContext).startActivityForResult(intent, PERMISSION_USAGE_ACCESS_STATS);
+                resultLauncher.launch(intent);
             });
         }
     }

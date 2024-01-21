@@ -90,8 +90,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
     private val wakeLock: PowerManager.WakeLock by lazy {
         powerManager.newWakeLock(
-            PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-            "lock:proximity_screen_off"
+            PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "lock:proximity_screen_off"
         )
     }
 
@@ -112,11 +111,9 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     private fun emitter(event: String) = Emitter.Listener {
         when (event) {
 
-            SocketManager.EVENT_NO_ANSWER,
-            SocketManager.EVENT_CALL_REJECT_BY_DR -> stopSelf()
+            SocketManager.EVENT_NO_ANSWER, SocketManager.EVENT_CALL_REJECT_BY_DR -> stopSelf()
 
-            SocketManager.EVENT_CALL_TIME_UP,
-            SocketManager.EVENT_CALL_CANCEL_BY_DR -> {
+            SocketManager.EVENT_CALL_TIME_UP, SocketManager.EVENT_CALL_CANCEL_BY_DR -> {
                 if (!isDuplicateCancelEvent) {
                     isDuplicateCancelEvent = true
                     rtcArgs?.let {
@@ -297,7 +294,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     }
 
     private fun destroySetting() {
-        ringtone.stop()
+        if (ringtone.isPlaying) ringtone.stop()
         vibratorService.cancel()
 
         if (isTimerRunning) {
