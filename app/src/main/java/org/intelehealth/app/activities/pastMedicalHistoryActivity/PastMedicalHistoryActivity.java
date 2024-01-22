@@ -290,12 +290,14 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);
         ivIntuitiveScroll = findViewById(R.id.iv_intuitive_scroll);
 
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+      /*  if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             ivIntuitiveScroll.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_swipe, null));
             ivIntuitiveScroll.setRotationY(180);
         } else {
             ivIntuitiveScroll.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_swipe, null));
-        }
+        }*/
+
+        ivIntuitiveScroll.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_swipe, null));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         pastMedical_recyclerView.setLayoutManager(linearLayoutManager);
