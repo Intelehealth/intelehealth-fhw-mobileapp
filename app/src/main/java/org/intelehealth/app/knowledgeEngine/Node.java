@@ -149,6 +149,8 @@ public class Node implements Serializable {
     private HashMap<String, String> imagePathListWithSectionTag = new HashMap<String, String>();
     private String imagePath;
 
+    private boolean enableSubmit;
+
     /**
      * Nodes refer to the structure that is used for a decision tree or mindmap.
      * The knowledgeEngine object is stored in the same structure where the there is a root knowledgeEngine which contains all the sub-nodes.
@@ -357,7 +359,7 @@ public class Node implements Serializable {
             this.enableExclusiveOption = jsonNode.optBoolean("enable-exclusive-option");
             this.isExclusiveOption = jsonNode.optBoolean("is-exclusive-option");
             this.compareDuplicateNode = jsonNode.optString("compare-duplicate-node");
-
+            this.enableSubmit = jsonNode.optBoolean("submit");
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -3318,7 +3320,7 @@ public class Node implements Serializable {
     public boolean isNestedMandatoryOptionsAnswered() {
         Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered - " + findDisplay());
         boolean allAnswered = isSelected();
-        if(isMultiChoice() && !isDataCaptured()){
+        if (isMultiChoice() && !isDataCaptured()) {
             allAnswered = false;
         }
         /*if(node.isSelected() && node.isRequired() && node.optionsList.size()==1){
@@ -3340,8 +3342,8 @@ public class Node implements Serializable {
                                 allAnswered = false;
                                 break;
                             }
-                        }else {
-                            if(innerNode.isUserInputsTypeNode() && !innerNode.isDataCaptured){
+                        } else {
+                            if (innerNode.isUserInputsTypeNode() && !innerNode.isDataCaptured) {
                                 allAnswered = false;
                                 break;
                             }
@@ -3771,6 +3773,14 @@ public class Node implements Serializable {
             }
         }
         return false;
+    }
+
+    public boolean isEnableSubmit() {
+        return enableSubmit;
+    }
+
+    public void setEnableSubmit(boolean enableSubmit) {
+        this.enableSubmit = enableSubmit;
     }
 
     /*End*/

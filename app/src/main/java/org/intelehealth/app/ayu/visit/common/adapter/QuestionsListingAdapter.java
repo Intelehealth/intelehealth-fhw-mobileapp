@@ -34,6 +34,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ajalt.timberkt.Timber;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
@@ -839,12 +840,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, boolean isRootNodeQuestion) {
         //holder.nextRelativeLayout.setVisibility(View.GONE);
         holder.isParallelMultiNestedNode = false;
-        holder.singleComponentContainer.removeAllViews();
+        boolean tag = false;
+        if (holder.singleComponentContainer.getTag() != null) {
+            tag = (boolean) holder.singleComponentContainer.getTag();
+        }
+        if (!tag) holder.singleComponentContainer.removeAllViews();
         Log.v(TAG, "showOptionsDataV2 selectedNode - " + new Gson().toJson(selectedNode));
         Log.v(TAG, "showOptionsDataV2 options - " + options.size());
         Log.v(TAG, "showOptionsDataV2 index - " + index);
         Log.v(TAG, "showOptionsDataV2 isSuperNested - " + isSuperNested);
-        if (!isSuperNested && options != null && options.size() == 1 && options.get(0).getInputType() != null && !options.get(0).getInputType().isEmpty() && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
+        if (!isSuperNested && options != null && options.size() == 1
+                && options.get(0).getInputType() != null
+                && !options.get(0).getInputType().isEmpty()
+                && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
             Log.v(TAG, "showOptionsDataV2 single option");
             /*if (isSuperNested)
                 holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
@@ -992,7 +1000,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (holder.nestedQuestionsListingAdapter != null) {
 
             }
-            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, mItemList.get(Math.max(holder.getAbsoluteAdapterPosition(), 0)).isRequired(), new OnItemSelection() {
+            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView,
+                    selectedNode, 0, index, mIsEditMode,
+                    mItemList.get(Math.max(holder.getAbsoluteAdapterPosition(), 0)).isRequired(), new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
@@ -1303,7 +1313,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             if (!mItemList.get(index).isMultiChoice() && !mItemList.get(index).isEnableExclusiveOption()) {
                                 holder.nestedRecyclerView.setAdapter(null); /** Note: Sr.No.29 - Fix: This code should not trigger in-case of phys exam take picture so use is-exclusive logic. */
                             }
-
+                            Timber.tag(TAG).d("singleComponentContainer::child=>%s", holder.singleComponentContainer.getChildCount());
                         } else {
                             holder.singleComponentContainer.removeAllViews();
                             //holder.superNestedContainerLinearLayout.removeAllViews();
@@ -1400,6 +1410,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             case "text":
                                 holder.submitButton.setVisibility(View.GONE);
                                 holder.skipButton.setVisibility(View.GONE);
+                                holder.singleComponentContainer.setTag(node.isSelected());
                                 // askText(questionNode, context, adapter);
                                 addTextEnterView(node, holder, index);
                                 break;
@@ -1446,6 +1457,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 addFrequencyView(node, holder, index);
                                 break;
                             case "camera":
+//                                if (!mItemList.get(index).isMultiChoice())
                                 holder.submitButton.setVisibility(View.GONE);
                                 holder.skipButton.setVisibility(View.GONE);
                                 // openCamera(context, imagePath, imageName);
@@ -2016,6 +2028,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.v("showCameraView", "QLA " + new Gson().toJson(node));
         Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(node.getImagePathList()));
         holder.otherContainerLinearLayout.removeAllViews();
+//        if (!parentNode.isMultiChoice())
         holder.submitButton.setVisibility(View.GONE);
         holder.skipButton.setVisibility(View.GONE);
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);

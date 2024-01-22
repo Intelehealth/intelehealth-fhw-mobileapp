@@ -726,218 +726,215 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 options.get(i).setNestedLeve(options.get(i).getNestedLeve() + 1);
             }
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options,
-                    new OptionsChipsGridAdapter.OnItemSelection() {
-                        @Override
-                        public void onSelect(Node node, boolean isLoadingForNestedEditData) {
-                            Log.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
-                            Log.d(TAG, "onSelect selectedNode: " + new Gson().toJson(selectedNode));
-                            if (!isLoadingForNestedEditData)
-                                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode);
-                            if (!isLoadingForNestedEditData) {
-                                mItemList.get(index).setSelected(false);
-                                mItemList.get(index).setDataCaptured(false);
+                    (node, isLoadingForNestedEditData) -> {
+                        Log.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
+                        Log.d(TAG, "onSelect selectedNode: " + new Gson().toJson(selectedNode));
+                        if (!isLoadingForNestedEditData)
+                            VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode);
+                        if (!isLoadingForNestedEditData) {
+                            mItemList.get(index).setSelected(false);
+                            mItemList.get(index).setDataCaptured(false);
+                        }
+                        for (int i = 0; i < options.size(); i++) {
+                            if (options.get(i).isSelected()) {
+                                mItemList.get(index).setSelected(true);
+                                //mItemList.get(index).setDataCaptured(true);
+                                break;
                             }
-                            for (int i = 0; i < options.size(); i++) {
-                                if (options.get(i).isSelected()) {
-                                    mItemList.get(index).setSelected(true);
-                                    //mItemList.get(index).setDataCaptured(true);
-                                    break;
-                                }
-                            }
-                            if (isLoadingForNestedEditData) {
-                                if (selectedNode.isDataCaptured()) {
-                                    AdapterUtils.setToDisable(holder.skipButton);
-                                    //AdapterUtils.setToDisable(holder.submitButton);
-                                } else {
-                                    AdapterUtils.setToDefault(holder.skipButton);
-                                    AdapterUtils.setToDefault(holder.submitButton);
-                                }
+                        }
+                        if (isLoadingForNestedEditData) {
+                            if (selectedNode.isDataCaptured()) {
+                                AdapterUtils.setToDisable(holder.skipButton);
+                                //AdapterUtils.setToDisable(holder.submitButton);
                             } else {
-                                AdapterUtils.setToDefault(holder.submitButton);
                                 AdapterUtils.setToDefault(holder.skipButton);
-
+                                AdapterUtils.setToDefault(holder.submitButton);
                             }
-                     /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
-                    holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
+                        } else {
+                            AdapterUtils.setToDefault(holder.submitButton);
+                            AdapterUtils.setToDefault(holder.skipButton);
 
-                            String type = node.getInputType();
+                        }
+                 /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
+                holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
 
-                            if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
-                                type = "options";
-                            }
-                            Log.v(TAG, "node - " + node.getText());
-                            Log.v(TAG, "node - " + node.findDisplay());
-                            Log.v(TAG, "Type - " + type);
-                            Log.v(TAG, "isLoadingForNestedEditData - " + isLoadingForNestedEditData);
+                        String type = node.getInputType();
+
+                        if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+                            type = "options";
+                        }
+                        Log.v(TAG, "node - " + node.getText());
+                        Log.v(TAG, "node - " + node.findDisplay());
+                        Log.v(TAG, "Type - " + type);
+                        Log.v(TAG, "isLoadingForNestedEditData - " + isLoadingForNestedEditData);
 
 
-                            boolean foundUserInputs = false;
-                            for (int i = 0; i < options.size(); i++) {
-                                if (options.get(i).isSelected()) {
-                                    foundUserInputs = options.get(i).isUserInputsTypeNode();
-                                    if (foundUserInputs)
-                                        break;
-                                }
-                            }
-                            Log.v(TAG, "foundUserInputs - " + foundUserInputs);
-                            if (!foundUserInputs) {
-                                holder.singleComponentContainer.removeAllViews();
-                            }
-
-                            boolean isRequiredToShowParentActionButtons = false;
-                            for (int i = 0; i < options.size(); i++) {
-
-                                if (options.get(i).isSelected()) {
-                                    mItemList.get(index).setSelected(true);
-                                    if (!options.get(i).isTerminal()) {
-
-                                        //mItemList.get(index).setDataCaptured(true);
-                                        //break;
-                                        if (!isRequiredToShowParentActionButtons)
-                                            isRequiredToShowParentActionButtons = !isAnySubChildOpenedWithAction(options.get(i));
-                                    }
-                                }
-                            }
-                            boolean isAnyOtherOptionSelected = false;
-                            for (int i = 0; i < options.size(); i++) {
-                                if (options.get(i).isSelected()) {
-                                    isAnyOtherOptionSelected = true;
+                        boolean foundUserInputs = false;
+                        for (int i = 0; i < options.size(); i++) {
+                            if (options.get(i).isSelected()) {
+                                foundUserInputs = options.get(i).isUserInputsTypeNode();
+                                if (foundUserInputs)
                                     break;
+                            }
+                        }
+                        Log.v(TAG, "foundUserInputs - " + foundUserInputs);
+                        if (!foundUserInputs) {
+                            holder.singleComponentContainer.removeAllViews();
+                        }
+
+                        boolean isRequiredToShowParentActionButtons = false;
+                        for (int i = 0; i < options.size(); i++) {
+
+                            if (options.get(i).isSelected()) {
+                                mItemList.get(index).setSelected(true);
+                                if (!options.get(i).isTerminal()) {
+
+                                    //mItemList.get(index).setDataCaptured(true);
+                                    //break;
+                                    if (!isRequiredToShowParentActionButtons)
+                                        isRequiredToShowParentActionButtons = !isAnySubChildOpenedWithAction(options.get(i));
                                 }
                             }
-
-                            if (mItemList.get(index).isMultiChoice()) {
-                                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                                if (!isAnyOtherOptionSelected || isRequiredToShowParentActionButtons) {
-                                    holder.submitButton.setVisibility(View.VISIBLE);
-                                    holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, mItemList.get(index).isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
-                                    holder.submitButton.setBackgroundResource(mItemList.get(index).isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-                                } else {
-                                    holder.submitButton.setVisibility(View.GONE);
-                                }
+                        }
+                        boolean isAnyOtherOptionSelected = false;
+                        for (int i = 0; i < options.size(); i++) {
+                            if (options.get(i).isSelected()) {
+                                isAnyOtherOptionSelected = true;
+                                break;
                             }
-                            if (!node.isSelected()) {
-                                node.unselectAllNestedNode();
+                        }
 
-                                // remove child nodes views on deselect of same option - start
-                                holder.singleComponentContainer.removeAllViews();
-                                if (mItemList.get(index).isMultiChoice()) {
-                                    holder.submitButton.setVisibility(View.VISIBLE);
-                                } else {
-                                    holder.submitButton.setVisibility(View.GONE);
-                                    mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
-                                    AdapterUtils.setToDisable(holder.skipButton);
-                                }
-
-                                if (mItemList.get(index).isRequired())
-                                    holder.skipButton.setVisibility(View.GONE);
-                                else
-                                    holder.skipButton.setVisibility(View.VISIBLE);
-
-                                checkAndHideSkipButton(holder.skipButton);
-                                // remove child nodes views on deselect of same option - end
-
-
-                                if (type.equalsIgnoreCase("camera"))
-                                    mItemList.get(index).removeImagesAllNestedNode();
-
-                                if (!mItemList.get(index).isMultiChoice()) {
-
-                            /*if (mItemList.size() > 1) {
-                                mItemList.remove(1);
-                                notifyItemRemoved(1);
+                        if (mItemList.get(index).isMultiChoice()) {
+                            holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                            if (!isAnyOtherOptionSelected || isRequiredToShowParentActionButtons) {
+                                holder.submitButton.setVisibility(View.VISIBLE);
+                                holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, mItemList.get(index).isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+                                holder.submitButton.setBackgroundResource(mItemList.get(index).isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
                             } else {
-                                notifyItemChanged(index);
-                            }*/
-                                    // start
-                                    for (int i = 0; i < mItemList.size(); i++) {
-                                        if (!mItemList.get(i).isSelected()) {
-                                            if (mItemList.get(i).getText().equalsIgnoreCase(node.getText())) { // Here, if same option is unselected ie. clicked - than the option is set to isSelected = false now it check to make sure to remove only this option, if check if text is equal and removes only that item and its nested options.
-                                                mItemList.remove(i);
-                                                notifyItemRemoved(i);
-                                            }
-                                        }
-                                    }
-                                    // end
+                                holder.submitButton.setVisibility(View.GONE);
+                            }
+                        }
+                        if (!node.isSelected()) {
+                            node.unselectAllNestedNode();
 
-                                } else {
+                            // remove child nodes views on deselect of same option - start
+                            holder.singleComponentContainer.removeAllViews();
+                            if (mItemList.get(index).isMultiChoice()) {
+                                holder.submitButton.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.submitButton.setVisibility(View.GONE);
+                                mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                                AdapterUtils.setToDisable(holder.skipButton);
+                            }
 
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (!isLoadingForNestedEditData) {
-                                                // found the correct node
-                                                boolean found = false;
-                                                for (int i = 0; i < mItemList.size(); i++) {
-                                                    Node n = mItemList.get(i);
-                                                    Log.v(TAG, node.getText() + "## n ## " + n.getText());
-                                                    if (node.getText().equalsIgnoreCase(n.getText())) {
-                                                        found = true;
-                                                        mItemList.remove(i);
-                                                        notifyItemRemoved(i);
-                                                        break;
-                                                    }
-                                                }
-                                                if (!found)
-                                                    notifyItemChanged(index);
-                                            }
-                                        }
-                                    }, 100);
-                                }
+                            if (mItemList.get(index).isRequired())
+                                holder.skipButton.setVisibility(View.GONE);
+                            else
+                                holder.skipButton.setVisibility(View.VISIBLE);
 
-                                return;
-                            } else if (!type.isEmpty() && node.isSelected()) {
-                                if (node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
-                                    for (int i = 0; i < options.size(); i++) {
-                                        if (!options.get(i).getText().equals(node.getText())) {
-                                            options.get(i).unselectAllNestedNode();
-                                        }
-                                    }
-                           /* if (mItemList.size() > 1) { // TODO: why removing this code from here????
-                                mItemList.remove(1);
-                                notifyItemRemoved(1);
-                            }*/
-                                    // start
-                                    for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
-                                        if (!mItemList.get(i).isSelected()) { // here, all those that are not selected nested - options those will be removed thus, keeping only the current selection options - nested options visible.
+                            checkAndHideSkipButton(holder.skipButton);
+                            // remove child nodes views on deselect of same option - end
+
+
+                            if (type.equalsIgnoreCase("camera"))
+                                mItemList.get(index).removeImagesAllNestedNode();
+
+                            if (!mItemList.get(index).isMultiChoice()) {
+
+                        /*if (mItemList.size() > 1) {
+                            mItemList.remove(1);
+                            notifyItemRemoved(1);
+                        } else {
+                            notifyItemChanged(index);
+                        }*/
+                                // start
+                                for (int i = 0; i < mItemList.size(); i++) {
+                                    if (!mItemList.get(i).isSelected()) {
+                                        if (mItemList.get(i).getText().equalsIgnoreCase(node.getText())) { // Here, if same option is unselected ie. clicked - than the option is set to isSelected = false now it check to make sure to remove only this option, if check if text is equal and removes only that item and its nested options.
                                             mItemList.remove(i);
                                             notifyItemRemoved(i);
                                         }
                                     }
-                                    // end
                                 }
-                                //holder.singleComponentContainer.removeAllViews();
-                                //holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                                // end
 
                             } else {
-                                holder.singleComponentContainer.removeAllViews();
-                                //holder.superNestedContainerLinearLayout.removeAllViews();
-                                if (mItemList.get(index).isMultiChoice()) {
-                                    //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                                    holder.submitButton.setVisibility(View.VISIBLE);
-                                } else {
-                                    //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
-                                    holder.submitButton.setVisibility(View.GONE);
-                                    mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
-                                    AdapterUtils.setToDisable(holder.skipButton);
-                                }
 
-                                if (mItemList.get(index).isRequired()) {
-                                    holder.skipButton.setVisibility(View.GONE);
-                                } else {
-                                    holder.skipButton.setVisibility(View.VISIBLE);
-                                }
-
-                                checkAndHideSkipButton(holder.skipButton);
-                                return;
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isLoadingForNestedEditData) {
+                                            // found the correct node
+                                            boolean found = false;
+                                            for (int i = 0; i < mItemList.size(); i++) {
+                                                Node n = mItemList.get(i);
+                                                Log.v(TAG, node.getText() + "## n ## " + n.getText());
+                                                if (node.getText().equalsIgnoreCase(n.getText())) {
+                                                    found = true;
+                                                    mItemList.remove(i);
+                                                    notifyItemRemoved(i);
+                                                    break;
+                                                }
+                                            }
+                                            if (!found)
+                                                notifyItemChanged(index);
+                                        }
+                                    }
+                                }, 100);
                             }
+
+                            return;
+                        } else if (!type.isEmpty() && node.isSelected()) {
+                            if (node.isExcludedFromMultiChoice() || !mItemList.get(index).isMultiChoice()) {
+                                for (int i = 0; i < options.size(); i++) {
+                                    if (!options.get(i).getText().equals(node.getText())) {
+                                        options.get(i).unselectAllNestedNode();
+                                    }
+                                }
+                       /* if (mItemList.size() > 1) { // TODO: why removing this code from here????
+                            mItemList.remove(1);
+                            notifyItemRemoved(1);
+                        }*/
+                                // start
+                                for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
+                                    if (!mItemList.get(i).isSelected()) { // here, all those that are not selected nested - options those will be removed thus, keeping only the current selection options - nested options visible.
+                                        mItemList.remove(i);
+                                        notifyItemRemoved(i);
+                                    }
+                                }
+                                // end
+                            }
+                            //holder.singleComponentContainer.removeAllViews();
+                            //holder.singleComponentContainer.setVisibility(View.VISIBLE);
+
+                        } else {
+                            holder.singleComponentContainer.removeAllViews();
+                            //holder.superNestedContainerLinearLayout.removeAllViews();
+                            if (mItemList.get(index).isMultiChoice()) {
+                                //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                                holder.submitButton.setVisibility(View.VISIBLE);
+                            } else {
+                                //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                                holder.submitButton.setVisibility(View.GONE);
+                                mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                                AdapterUtils.setToDisable(holder.skipButton);
+                            }
+
+                            if (mItemList.get(index).isRequired()) {
+                                holder.skipButton.setVisibility(View.GONE);
+                            } else {
+                                holder.skipButton.setVisibility(View.VISIBLE);
+                            }
+
                             checkAndHideSkipButton(holder.skipButton);
-                            if (type.equals("options")) {
-                                addItem(node);
-                                //showNestedItemsV2(node, holder, node.getOptionsList(), index, false, false);
-                            } else {
-                                routeByType(holder, selectedNode, node, index, true, true);
-                            }
+                            return;
+                        }
+                        checkAndHideSkipButton(holder.skipButton);
+                        if (type.equals("options")) {
+                            addItem(node);
+                            //showNestedItemsV2(node, holder, node.getOptionsList(), index, false, false);
+                        } else {
+                            routeByType(holder, selectedNode, node, index, true, true);
                         }
                     });
             holder.optionRecyclerView.setAdapter(optionsChipsGridAdapter);
@@ -1856,7 +1853,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void addDateView(GenericViewHolder genericViewHolder, Node parentNode, Node node, LinearLayout containerLayout, int index) {
-        containerLayout.removeAllViews();
+        boolean selected = false;
+        if (containerLayout.getTag() != null) selected = (boolean) containerLayout.getTag();
+        if (!selected) containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
@@ -1916,29 +1915,26 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             }
 
         }
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                // display the selected date by using a toast
-                int m = month + 1;
-                //String d = (dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth))
-                //       + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
+        calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+            // display the selected date by using a toast
+            int m = month + 1;
+            //String d = (dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth))
+            //       + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
 
 
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(0);
-                //cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
-                cal.set(year, month, dayOfMonth);
-                Date date = cal.getTime();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
-                SimpleDateFormat simpleDateFormatLocal = new SimpleDateFormat("dd/MMM/yyyy", new Locale(new SessionManager(mContext).getAppLanguage()));
-                String dateString = simpleDateFormat.format(date);
-                displayDateButton.setText(simpleDateFormatLocal.format(date));
-                displayDateButton.setTag(dateString);
-                VisitUtils.scrollNow(mRootRecyclerView, 400, 0, 400, mIsEditMode);
-                AdapterUtils.setToDefault(submitButton);
-                AdapterUtils.setToDefault(skipButton);
-            }
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(0);
+            //cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
+            cal.set(year, month, dayOfMonth);
+            Date date = cal.getTime();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+            SimpleDateFormat simpleDateFormatLocal = new SimpleDateFormat("dd/MMM/yyyy", new Locale(new SessionManager(mContext).getAppLanguage()));
+            String dateString = simpleDateFormat.format(date);
+            displayDateButton.setText(simpleDateFormatLocal.format(date));
+            displayDateButton.setTag(dateString);
+            VisitUtils.scrollNow(mRootRecyclerView, 400, 0, 400, mIsEditMode);
+            AdapterUtils.setToDefault(submitButton);
+            AdapterUtils.setToDefault(skipButton);
         });
         /*if (node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);
