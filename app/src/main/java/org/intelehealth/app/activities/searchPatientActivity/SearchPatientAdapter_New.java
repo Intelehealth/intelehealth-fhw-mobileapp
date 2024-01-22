@@ -106,15 +106,15 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 //  5. Checking visit uploaded or not and Prescription received/pending tag display. - start
                 if (model.getVisitDTO() != null) {
                     if (model.getVisitDTO().getSyncd() != null && model.getVisitDTO().getSyncd()) {
-                        holder.visitNotUploadCV.setVisibility(View.GONE);
+                        //holder.visitNotUploadCV.setVisibility(View.GONE);
                     } else {
-                        holder.visitNotUploadCV.setVisibility(View.VISIBLE);
+                        //holder.visitNotUploadCV.setVisibility(View.VISIBLE);
                         holder.presc_pendingCV.setVisibility(View.GONE);
                         holder.presc_receivingCV.setVisibility(View.GONE);
                     }
 
                     if (model.getVisitDTO().getEnddate() != null) {
-                        holder.visitNotUploadCV.setVisibility(View.GONE);
+                        //holder.visitNotUploadCV.setVisibility(View.GONE);
                     }
                 }
                 // checking visit uploaded or not - end

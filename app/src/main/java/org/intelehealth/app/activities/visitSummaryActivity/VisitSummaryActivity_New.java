@@ -5447,7 +5447,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
-                complainLabelTextView.setText(_complain);
+                complainLabelTextView.setText(getFormattedComplain(_complain));
                 Log.v("PH0_complain", _complain);
                 if (_complain.trim().equalsIgnoreCase(VisitUtils.getTranslatedGeneralExamString(sessionManager.getAppLanguage()))) {
                     complainLabelTextView.setVisibility(View.GONE);
@@ -5514,6 +5514,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         }
 
+    }
+
+    /**
+     * formatting complain here
+     * if any unexpected complain has came then format it here
+     * @param complain
+     * @return
+     */
+    private String getFormattedComplain(String complain) {
+        if(!complain.trim().equals(getString(R.string.general_exam_title).trim())){
+            return complain;
+        }
+        return "";
     }
 
     private void setDataForPatientMedicalHistorySummary(String summaryStringPastHistory) {
