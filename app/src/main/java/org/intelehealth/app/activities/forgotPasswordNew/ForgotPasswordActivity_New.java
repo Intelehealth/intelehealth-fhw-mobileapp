@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -265,6 +266,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                         etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                         tvMobileError.setText(getResources().getString(R.string.mobile_not_registered));
                         tvMobileError.setVisibility(View.VISIBLE);
+                    }else {
+                        Toast.makeText(ForgotPasswordActivity_New.this, forgotPasswordApiResponseModel_new.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 buttonContinue.setEnabled(true);
