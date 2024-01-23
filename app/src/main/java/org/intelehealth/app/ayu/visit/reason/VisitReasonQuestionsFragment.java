@@ -124,7 +124,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
             complainBasicInfo.setComplainName(mChiefComplainRootNodeList.get(i).getText());
             complainBasicInfo.setComplainNameByLocale(mChiefComplainRootNodeList.get(i).findDisplay());
             complainBasicInfo.setOptionSize(mChiefComplainRootNodeList.get(i).getOptionsList().size());
-            if (complainBasicInfo.getComplainName().equalsIgnoreCase("Associated symptoms")) {
+            if (complainBasicInfo.getComplainName().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
                 complainBasicInfo.setComplainNameByLocale(getString(R.string.associated_symptoms_header_visit_creation));
                 complainBasicInfo.setAssociateSymptom(true);
             }

@@ -906,10 +906,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
         }
 
-        if (mComplaint.contains("Associated symptoms")) {
+        if (mComplaint.contains(Node.ASSOCIATE_SYMPTOMS)) {
             String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+                mComplaint = mComplaint.substring(0, compla.indexOf(Node.ASSOCIATE_SYMPTOMS) - 3);
                 //   mComplaint = "Test Complaint";
             }
         } else {
@@ -2133,7 +2133,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             boolean isAssociateSymptomFound = false;
             if (mIsCCInOldFormat) {
                 mChiefComplainList.clear();
-                valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
+                valueArray = value.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
                 isAssociateSymptomFound = valueArray.length >= 2;
                 String[] headerchips = valueArray[0].split("►");
                 List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));

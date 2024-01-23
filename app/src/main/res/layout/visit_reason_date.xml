@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
+    <TextView
+        android:id="@+id/date_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/margin_8"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="1sp"
+        android:text="Question 1 ?"
+        android:textColor="@color/ui2_black_text_color"
+        android:textSize="@dimen/txtsize_patdetail_14sp"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/ui2_next_icon_soft_rd" />
+
     <CalendarView
         android:id="@+id/cav_date"
         style="@style/edittext_textcolor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/date_header"
         android:layout_marginTop="@dimen/hamburger_margin_start"
         android:background="@color/white"
         android:drawablePadding="@dimen/margin_8"

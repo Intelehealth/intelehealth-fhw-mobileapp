@@ -95,6 +95,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
@@ -666,7 +667,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         //based on appointment status
         if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.CANCELLED)) {
             btnAppointment.setText(getString(R.string.appointment));
-        }else if(new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.BOOKED)){
+        } else if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.BOOKED)) {
             btnAppointment.setText(getString(R.string.reschedule));
             doesAppointmentExist = true;
         }
@@ -4470,10 +4471,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         }
 
-        if (mComplaint.contains("Associated symptoms")) {
+        if (mComplaint.contains(Node.ASSOCIATE_SYMPTOMS)) {
             String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3); // todo: uncomment later.
+                mComplaint = mComplaint.substring(0, compla.indexOf(Node.ASSOCIATE_SYMPTOMS) - 3); // todo: uncomment later.
                 //   mComplaint = "Test Complaint";
             }
         } else {
@@ -5063,11 +5064,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
+            Timber.tag(TAG).d("Complain => %s", value);
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
                     JSONObject jsonObject = new JSONObject(value);
                     if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
                         value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+
                         mIsCCInOldFormat = false;
                     } else {
                         value = jsonObject.getString("en");
@@ -5087,7 +5090,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
                 findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
 
-                valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
+                valueArray = value.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
                 isAssociateSymptomFound = valueArray.length >= 2;
                 Log.v(TAG, "complaint: " + valueArray[0]);
                 Log.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));

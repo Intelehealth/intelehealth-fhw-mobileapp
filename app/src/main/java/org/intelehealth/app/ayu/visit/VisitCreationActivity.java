@@ -501,7 +501,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
             Node node = mChiefComplainRootNodeList.get(i);
             Log.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
-            boolean isAssociateSymptomsType = i == mChiefComplainRootNodeList.size() - 1;
+            boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
             String val = formatComplainRecord(node, isAssociateSymptomsType);
             Log.v(TAG, "val- " + val);
             String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
@@ -515,8 +515,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         insertionLocale = stringBuilder.toString();
 
 
-        if (insertion.contains("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>")) {
-            insertion = insertion.replace("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>", "<br/>►<b> Associated symptoms</b>:  <br/>");
+        if (insertion.contains("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>")) {
+            insertion = insertion.replace("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>", "<br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
         }
         JSONObject jsonObject = new JSONObject();
         try {
@@ -623,7 +623,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             Node associateSymptoms = null;
             Log.v(TAG, "optionList  mainNode- " + mainNode.getText());
             for (int j = 0; j < mainNode.getOptionsList().size(); j++) {
-                if (mainNode.getOptionsList().get(j).getText().equalsIgnoreCase("Associated symptoms")) {
+                if (mainNode.getOptionsList().get(j).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
                     if (mCommonAssociateSymptoms == null)
                         mCommonAssociateSymptoms = mainNode.getOptionsList().get(j);
                     else {
@@ -1114,7 +1114,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private String generateFamilyHistoryAns(boolean isLocale) {
         String familyHistory = "";
         ArrayList<String> familyInsertionList = new ArrayList<>();
-        if(!mFamilyHistoryNode.getOptionsList().get(0).isNestedMandatoryOptionsAnswered()){
+        if (!mFamilyHistoryNode.getOptionsList().get(0).isNestedMandatoryOptionsAnswered()) {
             return null;
         }
         if (mFamilyHistoryNode.anySubSelected()) {
