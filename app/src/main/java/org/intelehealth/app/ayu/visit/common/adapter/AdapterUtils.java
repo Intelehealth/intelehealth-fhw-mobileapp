@@ -47,7 +47,6 @@ public class AdapterUtils {
     }
 
     /**
-     *
      * @param context
      * @param button
      * @param onFinishActionListener

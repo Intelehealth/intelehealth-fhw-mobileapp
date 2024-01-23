@@ -454,58 +454,63 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Slider rangeSlider = view.findViewById(R.id.number_slider);
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
         TextView rangeTextView = view.findViewById(R.id.btn_values);
-        TextView submitTextView = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btn_submit);
 
         Button skipButton = view.findViewById(R.id.btn_skip);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        if (node.isSkipped()) {
+            skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
+            skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+            AdapterUtils.setToDisable(submitButton);
+        }
+
+        if (node.isDataCaptured()) AdapterUtils.setToDisable(skipButton);
        /* if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                node.setSelected(false);
-                parentNode.setSelected(false);
-                parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
-                notifyItemChanged(index);
-            }
+
+        skipButton.setOnClickListener(view12 -> {
+            node.setSelected(false);
+            node.setDataCaptured(false);
+            parentNode.setSelected(false);
+            parentNode.setDataCaptured(false);
+            mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+            notifyItemChanged(index);
         });
 
-
-        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%") && TextUtils.isDigitsOnly(node.getLanguage())) {
-            int i = Integer.parseInt(node.getLanguage());
-            rangeTextView.setText(mContext.getString(R.string.level) + " " + i);
+        Timber.tag(TAG).d("Slider Value =>%s", node.getLanguage());
+        if (node.getLanguage() != null && !node.getLanguage().isEmpty()
+                && !node.getLanguage().equalsIgnoreCase("%")
+                && TextUtils.isDigitsOnly(node.getLanguage().trim())) {
+            Timber.tag(TAG).d("Slider Value if =>%s", node.getLanguage());
+            int i = Integer.parseInt(node.getLanguage().trim());
+            rangeTextView.setText(mContext.getString(R.string.level, i));
             rangeSlider.setValue(i);
-        }
-        submitTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
-                    Toast.makeText(mContext, mContext.getString(R.string.drag_to_select), Toast.LENGTH_SHORT).show();
+            updateCustomEmojiSliderUI(view, i);
+        } else updateCustomEmojiSliderUI(view, 0);
+
+        submitButton.setOnClickListener(view1 -> {
+            if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
+                Toast.makeText(mContext, mContext.getString(R.string.drag_to_select), Toast.LENGTH_SHORT).show();
+            } else {
+                int x = (int) rangeSlider.getValue();
+                String durationString = String.valueOf(x);
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
-                    int x = (int) rangeSlider.getValue();
-                    String durationString = String.valueOf(x);
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", durationString));
-                    } else {
-                        node.addLanguage(" " + durationString);
-                        node.setText(durationString);
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                    }
-                    node.setSelected(true);
-                    parentNode.setSelected(true);
-                    parentNode.setDataCaptured(true);
-                    notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
+                node.setSelected(true);
+                node.setDataCaptured(true);
+                parentNode.setSelected(true);
+                parentNode.setDataCaptured(true);
+                notifyItemChanged(index);
+                mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
             }
         });
-        rangeSlider.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return String.valueOf((int) value);
-            }
-        });
+        rangeSlider.setLabelFormatter(value -> String.valueOf((int) value));
         rangeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @SuppressLint("RestrictedApi")
             @Override
@@ -517,12 +522,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int x = (int) rangeSlider.getValue();
-                rangeTextView.setText(mContext.getString(R.string.level) + " " + x);
+                rangeTextView.setText(mContext.getString(R.string.level, x));
                 updateCustomEmojiSliderUI(view, x);
             }
         });
 
-        updateCustomEmojiSliderUI(view, 0);
         containerLayout.addView(view);
     }
 

@@ -1667,7 +1667,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="questions">questions</string>
     <string name="visit_reason">2/4 Visit reason</string>
     <string name="please_select_range">Please select the range!</string>
-    <string name="level">Level</string>
+    <string name="level">Level %1$d</string>
     <string name="drag_to_select">Please drag to select!</string>
     <string name="select_yes_or_no">Select yes or no</string>
     <string name="select_duration_number">Please select the duration number</string>

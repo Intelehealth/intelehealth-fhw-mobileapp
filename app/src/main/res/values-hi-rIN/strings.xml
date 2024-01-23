@@ -1279,7 +1279,7 @@
     <string name="questions">प्रश्न</string>
     <string name="visit_reason">2/4 विज़िट कारण</string>
     <string name="please_select_range">कृपया सीमा चुनें!</string>
-    <string name="level">लेवल</string>
+    <string name="level">लेवल %1$d</string>
     <string name="drag_to_select">सेलेक्ट करने के लिए कृपया ड्रैग करें!</string>
     <string name="select_yes_or_no">हां या ना चुनें</string>
     <string name="select_duration_number">कृपया अवधि संख्या चुनें</string>

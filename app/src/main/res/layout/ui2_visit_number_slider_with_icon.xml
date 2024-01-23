@@ -265,7 +265,8 @@
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/edittext_border_blue"
         android:gravity="center"
-        android:minWidth="80dip"
+        android:minWidth="80dp"
+        android:minHeight="@dimen/icon_36dp"
         android:padding="@dimen/padding_10"
         android:text="---"
         android:textAllCaps="false"
@@ -274,7 +275,7 @@
         android:textStyle="bold"
         tools:ignore="TextContrastCheck" />
 
-    <TextView
+    <Button
         android:id="@+id/btn_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -283,14 +284,15 @@
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/ui2_common_button_bg_submit"
         android:gravity="center"
-        android:minWidth="80dip"
-        android:padding="@dimen/padding_10"
+        android:minWidth="80dp"
+        android:minHeight="@dimen/icon_36dp"
         android:text="@string/submit"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/card_content_normal_text_size"
         android:textStyle="bold"
         tools:ignore="TextContrastCheck" />
+
     <Button
         android:id="@+id/btn_skip"
         android:layout_width="wrap_content"
@@ -300,9 +302,10 @@
         android:layout_marginEnd="@dimen/margin_24"
         android:layout_toStartOf="@+id/btn_submit"
         android:background="@drawable/ui2_common_button_bg_submit"
-        android:minWidth="100dip"
-        android:paddingHorizontal="@dimen/padding_7"
-        android:paddingVertical="@dimen/padding_7"
+        android:minWidth="80dp"
+        android:minHeight="@dimen/icon_36dp"
+        android:padding="0dp"
+        android:paddingHorizontal="@dimen/std_8dp"
         android:text="@string/skip_new"
         android:textAllCaps="false"
         android:textColor="@color/white"
