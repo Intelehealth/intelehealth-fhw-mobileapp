@@ -313,7 +313,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                     if (!chief_complaint_value.isEmpty()) {
                         chief_complaint_value = chief_complaint_value.replaceAll(Node.bullet_arrow, "");
                         chief_complaint_value = chief_complaint_value.replaceAll("<br/>", ", ");
-                        chief_complaint_value = chief_complaint_value.replaceAll("Associated symptoms", "");
+                        chief_complaint_value = chief_complaint_value.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
                         //visitValue = visitValue.substring(0, visitValue.length() - 2);
                         chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
                         chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");

@@ -36,6 +36,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
@@ -1572,6 +1573,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         final EditText editText = view.findViewById(R.id.actv_reasons);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
         Button skipButton = view.findViewById(R.id.btn_skip);
+        Timber.tag(TAG).d("Input =>%s", node.getLanguage());
         if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
@@ -1581,6 +1583,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
                 editText.setText(node.getLanguage().split(" : ")[1]);
+            else editText.setText(node.getLanguage());
         }
         String oldValue = editText.getText().toString().trim();
         editText.addTextChangedListener(new TextWatcher() {
@@ -1717,6 +1720,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
         }
+        Timber.tag(TAG).d("Input =>%s", node.getLanguage());
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
                 editText.setText(node.getLanguage().split(" : ")[1]);

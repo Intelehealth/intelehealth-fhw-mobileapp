@@ -342,7 +342,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
         mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainNameByLocale());
 
-        if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
+        if (genericViewHolder.node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
             //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
             showAssociateSymptoms(genericViewHolder.node, genericViewHolder, position);
             genericViewHolder.tvQuestionCounter.setText("");
@@ -877,8 +877,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     addTextEnterView(options.get(0), holder, index);
                     break;
                 case "date":
+                    node.setShowCalendarHeader(true);
                     //askDate(questionNode, context, adapter);
-                    addDateView(options.get(0), holder, index);
+                    addDateView(node, holder, index);
                     break;
                 case "location":
                     //askLocation(questionNode, context, adapter);
@@ -2505,6 +2506,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
+        Timber.tag(TAG).d("Input =>%s", node.getLanguage());
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             editText.setText(node.getLanguage());
         }
@@ -2636,6 +2638,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
+        final TextView calendarHeader = view.findViewById(R.id.date_header);
+        calendarHeader.setVisibility(node.isShowCalendarHeader() ? View.VISIBLE : View.GONE);
+        calendarHeader.setText(node.getText());
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         Button skipButton = view.findViewById(R.id.btn_skip);

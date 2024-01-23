@@ -642,7 +642,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     if (!visitValue.isEmpty()) {
                                         visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
                                         visitValue = visitValue.replaceAll("<br/>", ", ");
-                                        visitValue = visitValue.replaceAll("Associated symptoms", "");
+                                        visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
                                         //visitValue = visitValue.substring(0, visitValue.length() - 2);
                                         visitValue = visitValue.replaceAll("<b>", "");
                                         visitValue = visitValue.replaceAll("</b>", "");
@@ -1808,7 +1808,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                         if (!visitValue.isEmpty()) {
                                             visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
                                             visitValue = visitValue.replaceAll("<br/>", ", ");
-                                            visitValue = visitValue.replaceAll("Associated symptoms", "");
+                                            visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
                                             //visitValue = visitValue.substring(0, visitValue.length() - 2);
                                             visitValue = visitValue.replaceAll("<b>", "");
                                             visitValue = visitValue.replaceAll("</b>", "");

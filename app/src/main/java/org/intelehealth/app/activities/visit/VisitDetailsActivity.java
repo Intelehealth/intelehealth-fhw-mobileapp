@@ -432,7 +432,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                     if (!chief_complaint_value.isEmpty()) {
                         chief_complaint_value = chief_complaint_value.replaceAll(Node.bullet_arrow, "");
                         chief_complaint_value = chief_complaint_value.replaceAll("<br/>", ", ");
-                        chief_complaint_value = chief_complaint_value.replaceAll("Associated symptoms", "");
+                        chief_complaint_value = chief_complaint_value.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
                         //visitValue = visitValue.substring(0, visitValue.length() - 2);
                         chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
                         chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");
@@ -727,7 +727,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                                         if (!visitValue.isEmpty()) {
                                             visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
                                             visitValue = visitValue.replaceAll("<br/>", "");
-                                            visitValue = visitValue.replaceAll("Associated symptoms", "");
+                                            visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
                                             //visitValue = visitValue.substring(0, visitValue.length() - 2);
                                             visitValue = visitValue.replaceAll("<b>", "");
                                             visitValue = visitValue.replaceAll("</b>", "");
