@@ -647,8 +647,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                         visitValue = visitValue.replaceAll("<b>", "");
                                         visitValue = visitValue.replaceAll("</b>", "");
                                         visitValue = visitValue.trim();
-                                        while (visitValue.endsWith(",")){
-                                            visitValue = visitValue.substring(0, visitValue.length()-1).trim();
+                                        while (visitValue.endsWith(",")) {
+                                            visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
                                         }
                                     }
                                 }
@@ -674,7 +674,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
                                     if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
                                         System.out.println(complainName);
-                                        if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+                                        if (!stringBuilder.toString().isEmpty())
+                                            stringBuilder.append(", ");
                                         stringBuilder.append(complainName);
                                     }
 
@@ -1163,7 +1164,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         // setting education status
-        if(patientDTO.getEducation()!=null) {
+        if (patientDTO.getEducation() != null) {
             if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 patienteducation.setText("नहीं दिया गया");
@@ -1238,7 +1239,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         // setting economic status
-        if(patientDTO.getEconomic()!=null) {
+        if (patientDTO.getEconomic() != null) {
             if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 patienteconomicstatus.setText("नहीं दिया गया");
@@ -1314,7 +1315,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         // setting caste value
-        if(patientDTO.getCaste()!=null) {
+        if (patientDTO.getCaste() != null) {
             if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 patientcaste.setText("नहीं दिया गया");
@@ -1412,16 +1413,20 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private String getStateTranslated(String state, String language) {
-        StateDistMaster mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json").toString(), StateDistMaster.class);
         String desiredVal = state;
-        for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
-            String sName = mStateDistMaster.getStateDataList().get(i).getState();
-            if (sName.equalsIgnoreCase(state)) {
-                if (language.equalsIgnoreCase("hi"))
-                    desiredVal = mStateDistMaster.getStateDataList().get(i).getStateHindi();
-                else if (language.equalsIgnoreCase("en"))
-                    desiredVal = mStateDistMaster.getStateDataList().get(i).getState();
-                break;
+        JSONObject jsonObject = FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json");
+        if (jsonObject != null) {
+            StateDistMaster mStateDistMaster = new Gson().fromJson(jsonObject.toString(), StateDistMaster.
+                    class);
+            for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
+                String sName = mStateDistMaster.getStateDataList().get(i).getState();
+                if (sName.equalsIgnoreCase(state)) {
+                    if (language.equalsIgnoreCase("hi"))
+                        desiredVal = mStateDistMaster.getStateDataList().get(i).getStateHindi();
+                    else if (language.equalsIgnoreCase("en"))
+                        desiredVal = mStateDistMaster.getStateDataList().get(i).getState();
+                    break;
+                }
             }
         }
 
@@ -1594,7 +1599,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         positive_btn.setOnClickListener(v -> {
-          //  checkVisitOrStartNewVisit();  // commented as this isnt being in use.
+            //  checkVisitOrStartNewVisit();  // commented as this isnt being in use.
         });
 
         alertDialog.show();
@@ -1813,8 +1818,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                             visitValue = visitValue.replaceAll("<b>", "");
                                             visitValue = visitValue.replaceAll("</b>", "");
                                             visitValue = visitValue.trim();
-                                            while (visitValue.endsWith(",")){
-                                                visitValue = visitValue.substring(0, visitValue.length()-1).trim();
+                                            while (visitValue.endsWith(",")) {
+                                                visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
                                             }
                                         }
                                     }
@@ -1840,7 +1845,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                         //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
                                         if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
                                             System.out.println(complainName);
-                                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+                                            if (!stringBuilder.toString().isEmpty())
+                                                stringBuilder.append(", ");
                                             stringBuilder.append(complainName);
                                         }
 

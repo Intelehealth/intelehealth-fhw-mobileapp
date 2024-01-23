@@ -52,6 +52,7 @@ import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
+import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
@@ -2611,6 +2612,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
 
         editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
         editText.setMinLines(5);
         editText.setLines(5);
         editText.setHorizontallyScrolling(false);

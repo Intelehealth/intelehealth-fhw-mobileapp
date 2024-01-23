@@ -56,8 +56,10 @@ public class NodeAdapterUtils {
     public static String getTheChiefComplainNameWRTLocale(Context context, String chiefComplainName) {
         String fileLocation = "engines/" + chiefComplainName + ".json";
         JSONObject currentFile = FileUtils.encodeJSON(context, fileLocation);
-        Node mainNode = new Node(currentFile);
-        return mainNode.findDisplay();
+        if (currentFile != null) {
+            Node mainNode = new Node(currentFile);
+            return mainNode.findDisplay();
+        } else return context.getString(R.string.no_data_found);
     }
 
 
