@@ -123,6 +123,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 String visitDate = model.getVisit_startdate();
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     visitDate = StringUtils.en_hi_dob_three(visitDate);
+                holder.search_date_relative.setVisibility(View.VISIBLE);
                 holder.search_date_relative.setText(visitDate);
             } else {
                 holder.presc_pendingCV.setVisibility(View.GONE);
