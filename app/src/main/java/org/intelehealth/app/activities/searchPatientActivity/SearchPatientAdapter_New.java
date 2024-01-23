@@ -129,7 +129,8 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 holder.presc_receivingCV.setVisibility(View.GONE);
 
                 holder.fu_item_calendar.setVisibility(View.GONE);
-                holder.search_date_relative.setText(R.string.no_visit_created);
+                //holder.search_date_relative.setText(R.string.no_visit_created);
+                holder.search_date_relative.setVisibility(View.GONE);
             }
 
             //  6. Patient Profile Pic
