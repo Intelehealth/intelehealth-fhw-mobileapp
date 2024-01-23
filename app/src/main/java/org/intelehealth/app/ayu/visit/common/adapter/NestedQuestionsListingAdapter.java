@@ -740,7 +740,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             for (int i = 0; i < options.size(); i++) {
                                 if (options.get(i).isSelected()) {
                                     mItemList.get(index).setSelected(true);
-                                    //mItemList.get(index).setDataCaptured(true);
+                                    if(mItemList.get(index).getOptionsList().get(i).isTerminal()) {
+                                        mItemList.get(index).getOptionsList().get(i).setDataCaptured(true);
+                                    }
                                     break;
                                 }
                             }
@@ -2096,6 +2098,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         AdapterUtils.setToDisable(skipButton);
                         mItemList.get(index).setSelected(true);
                         mItemList.get(index).setDataCaptured(true);
+                        Log.v(TAG, new Gson().toJson(mItemList.get(index)));
                         AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                             @Override
                             public void onFinish() {

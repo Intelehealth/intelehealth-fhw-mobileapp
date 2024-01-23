@@ -3317,8 +3317,9 @@ public class Node implements Serializable {
 
     public boolean isNestedMandatoryOptionsAnswered() {
         Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered - " + findDisplay());
+        Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered isDataCaptured- " + isDataCaptured());
         boolean allAnswered = isSelected();
-        if(isMultiChoice() && !isDataCaptured()){
+        if (isMultiChoice() && !isDataCaptured()) {
             allAnswered = false;
         }
         /*if(node.isSelected() && node.isRequired() && node.optionsList.size()==1){
@@ -3340,8 +3341,8 @@ public class Node implements Serializable {
                                 allAnswered = false;
                                 break;
                             }
-                        }else {
-                            if(innerNode.isUserInputsTypeNode() && !innerNode.isDataCaptured){
+                        } else {
+                            if (innerNode.isUserInputsTypeNode() && !innerNode.isDataCaptured) {
                                 allAnswered = false;
                                 break;
                             }
@@ -3349,8 +3350,8 @@ public class Node implements Serializable {
                     }
                 }
             }
-            if (isSelected() && countSelected == 0) {
-                allAnswered = false;
+            if (isSelected()) {
+                allAnswered = countSelected != 0;
             }
 
         }
