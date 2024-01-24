@@ -1,6 +1,7 @@
 package org.intelehealth.ekalarogya.database.dao;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.builder.QueryBuilder;
 import org.intelehealth.ekalarogya.models.FamilyMemberRes;
 import org.intelehealth.ekalarogya.services.MyIntentService;
@@ -284,20 +286,22 @@ public class PatientsDAO {
     public List<FamilyMemberRes> getPatientName(String patientuuid) throws DAOException {
 
         List<FamilyMemberRes> listPatientNames = new ArrayList<>();
-
+        FamilyMemberRes familyMemberRes = new FamilyMemberRes();
+        Context context = IntelehealthApplication.getAppContext();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
-                    FamilyMemberRes familyMemberRes = new FamilyMemberRes();
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                     familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     listPatientNames.add(familyMemberRes);
 //                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
                 }
-            }
+            } else familyMemberRes.setName(
+                    context.getString(org.intelehealth.klivekit.R.string.call_unknown)
+            );
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException s) {
@@ -306,6 +310,7 @@ public class PatientsDAO {
         } finally {
             db.endTransaction();
         }
+        listPatientNames.add(familyMemberRes);
         return listPatientNames;
     }
 

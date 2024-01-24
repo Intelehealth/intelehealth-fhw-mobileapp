@@ -5,6 +5,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.client.Socket.EVENT_CONNECT
@@ -175,11 +176,15 @@ open class SocketManager @Inject constructor() {
     }
 
     private fun saveActiveUsers(json: JSONObject) {
-        val activeUser = Gson().fromJson(json.toString(), ActiveUser::class.java)
-        activeUser?.let {
-            activeUser.uuid?.let { it1 ->
-                activeUsers.put(it1, activeUser)
-            };
+        try {
+            val activeUser = Gson().fromJson(json.toString(), ActiveUser::class.java)
+            activeUser?.let {
+                activeUser.uuid?.let { it1 ->
+                    activeUsers.put(it1, activeUser)
+                };
+            }
+        } catch (ex: JsonSyntaxException) {
+            Timber.e { ex.toString() }
         }
     }
 
