@@ -515,7 +515,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
-
+                submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
             }
 
             @SuppressLint("RestrictedApi")

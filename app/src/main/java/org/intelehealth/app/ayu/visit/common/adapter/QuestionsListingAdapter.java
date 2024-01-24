@@ -289,7 +289,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         genericViewHolder.submitButton.setBackgroundResource(genericViewHolder.node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         if (genericViewHolder.node.findPopup() != null && !genericViewHolder.node.findPopup().isEmpty()) {
             genericViewHolder.knowMoreTextView.setVisibility(View.VISIBLE);
-
         } else {
             genericViewHolder.knowMoreTextView.setVisibility(View.GONE);
         }
@@ -509,7 +508,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull RangeSlider slider) {
-
+                submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
             }
 
             @SuppressLint("RestrictedApi")
@@ -845,7 +845,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder.singleComponentContainer.getTag() != null) {
             tag = (boolean) holder.singleComponentContainer.getTag();
         }
+        Timber.tag(TAG).d("TAG =>%s", tag);
+        Timber.tag(TAG).d("Single size=>%s", holder.singleComponentContainer.getChildCount());
         if (!tag) holder.singleComponentContainer.removeAllViews();
+
         Log.v(TAG, "showOptionsDataV2 selectedNode - " + new Gson().toJson(selectedNode));
         Log.v(TAG, "showOptionsDataV2 options - " + options.size());
         Log.v(TAG, "showOptionsDataV2 index - " + index);
@@ -875,6 +878,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             switch (type) {
                 case "text":
                     // askText(questionNode, context, adapter);
+                    holder.singleComponentContainer.setTag(selectedNode.isSelected());
                     addTextEnterView(options.get(0), holder, index);
                     break;
                 case "date":
@@ -1209,6 +1213,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             AdapterUtils.setToDefault(holder.submitButton);
                             AdapterUtils.setToDefault(holder.skipButton);
                         }
+
+                        if (node.getInputType().equalsIgnoreCase("text"))
+                            holder.singleComponentContainer.setTag(node.isSelected());
                         //holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, selectedNode.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
                         //holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
 
@@ -1284,7 +1291,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                             holder.skipButton.setVisibility(View.GONE);
                                         } else {
                                             holder.skipButton.setVisibility(View.VISIBLE);
+                                        }
 
+                                        for (int i = 0; i < mItemList.get(index).getOptionsList().size(); i++) {
+                                            Node child = mItemList.get(index).getOptionsList().get(i);
+                                            if (child.getInputType().equalsIgnoreCase("camera") && child.isSelected()) {
+                                                holder.submitButton.setVisibility(View.GONE);
+                                                break;
+                                            }
                                         }
                                     }
                                 } else {
@@ -1874,9 +1888,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             for (int i = 0; i < options.size(); i++) {
                                 if (options.get(i).isSelected()) {
                                     isAnyOtherOptionSelected = true;
+                                    Timber.tag(TAG).d("Option[%1s]=>%2s", i, options.get(i).getText());
                                     break;
                                 }
                             }
+
+                            Timber.tag(TAG).d("isAnyOtherOptionSelected => %s", isAnyOtherOptionSelected);
 
                             if (isLoadingForNestedEditData) {
                                 if (selectedNode.isDataCaptured()) {
@@ -2500,6 +2517,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
 
         Log.v(TAG, "addTextEnterView");
+//        boolean tag = false;
+//        if (holder.singleComponentContainer.getTag() != null) {
+//            tag = (boolean) holder.singleComponentContainer.getTag();
+//        }
+//        Timber.tag(TAG).d("TAG =>%s", tag);
+//        Timber.tag(TAG).d("Single size=>%s", holder.singleComponentContainer.getChildCount());
+//        if (!tag)
         holder.singleComponentContainer.removeAllViews();
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
@@ -2641,8 +2665,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
         final TextView calendarHeader = view.findViewById(R.id.date_header);
-        calendarHeader.setVisibility(node.isShowCalendarHeader() ? View.VISIBLE : View.GONE);
-        calendarHeader.setText(node.getText());
+//        calendarHeader.setVisibility(node.isShowCalendarHeader() ? View.VISIBLE : View.GONE);
+//        calendarHeader.setText(node.getText());
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         Button skipButton = view.findViewById(R.id.btn_skip);

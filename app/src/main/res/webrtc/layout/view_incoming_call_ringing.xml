@@ -10,10 +10,14 @@
 
         <TextView
             android:id="@+id/caller_name_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/std_16dp"
             android:layout_marginTop="@dimen/action_btn_min_width"
+            android:layout_marginEnd="@dimen/std_16dp"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/std_16dp"
             android:text="Doctor"
             android:textColor="@color/gray_5"
             android:textSize="28sp"
