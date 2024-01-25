@@ -52,6 +52,7 @@
     <string name="error_invalid_password">हा संकेतशब्द खूप छोटा आहे</string>
     <string name="error_incorrect_password">कृपया प्रविष्ट केलेले वापरकर्तानाव आणि संकेतशब्द तपासा</string>
     <string name="error_field_required">हे क्षेत्र आवश्यक आहे</string>
+    <string name="error_field_required_non_adult" translatable="false">18 वर्षांपेक्षा कमी वयाच्या लोकांसाठी ही खोली आवश्यक आहे</string>
     <string name="error_network">नेटवर्क त्रुटि</string>
     <string name="error_location_not_selected">कृपया स्थान ड्रॉपडाउन मूल्य फॉर्म निवडा</string>
     <string name="error_location_not_fetched">स्थाने आणण्यात अक्षम</string>

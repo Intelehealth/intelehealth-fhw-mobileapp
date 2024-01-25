@@ -39,6 +39,7 @@
     <string name="enter_license_key">"ଲାଇସେନ୍ସ ନମ୍ବର ନେବା "</string>
     <string name="error_downloading_protocols">ଭୂଲ ମାଇଣ୍ଡ ମ୍ଯାପ୍ ଡ଼ାଉନ ଲୋର୍ଡ଼ କରିବା</string>
     <string name="error_field_required">ଏହି କ୍ଷେତ୍ର ଅାବଶ୍ଯକ ଅଟେ (ଏହି କ୍ଷେତ୍ରର ଅାବଶ୍ଯତା ଅଛି)</string>
+    <string name="error_field_required_non_adult" translatable="false">ରୁମ କେବଳ 18 ବର୍ଷରୁ କମ୍ ଲୋକଙ୍କ ପାଇଁ ଆବଶ୍ୟକ |</string>
     <string name="error_incorrect_password">ଏହି ପାସଓ୍ୱାର୍ଡ଼ଟି ଭୁଲ ଅଟେ</string>
     <string name="error_invalid_password">"ଏହି ପାସଓ୍ୱାର୍ଡ଼ଟି ବହୁତ ଛୋଟ ଅଟେ "</string>
     <string name="error_invalid_email">"ଏହି ବ୍ଯବହାରକାରୀର ନାମ ଅମାନ୍ଯ ଅଟେ "</string>

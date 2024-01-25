@@ -30,6 +30,7 @@
     <string name="error_invalid_password" translatable="false">এই পাসওয়ার্ডটি খুব ছোটো</string>
     <string name="error_incorrect_password" translatable="false">দয়াকরে ব্যবহারকারীর নাম এবং পাসওয়ার্ড চেক করুন</string>
     <string name="error_field_required" translatable="false">ঘরটি অবশ্যই পূরণ করতে হবে</string>
+    <string name="error_field_required_non_adult" translatable="false">এই ঘরটি ১৮ বছরের কম বয়সীদের জন্য প্রয়োজন</string>
     <string name="error_network" translatable="false">নেটওয়ার্ক ত্রুটি</string>
     <string name="error_location_not_selected" translatable="false">অবস্থান ও ড্রপডাউন নির্বাচন করুন</string>
     <string name="error_location_not_fetched" translatable="false">অবস্থানগুলি আনতে অক্ষম</string>

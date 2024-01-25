@@ -14,6 +14,7 @@
     <string name="error_invalid_password" translatable="false">ఈ పాస్‌వర్డ్ చాలా చిన్నది</string>
     <string name="error_incorrect_password" translatable="false">దయచేసి వినియోగదారు పేరు మరియు పాస్‌వర్డ్ నమోదుచేసినది తనిఖీ చేయండి</string>
     <string name="error_field_required" translatable="false">ఈ ఖాళీని తప్పనిసరిగా పూరించవలెను</string>
+    <string name="error_field_required_non_adult" translatable="false">18 ఏళ్లలోపు వారికి మాత్రమే గది అవసరం</string>
     <string name="error_network" translatable="false">నెట్వర్క్ లోపం</string>
     <string name="error_location_not_selected" translatable="false">దయచేసి ఈ క్రింది స్థానాలలో విలువను ఎంచుకోండి</string>
     <string name="error_location_not_fetched" translatable="false">స్థానాలను పొందడం సాధ్యం కాలేదు</string>

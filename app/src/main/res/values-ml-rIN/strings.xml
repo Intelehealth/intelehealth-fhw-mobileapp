@@ -29,7 +29,8 @@
     <string name="error_invalid_email" translatable="false">യൂസർ നെയിം സാധുവല്ല</string>
     <string name="error_invalid_password" translatable="false">ഈ പാസ്സ്‌വേർഡ് വളരെ ചെറുതാണ്</string>
     <string name="error_incorrect_password" translatable="false">ഈ പാസ്സ്‌വേർഡ് വളരെ ചെറുതാണ്</string>
-    <string name="error_field_required" translatable="false">ഈ ഫീൽഡ് ആവശ്യമാണ്</string>
+    <string name="error_field_required" translatable="false">18 വയസ്സിന് താഴെയുള്ളവർക്ക് ഈ മുറി ആവശ്യമാണ്</string>
+    <string name="error_field_required_non_adult" translatable="false">ഈ ഫീൽഡ് ആവശ്യമാണ്</string>
     <string name="error_network" translatable="false">" നെറ്റ്‌വർക്ക് പിശക്"</string>
     <string name="error_location_not_selected" translatable="false">" ലൊക്കേഷൻ ഡ്രോപ്ഡൗണില്‍നിന്ന് ഒരു സംഖ്യ തെരഞ്ഞെടുക്കുക"</string>
     <string name="error_location_not_fetched" translatable="false">" ലൊക്കേഷൻ കണ്ടുപിടിക്കാൻ സാധിക്കുന്നില്ല"</string>
