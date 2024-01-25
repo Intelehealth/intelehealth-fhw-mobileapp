@@ -1014,7 +1014,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
                     if (!node.isSelected()) return;
                     holder.isParallelMultiNestedNode = false;
-                    if (selectedNode!=null) {
+                    if (selectedNode != null) {
                         holder.isParallelMultiNestedNode = selectedNode.isHavingMoreNestedQuestion();
                         //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
                         //holder.nextRelativeLayout.setVisibility(View.GONE);
@@ -1310,6 +1310,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 }
                             }
                         } else if (!type.isEmpty() && node.isSelected()) {
+                            Timber.tag(TAG).d("mItemList.get(index)::child=>%s", mItemList.get(index).findDisplay());
+
+                            if (!mItemList.get(index).isMultiChoice()) {
+                                for (int i = 0; i < mItemList.get(index).getOptionsList().size(); i++) {
+                                    if (!mItemList.get(index).getOptionsList().get(i).getText().equals(node.getText())) {
+                                        mItemList.get(index).getOptionsList().get(i).unselectAllNestedNode();
+                                    }
+                                }
+                            }
 
                             if (!foundUserInputs) {
                                 holder.singleComponentContainer.removeAllViews();
@@ -2033,7 +2042,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.v("showCameraView", "QLA parentNode" + new Gson().toJson(parentNode));
         Log.v("showCameraView", "QLA " + new Gson().toJson(node));
         Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(parentNode.getImagePathList()));
-        Log.v("showCameraView", "QLA ImagePathList isDataCaptured - " + parentNode.isDataCaptured()  );
+        Log.v("showCameraView", "QLA ImagePathList isDataCaptured - " + parentNode.isDataCaptured());
         Log.v("showCameraView", "QLA ImagePathList isImageUploaded - " + parentNode.isImageUploaded());
         holder.otherContainerLinearLayout.removeAllViews();
 //        if (!parentNode.isMultiChoice())
