@@ -540,6 +540,7 @@ public class ChatActivity extends AppCompatActivity {
                     new JSONObject(chatMessage.toJson()), response -> {
                 Log.v(TAG, "postMessages - response - " + response.toString());
                 try {
+
                     ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
                     mMessageEditText.setText("");
                     //                        getAllMessages(false);
