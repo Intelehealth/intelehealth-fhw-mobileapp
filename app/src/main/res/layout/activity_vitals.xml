@@ -60,186 +60,6 @@
                         android:padding="10dp">
 
                         <TextView
-                            android:id="@+id/textview_hw"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:fontFamily="@font/lato_bold"
-                            android:includeFontPadding="false"
-                            android:text="@string/table_hw"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textSize="@dimen/card_content_text_size" />
-
-                        <!--Height & Weight-->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="5dp"
-                            android:orientation="horizontal">
-
-                            <TableLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="10dp"
-                                android:stretchColumns="0,2">
-
-                                <TableRow
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <com.google.android.material.textfield.TextInputLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content">
-
-                                        <EditText
-                                            android:id="@+id/table_height"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:focusable="true"
-                                            android:focusableInTouchMode="true"
-                                            android:fontFamily="@font/lato_regular"
-                                            android:hint="@string/table_height"
-                                            android:imeOptions="actionUnspecified"
-                                            android:includeFontPadding="false"
-                                            android:inputType="number"
-                                            android:maxLength="3"
-                                            android:maxLines="1"
-                                            android:singleLine="true"
-                                            android:tag="@string/tag_optional"
-                                            android:textSize="@dimen/card_content_sub_text_size" />
-
-                                    </com.google.android.material.textfield.TextInputLayout>
-
-                                    <TextView
-                                        android:id="@+id/textView_splash"
-                                        android:layout_width="22dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_gravity="center"
-                                        android:gravity="center_vertical|center_horizontal"
-                                        android:text="/"
-                                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                                    <com.google.android.material.textfield.TextInputLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content">
-
-                                        <EditText
-                                            android:id="@+id/table_weight"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:focusable="true"
-                                            android:focusableInTouchMode="true"
-                                            android:fontFamily="@font/lato_regular"
-                                            android:hint="@string/table_weight"
-                                            android:imeOptions="actionUnspecified"
-                                            android:includeFontPadding="false"
-                                            android:inputType="number"
-                                            android:maxLength="3"
-                                            android:maxLines="1"
-                                            android:singleLine="true"
-                                            android:tag="@string/tag_optional"
-                                            android:textSize="@dimen/card_content_sub_text_size" />
-
-                                    </com.google.android.material.textfield.TextInputLayout>
-                                </TableRow>
-                            </TableLayout>
-
-                            <!--
-                            <ImageButton
-                                android:id="@+id/height_weight_Btn"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_margin="10dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_add_24dp"
-                                android:background="@drawable/circle"
-                                android:backgroundTint="@color/colorAccent" />
--->
-
-                        </LinearLayout>
-
-                        <!--   <com.google.android.material.textfield.TextInputLayout
-                               android:layout_width="match_parent"
-                               android:layout_height="wrap_content">
-
-                               <EditText
-                                   android:id="@+id/table_height"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="wrap_content"
-                                   android:fontFamily="@font/lato_regular"
-                                   android:hint="@string/table_height"
-                                   android:imeOptions="actionUnspecified"
-                                   android:inputType="numberDecimal"
-                                   android:maxLines="1"
-                                   android:singleLine="true"
-                                   android:tag="@string/tag_optional"
-                                   android:textSize="@dimen/card_content_sub_text_size" />
-
-                           </com.google.android.material.textfield.TextInputLayout>
-
-                           <com.google.android.material.textfield.TextInputLayout
-                               android:layout_width="match_parent"
-                               android:layout_height="wrap_content">
-
-                               <EditText
-                                   android:id="@+id/table_weight"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="wrap_content"
-                                   android:fontFamily="@font/lato_regular"
-                                   android:hint="@string/table_weight"
-                                   android:imeOptions="actionUnspecified"
-                                   android:includeFontPadding="false"
-                                   android:inputType="numberDecimal"
-                                   android:maxLines="1"
-                                   android:singleLine="true"
-                                   android:tag="@string/tag_optional"
-                                   android:textSize="@dimen/card_content_sub_text_size" />
-
-                           </com.google.android.material.textfield.TextInputLayout>-->
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <EditText
-                                android:id="@+id/table_bmi"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:focusable="false"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/table_bmi"
-                                android:imeOptions="actionUnspecified"
-                                android:includeFontPadding="false"
-                                android:inputType="none"
-                                android:longClickable="false"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="19dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="10sp"
-                    app:cardElevation="3dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:cardUseCompatPadding="true">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
                             android:id="@+id/textview_vitals"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -532,6 +352,185 @@
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
                                 android:maxLength="6"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="3dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/textview_hw"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
+                            android:text="@string/table_hw"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                        <!--Height & Weight-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <TableLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="10dp"
+                                android:stretchColumns="0,2">
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/table_height"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:focusable="true"
+                                            android:focusableInTouchMode="true"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:hint="@string/table_height"
+                                            android:imeOptions="actionUnspecified"
+                                            android:includeFontPadding="false"
+                                            android:inputType="number"
+                                            android:maxLength="3"
+                                            android:maxLines="1"
+                                            android:singleLine="true"
+                                            android:tag="@string/tag_optional"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <TextView
+                                        android:id="@+id/textView_splash"
+                                        android:layout_width="22dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center_vertical|center_horizontal"
+                                        android:text="/"
+                                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/table_weight"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:focusable="true"
+                                            android:focusableInTouchMode="true"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:hint="@string/table_weight"
+                                            android:imeOptions="actionUnspecified"
+                                            android:includeFontPadding="false"
+                                            android:inputType="number"
+                                            android:maxLength="3"
+                                            android:maxLines="1"
+                                            android:singleLine="true"
+                                            android:tag="@string/tag_optional"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+                                </TableRow>
+                            </TableLayout>
+
+                            <!--
+                            <ImageButton
+                                android:id="@+id/height_weight_Btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_margin="10dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_add_24dp"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent" />
+-->
+
+                        </LinearLayout>
+
+                        <!--   <com.google.android.material.textfield.TextInputLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content">
+
+                               <EditText
+                                   android:id="@+id/table_height"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:fontFamily="@font/lato_regular"
+                                   android:hint="@string/table_height"
+                                   android:imeOptions="actionUnspecified"
+                                   android:inputType="numberDecimal"
+                                   android:maxLines="1"
+                                   android:singleLine="true"
+                                   android:tag="@string/tag_optional"
+                                   android:textSize="@dimen/card_content_sub_text_size" />
+
+                           </com.google.android.material.textfield.TextInputLayout>
+
+                           <com.google.android.material.textfield.TextInputLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content">
+
+                               <EditText
+                                   android:id="@+id/table_weight"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:fontFamily="@font/lato_regular"
+                                   android:hint="@string/table_weight"
+                                   android:imeOptions="actionUnspecified"
+                                   android:includeFontPadding="false"
+                                   android:inputType="numberDecimal"
+                                   android:maxLines="1"
+                                   android:singleLine="true"
+                                   android:tag="@string/tag_optional"
+                                   android:textSize="@dimen/card_content_sub_text_size" />
+
+                           </com.google.android.material.textfield.TextInputLayout>-->
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/table_bmi"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/table_bmi"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="none"
+                                android:longClickable="false"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
@@ -882,7 +881,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="20dp"
+                    android:layout_marginVertical="30dp"
                     android:background="@color/orange3"
                     android:elevation="5dp"
                     android:fontFamily="@font/lato_bold"

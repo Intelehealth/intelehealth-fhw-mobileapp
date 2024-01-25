@@ -43,6 +43,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -186,8 +188,11 @@ public class ComplaintNodeActivity extends BaseActivity {
                 if (currentFile != null) {
                     Log.i(TAG, currentFile.toString());
                     Node currentNode = new Node(currentFile);
+                    if (currentNode.getText().equalsIgnoreCase("Health Visit"))
+                        complaints.add(0, currentNode);     // SYR-533: to make sure that health visit always comes first.
+                    else
+                        complaints.add(currentNode);    // others will be added in last/bottom.
 
-                    complaints.add(currentNode);
                 }
             }
             //remove items from complaints array here...
@@ -235,7 +240,12 @@ public class ComplaintNodeActivity extends BaseActivity {
                     String fileLocation = "engines/" + name;
                     currentFile = FileUtils.encodeJSON(this, fileLocation);
                     Node currentNode = new Node(currentFile);
-                    complaints.add(currentNode);
+                    if (currentNode.getText().equalsIgnoreCase("Health Visit"))
+                        complaints.add(0, currentNode);     // SYR-533: to make sure that health visit always comes first.
+                    else
+                        complaints.add(currentNode);    // others will be added in last/bottom.
+
+                 //   complaints.add(currentNode);
                 }
                 //remove items from complaints array here...
                 mgender = fetch_gender(patientUuid);
