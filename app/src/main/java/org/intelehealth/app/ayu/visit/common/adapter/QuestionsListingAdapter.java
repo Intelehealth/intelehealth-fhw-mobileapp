@@ -1014,8 +1014,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
                     if (!node.isSelected()) return;
                     holder.isParallelMultiNestedNode = false;
-                    if (parentNode != null) {
-                        holder.isParallelMultiNestedNode = parentNode.isHavingMoreNestedQuestion();
+                    if (selectedNode!=null) {
+                        holder.isParallelMultiNestedNode = selectedNode.isHavingMoreNestedQuestion();
                         //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
                         //holder.nextRelativeLayout.setVisibility(View.GONE);
                     }
