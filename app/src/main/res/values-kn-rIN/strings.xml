@@ -51,6 +51,7 @@
     <string name="error_invalid_password">ಈ ಪಾಸ್‌ವರ್ಡ್ ತುಂಬಾ ಚಿಕ್ಕದಾಗಿದೆ</string>
     <string name="error_incorrect_password">ದಯವಿಟ್ಟುಬಳಕೆದಾರರ ಹೆಸರು ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</string>
     <string name="error_field_required">ಈ ಸ್ಥಳವನ್ನು ತುಂಬಿರಿ</string>
+    <string name="error_field_required_non_adult">18 ವರ್ಷಕ್ಕಿಂತ ಕಡಿಮೆ ವಯಸ್ಸಿನವರಿಗೆ ಈ ಕೊಠಡಿ ಅಗತ್ಯವಿದೆ</string>
     <string name="error_network">ನೆಟ್‌ವರ್ಕ್ ದೋಷ</string>
     <string name="error_location_not_selected">ದಯವಿಟ್ಟು ಸ್ಥಳವನ್ನು ಡ್ರಾಪ್‌ಡೌನ್ನಿಂದ ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="error_location_not_fetched"> ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</string>

@@ -860,6 +860,15 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         String height = heightvalue;
         String weight = weightvalue;
+
+        if(!isPatientAdult() && weight.isEmpty()){
+            mWeightErrorTextView.setVisibility(View.VISIBLE);
+            mWeightErrorTextView.setText(getString(R.string.error_field_required_non_adult));
+            //mWeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            return false;
+        }
+
         if (!weight.isEmpty() && height.isEmpty()) {
             mHeightErrorTextView.setVisibility(View.VISIBLE);
             mHeightErrorTextView.setText(getString(R.string.error_field_required));
@@ -1365,6 +1374,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
         }
         return true;
+    }
+
+    /**
+     * check patient is adult or not
+     * @return
+     */
+    private boolean isPatientAdult() {
+        return float_ageYear_Month > 18;
     }
 
     /*private String convertFtoC(String temperature) {

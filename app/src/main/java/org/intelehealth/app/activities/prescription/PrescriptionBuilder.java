@@ -141,33 +141,50 @@ public class PrescriptionBuilder {
                 + "</div>\n"
                 + "<div class=\"col-md-3 patient-info-section p-3\">\n"
                 + "<div class=\"patient-info-item mb-3\">\n"
-                + "<h6>Age</h6>\n"
-                + "<p>\n " + DateAndTimeUtils.getAgeInYears(patient.getDate_of_birth(), activityContext) + "\n"
+                + "<h6>Gender</h6>\n"
+                + "<p>\n " + getFullGenderStr(patient.getGender()) + "\n"
                 + "</p>\n"
                 + "</div>\n"
                 + "<div class=\"patient-info-item\">\n"
-                + "<h6>Address</h6>\n"
-                + "<p>" + patient.getCity_village() + "</p>\n"
+                + "<h6>Age</h6>\n"
+                + "<p>\n " + DateAndTimeUtils.getAgeInYears(patient.getDate_of_birth(), activityContext) + "\n"
                 + "</div>\n"
                 + "</div>\n"
                 + "<div class=\"col-md-3 patient-info-section p-3\">\n"
                 + "<div class=\"patient-info-item mb-3\">\n"
+                + "<h6>Address</h6>\n"
+                + "<p>" + patient.getCity_village() + "</p>\n"
+                + "</div>\n"
+                + "<div class=\"patient-info-item\">\n"
                 + "<h6>Occupation</h6>\n"
                 + "<p>" + patient.getOccupation() + "</p>\n"
                 + "</div>\n"
-                + "<div class=\"patient-info-item\">\n"
-                + "<h6>National ID</h6>\n"
-                + "<p>" + patient.getNationalID() + "</p>\n"
-                + "</div>\n"
                 + "</div>\n"
                 + "<div class=\"col-md-3 patient-info-section p-3\">\n"
+                + "<div class=\"patient-info-item mb-3\">\n"
+                + "<h6>National ID</h6>\n"
+                + "<p>" + patient.getNationalID() + "</p>\n"
+                + "</p>\n"
+                + "</div>\n"
                 + "<div class=\"patient-info-item\">\n"
                 + "<h6>Contact no.</h6>\n"
                 + "<p>\n <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/phone-black.svg\" alt=\"\" />\n " + patientPhoneNumber + "\n"
-                + "</p>\n"
                 + "</div>\n"
                 + "</div>\n"
                 + "</div>";
+    }
+
+    /**
+     * return full gender from gender char
+     * @param gender
+     * @return
+     */
+    private String getFullGenderStr(String gender) {
+        return switch (gender.toLowerCase()) {
+            case "f" -> "Female";
+            case "m" -> "Male";
+            default -> "Other";
+        };
     }
 
     private String generateMainRowData(

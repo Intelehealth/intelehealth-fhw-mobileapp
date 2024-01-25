@@ -52,6 +52,7 @@
     <string name="error_invalid_password" translatable="false">यह पासवर्ड बहुत छोटा है</string>
     <string name="error_incorrect_password" translatable="false">कृपया उपयोगकर्ता नाम और पासवर्ड की जाँच करें</string>
     <string name="error_field_required" translatable="false">यह फ़ील्ड आवश्यक है</string>
+    <string name="error_field_required_non_adult" translatable="false">यह कमरा 18 वर्ष से कम उम्र के लोगों के लिए आवश्यक है</string>
     <string name="error_network" translatable="false">नेटवर्क त्रुटि</string>
     <string name="error_location_not_selected" translatable="false">कृपया स्थान ड्रॉपडाउन से मान का चयन करें</string>
     <string name="error_location_not_fetched" translatable="false">स्थानों को लाने में असमर्थ</string>

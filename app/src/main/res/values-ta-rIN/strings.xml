@@ -30,6 +30,7 @@
     <string name="error_invalid_password" translatable="false">இந்தக் கடவுச்சொல் மிகவும் சிறியது</string>
     <string name="error_incorrect_password" translatable="false">உள்ளிடப்பட்ட பயனர்பெயர் மற்றும் கடவுச்சொல்லைச் சரிபார்க்கவும்</string>
     <string name="error_field_required" translatable="false">இந்தப் புலம் தேவை</string>
+    <string name="error_field_required_non_adult" translatable="false">18 வயதுக்குட்பட்டவர்களுக்கு மட்டுமே அறை தேவை</string>
     <string name="error_network" translatable="false">பிணைய பிழை</string>
     <string name="error_location_not_selected" translatable="false">இருப்பிட கீழ்தோன்றலில் இருந்து ஒரு இடத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="error_location_not_fetched" translatable="false">இருப்பிடங்களைப் பெற முடியவில்லை</string>

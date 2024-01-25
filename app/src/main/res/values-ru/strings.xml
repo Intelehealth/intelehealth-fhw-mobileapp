@@ -52,6 +52,7 @@
     <string name="error_invalid_password" translatable="false">Пароль слишком короткий</string>
     <string name="error_incorrect_password" translatable="false">пожалуйста, проверьте имя пользователя и введенный пароль</string>
     <string name="error_field_required" translatable="false">Это поле обязательно для заполнения</string>
+    <string name="error_field_required_non_adult" translatable="false">ରୁମ କେବଳ 18 ବର୍ଷରୁ କମ୍ ଲୋକଙ୍କ ପାଇଁ ଆବଶ୍ୟକ |</string>
     <string name="error_network" translatable="false">Ошибка сети</string>
     <string name="error_location_not_selected" translatable="false">Пожалуйста, выберите значение в раскрывающемся списке</string>
     <string name="error_location_not_fetched" translatable="false">Невозможно получить местоположение</string>
