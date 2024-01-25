@@ -51,6 +51,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
@@ -312,7 +313,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                     if (!chief_complaint_value.isEmpty()) {
                         chief_complaint_value = chief_complaint_value.replaceAll(Node.bullet_arrow, "");
                         chief_complaint_value = chief_complaint_value.replaceAll("<br/>", ", ");
-                        chief_complaint_value = chief_complaint_value.replaceAll("Associated symptoms", "");
+                        chief_complaint_value = chief_complaint_value.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
                         //visitValue = visitValue.substring(0, visitValue.length() - 2);
                         chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
                         chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");
@@ -543,7 +544,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             tvAppointmentTime.setVisibility(View.GONE);
             stateAppointmentPrescription.setVisibility(View.GONE);
 
-            mScheduleAppointmentTextView.setVisibility(View.VISIBLE);
+            mScheduleAppointmentTextView.setVisibility(View.GONE);
         } else {
             btnCancelAppointment.setVisibility(View.VISIBLE);
             btnRescheduleAppointment.setVisibility(View.VISIBLE);
@@ -757,7 +758,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         request.setId(appointment_id);
         request.setReason(reason);
         request.setHwUUID(new SessionManager(AppointmentDetailsActivity.this).getProviderID()); // user id / healthworker id
-        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi().cancelAppointment(request).enqueue(new Callback<CancelResponse>() {
             @Override
             public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {

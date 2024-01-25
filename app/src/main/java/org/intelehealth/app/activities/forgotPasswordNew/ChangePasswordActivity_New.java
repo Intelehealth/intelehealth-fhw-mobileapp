@@ -58,7 +58,9 @@ import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,7 +71,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
     CustomProgressDialog cpd;
     Context context;
     SessionManager sessionManager = null;
-    TextView tvErrorCurrentPassword, tvErrorNewPassword, tvErrorConfirmPassword,tvGeneratePassword;
+    TextView tvErrorCurrentPassword, tvErrorNewPassword, tvErrorConfirmPassword, tvGeneratePassword;
     RelativeLayout layoutParent;
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
@@ -164,7 +166,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
     }
 
     public void apiCallForChangePassword(String currentPassword, String newPassword) {
-        cpd.show();
+        cpd.show(getString(R.string.please_wait));
         String serverUrl = BuildConfig.SERVER_URL;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -173,36 +175,39 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResponseBody> loginModelObservable = apiService.CHANGE_PASSWORD_OBSERVABLE(inputModel, encoded);
-        loginModelObservable.subscribe(new Observer<ResponseBody>() {
-            @Override
-            public void onSubscribe(Disposable d) { }
+        loginModelObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
 
-            @Override
-            public void onNext(ResponseBody test) {
-                showSnackBarAndRemoveLater(getString(R.string.the_password_has_been_successfully_changed));
-                final Handler handler = new Handler();
-                handler.postDelayed(() -> performLogout(), 2000);
-                cpd.dismiss();
-            }
+                    @Override
+                    public void onNext(ResponseBody test) {
+                        showSnackBarAndRemoveLater(getString(R.string.the_password_has_been_successfully_changed));
+                        final Handler handler = new Handler();
+                        handler.postDelayed(() -> performLogout(), 2000);
+                        cpd.dismiss();
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Logger.logD(TAG, "Login Failure" + e.getMessage());
-                e.printStackTrace();
-                if(e.getMessage().contains("HTTP 400"))
-                {
-                    tvErrorCurrentPassword.setVisibility(View.VISIBLE);
-                    tvErrorCurrentPassword.setText(getResources().getString(R.string.error_password_not_exist));
-                    etCurrentPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                }
-                cpd.dismiss();
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, "Login Failure" + e.getMessage());
+                        e.printStackTrace();
+                        if (e.getMessage().contains("HTTP 400")) {
+                            tvErrorCurrentPassword.setVisibility(View.VISIBLE);
+                            tvErrorCurrentPassword.setText(getResources().getString(R.string.error_password_not_exist));
+                            etCurrentPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                        }
+                        cpd.dismiss();
+                    }
 
-            @Override
-            public void onComplete() {
-                Logger.logD(TAG, "completed");
-            }
-        });
+                    @Override
+                    public void onComplete() {
+                        Logger.logD(TAG, "completed");
+                    }
+                });
 
     }
 
@@ -365,7 +370,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
                 }
             }
 
-            if(hasUppercase && hasLowercase && hasDigit)
+            if (hasUppercase && hasLowercase && hasDigit)
                 return true;
             else
                 return false;

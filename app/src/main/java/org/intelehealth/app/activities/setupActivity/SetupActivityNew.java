@@ -388,7 +388,10 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         StrictMode.setThreadPolicy(policy);
 
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
-        loginModelObservable.subscribe(new Observer<LoginModel>() {
+        loginModelObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LoginModel>() {
             @Override
             public void onSubscribe(Disposable d) {
             }
@@ -810,7 +813,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     }
 
     private void getMindmapDownloadURL(String url) {
-        customProgressDialog.show();
+        customProgressDialog.show(getString(R.string.please_wait));
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {

@@ -3,6 +3,7 @@ package org.intelehealth.app.ayu.visit.common.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,6 +27,7 @@ import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -180,20 +182,20 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                                     genericViewHolder.questionsListingAdapter.notifyItemChanged(index);
                                 }
                                 //if (mItemList.get(position).isContainsTheQuestionBeforeOptions()) {
-                                    //Log.v("onSelect", "node - " + node.getText());
-                                    if (genericViewHolder.currentComplainNodeOptionsIndex < mItemList.get(position).getOptionsList().size() - 1) {
-                                        genericViewHolder.currentComplainNodeOptionsIndex++;
-                                        //genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
-                                        if (genericViewHolder.isHavingDirectOption)
-                                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position), getEngineVersion());
-                                        else
-                                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex), getEngineVersion());
-                                    } /*else {
+                                //Log.v("onSelect", "node - " + node.getText());
+                                if (genericViewHolder.currentComplainNodeOptionsIndex < mItemList.get(position).getOptionsList().size() - 1) {
+                                    genericViewHolder.currentComplainNodeOptionsIndex++;
+                                    //genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
+                                    if (genericViewHolder.isHavingDirectOption)
+                                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position), getEngineVersion());
+                                    else
+                                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex), getEngineVersion());
+                                } /*else {
                                     genericViewHolder.currentComplainNodeOptionsIndex = 0;
 
                                 }*/
                                 //}
-                                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 600,mIsEditMode);
+                                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 600, mIsEditMode);
                             }
 
                             @Override
@@ -223,10 +225,10 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 //                        if (!mItemList.get(position).isContainsTheQuestionBeforeOptions()) {
 //                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position), getEngineVersion());
 //                        } else {
-                            if (genericViewHolder.isHavingDirectOption)
-                                genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position), getEngineVersion());
-                            else
-                                genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex), getEngineVersion());
+                        if (genericViewHolder.isHavingDirectOption)
+                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position), getEngineVersion());
+                        else
+                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex), getEngineVersion());
                         //}
                         //}
                     } else {
@@ -313,7 +315,8 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
 
     }
-    private void unselectNested(Node node){
+
+    private void unselectNested(Node node) {
         node.unselectAllNestedNode();
     }
 
@@ -370,7 +373,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 holder.node.setSelected(false);
                 holder.node.setDataCaptured(false);
                 // scroll little bit
-                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300,mIsEditMode);
+                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode);
             }
         });
 
@@ -426,7 +429,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         }
                     });
                     // scroll little bit
-                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300,mIsEditMode);
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode);
                 }
 
 
@@ -453,6 +456,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
 
         editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
         editText.setMinLines(5);
         editText.setLines(5);
         editText.setHorizontallyScrolling(false);
@@ -486,7 +490,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                 String dateString = simpleDateFormat.format(date);
                 displayDateButton.setText(dateString);
-                VisitUtils.scrollNow(mRecyclerView, 400, 0, 400,mIsEditMode);
+                VisitUtils.scrollNow(mRecyclerView, 400, 0, 400, mIsEditMode);
                 AdapterUtils.setToDefault(submitButton);
                 AdapterUtils.setToDefault(skipButton);
             }
@@ -509,7 +513,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         node.setSelected(false);
                         node.setSelected(false);
                         //mOnItemSelection.onSelect(node, index);
-                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400,mIsEditMode);
+                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode);
                     }
                 });
 
@@ -553,7 +557,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                         }
                     });
-                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400,mIsEditMode);
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode);
                 }
             }
         });

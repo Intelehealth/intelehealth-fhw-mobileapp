@@ -96,7 +96,7 @@ public class VisitReasonSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mIsEditMode&& ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()){
+                if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else
@@ -175,8 +175,8 @@ public class VisitReasonSummaryFragment extends Fragment {
                         if (qa.length == 2) {
                             String k = value.split("•")[0].trim();
                             String v = value.split("•")[1].trim();
-                            if(v.endsWith(",")){
-                                v =  v.substring(0, v.length()-1);
+                            if (v.endsWith(",")) {
+                                v = v.substring(0, v.length() - 1);
                             }
                             VisitSummaryData summaryData = new VisitSummaryData();
                             summaryData.setQuestion(k);
@@ -199,13 +199,13 @@ public class VisitReasonSummaryFragment extends Fragment {
                                 lastString = v1;
                                 if (j % 2 != 0) {
                                     String v = qa[j].trim();
-                                    if( j== qa.length-2){
-                                        v = v + Node.bullet_arrow +qa[j+1];
+                                    if (j == qa.length - 2) {
+                                        v = v + Node.bullet_arrow + qa[j + 1];
                                     }
 
                                     VisitSummaryData summaryData = new VisitSummaryData();
-                                    if(v.endsWith(",")){
-                                        v =  v.substring(0, v.length()-1);
+                                    if (v.endsWith(",")) {
+                                        v = v.substring(0, v.length() - 1);
                                     }
                                     summaryData.setQuestion(key);
                                     summaryData.setDisplayValue(v);
@@ -295,7 +295,9 @@ public class VisitReasonSummaryFragment extends Fragment {
         }
     }
 
-   /* *//**
+    /* */
+
+    /**
      * @param
      * @return
      *//*
@@ -318,7 +320,6 @@ public class VisitReasonSummaryFragment extends Fragment {
             return "Patient denies -";
         }
     }*/
-
     private void prepareSummary() {
         try {
             String str = mSummaryStringJsonObject.getString("en");
@@ -330,7 +331,7 @@ public class VisitReasonSummaryFragment extends Fragment {
             String associatedSymptomsString = "";
             for (String s : spt) {
                 Log.e("node", s);
-                if (s.trim().startsWith("Associated symptoms:")) {
+                if (s.trim().startsWith("" + Node.ASSOCIATE_SYMPTOMS + ":")) {
                     associatedSymptomsString = s;
                 } else {
                     list.add(s);

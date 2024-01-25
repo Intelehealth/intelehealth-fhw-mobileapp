@@ -4,6 +4,7 @@ import static org.intelehealth.app.database.dao.VisitsDAO.olderNotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -27,6 +28,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentOnAttachListener;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -283,8 +286,10 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             }
         }).start();
 
-        getUpcomingAppointments();
+        getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener);
+    }
 
+    private void startExecutor() {
         Executors.newSingleThreadExecutor().execute(() -> {
             int count = countPendingFollowupVisits();
 
@@ -294,6 +299,11 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             });
         });
     }
+
+    private final FragmentOnAttachListener fragmentAttachListener = (fragmentManager, fragment) -> {
+        getUpcomingAppointments();
+        startExecutor();
+    };
 
     @Override
     public void onResume() {
@@ -365,6 +375,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void getUpcomingAppointments() {
         Executors.newSingleThreadExecutor().execute(() -> {
             //recyclerview for upcoming appointments
@@ -399,7 +410,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                 }
 
                 int finalTotalUpcomingApps = totalUpcomingApps;
-                requireActivity().runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + getResources().getString(R.string.upcoming)));
+                if (mUpcomingAppointmentCountTextView != null) {
+                    requireActivity().runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + getResources().getString(R.string.upcoming)));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

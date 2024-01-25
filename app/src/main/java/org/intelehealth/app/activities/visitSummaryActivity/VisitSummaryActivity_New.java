@@ -95,6 +95,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
@@ -662,7 +663,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             editAddDocs.setVisibility(View.VISIBLE);
         }
 
-        if (new AppointmentDAO().doesAppointmentExistForVisit(visitUUID)) {
+        //here we changing the appointment button behavior
+        //based on appointment status
+        if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.CANCELLED)) {
+            btnAppointment.setText(getString(R.string.appointment));
+        } else if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.BOOKED)) {
             btnAppointment.setText(getString(R.string.reschedule));
             doesAppointmentExist = true;
         }
@@ -2968,13 +2973,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void registerBroadcastReceiverDynamically() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
+        ContextCompat.registerReceiver(
+                this,
+                broadcastReceiverForIamgeDownlaod,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        registerReceiver(downloadPrescriptionService, filter);
+        ContextCompat.registerReceiver(
+                this,
+                downloadPrescriptionService,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     @Override
@@ -3500,7 +3515,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            registerReceiver(receiver, filter);
+            ContextCompat.registerReceiver(
+                    this,
+                    receiver,
+                    filter,
+                    ContextCompat.RECEIVER_NOT_EXPORTED
+            );
             isReceiverRegistered = true;
         }
     }
@@ -3510,7 +3530,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         super.onStart();
         registerDownloadPrescription();
         callBroadcastReceiver();
-        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
+        ContextCompat.registerReceiver(
+                this,
+                mMessageReceiver,
+                new IntentFilter(FILTER),
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
@@ -4446,10 +4471,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         }
 
-        if (mComplaint.contains("Associated symptoms")) {
+        if (mComplaint.contains(Node.ASSOCIATE_SYMPTOMS)) {
             String[] cc = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3); // todo: uncomment later.
+                mComplaint = mComplaint.substring(0, compla.indexOf(Node.ASSOCIATE_SYMPTOMS) - 3); // todo: uncomment later.
                 //   mComplaint = "Test Complaint";
             }
         } else {
@@ -5039,11 +5064,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
+            Timber.tag(TAG).d("Complain => %s", value);
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
                     JSONObject jsonObject = new JSONObject(value);
                     if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
                         value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+
                         mIsCCInOldFormat = false;
                     } else {
                         value = jsonObject.getString("en");
@@ -5063,7 +5090,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
                 findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
 
-                valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
+                valueArray = value.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
                 isAssociateSymptomFound = valueArray.length >= 2;
                 Log.v(TAG, "complaint: " + valueArray[0]);
                 Log.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
@@ -5423,7 +5450,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
-                complainLabelTextView.setText(_complain);
+                complainLabelTextView.setText(getFormattedComplain(_complain));
                 Log.v("PH0_complain", _complain);
                 if (_complain.trim().equalsIgnoreCase(VisitUtils.getTranslatedGeneralExamString(sessionManager.getAppLanguage()))) {
                     complainLabelTextView.setVisibility(View.GONE);
@@ -5490,6 +5517,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         }
 
+    }
+
+    /**
+     * formatting complain here
+     * if any unexpected complain has came then format it here
+     * @param complain
+     * @return
+     */
+    private String getFormattedComplain(String complain) {
+        if(!complain.trim().equals(getString(R.string.general_exam_title).trim())){
+            return complain;
+        }
+        return "";
     }
 
     private void setDataForPatientMedicalHistorySummary(String summaryStringPastHistory) {

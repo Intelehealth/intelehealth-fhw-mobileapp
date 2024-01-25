@@ -106,15 +106,15 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 //  5. Checking visit uploaded or not and Prescription received/pending tag display. - start
                 if (model.getVisitDTO() != null) {
                     if (model.getVisitDTO().getSyncd() != null && model.getVisitDTO().getSyncd()) {
-                        holder.visitNotUploadCV.setVisibility(View.GONE);
+                        //holder.visitNotUploadCV.setVisibility(View.GONE);
                     } else {
-                        holder.visitNotUploadCV.setVisibility(View.VISIBLE);
+                        //holder.visitNotUploadCV.setVisibility(View.VISIBLE);
                         holder.presc_pendingCV.setVisibility(View.GONE);
                         holder.presc_receivingCV.setVisibility(View.GONE);
                     }
 
                     if (model.getVisitDTO().getEnddate() != null) {
-                        holder.visitNotUploadCV.setVisibility(View.GONE);
+                        //holder.visitNotUploadCV.setVisibility(View.GONE);
                     }
                 }
                 // checking visit uploaded or not - end
@@ -123,13 +123,16 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 String visitDate = model.getVisit_startdate();
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     visitDate = StringUtils.en_hi_dob_three(visitDate);
+                holder.search_date_relative.setVisibility(View.VISIBLE);
                 holder.search_date_relative.setText(visitDate);
             } else {
                 holder.presc_pendingCV.setVisibility(View.GONE);
                 holder.presc_receivingCV.setVisibility(View.GONE);
 
                 holder.fu_item_calendar.setVisibility(View.GONE);
-                holder.search_date_relative.setText(R.string.no_visit_created);
+                //holder.search_date_relative.setText(R.string.no_visit_created);
+                holder.search_date_relative.setVisibility(View.GONE);
+                holder.fu_item_calendar.setVisibility(View.GONE);
             }
 
             //  6. Patient Profile Pic

@@ -298,7 +298,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             return false;
         }
 
-        checkOverlayPermission();
+//        checkOverlayPermission();
         return true;
     }
 

@@ -323,27 +323,27 @@ public class PatientsDAO {
     public List<FamilyMemberRes> getPatientName(String patientuuid) throws DAOException {
 
         List<FamilyMemberRes> listPatientNames = new ArrayList<>();
-
+        FamilyMemberRes familyMemberRes = new FamilyMemberRes();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
         try {
             Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
-                    FamilyMemberRes familyMemberRes = new FamilyMemberRes();
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                     familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     listPatientNames.add(familyMemberRes);
 //                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
                 }
+            } else {
+                familyMemberRes.setName("Unknown");
+                listPatientNames.add(familyMemberRes);
             }
             cursor.close();
-           // db.setTransactionSuccessful();
+            // db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
-        } finally {
-           // db.endTransaction();
         }
         return listPatientNames;
     }
@@ -374,30 +374,30 @@ public class PatientsDAO {
     }
 
     public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS, SQLiteDatabase db) throws DAOException {
-        if(patientAttributesDTOS==null) return false;
+        if (patientAttributesDTOS == null) return false;
         boolean isInserted = true;
         ContentValues values = new ContentValues();
         db.beginTransaction();
-            try {
-                for (int i = 0; i < patientAttributesDTOS.size(); i++) {
-                    values.put("uuid", patientAttributesDTOS.get(i).getUuid());
-                    values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
-                    values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
-                    values.put("value", patientAttributesDTOS.get(i).getValue());
-                    values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                    values.put("sync", false);
-                    db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                }
-                db.setTransactionSuccessful();
-            } catch (SQLException e) {
-                isInserted = false;
-                FirebaseCrashlytics.getInstance().recordException(e);
-                throw new DAOException(e.getMessage(), e);
-            } finally {
-                db.endTransaction();
+        try {
+            for (int i = 0; i < patientAttributesDTOS.size(); i++) {
+                values.put("uuid", patientAttributesDTOS.get(i).getUuid());
+                values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
+                values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
+                values.put("value", patientAttributesDTOS.get(i).getValue());
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("sync", false);
+                db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            isInserted = false;
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
 
-            return isInserted;
+        return isInserted;
 
     }
 

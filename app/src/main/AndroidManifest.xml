@@ -404,6 +404,7 @@
         <!-- android:authorities="org.intelehealth.app.activities.searchPatientActivity.SearchSuggestionProvider" -->
         <!-- android:exported="false" /> -->
         <service android:name=".services.DownloadService" />
+        <service android:name=".services.InitialSyncIntentService" />
         <service android:name=".services.MyIntentService" />
         <service android:name=".services.LastSyncIntentService" />
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->

@@ -163,8 +163,10 @@ public class ProviderDAO {
     public ProviderDTO getLoginUserDetails(String uuid) throws DAOException {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ProviderDTO providerDTO = null;
-
+        //if db in transaction then return null
+        if(db.inTransaction()) return null;
         db.beginTransaction();
+
         try {
             String query = "select * from tbl_provider where uuid = ?";
             Cursor cursor = db.rawQuery(query, new String[]{uuid});

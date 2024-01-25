@@ -36,9 +36,9 @@ public class ApiClient {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client.addInterceptor(loggingInterceptor);
-        client.connectTimeout(600, TimeUnit.SECONDS);
-        client.readTimeout(600, TimeUnit.SECONDS);
-        client.writeTimeout(600, TimeUnit.SECONDS);
+        client.connectTimeout(60, TimeUnit.SECONDS);
+        client.readTimeout(60, TimeUnit.SECONDS);
+        client.writeTimeout(60, TimeUnit.SECONDS);
         retrofit = builder.client(client.build()).build();
         return retrofit.create(serviceClass);
     }

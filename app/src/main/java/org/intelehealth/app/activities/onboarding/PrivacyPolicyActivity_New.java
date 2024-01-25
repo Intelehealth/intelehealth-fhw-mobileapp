@@ -56,6 +56,13 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
             }
         });
 
+        //show button if it's from add patient
+        if(!intentType.equalsIgnoreCase("doNotNavigateFurther")){
+            findViewById(R.id.layout_button_privacy).setVisibility(View.VISIBLE);
+        }else {
+            findViewById(R.id.layout_button_privacy).setVisibility(View.GONE);
+        }
+
         btn_accept_privacy.setOnClickListener(v -> {
             if(intentType.equalsIgnoreCase("doNotNavigateFurther")){
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);

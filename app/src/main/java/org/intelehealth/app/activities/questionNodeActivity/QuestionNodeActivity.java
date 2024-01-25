@@ -287,7 +287,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
-            if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
+            if (!currentNode.findDisplay().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)
                     && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
                     && !currentNode.findDisplay().equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା")
                     && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
@@ -584,7 +584,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
         for (int i = 0; i < complaintsNodes.get(complaintIndex).size(); i++) {
 
             if ((complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("Associated symptoms"))
+                    .equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS))
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
@@ -632,7 +632,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
 
             try {
                 assoSympObj.put("id", "ID_294177528");
-                assoSympObj.put("text", "Associated symptoms");
+                assoSympObj.put("text", Node.ASSOCIATE_SYMPTOMS);
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
                 assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
@@ -648,7 +648,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
-                finalAssoSympObj.put("text", "Associated symptoms");
+                finalAssoSympObj.put("text", Node.ASSOCIATE_SYMPTOMS);
                 finalAssoSympObj.put("display-kn", "ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು");
                 finalAssoSympObj.put("display-ml", "ബന്ധപ്പെട്ട രോഗലക്ഷണങ്ങൾ");
                 finalAssoSympObj.put("display-as", "সংশ্লিষ্ট লক্ষণ");

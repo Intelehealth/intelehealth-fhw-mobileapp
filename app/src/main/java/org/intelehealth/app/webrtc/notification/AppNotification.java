@@ -13,6 +13,8 @@ import androidx.core.app.NotificationManagerCompat;
 
 import org.intelehealth.app.R;
 
+import java.util.Random;
+
 
 /**
  * Created by Vaghela Mithun R. on 02-08-2023 - 16:21.
@@ -64,7 +66,8 @@ public class AppNotification {
 //        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 //            return;
 //        }
-        notificationManager.notify(notificationId, notificationBuilder.build());
+        int notId = new Random().nextInt(10000);
+        notificationManager.notify(notId, notificationBuilder.build());
     }
 
 

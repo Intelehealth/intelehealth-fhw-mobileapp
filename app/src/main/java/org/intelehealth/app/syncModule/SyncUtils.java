@@ -35,7 +35,7 @@ public class SyncUtils {
 
         SyncDAO syncDAO = new SyncDAO();
         Logger.logD(TAG, "Pull Started");
-        syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+        syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity,0);
         Logger.logD(TAG, "Pull ended");
         // sync data
         AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
@@ -45,7 +45,7 @@ public class SyncUtils {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         syncDAO.pushDataApi();
-        syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
+        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(),0); //only this new function duplicate
         imagesPushDAO.loggedInUserProfileImagesPush();
         /*
          * Looper.getMainLooper is used in background sync since the sync_background()
@@ -67,7 +67,7 @@ public class SyncUtils {
         imagesPushDAO.deleteObsImage();
         NotificationUtils notificationUtils = new NotificationUtils();
         notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
-        WorkManager.getInstance()
+        WorkManager.getInstance(IntelehealthApplication.getAppContext())
                 .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
                 .then(AppConstants.LAST_SYNC_WORK_REQUEST)
                 .enqueue();
@@ -86,7 +86,7 @@ public class SyncUtils {
             @Override
             public void run() {
                 Logger.logD(TAG, "Pull Started");
-                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity,0);
                 AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
                 Logger.logD(TAG, "Pull ended");
             }

@@ -34,6 +34,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ajalt.timberkt.Timber;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
@@ -51,6 +52,7 @@ import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
+import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
@@ -341,7 +343,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
         mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainNameByLocale());
 
-        if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
+        if (genericViewHolder.node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
             //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
             showAssociateSymptoms(genericViewHolder.node, genericViewHolder, position);
             genericViewHolder.tvQuestionCounter.setText("");
@@ -839,12 +841,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, boolean isRootNodeQuestion) {
         //holder.nextRelativeLayout.setVisibility(View.GONE);
         holder.isParallelMultiNestedNode = false;
-        holder.singleComponentContainer.removeAllViews();
+        boolean tag = false;
+        if (holder.singleComponentContainer.getTag() != null) {
+            tag = (boolean) holder.singleComponentContainer.getTag();
+        }
+        if (!tag) holder.singleComponentContainer.removeAllViews();
         Log.v(TAG, "showOptionsDataV2 selectedNode - " + new Gson().toJson(selectedNode));
         Log.v(TAG, "showOptionsDataV2 options - " + options.size());
         Log.v(TAG, "showOptionsDataV2 index - " + index);
         Log.v(TAG, "showOptionsDataV2 isSuperNested - " + isSuperNested);
-        if (!isSuperNested && options != null && options.size() == 1 && options.get(0).getInputType() != null && !options.get(0).getInputType().isEmpty() && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
+        if (!isSuperNested && options != null && options.size() == 1
+                && options.get(0).getInputType() != null
+                && !options.get(0).getInputType().isEmpty()
+                && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
             Log.v(TAG, "showOptionsDataV2 single option");
             /*if (isSuperNested)
                 holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
@@ -869,8 +878,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     addTextEnterView(options.get(0), holder, index);
                     break;
                 case "date":
+                    node.setShowCalendarHeader(true);
                     //askDate(questionNode, context, adapter);
-                    addDateView(options.get(0), holder, index);
+                    addDateView(node, holder, index);
                     break;
                 case "location":
                     //askLocation(questionNode, context, adapter);
@@ -992,7 +1002,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (holder.nestedQuestionsListingAdapter != null) {
 
             }
-            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, mItemList.get(Math.max(holder.getAbsoluteAdapterPosition(), 0)).isRequired(), new OnItemSelection() {
+            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView,
+                    selectedNode, 0, index, mIsEditMode,
+                    mItemList.get(Math.max(holder.getAbsoluteAdapterPosition(), 0)).isRequired(), new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
@@ -1306,7 +1318,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             if (!mItemList.get(index).isMultiChoice() && !mItemList.get(index).isEnableExclusiveOption()) {
                                 holder.nestedRecyclerView.setAdapter(null); /** Note: Sr.No.29 - Fix: This code should not trigger in-case of phys exam take picture so use is-exclusive logic. */
                             }
-
+                            Timber.tag(TAG).d("singleComponentContainer::child=>%s", holder.singleComponentContainer.getChildCount());
                         } else {
                             holder.singleComponentContainer.removeAllViews();
                             //holder.superNestedContainerLinearLayout.removeAllViews();
@@ -1404,6 +1416,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             case "text":
                                 holder.submitButton.setVisibility(View.GONE);
                                 holder.skipButton.setVisibility(View.GONE);
+                                holder.singleComponentContainer.setTag(node.isSelected());
                                 // askText(questionNode, context, adapter);
                                 addTextEnterView(node, holder, index);
                                 break;
@@ -1450,6 +1463,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 addFrequencyView(node, holder, index);
                                 break;
                             case "camera":
+//                                if (!mItemList.get(index).isMultiChoice())
                                 holder.submitButton.setVisibility(View.GONE);
                                 holder.skipButton.setVisibility(View.GONE);
                                 // openCamera(context, imagePath, imageName);
@@ -2022,6 +2036,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.v("showCameraView", "QLA ImagePathList isDataCaptured - " + parentNode.isDataCaptured()  );
         Log.v("showCameraView", "QLA ImagePathList isImageUploaded - " + parentNode.isImageUploaded());
         holder.otherContainerLinearLayout.removeAllViews();
+//        if (!parentNode.isMultiChoice())
         holder.submitButton.setVisibility(View.GONE);
         holder.skipButton.setVisibility(View.GONE);
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
@@ -2498,6 +2513,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
+        Timber.tag(TAG).d("Input =>%s", node.getLanguage());
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             editText.setText(node.getLanguage());
         }
@@ -2602,6 +2618,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
 
         editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
         editText.setMinLines(5);
         editText.setLines(5);
         editText.setHorizontallyScrolling(false);
@@ -2629,6 +2646,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
+        final TextView calendarHeader = view.findViewById(R.id.date_header);
+        calendarHeader.setVisibility(node.isShowCalendarHeader() ? View.VISIBLE : View.GONE);
+        calendarHeader.setText(node.getText());
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         Button skipButton = view.findViewById(R.id.btn_skip);

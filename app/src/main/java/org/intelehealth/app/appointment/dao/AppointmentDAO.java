@@ -1652,6 +1652,26 @@ public class AppointmentDAO {
         return doesAppointmentExist;
     }
 
+    /*
+     checking appointment status here.
+     */
+    public String checkAppointmentStatus(String visitUUID) {
+        String status = "";
+        String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ?";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            status = cursor.getString(cursor.getColumnIndexOrThrow("status"));
+            cursor.close();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return status;
+    }
+
     public String getTimeAndDateForAppointment(String visitUUID) {
         String appointmentDateTime = "";
         String query = "SELECT * FROM tbl_appointments WHERE visit_uuid = ?";
