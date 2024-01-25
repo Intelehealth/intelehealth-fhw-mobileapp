@@ -69,6 +69,7 @@ import java.util.Locale;
 public class Node implements Serializable {
 
     public static final String ASSOCIATE_SYMPTOMS = "Associated symptoms";
+    public static final String NOT_ANSWERED = "Question not answered";
     public static final int TAKE_IMAGE_FOR_NODE = 507;
     public static final String TAG = Node.class.getSimpleName();
     public static final int DIRECT_USER_INPUT_CHILD = 0;
@@ -531,28 +532,25 @@ public class Node implements Serializable {
         final EditText dialogEditText = new EditText(context);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
         textInput.setView(dialogEditText);
-        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
-                    } else {
-                        node.addLanguage(dialogEditText.getText().toString());
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                    }
+        textInput.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
+            if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                 } else {
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
-                    } else {
-                        node.addLanguage("Question not answered");
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                    }
+                    node.addLanguage(dialogEditText.getText().toString());
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected(true);
-                adapter.notifyDataSetChanged();
-                dialog.dismiss();
+            } else {
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", NOT_ANSWERED));
+                } else {
+                    node.addLanguage(NOT_ANSWERED);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
             }
+            node.setSelected(true);
+            adapter.notifyDataSetChanged();
+            dialog.dismiss();
         });
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -567,9 +565,9 @@ public class Node implements Serializable {
                     }
                 } else {
                     if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        node.setLanguage(node.getLanguage().replace("_", NOT_ANSWERED));
                     } else {
-                        node.addLanguage("Question not answered");
+                        node.addLanguage(NOT_ANSWERED);
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
                 }
@@ -610,9 +608,9 @@ public class Node implements Serializable {
                             } else {
                                 node.setSelected(true);
                                 if (node.getLanguage().contains("_")) {
-                                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                                    node.setLanguage(node.getLanguage().replace("_", NOT_ANSWERED));
                                 } else {
-                                    node.addLanguage("Question not answered");
+                                    node.addLanguage(NOT_ANSWERED);
                                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                                 }
                             }
@@ -708,9 +706,9 @@ public class Node implements Serializable {
                     node.setSelected(false);
                     //} else {
                     if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        node.setLanguage(node.getLanguage().replace("_", NOT_ANSWERED));
                     } else {
-                        node.addLanguage("Question not answered");
+                        node.addLanguage(NOT_ANSWERED);
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
                     //   node.setSelected(true);
@@ -959,9 +957,9 @@ public class Node implements Serializable {
                         node.setSelected(false);
                     } else {
                         if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                            node.setLanguage(node.getLanguage().replace("_", NOT_ANSWERED));
                         } else {
-                            node.addLanguage("Question not answered");
+                            node.addLanguage(NOT_ANSWERED);
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
                         node.setSelected(true);
@@ -2896,7 +2894,7 @@ public class Node implements Serializable {
         Log.i(TAG, "ipt: formQuestionAnswer: " + mLanguage);
 
         if (mLanguage.equalsIgnoreCase("")) {
-            mLanguage = (level == 0 ? bullet_hollow : right_pointing) + "Question not answered" + next_line;
+            mLanguage = (level == 0 ? bullet_hollow : right_pointing) + NOT_ANSWERED + next_line;
         }
 
         return mLanguage;
