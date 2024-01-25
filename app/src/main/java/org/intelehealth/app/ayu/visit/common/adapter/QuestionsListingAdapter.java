@@ -1018,8 +1018,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
                     if (!node.isSelected()) return;
                     holder.isParallelMultiNestedNode = false;
-                    if (parentNode != null) {
-                        holder.isParallelMultiNestedNode = parentNode.isHavingMoreNestedQuestion();
+                    if (selectedNode != null) {
+                        holder.isParallelMultiNestedNode = selectedNode.isHavingMoreNestedQuestion();
                         //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
                         //holder.nextRelativeLayout.setVisibility(View.GONE);
                     }
@@ -1257,15 +1257,16 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             node.unselectAllNestedNode();
                             if (type.equalsIgnoreCase("camera"))
                                 mItemList.get(index).removeImagesAllNestedNode();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (!isLoadingForNestedEditData) {
+                            if (!isLoadingForNestedEditData)
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+
 
                                         notifyItemChanged(index);
+
                                     }
-                                }
-                            }, 100);
+                                }, 100);
                         } else if (type.isEmpty() && node.isSelected()) {
 
                             if (!foundUserInputs) {
@@ -1286,18 +1287,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                                 if (mItemList.get(index).isMultiChoice()) {
                                     if (isNothingNestedOpen || isRequiredToShowParentActionButtons) {
-                                        holder.submitButton.setVisibility(View.VISIBLE);
-                                        if (mItemList.get(index).isRequired()) {
-                                            holder.skipButton.setVisibility(View.GONE);
-                                        } else {
-                                            holder.skipButton.setVisibility(View.VISIBLE);
-                                        }
+                                        if (!mItemList.get(index).isEnableExclusiveOption()) {
+                                            holder.submitButton.setVisibility(View.VISIBLE);
+                                            if (mItemList.get(index).isRequired()) {
+                                                holder.skipButton.setVisibility(View.GONE);
+                                            } else {
+                                                holder.skipButton.setVisibility(View.VISIBLE);
 
-                                        for (int i = 0; i < mItemList.get(index).getOptionsList().size(); i++) {
-                                            Node child = mItemList.get(index).getOptionsList().get(i);
-                                            if (child.getInputType().equalsIgnoreCase("camera") && child.isSelected()) {
-                                                holder.submitButton.setVisibility(View.GONE);
-                                                break;
                                             }
                                         }
                                     }
@@ -1321,6 +1317,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 }
                             }
                         } else if (!type.isEmpty() && node.isSelected()) {
+                            Timber.tag(TAG).d("mItemList.get(index)::child=>%s", mItemList.get(index).findDisplay());
+
+                            if (!mItemList.get(index).isMultiChoice()) {
+                                for (int i = 0; i < mItemList.get(index).getOptionsList().size(); i++) {
+                                    if (!mItemList.get(index).getOptionsList().get(i).getText().equals(node.getText())) {
+                                        mItemList.get(index).getOptionsList().get(i).unselectAllNestedNode();
+                                    }
+                                }
+                            }
 
                             if (!foundUserInputs) {
                                 holder.singleComponentContainer.removeAllViews();
@@ -1366,7 +1371,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             if (mItemList.get(index).isMultiChoice()) {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
                                 if (!isAnyOtherOptionSelected || isRequiredToShowParentActionButtons)
-                                    holder.submitButton.setVisibility(View.VISIBLE);
+                                    if (!mItemList.get(index).isEnableExclusiveOption())
+                                        holder.submitButton.setVisibility(View.VISIBLE);
 
                                 if (node.isExcludedFromMultiChoice()) {
                                     /*for (int i = 0; i < options.size(); i++) {
@@ -2045,15 +2051,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Node parentNode = mItemList.get(index);
         Log.v("showCameraView", "QLA parentNode" + new Gson().toJson(parentNode));
         Log.v("showCameraView", "QLA " + new Gson().toJson(node));
-        Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(node.getImagePathList()));
+        Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(parentNode.getImagePathList()));
+        Log.v("showCameraView", "QLA ImagePathList isDataCaptured - " + parentNode.isDataCaptured());
+        Log.v("showCameraView", "QLA ImagePathList isImageUploaded - " + parentNode.isImageUploaded());
         holder.otherContainerLinearLayout.removeAllViews();
 //        if (!parentNode.isMultiChoice())
         holder.submitButton.setVisibility(View.GONE);
         holder.skipButton.setVisibility(View.GONE);
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
-        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, parentNode.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
-        submitButton.setBackgroundResource(parentNode.isDataCaptured() && parentNode.isImageUploaded() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, parentNode.isImageUploaded() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(parentNode.isImageUploaded() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
         LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
         //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);

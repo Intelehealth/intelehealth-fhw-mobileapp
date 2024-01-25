@@ -2103,6 +2103,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         AdapterUtils.setToDisable(skipButton);
                         mItemList.get(index).setSelected(true);
                         mItemList.get(index).setDataCaptured(true);
+                        Log.v(TAG, new Gson().toJson(mItemList.get(index)));
                         AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                             @Override
                             public void onFinish() {

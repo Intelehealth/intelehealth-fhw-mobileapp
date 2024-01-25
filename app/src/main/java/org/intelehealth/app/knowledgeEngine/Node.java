@@ -3320,6 +3320,7 @@ public class Node implements Serializable {
 
     public boolean isNestedMandatoryOptionsAnswered() {
         Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered - " + findDisplay());
+        Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered isDataCaptured- " + isDataCaptured());
         boolean allAnswered = isSelected();
         if (isMultiChoice() && !isDataCaptured()) {
             allAnswered = false;
@@ -3352,8 +3353,8 @@ public class Node implements Serializable {
                     }
                 }
             }
-            if (isSelected() && countSelected == 0) {
-                allAnswered = false;
+            if (isSelected()) {
+                allAnswered = countSelected != 0;
             }
 
         }
