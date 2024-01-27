@@ -61,6 +61,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.cameraActivity.CameraActivity;
@@ -78,6 +79,7 @@ import org.intelehealth.ezazi.ui.dialog.CalendarDialog;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
+import org.intelehealth.ezazi.utilities.DateOfBirthCalculator;
 import org.intelehealth.ezazi.utilities.EditTextUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.IReturnValues;
@@ -108,6 +110,7 @@ import java.util.UUID;
  */
 public class PatientPersonalInfoFragment extends Fragment {
     private static final String TAG = "PatientPersonalInfoFrag";
+    private boolean isDobFromCalendar;
 
     public static PatientPersonalInfoFragment getInstance() {
         return new PatientPersonalInfoFragment();
@@ -166,6 +169,11 @@ public class PatientPersonalInfoFragment extends Fragment {
     private NestedScrollView scrollviewPersonalInfo;
 
     private Date defaultDobDate;
+    private int mMonthValidation;
+    private int mDayValidation;
+    private String selectedDobMonth="";
+    private String selectedDobDay="";
+    private String selectedDobYear="";
 
 
     @Override
@@ -249,7 +257,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mDOB.setShowSoftInputOnFocus(false);
-            mAge.setShowSoftInputOnFocus(false);
+            // mAge.setShowSoftInputOnFocus(false);
         }
 
      /*   mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
@@ -290,11 +298,8 @@ public class PatientPersonalInfoFragment extends Fragment {
         mDOB.setOnClickListener(v -> {
             selectDob();
         });
-        etLayoutAge.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        etLayoutAge.setEndIconOnClickListener(v -> {
 
-            }
         });
     }
 
@@ -337,8 +342,12 @@ public class PatientPersonalInfoFragment extends Fragment {
         setDefaultDob(dialog);
         dialog.setListener((day, month, year, value) -> {
             Log.e(TAG, "Date = >" + value);
+            mMonthValidation = month;
+            mDayValidation = day;
+
             //dd/mm/yyyy
             if (!value.isEmpty()) {
+                mAge.setText("");
                 dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(value);
                 patient1.setDate_of_birth(dobToDb);
 //            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
@@ -347,7 +356,13 @@ public class PatientPersonalInfoFragment extends Fragment {
                 mAgeYears = Integer.parseInt(ymdData[0]);
                 mAgeMonths = Integer.parseInt(ymdData[1]);
                 mAgeDays = Integer.parseInt(ymdData[2]);
+                Log.d(TAG, "kz26selectDob: month : " + month);
+                Log.d(TAG, "kz26selectDob: day : " + day);
+                Log.d(TAG, "kz26selectDob: mAgeYears : " + mAgeYears);
 
+                selectedDobMonth = String.valueOf(month);
+                selectedDobDay = String.valueOf(day);
+                selectedDobYear= String.valueOf(year);
                 // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
                 mDOB.setText(value);
                 tvDobForDb.setText(value);
@@ -361,6 +376,7 @@ public class PatientPersonalInfoFragment extends Fragment {
                     mAge.setText(mAgeYears + "");
                 }
                 Log.d(TAG, "getSelectedDate: " + value);
+                isDobFromCalendar = true;
                 setSelectedDob(mContext, value);
             } else {
                 Log.d(TAG, "onClick: date empty");
@@ -458,22 +474,56 @@ public class PatientPersonalInfoFragment extends Fragment {
                     // String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
                     String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dateOfBirth).split(" ");
                     mAgeYears = Integer.valueOf(ymdData[0]);
+                    Log.d(TAG, "updatePatientDetailsFromSecondScreen: dob :: "+new Gson().toJson(ymdData));
+                    Log.d(TAG, "updatePatientDetailsFromSecondScreen: dateOfBirth : "+dateOfBirth);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+
+                    try {
+                        Date date = sdf.parse(dateOfBirth);
+
+                        // Format the date to extract day, month, and year
+                        SimpleDateFormat sdfDay = new SimpleDateFormat("dd", Locale.ENGLISH);
+                        SimpleDateFormat sdfMonth = new SimpleDateFormat("MMM", Locale.ENGLISH);
+                        SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+                        SimpleDateFormat sdfMonthNumber = new SimpleDateFormat("MM", Locale.ENGLISH);
+
+                        String day = sdfDay.format(date);
+                        String month = sdfMonth.format(date);
+                        String year = sdfYear.format(date);
+                        String monthNumber = sdfMonthNumber.format(date);
+
+                        System.out.println("123Day: " + day);
+                        System.out.println("123Month: " + month);
+                        System.out.println("123Year: " + year);
+                        System.out.println("123monthNumber " + monthNumber);
+                        selectedDobDay = "";
+                        selectedDobMonth = "";
+                        selectedDobYear = "";
+
+                        selectedDobYear = year;
+                        selectedDobMonth = monthNumber;
+                        selectedDobDay = day;
+
+                        if (mAgeYears < 9) {
+                            mAge.setText("");
+                            mDOB.setText("");
+                            tvErrorAge.setVisibility(View.VISIBLE);
+
+                        } else {
+                            mAge.setText(mAgeYears + "");
+                        }
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     //  mAgeMonths = Integer.valueOf(ymdData[1]);
                     // mAgeDays = Integer.valueOf(ymdData[2]);
           /*  String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
                     mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
                     mAgeDays + getResources().getString(R.string.days);*/
 
-                    if (mAgeYears < 9) {
-                        mAge.setText("");
-                        mDOB.setText("");
-                        tvErrorAge.setVisibility(View.VISIBLE);
 
-                    } else {
-                        mAge.setText(mAgeYears + "");
-
-
-                    }
                 }
 
 
@@ -519,7 +569,6 @@ public class PatientPersonalInfoFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     private InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
@@ -693,6 +742,9 @@ public class PatientPersonalInfoFragment extends Fragment {
         mAgeYears = Integer.parseInt(ymdData[0]);
         mAgeMonths = Integer.parseInt(ymdData[1]);
         mAgeDays = Integer.parseInt(ymdData[2]);
+        Log.d(TAG, "kz20bindDataWithUI: mAgeMonths : " + mAgeMonths);
+        Log.d(TAG, "kz20bindDataWithUI: mAgeDays : " + mAgeDays);
+
 
         // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
         String[] splitedDate = dob.split("/");
@@ -1304,6 +1356,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            String val = charSequence.toString().trim();
         }
 
         @Override
@@ -1343,15 +1396,8 @@ public class PatientPersonalInfoFragment extends Fragment {
 
                 }
             } else if (this.editText.getId() == R.id.et_age) {
-                if (val.isEmpty()) {
-                    tvErrorAge.setVisibility(View.VISIBLE);
-                    tvErrorAge.setText(getString(R.string.select_age));
-                    cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
-                } else {
-                    tvErrorAge.setVisibility(View.GONE);
-                    cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-                }
+                // oldCodeForAge(val);
+                newCodeForAge(val);
             } else if (this.editText.getId() == R.id.et_mobile_no) {
                 if (!val.isEmpty()) {
                     if (val.length() != 10) {
@@ -1377,6 +1423,73 @@ public class PatientPersonalInfoFragment extends Fragment {
             }
         }
     }
+
+    private void newCodeForAge(String val) {
+        if (val.isEmpty() || Integer.parseInt(val) < 13) {
+            tvErrorAge.setVisibility(View.VISIBLE);
+            tvErrorAge.setText(getString(R.string.patient_age_validation));
+            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+            mDOB.setText("");
+            selectedDobMonth = "";
+            selectedDobDay = "";
+            selectedDobYear = "";
+
+        } else {
+            tvErrorAge.setVisibility(View.GONE);
+            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+            if (selectedDobDay.isEmpty() && selectedDobMonth.isEmpty() && selectedDobYear.isEmpty()) {
+                //if dob not selected - enter age
+                Calendar currentDate = Calendar.getInstance();
+                selectedDobDay = String.valueOf(currentDate.get(Calendar.DAY_OF_MONTH));
+                selectedDobMonth = String.valueOf(currentDate.get(Calendar.MONTH));
+                selectedDobYear = String.valueOf(currentDate.get(Calendar.YEAR));
+
+            }
+            if(!selectedDobDay.isEmpty() && !selectedDobMonth.isEmpty() &&!selectedDobYear.isEmpty()) {
+
+                //add flag
+                String dob = DateOfBirthCalculator.getDobFromAge(Integer.parseInt(val), selectedDobMonth, selectedDobDay, selectedDobYear);
+                mDOB.setText(dob);
+                setSelectedDob(mContext, dob);
+                dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(dob);
+                //patient1.setDate_of_birth(dobToDb);
+                patientDTO.setDateofbirth(dobToDb);
+
+            }
+        }
+    }
+
+/*
+    private void oldCodeForAge(String val) {
+        // DateOfBirthCalculator
+        if (val.isEmpty() || Integer.parseInt(val) < 13) {
+            tvErrorAge.setVisibility(View.VISIBLE);
+            tvErrorAge.setText(getString(R.string.patient_age_validation));
+            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+            mDOB.setText("");
+            selectedDobMonth = "";
+            selectedDobDay = "";
+        } else {
+            Log.d(TAG, "kz26textwatcher: selectedDobMonth : " + selectedDobMonth);
+            Log.d(TAG, "kz26textwatcher: selectedDobDay : " + selectedDobDay);
+            if (selectedDobMonth != null && !selectedDobMonth.isEmpty() && selectedDobDay != null && !selectedDobDay.isEmpty()) {
+                //dob selected
+                return;
+            } else {
+                //add flag
+                String dob = DateOfBirthCalculator.getDobFromAge(Integer.parseInt(val));
+                mDOB.setText(dob);
+                setSelectedDob(mContext, dob);
+                dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(dob);
+                //patient1.setDate_of_birth(dobToDb);
+                patientDTO.setDateofbirth(dobToDb);
+                tvErrorAge.setVisibility(View.GONE);
+                cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+            }
+        }
+
+    }
+*/
 
     private void setScrollToFocusedItem() {
         if (requireView().findFocus() != null) {

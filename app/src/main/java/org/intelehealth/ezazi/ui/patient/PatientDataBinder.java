@@ -106,7 +106,12 @@ public class PatientDataBinder {
                 model.setFullName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("fullName")));
                 model.setVisitUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("visitId")));
                 model.setCreatedAt(searchCursor.getString(searchCursor.getColumnIndexOrThrow("dateCreated")));
+                model.setEndDate(searchCursor.getString(searchCursor.getColumnIndexOrThrow("enddate")));
+                model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setStage(searchCursor.getString(searchCursor.getColumnIndexOrThrow("stage")));
+                model.setStartDate(searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")));
+                model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+
                 patients.add(model);
             } while (searchCursor.moveToNext());
         }

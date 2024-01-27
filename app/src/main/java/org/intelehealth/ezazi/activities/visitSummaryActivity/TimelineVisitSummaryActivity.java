@@ -23,11 +23,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,6 +48,7 @@ import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
+import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.databinding.DialogOutOfTimeEzaziBinding;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
@@ -68,6 +72,7 @@ import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
+import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
@@ -95,7 +100,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private String whichScreenUserCameFromTag = "";
     private String providerID;
     private SessionManager sessionManager;
-    private final EncounterDAO encounterDAO = new EncounterDAO();
+    private EncounterDAO encounterDAO = new EncounterDAO();
     private Button endStageButton;
     private int stageNo = 0;
     private String isVCEPresent = "";
@@ -107,7 +112,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     private boolean hwHasEditAccess = true;
     private boolean isNewEncounterCreated = false;
-
+    private boolean isDecisionPending;
+    private ConstraintLayout layoutPendingFlag;
     private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -154,14 +160,16 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         registerReceiver(mMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
         registerReceiver(syncBroadcastReceiver, new IntentFilter(AppConstants.SYNC_INTENT_ACTION));
         registerReceiver(checkEncounterEditMode, new IntentFilter(AppConstants.CURRENT_ENC_EDIT_INTENT_ACTION));
+        manageVisibilityOfPendingFlag();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_timeline_ezazi);
         super.onCreate(savedInstanceState);
-        initUI();
+        encounterDAO = new EncounterDAO();
 
+        initUI();
         fabSOS.setOnClickListener(view -> {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             // Vibrate for 500 milliseconds
@@ -258,11 +266,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     }
 
     private void showEmergencyDialog() {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                .title(R.string.title_sos_data_entry)
-                .positiveButtonLabel(R.string.yes)
-                .content(getString(R.string.are_you_sure_to_capture_emergency_data))
-                .build();
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this).title(R.string.title_sos_data_entry).positiveButtonLabel(R.string.yes).content(getString(R.string.are_you_sure_to_capture_emergency_data)).build();
 
         dialog.setListener(this::collectEmergencyData);
 
@@ -368,6 +372,10 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             visitUuid = intent.getStringExtra("visitUuid");
             providerID = intent.getStringExtra("providerID");
             whichScreenUserCameFromTag = intent.getStringExtra("tag");
+            isDecisionPending = intent.getBooleanExtra("isDecisionPending", false);
+
+            manageVisibilityOfPendingFlag();
+
             hwHasEditAccess = new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID());
 
             if (whichScreenUserCameFromTag != null && whichScreenUserCameFromTag.equalsIgnoreCase("new")) {
@@ -378,7 +386,9 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         }
 
         setTitle(patientName);
+        encounterDAO = new EncounterDAO();
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Log.d(TAG, "kkinitUI: visitUuid : " + visitUuid);
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter.
         String latestEncounterName = encounterDAO.findCurrentStage(encounterDTO.getVisituuid());
         if (isVCEPresent.equalsIgnoreCase("")) { // "" ie. not present
@@ -405,8 +415,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         } else {
             VisitOutcome outcome = new ObsDAO().getCompletedVisitType(isVCEPresent);
             endStageButton.setVisibility(View.INVISIBLE);
-            if (outcome != null && outcome.getOutcome() != null
-                    && !outcome.getOutcome().equalsIgnoreCase("")) {
+            if (outcome != null && outcome.getOutcome() != null && !outcome.getOutcome().equalsIgnoreCase("")) {
                 outcomeTV.setVisibility(View.VISIBLE);
                 setOutcomeText(outcome.getOutcome());
                 outcomeTV.setGravity(Gravity.CENTER);
@@ -447,6 +456,14 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         mCountDownTimer.cancel();
         mCountDownTimer.start();
+
+    }
+
+    private void manageVisibilityOfPendingFlag() {
+        layoutPendingFlag = findViewById(R.id.layout_decision_pending);
+        ImageView ivCloseMessage = findViewById(R.id.iv_close_decision_pending);
+        layoutPendingFlag.setVisibility(isDecisionPending ? View.VISIBLE : View.GONE);
+        ivCloseMessage.setOnClickListener(view -> layoutPendingFlag.setVisibility(View.GONE));
     }
 
     private void showLabourBottomSheetDialog(boolean hasMotherDeceased) {
@@ -497,16 +514,10 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private void showContentDialog(VisitOutcome outcome) {
         String content = outcome.getOtherComment();
         if (outcome.isHasMotherDeceased()) {
-            content = content != null ? "Other Comment:\n" + content + "\n\n" + "Mother Deceased Reason:\n" + outcome.getMotherDeceasedReason()
-                    : "Mother Deceased Reason:\n" + outcome.getMotherDeceasedReason();
+            content = content != null ? "Other Comment:\n" + content + "\n\n" + "Mother Deceased Reason:\n" + outcome.getMotherDeceasedReason() : "Mother Deceased Reason:\n" + outcome.getMotherDeceasedReason();
         }
 
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                .title(outcome.getOutcome())
-                .content(content)
-                .positiveButtonLabel(R.string.okay)
-                .hideNegativeButton(true)
-                .build();
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this).title(outcome.getOutcome()).content(content).positiveButtonLabel(R.string.okay).hideNegativeButton(true).build();
 
         dialog.show(getSupportFragmentManager(), dialog.getTag());
     }
@@ -514,9 +525,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private void updateOutOfTimeOutcomeText(VisitOutcome visitOutcome) {
         outcomeTV.setGravity(Gravity.START);
         String label = visitOutcome.getOutcome();
-        String content = visitOutcome.getOtherComment() != null
-                ? visitOutcome.getOtherComment() + (visitOutcome.getMotherDeceasedReason() != null ?
-                "/" + visitOutcome.getMotherDeceasedReason() : "") : visitOutcome.getMotherDeceasedReason();
+        String content = visitOutcome.getOtherComment() != null ? visitOutcome.getOtherComment() + (visitOutcome.getMotherDeceasedReason() != null ? "/" + visitOutcome.getMotherDeceasedReason() : "") : visitOutcome.getMotherDeceasedReason();
         String mainReason = getString(R.string.outcome_reason, content);
         setOutcomeText(label + mainReason);
     }
@@ -540,17 +549,9 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         binding.etOutOfTimeReason.setText(outcome.getOtherComment().equalsIgnoreCase(outcome.getOutcome()) ? "" : outcome.getOtherComment());
         binding.etOutOfTimeReasonLayout.setMultilineInputEndIconGravity();
         binding.etOutOfTimeReason.setEnabled(hwHasEditAccess);
-        int positiveLbl = hwHasEditAccess
-                ? isUpdateRequest == 2 ? R.string.update_out_of_time_reason : R.string.add_out_of_time_reason
-                : R.string.okay;
+        int positiveLbl = hwHasEditAccess ? isUpdateRequest == 2 ? R.string.update_out_of_time_reason : R.string.add_out_of_time_reason : R.string.okay;
 
-        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(this)
-                .title(R.string.time_out_reason)
-                .positiveButtonLabel(positiveLbl)
-                .negativeButtonLabel(R.string.cancel)
-                .hideNegativeButton(!hwHasEditAccess)
-                .view(binding.getRoot())
-                .build();
+        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(this).title(R.string.time_out_reason).positiveButtonLabel(positiveLbl).negativeButtonLabel(R.string.cancel).hideNegativeButton(!hwHasEditAccess).view(binding.getRoot()).build();
 
         if (hwHasEditAccess) {
             dialog.setListener(() -> {
@@ -963,11 +964,29 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     private void showToastAndUploadVisit(boolean isInserted, String message) {
         if (isInserted) {
+            updateVisitDecisionPendingFlag(); //added for decision pending visits
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
             cancelStage2_Alarm(); // cancel stage 2 alarm so that again 15mins interval doesnt starts.
             checkInternetAndUploadVisitEncounter(true);
         } else {
             Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateVisitDecisionPendingFlag() {
+        Log.d(TAG, "updateVisitDecisionPendingFlag: visituuid : " + visitUuid);
+        if (visitUuid != null && !visitUuid.isEmpty()) {
+            long updated = new VisitAttributeListDAO().updateVisitAttribute(visitUuid, UuidDictionary.DECISION_PENDING, "true");
+            if (updated > 0) {
+                try {
+                    VisitsDAO visitsDAO = new VisitsDAO();
+                    visitsDAO.updateVisitSync(visitUuid, "false");
+                    Intent intent = new Intent(AppConstants.VISIT_DECISION_PENDING_ACTION);
+                    IntelehealthApplication.getAppContext().sendBroadcast(intent);
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
@@ -985,6 +1004,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     };
 
     private void showToastAndUploadVisitForStage1(boolean isCompleteVisitCall, String message) {
+        updateVisitDecisionPendingFlag(); //added for decision pending visits
         isVisitCompleted = isCompleteVisitCall;
         if (NetworkConnection.isOnline(getApplication())) {
             Toast.makeText(context, getResources().getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PatientDTO implements Serializable {
 
-    @SerializedName("uuid")
+    @SerializedName("uuid") //for patient uuid
     @Expose
     private String uuid;
     @SerializedName("openmrs_id")
@@ -88,11 +88,29 @@ public class PatientDTO implements Serializable {
         return alternateNo;
     }
 
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
 
     String alternateNo;
+    private String startDate;
+    private String endDate;
 
     public String getUuid() {
         return uuid;

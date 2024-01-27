@@ -13,10 +13,50 @@
         android:layout_marginHorizontal="@dimen/screen_padding"
         android:background="@drawable/container_bg" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_decision_pending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/screen_padding"
+        android:background="@drawable/bg_decision_pending_alert"
+        android:elevation="1dp"
+        android:padding="@dimen/screen_container_padding"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/container"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toTopOf="@id/container">
+
+        <TextView
+            android:id="@+id/tv_message_pending_outcome"
+            style="@style/Theme.EZazi.Heading2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/std_6dp"
+            android:layout_marginEnd="@dimen/std_16dp"
+            android:text="@string/take_visit_decision"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_close_decision_pending"
+            android:layout_width="@dimen/std_20dp"
+            android:layout_height="@dimen/std_20dp"
+            android:src="@drawable/close_alert"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_timeline"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:elevation="0dp"
         app:layout_constraintBottom_toTopOf="@id/bottomMenu"
         app:layout_constraintEnd_toEndOf="@id/container"
         app:layout_constraintStart_toStartOf="@+id/container"
@@ -25,8 +65,8 @@
 
 
     <include
-        layout="@layout/timeline_bottom_action_view"
         android:id="@+id/bottomMenu"
+        layout="@layout/timeline_bottom_action_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

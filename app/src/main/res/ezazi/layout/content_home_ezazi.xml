@@ -39,18 +39,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvWelcomeUser" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvActiveVisitLabel"
-        style="@style/Theme.EZazi.Screen.Title"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/layoutVisitTypes"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/actionbar_vertical_padding"
-        android:layout_marginTop="@dimen/screen_padding"
-        android:text="@string/active_cases"
-        android:textSize="@dimen/subheading_text_size"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="@id/container"
-        app:layout_constraintTop_toTopOf="@id/container"
-        tools:text="Active Cases (8)" />
+        app:layout_constraintTop_toTopOf="@id/container">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvActiveVisitLabel1"
+            style="@style/Theme.EZazi.Screen.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/actionbar_vertical_padding"
+            android:layout_marginTop="@dimen/screen_padding"
+            android:text="@string/active_cases"
+            android:textSize="@dimen/subheading_text_size"
+            tools:text="Active Cases (8)" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvDecisionPendingVisitLabel"
+            style="@style/Theme.EZazi.Screen.Title"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/actionbar_vertical_padding"
+            android:layout_marginTop="@dimen/screen_padding"
+            android:text="@string/decision_pending"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/subheading_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/container"
+            tools:text="@string/decision_pending" />
+    </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clSearchContainer"
@@ -61,7 +83,7 @@
         android:background="@drawable/round_corner_gray_stroke_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/container"
-        app:layout_constraintTop_toBottomOf="@id/tvActiveVisitLabel">
+        app:layout_constraintTop_toBottomOf="@id/layoutVisitTypes">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"

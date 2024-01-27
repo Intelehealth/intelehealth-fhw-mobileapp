@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.ui.visit.data
 
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import org.intelehealth.ezazi.builder.PatientQueryBuilder
 import org.intelehealth.ezazi.models.dto.PatientDTO
 import org.intelehealth.ezazi.ui.patient.PatientDataBinder
@@ -11,9 +12,11 @@ import org.intelehealth.ezazi.ui.patient.PatientDataBinder
  * Mob   : +919727206702
  **/
 class VisitRepository(val database: SQLiteDatabase) {
+    private val TAG = "VisitRepository"
     fun getOutcomePendingVisits(offset: Int, limit: Int, providerId: String): List<PatientDTO> {
         PatientQueryBuilder().outcomePendingPatientQuery(offset, limit, providerId).apply {
             val cursor = database.rawQuery(this, null)
+            Log.d(TAG, "getOutcomePendingVisits: checkcusrsor count : "+cursor.count)
             return PatientDataBinder().outcomePendingVisits(cursor)
         }
     }

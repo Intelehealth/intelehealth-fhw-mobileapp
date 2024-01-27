@@ -164,6 +164,7 @@ public class VisitAttributeListDAO {
 
         Log.d("SPINNER", "SPINNER_Selected_visituuid_logs: " + visitUuid);
         Log.d("SPINNER", "SPINNER_Selected_value_logs: " + speciality_selected);
+        Log.d("SPINNER", "SPINNER_Selected_visitAttrTypeUuid: " + visitAttrTypeUuid);
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -240,6 +241,9 @@ public class VisitAttributeListDAO {
     }
 
     public long updateVisitAttribute(String visitId, String attributeId, String value) {
+        Log.d(TAG, "updateVisitAttribute: visitId : " + visitId);
+        Log.d(TAG, "updateVisitAttribute: attributeId : " + attributeId);
+        Log.d(TAG, "updateVisitAttribute: value : " + value);
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
@@ -252,8 +256,14 @@ public class VisitAttributeListDAO {
             createdRecordsCount1 = db.update("tbl_visit_attribute", values, whereclause, new String[]{visitId, attributeId});
             db.setTransactionSuccessful();
             Logger.logD("created records", "created records count" + createdRecordsCount1);
+           /* if (createdRecordsCount1 > 0) {
+                SyncDAO syncDAO = new SyncDAO();
+                syncDAO.pushDataApi();
+            }*/
         } catch (SQLException e) {
             Timber.tag(TAG).e(e);
+            e.printStackTrace();
+            Log.d(TAG, "updateVisitAttribute: e : " + e.getLocalizedMessage());
         } finally {
             db.endTransaction();
         }

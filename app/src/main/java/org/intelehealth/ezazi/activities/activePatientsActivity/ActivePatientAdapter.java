@@ -284,6 +284,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 visitSummary.putExtra("tag", "");
                 visitSummary.putExtra("providerID", sessionManager.getProviderID());
                 visitSummary.putExtra("pastVisit", past_visit);
+                visitSummary.putExtra("isDecisionPending", false);
 
                 if (holder.ivPriscription.getTag().equals("1")) {
                     visitSummary.putExtra("hasPrescription", "true");

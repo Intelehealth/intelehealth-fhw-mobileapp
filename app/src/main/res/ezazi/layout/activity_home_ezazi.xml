@@ -8,6 +8,7 @@
     tools:context=".activities.homeActivity.HomeActivity">
 
     <include
+        android:id="@+id/layout_content_home"
         layout="@layout/content_home_ezazi"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -377,6 +377,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 VisitsDAO visitsDAO = new VisitsDAO();
 
                 try {
+                    Log.d(TAG, "onClick: check kz");
 //                    ArrayList<VisitAttributeDTO> attributes = new ArrayList<>();
 //                    VisitAttributeDTO general = VisitAttributeDTO.generateNew(uuid, "General Physician", VISIT_ATTR_TYPE_UUID);
 //                    VisitAttributeDTO holder = VisitAttributeDTO.generateNew(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
@@ -397,6 +398,8 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
 
                 } catch (DAOException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "onClick: e message : "+e.getLocalizedMessage());
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 // end - visit

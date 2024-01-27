@@ -93,6 +93,7 @@ import org.intelehealth.ezazi.models.DownloadMindMapRes;
 import org.intelehealth.ezazi.models.FamilyMemberRes;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
+import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
@@ -112,6 +113,9 @@ import org.intelehealth.ezazi.ui.dialog.model.SelectAllMultiChoice;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.shared.BaseActivity;
 import org.intelehealth.ezazi.ui.visit.VisitQueryResultBinder;
+import org.intelehealth.ezazi.ui.visit.activity.VisitStatusActivity;
+import org.intelehealth.ezazi.ui.visit.adapter.OutcomeCount;
+import org.intelehealth.ezazi.ui.visit.data.VisitRepository;
 import org.intelehealth.ezazi.utilities.DownloadMindMaps;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
@@ -210,6 +214,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     private Button mEndShiftTextView;
 
     private BottomNavigationView bottomNavigationView;
+    int countPending;
 
     private List<VisitDTO> visitDTOList;
     /*eZazi End*/
@@ -372,6 +377,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         // Added by Mithun Vaghela
         TextView welcomeUser = findViewById(R.id.tvWelcomeUser);
         welcomeUser.setText(getString(R.string.welcome_user, sessionManager.getChwname()));
+        Log.d(TAG, "onCreate: test log");
 
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
@@ -423,6 +429,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
             }
         });*/
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
         loadVisits();
 
         initBottomMenu();
@@ -976,13 +983,12 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     }
 
     private void loadVisits() {
-
         if (sessionManager.isPullSyncFinished()) {
             getVisits();
             findViewById(R.id.tvEmpty).setVisibility(View.GONE);
             mActiveVisitsRecyclerView.setVisibility(View.VISIBLE);
             List<ActivePatientModel> activePatientModels = new VisitQueryResultBinder().executeActiveVisitsQuery(offset, limit);   //doQuery(offset);
-
+            Log.d(TAG, "loadVisits11: activePatientModels  : " + activePatientModels.size());
             // #-- Alert logic -- start
             for (int j = 0; j < activePatientModels.size(); j++) {
 //                encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(activePatientModels.get(j).getUuid()); // get latest encounter by visit uuid
@@ -1099,6 +1105,8 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
             mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
 
             setActiveCasesCount();
+            showDecisionPendingVisits();
+
 
 //            mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
 //                @Override
@@ -1240,9 +1248,25 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 
     }
 
+    private void showDecisionPendingVisits() {
+        Log.d(TAG, "showDecisionPendingVisits: ");
+        TextView tvDecisionPending = findViewById(R.id.tvDecisionPendingVisitLabel);
+        if (db != null && db.isOpen()) {
+            VisitRepository visitRepository = new VisitRepository(db);
+            List<PatientDTO> outcomePendingVisits = visitRepository.getOutcomePendingVisits(0, 10, sessionManager.getProviderID());
+            String decisionPending = getString(R.string.decision_pending, outcomePendingVisits.size());
+            tvDecisionPending.setText(decisionPending);
+        }
+
+        tvDecisionPending.setOnClickListener(view -> {
+            Intent intent = new Intent(HomeActivity.this, VisitStatusActivity.class);
+            startActivity(intent);
+        });
+    }
+
     private void setActiveCasesCount() {
         String activeCases = getString(R.string.active_cases, mActivePatientAdapter.getItemCount());
-        ((TextView) findViewById(R.id.tvActiveVisitLabel)).setText(activeCases);
+        ((TextView) findViewById(R.id.tvActiveVisitLabel1)).setText(activeCases);
         mEndShiftTextView.setEnabled(mActivePatientAdapter.getItemCount() > 0);
     }
 
@@ -2457,4 +2481,5 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         search = query;
         return false;
     }
+
 }

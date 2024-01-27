@@ -71,7 +71,7 @@ public class PatientQueryBuilder extends QueryBuilder {
                 "P.date_of_birth, " +
                 "CASE WHEN PA.person_attribute_type_uuid  != '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END bedNo, " +
                 "CASE PA.person_attribute_type_uuid WHEN '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END phoneNumber, " +
-                "(SELECT uuid FROM tbl_encounter where visituuid = V.uuid and voided IN ('0', 'false', 'FALSE') AND encounter_type_uuid != '" + ENCOUNTER_VISIT_COMPLETE + "' ORDER BY encounter_time DESC limit 1) as latestEncounterId, " +
+                "(SELECT uuid FROM tbl_encounter where visituuid = V.uuid and voided IN ('0', 'false', 'FALSE') AND encounter_type_uuid != '" + ENCOUNTER_VISIT_COMPLETE + "' ORDER BY encounter_time DESC limit 1) as latestEncounterId,  (SELECT value FROM tbl_visit_attribute where visit_attribute_type_uuid ='" +  DECISION_PENDING + "' AND visit_uuid = V.uuid) as outcomePending, " +
                 getCurrentStageCase())
                 .from("tbl_visit  V")
                 .join("LEFT OUTER JOIN tbl_patient P ON P.uuid = V.patientuuid " +
@@ -81,7 +81,7 @@ public class PatientQueryBuilder extends QueryBuilder {
                         " WHERE name = '" + PatientAttributesDTO.Columns.BED_NUMBER.value + "')")
                 .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
                         "AND V.voided IN ('0', 'false', 'FALSE') AND VA.value = '" + providerId + "'" +
-                        " AND  (V.enddate IS NULL OR  V.enddate = '')")
+                        " AND outcomePending = 'false'  AND  (V.enddate IS NULL OR  V.enddate = '')")
                 .groupBy("V.uuid")
                 .orderBy("V.startdate")
                 .orderIn("DESC")
@@ -157,17 +157,16 @@ public class PatientQueryBuilder extends QueryBuilder {
         Log.e(TAG, "upcomingPatientQuery => " + query);
         return query;
     }
-
     public String outcomePendingPatientQuery(int offset, int limit, String providerId) {
-        String query = select("V.uuid as visitId, P.openmrs_id, P.dateCreated, " +
+        String query = select("P.date_of_birth, P.uuid, V.enddate, V. startdate,V.uuid as visitId, P.openmrs_id, P.dateCreated, " +
                 "CASE WHEN middle_name IS NULL THEN first_name || ' ' || last_name " +
                 "ELSE first_name || ' ' || middle_name || ' ' || last_name END fullName, " + getCurrentStageCase() + "," +
-                "(SELECT value FROM tbl_visit_attribute where visit_attribute_type_uuid = '" + DECISION_PENDING + "') as outcomePending")
+                "(SELECT value FROM tbl_visit_attribute where visit_attribute_type_uuid = '" + DECISION_PENDING + "' AND visit_uuid = V.uuid) as outcomePending")
                 .from(" tbl_visit V ")
                 .join(" LEFT JOIN tbl_patient P ON P.uuid = V.patientuuid ")
                 .joinPlus(" LEFT JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid ")
                 .where(" V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
-                        "AND V.voided IN ('0', 'false', 'FALSE') AND VA.value = '" + providerId + "' AND outcomePending = 'true' ")
+                        "AND V.voided IN ('0', 'false', 'FALSE') AND VA.value = '" + providerId + "' AND outcomePending = 'true'")
                 .groupBy(" V.uuid ")
                 .orderBy(" P.dateCreated ")
                 .orderIn("DESC")

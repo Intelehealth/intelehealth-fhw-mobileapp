@@ -103,19 +103,26 @@ public class CardGenerationEngine {
 
                     if (latestEncounterName.toLowerCase().contains("stage1")) {
                         if (minutes >= 30) {
-                            // get next encounter name
-                            String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
-                            if (nextEncounterTypeName != null) {
-                                Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
-                                createNewEncounter(visitUid, nextEncounterTypeName);
+                            //out of time -decision pending
+                            if (checkVisitEncounterReachToLimitForStage1(latestEncounterName)) {
+                                closeReachToLimitVisit(visitUid);
+                            } else {
+                                // get next encounter name
+                                String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
+                                if (nextEncounterTypeName != null) {
+                                    Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
+                                    createNewEncounter(visitUid, nextEncounterTypeName);
+                                }
                             }
                         } else if (minutes == 29) {
                             SyncUtils syncUtils = new SyncUtils();
                             syncUtils.syncBackground();
                         }
                     } else if (latestEncounterName.toLowerCase().contains("stage2")) {
+                        Log.d(TAG, "scanForNewCardEligibility: minutes : " + minutes);
+
                         if (minutes >= 15) {
-                            //out of time
+                            //out of time -decision pending
                             if (checkVisitEncounterReachToLimit(latestEncounterName)) {
                                 closeReachToLimitVisit(visitUid);
                             } else {
@@ -246,6 +253,8 @@ public class CardGenerationEngine {
     }
 
     private static void closeReachToLimitVisit(String visitId) {
+        Log.d(TAG, "kz11closeReachToLimitVisit: visitid :: " + visitId);
+        Log.d(TAG, "kz11closeReachToLimitVisit: check insert value :");
         long updated = new VisitAttributeListDAO().updateVisitAttribute(visitId, UuidDictionary.DECISION_PENDING, "true");
         if (updated > 0) {
             try {
@@ -341,4 +350,17 @@ public class CardGenerationEngine {
         notificationManager.notify(100, notificationBuilder.build());
 
     }
+
+    private static boolean checkVisitEncounterReachToLimitForStage1(String encounterTypeName) {
+        if (!encounterTypeName.toLowerCase().contains("stage") && !encounterTypeName.toLowerCase().contains("hour"))
+            return false;
+        String[] parts = encounterTypeName.toLowerCase().replaceAll("stage", "").replaceAll("hour", "").split("_");
+        if (parts.length != 3) return false;
+        int stageNumber = Integer.parseInt(parts[0]);
+        int hourNumber = Integer.parseInt(parts[1]);
+        int cardNumber = Integer.parseInt(parts[2]);
+
+        return stageNumber == 1 && hourNumber == 15 && cardNumber == 4;
+    }
+
 }

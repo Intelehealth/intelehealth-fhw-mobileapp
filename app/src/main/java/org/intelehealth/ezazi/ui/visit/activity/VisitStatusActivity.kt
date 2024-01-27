@@ -1,12 +1,17 @@
 package org.intelehealth.ezazi.ui.visit.activity
 
 import android.os.Bundle
+import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import org.intelehealth.ezazi.R
 import org.intelehealth.ezazi.databinding.ActivityVisitStatusBinding
 import org.intelehealth.ezazi.ui.shared.BaseActivity
 import org.intelehealth.ezazi.ui.visit.adapter.VisitTabPagerAdapter
+import org.intelehealth.ezazi.ui.visit.fragment.OutcomePendingVisitFragment
 
 /**
  * Created by Vaghela Mithun R. on 16-01-2024 - 00:39.
@@ -20,19 +25,28 @@ class VisitStatusActivity : BaseActivity() {
         binding = ActivityVisitStatusBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupActionBar()
-        setupTabs()
+
+        val fragmentContainer = findViewById<FrameLayout>(R.id.fragmentContainer)
+        // Example: Replace the fragment in the FrameLayout with OutcomePendingVisitFragment
+        replaceFragment(OutcomePendingVisitFragment(), fragmentContainer.id)
+       /* supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, MyFragment())
+            .commit()    */
+
+    //setupTabs()
     }
+
 
     private fun setupActionBar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.let {
-            it.title = resources.getString(R.string.visit)
+            it.title = resources.getString(R.string.decision_pending_title)
             it.setHomeButtonEnabled(true)
             it.setDisplayHomeAsUpEnabled(true)
         }
     }
 
-    private fun setupTabs() {
+    /*private fun setupTabs() {
         if (::binding.isInitialized) {
             val adapter = VisitTabPagerAdapter(this, supportFragmentManager, lifecycle)
             binding.viewPagerVisitStatus.adapter = adapter
@@ -43,5 +57,17 @@ class VisitStatusActivity : BaseActivity() {
                 tab.text = adapter.getTitle(position)
             }.attach()
         }
+    }*/
+    private fun replaceFragment(fragment: Fragment, containerId: Int) {
+        val fragmentManager: FragmentManager = supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+
+        // Replace containerId with the actual ID of your FrameLayout
+        fragmentTransaction.replace(containerId, fragment)
+
+        // Add to back stack if needed
+        // fragmentTransaction.addToBackStack(null)
+
+        fragmentTransaction.commit()
     }
 }

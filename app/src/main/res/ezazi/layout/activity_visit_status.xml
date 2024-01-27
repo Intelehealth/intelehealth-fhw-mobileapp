@@ -2,9 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
@@ -25,21 +26,22 @@
                 app:navigationIcon="@drawable/selector_actionbar_back"
                 app:popupTheme="@style/Theme.EZazi.PopupOverlay" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabsVisitStatus"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                app:tabIndicatorColor="@color/blinkCardColor"
-                app:tabMode="scrollable" />
+            <!--     <com.google.android.material.tabs.TabLayout
+                     android:id="@+id/tabsVisitStatus"
+                     android:layout_width="match_parent"
+                     android:layout_height="?actionBarSize"
+                     app:tabIndicatorColor="@color/blinkCardColor"
+                     app:tabMode="scrollable" />-->
+
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:layout_margin="@dimen/screen_padding"
-            android:background="@drawable/container_bg"
-            android:id="@+id/viewPagerVisitStatus"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+            <FrameLayout
+                android:id="@+id/fragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/screen_padding"
+                android:layout_marginEnd="@dimen/screen_padding"
+                android:layout_height="match_parent"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 </layout>

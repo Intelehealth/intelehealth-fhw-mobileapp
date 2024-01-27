@@ -7,10 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.ezazi.R
-import org.intelehealth.ezazi.app.AppConstants
+import org.intelehealth.ezazi.core.Result
 import org.intelehealth.ezazi.databinding.FragmentVisitStatusListBinding
-import org.intelehealth.ezazi.ui.elcg.model.ELCGGraph
-import org.intelehealth.ezazi.ui.visit.data.VisitRepository
+import org.intelehealth.ezazi.models.dto.PatientDTO
 import org.intelehealth.ezazi.ui.visit.viewmodel.VisitViewModel
 
 /**
@@ -37,8 +36,13 @@ class UpcomingVisitFragment : Fragment(R.layout.fragment_visit_status_list) {
         viewMode.upcomingVisits().observe(viewLifecycleOwner) {
             viewMode.handleResponse(it) { visits ->
                 Timber.d { "Upcoming Visit ${Gson().toJson(visits)}" }
+                bindDataToUI(it)
             }
         }
+    }
+
+    private fun bindDataToUI(result: Result<List<PatientDTO>>) {
+
     }
 
     companion object {
