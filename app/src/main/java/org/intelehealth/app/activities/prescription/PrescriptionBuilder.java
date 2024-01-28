@@ -272,6 +272,9 @@ public class PrescriptionBuilder {
         String newValue = value;
         if (newValue == null || newValue.isEmpty() || newValue.equalsIgnoreCase("0")) {
             newValue = activityContext.getString(R.string.not_provided);
+            //we are not gonna show empty vitals on ui
+            //we removing whole ui corresponding vitals
+            return "";
         }
 
         return listOpeningTag
@@ -444,9 +447,6 @@ public class PrescriptionBuilder {
         if (!tableAdditionalDataFinalString.isEmpty()) {
             finalMedicationData = finalMedicationData + tableAdditionalDataFinalString;
         }
-
-        Log.d("TTTTTTTTTT","  "+finalMedicationData);
-
 
         finalMedicationData = finalMedicationData
                 + closingDivTag
