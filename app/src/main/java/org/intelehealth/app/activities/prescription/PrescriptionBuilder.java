@@ -246,6 +246,8 @@ public class PrescriptionBuilder {
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_spo2), vitalsData.getSpo2());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.respiratory_rate), vitalsData.getResp());
 
+        if(vitalsDataString.isEmpty()) return "";
+
         finalVitalsData = openingDivTag
                 + openingDataSectionTag
                 + vitalsTitleTag
