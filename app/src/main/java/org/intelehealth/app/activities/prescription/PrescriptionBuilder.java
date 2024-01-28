@@ -273,7 +273,7 @@ public class PrescriptionBuilder {
         if (newValue == null || newValue.isEmpty() || newValue.equalsIgnoreCase("0")) {
             newValue = activityContext.getString(R.string.not_provided);
             //we are not gonna show empty vitals on ui
-            //we removing whole ui corresponding vitals
+            //we removing whole ui for corresponding vitals
             return "";
         }
 
