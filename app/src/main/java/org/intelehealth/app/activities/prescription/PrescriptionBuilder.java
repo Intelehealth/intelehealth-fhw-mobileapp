@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.prescription;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -208,11 +209,8 @@ public class PrescriptionBuilder {
                 + generateConsultationDetails(patient)
                 + generateDiagnosisData(diagnosisData)
                 + generateMedicationData(medicationData)
-                + lineBreak
                 + generateAdviceData(adviceData)
-                + lineBreak
                 + generateTestData(testData)
-                + lineBreak
                 + generateReferredOutData(referredOutData)
                 + generateFollowUpData(followUpData)
                 + rowClosingTag
@@ -248,6 +246,8 @@ public class PrescriptionBuilder {
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_spo2), vitalsData.getSpo2());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.respiratory_rate), vitalsData.getResp());
 
+        if(vitalsDataString.isEmpty()) return "";
+
         finalVitalsData = openingDivTag
                 + openingDataSectionTag
                 + vitalsTitleTag
@@ -274,6 +274,9 @@ public class PrescriptionBuilder {
         String newValue = value;
         if (newValue == null || newValue.isEmpty() || newValue.equalsIgnoreCase("0")) {
             newValue = activityContext.getString(R.string.not_provided);
+            //we are not gonna show empty vitals on ui
+            //we removing whole ui for corresponding vitals
+            return "";
         }
 
         return listOpeningTag
@@ -425,6 +428,7 @@ public class PrescriptionBuilder {
                 + "<th scope=\"col\">Remarks</th>\n"
                 + "</tr>\n"
                 + "</thead>";
+        String lineBreak = "<br>";
 
         String tableDataFinalString = bifurcateMedicationData(medicationData);
         String tableAdditionalDataFinalString = handleAdditionalData(medicationData);
@@ -446,18 +450,24 @@ public class PrescriptionBuilder {
             finalMedicationData = finalMedicationData + tableAdditionalDataFinalString;
         }
 
-
         finalMedicationData = finalMedicationData
                 + closingDivTag
                 + closingDivTag
                 + closingDivTag;
 
-        return finalMedicationData;
+        if((tableDataFinalString+tableAdditionalDataFinalString).isEmpty()){
+            return "";
+        }
+
+        return finalMedicationData+lineBreak;
     }
 
     private String bifurcateMedicationData(String medicationData) {
         if (medicationData.isEmpty()) {
-            return handleEmptyMedicationData();
+            //returning empty because currently if no medication found
+            // then we will disable the medication ui
+            return "";
+            //return handleEmptyMedicationData();
         }
 
         String finalMedicationDataString = "";
@@ -580,8 +590,11 @@ public class PrescriptionBuilder {
         String dataSectionContentOpeningTag = "<div class=\"data-section-content\">";
         String unorderedListOpeningTag = "<ul class=\"items-list\">";
         String unorderedListClosingTag = "</ul>";
+        String lineBreak = "<br>";
 
         String bifurcatedAdviceData = checkAndBifurcateAdviceData(adviceData);
+
+        if(bifurcatedAdviceData.isEmpty()) return "";
 
         finalAdviceString = openingDivTag
                 + dataSectionTag
@@ -594,7 +607,7 @@ public class PrescriptionBuilder {
                 + closingDivTag
                 + closingDivTag;
 
-        return finalAdviceString;
+        return finalAdviceString+lineBreak;
     }
 
     private String checkAndBifurcateAdviceData(String adviceData) {
@@ -607,6 +620,10 @@ public class PrescriptionBuilder {
         String spanClosingTag = "</span>";
 
         if (!adviceData.contains("<br><br>")) {
+            //checking any advice exist or not
+            //if not then return empty string
+            //because we will disable advice ui if advice is empty
+            if(adviceData.isEmpty()) return "";
             finalAdviceStringBuilder.append(listOpeningTag);
             finalAdviceStringBuilder.append(divClassOpeningTagCenter);
             finalAdviceStringBuilder.append(spanOpeningTag);
@@ -616,6 +633,10 @@ public class PrescriptionBuilder {
             finalAdviceStringBuilder.append(listClosingTag);
         } else {
             String[] adviceArray = adviceData.split("<br><br>");
+            //checking any advice exist or not
+            //if not then return empty string
+            //because we will disable advice ui if advice is empty
+            if(adviceArray.length == 0) return "";
             for (String advice : adviceArray) {
                 finalAdviceStringBuilder.append(listOpeningTag);
                 finalAdviceStringBuilder.append(divClassOpeningTagCenter);
@@ -643,9 +664,11 @@ public class PrescriptionBuilder {
         String dataSectionContentOpeningTag = "<div class=\"data-section-content\">";
         String unorderedListOpeningTag = "<ul class=\"items-list\">";
         String unorderedListClosingTag = "</ul>";
+        String lineBreak = "<br>";
 
         String bifurcatedTestsData = checkAndBifurcateTestData(testData);
 
+        if(bifurcatedTestsData.isEmpty()) return "";
         finalTestString = divOpeningTag
                 + divDataSectionOpening
                 + divDataSectionTitleTag
@@ -657,7 +680,7 @@ public class PrescriptionBuilder {
                 + divClosingTag
                 + divClosingTag;
 
-        return finalTestString;
+        return finalTestString+lineBreak;
     }
 
     private String checkAndBifurcateTestData(String testsData) {
@@ -671,6 +694,10 @@ public class PrescriptionBuilder {
         String spanClosingTag = "</span>";
 
         if (!testsData.contains("\n\n")) {
+            //checking any test exist or not
+            //if not then return empty string
+            //because we will disable test ui if test is empty
+            if(testsData.isEmpty()) return "";
             finalTestsStringBuilder.append(listOpeningTag);
             finalTestsStringBuilder.append(divClassOpeningTagCenter);
             finalTestsStringBuilder.append(spanOpeningTag);
@@ -680,6 +707,11 @@ public class PrescriptionBuilder {
             finalTestsStringBuilder.append(listClosingTag);
         } else {
             String[] adviceArray = testsData.split("\n\n");
+            //checking any test exist or not
+            //if not then return empty string
+            //because we will disable test ui if test is empty
+            if(adviceArray.length == 0) return "";
+
             for (String advice : adviceArray) {
                 finalTestsStringBuilder.append(listOpeningTag);
                 finalTestsStringBuilder.append(divClassOpeningTagCenter);
@@ -719,6 +751,8 @@ public class PrescriptionBuilder {
 
         String bifurcatedReferralData = checkAndBifurcateReferredData(referredOutData);
 
+        if(bifurcatedReferralData.isEmpty()) return "";
+
         finalReferredOutString = divOpeningTag
                 + divDataSectionOpening
                 + divDataSectionTitleTag
@@ -754,6 +788,10 @@ public class PrescriptionBuilder {
             finalReferredOutData.append(tableRowOpeningTag);
             finalReferredOutData.append(noReferralsAddedOpeningTag);
             finalReferredOutData.append(tableRowClosingTag);
+            //checking any referral out exist or not
+            //if not then return empty string
+            //because we will disable referral out ui if referral out is empty
+            return "";
         } else {
             String[] referredOutArray;
             if (referredOutData.contains("\n\n")) {
@@ -761,6 +799,10 @@ public class PrescriptionBuilder {
             } else {
                 referredOutArray = new String[]{referredOutData};
             }
+            //checking any referral out exist or not
+            //if not then return empty string
+            //because we will disable referral out ui if referral out is empty
+            if(referredOutArray.length == 0) return "";
 
             for (String referred : referredOutArray) {
                 if (referred.contains(":")) {
@@ -798,6 +840,10 @@ public class PrescriptionBuilder {
 
         if (followUpData.equalsIgnoreCase("")) {
             isFollowUpScheduled = "No";
+            //checking any follow up exist or not
+            //if not then return empty string
+            //because we will disable follow up ui if follow up is empty
+            return "";
         } else {
             isFollowUpScheduled = "Yes";
         }
