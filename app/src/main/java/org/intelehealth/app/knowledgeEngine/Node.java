@@ -75,12 +75,12 @@ public class Node implements Serializable {
     public static final int DIRECT_USER_INPUT_CHILD = 0;
     public static final int CHILD_OPTIONS = 1;
     public static final int CHILD_QUESTION = 2;
-    public static String bullet = "\u2022";
-    public static String big_bullet = "\u25CF";
-    //    public static String bullet_hollow = "\u25CB";
-    public static String bullet_hollow = "\u2022";
-    public static String bullet_arrow = "\u25BA";
-    public static String right_pointing = "\u25BB";
+    public static String bullet = "•";
+    public static String big_bullet = "●";
+    //    public static String bullet_hollow = "○";
+    public static String bullet_hollow = "•";
+    public static String bullet_arrow = "►";
+    public static String right_pointing = "▻";
     public static String next_line = "<br/>";
     String space = "\t";
     private String engineVersion;
