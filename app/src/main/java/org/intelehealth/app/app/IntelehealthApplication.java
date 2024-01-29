@@ -29,6 +29,7 @@ import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
 import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
 
 import io.reactivex.plugins.RxJavaPlugins;
@@ -160,6 +161,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
      * so when app create open it and close on app terminate
      */
     public void initSocketConnection() {
+        DateTimeResource.build(this);
         Log.d(TAG, "initSocketConnection: ");
         if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
             Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
