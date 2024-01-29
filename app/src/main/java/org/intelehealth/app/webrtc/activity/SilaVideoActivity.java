@@ -94,13 +94,13 @@ public class SilaVideoActivity extends CoreVideoCallActivity implements SwipeBut
     private void initView() {
         if (args != null && args.getDoctorName() != null) {
             String doctorName = args.getDoctorName();
-            if (!args.getDoctorName().startsWith("Dr")) {
-                doctorName = "Dr." + doctorName;
+            if (!args.getDoctorName().startsWith(getString(R.string.doctor_annotation))) {
+                doctorName = getString(R.string.doctor_annotation) + doctorName;
             }
             CallMode callMode = CallMode.OUTGOING;
             if (args.isIncomingCall()) callMode = CallMode.INCOMING;
             showPatientName();
-            binding.incomingCallView.callingHintsTv.setText(callMode.getValue());
+            binding.incomingCallView.callingHintsTv.setText(getString(callMode.getResourceValue()));
             binding.incomingCallView.callerNameTv.setText(doctorName);
             binding.incomingCallView.tvCallerIdentity.setText(String.valueOf(args.getDoctorName().toCharArray()[0]));
             binding.videoCallView.tvVideoCallDoctorName.setText(doctorName);
