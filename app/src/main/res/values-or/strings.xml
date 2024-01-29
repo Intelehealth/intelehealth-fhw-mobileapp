@@ -881,7 +881,7 @@
 
     <string name="what_is_your_marital_status">ବୈବାହିକ ସ୍ଥିତି*</string>
     <string name="currently_married">ବିବାହିତ</string>
-<!--    <string name="married_gauna_not_performed">ବିବାହିତ , ସମ୍ପାଦନ ହୋଇନାହିଁ</string>-->
+    <!--    <string name="married_gauna_not_performed">ବିବାହିତ , ସମ୍ପାଦନ ହୋଇନାହିଁ</string>-->
     <string name="widowed">ବିଧବା</string>
     <string name="divorced">ଛାଡପତ୍ର</string>
     <string name="separated">ପୃଥକ ରହିବା</string>
@@ -1058,7 +1058,7 @@
     <string name="location_setup">ସ୍ଥାନ ନିରୂପଣ %1$s</string>
     <string name="app_version_string">ବ୍ୟବହୃତ %1$s , ଆପ ର ବ୍ୟକ୍ତିଗତ ବିବରଣ %2$s</string>
     <string name="height_ft">ଫୁଟ</string>
-    <string name="ft">ପାଦ</string>
+    <string name="ft">ଫୁଟ</string>
     <string name="in">ଇଞ୍ଚ</string>
     <string name="please_select_patient_height">ଦୟାକରି ରୋଗୀର ଉଚ୍ଚତା ନିରୂପଣ କର</string>
     <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">ସିଷ୍ଟୋଲିକ ଚାପ ଦାଇୟାଷ୍ଟୋଲିକ ଚାପ ଠାରୁ କମ୍ ହେବନି</string>
