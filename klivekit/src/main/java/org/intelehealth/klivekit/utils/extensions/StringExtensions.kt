@@ -5,6 +5,8 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import org.intelehealth.klivekit.R
+import org.intelehealth.klivekit.utils.DateTimeResource
 import org.intelehealth.klivekit.utils.DateTimeUtils
 import java.util.Calendar
 import java.util.Date
@@ -25,6 +27,7 @@ fun String.toLocalDateFormat(format: String): String {
 }
 
 fun String.milliToLogTime(format: String): String {
+    val resource = DateTimeResource.getInstance()
     val different = System.currentTimeMillis() - this.toLong()
     val days = TimeUnit.MILLISECONDS.toDays(different)
     val hours = TimeUnit.MILLISECONDS.toHours(different)
@@ -35,23 +38,35 @@ fun String.milliToLogTime(format: String): String {
         it.timeInMillis = this.toLong()
         return@let it.time
     }.toWeekDaysWithTime(format)
-    else if (hours >= 1) if (hours.toInt() == 1) "An hr ago" else "$hours hrs ago"
-    else if (minutes >= 1) if (minutes.toInt() == 1) "A min ago" else "$minutes mins ago"
-    else if (seconds >= 1) if (seconds.toInt() == 1) "A sec ago" else "$seconds secs ago"
-    else "Now"
+    else if (hours >= 1) {
+        if (hours.toInt() == 1) resource?.getResourceString(R.string.an_hour_ago) ?: "An hour ago"
+        else resource?.getResourceString(R.string.hours_ago, "$hours") ?: "$hours hrs ago"
+    } else if (minutes >= 1) {
+        if (minutes.toInt() == 1) resource?.getResourceString(R.string.a_min_ago) ?: "A min ago"
+        else resource?.getResourceString(R.string.mins_ago, "$minutes") ?: "$minutes mins ago"
+    } else if (seconds >= 1) {
+        if (minutes.toInt() == 1) resource?.getResourceString(R.string.a_second_ago) ?: "A sec ago"
+        else resource?.getResourceString(R.string.seconds_ago, "$seconds") ?: "$seconds secs ago"
+    } else resource?.getResourceString(R.string.now) ?: "Now"
 }
 
 fun Date.toWeekDays(format: String): String {
-    return if (DateTimeUtils.isToday(this)) "Today"
-    else if (DateTimeUtils.isYesterday(this)) "Yesterday"
-    else DateTimeUtils.formatToLocalDate(this, format)
+    val resource = DateTimeResource.getInstance()
+    return if (DateTimeUtils.isToday(this)) {
+        resource?.getResourceString(R.string.today) ?: "Today"
+    } else if (DateTimeUtils.isYesterday(this)) {
+        resource?.getResourceString(R.string.yesterday) ?: "Yesterday"
+    } else DateTimeUtils.formatToLocalDate(this, format)
 }
 
 fun Date.toWeekDaysWithTime(format: String): String {
+    val resource = DateTimeResource.getInstance()
     val time = DateTimeUtils.formatToLocalDate(this, DateTimeUtils.TIME_FORMAT)
-    return if (DateTimeUtils.isToday(this)) "Today at $time"
-    else if (DateTimeUtils.isYesterday(this)) "Yesterday at $time"
-    else DateTimeUtils.formatToLocalDate(this, format)
+    return if (DateTimeUtils.isToday(this)) {
+        resource?.getResourceString(R.string.today_at, time) ?: "Today at $time"
+    } else if (DateTimeUtils.isYesterday(this)) {
+        resource?.getResourceString(R.string.yesterday_at, time) ?: "Yesterday at $time"
+    } else DateTimeUtils.formatToLocalDate(this, format)
 }
 
 fun String.span(@ColorRes colorRes: Int, context: Context) = SpannableString(this).apply {
