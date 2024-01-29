@@ -840,6 +840,7 @@ public class PrescriptionBuilder {
 
         if (followUpData.equalsIgnoreCase("")) {
             isFollowUpScheduled = "No";
+            return "";
         } else {
             isFollowUpScheduled = "Yes";
         }
