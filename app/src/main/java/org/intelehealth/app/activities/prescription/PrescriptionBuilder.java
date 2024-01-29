@@ -696,7 +696,7 @@ public class PrescriptionBuilder {
         if (!testsData.contains("\n\n")) {
             //checking any test exist or not
             //if not then return empty string
-            //because we will disable advice ui if advice is empty
+            //because we will disable test ui if test is empty
             if(testsData.isEmpty()) return "";
             finalTestsStringBuilder.append(listOpeningTag);
             finalTestsStringBuilder.append(divClassOpeningTagCenter);
@@ -709,7 +709,7 @@ public class PrescriptionBuilder {
             String[] adviceArray = testsData.split("\n\n");
             //checking any test exist or not
             //if not then return empty string
-            //because we will disable advice ui if advice is empty
+            //because we will disable test ui if test is empty
             if(adviceArray.length == 0) return "";
 
             for (String advice : adviceArray) {
@@ -790,7 +790,7 @@ public class PrescriptionBuilder {
             finalReferredOutData.append(tableRowClosingTag);
             //checking any referral out exist or not
             //if not then return empty string
-            //because we will disable advice ui if advice is empty
+            //because we will disable referral out ui if referral out is empty
             return "";
         } else {
             String[] referredOutArray;
@@ -801,7 +801,7 @@ public class PrescriptionBuilder {
             }
             //checking any referral out exist or not
             //if not then return empty string
-            //because we will disable advice ui if advice is empty
+            //because we will disable referral out ui if referral out is empty
             if(referredOutArray.length == 0) return "";
 
             for (String referred : referredOutArray) {
@@ -840,6 +840,9 @@ public class PrescriptionBuilder {
 
         if (followUpData.equalsIgnoreCase("")) {
             isFollowUpScheduled = "No";
+            //checking any follow up exist or not
+            //if not then return empty string
+            //because we will disable follow up ui if follow up is empty
             return "";
         } else {
             isFollowUpScheduled = "Yes";
