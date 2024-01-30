@@ -25,7 +25,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -980,11 +979,18 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     Log.v(TAG, "savePhysicalExamData, l2Node " + new Gson().toJson(l2Node));
                     List<String> imagePathList = l2Node.getImagePathList();
                     Log.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
-                    if (imagePathList != null) {
-                        for (String imagePath : imagePathList) {
-                            String comments = l2Node.getImagePathListWithSectionTag().get(imagePath);
-                            String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1).split("\\.")[0];
-                            updateImageDatabase(fileName, comments);
+                    if (imagePathList != null && imagePathList.size() > 0){
+                        if(l2Node.isImageUploaded()) {
+
+                            for (String imagePath : imagePathList) {
+                                String comments = l2Node.getImagePathListWithSectionTag().get(imagePath);
+                                String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1).split("\\.")[0];
+                                updateImageDatabase(fileName, comments);
+                            }
+
+                        } else {
+                            Toast.makeText(this, getString(R.string.image_upload_pending_alert), Toast.LENGTH_SHORT).show();
+                            return false;
                         }
                     }
                 }

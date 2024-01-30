@@ -2224,6 +2224,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (!newNumber.equals(finalOldDataNumber1)) {
                     AdapterUtils.setToDefault(submitButton);
                     AdapterUtils.setToDefault(skipButton);
+                    node.setSelected(false);
+                    holder.node.setSelected(false);
+
+                    node.setDataCaptured(false);
+                    holder.node.setDataCaptured(false);
                 }
             }
 
@@ -2254,6 +2259,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (!newType.equals(finalOldDataType)) {
                     AdapterUtils.setToDefault(submitButton);
                     AdapterUtils.setToDefault(skipButton);
+                    node.setSelected(false);
+                    holder.node.setSelected(false);
+
+                    node.setDataCaptured(false);
+                    holder.node.setDataCaptured(false);
                 }
             }
 

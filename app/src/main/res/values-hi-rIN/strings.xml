@@ -1462,5 +1462,6 @@
     <string name="confirm_cancel_appointment_message">इस विजिट से एक अपॉइंटमेंट जुड़ा हुआ है और इसे बंद करते ही वह अपॉइंटमेंट भी ख़ारिज हो जाएगा। क्या आप इस विजिट को बंद करना चाहेंगे?</string>
     <string name="no_prescription_exists">कोई नुस्खा नहीं पाया गया</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">You missed the compulsory questions, Please answer them.</string>
+    <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
 
 </resources>

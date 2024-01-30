@@ -169,13 +169,16 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
     public void addItem(Node node) {
-        Log.v(TAG, "addItem()");
+        Log.v(TAG, "addItem() "+ new Gson().toJson(node));
+        Log.v(TAG, "mItemList count "+ mItemList.size());
         for (int i = 0; i < mItemList.size(); i++) {
+            Log.v(TAG, "mItemList.get(i).getId() "+ mItemList.get(i).getId() +" node ID "+node.getId());
             if (mItemList.get(i).getId().equalsIgnoreCase(node.getId())) {
                 return;
             }
         }
         mItemList.add(node);
+        Log.v(TAG, "mItemList count "+ mItemList.size());
         mIndexMappingHashMap.put(mItemList.size() - 1, mRootIndex);
         notifyItemInserted(mItemList.size() - 1);
     }
@@ -938,6 +941,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         }
                         checkAndHideSkipButton(holder.skipButton);
                         if (type.equals("options")) {
+                            Log.v(TAG, "Option got!");
                             addItem(node);
                             //showNestedItemsV2(node, holder, node.getOptionsList(), index, false, false);
                         } else {
@@ -966,7 +970,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void showNestedItemsV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, boolean isGotFromChipSelected) {
-        Log.v(TAG, index + " - " + new Gson().toJson(selectedNode));
+        Log.v(TAG, index + " showNestedItemsV2  - " + new Gson().toJson(selectedNode));
+        Log.v(TAG, index + " showNestedItemsV2  - " + new Gson().toJson(options));
+        holder.selectedNestedOptionIndex=0;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         linearLayoutManager.setStackFromEnd(false);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
@@ -1007,6 +1013,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                     else {
                         holder.selectedNestedOptionIndex += 1;
+                        Log.v(TAG, "options.get(holder.selectedNestedOptionIndex) "+holder.selectedNestedOptionIndex);
                         holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
                     }
                 }
@@ -1038,6 +1045,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         if (mIsEditMode) {
             holder.nestedQuestionsListingAdapter.addItemAll(options);
         } else {
+            Log.v(TAG, "showNestedItemsV2 options.get(holder.selectedNestedOptionIndex)111 - "+holder.selectedNestedOptionIndex);
             holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
         }
         holder.nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
