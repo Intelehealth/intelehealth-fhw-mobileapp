@@ -62,7 +62,7 @@ object CallHandlerUtils {
      * @param callArgs an instance of RtcArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun operateIncomingCall(context: Context, callArgs: RtcArgs, ) {
+    fun operateIncomingCall(context: Context, callArgs: RtcArgs) {
         Timber.d { "operateIncomingCall ->Url = ${callArgs.url}" }
         callArgs.callMode = CallMode.INCOMING
         getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
@@ -79,16 +79,16 @@ object CallHandlerUtils {
     )
 
     private fun generateCallLog(callArgs: RtcArgs, context: Context) = RtcCallLog(
-        callerName = callArgs.doctorName!!,
-        callerId = callArgs.doctorId!!,
-        calleeId = callArgs.nurseId!!,
-        calleeName = callArgs.nurseName!!,
-        roomId = callArgs.roomId!!,
-        roomName = callArgs.patientName!!,
+        callerName = callArgs.doctorName ?: "",
+        callerId = callArgs.doctorId ?: "",
+        calleeId = callArgs.nurseId ?: "",
+        calleeName = callArgs.nurseName ?: "",
+        roomId = callArgs.roomId ?: "",
+        roomName = callArgs.patientName ?: "",
         callMode = callArgs.callMode,
         callStatus = callArgs.callStatus,
         callTime = System.currentTimeMillis().toString(),
-        callUrl = callArgs.url!!,
+        callUrl = callArgs.url ?: "",
         chatAction = RtcEngine.getConfig(context)!!.chatIntentClass,
         callAction = RtcEngine.getConfig(context)!!.callIntentClass,
         hasCallAction = false,
