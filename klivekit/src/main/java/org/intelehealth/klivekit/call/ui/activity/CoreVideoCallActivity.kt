@@ -80,8 +80,18 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         PreferenceHelper(applicationContext)
     }
 
-    private val neededPermissions =
-        arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
+    private val neededPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        arrayOf(
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA,
+            Manifest.permission.MANAGE_OWN_CALLS
+        )
+    } else {
+        arrayOf(
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA,
+        )
+    }
 
 
     // initiate the incoming call ringtone
