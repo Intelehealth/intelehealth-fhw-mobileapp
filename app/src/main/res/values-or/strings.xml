@@ -740,6 +740,7 @@
     <string name="hours">hours</string>
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">You are offline! Please connect to the internet for videos.</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">You missed the compulsory questions, Please answer them.</string>
+    <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
 
 
 </resources>
