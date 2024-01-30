@@ -33,6 +33,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -2771,7 +2772,7 @@ public class Node implements Serializable {
                                     }
                                 } else {
                                     if (answer.equals("%")) {
-                                    } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                    } else if (mOptions.get(i).getText().trim().equals(mOptions.get(i).getLanguage().trim())) {
                                         stringsList.add(bullet_hollow + answer + next_line);
                                     } else if (answer.substring(0, 1).equals("%")) {
                                         stringsList.add(bullet_hollow + answer.substring(1) + next_line);
