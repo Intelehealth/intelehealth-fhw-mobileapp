@@ -308,6 +308,7 @@
                             android:importantForAutofill="no"
                             android:inputType="number"
                             android:maxLines="1"
+                            android:maxLength="2"
                             android:nextFocusForward="@id/et_mobile_no"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />

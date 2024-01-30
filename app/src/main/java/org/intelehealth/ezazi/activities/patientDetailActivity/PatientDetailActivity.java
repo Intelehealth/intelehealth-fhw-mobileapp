@@ -394,7 +394,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                     speciality_attributes
                             .insertVisitAttributes(uuid, "$", VISIT_READ_STATUS);
                     speciality_attributes
-                            .insertVisitAttributes(uuid, "0", UuidDictionary.DECISION_PENDING);
+                            .insertVisitAttributes(uuid, "false", UuidDictionary.DECISION_PENDING);
 
 
                 } catch (DAOException e) {

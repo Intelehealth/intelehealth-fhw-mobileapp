@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
@@ -45,11 +45,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
-        tools:replace="allowBackup">
+        tools:replace="allowBackup" >
         <activity
             android:name=".activities.addNewPatient.PatientSummaryActivity"
             android:exported="false"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -59,7 +59,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -71,7 +71,6 @@
             android:label="@string/title_activity_epartogram"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".partogram.PartogramDataCaptureActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -107,7 +106,7 @@
         <receiver
             android:name=".utilities.RTCMessageReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" />
             </intent-filter>
@@ -181,7 +180,7 @@
             android:label="@string/title_activity_visit_summary"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
@@ -234,7 +233,7 @@
             android:label="@string/title_search_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan">
+            android:windowSoftInputMode="adjustNothing|adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -257,7 +256,7 @@
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
@@ -277,7 +276,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan|adjustResize">
+            android:windowSoftInputMode="adjustPan|adjustResize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
@@ -293,27 +292,24 @@
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <!--        <activity-->
-        <!--            android:name=".ui.elcg.activity.WhoElcgActivity"-->
-        <!--            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"-->
-        <!--            android:exported="true"-->
-        <!--            android:label=""-->
-        <!--            android:screenOrientation="portrait"-->
-        <!--            android:theme="@style/AppTheme.NoActionBar">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- <activity -->
+        <!-- android:name=".ui.elcg.activity.WhoElcgActivity" -->
+        <!-- android:configChanges="orientation|keyboardHidden|screenSize|uiMode" -->
+        <!-- android:exported="true" -->
+        <!-- android:label="" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity
             android:name=".ui.password.activity.ForgotPasswordActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -349,7 +345,6 @@
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
-
         <activity
             android:name=".ui.visit.activity.VisitLabourActivity"
             android:configChanges="uiMode"
@@ -357,14 +352,12 @@
             android:label="@string/complete_visit"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
         <activity
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -374,7 +367,7 @@
 
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
-            android:exported="false">
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -392,7 +385,7 @@
         <receiver
             android:name=".syncModule.BootCompleteReceiver"
             android:enabled="true"
-            android:exported="false">
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -406,7 +399,7 @@
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
         <service
             android:name=".services.firebase_services.MyFirebaseMessagingService"
-            android:exported="false">
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -424,8 +417,8 @@
 
         <receiver
             android:name=".services.firebase_services.CallRTCNotifyReceiver"
-            android:exported="false">
-            <intent-filter android:priority="100">
+            android:exported="false" >
+            <intent-filter android:priority="100" >
                 <action
                     android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"
                     android:enabled="true" />
@@ -433,13 +426,13 @@
         </receiver>
         <receiver
             android:name=".services.firebase_services.RestartServiceReceiver"
-            android:exported="false">
-            <intent-filter android:priority="99">
+            android:exported="false" >
+            <intent-filter android:priority="99" >
                 <action
                     android:name="org.intelehealth.app.RTC_SERVICE_START"
                     android:enabled="true" />
             </intent-filter>
-            <intent-filter android:priority="99">
+            <intent-filter android:priority="99" >
                 <action
                     android:name="android.intent.action.BOOT_COMPLETED"
                     android:enabled="true" />

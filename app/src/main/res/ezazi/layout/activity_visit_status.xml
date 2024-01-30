@@ -34,14 +34,27 @@
                      app:tabMode="scrollable" />-->
 
         </com.google.android.material.appbar.AppBarLayout>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerOutcomePending"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginEnd="@dimen/screen_padding"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-            <FrameLayout
+            <fragment
+                android:id="@+id/fragmentOutcomePending"
+                android:name="org.intelehealth.ezazi.ui.visit.fragment.OutcomePendingVisitFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.fragment.app.FragmentContainerView>
+         <!--   <FrameLayout
                 android:id="@+id/fragmentContainer"
                 android:layout_width="match_parent"
                 android:layout_marginStart="@dimen/screen_padding"
                 android:layout_marginEnd="@dimen/screen_padding"
                 android:layout_height="match_parent"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
-
+-->
     </LinearLayout>
 </layout>

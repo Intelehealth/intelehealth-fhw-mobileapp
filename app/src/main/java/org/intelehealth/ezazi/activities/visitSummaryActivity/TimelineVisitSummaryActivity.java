@@ -77,6 +77,7 @@ import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -374,7 +375,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             whichScreenUserCameFromTag = intent.getStringExtra("tag");
             isDecisionPending = intent.getBooleanExtra("isDecisionPending", false);
 
-            manageVisibilityOfPendingFlag();
+            // manageVisibilityOfPendingFlag();
 
             hwHasEditAccess = new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID());
 
@@ -454,16 +455,25 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             }
         });
 
+        manageVisibilityOfPendingFlag();
+
+
         mCountDownTimer.cancel();
         mCountDownTimer.start();
 
     }
 
     private void manageVisibilityOfPendingFlag() {
+        TextView tvPendingDecision = findViewById(R.id.tv_message_pending_outcome);
         layoutPendingFlag = findViewById(R.id.layout_decision_pending);
         ImageView ivCloseMessage = findViewById(R.id.iv_close_decision_pending);
         layoutPendingFlag.setVisibility(isDecisionPending ? View.VISIBLE : View.GONE);
         ivCloseMessage.setOnClickListener(view -> layoutPendingFlag.setVisibility(View.GONE));
+        if (stageNo == 1) {
+            tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_1));
+        } else if (stageNo == 2) {
+            tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_2));
+        }
     }
 
     private void showLabourBottomSheetDialog(boolean hasMotherDeceased) {
@@ -846,6 +856,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
             stageNo = 2;
             endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
+            updateVisitDecisionPendingFlag(); //added for decision pending visits
         });
 
     }
@@ -882,7 +893,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         }
         isVCEPresent = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
         Log.d(TAG, "fetchAllEncountersFromVisitForTimelineScreen: isNewEncounterCreated : " + isNewEncounterCreated);
-        adapter = new TimelineAdapter(context, intent, encounterListDTO, sessionManager, isVCEPresent, isNewEncounterCreated);
+        adapter = new TimelineAdapter(context, intent, encounterListDTO, sessionManager, isVCEPresent, isNewEncounterCreated, isDecisionPending);
         Collections.reverse(encounterListDTO);
         recyclerView.setAdapter(adapter);
     }
@@ -976,13 +987,15 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private void updateVisitDecisionPendingFlag() {
         Log.d(TAG, "updateVisitDecisionPendingFlag: visituuid : " + visitUuid);
         if (visitUuid != null && !visitUuid.isEmpty()) {
-            long updated = new VisitAttributeListDAO().updateVisitAttribute(visitUuid, UuidDictionary.DECISION_PENDING, "true");
+            long updated = new VisitAttributeListDAO().updateVisitAttribute(visitUuid, UuidDictionary.DECISION_PENDING, "false");
             if (updated > 0) {
                 try {
+                    isDecisionPending= false; //reset flag
+                    layoutPendingFlag.setVisibility(View.GONE);
                     VisitsDAO visitsDAO = new VisitsDAO();
                     visitsDAO.updateVisitSync(visitUuid, "false");
-                    Intent intent = new Intent(AppConstants.VISIT_DECISION_PENDING_ACTION);
-                    IntelehealthApplication.getAppContext().sendBroadcast(intent);
+                    //Intent intent = new Intent(AppConstants.VISIT_DECISION_PENDING_ACTION);
+                    //IntelehealthApplication.getAppContext().sendBroadcast(intent);
                 } catch (DAOException e) {
                     throw new RuntimeException(e);
                 }
@@ -1016,6 +1029,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
      /*   Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         checkInternetAndUploadVisitEncounter(true);*/
     }
+
 
 //    public static PendingIntent getPendingIntent(Context context, RtcArgs args) {
 //        Intent shiftChangeIntent = new Intent(context, HomeActivity.class);

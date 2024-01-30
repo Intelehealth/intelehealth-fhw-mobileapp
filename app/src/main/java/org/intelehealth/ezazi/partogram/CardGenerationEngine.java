@@ -103,7 +103,7 @@ public class CardGenerationEngine {
 
                     if (latestEncounterName.toLowerCase().contains("stage1")) {
                         if (minutes >= 30) {
-                            //out of time -decision pending
+                           /* //out of time -decision pending*/
                             if (checkVisitEncounterReachToLimitForStage1(latestEncounterName)) {
                                 closeReachToLimitVisit(visitUid);
                             } else {
@@ -360,7 +360,7 @@ public class CardGenerationEngine {
         int hourNumber = Integer.parseInt(parts[1]);
         int cardNumber = Integer.parseInt(parts[2]);
 
-        return stageNumber == 1 && hourNumber == 15 && cardNumber == 4;
+        return stageNumber == 1 && hourNumber == 15 && cardNumber == 2;
     }
 
 }

@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.models.dto.VisitAttributeDTO;
 import org.intelehealth.ezazi.utilities.Logger;
+import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 
 /**
@@ -113,7 +114,8 @@ public class VisitAttributeListDAO {
 
             if (visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_DR_SPECIALITY)
                     || visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_HOLDER)
-                    || visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_READ_STATUS)) {
+                    || visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_READ_STATUS) ||
+                    visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(UuidDictionary.DECISION_PENDING)) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             if (createdRecordsCount != -1) {
@@ -270,4 +272,28 @@ public class VisitAttributeListDAO {
 
         return createdRecordsCount1;
     }
+
+    public boolean checkIsVisitActive(String VISITUUID) {
+        String value = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? " +
+                        " AND visit_attribute_type_uuid = '" + UuidDictionary.DECISION_PENDING + "' AND value = 'false'",
+                new String[]{VISITUUID});
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                Log.d("isactive", "checkIsVisitActive: " + value);
+                return true;
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        return false;
+    }
+
 }

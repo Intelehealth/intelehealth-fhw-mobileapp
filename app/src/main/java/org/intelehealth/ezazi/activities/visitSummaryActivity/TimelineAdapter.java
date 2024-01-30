@@ -61,13 +61,17 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     private boolean nurseHasEditAccess = true;
     private boolean isNewEncounterCreated = false;
     private String encounterType = "";
+    private boolean isDecisionPending;
+
     public TimelineAdapter(Context context, Intent intent, ArrayList<EncounterDTO> encounterDTOList,
-                           SessionManager sessionManager, String isVCEPresent,boolean isNewEncounterCreated) {
+                           SessionManager sessionManager,
+                           String isVCEPresent, boolean isNewEncounterCreated, boolean isDecisionPending) {
         this.context = context;
         this.encounterDTOList = encounterDTOList;
         this.sessionManager = sessionManager;
         this.isVCEPresent = isVCEPresent;
         this.isNewEncounterCreated = isNewEncounterCreated;
+        this.isDecisionPending = isDecisionPending;
 
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -367,7 +371,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         holder.cardview.setEnabled(true);
                     }*/
 
-                    if (!isNewEncounterCreated && position == 0) {
+                    if (!isNewEncounterCreated && position == 0 && !isDecisionPending) {
                         holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
                         holder.ivEdit.setVisibility(View.VISIBLE);
                     } else {
@@ -391,8 +395,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
             }
         }
-         encounterType = encounterDTOList.get(position).getEncounterType().toString();
-        Log.d("TAG", "onBindViewHolder: encounterType : "+encounterType);
+        encounterType = encounterDTOList.get(position).getEncounterType().toString();
+        Log.d("TAG", "onBindViewHolder: encounterType : " + encounterType);
         updateEditIconVisibility(holder.ivEdit);
         if (!nurseHasEditAccess) holder.cardview.setOnClickListener(null);
     }
@@ -466,8 +470,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     type = FIFTEEN_MIN;
                 }*/
             }
-            Log.d("final list print", "nextIntent: whole list : "+new Gson().toJson(encounterDTOList));
-            Log.d("final", "nextIntent: encountertype : "+encounterType);
+            Log.d("final list print", "nextIntent: whole list : " + new Gson().toJson(encounterDTOList));
+            Log.d("final", "nextIntent: encountertype : " + encounterType);
             Intent i1 = new Intent(context, PartogramDataCaptureActivity.class);
             i1.putExtra("patientUuid", patientUuid);
             i1.putExtra("name", patientName);

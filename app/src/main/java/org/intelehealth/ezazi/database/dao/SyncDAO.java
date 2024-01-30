@@ -106,6 +106,7 @@ public class SyncDAO {
         String oldDate = sessionManager.getPullExcutedTime();
         String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
 //        String url = "https://" + sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        Log.d(TAG, "pullData_Background: url : "+url);
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
@@ -197,10 +198,11 @@ public class SyncDAO {
         db = mDbHelper.getWritableDatabase();
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
+        Log.d(TAG, "pullcheck pullData: encoded : "+encoded);
         String oldDate = sessionManager.getPullExcutedTime();
         String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
 //        String url = "https://" + sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
-        Logger.logD(TAG, "pull request url" + url);
+        Logger.logD(TAG, "pullcheck pull request url" + url);
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {

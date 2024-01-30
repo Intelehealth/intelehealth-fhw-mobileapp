@@ -1093,9 +1093,10 @@
     <string name="duration_unit">Duration Unit*</string>
     <string name="remark">Remark</string>
     <string name="content_elcg_internet_require">WHO LCG view requires an internet connection. Please ensure you are connected to the internet.</string>
-    <string name="decision_pending_title">Decision Pending</string>
-    <string name="decision_pending">Decision Pending (%1$d)</string>
-    <string name="take_visit_decision">Require to take decision of stage 2 outcome for this patient</string>
+    <string name="decision_pending_title">Outcome Pending</string>
+    <string name="decision_pending">Outcome Pending (%1$d)</string>
+    <string name="outcome_decision_stage_1">Please enter the outcome of Stage 1</string>
     <string name="patient_age_validation">Age must be greater than 13 years</string>
+    <string name="outcome_decision_stage_2">Please enter the outcome of Stage 2</string>
 
 </resources>

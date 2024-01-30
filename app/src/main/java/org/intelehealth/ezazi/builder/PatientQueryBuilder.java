@@ -71,7 +71,10 @@ public class PatientQueryBuilder extends QueryBuilder {
                 "P.date_of_birth, " +
                 "CASE WHEN PA.person_attribute_type_uuid  != '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END bedNo, " +
                 "CASE PA.person_attribute_type_uuid WHEN '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END phoneNumber, " +
-                "(SELECT uuid FROM tbl_encounter where visituuid = V.uuid and voided IN ('0', 'false', 'FALSE') AND encounter_type_uuid != '" + ENCOUNTER_VISIT_COMPLETE + "' ORDER BY encounter_time DESC limit 1) as latestEncounterId,  (SELECT value FROM tbl_visit_attribute where visit_attribute_type_uuid ='" +  DECISION_PENDING + "' AND visit_uuid = V.uuid) as outcomePending, " +
+                "(SELECT uuid FROM tbl_encounter where visituuid = V.uuid and voided IN ('0', 'false', 'FALSE') " +
+                "AND encounter_type_uuid != '" + ENCOUNTER_VISIT_COMPLETE + "' ORDER BY encounter_time DESC limit 1) " +
+                "as latestEncounterId,  (SELECT value FROM tbl_visit_attribute where " +
+                "visit_attribute_type_uuid ='" +  DECISION_PENDING + "' AND visit_uuid = V.uuid) as outcomePending, " +
                 getCurrentStageCase())
                 .from("tbl_visit  V")
                 .join("LEFT OUTER JOIN tbl_patient P ON P.uuid = V.patientuuid " +
@@ -79,7 +82,8 @@ public class PatientQueryBuilder extends QueryBuilder {
                         " LEFT OUTER JOIN tbl_patient_attribute PA ON PA.patientuuid = P.uuid " +
                         " AND PA.person_attribute_type_uuid = (SELECT uuid FROM tbl_patient_attribute_master " +
                         " WHERE name = '" + PatientAttributesDTO.Columns.BED_NUMBER.value + "')")
-                .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
+                .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" +
+                        ENCOUNTER_VISIT_COMPLETE + "' ) " +
                         "AND V.voided IN ('0', 'false', 'FALSE') AND VA.value = '" + providerId + "'" +
                         " AND outcomePending = 'false'  AND  (V.enddate IS NULL OR  V.enddate = '')")
                 .groupBy("V.uuid")

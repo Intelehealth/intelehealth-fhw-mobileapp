@@ -26,13 +26,9 @@ class VisitStatusActivity : BaseActivity() {
         setContentView(binding.root)
         setupActionBar()
 
-        val fragmentContainer = findViewById<FrameLayout>(R.id.fragmentContainer)
-        // Example: Replace the fragment in the FrameLayout with OutcomePendingVisitFragment
+        /*val fragmentContainer = findViewById<FrameLayout>(R.id.fragmentContainer)
         replaceFragment(OutcomePendingVisitFragment(), fragmentContainer.id)
-       /* supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, MyFragment())
-            .commit()    */
-
+*/
     //setupTabs()
     }
 
@@ -44,6 +40,8 @@ class VisitStatusActivity : BaseActivity() {
             it.setHomeButtonEnabled(true)
             it.setDisplayHomeAsUpEnabled(true)
         }
+        binding.toolbar.setNavigationOnClickListener { v -> onBackNavigate() }
+
     }
 
     /*private fun setupTabs() {
@@ -61,13 +59,10 @@ class VisitStatusActivity : BaseActivity() {
     private fun replaceFragment(fragment: Fragment, containerId: Int) {
         val fragmentManager: FragmentManager = supportFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-
-        // Replace containerId with the actual ID of your FrameLayout
         fragmentTransaction.replace(containerId, fragment)
-
-        // Add to back stack if needed
-        // fragmentTransaction.addToBackStack(null)
-
         fragmentTransaction.commit()
+    }
+    protected fun onBackNavigate() {
+        onBackPressed()
     }
 }
