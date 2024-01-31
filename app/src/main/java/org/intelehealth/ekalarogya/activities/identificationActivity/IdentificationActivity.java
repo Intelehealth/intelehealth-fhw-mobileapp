@@ -2384,7 +2384,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 char c = charSequence.charAt(i);
                 if (isCharAllowed(c)) // put your condition here
                     sb.append(c);
-                else if (c=='.' || c=='&' || c=='(' || c==')' || c=='\'' || c=='-' || c=='#' || c=='@' || c=='%' || c=='/')
+                else if (c=='.' || c=='&' || c=='(' || c==')' || c=='\'' || c=='-' || c=='#' || c=='@' || c=='%' || c=='/' || c==':' || c==',')
                     sb.append(c);
                 else
                     keepOriginal = false;
