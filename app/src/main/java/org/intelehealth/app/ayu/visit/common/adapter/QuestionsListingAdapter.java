@@ -1093,25 +1093,34 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (!havingNestedQuestion) {
                 havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
             }
+            Log.v(TAG, "havingNestedQuestion - "+havingNestedQuestion);
+            Log.v(TAG, "isRootNodeQuestion - "+isRootNodeQuestion);
+            Log.v(TAG, "Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType() - "+(Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType()));
+            Log.v(TAG, "selectedNode.isContainsTheQuestionBeforeOptions() - "+(selectedNode.isContainsTheQuestionBeforeOptions()));
             if (!isRootNodeQuestion && (havingNestedQuestion || Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType())) {
                 holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
                 //questionTextView.setText(options.get(0).findDisplay());
                 holder.nestedQuestionsListingAdapter.clearItems();
 
                 if (havingNestedQuestion || selectedNode.isContainsTheQuestionBeforeOptions()) {
-
+                    Log.v(TAG, "options - "+(new Gson().toJson(options)));
 
                     if (mIsEditMode) {
                         for (int i = 0; i < options.size(); i++) {
                             holder.nestedQuestionsListingAdapter.addItem(options.get(i));
                         }
                     } else if (holder.selectedNestedOptionIndex > 0) {
-                        for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
+                        holder.selectedNestedOptionIndex = 0;
+                        Log.v(TAG, "holder.selectedNestedOptionIndex 1 - "+(holder.selectedNestedOptionIndex));
+                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                       /* for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
                             if (options.size() < i) {
                                 holder.nestedQuestionsListingAdapter.addItem(options.get(i));
                             }
-                        }
+                        }*/
                     } else {
+                        Log.v(TAG, "holder.selectedNestedOptionIndex 2 - "+(holder.selectedNestedOptionIndex));
+
                         holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
                     }
                 } else {
