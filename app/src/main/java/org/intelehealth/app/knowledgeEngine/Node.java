@@ -2831,6 +2831,9 @@ public class Node implements Serializable {
                         }
                         lastVal = v;
                     }*/
+                    if(stringsList.contains(bullet_hollow  + NOT_ANSWERED + next_line) || stringsList.contains( right_pointing+ NOT_ANSWERED + next_line)){
+                        stringsList.clear();
+                    }
                     Log.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
