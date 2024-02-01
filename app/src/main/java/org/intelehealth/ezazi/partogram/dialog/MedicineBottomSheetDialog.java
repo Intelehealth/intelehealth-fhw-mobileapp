@@ -40,10 +40,12 @@ import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
 import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.ScreenUtils;
+import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -54,7 +56,7 @@ import java.util.List;
 public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         implements BaseViewHolder.ViewHolderClickListener, View.OnClickListener {
     private static final String TAG = "MedicineBottomSheetDial";
-    private List<Medicine> medicines;
+    private LinkedList<ItemHeader> medicines;
 
     private MedicineListChangeListener medicineListChangeListener;
     private List<Medicine> deletedMedicines;
@@ -275,11 +277,13 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     public void onViewHolderViewClicked(@Nullable View view, int position) {
         if (view == null) return;
         if (view.getId() == R.id.btnEditMedicine) {
-            binding.includeAddNewMedicineDialog.setMedicine(adapter.getItem(position));
-            binding.includeAddNewMedicineDialog.setUpdatePosition(position);
-            binding.clAddNewMedicineRoot.setVisibility(View.VISIBLE);
-            binding.btnAddMoreMedicine.setVisibility(View.GONE);
-            binding.includeAddNewMedicineDialog.btnAddMedicineAdd.setText(getString(R.string.update));
+            if (adapter.getItem(position) instanceof Medicine medicine) {
+                binding.includeAddNewMedicineDialog.setMedicine(medicine);
+                binding.includeAddNewMedicineDialog.setUpdatePosition(position);
+                binding.clAddNewMedicineRoot.setVisibility(View.VISIBLE);
+                binding.btnAddMoreMedicine.setVisibility(View.GONE);
+                binding.includeAddNewMedicineDialog.btnAddMedicineAdd.setText(getString(R.string.update));
+            }
         } else if (view.getId() == R.id.btnMedicineDelete) {
             showConfirmationDialog(position);
         } else if (view.getId() == R.id.clMedicineRowItemRoot) {
@@ -297,7 +301,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
                 .build();
 
         dialog.setListener(() -> {
-            addToDeletedMedicinesList(adapter.getItem(position));
+            addToDeletedMedicinesList((Medicine) adapter.getItem(position));
             adapter.remove(position);
         });
         dialog.show(getChildFragmentManager(), dialog.getClass().getCanonicalName());
@@ -347,7 +351,11 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     }
 
     private void saveAndUpdateFinalListOfMedicines() {
-        medicineListChangeListener.onMedicineListChanged(adapter.getList(), deletedMedicines);
+        List<Medicine> medicinesList = new ArrayList<>();
+        for (ItemHeader item : adapter.getList()) {
+            if (item instanceof Medicine medicine) medicinesList.add((Medicine) item);
+        }
+        medicineListChangeListener.onMedicineListChanged(medicinesList, deletedMedicines);
         dismiss();
     }
 
@@ -427,8 +435,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         ArrayList<String> filteredItems = new ArrayList<>();
         if (adapter != null && adapter.getList().size() > 0) {
             for (String item : medicineItem) {
-                for (Medicine medicine : adapter.getList()) {
-                    if (!medicine.getName().equals(item)) {
+                for (ItemHeader medItem : adapter.getList()) {
+                    if (medItem instanceof Medicine medicine && !medicine.getName().equals(item)) {
                         filteredItems.add(item);
                     }
                 }

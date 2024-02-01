@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
+import org.intelehealth.ezazi.R
 import org.intelehealth.ezazi.ui.password.listener.APIExecuteListener
 
 /**
@@ -54,7 +55,7 @@ open class BaseViewModel(
     }
 
     fun <L> executeLocalQuery(
-        queryCall: suspend () -> L?
+        queryCall:  () -> L?
     ) = flow {
         val localData = queryCall.invoke()
         localData?.let { emit(Result.Success(localData, "")) } ?: kotlin.run {

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,9 +58,11 @@ class OutcomePendingVisitFragment : Fragment(R.layout.fragment_visit_status_list
 
     override fun onResume() {
         super.onResume()
-        requireContext().registerReceiver(
+        ContextCompat.registerReceiver(
+            requireContext(),
             visitOutOfTimeReceiver,
-            IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION)
+            IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION),
+            ContextCompat.RECEIVER_NOT_EXPORTED
         )
         loadOutcomePendingVisits()
     }

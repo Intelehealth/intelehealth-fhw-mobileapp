@@ -202,12 +202,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     public static void setAlertDialogCustomTheme(Context context, Dialog builderDialog) {
         // Getting the view elements
         TextView textView = (TextView) builderDialog.getWindow().findViewById(android.R.id.message);
-        TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
+//        TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
         Button button1 = (Button) builderDialog.getWindow().findViewById(android.R.id.button1);
         Button button2 = (Button) builderDialog.getWindow().findViewById(android.R.id.button2);
         if (textView != null)
             textView.setTypeface(ResourcesCompat.getFont(context, R.font.lato_regular));
-        alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
+//        alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button1.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
     }

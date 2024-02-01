@@ -3,15 +3,13 @@ package org.intelehealth.ezazi.ui.elcg.fragment
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.content.IntentCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.ezazi.R
 import org.intelehealth.ezazi.databinding.FragmentElcgDataBinding
 import org.intelehealth.ezazi.ui.elcg.activity.WhoElcgActivity
-import org.intelehealth.ezazi.ui.elcg.adapter.ELCGAdapter
+import org.intelehealth.ezazi.ui.elcg.adapter.Adapter
 import org.intelehealth.ezazi.ui.elcg.data.ELCGDataSource
 import org.intelehealth.ezazi.ui.elcg.data.ELCGRepository
 import org.intelehealth.ezazi.ui.elcg.model.ELCGGraph
@@ -55,7 +53,7 @@ class ELCGDataFragment private constructor() : Fragment(R.layout.fragment_elcg_d
     private fun observeGraphData() {
         viewModel.elcgGraphLiveData.observe(viewLifecycleOwner) { data ->
             Timber.d { "graph size ${data.size}" }
-            binding!!.rvELCGData.adapter = ELCGAdapter(requireContext(), data)
+            binding!!.rvELCGData.adapter = Adapter(requireContext(), data)
         }
     }
 

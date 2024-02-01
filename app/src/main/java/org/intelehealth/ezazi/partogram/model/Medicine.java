@@ -2,11 +2,14 @@ package org.intelehealth.ezazi.partogram.model;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
+import org.intelehealth.klivekit.chat.model.ItemHeader;
 
 import java.io.Serializable;
 
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * Mob   : +919727206702
  **/
 
-public class Medicine implements Serializable {
+public class Medicine implements Serializable, ItemHeader {
     private String obsUuid;
     private String name;
     private String strength;
@@ -29,6 +32,8 @@ public class Medicine implements Serializable {
     private String form;
     private String duration;
     private String durationUnit;
+
+    private String createdAt;
 
     public String getMedicineFullName() {
         return medicineFullName;
@@ -202,5 +207,16 @@ public class Medicine implements Serializable {
         obs.setEncounteruuid(encounterId);
         Log.e("Medicine", "toObs: " + new Gson().toJson(obs));
         return obs;
+    }
+
+    @Override
+    public boolean isHeader() {
+        return false;
+    }
+
+    @NonNull
+    @Override
+    public String createdDate() {
+        return createdAt;
     }
 }

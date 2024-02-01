@@ -20,7 +20,7 @@ import org.intelehealth.ezazi.ui.visit.fragment.OutcomePendingVisitFragment
  **/
 class VisitStatusActivity : BaseActivity() {
     private lateinit var binding: ActivityVisitStatusBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         binding = ActivityVisitStatusBinding.inflate(layoutInflater)
         setContentView(binding.root)

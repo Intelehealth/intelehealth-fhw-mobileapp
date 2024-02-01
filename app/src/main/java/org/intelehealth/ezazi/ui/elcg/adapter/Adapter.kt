@@ -15,8 +15,8 @@ import java.util.LinkedList
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  */
-class ELCGAdapter(context: Context, objectsList: LinkedList<ItemHeader>) :
-    ELCGStageHeaderAdapter(context, objectsList) {
+class Adapter(context: Context, objectsList: LinkedList<ItemHeader>) :
+    StageHeaderAdapter(context, objectsList) {
 
     override fun getItemViewType(position: Int): Int {
         if (getItem(position).isHeader()) return HEADER

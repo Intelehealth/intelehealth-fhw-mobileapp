@@ -15,7 +15,7 @@ import java.util.LinkedList
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  */
-abstract class ELCGStageHeaderAdapter(context: Context, objectsList: LinkedList<ItemHeader>) :
+abstract class StageHeaderAdapter(context: Context, objectsList: LinkedList<ItemHeader>) :
     BaseRecyclerViewAdapter<ItemHeader>(context, objectsList) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

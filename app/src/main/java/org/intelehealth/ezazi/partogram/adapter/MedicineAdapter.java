@@ -10,9 +10,12 @@ import org.intelehealth.ezazi.databinding.RowItemMedicineBinding;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.partogram.viewholder.MedicineViewHolder;
+import org.intelehealth.ezazi.ui.elcg.adapter.StageHeaderAdapter;
+import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.BaseRecyclerViewAdapter;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,7 +23,7 @@ import java.util.List;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class MedicineAdapter extends BaseRecyclerViewAdapter<Medicine> {
+public class MedicineAdapter extends StageHeaderAdapter {
     private BaseViewHolder.ViewHolderClickListener clickListener;
     private int expandedItemPosition = -1;
 
@@ -46,7 +49,7 @@ public class MedicineAdapter extends BaseRecyclerViewAdapter<Medicine> {
         }
     }
 
-    public MedicineAdapter(@NonNull Context ctx, @NonNull List<Medicine> lists) {
+    public MedicineAdapter(@NonNull Context ctx, @NonNull LinkedList<ItemHeader> lists) {
         super(ctx, lists);
     }
 
@@ -59,12 +62,11 @@ public class MedicineAdapter extends BaseRecyclerViewAdapter<Medicine> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof MedicineViewHolder) {
-            MedicineViewHolder medicineViewHolder = (MedicineViewHolder) holder;
+        if (holder instanceof MedicineViewHolder medicineViewHolder) {
             medicineViewHolder.setViewClickListener(clickListener);
             medicineViewHolder.setAccessMode(accessMode);
-            medicineViewHolder.bind(getItem(position));
+            medicineViewHolder.bind((Medicine) getItem(position));
             medicineViewHolder.expandDetails(expandedItemPosition == position);
-        }
+        } else super.onBindViewHolder(holder, position);
     }
 }

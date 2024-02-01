@@ -1,14 +1,20 @@
 package org.intelehealth.ezazi.partogram.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+
+import org.intelehealth.klivekit.chat.model.ItemHeader;
+
+import java.io.Serializable;
 
 /**
  * Created by Vaghela Mithun R. on 31-08-2023 - 13:28.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class Medication {
+public class Medication implements Serializable, ItemHeader {
     @SerializedName("type")
     private String type;
 
@@ -20,6 +26,7 @@ public class Medication {
 
     @SerializedName("infusionStatus")
     private String infusionStatus;
+    private String createdAt;
 
     public String getType() {
         return type;
@@ -68,5 +75,16 @@ public class Medication {
 
     public String toJson() {
         return new Gson().toJson(this);
+    }
+
+    @Override
+    public boolean isHeader() {
+        return false;
+    }
+
+    @NonNull
+    @Override
+    public String createdDate() {
+        return createdAt;
     }
 }
