@@ -92,7 +92,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     }
 
     public void setMedicines(List<Medicine> medicines) {
-        this.medicines = medicines;
+        this.medicines = new LinkedList<>();
+        this.medicines.addAll(medicines);
     }
 
     @Override
