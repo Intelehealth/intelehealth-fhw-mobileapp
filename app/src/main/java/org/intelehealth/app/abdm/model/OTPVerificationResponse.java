@@ -6,10 +6,15 @@ package org.intelehealth.app.abdm.model;
  * Mobile: +917304154312
  **/
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class OTPVerificationResponse {
+public class OTPVerificationResponse implements Parcelable {
 
     @SerializedName("message")
     @Expose
@@ -26,6 +31,25 @@ public class OTPVerificationResponse {
     @SerializedName("isNew")
     @Expose
     private Boolean isNew;
+
+    protected OTPVerificationResponse(Parcel in) {
+        message = in.readString();
+        txnId = in.readString();
+        byte tmpIsNew = in.readByte();
+        isNew = tmpIsNew == 0 ? null : tmpIsNew == 1;
+    }
+
+    public static final Creator<OTPVerificationResponse> CREATOR = new Creator<OTPVerificationResponse>() {
+        @Override
+        public OTPVerificationResponse createFromParcel(Parcel in) {
+            return new OTPVerificationResponse(in);
+        }
+
+        @Override
+        public OTPVerificationResponse[] newArray(int size) {
+            return new OTPVerificationResponse[size];
+        }
+    };
 
     public String getMessage() {
         return message;
@@ -67,14 +91,16 @@ public class OTPVerificationResponse {
         this.isNew = isNew;
     }
 
+
     @Override
-    public String toString() {
-        return "OTPVerificationResponse{" +
-                "message='" + message + '\'' +
-                ", txnId='" + txnId + '\'' +
-                ", tokens=" + tokens +
-                ", aBHAProfile=" + aBHAProfile +
-                ", isNew=" + isNew +
-                '}';
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(message);
+        dest.writeString(txnId);
+        dest.writeByte((byte) (isNew == null ? 0 : isNew ? 1 : 2));
     }
 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,8 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAadharMobileVerificationBinding;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.WindowsUtils;
+
+import java.io.Serializable;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -158,16 +161,18 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                         // 1. if new user than isNew = true
                         // 2. if already exist user than isNew = false.
 
+                        Intent intent;
                         if (otpVerificationResponse.getIsNew()) {
                             // New user - than take to ABHA address screen.
-                            Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
-                            startActivity(intent);
+                            intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
                         }
                         else {
-                            // Alredy user exist - than take to Patient Registration screen.
-                            Intent intent = new Intent(context, IdentificationActivity_New.class);
-                            startActivity(intent);
+                            // Already user exist - than take to Patient Registration screen.
+                            intent = new Intent(context, IdentificationActivity_New.class);
                         }
+
+                        intent.putExtra("payload", otpVerificationResponse);
+                        startActivity(intent);
 
                     }
 

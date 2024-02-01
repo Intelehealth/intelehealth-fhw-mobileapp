@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".abdm.activity.AbhaAddressSuggestionsActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        app:singleLine="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:paddingHorizontal="10dp"
+            android:gravity="center"
+            android:text="Suggestion 1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="10sp"
+            app:chipBackgroundColor="@color/colorPrimaryDark"
+            app:chipStrokeColor="@color/colorPrimaryDark"
+            app:closeIconEnabled="true"
+            app:closeIconTint="@color/colorPrimary"
+            app:closeIconVisible="false" />
+
+
+    </com.google.android.material.chip.ChipGroup>
+</RelativeLayout>
