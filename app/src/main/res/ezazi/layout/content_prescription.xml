@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <View
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/screen_padding"
+            android:background="@drawable/container_bg" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPrescription"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/screen_container_padding"
+            android:layout_marginTop="@dimen/screen_container_padding"
+            android:layout_marginBottom="@dimen/screen_padding"
+            android:background="@drawable/white_child_container_bg"
+            android:fadeScrollbars="false"
+            android:padding="@dimen/screen_container_padding"
+            android:scrollbars="none"
+            app:elevation="1dp"
+            app:layout_constraintBottom_toBottomOf="@id/container"
+            app:layout_constraintEnd_toEndOf="@id/container"
+            app:layout_constraintStart_toStartOf="@id/container"
+            app:layout_constraintTop_toTopOf="@id/container" />
+
+
+        <TextView
+            android:id="@+id/tvCallLogEmptyMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/std_16dp"
+            android:drawablePadding="@dimen/std_16dp"
+            android:gravity="center"
+            android:text="@string/no_prescription"
+            app:drawableTopCompat="@drawable/ic_vector_prescription"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

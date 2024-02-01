@@ -11,10 +11,10 @@ import org.intelehealth.ezazi.ui.prescription.data.PrescriptionRepository
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class PrescriptionViewModel(repository: PrescriptionRepository) : BaseViewModel() {
+class PrescriptionViewModel(val repository: PrescriptionRepository) : BaseViewModel() {
 
-    fun getPrescriptions() = executeLocalQuery {
-//        visitRepository.getOutcomePendingVisits(offset, limit, providerId)
+    fun getPrescriptions(visitId: String) = executeLocalQuery {
+        repository.fetchPrescription(visitId)
     }.asLiveData()
 
     companion object {

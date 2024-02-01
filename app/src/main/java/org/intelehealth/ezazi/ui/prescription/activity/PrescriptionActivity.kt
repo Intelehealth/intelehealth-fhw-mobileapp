@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.ui.prescription.activity
 
+import android.os.Bundle
+import org.intelehealth.ezazi.databinding.ActivityPrescriptionEzaziBinding
 import org.intelehealth.ezazi.ui.shared.BaseActivity
 
 /**
@@ -8,4 +10,10 @@ import org.intelehealth.ezazi.ui.shared.BaseActivity
  * Mob   : +919727206702
  **/
 class PrescriptionActivity : BaseActivity() {
+    private lateinit var binding: ActivityPrescriptionEzaziBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityPrescriptionEzaziBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+    }
 }

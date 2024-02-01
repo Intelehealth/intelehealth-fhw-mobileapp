@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase
  * Mob   : +919727206702
  **/
 class PrescriptionRepository(val database: SQLiteDatabase) {
-    fun getPrescriptions(){
+    fun fetchPrescription(visitId: String) {
 
     }
 }
