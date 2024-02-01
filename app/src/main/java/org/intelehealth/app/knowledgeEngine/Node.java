@@ -2759,6 +2759,7 @@ public class Node implements Serializable {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
 
                         if (mOptions.get(i).getInputType().equals("camera")) {
+                            stringsList.add(bullet_hollow + answer + next_line);
                         } else {
                             if (!answer.isEmpty()) {
                                 if (isAssociateSymptomsType) {
