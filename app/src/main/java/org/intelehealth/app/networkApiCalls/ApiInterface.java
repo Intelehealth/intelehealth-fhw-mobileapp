@@ -4,6 +4,9 @@ package org.intelehealth.app.networkApiCalls;
 import com.google.gson.JsonObject;
 
 import org.intelehealth.app.abdm.model.AadharApiBody;
+import org.intelehealth.app.abdm.model.AadharOTPResponse;
+import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
+import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
@@ -205,9 +208,14 @@ public interface ApiInterface {
     Single<TokenResponse> GET_TOKEN(@Url String url);
 
     @GET
-    Single<ResponseBody> GET_OTP_FOR_AADHAR(@Url String url,
-                                              @Header("Authorization") String accessToken,
-                                              @Body AadharApiBody aadharApiBody);
+    Single<AadharOTPResponse> GET_OTP_FOR_AADHAR(@Url String url,
+                                                 @Header("Authorization") String accessToken,
+                                                 @Body AadharApiBody aadharApiBody);
+
+    @POST
+    Single<OTPVerificationResponse> PUSH_OTP_FOR_VERIFICATION(@Url String url,
+                                                                  @Header("Authorization") String accessToken,
+                                                                  @Body OTPVerificationRequestBody otpVerificationRequestBody);
 
 
 }

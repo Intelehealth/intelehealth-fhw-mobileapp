@@ -49,10 +49,13 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".abdm.activity.AbhaAddressSuggestionsActivity"
+            android:exported="false" />
+        <activity
             android:name=".abdm.activity.AadharMobileVerificationActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".abdm.activity.ConsentActivity"
             android:exported="true"

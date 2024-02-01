@@ -109,4 +109,8 @@ public class UrlModifiers {
         Log.d("TAG", "getAadharOTPVerificationUrl: " + BuildConfig.SERVER_URL + "/abha/getEnrollOTPReq");
         return BuildConfig.SERVER_URL + "/abha/getEnrollOTPReq";
     }
+
+    public static String getOTPForVerificationUrl() {
+        return BuildConfig.SERVER_URL + "/abha/enrollByAadhar";
+    }
 }

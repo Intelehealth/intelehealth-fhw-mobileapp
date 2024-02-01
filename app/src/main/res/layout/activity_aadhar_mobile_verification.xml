@@ -37,7 +37,7 @@
                 android:layout_marginLeft="26dp"
                 android:layout_marginTop="6dp"
                 android:layout_below="@+id/otp_verific"
-                android:text="Verify your phone number for data security and privacy."
+                android:text="Verify your aadhar card and phone number for data security and privacy."
                 android:textAppearance="@style/sub_title"
                 android:textColor="@null"
                 android:textSize="@null"
@@ -126,46 +126,75 @@
                     />
             </LinearLayout>
 
-            <com.mukesh.OtpView
-                android:id="@+id/otpBox"
+            <FrameLayout
+                android:id="@+id/fl_otpBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 tools:visibility="visible"
+                android:layout_below="@+id/linear_mobile"
                 android:layout_gravity="center"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:inputType="number"
-                android:itemBackground="@color/fade_color"
-                app:OtpLineColor="@color/colorPrimaryDark"
-                android:focusableInTouchMode="true"
-                android:layout_below="@+id/linear_mobile"
-                app:OtpItemCount="6"
-                app:OtpViewType="line"
-                android:textColor="@color/colorPrimaryDark"
-                tools:text="123456"/>
+                >
 
-            <RelativeLayout
+                <com.mukesh.OtpView
+                    android:id="@+id/otpBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:itemBackground="@color/fade_color"
+                    app:OtpLineColor="@color/colorPrimaryDark"
+                    android:focusableInTouchMode="true"
+                    app:OtpItemCount="6"
+                    app:OtpViewType="line"
+                    android:textColor="@color/colorPrimaryDark"
+                    tools:text="123456"/>
+
+            </FrameLayout>
+
+            <Button
                 android:id="@+id/sendOtpBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="50dp"
-                android:background="@drawable/send_otp_svg"
-                android:layout_below="@+id/otpBox"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_centerHorizontal="true" >
+                android:background="@drawable/ui2_common_primary_bg_with_state"
+                android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+                android:drawableTint="@color/iconTintWhite"
+                android:layout_below="@+id/fl_otpBox"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:layout_centerHorizontal="true"
+                android:paddingStart="@dimen/common_button_padding_left"
+                android:paddingTop="@dimen/common_button_padding_top"
+                android:paddingEnd="@dimen/common_button_padding_right"
+                android:paddingBottom="@dimen/common_button_padding_bottom"
+                android:text="Send OTP" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Send OTP"
-                    android:textColor="@null"
-                    android:textSize="@null"
-                    android:gravity="center"
-                    android:textAppearance="@style/send_otp"
-                    android:layout_centerInParent="true" />
-            </RelativeLayout>
+            <!--
+                        <RelativeLayout
+                            android:id="@+id/sendOtpBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="50dp"
+                            android:background="@drawable/send_otp_svg"
+                            android:layout_below="@+id/fl_otpBox"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="30dp"
+                            android:layout_centerHorizontal="true" >
+
+                            <TextView
+                                android:id="@+id/txt_otpbtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Send OTP"
+                                android:textColor="@null"
+                                android:textSize="@null"
+                                android:gravity="center"
+                                android:textAppearance="@style/send_otp"
+                                android:layout_centerInParent="true" />
+                        </RelativeLayout>
+            -->
 
         </RelativeLayout>
     </ScrollView>
