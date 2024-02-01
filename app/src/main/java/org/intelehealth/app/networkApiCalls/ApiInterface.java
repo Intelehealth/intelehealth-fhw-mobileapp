@@ -3,6 +3,8 @@ package org.intelehealth.app.networkApiCalls;
 
 import com.google.gson.JsonObject;
 
+import org.intelehealth.app.abdm.model.AadharApiBody;
+import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.CheckAppUpdateRes;
@@ -197,4 +199,15 @@ public interface ApiInterface {
     @POST("attribute/{attributeUuid}")
     Observable<ResponseBody> PROFILE_ATTRIBUTE_UPDATE(@Path("attributeUuid") String attributeUuid,
                                                       @Body ProfileUpdateAttribute profileUpdateAttribute, @Header("Authorization") String authHeader);
+
+    // ABDM
+    @GET
+    Single<TokenResponse> GET_TOKEN(@Url String url);
+
+    @GET
+    Single<ResponseBody> GET_OTP_FOR_AADHAR(@Url String url,
+                                              @Header("Authorization") String accessToken,
+                                              @Body AadharApiBody aadharApiBody);
+
+
 }

@@ -61,8 +61,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_marginHorizontal="10dp"
                 android:layout_below="@+id/imgview"
-                android:text="We will send you one time OTP on your mobile number."
+                android:text="We will send you one time OTP on your Aadhar registered mobile number."
                 android:textAppearance="@style/we_will_sen"
                 android:textColor="@null"
                 android:textSize="@null"
@@ -95,13 +97,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textbox_outline"
-                    android:hint="Type your Aadhar Card number*"
+                    android:hint="Type your 12-digit Aadhar Card number*"
                     android:textColor="@null"
                     android:textSize="@null"
                     android:textAppearance="@style/type_mobile_no"
                     android:textColorHint="@color/hint_color"
                     android:padding="14dp"
                     android:inputType="phone"
+                    android:maxLength="12"
                     android:layout_marginHorizontal="20dp"
                     />
 
@@ -109,7 +112,7 @@
                     android:id="@+id/mobileNoBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="14dp"
                     android:background="@drawable/textbox_outline"
                     android:hint="Type your 10-digit mobile number*"
                     android:textColor="@null"
@@ -118,6 +121,7 @@
                     android:textColorHint="@color/hint_color"
                     android:padding="14dp"
                     android:inputType="phone"
+                    android:maxLength="10"
                     android:layout_marginHorizontal="20dp"
                     />
             </LinearLayout>
@@ -126,6 +130,8 @@
                 android:id="@+id/otpBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_gravity="center"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
@@ -141,17 +147,18 @@
 
             <RelativeLayout
                 android:id="@+id/sendOtpBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
                 android:background="@drawable/send_otp_svg"
                 android:layout_below="@+id/otpBox"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
                 android:layout_centerHorizontal="true" >
 
                 <TextView
-                    android:layout_width="82dp"
-                    android:layout_height="23dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Send OTP"
                     android:textColor="@null"
                     android:textSize="@null"

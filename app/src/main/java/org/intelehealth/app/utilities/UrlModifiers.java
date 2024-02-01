@@ -1,5 +1,7 @@
 package org.intelehealth.app.utilities;
 
+import android.util.Log;
+
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -97,5 +99,14 @@ public class UrlModifiers {
         String provider = "provider?user=" + USER_UUID + "&v=custom:(uuid,person:(uuid,display,gender,age,birthdate,preferredName),attributes)";
         String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
+    }
+
+    public static String getABDM_TokenUrl() {
+        return BuildConfig.SERVER_URL + "/abha/getToken";
+    }
+
+    public static String getAadharOTPVerificationUrl() {
+        Log.d("TAG", "getAadharOTPVerificationUrl: " + BuildConfig.SERVER_URL + "/abha/getEnrollOTPReq");
+        return BuildConfig.SERVER_URL + "/abha/getEnrollOTPReq";
     }
 }
