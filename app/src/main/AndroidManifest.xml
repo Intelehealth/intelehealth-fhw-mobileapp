@@ -49,6 +49,16 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".abdm.activity.AadharMobileVerificationActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".abdm.activity.ConsentActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".profile.MyProfileActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
@@ -259,25 +269,19 @@
             android:name=".activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.forgotPasswordNew.ForgotPasswordActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-
-        <!--        <receiver-->
-        <!--            android:name=".services.firebase_services.RTCMessageReceiver"-->
-        <!--            android:enabled="true"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" />-->
-        <!--            </intent-filter>-->
-        <!--        </receiver>-->
-
+            android:windowSoftInputMode="adjustPan" /> <!-- <receiver -->
+        <!-- android:name=".services.firebase_services.RTCMessageReceiver" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
         <receiver
             android:name=".services.CameraOpenRequestReceiver"
             android:enabled="true"
@@ -335,8 +339,7 @@
             android:name=".activities.onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-        <!-- <service -->
+            android:windowSoftInputMode="adjustPan" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
         <activity
@@ -353,7 +356,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".webrtc.activity.IDAChatActivity"
             android:exported="true"
@@ -422,14 +424,13 @@
             <intent-filter>
                 <action android:name="org.intelehealth.ekalarogya.FCM_BACKGROUND_BROADCAST_ACTION" />
             </intent-filter>
-        </receiver>
-        <!--        <service-->
-        <!--            android:name=".services.firebase_services.MyFirebaseMessagingService"-->
-        <!--            android:exported="false">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-        <!--            </intent-filter>-->
-        <!--        </service> -->
+        </receiver> <!-- <service -->
+        <!-- android:name=".services.firebase_services.MyFirebaseMessagingService" -->
+        <!-- android:exported="false"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
         <!-- <receiver -->
         <!-- android:name="org.intelehealth.app.utilities.NetworkChangeListener" -->
         <!-- android:label="NetworkChangeReceiver"> -->
@@ -444,39 +445,36 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" /> <!-- Firebase Realdb -->
-        <!--        <receiver-->
-        <!--            android:name=".services.firebase_services.CallRTCNotifyReceiver"-->
-        <!--            android:exported="false">-->
-        <!--            <intent-filter android:priority="100">-->
-        <!--                <action-->
-        <!--                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"-->
-        <!--                    android:enabled="true" />-->
-        <!--            </intent-filter>-->
-        <!--        </receiver>-->
-        <!--        <receiver-->
-        <!--            android:name=".services.firebase_services.RestartServiceReceiver"-->
-        <!--            android:exported="false">-->
-        <!--                        <intent-filter android:priority="99">-->
-        <!--                            <action-->
-        <!--                                android:name="org.intelehealth.app.RTC_SERVICE_START"-->
-        <!--                                android:enabled="true" />-->
-        <!--                        </intent-filter>-->
-        <!--            <intent-filter android:priority="99">-->
-        <!--                <action-->
-        <!--                    android:name="android.intent.action.BOOT_COMPLETED"-->
-        <!--                    android:enabled="true" />-->
-        <!--            </intent-filter>-->
-        <!--        </receiver>-->
-
-        <!--        <service-->
-        <!--            android:name=".services.firebase_services.CallListenerBackgroundService"-->
-        <!--            android:enabled="true"-->
-        <!--            android:exported="true" />-->
-
+        <!-- <receiver -->
+        <!-- android:name=".services.firebase_services.CallRTCNotifyReceiver" -->
+        <!-- android:exported="false"> -->
+        <!-- <intent-filter android:priority="100"> -->
+        <!-- <action -->
+        <!-- android:name="org.intelehealth.app.RTC_MESSAGE_EVENT" -->
+        <!-- android:enabled="true" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <!-- <receiver -->
+        <!-- android:name=".services.firebase_services.RestartServiceReceiver" -->
+        <!-- android:exported="false"> -->
+        <!-- <intent-filter android:priority="99"> -->
+        <!-- <action -->
+        <!-- android:name="org.intelehealth.app.RTC_SERVICE_START" -->
+        <!-- android:enabled="true" /> -->
+        <!-- </intent-filter> -->
+        <!-- <intent-filter android:priority="99"> -->
+        <!-- <action -->
+        <!-- android:name="android.intent.action.BOOT_COMPLETED" -->
+        <!-- android:enabled="true" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <!-- <service -->
+        <!-- android:name=".services.firebase_services.CallListenerBackgroundService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true" /> -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_launcher" />

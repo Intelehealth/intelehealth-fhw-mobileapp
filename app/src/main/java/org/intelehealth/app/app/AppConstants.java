@@ -186,6 +186,7 @@ public class AppConstants {
     public static final int TERMS_CONDITIONS_DECLINE = 2;
     public static final int PRIVACY_POLICY_ACCEPT = 3;
     public static final int PRIVACY_POLICY_DECLINE = 4;
+    public static final int CONSENT_DECLINE = 55;
 
 
     public static final int EVENT_FLAG_START = 0;

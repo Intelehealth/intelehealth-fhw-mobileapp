@@ -13,6 +13,8 @@
 <!--
     <color name="colorAccent">#3F9600</color>
 -->
+    <color name="hint_color">#B0ADBE</color>
+    <color name="fade_color">#20ce93d8</color>
     <color name="primary_text">#212121</color>
     <color name="icons">#FFFFFF</color>
     <color name="titleBar_cardview">#0277bd</color>

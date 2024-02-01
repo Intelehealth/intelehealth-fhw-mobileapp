@@ -164,5 +164,8 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'com.github.EusebiuCandrea:ToolTipPopupWordTV:1.0.1'//
 
+    // ABDM
+    implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.2' // otp view
+
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

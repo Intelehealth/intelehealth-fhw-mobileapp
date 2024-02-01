@@ -205,7 +205,11 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
 
     public void cancelRegistration(View view) {
         if(!intentRx.hasExtra("patientUuid")) {
-            patientRegistrationDialog(context, getResources().getDrawable(R.drawable.close_patient_svg), getResources().getString(R.string.close_patient_registration), getResources().getString(R.string.sure_you_want_close_registration), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+            patientRegistrationDialog(context, getResources().getDrawable(R.drawable.close_patient_svg),
+                    getResources().getString(R.string.close_patient_registration),
+                    getResources().getString(R.string.sure_you_want_close_registration),
+                    getResources().getString(R.string.yes), getResources().getString(R.string.no),
+                    new DialogUtils.CustomDialogListener() {
                 @Override
                 public void onDialogActionDone(int action) {
                     if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) finish();

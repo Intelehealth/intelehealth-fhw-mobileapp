@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.activity.ConsentActivity;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
@@ -68,7 +69,8 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
                 finish();
             }else {
-                Intent intent = new Intent(this, IdentificationActivity_New.class);
+              //  Intent intent = new Intent(this, IdentificationActivity_New.class);
+                Intent intent = new Intent(this, ConsentActivity.class);
                 startActivity(intent);
                 finish();
             }
