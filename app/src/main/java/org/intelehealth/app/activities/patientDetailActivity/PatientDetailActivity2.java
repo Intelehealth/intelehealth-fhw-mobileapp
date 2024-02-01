@@ -534,6 +534,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+        setFullName();
         initForOpenVisit();
         initForPastVisit();
     }
@@ -758,6 +759,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         in.putExtra("float_ageYear_Month", float_ageYear_Month);
         in.putExtra("tag", "VisitDetailsActivity");
         startActivity(in);
+    }
+
+    /**
+     * set patient full name here
+     */
+    private void setFullName() {
+        if (patientDTO.getMiddlename() == null) {
+            patientName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
+        } else {
+            patientName = patientDTO.getFirstname() + " " + patientDTO.getMiddlename() + " " + patientDTO.getLastname();
+        }
     }
 
     public void setDisplay(String dataString) {
