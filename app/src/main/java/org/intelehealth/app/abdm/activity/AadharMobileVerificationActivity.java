@@ -52,10 +52,12 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         hasABHA = intent.getBooleanExtra("hasABHA", false);
         Log.d(TAG, "hasABHA: " + hasABHA);
         if (hasABHA) {
-            binding.flDoNotHaveABHANumber.setVisibility(View.GONE);
+            binding.layoutDoNotHaveABHANumber.flDoNotHaveABHANumber.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.flHaveABHANumber.setVisibility(View.VISIBLE);
         }
         else {
-            binding.flDoNotHaveABHANumber.setVisibility(View.VISIBLE);
+            binding.layoutDoNotHaveABHANumber.flDoNotHaveABHANumber.setVisibility(View.VISIBLE);
+            binding.layoutHaveABHANumber.flHaveABHANumber.setVisibility(View.GONE);
         }
 
 
@@ -71,9 +73,13 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 else {
                     // ie. otp received and making call to enrollAadhar api.
                     if (binding.otpBox.getText() != null) {
-                        callOTPForVerificationApi((String) binding.sendOtpBtn.getTag(),
-                                binding.mobileNoBox.getText().toString().trim(),
-                                binding.otpBox.getText().toString());
+                        String mobileNo = "";
+                        if (hasABHA)
+                            mobileNo = binding.layoutHaveABHANumber.etInput.getText().toString().trim();
+                        else
+                            mobileNo = binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().trim();
+
+                        callOTPForVerificationApi((String) binding.sendOtpBtn.getTag(), mobileNo, binding.otpBox.getText().toString());
                     }
                 }
             }
@@ -112,7 +118,13 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
         // payload
         AadharApiBody aadharApiBody = new AadharApiBody();
-        aadharApiBody.setAadhar(binding.aadharNoBox.getText().toString());
+        String aadharNo = "";
+        if (hasABHA)
+            aadharNo = binding.layoutHaveABHANumber.etInput.getText().toString().trim();
+        else
+            aadharNo = binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().trim();
+
+        aadharApiBody.setAadhar(aadharNo);
         String url = UrlModifiers.getAadharOTPVerificationUrl();
 
         Single<AadharOTPResponse> responseBodySingle = AppConstants.apiInterface.GET_OTP_FOR_AADHAR(
@@ -197,30 +209,37 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     }
 
     private boolean checkValidation() {
-        if (binding.aadharNoBox.getText().toString().isEmpty()) {
-            binding.aadharNoBox.setError(getString(R.string.error_field_required));
-            return false;
+        if (hasABHA) {
+
         }
-        if (binding.mobileNoBox.getText().toString().isEmpty()) {
-            binding.mobileNoBox.setError(getString(R.string.error_field_required));
-            return false;
-        }
-        if (binding.aadharNoBox.getText().toString().length() < 12) {
-            binding.aadharNoBox.setError("Invalid");
-            return false;
-        }
-        if (binding.mobileNoBox.getText().toString().length() < 10) {
-            binding.mobileNoBox.setError("Invalid");
-            return false;
-        }
-        if (binding.flOtpBox.getVisibility() == View.VISIBLE) {
-            if (binding.otpBox.getText() != null) {
-                if (binding.otpBox.getText().toString().isEmpty()) {
-                    Toast.makeText(context, "Please enter OTP received!", Toast.LENGTH_LONG).show();
-                    return false;
-                }
+        else {
+            if (binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().isEmpty()) {
+                binding.layoutDoNotHaveABHANumber.aadharNoBox.setError(getString(R.string.error_field_required));
+                return false;
+            }
+            if (binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().isEmpty()) {
+                binding.layoutDoNotHaveABHANumber.mobileNoBox.setError(getString(R.string.error_field_required));
+                return false;
+            }
+            if (binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().length() < 12) {
+                binding.layoutDoNotHaveABHANumber.aadharNoBox.setError("Invalid");
+                return false;
+            }
+            if (binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().length() < 10) {
+                binding.layoutDoNotHaveABHANumber.mobileNoBox.setError("Invalid");
+                return false;
             }
         }
+
+        // common area...
+            if (binding.flOtpBox.getVisibility() == View.VISIBLE) {
+                if (binding.otpBox.getText() != null) {
+                    if (binding.otpBox.getText().toString().isEmpty()) {
+                        Toast.makeText(context, "Please enter OTP received!", Toast.LENGTH_LONG).show();
+                        return false;
+                    }
+                }
+            }
         return true;
     }
 }

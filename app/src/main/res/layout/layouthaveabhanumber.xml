@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fl_haveABHANumber"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginHorizontal="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -85,7 +86,7 @@
                 app:passwordToggleTint="@android:color/transparent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edittext_username"
+                    android:id="@+id/et_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textbox_outline"

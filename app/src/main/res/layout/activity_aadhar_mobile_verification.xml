@@ -78,15 +78,15 @@
                 android:layout_marginTop="20dp">
 
                 <include
+                    android:id="@+id/layout_doNotHaveABHANumber"
                     layout="@layout/layout_donothaveabha"
-                    android:id="@+id/fl_doNotHaveABHANumber"
                     android:visibility="gone"
                     tools:visibility="gone"
                     />
 
                 <include
+                    android:id="@+id/layout_haveABHANumber"
                     layout="@layout/layouthaveabhanumber"
-                    android:id="@+id/fl_haveABHANumber"
                     android:visibility="visible"
                     tools:visibility="visible"/>
 
