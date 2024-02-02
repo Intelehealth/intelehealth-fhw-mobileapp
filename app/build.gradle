@@ -12,8 +12,8 @@ android {
         applicationId "org.intelehealth.ekalarogya"
         minSdk 21
         targetSdk 34
-        versionCode 55
-        versionName '2.1.4'
+        versionCode 57
+        versionName '2.1.6'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
