@@ -76,12 +76,12 @@ public class Node implements Serializable {
     public static final int DIRECT_USER_INPUT_CHILD = 0;
     public static final int CHILD_OPTIONS = 1;
     public static final int CHILD_QUESTION = 2;
-    public static String bullet = "•";
-    public static String big_bullet = "●";
-    //    public static String bullet_hollow = "○";
-    public static String bullet_hollow = "•";
-    public static String bullet_arrow = "►";
-    public static String right_pointing = "▻";
+    public static String bullet = "\u2022";
+    public static String big_bullet = "\u25CF";
+    //    public static String bullet_hollow = "\u25CB";
+    public static String bullet_hollow = "\u2022";
+    public static String bullet_arrow = "\u25BA";
+    public static String right_pointing = "\u25BB";
     public static String next_line = "<br/>";
     String space = "\t";
     private String engineVersion;
@@ -2748,13 +2748,18 @@ public class Node implements Serializable {
                 }
                 question = question.replaceAll("\\[(.*?)\\]", "");
                 String answer = mOptions.get(i).getLanguage();
-                Log.i(TAG, "ipt: +++++++++++++++++++++++++++ isTerminal - " + mOptions.get(i).isTerminal());
-                Log.i(TAG, "ipt: level - " + level);
-                Log.i(TAG, "ipt: getInputType " + mOptions.get(i).getInputType());
-                Log.i(TAG, "ipt: findDisplay " + mOptions.get(i).findDisplay());
-                Log.i(TAG, "ipt: getText " + mOptions.get(i).getText());
-                Log.i(TAG, "ipt: -------------------answer " + answer);
-                Log.i(TAG, "ipt: -------------------question " + question);
+                Timber.tag(TAG).i("ipt: +++++++++++++++++++++++++++START++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                Timber.tag(TAG).i("ipt: isTerminal - %s", mOptions.get(i).isTerminal());
+                Timber.tag(TAG).i("ipt: level - %s", level);
+                Timber.tag(TAG).i("ipt: getInputType %s", mOptions.get(i).getInputType());
+                Timber.tag(TAG).i("ipt: findDisplay %s", mOptions.get(i).findDisplay());
+                Timber.tag(TAG).i("ipt: getText %s", mOptions.get(i).getText());
+                Timber.tag(TAG).i("ipt: answer %s", answer);
+                Timber.tag(TAG).i("ipt: question %s", question);
+                if (answer.equals("%")) {
+                    level = level - 1;
+                }
+
                 if (mOptions.get(i).isTerminal()) {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
 
@@ -2774,8 +2779,8 @@ public class Node implements Serializable {
                                 } else {
                                     if (answer.equals("%")) {
                                     } else if (mOptions.get(i).getText().trim().equals(mOptions.get(i).getLanguage().trim())) {
-                                        stringsList.add(bullet_hollow + answer + next_line);
-                                    } else if (answer.substring(0, 1).equals("%")) {
+                                        stringsList.add((level > 1 ? right_pointing : bullet_hollow) + answer + next_line);
+                                    } else if (answer.charAt(0) == '%') {
                                         stringsList.add(bullet_hollow + answer.substring(1) + next_line);
                                     } else {
                                         stringsList.add((level > 1 ? right_pointing : bullet_hollow) + answer + next_line);
@@ -2805,22 +2810,26 @@ public class Node implements Serializable {
 
                     }
                 } else {
-                    Log.i(TAG, "ipt: nested question " + question);
-                    Log.i(TAG, "ipt: nested question level - " + level);
+                    Timber.tag(TAG).i("ipt: ******************START********************************* %s", level);
+                    Timber.tag(TAG).i("ipt: nested question %s", question);
+                    Timber.tag(TAG).i("ipt: nested question level - %s", level);
                     if (level > 0 && level % 2 != 0)
                         if (question.startsWith("▻"))
                             question = bullet_hollow + " " + question.substring(1);
-                    stringsList.add(question + next_line);
-                    Log.i(TAG, "ipt: nested question " + question);
-                    Log.i(TAG, "ipt: nested answer stringsList" + stringsList);
+                    if (!answer.equals("%")) {
+                        stringsList.add(question + next_line);
+                    }
+
+                    Timber.tag(TAG).i("ipt: nested question %s", question);
+                    Timber.tag(TAG).i("ipt: nested answer stringsList%s", stringsList);
                     String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
 
-                    Log.i(TAG, "ipt: nested answer " + temp1);
+                    Timber.tag(TAG).i("ipt: nested answer %s", temp1);
                     temp1 = temp1.replaceAll("<br/>•", ",");
                     if (level == 0)
                         if (temp1.startsWith("▻") && temp1.chars().filter(ch -> ch == '▻').count() > 1)
                             temp1 = bullet_hollow + " " + temp1.substring(1);
-                    Log.v(TAG, "ipt: nested answer " + temp1);
+                    Timber.tag(TAG).v("ipt: nested answer %s", temp1);
                     stringsList.add(temp1);
                     // cleanup duplicate text
                     String lastVal = "";
@@ -2832,11 +2841,12 @@ public class Node implements Serializable {
                         }
                         lastVal = v;
                     }*/
-                    if(stringsList.contains(bullet_hollow  + NOT_ANSWERED + next_line) || stringsList.contains( right_pointing+ NOT_ANSWERED + next_line)){
+                    if (stringsList.contains(bullet_hollow + NOT_ANSWERED + next_line) || stringsList.contains(right_pointing + NOT_ANSWERED + next_line)) {
                         //stringsList.clear();
                         stringsList.remove(stringsList.size() - 1);
                     }
-                    Log.i(TAG, "ipt: stringsList " + stringsList);
+                    Timber.tag(TAG).i("ipt: stringsList %s", stringsList);
+                    Timber.tag(TAG).i("ipt: ******************END********************************* %s", level);
                 }
             } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS))
@@ -2876,14 +2886,16 @@ public class Node implements Serializable {
                     stringsListNoSelected.add("Patient denies -" + next_line);
                 }
                 stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
-                Log.e(TAG, "ipt: " + stringsListNoSelected);
+                Timber.tag(TAG).e("ipt: %s", stringsListNoSelected);
             }
+
         }
 
 
         if (stringsListNoSelected.size() > 0) {
             stringsList.addAll(stringsListNoSelected);
         }
+        Timber.tag(TAG).i("ipt: stringsList: %s", stringsList);
 
         String mLanguage = "";
         for (int i = 0; i < stringsList.size(); i++) {
@@ -2893,15 +2905,18 @@ public class Node implements Serializable {
             }
 
         }
+        Timber.tag(TAG).i("ipt: formQuestionAnswer: %s", mLanguage);
+
         mLanguage = mLanguage.replaceAll(",<br/>•", ",");
         if (mLanguage.endsWith(",")) {
             mLanguage = mLanguage.substring(0, mLanguage.length() - 1);
         }
-        Log.i(TAG, "ipt: formQuestionAnswer: " + mLanguage);
+        Timber.tag(TAG).i("ipt: formQuestionAnswer: %s", mLanguage);
 
         if (mLanguage.equalsIgnoreCase("")) {
             mLanguage = (level == 0 ? bullet_hollow : right_pointing) + NOT_ANSWERED + next_line;
         }
+        Timber.tag(TAG).i("ipt: +++++++++++++++++++++++++++++++++++END+++++++++++++++++++++++++++++++++++++++++++++");
 
         return mLanguage;
     }
