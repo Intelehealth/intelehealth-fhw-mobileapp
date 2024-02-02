@@ -3275,7 +3275,7 @@ public class Node implements Serializable {
 
         if (isRequired()) {
             if (optionsList != null && !optionsList.isEmpty()) {
-                if (!isSelected() || (isSelected() && !isNestedMandatoryOptionsAnswered(this))) {
+                if (!isAllAssociatedSymptomsOptionsAnswered()) {
                     switch (locale) {
                         case "en":
                             stringBuilder.append("\n").append(bullet + " ").append(display);
@@ -3328,6 +3328,32 @@ public class Node implements Serializable {
                         allAnswered = false;
                         break;
                     }
+                }
+            }
+
+        }
+        Log.v(TAG, "isNestedMandatory allAnswered - " + allAnswered);
+        return allAnswered;
+    }
+
+    public boolean isAllAssociatedSymptomsOptionsAnswered() {
+        Log.v(TAG, "isAllAssociatedSymptomsOptionsAnswered - " + new Gson().toJson(this).toString());
+        boolean allAnswered = true;
+        /*if(node.isSelected() && node.isRequired() && node.optionsList.size()==1){
+            if(!node.optionsList.get(0).isSelected()){
+                return  false;
+            }
+        }*/
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (int i = 0; i < optionsList.size(); i++) {
+                Node innerNode = optionsList.get(i);
+                Log.v(TAG, "isNestedMandatory innerNode findDisplay- " + innerNode.findDisplay());
+                Log.v(TAG, "isNestedMandatory innerNode isNoSelected- " + innerNode.isNoSelected());
+                Log.v(TAG, "isNestedMandatory innerNode isNoSelected- " + innerNode.isSelected());
+                if (!innerNode.isNoSelected() && !innerNode.isSelected()) {
+                    allAnswered = false;
+                    break;
+
                 }
             }
 
