@@ -40,6 +40,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     ActivityAadharMobileVerificationBinding binding;
     private String accessToken = "";
     private boolean hasABHA;
+    public static final String BEARER_AUTH = "Bearer ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +60,6 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             binding.layoutDoNotHaveABHANumber.flDoNotHaveABHANumber.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.flHaveABHANumber.setVisibility(View.GONE);
         }
-
-
 
         binding.sendOtpBtn.setOnClickListener(v -> {
             if(checkValidation()) {
@@ -91,23 +90,31 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
      //   binding.sendOtpBtn.setEnabled(true);    // todo: testing purpose
 
         Single<TokenResponse> tokenResponse = AppConstants.apiInterface.GET_TOKEN(UrlModifiers.getABDM_TokenUrl());
-        tokenResponse.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<TokenResponse>() {
-                    @Override
-                    public void onSuccess(TokenResponse tokenResponse) {
-                        accessToken = tokenResponse.getAccessToken();
-                        Log.d(TAG, "onSuccess: TokenResponse: " + tokenResponse.toString());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // api - start
+                tokenResponse.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableSingleObserver<TokenResponse>() {
+                            @Override
+                            public void onSuccess(TokenResponse tokenResponse) {
+                                accessToken = BEARER_AUTH + tokenResponse.getAccessToken();
+                                Log.d(TAG, "onSuccess: TokenResponse: " + tokenResponse.toString());
 
-                     //   binding.sendOtpBtn.setTag("d4933b4b-0d08-43f5-b699-c588db8742c9"); // todo testing purpose...
-                        callAadharMobileVerificationApi(accessToken);
-                    }
+                                //   binding.sendOtpBtn.setTag("d4933b4b-0d08-43f5-b699-c588db8742c9"); // todo testing purpose...
+                                callAadharMobileVerificationApi(accessToken);
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
+                            @Override
+                            public void onError(Throwable e) {
 
-                    }
-                });
+                            }
+                        });
+                // api - end
+            }
+        }).start();
+
     }
 
     private void callAadharMobileVerificationApi(String accessToken) {
@@ -127,46 +134,52 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         aadharApiBody.setAadhar(aadharNo);
         String url = UrlModifiers.getAadharOTPVerificationUrl();
 
-        Single<AadharOTPResponse> responseBodySingle = AppConstants.apiInterface.GET_OTP_FOR_AADHAR(
-                url, accessToken, aadharApiBody);
+        Single<AadharOTPResponse> responseBodySingle = AppConstants.apiInterface.GET_OTP_FOR_AADHAR(url, accessToken, aadharApiBody);
 
-        responseBodySingle.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<AadharOTPResponse>() {
-                    @Override
-                    public void onSuccess(AadharOTPResponse aadharOTPResponse) {
-                        Log.d(TAG, "onSuccess: AadharResponse: " + aadharOTPResponse);
-                        // here, we will receive: txtID, otp
-                        // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // api - start
+                responseBodySingle.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableSingleObserver<AadharOTPResponse>() {
+                            @Override
+                            public void onSuccess(AadharOTPResponse aadharOTPResponse) {
+                                Log.d(TAG, "onSuccess: AadharResponse: " + aadharOTPResponse.toString());
+                                // here, we will receive: txtID, otp
+                                // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
 
-                        if (binding.flOtpBox.getVisibility() != View.VISIBLE)
-                            binding.flOtpBox.setVisibility(View.VISIBLE);
+                                if (binding.flOtpBox.getVisibility() != View.VISIBLE)
+                                    binding.flOtpBox.setVisibility(View.VISIBLE);
 
-                        binding.sendOtpBtn.setTag(aadharOTPResponse.getTxnId());
-                        binding.sendOtpBtn.setText("Verify");
-                        binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
-                    }
+                                binding.sendOtpBtn.setTag(aadharOTPResponse.getTxnId());
+                                binding.sendOtpBtn.setText("Verify");
+                                binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "onError: AadharResponse: " + e.getMessage());
-                    }
-                });
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d(TAG, "onError: AadharResponse: " + e.getMessage());
+                            }
+                        });
+                // api - end
+            }
+        }).start();
 
     }
 
     /**
-     * Here, this function is used to call the EnrollByAadhar api which takes body txtId, mobileNo, otp and will return us
-     * patient's details. Here, we need to handle, if NO: was selected for abha no show the abha address selection screen.
-     * and if YES: was selected for ABHA no than directly take to Patient Registration screen.
+     * Here, this function is used to call the EnrollByAadhar api which takes @BODY: txtId, mobileNo, otp and will return us
+     * patient's details.
      * @param txnId
      * @param mobileNo
      * @param otp
      */
     private void callOTPForVerificationApi(String txnId, String mobileNo, String otp) {
+        Log.d("callOTPForVerificationApi: ", "parameters: " + txnId + ", " + mobileNo + ", " + otp);
+
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         binding.sendOtpBtn.setTag(null);    // resetting...
-      //  Toast.makeText(context, "Donnnneeee......", Toast.LENGTH_SHORT).show();   // todo: testing
 
         // payload
         String url = UrlModifiers.getOTPForVerificationUrl();
@@ -178,34 +191,43 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         Single<OTPVerificationResponse> otpVerificationResponseObservable =
                 AppConstants.apiInterface.PUSH_OTP_FOR_VERIFICATION(url, accessToken, body);
 
-        otpVerificationResponseObservable.observeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<OTPVerificationResponse>() {
-                    @Override
-                    public void onSuccess(OTPVerificationResponse otpVerificationResponse) {
-                        // 1. if new user than isNew = true
-                        // 2. if already exist user than isNew = false.
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // api - start
+                otpVerificationResponseObservable
+                        .observeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableSingleObserver<OTPVerificationResponse>() {
+                            @Override
+                            public void onSuccess(OTPVerificationResponse otpVerificationResponse) {
+                                // 1. if new user than isNew = true
+                                // 2. if already exist user than isNew = false.
+                                Log.d("callOTPForVerificationApi: ", "onSuccess: " + otpVerificationResponse.toString());
 
-                        Intent intent;
-                        if (otpVerificationResponse.getIsNew()) {
-                            // New user - than take to ABHA address screen.
-                            intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
-                        }
-                        else {
-                            // Already user exist - than take to Patient Registration screen.
-                            intent = new Intent(context, IdentificationActivity_New.class);
-                        }
+                                Intent intent;
+                                if (otpVerificationResponse.getIsNew()) {
+                                    // New user - than take to ABHA address screen.
+                                    intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
+                                } else {
+                                    // Already user exist - than take to Patient Registration screen.
+                                    intent = new Intent(context, IdentificationActivity_New.class);
+                                }
 
-                        intent.putExtra("payload", otpVerificationResponse);
-                        startActivity(intent);
+                                intent.putExtra("payload", otpVerificationResponse);
+                                startActivity(intent);
+                                finish();
+                            }
 
-                    }
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d("callOTPForVerificationApi: ", "onError: " + e.toString());
+                            }
+                        });
+                // api - end
+            }
+        }).start();
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
     }
 
     private boolean checkValidation() {

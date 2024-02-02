@@ -14,7 +14,9 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class OTPVerificationResponse implements Parcelable {
+import java.io.Serializable;
+
+public class OTPVerificationResponse implements Serializable {
 
     @SerializedName("message")
     @Expose
@@ -31,25 +33,6 @@ public class OTPVerificationResponse implements Parcelable {
     @SerializedName("isNew")
     @Expose
     private Boolean isNew;
-
-    protected OTPVerificationResponse(Parcel in) {
-        message = in.readString();
-        txnId = in.readString();
-        byte tmpIsNew = in.readByte();
-        isNew = tmpIsNew == 0 ? null : tmpIsNew == 1;
-    }
-
-    public static final Creator<OTPVerificationResponse> CREATOR = new Creator<OTPVerificationResponse>() {
-        @Override
-        public OTPVerificationResponse createFromParcel(Parcel in) {
-            return new OTPVerificationResponse(in);
-        }
-
-        @Override
-        public OTPVerificationResponse[] newArray(int size) {
-            return new OTPVerificationResponse[size];
-        }
-    };
 
     public String getMessage() {
         return message;
@@ -91,16 +74,14 @@ public class OTPVerificationResponse implements Parcelable {
         this.isNew = isNew;
     }
 
-
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(message);
-        dest.writeString(txnId);
-        dest.writeByte((byte) (isNew == null ? 0 : isNew ? 1 : 2));
+    public String toString() {
+        return "OTPVerificationResponse{" +
+                "message='" + message + '\'' +
+                ", txnId='" + txnId + '\'' +
+                ", tokens=" + tokens +
+                ", aBHAProfile=" + aBHAProfile +
+                ", isNew=" + isNew +
+                '}';
     }
 }

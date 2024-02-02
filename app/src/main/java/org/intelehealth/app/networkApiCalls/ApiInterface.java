@@ -207,7 +207,7 @@ public interface ApiInterface {
     @GET
     Single<TokenResponse> GET_TOKEN(@Url String url);
 
-    @GET
+    @POST
     Single<AadharOTPResponse> GET_OTP_FOR_AADHAR(@Url String url,
                                                  @Header("Authorization") String accessToken,
                                                  @Body AadharApiBody aadharApiBody);

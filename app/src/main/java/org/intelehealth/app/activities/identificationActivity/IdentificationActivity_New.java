@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -74,6 +75,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
     private ImageButton refresh;
     private NetworkUtils networkUtils;
     Intent intentRx;
+    private OTPVerificationResponse otpVerificationResponse;
     private ObjectAnimator syncAnimator;
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -124,6 +126,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
                 patientID_edit = intentRx.getStringExtra("patientUuid");
                 screenName = intentRx.getStringExtra("ScreenEdit");
                 patient1.setUuid(patientID_edit);
+
                 Bundle args = intentRx.getBundleExtra("BUNDLE");
                 patientdto = (PatientDTO) args.getSerializable("patientDTO");
                 if (screenName.equalsIgnoreCase("personal_edit")) {
@@ -134,6 +137,10 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
                     setscreen(thirdScreen);
                 }
 
+            }
+
+            if (intentRx.hasExtra("payload")) {
+                abdmAutoFillScreensWithValues(firstScreen, intentRx);
             }
         }
 
@@ -161,6 +168,16 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         }
         res.updateConfiguration(conf, dm);
         return context;
+    }
+
+    private void abdmAutoFillScreensWithValues(Fragment fragment, Intent intent) {
+        otpVerificationResponse = (OTPVerificationResponse) intent.getSerializableExtra("payload");
+        Log.d(TAG, "payload: " + otpVerificationResponse.toString());
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("payload", otpVerificationResponse);
+        fragment.setArguments(bundle); // passing data to Fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, fragment).commit();
     }
 
     private void setscreen(Fragment fragment) {

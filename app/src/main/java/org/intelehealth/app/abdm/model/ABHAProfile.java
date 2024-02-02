@@ -5,11 +5,17 @@ package org.intelehealth.app.abdm.model;
  * Email: prajwalwaingankar@gmail.com
  * Mobile: +917304154312
  **/
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ABHAProfile {
+public class ABHAProfile implements Serializable {
 
     @SerializedName("firstName")
     @Expose
@@ -188,4 +194,25 @@ public class ABHAProfile {
         this.abhaStatus = abhaStatus;
     }
 
+    @Override
+    public String toString() {
+        return "ABHAProfile{" +
+                "firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dob='" + dob + '\'' +
+                ", gender='" + gender + '\'' +
+                ", photo='" + photo + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", email=" + email +
+                ", phrAddress=" + phrAddress +
+                ", address='" + address + '\'' +
+                ", districtCode='" + districtCode + '\'' +
+                ", stateCode='" + stateCode + '\'' +
+                ", pinCode='" + pinCode + '\'' +
+                ", abhaType=" + abhaType +
+                ", aBHANumber='" + aBHANumber + '\'' +
+                ", abhaStatus='" + abhaStatus + '\'' +
+                '}';
+    }
 }

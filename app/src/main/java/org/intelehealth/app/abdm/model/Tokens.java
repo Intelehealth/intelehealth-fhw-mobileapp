@@ -5,9 +5,17 @@ package org.intelehealth.app.abdm.model;
  * Email: prajwalwaingankar@gmail.com
  * Mobile: +917304154312
  **/
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-public class Tokens {
+
+import java.io.Serializable;
+
+public class Tokens implements Serializable {
 
     @SerializedName("token")
     @Expose
@@ -54,4 +62,13 @@ public class Tokens {
         this.refreshExpiresIn = refreshExpiresIn;
     }
 
+    @Override
+    public String toString() {
+        return "Tokens{" +
+                "token='" + token + '\'' +
+                ", expiresIn=" + expiresIn +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", refreshExpiresIn=" + refreshExpiresIn +
+                '}';
+    }
 }

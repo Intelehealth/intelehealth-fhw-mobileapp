@@ -28,10 +28,8 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         WindowsUtils.setStatusBarColor(AbhaAddressSuggestionsActivity.this);  // changing status bar color
 
         Intent intent = getIntent();
-      /*  OTPVerificationResponse response = intent.getParcelableExtra("payload");
-
+        OTPVerificationResponse response = (OTPVerificationResponse) intent.getSerializableExtra("payload");
         response.getABHAProfile().getAddress();     // auto-generated address from abdm end.
-*/ // todo: uncomment later
 
         createDynamicChips("prajwalw@sbx");
         createDynamicChips("prajuuu@sbx");

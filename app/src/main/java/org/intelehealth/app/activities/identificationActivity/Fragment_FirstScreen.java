@@ -47,6 +47,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -188,6 +189,13 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             //   patientID_edit = getArguments().getString("patientUuid");
             patient_detail = getArguments().getBoolean("patient_detail");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
+
+            if (getArguments().containsKey("payload")) {
+                OTPVerificationResponse otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable("payload");
+                mFirstNameEditText.setText(otpVerificationResponse.getABHAProfile().getFirstName());
+                mMiddleNameEditText.setText(otpVerificationResponse.getABHAProfile().getMiddleName());
+                mLastNameEditText.setText(otpVerificationResponse.getABHAProfile().getLastName());
+            }
         }
 
         if (patient_detail)
