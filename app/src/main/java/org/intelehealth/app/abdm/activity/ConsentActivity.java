@@ -39,11 +39,12 @@ public class ConsentActivity extends AppCompatActivity {
                     new DialogUtils.CustomDialogListener() {
                         @Override
                         public void onDialogActionDone(int action) {
+                           // Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: testing purpose
                             Intent intent = new Intent(context, AadharMobileVerificationActivity.class);
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK)
-                                intent.putExtra("hasABHA", true);   // ie. call fetching patient data api.
+                                intent.putExtra("hasABHA", true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
                             else
-                                intent.putExtra("hasABHA", false);  // ie. call firsts fetching abha address suggestions api for selection.
+                                intent.putExtra("hasABHA", false);  // ie. Aadhar AND Mobile api to call. // here Aadhar api is used.
 
                             startActivity(intent);
                             finish();

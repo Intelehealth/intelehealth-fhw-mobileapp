@@ -70,61 +70,27 @@
                 android:textSize="@null"
                 />
 
-            <LinearLayout
-                android:id="@+id/linear_mobile"
+            <FrameLayout
+                android:id="@+id/fl_aadhar_mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/we_will_sen"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
+                android:layout_marginTop="20dp">
 
-<!--
-                <com.hbb20.CountryCodePicker
-                    android:id="@+id/countrycode_spinner"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center_vertical"
-                    app:ccp_countryPreference="in,us"
-                    app:ccp_autoFormatNumber="true"
-                    app:ccp_textSize="16sp"
-                    />
--->
-
-                <EditText
-                    android:id="@+id/aadharNoBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/textbox_outline"
-                    android:hint="Type your 12-digit Aadhar Card number*"
-                    android:textColor="@null"
-                    android:textSize="@null"
-                    android:textAppearance="@style/type_mobile_no"
-                    android:textColorHint="@color/hint_color"
-                    android:padding="14dp"
-                    android:inputType="phone"
-                    android:maxLength="12"
-                    android:layout_marginHorizontal="20dp"
+                <include
+                    layout="@layout/layout_donothaveabha"
+                    android:id="@+id/fl_doNotHaveABHANumber"
+                    android:visibility="gone"
+                    tools:visibility="gone"
                     />
 
-                <EditText
-                    android:id="@+id/mobileNoBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:background="@drawable/textbox_outline"
-                    android:hint="Type your 10-digit mobile number*"
-                    android:textColor="@null"
-                    android:textSize="@null"
-                    android:textAppearance="@style/type_mobile_no"
-                    android:textColorHint="@color/hint_color"
-                    android:padding="14dp"
-                    android:inputType="phone"
-                    android:maxLength="10"
-                    android:layout_marginHorizontal="20dp"
-                    />
-            </LinearLayout>
+                <include
+                    layout="@layout/layouthaveabhanumber"
+                    android:id="@+id/fl_haveABHANumber"
+                    android:visibility="visible"
+                    tools:visibility="visible"/>
+
+            </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/fl_otpBox"
@@ -132,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 tools:visibility="visible"
-                android:layout_below="@+id/linear_mobile"
+                android:layout_below="@+id/fl_aadhar_mobile"
                 android:layout_gravity="center"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"

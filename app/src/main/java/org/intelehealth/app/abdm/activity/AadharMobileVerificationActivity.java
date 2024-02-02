@@ -39,6 +39,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     public static final String TAG = AadharMobileVerificationActivity.class.getSimpleName();
     ActivityAadharMobileVerificationBinding binding;
     private String accessToken = "";
+    private boolean hasABHA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,18 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         binding = ActivityAadharMobileVerificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         WindowsUtils.setStatusBarColor(AadharMobileVerificationActivity.this);  // changing status bar color
+
+        Intent intent = getIntent();
+        hasABHA = intent.getBooleanExtra("hasABHA", false);
+        Log.d(TAG, "hasABHA: " + hasABHA);
+        if (hasABHA) {
+            binding.flDoNotHaveABHANumber.setVisibility(View.GONE);
+        }
+        else {
+            binding.flDoNotHaveABHANumber.setVisibility(View.VISIBLE);
+        }
+
+
 
         binding.sendOtpBtn.setOnClickListener(v -> {
             if(checkValidation()) {

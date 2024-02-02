@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--
+                            <com.hbb20.CountryCodePicker
+                                android:id="@+id/countrycode_spinner"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:gravity="center_vertical"
+                                app:ccp_countryPreference="in,us"
+                                app:ccp_autoFormatNumber="true"
+                                app:ccp_textSize="16sp"
+                                />
+            -->
+
+            <EditText
+                android:id="@+id/aadharNoBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textbox_outline"
+                android:hint="Type your 12-digit Aadhar Card number*"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:textAppearance="@style/type_mobile_no"
+                android:textColorHint="@color/hint_color"
+                android:padding="14dp"
+                android:inputType="phone"
+                android:maxLength="12"
+                android:layout_marginHorizontal="20dp"
+                />
+
+            <EditText
+                android:id="@+id/mobileNoBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/textbox_outline"
+                android:hint="Type your 10-digit mobile number*"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:textAppearance="@style/type_mobile_no"
+                android:textColorHint="@color/hint_color"
+                android:padding="14dp"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:layout_marginHorizontal="20dp"
+                />
+        </LinearLayout>
+
+</FrameLayout>

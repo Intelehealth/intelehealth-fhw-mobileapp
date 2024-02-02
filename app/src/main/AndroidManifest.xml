@@ -51,7 +51,7 @@
         <activity
             android:name=".abdm.activity.AbhaAddressSuggestionsActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".abdm.activity.AadharMobileVerificationActivity"
