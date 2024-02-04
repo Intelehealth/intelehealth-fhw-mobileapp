@@ -379,27 +379,36 @@ public class HomeActivity extends BaseActivity {
     }
 
     //function for handling the video library feature...
+//    private void videoLibrary() {
+//        if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
+//        //Check for license key and load the correct config file
+//        try {
+//            JSONObject obj = null;
+//            if (hasLicense) {
+//                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+//            } else {
+//                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
+//            }
+//            if (obj.has("video_library")) {
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                Uri uri = Uri.parse(obj.getString("video_library"));
+//                intent.setData(uri);
+//                startActivity(intent);
+//            } else {
+//                Toast.makeText(context, "No config attribute found", Toast.LENGTH_SHORT).show();
+//            }
+//        } catch (JSONException e) {
+//            FirebaseCrashlytics.getInstance().recordException(e);
+//            Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
+//        }
+//    }
+
     private void videoLibrary() {
-        if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
-        //Check for license key and load the correct config file
         try {
-            JSONObject obj = null;
-            if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-            } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
-            }
-            if (obj.has("video_library")) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri.parse(obj.getString("video_library"));
-                intent.setData(uri);
-                startActivity(intent);
-            } else {
-                Toast.makeText(context, "No config attribute found", Toast.LENGTH_SHORT).show();
-            }
-        } catch (JSONException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, Class.forName("org.intelehealth.videolibrary.view.activities.YoutubeListingActivity"));
+            startActivity(intent);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
