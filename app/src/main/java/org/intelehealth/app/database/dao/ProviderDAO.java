@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -111,6 +112,38 @@ public class ProviderDAO {
 
         }
         return providersList;
+
+    }
+
+    public String getProviderName(String userUuid) throws DAOException {
+        String fullname = "";
+        String givenname = "", familyname = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            String query = "select * from tbl_provider where useruuid = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{userUuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    givenname = cursor.getString(cursor.getColumnIndexOrThrow("given_name"));
+                    familyname = cursor.getString(cursor.getColumnIndexOrThrow("family_name"));
+                    fullname = givenname + " " + familyname;
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+
+        }
+
+        if (!fullname.equalsIgnoreCase(""))
+            return fullname;
+        else
+            return "Test Doctor";
 
     }
 

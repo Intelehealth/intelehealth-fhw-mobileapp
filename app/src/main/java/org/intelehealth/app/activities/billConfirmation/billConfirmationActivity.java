@@ -739,20 +739,18 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
 
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
-        switch (view.getId()) {
-            case R.id.yes_pay_bill:
-                if (checked) {
-                    paymentStatus = "Paid";
-                    not_paying_reasonTIL.setVisibility(View.GONE);
-                    not_paying_reasonET.setText("");
-                }
-                break;
-            case R.id.no_pay_bill:
-                if (checked) {
-                    paymentStatus = "Unpaid";
-                    not_paying_reasonTIL.setVisibility(View.VISIBLE);
-                }
-                break;
+        int id = view.getId();
+        if (id == R.id.yes_pay_bill) {
+            if (checked) {
+                paymentStatus = "Paid";
+                not_paying_reasonTIL.setVisibility(View.GONE);
+                not_paying_reasonET.setText("");
+            }
+        } else if (id == R.id.no_pay_bill) {
+            if (checked) {
+                paymentStatus = "Unpaid";
+                not_paying_reasonTIL.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -856,14 +854,12 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.detail_home:
-                Intent intent = new Intent(billConfirmationActivity.this, HomeActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.detail_home) {
+            Intent intent = new Intent(billConfirmationActivity.this, HomeActivity.class);
+            startActivity(intent);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     //This will open a Dialog that will show all the Bluetooth devices...

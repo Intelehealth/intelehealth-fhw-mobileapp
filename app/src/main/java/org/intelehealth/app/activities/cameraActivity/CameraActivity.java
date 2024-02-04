@@ -1,6 +1,5 @@
 package org.intelehealth.app.activities.cameraActivity;
 
-import static org.intelehealth.app.R.id.image;
 import static org.intelehealth.app.R.id.switch_flash;
 
 import android.Manifest;

@@ -29,7 +29,6 @@ import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.apprtc.CompleteActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -137,7 +136,7 @@ public class CallListenerBackgroundService extends Service {
                     if (value == null) return;
                     if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
                         Intent broadcast = new Intent();
-                        broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
+                        //broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
                         sendBroadcast(broadcast);
                         return;
                     }

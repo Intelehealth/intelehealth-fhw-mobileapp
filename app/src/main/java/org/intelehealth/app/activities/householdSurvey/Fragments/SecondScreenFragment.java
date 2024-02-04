@@ -265,13 +265,12 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         if (view.getId() != R.id.next_button)
             checked = ((RadioButton) view).isChecked();
 
-        switch (view.getId()) {
-            case R.id.next_button:
-                try {
-                    insertData();
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
+        if (view.getId() == R.id.next_button) {
+            try {
+                insertData();
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

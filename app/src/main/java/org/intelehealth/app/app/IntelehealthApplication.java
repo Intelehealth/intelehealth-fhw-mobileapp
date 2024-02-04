@@ -16,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 //import com.healthcubed.ezdxlib.bluetoothHandler.EzdxBT;
 import com.parse.Parse;
@@ -25,7 +26,13 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.apprtc.data.Manager;
+import org.intelehealth.app.webrtc.activity.NASCallLogActivity;
+import org.intelehealth.app.webrtc.activity.NASChatActivity;
+import org.intelehealth.app.webrtc.activity.NASVideoActivity;
+import org.intelehealth.klivekit.RtcEngine;
+import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.DateTimeResource;
+import org.intelehealth.klivekit.utils.Manager;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
@@ -44,6 +51,7 @@ public class IntelehealthApplication extends MultiDexApplication implements
     private static Context mContext;
     private static String androidId;
     private Activity currentActivity;
+
     SessionManager sessionManager;
 
     public static Context getAppContext() {
@@ -60,6 +68,8 @@ public class IntelehealthApplication extends MultiDexApplication implements
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
+    private final SocketManager socketManager = SocketManager.getInstance();
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -110,6 +120,7 @@ public class IntelehealthApplication extends MultiDexApplication implements
             SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
             mDbHelper.onCreate(localdb);
         }
+        initSocketConnection();
         registerActivityLifecycleCallbacks(this);
     }
 
@@ -172,7 +183,7 @@ public class IntelehealthApplication extends MultiDexApplication implements
     public static void setAlertDialogCustomTheme(Context context, Dialog builderDialog) {
         // Getting the view elements
         TextView textView = (TextView) builderDialog.getWindow().findViewById(android.R.id.message);
-        TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
+        TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(androidx.appcompat.R.id.alertTitle);
         Button button1 = (Button) builderDialog.getWindow().findViewById(android.R.id.button1);
         Button button2 = (Button) builderDialog.getWindow().findViewById(android.R.id.button2);
         textView.setTypeface(ResourcesCompat.getFont(context, R.font.lato_regular));
@@ -197,5 +208,45 @@ public class IntelehealthApplication extends MultiDexApplication implements
 
     public void setRtPrinter(RTPrinter rtPrinter) {
         this.rtPrinter = rtPrinter;
+    }
+
+    /**
+     * Socket should be open and close app level,
+     * so when app create open it and close on app terminate
+     */
+    public void initSocketConnection() {
+        DateTimeResource.build(this);
+        Log.d(TAG, "initSocketConnection: ");
+        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
+            Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+            String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
+                    + sessionManager.getProviderID()
+                    + "&name=" + sessionManager.getChwname();
+            if (!socketManager.isConnected()) socketManager.connect(socketUrl);
+            initRtcConfig();
+        }
+    }
+
+    private void initRtcConfig() {
+        new RtcEngine.Builder()
+                .callUrl(BuildConfig.LIVE_KIT_URL)
+                .socketUrl(BuildConfig.SOCKET_URL + "?userId="
+                        + sessionManager.getProviderID()
+                        + "&name=" + sessionManager.getChwname())
+                .callIntentClass(NASVideoActivity.class)
+                .chatIntentClass(NASChatActivity.class)
+                .callLogIntentClass(NASCallLogActivity.class)
+                .build().saveConfig(this);
+    }
+
+    @Override
+    public void onTerminate() {
+        Timber.tag("APP").d("onTerminate");
+        disconnectSocket();
+        super.onTerminate();
+    }
+
+    public void disconnectSocket() {
+        socketManager.disconnect();
     }
 }

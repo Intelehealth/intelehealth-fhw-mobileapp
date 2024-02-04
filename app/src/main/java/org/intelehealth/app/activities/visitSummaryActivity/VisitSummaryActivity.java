@@ -112,10 +112,10 @@ import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.Base64Utils;
-import org.intelehealth.apprtc.ChatActivity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.utilities.VisitUtils;
+import org.intelehealth.app.webrtc.activity.NASChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -489,14 +489,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.summary_home: {
-//                NavUtils.navigateUpFromSameTask(this);
-                Intent i = new Intent(this, HomeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-                return true;
-            }
+        int itemId = item.getItemId();
+        if (itemId == R.id.summary_home) {//                NavUtils.navigateUpFromSameTask(this);
+            Intent i = new Intent(this, HomeActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            return true;
 //            case R.id.summary_print: {
 //                try {
 //                    doWebViewPrint_Button();
@@ -505,17 +503,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 //                }
 //                return true;
 //            }
-            case R.id.summary_sms: {
-                //     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
-                return true;
-            }
-            case R.id.summary_endVisit: {
-                onEndVisit();
-                return true;
-            }
-            default:
-                return super.onOptionsItemSelected(item);
+        } else if (itemId == R.id.summary_sms) {//     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
+            return true;
+        } else if (itemId == R.id.summary_endVisit) {
+            onEndVisit();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void onEndVisit() {
@@ -691,7 +685,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-                Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);
+                Intent chatIntent = new Intent(VisitSummaryActivity.this, NASChatActivity.class);
                 chatIntent.putExtra("patientName", patientName);
                 chatIntent.putExtra("visitUuid", visitUuid);
                 chatIntent.putExtra("patientUuid", patientUuid);

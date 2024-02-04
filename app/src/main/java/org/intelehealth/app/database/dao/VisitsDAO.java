@@ -12,6 +12,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -469,5 +470,19 @@ public class VisitsDAO {
             db.endTransaction();
         }
         return date;
+    }
+
+    public String getVisitIdByPatientId(String patientId) {
+        String visitId = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ? ", new String[]{patientId});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                visitId = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        cursor.close();
+
+        return visitId;
     }
 }

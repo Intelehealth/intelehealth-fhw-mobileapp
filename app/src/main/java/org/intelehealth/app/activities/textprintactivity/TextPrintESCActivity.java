@@ -480,28 +480,22 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_txtprint:
-                try {
-                    textPrint();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                break;
-            /*case R.id.btn_select_chartsetname:
+        int id = view.getId();
+        if (id == R.id.btn_txtprint) {
+            try {
+                textPrint();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+                /*case R.id.btn_select_chartsetname:
                 showSelectChartsetnameDialog();
                 break;*/
-            case R.id.tv_device_selected:
-                showBluetoothDeviceChooseDialog(); // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
-                break;
-            case R.id.btn_connect:
-                doConnect(); //Here on clicking will connect with the selected Bluetooth device...
-                break;
-            case R.id.btn_disConnect:
-                doDisConnect();
-                break;
-            default:
-                break;
+        } else if (id == R.id.tv_device_selected) {
+            showBluetoothDeviceChooseDialog(); // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
+        } else if (id == R.id.btn_connect) {
+            doConnect(); //Here on clicking will connect with the selected Bluetooth device...
+        } else if (id == R.id.btn_disConnect) {
+            doDisConnect();
         }
     }
 
