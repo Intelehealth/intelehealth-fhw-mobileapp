@@ -113,4 +113,8 @@ public class UrlModifiers {
     public static String getOTPForVerificationUrl() {
         return BuildConfig.SERVER_URL + "/abha/enrollByAadhar";
     }
+
+    public static String getEnrollABHASuggestionUrl() {
+        return BuildConfig.SERVER_URL + "/abha/enrollSuggestion";
+    }
 }

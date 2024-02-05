@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 
 import org.intelehealth.app.abdm.model.AadharApiBody;
 import org.intelehealth.app.abdm.model.AadharOTPResponse;
+import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
+import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
@@ -216,6 +218,11 @@ public interface ApiInterface {
     Single<OTPVerificationResponse> PUSH_OTP_FOR_VERIFICATION(@Url String url,
                                                                   @Header("Authorization") String accessToken,
                                                                   @Body OTPVerificationRequestBody otpVerificationRequestBody);
+
+    @POST
+    Single<EnrollSuggestionResponse> PUSH_ENROLL_ABHA_ADDRESS_SUGGESTION(@Url String url,
+                                                               @Header("Authorization") String accessToken,
+                                                               @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
 
 
 }

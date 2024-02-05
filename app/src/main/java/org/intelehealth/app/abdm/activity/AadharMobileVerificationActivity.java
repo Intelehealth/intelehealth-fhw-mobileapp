@@ -206,15 +206,17 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Log.d("callOTPForVerificationApi: ", "onSuccess: " + otpVerificationResponse.toString());
 
                                 Intent intent;
-                                if (otpVerificationResponse.getIsNew()) {
+                               /* if (otpVerificationResponse.getIsNew()) {
                                     // New user - than take to ABHA address screen.
                                     intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
                                 } else {
                                     // Already user exist - than take to Patient Registration screen.
                                     intent = new Intent(context, IdentificationActivity_New.class);
-                                }
+                                }*/ // todo: uncomment later.
 
+                                intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: remove this later: testing.
                                 intent.putExtra("payload", otpVerificationResponse);
+                                intent.putExtra("accessToken", accessToken);
                                 startActivity(intent);
                                 finish();
                             }
