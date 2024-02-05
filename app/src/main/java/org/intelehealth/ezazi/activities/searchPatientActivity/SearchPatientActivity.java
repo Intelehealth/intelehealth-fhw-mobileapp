@@ -26,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -978,7 +979,9 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(screenRefreshReceiver, new IntentFilter(AppConstants.getScreenRefreshEventReceiver()));
+        //registerReceiver(screenRefreshReceiver, new IntentFilter(AppConstants.getScreenRefreshEventReceiver()));
+        ContextCompat.registerReceiver(SearchPatientActivity.this, screenRefreshReceiver, new IntentFilter(AppConstants.getScreenRefreshEventReceiver()), ContextCompat.RECEIVER_EXPORTED);
+
     }
 
     @Override
