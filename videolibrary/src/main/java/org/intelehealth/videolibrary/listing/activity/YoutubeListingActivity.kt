@@ -6,19 +6,18 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.intelehealth.videolibrary.R
 import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import org.intelehealth.videolibrary.constants.Constants
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
-
-private val videoIDs: List<String> = listOf(
-    "-98fnc4VAo8",
-    "h2svwQmFwHE",
-    "m5Kn9WmOCrw",
-    "RDvs-FvgAC8"
-)
+import org.intelehealth.videolibrary.restapi.RetrofitProvider
+import org.intelehealth.videolibrary.restapi.response.VideoLibraryResponse
 
 class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
@@ -47,16 +46,30 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
     }
 
     private fun setVideoLibraryRecyclerView() {
-        val adapter = YoutubeListingAdapter(
-            videoIDs,
-            lifecycle,
-            this
-        )
+        CoroutineScope(Dispatchers.IO).launch {
 
-        binding?.recyclerview?.let {
-            it.adapter = adapter
-            it.setHasFixedSize(true)
-            it.layoutManager = LinearLayoutManager(this@YoutubeListingActivity)
+            val videoLibraryResponse: VideoLibraryResponse = RetrofitProvider
+                .apiService
+                .fetchVideosLibrary(
+                    "org.intelehealth.ekalarogya",
+                    "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDcxNTc3OTksImRhdGEiOnsic2Vzc2lvbklkIjoiRTkwMTgwN0FBNzA1NEIyMzUwMkY0NEY5OUNFMDA4ODIiLCJ1c2VySWQiOiI0ODI3OTdhYi0wODEyLTRmNjQtYTMwOC1lYmY5NDI5N2M3NTAiLCJuYW1lIjoiYXJwYW5udXJzZSJ9LCJpYXQiOjE3MDcxNDEyODR9.Flb31TCnMm5CqyMCVpHmVsXDNJoi2jSAR02QGQOpTOCAfXDRtMLOrcJvQj3cz9Dp7W23MXrslvlvGf3dK1ao4F9zIiCeqlLQYMJ0e2ZkllLTni870H-AIBwK0xBAdxG4U-xs8LiUE1aXlywSfGqmGvA5qmT6C_moyQSrpEIgVRkE3g6cOsF-bkG2XiDQFgbCtaQkm9orqgkperjVs0RVW_j0Z6Qrw1pOPFvOr10Ao7MzSE-cQTSjTOG1_57zmZevoEbF_VYpokftGnKSpP4bxNBGQ5IYuHxF8xGf2FHN_GVLCm-rndYRD4Gib6X34dbqVTG9SSDkolFNcxyY4jyf4w"
+                )
+
+            if (videoLibraryResponse.success) {
+                withContext(Dispatchers.Main) {
+                    val adapter = YoutubeListingAdapter(
+                        videoLibraryResponse.projectLibraryData.videos,
+                        lifecycle,
+                        this@YoutubeListingActivity
+                    )
+
+                    binding?.recyclerview?.let {
+                        it.adapter = adapter
+                        it.setHasFixedSize(true)
+                        it.layoutManager = LinearLayoutManager(this@YoutubeListingActivity)
+                    }
+                }
+            }
         }
     }
 

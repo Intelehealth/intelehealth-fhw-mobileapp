@@ -8,9 +8,10 @@ import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import org.intelehealth.videolibrary.databinding.ItemVideoListingBinding
+import org.intelehealth.videolibrary.restapi.response.Video
 
 internal class YoutubeListingAdapter(
-    private val videoIds: List<String>,
+    private val videoIds: List<Video>,
     private val lifecycle: Lifecycle,
     private val listener: VideoClickedListener
 ) : RecyclerView.Adapter<YoutubeListingAdapter.YoutubeListingViewHolder>() {
@@ -32,7 +33,7 @@ internal class YoutubeListingAdapter(
     override fun getItemCount(): Int = videoIds.size
 
     override fun onBindViewHolder(holder: YoutubeListingViewHolder, position: Int) {
-        holder.cueVideo(videoIds[position])
+        holder.cueVideo(videoIds[position].videoId)
 
     }
 
