@@ -6,13 +6,13 @@
     <application>
 
         <activity
-            android:name=".view.activities.VideoPlayerActivity"
+            android:name=".player.activity.VideoPlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".view.activities.YoutubeListingActivity"
+            android:name=".listing.activity.YoutubeListingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />

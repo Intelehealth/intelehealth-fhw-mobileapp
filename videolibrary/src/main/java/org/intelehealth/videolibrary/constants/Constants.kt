@@ -1,4 +1,4 @@
-package org.intelehealth.videolibrary.model.constants
+package org.intelehealth.videolibrary.constants
 
 object Constants {
     const val VIDEO_ID = "video_id"

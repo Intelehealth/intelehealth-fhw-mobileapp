@@ -1,10 +1,10 @@
-package org.intelehealth.videolibrary.view.adapter
+package org.intelehealth.videolibrary.listing.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
-import org.intelehealth.videolibrary.model.callbacks.VideoClickedListener
+import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import org.intelehealth.videolibrary.databinding.ItemVideoListingBinding

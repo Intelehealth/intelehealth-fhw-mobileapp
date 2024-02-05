@@ -1,4 +1,4 @@
-package org.intelehealth.videolibrary.view.activities
+package org.intelehealth.videolibrary.player.activity
 
 import android.content.pm.ActivityInfo
 import android.graphics.Color
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import org.intelehealth.videolibrary.model.constants.Constants
+import org.intelehealth.videolibrary.constants.Constants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener

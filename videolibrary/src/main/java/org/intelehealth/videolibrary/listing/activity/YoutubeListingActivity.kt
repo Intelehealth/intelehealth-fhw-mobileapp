@@ -1,4 +1,4 @@
-package org.intelehealth.videolibrary.view.activities
+package org.intelehealth.videolibrary.listing.activity
 
 import android.content.Intent
 import android.graphics.Color
@@ -7,10 +7,11 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.videolibrary.R
+import org.intelehealth.videolibrary.callbacks.VideoClickedListener
+import org.intelehealth.videolibrary.constants.Constants
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
-import org.intelehealth.videolibrary.model.callbacks.VideoClickedListener
-import org.intelehealth.videolibrary.model.constants.Constants
-import org.intelehealth.videolibrary.view.adapter.YoutubeListingAdapter
+import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
+import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
 
 private val videoIDs: List<String> = listOf(
     "-98fnc4VAo8",
