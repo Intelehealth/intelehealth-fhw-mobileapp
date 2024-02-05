@@ -1,6 +1,7 @@
 package org.intelehealth.app.abdm.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +40,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     public static final String TAG = AadharMobileVerificationActivity.class.getSimpleName();
     ActivityAadharMobileVerificationBinding binding;
     private String accessToken = "";
+    String optionSelected = "username";
     private boolean hasABHA;
     public static final String BEARER_AUTH = "Bearer ";
 
@@ -55,6 +57,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         if (hasABHA) {
             binding.layoutDoNotHaveABHANumber.flDoNotHaveABHANumber.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.flHaveABHANumber.setVisibility(View.VISIBLE);
+            clickListenerFor_HasABHA();
         }
         else {
             binding.layoutDoNotHaveABHANumber.flDoNotHaveABHANumber.setVisibility(View.VISIBLE);
@@ -73,21 +76,59 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                     // ie. otp received and making call to enrollAadhar api.
                     if (binding.otpBox.getText() != null) {
                         String mobileNo = "";
-                        if (hasABHA)
-                            mobileNo = binding.layoutHaveABHANumber.etInput.getText().toString().trim();
-                        else
+                        if (hasABHA) {
+                            if (optionSelected.equalsIgnoreCase("mobile")) {
+                                // via. mobile login
+                                mobileNo = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().trim();
+                                // todo: call mobile login api. no need for aadhar here.
+                            }
+                            else {
+                                // via. aadhar login
+                                mobileNo = binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().trim();
+                                callOTPForVerificationApi((String) binding.sendOtpBtn.getTag(), mobileNo, binding.otpBox.getText().toString());
+                            }
+                        }
+                        else {
                             mobileNo = binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().trim();
-
-                        callOTPForVerificationApi((String) binding.sendOtpBtn.getTag(), mobileNo, binding.otpBox.getText().toString());
+                            callOTPForVerificationApi((String) binding.sendOtpBtn.getTag(), mobileNo, binding.otpBox.getText().toString());
+                        }
                     }
                 }
             }
         });
     }
 
+    private void clickListenerFor_HasABHA() {
+        binding.layoutHaveABHANumber.buttonUsername.setOnClickListener(v -> {
+            optionSelected = "username";
+            binding.layoutHaveABHANumber.edittextMobileNumber.setText("");
+            binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);  // show mobile no as well for aadhar as api requires it.
+            binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
+            binding.layoutHaveABHANumber.tvMobileError.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
+            binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+        });
+
+        binding.layoutHaveABHANumber.buttonMobileNumber.setOnClickListener(v -> {
+            optionSelected = "mobile";
+            binding.layoutHaveABHANumber.edittextUsername.setText("");
+            binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);
+            binding.layoutHaveABHANumber.tvMobileError.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
+            binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+        });
+    }
+
     private void callGenerateTokenApi() {
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
-     //   binding.sendOtpBtn.setEnabled(true);    // todo: testing purpose
+     //   binding.sendOtpBtn.setEnabled(true);    // todo: for testing purpose
 
         Single<TokenResponse> tokenResponse = AppConstants.apiInterface.GET_TOKEN(UrlModifiers.getABDM_TokenUrl());
         new Thread(new Runnable() {
@@ -127,7 +168,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         AadharApiBody aadharApiBody = new AadharApiBody();
         String aadharNo = "";
         if (hasABHA)
-            aadharNo = binding.layoutHaveABHANumber.etInput.getText().toString().trim();
+            aadharNo = binding.layoutHaveABHANumber.edittextUsername.getText().toString().trim();
         else
             aadharNo = binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().trim();
 
@@ -214,7 +255,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                     intent = new Intent(context, IdentificationActivity_New.class);
                                 }*/ // todo: uncomment later.
 
-                                intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: remove this later: testing.
+                                intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: remove this later: testing...
                                 intent.putExtra("payload", otpVerificationResponse);
                                 intent.putExtra("accessToken", accessToken);
                                 startActivity(intent);
