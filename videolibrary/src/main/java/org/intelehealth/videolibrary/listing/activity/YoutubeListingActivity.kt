@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.CoroutineScope
@@ -48,6 +49,10 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
     private fun setVideoLibraryRecyclerView() {
         CoroutineScope(Dispatchers.IO).launch {
 
+            withContext(Dispatchers.Main) {
+                binding?.progressBar?.visibility = View.VISIBLE
+            }
+
             val videoLibraryResponse: VideoLibraryResponse = RetrofitProvider
                 .apiService
                 .fetchVideosLibrary(
@@ -68,6 +73,8 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
                         it.setHasFixedSize(true)
                         it.layoutManager = LinearLayoutManager(this@YoutubeListingActivity)
                     }
+
+                    binding?.progressBar?.visibility = View.GONE
                 }
             }
         }
