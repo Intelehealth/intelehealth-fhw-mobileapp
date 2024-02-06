@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
@@ -32,6 +33,12 @@ public class ConsentActivity extends AppCompatActivity {
         WindowsUtils.setStatusBarColor(ConsentActivity.this);
 
         btn_accept_privacy = findViewById(R.id.btn_accept_privacy); // ACCEPT BTN
+        ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
+
+        ivBack.setOnClickListener(v -> {
+            finish();
+        });
+
         btn_accept_privacy.setOnClickListener(v -> {
             patientRegistrationDialog(context, getDrawable(R.drawable.dialog_icon_complete),
                     getString(R.string.abha_number), getString(R.string.do_you_have_your_abha_number),

@@ -162,7 +162,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
-
+                                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "onError: callGenerateTokenApi: " + e.toString());
                             }
                         });
                 // api - end
@@ -205,6 +206,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             @Override
                             public void onError(Throwable e) {
                                 Log.d(TAG, "onError: callMobileNumberVerificationApi: " + e.getMessage());
+                                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
                         });
                 // api - end
@@ -249,6 +251,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             @Override
                             public void onError(Throwable e) {
                                 Log.d(TAG, "onError: AadharResponse: " + e.getMessage());
+                                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
                         });
                 // api - end
@@ -299,7 +302,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                         } else {
                                             // ie. Only 1 account for this mobile number than call -> fetch User Profile details api.
                                             String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
-                                            String X_TOKEN = mobileLoginOnOTPVerifiedResponse.getToken();
+                                            String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
                                             callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
                                         }
                                     }
@@ -309,6 +312,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             @Override
                             public void onError(Throwable e) {
                                 Log.d("callOTPForMobileLoginVerificationApi", "onError: " + e.toString());
+                                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -322,7 +326,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
      * @param xToken
      */
     private void callFetchUserProfileAPI(String abhaNumber, String txnId, String xToken) {
-        
+        binding.sendOtpBtn.setEnabled(false);    // btn disabled.
+        binding.sendOtpBtn.setTag(null);    // resetting...
+
+        // call fetch abha profile api here.
     }
 
 
@@ -364,15 +371,15 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Log.d("callOTPForVerificationApi: ", "onSuccess: " + otpVerificationResponse.toString());
 
                                 Intent intent;
-                               /* if (otpVerificationResponse.getIsNew()) {
+                                if (otpVerificationResponse.getIsNew()) {
                                     // New user - than take to ABHA address screen.
                                     intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
                                 } else {
                                     // Already user exist - than take to Patient Registration screen.
                                     intent = new Intent(context, IdentificationActivity_New.class);
-                                }*/ // todo: uncomment later.
+                                } // todo: uncomment later.
 
-                                intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: remove this later: testing...
+                             //   intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: remove this later: testing...
                                 intent.putExtra("payload", otpVerificationResponse);
                                 intent.putExtra("accessToken", accessToken);
                                 startActivity(intent);
@@ -382,6 +389,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             @Override
                             public void onError(Throwable e) {
                                 Log.d("callOTPForVerificationApi: ", "onError: " + e.toString());
+                                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
                         });
                 // api - end
