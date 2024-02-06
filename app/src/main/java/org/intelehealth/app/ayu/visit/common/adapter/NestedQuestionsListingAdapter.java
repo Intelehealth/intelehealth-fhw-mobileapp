@@ -694,7 +694,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
      * @param index
      * @param isSuperNested
      */
-    private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, boolean isGotFromChipSelected) {
+    private void showOptionsDataV2(final Node selectedNode,
+                                   final GenericViewHolder holder,
+                                   List<Node> options,
+                                   int index, boolean isSuperNested,
+                                   boolean isGotFromChipSelected) {
         Log.v(TAG, "showOptionsDataV2 - " + getEngineVersion());
         holder.singleComponentContainer.removeAllViews();
         holder.optionRecyclerView.setVisibility(View.VISIBLE);
@@ -2103,25 +2107,22 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             tvQuestion = itemView.findViewById(R.id.tv_question);
             tvQuestionDesc = itemView.findViewById(R.id.tv_question_desc);
 
-            submitButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mItemList.get(index).isSelected()) {
-                        mItemList.get(index).setSkipped(false);
-                        AdapterUtils.setToDisable(skipButton);
-                        mItemList.get(index).setSelected(true);
-                        mItemList.get(index).setDataCaptured(true);
-                        Log.v(TAG, new Gson().toJson(mItemList.get(index)));
-                        AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
-                            @Override
-                            public void onFinish() {
-                                mOnItemSelection.onSelect(node, mRootIndex, false, null);
-                            }
-                        });
+            submitButton.setOnClickListener(view -> {
+                if (mItemList.get(index).isSelected()) {
+                    mItemList.get(index).setSkipped(false);
+                    AdapterUtils.setToDisable(skipButton);
+                    mItemList.get(index).setSelected(true);
+                    mItemList.get(index).setDataCaptured(true);
+                    Log.v(TAG, new Gson().toJson(mItemList.get(index)));
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, mRootIndex, false, null);
+                        }
+                    });
 
-                    } else
-                        Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
-                }
+                } else
+                    Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
             });
 
             skipButton.setOnClickListener(new View.OnClickListener() {

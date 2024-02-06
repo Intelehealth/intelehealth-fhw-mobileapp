@@ -2789,7 +2789,6 @@ public class Node implements Serializable {
                                 stringsList.add(right_pointing + mOptions.get(i).findDisplay() + next_line);
                             } else {
                                 stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
-
                             }
 
                         } else {
@@ -2832,7 +2831,7 @@ public class Node implements Serializable {
                         }
                         lastVal = v;
                     }*/
-                    if(stringsList.contains(bullet_hollow  + NOT_ANSWERED + next_line) || stringsList.contains( right_pointing+ NOT_ANSWERED + next_line)){
+                    if (stringsList.contains(bullet_hollow + NOT_ANSWERED + next_line) || stringsList.contains(right_pointing + NOT_ANSWERED + next_line)) {
                         //stringsList.clear();
                         stringsList.remove(stringsList.size() - 1);
                     }
@@ -3321,9 +3320,36 @@ public class Node implements Serializable {
         return allAnswered;
     }
 
+    public boolean checkIsAnswered() {
+        Timber.tag(TAG).d("Node => %s", findDisplay());
+        boolean isAnswered = isSelected();
+        if (isRequired() && !isSelected()) return false;
+
+        if (optionsList != null && !optionsList.isEmpty()) {
+            ArrayList<Node> selectedNodes = getSelectedNode();
+            if (isRequired() && selectedNodes.isEmpty()) return false;
+            for (Node child : selectedNodes) {
+                if (!child.checkIsAnswered()) {
+                    isAnswered = false;
+                    break;
+                }
+            }
+        } else if (isUserInputsTypeNode()) isAnswered = isDataCaptured();
+
+        return isAnswered;
+    }
+
+    public ArrayList<Node> getSelectedNode() {
+        ArrayList<Node> nodes = new ArrayList<>();
+        for (Node node : optionsList) {
+            if (node.isSelected()) nodes.add(node);
+        }
+        return nodes;
+    }
 
     public boolean isNestedMandatoryOptionsAnswered() {
         Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered - " + findDisplay());
+        Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered isSelected " + isSelected());
         Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered isDataCaptured- " + isDataCaptured());
         boolean allAnswered = isSelected();
         if (isMultiChoice() && !isDataCaptured()) {
@@ -3340,8 +3366,8 @@ public class Node implements Serializable {
                 Node innerNode = optionsList.get(i);
                 if (innerNode.isSelected()) {
                     Log.v(TAG, innerNode.isRequired() + " = isNestedMandatory - " + innerNode.findDisplay() + " innerNode.isDataCaptured() - " + innerNode.isDataCaptured());
-                    countSelected++;
-                    if (innerNode.isRequired()) {
+                    if (innerNode.isRequired() && innerNode.isDataCaptured()) {
+                        countSelected++;
                         //if (innerNode.optionsList != null && !innerNode.optionsList.isEmpty()) {
                         if (!innerNode.isTerminal()) {
                             if (!innerNode.isNestedMandatoryOptionsAnswered()) {
@@ -3349,7 +3375,7 @@ public class Node implements Serializable {
                                 break;
                             }
                         } else {
-                            if (innerNode.isUserInputsTypeNode() && !innerNode.isDataCaptured) {
+                            if (innerNode.isUserInputsTypeNode() && !innerNode.isDataCaptured()) {
                                 allAnswered = false;
                                 break;
                             }

@@ -76,6 +76,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -348,8 +349,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        registerReceiver(mBroadcastReceiver, filterSend);
-
+        ContextCompat.registerReceiver(
+                context,
+                mBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
@@ -1544,7 +1549,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     protected void onStart() {
         super.onStart();
-        registerReceiver(reMyreceive, filter);
+        ContextCompat.registerReceiver(
+                context,
+                reMyreceive,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
+
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }

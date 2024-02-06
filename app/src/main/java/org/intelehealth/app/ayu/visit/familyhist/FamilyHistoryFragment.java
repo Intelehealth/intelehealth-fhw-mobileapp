@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ajalt.timberkt.Timber;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -34,6 +36,7 @@ import java.util.List;
  */
 public class FamilyHistoryFragment extends Fragment {
 
+    public static final String TAG = "FamilyHistoryFragment";
     private List<Node> mCurrentRootOptionList = new ArrayList<>();
     private int mCurrentComplainNodeOptionsIndex = 0;
     private QuestionsListingAdapter mQuestionsListingAdapter;
@@ -77,7 +80,7 @@ public class FamilyHistoryFragment extends Fragment {
         //sessionManager = new SessionManager(context);
     }
 
-    private HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
+    private final HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,6 +134,16 @@ public class FamilyHistoryFragment extends Fragment {
                     if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                         return;
                     }
+
+//                    if (node.getOptionsList() != null && node.isRequired() && node.getOptionsList().size() > 0) {
+//                        int selectCount = 0;
+//                        for (Node option : node.getOptionsList()) {
+//                            if (option.isSelected()) selectCount++;
+//                        }
+//                        node.setDataCaptured(selectCount > 0);
+//                        node.setSelected(node.isDataCaptured());
+//                    }
+
                     if (isSkipped) {
                         mQuestionsListingAdapter.geItems().get(index).setSelected(false);
                         mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);

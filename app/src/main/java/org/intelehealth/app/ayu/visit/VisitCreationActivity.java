@@ -979,8 +979,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     Log.v(TAG, "savePhysicalExamData, l2Node " + new Gson().toJson(l2Node));
                     List<String> imagePathList = l2Node.getImagePathList();
                     Log.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
-                    if (imagePathList != null && imagePathList.size() > 0){
-                        if(l2Node.isImageUploaded()) {
+                    if (imagePathList != null && imagePathList.size() > 0) {
+                        if (l2Node.isImageUploaded()) {
 
                             for (String imagePath : imagePathList) {
                                 String comments = l2Node.getImagePathListWithSectionTag().get(imagePath);
@@ -1048,12 +1048,15 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         Log.v(TAG, "familyHistory - " + familyHistory);
         if (familyHistory == null || familyHistory.trim().isEmpty()) {
             DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(VisitCreationActivity.this, 0, getString(R.string.alert_label_txt), getString(R.string.you_missed_the_compulsory_questions_please_answer_them), true, getResources().getString(R.string.generic_ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
-                @Override
-                public void onDialogActionDone(int action) {
-
-                }
-            });
+            dialogUtils.showCommonDialog(VisitCreationActivity.this,
+                    0,
+                    getString(R.string.alert_label_txt),
+                    getString(R.string.you_missed_the_compulsory_questions_please_answer_them),
+                    true,
+                    getResources().getString(R.string.generic_ok),
+                    getResources().getString(R.string.cancel),
+                    action -> {
+                    });
 
             return false;
         }
@@ -1120,9 +1123,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private String generateFamilyHistoryAns(boolean isLocale) {
         String familyHistory = "";
         ArrayList<String> familyInsertionList = new ArrayList<>();
-        if (!mFamilyHistoryNode.getOptionsList().get(0).isNestedMandatoryOptionsAnswered()) {
-            return null;
+        for (Node node : mFamilyHistoryNode.getOptionsList()) {
+            if (!node.checkIsAnswered()) return null;
+//            if (node.isSelected() && node.isRequired() && !node.isNestedMandatoryOptionsAnswered())
+//                return null;
         }
+//        if (!mFamilyHistoryNode.getOptionsList().get(0).isNestedMandatoryOptionsAnswered()) {
+//            return null;
+//        }
         if (mFamilyHistoryNode.anySubSelected()) {
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
