@@ -5,7 +5,12 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -18,12 +23,18 @@ import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
+import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAadharMobileVerificationBinding;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.SnackbarUtils;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.WindowsUtils;
+import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import io.reactivex.Single;
@@ -40,6 +51,12 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     String optionSelected = "username";
     private boolean hasABHA;
     public static final String BEARER_AUTH = "Bearer ";
+    private CustomProgressDialog cpd;
+    SnackbarUtils snackbarUtils;
+    SessionManager sessionManager = null;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +64,13 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         binding = ActivityAadharMobileVerificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         WindowsUtils.setStatusBarColor(AadharMobileVerificationActivity.this);  // changing status bar color
+        cpd = new CustomProgressDialog(context);
+        snackbarUtils = new SnackbarUtils();
+        sessionManager = new SessionManager(context);
+
+        binding.ivBackArrow.setOnClickListener(v -> {
+            finish();
+        });
 
         Intent intent = getIntent();
         hasABHA = intent.getBooleanExtra("hasABHA", false);
@@ -97,8 +121,11 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     }
 
     private void clickListenerFor_HasABHA() {
+        binding.otpBox.setText("");
+
         binding.layoutHaveABHANumber.buttonUsername.setOnClickListener(v -> {
             optionSelected = "username";
+            binding.layoutHaveABHANumber.edittextUsername.setText("");
             binding.layoutHaveABHANumber.edittextMobileNumber.setText("");
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);  // show mobile no as well for aadhar as api requires it.
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
@@ -125,6 +152,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     }
 
     private void callGenerateTokenApi() {
+        cpd.show(getString(R.string.otp_sending));
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
      //   binding.sendOtpBtn.setEnabled(true);    // todo: for testing purpose
 
@@ -165,6 +193,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 Log.e(TAG, "onError: callGenerateTokenApi: " + e.toString());
                                 binding.sendOtpBtn.setEnabled(true);
+                                cpd.dismiss();
                             }
                         });
                 // api - end
@@ -192,6 +221,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                         .subscribe(new DisposableSingleObserver<OTPResponse>() {
                             @Override
                             public void onSuccess(OTPResponse otpResponse) {
+                                cpd.dismiss();
+                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
+                                        StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
+
                                 Log.d(TAG, "onSuccess: callMobileNumberVerificationApi: " + otpResponse.toString());
                                 // here, we will receive: txtID and otp will be received via SMS.
                                 // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
@@ -206,8 +239,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
+                                binding.sendOtpBtn.setEnabled(true);
                                 Log.d(TAG, "onError: callMobileNumberVerificationApi: " + e.getMessage());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                cpd.dismiss();
                             }
                         });
                 // api - end
@@ -237,6 +272,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                         .subscribe(new DisposableSingleObserver<OTPResponse>() {
                             @Override
                             public void onSuccess(OTPResponse otpResponse) {
+                                cpd.dismiss();
+                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
+                                        StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
+
                                 Log.d(TAG, "onSuccess: AadharResponse: " + otpResponse.toString());
                                 // here, we will receive: txtID, otp
                                 // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
@@ -254,6 +293,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Log.d(TAG, "onError: AadharResponse: " + e.getMessage());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
+                                cpd.dismiss();
                             }
                         });
                 // api - end
@@ -268,6 +308,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
      * @param otp : otp received via. SMS
      */
     private void callOTPForMobileLoginVerificationApi(String txnId, String otp) {
+        cpd = new CustomProgressDialog(context);
+        cpd.show("Verifying OTP...");
         Log.d("callOTPForVerificationApi: ", "parameters: " + txnId + ", " + otp);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         binding.sendOtpBtn.setTag(null);    // resetting...
@@ -290,6 +332,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                         .subscribe(new DisposableSingleObserver<MobileLoginOnOTPVerifiedResponse>() {
                             @Override
                             public void onSuccess(MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
+                                cpd.dismiss();
+
                                 Log.d("callOTPForMobileLoginVerificationApi", "onSuccess: " + mobileLoginOnOTPVerifiedResponse.toString());
                                 if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
                                     if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is atleast one (1) account.
@@ -312,6 +356,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
+                                cpd.dismiss();
                                 Log.d("callOTPForMobileLoginVerificationApi", "onError: " + e.toString());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
@@ -345,6 +390,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
      * @param otp
      */
     private void callOTPForVerificationApi(String txnId, String mobileNo, String otp) {
+        cpd = new CustomProgressDialog(context);
+        cpd.show("Verifying OTP...");
         Log.d("callOTPForVerificationApi: ", "parameters: " + txnId + ", " + mobileNo + ", " + otp);
 
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
@@ -370,6 +417,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                         .subscribe(new DisposableSingleObserver<OTPVerificationResponse>() {
                             @Override
                             public void onSuccess(OTPVerificationResponse otpVerificationResponse) {
+                                cpd.dismiss();
+
                                 // 1. if new user than isNew = true
                                 // 2. if already exist user than isNew = false.
                                 Log.d("callOTPForVerificationApi: ", "onSuccess: " + otpVerificationResponse.toString());
@@ -392,6 +441,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
+                                binding.sendOtpBtn.setEnabled(true);
+                                cpd.dismiss();
                                 Log.d("callOTPForVerificationApi: ", "onError: " + e.toString());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
@@ -505,6 +556,30 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
 }

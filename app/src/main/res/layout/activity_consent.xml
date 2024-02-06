@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
 
@@ -39,15 +40,17 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/layout_button_privacy"
         android:layout_below="@+id/ll_action_bar"
-        android:layout_marginHorizontal="@dimen/content_margin_start">
+        android:layout_marginHorizontal="@dimen/content_margin_start"
+        >
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_toEndOf="@+id/iv_back_arrow_terms"
             android:autoLink="web"
             android:fontFamily="@font/lato_regular"
-            android:text="@string/i_hereby_declare_that_i_am_voluntarily_sharing_my_aadhaar_number_and_demographic_information_issued_by_uidai_with_national_health_authority_nha_for_the_sole_purpose_of_creation_of_abha_number_i_understand_that_my_abha_number_can_be_used_and_shared_for_purposes_as_may_be_notified_by_abdm_from_time_to_time_including_provision_of_healthcare_services_further_i_am_aware_that_my_personal_identifiable_information_name_address_age_date_of_birth_gender_and_photograph_may_be_made_available_to_the_entities_working_in_the_national_digital_health_ecosystem_ndhe_which_inter_alia_includes_stakeholders_and_entities_such_as_healthcare_professionals_e_g_doctors_facilities_e_g_hospitals_laboratories_and_data_fiduciaries_e_g_health_programmes_which_are_registered_with_or_linked_to_the_ayushman_bharat_digital_mission_abdm_and_various_processes_there_under_i_authorize_nha_to_use_my_aadhaar_number_for_performing_aadhaar_based_authentication_with_uidai_as_per_the_provisions_of_the_aadhaar_targeted_delivery_of_financial_and_other_subsidies_benefits_and_services_act_2016_for_the_aforesaid_purpose_i_understand_that_uidai_will_share_my_e_kyc_details_or_response_of_yes_with_nha_upon_successful_authentication_i_have_been_duly_informed_about_the_option_of_using_other_ids_apart_from_aadhaar_however_i_consciously_choose_to_use_aadhaar_number_for_the_purpose_of_availing_benefits_across_the_ndhe_i_am_aware_that_my_personal_identifiable_information_excluding_aadhaar_number_vid_number_can_be_used_and_shared_for_purposes_as_mentioned_above_i_reserve_the_right_to_revoke_the_given_consent_at_any_point_of_time_as_per_provisions_of_aadhaar_act_and_regulations"
+            android:justificationMode="inter_word"
+            android:text="@string/abdm_consent"
             android:textSize="@dimen/info_options_text_size" />
 
     </androidx.core.widget.NestedScrollView>
