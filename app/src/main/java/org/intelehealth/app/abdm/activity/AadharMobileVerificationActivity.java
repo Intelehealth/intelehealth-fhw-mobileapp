@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.model.AadharApiBody;
+import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
+import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
@@ -376,9 +378,45 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         binding.sendOtpBtn.setTag(null);    // resetting...
 
-        // call fetch abha profile api here.
+        // todo: call fetch abha profile api here.
        // Toast.makeText(context, "Mobile login is working...", Toast.LENGTH_SHORT).show();
-        // todo: implement api for mobile fetch data.
+
+        // payload - start
+        String url = UrlModifiers.getABHAProfileUrl();
+        AbhaProfileRequestBody requestBody = new AbhaProfileRequestBody();
+        requestBody.setTxnId(txnId);
+        requestBody.setAbhaNumber(abhaNumber);
+        // payload - end
+
+        Single<AbhaProfileResponse> abhaProfileResponseSingle =
+                AppConstants.apiInterface.PUSH_ABHA_PROFILE(url, accessToken, xToken, requestBody);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                abhaProfileResponseSingle
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableSingleObserver<AbhaProfileResponse>() {
+                            @Override
+                            public void onSuccess(AbhaProfileResponse abhaProfileResponse) {
+                                Log.d("callFetchUserProfileAPI", "onSuccess: " + abhaProfileResponse);
+                                Intent intent;
+                                // ie. only 1 account exists.
+                                intent = new Intent(context, IdentificationActivity_New.class);
+                                intent.putExtra("mobile_payload", abhaProfileResponse);
+                                intent.putExtra("accessToken", accessToken);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d("callFetchUserProfileAPI", "onError: " + e.toString());
+                            }
+                        });
+            }
+        }).start();
+
     }
 
 

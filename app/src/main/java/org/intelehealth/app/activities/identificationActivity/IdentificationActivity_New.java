@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
@@ -75,7 +76,10 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
     private ImageButton refresh;
     private NetworkUtils networkUtils;
     Intent intentRx;
+    public static final String PAYLOAD = "payload";
+    public static final String MOBILE_PAYLOAD = "mobile_payload";
     private OTPVerificationResponse otpVerificationResponse;
+    private AbhaProfileResponse abhaProfileResponse;
     private ObjectAnimator syncAnimator;
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -139,9 +143,11 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
 
             }
 
-            if (intentRx.hasExtra("payload")) {
+            /*if (intentRx.hasExtra("payload")) {
                 abdmAutoFillScreensWithValues(firstScreen, intentRx);
-            }
+            }*/
+
+            abdmAutoFillScreensWithValues(firstScreen, intentRx);
         }
 
     }
@@ -171,11 +177,19 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
     }
 
     private void abdmAutoFillScreensWithValues(Fragment fragment, Intent intent) {
-        otpVerificationResponse = (OTPVerificationResponse) intent.getSerializableExtra("payload");
-        Log.d(TAG, "payload: " + otpVerificationResponse.toString());
-
         Bundle bundle = new Bundle();
-        bundle.putSerializable("payload", otpVerificationResponse);
+
+        if (intent.hasExtra(PAYLOAD)) {
+            otpVerificationResponse = (OTPVerificationResponse) intent.getSerializableExtra(PAYLOAD);
+            Log.d("abdmAutoFillScreensWithValues", "payload: " + otpVerificationResponse.toString());
+            bundle.putSerializable(PAYLOAD, otpVerificationResponse);
+        }
+        else if (intent.hasExtra(MOBILE_PAYLOAD)) {
+            abhaProfileResponse = (AbhaProfileResponse) intent.getSerializableExtra(MOBILE_PAYLOAD);
+            Log.d("abdmAutoFillScreensWithValues", "payload_mobile: " + abhaProfileResponse.toString());
+            bundle.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+        }
+
         fragment.setArguments(bundle); // passing data to Fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, fragment).commit();
     }

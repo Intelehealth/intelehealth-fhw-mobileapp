@@ -5,11 +5,12 @@ package org.intelehealth.app.abdm.model;
  * Email: prajwalwaingankar@gmail.com
  * Mobile: +917304154312
  **/
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class AbhaProfileResponse {
+public class AbhaProfileResponse implements Serializable {
 
     @SerializedName("ABHANumber")
     @Expose
@@ -397,4 +398,44 @@ public class AbhaProfileResponse {
         this.emailVerified = emailVerified;
     }
 
+    @Override
+    public String toString() {
+        return "AbhaProfileResponse{" +
+                "aBHANumber='" + aBHANumber + '\'' +
+                ", preferredAbhaAddress='" + preferredAbhaAddress + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", name='" + name + '\'' +
+                ", yearOfBirth='" + yearOfBirth + '\'' +
+                ", dayOfBirth='" + dayOfBirth + '\'' +
+                ", monthOfBirth='" + monthOfBirth + '\'' +
+                ", gender='" + gender + '\'' +
+                ", email=" + email +
+                ", profilePhoto='" + profilePhoto + '\'' +
+                ", status='" + status + '\'' +
+                ", stateCode='" + stateCode + '\'' +
+                ", districtCode='" + districtCode + '\'' +
+                ", subDistrictCode=" + subDistrictCode +
+                ", villageCode=" + villageCode +
+                ", townCode=" + townCode +
+                ", wardCode=" + wardCode +
+                ", pincode='" + pincode + '\'' +
+                ", address='" + address + '\'' +
+                ", kycPhoto='" + kycPhoto + '\'' +
+                ", stateName='" + stateName + '\'' +
+                ", districtName='" + districtName + '\'' +
+                ", subdistrictName='" + subdistrictName + '\'' +
+                ", villageName=" + villageName +
+                ", townName='" + townName + '\'' +
+                ", wardName=" + wardName +
+                ", authMethods=" + authMethods +
+                ", tags=" + tags +
+                ", kycVerified=" + kycVerified +
+                ", verificationStatus=" + verificationStatus +
+                ", verificationType=" + verificationType +
+                ", emailVerified=" + emailVerified +
+                '}';
+    }
 }

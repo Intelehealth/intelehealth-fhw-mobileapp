@@ -2,6 +2,8 @@ package org.intelehealth.app.networkApiCalls;
 
 
 import org.intelehealth.app.abdm.model.AadharApiBody;
+import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
+import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
@@ -230,6 +232,11 @@ public interface ApiInterface {
     Single<EnrollSuggestionResponse> PUSH_ENROLL_ABHA_ADDRESS_SUGGESTION(@Url String url,
                                                                @Header("Authorization") String accessToken,
                                                                @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
+    @POST
+    Single<AbhaProfileResponse> PUSH_ABHA_PROFILE(@Url String url,
+                                                                    @Header("Authorization") String accessToken,
+                                                                    @Header("X-TOKEN") String xToken,
+                                                                    @Body AbhaProfileRequestBody abhaProfileRequestBody);
 
 
 }
