@@ -82,7 +82,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             }
                             else {
                                 // via. aadhar login
-                                mobileNo = binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().trim();
+                                mobileNo = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().trim();
                                 callOTPForVerificationApi((String) binding.sendOtpBtn.getTag(), mobileNo, binding.otpBox.getText().toString());
                             }
                         }
@@ -164,6 +164,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             public void onError(Throwable e) {
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 Log.e(TAG, "onError: callGenerateTokenApi: " + e.toString());
+                                binding.sendOtpBtn.setEnabled(true);
                             }
                         });
                 // api - end
@@ -252,6 +253,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             public void onError(Throwable e) {
                                 Log.d(TAG, "onError: AadharResponse: " + e.getMessage());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                binding.sendOtpBtn.setEnabled(true);
                             }
                         });
                 // api - end
@@ -291,7 +293,6 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Log.d("callOTPForMobileLoginVerificationApi", "onSuccess: " + mobileLoginOnOTPVerifiedResponse.toString());
                                 if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
                                     if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is atleast one (1) account.
-
                                         if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
                                             // ie. there are more than 1 accounts for this mobile number than show -> Accounts selection screen.
                                             Intent intent = new Intent(context, AccountSelectionLoginActivity.class);
@@ -313,6 +314,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             public void onError(Throwable e) {
                                 Log.d("callOTPForMobileLoginVerificationApi", "onError: " + e.toString());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                binding.sendOtpBtn.setEnabled(true);
                             }
                         });
             }
@@ -330,6 +332,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         binding.sendOtpBtn.setTag(null);    // resetting...
 
         // call fetch abha profile api here.
+       // Toast.makeText(context, "Mobile login is working...", Toast.LENGTH_SHORT).show();
+        // todo: implement api for mobile fetch data.
     }
 
 
