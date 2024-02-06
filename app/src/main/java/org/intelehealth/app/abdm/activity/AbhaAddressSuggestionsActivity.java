@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 
 import com.google.android.material.chip.Chip;
@@ -47,15 +48,17 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         accessToken = intent.getStringExtra("accessToken");
         OTPVerificationResponse response = (OTPVerificationResponse) intent.getSerializableExtra("payload");
-        txnID = response.getTxnId();     // auto-generated address from abdm end.
-        phrAddressList = response.getABHAProfile().getPhrAddress();     // auto-generated abha preferred address from abdm end.
-        Log.d(TAG, "phrAddress: " + phrAddressList.toString());
+        if (response != null) {
+            txnID = response.getTxnId();     // auto-generated address from abdm end.
+            phrAddressList = response.getABHAProfile().getPhrAddress();     // auto-generated abha preferred address from abdm end.
+            Log.d(TAG, "phrAddress: " + phrAddressList.toString());
+        }
 
-       /* createDynamicChips("prajwalw@sbx");
+        createDynamicChips("prajwalw@sbx");
         createDynamicChips("prajuuu@sbx");
         createDynamicChips("aparna@sbx");
         createDynamicChips("kavita@sbx");
-        createDynamicChips("hello@sbx");*/  // todo: this is just for testing.
+        createDynamicChips("hello@sbx");  // todo: testing -> comment later..
 
         if (binding.chipGrp.getChildCount() > 0) {
             for (int i = 0; i < binding.chipGrp.getChildCount(); i++) {
@@ -63,16 +66,18 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 binding.chipGrp.getChildAt(i).setOnClickListener(v -> {
                     Chip chip = binding.chipGrp.findViewById(binding.chipGrp.getChildAt(finalI).getId());
                     chip.setChecked(true);
-                    Log.d(TAG, "ischecked: " + chip.getText().toString());
+                    String c = chip.getText().toString();
+                    Log.d(TAG, "ischecked: " + c);
 
-                    //here you can call your method to load Images
+                    //here you can call your method...
 
 
                 });
             }
         }
 
-        // api - start
+        // todo: tesing -> uncomment later.
+      /*  // api - start
         String url = UrlModifiers.getEnrollABHASuggestionUrl();
         EnrollSuggestionRequestBody body = new EnrollSuggestionRequestBody();
         body.setTxnId(txnID);
@@ -108,7 +113,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                         });
             }
         }).start();
-        // api - end
+        // api - end*/
 
     }
 
@@ -117,10 +122,15 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         chip.setId(ViewCompat.generateViewId());
         chip.setText(chipTitle);
         chip.setCheckable(true);
-        chip.setChipBackgroundColorResource(R.color.colorPrimary);
-       // chip.setChipStrokeColorResource(R.color.colorPrimaryDark);
-        chip.setTextColor(getColor(R.color.white));
+        chip.setChipBackgroundColorResource(R.color.white);
+        chip.setChipStrokeColorResource(R.color.colorPrimaryDark);
+        chip.setChipStrokeWidth(2);
+        chip.setTextColor(getColor(R.color.colorPrimary));
         chip.isCloseIconVisible();
+        chip.setCheckedIconTintResource(R.color.colorPrimary);
+
+        if (binding.chipGrp.getChildCount() == 0) // ie. by default the auto-generated address will be selected.
+            chip.setChecked(true);
         binding.chipGrp.addView(chip);
     }
 }
