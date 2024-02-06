@@ -14,6 +14,7 @@ import kotlinx.coroutines.withContext
 import org.intelehealth.videolibrary.R
 import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import org.intelehealth.videolibrary.constants.Constants
+import org.intelehealth.videolibrary.data.SessionManager
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
@@ -23,13 +24,25 @@ import org.intelehealth.videolibrary.restapi.response.VideoLibraryResponse
 class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
     private var binding: ActivityYoutubeListingBinding? = null
+    private var sessionManager: SessionManager? = null
+
+    private var authKey: String? = null
+    private var packageName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityYoutubeListingBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+        setData()
         setToolbar()
         setVideoLibraryRecyclerView()
+    }
+
+    private fun setData() {
+        sessionManager = SessionManager(applicationContext)
+        authKey = sessionManager?.getJwtAuthToken()
+        packageName = applicationContext.packageName
     }
 
     private fun setToolbar() {
@@ -56,8 +69,8 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
             val videoLibraryResponse: VideoLibraryResponse = RetrofitProvider
                 .apiService
                 .fetchVideosLibrary(
-                    "org.intelehealth.ekalarogya",
-                    "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDcxNTc3OTksImRhdGEiOnsic2Vzc2lvbklkIjoiRTkwMTgwN0FBNzA1NEIyMzUwMkY0NEY5OUNFMDA4ODIiLCJ1c2VySWQiOiI0ODI3OTdhYi0wODEyLTRmNjQtYTMwOC1lYmY5NDI5N2M3NTAiLCJuYW1lIjoiYXJwYW5udXJzZSJ9LCJpYXQiOjE3MDcxNDEyODR9.Flb31TCnMm5CqyMCVpHmVsXDNJoi2jSAR02QGQOpTOCAfXDRtMLOrcJvQj3cz9Dp7W23MXrslvlvGf3dK1ao4F9zIiCeqlLQYMJ0e2ZkllLTni870H-AIBwK0xBAdxG4U-xs8LiUE1aXlywSfGqmGvA5qmT6C_moyQSrpEIgVRkE3g6cOsF-bkG2XiDQFgbCtaQkm9orqgkperjVs0RVW_j0Z6Qrw1pOPFvOr10Ao7MzSE-cQTSjTOG1_57zmZevoEbF_VYpokftGnKSpP4bxNBGQ5IYuHxF8xGf2FHN_GVLCm-rndYRD4Gib6X34dbqVTG9SSDkolFNcxyY4jyf4w"
+                    packageName = packageName!!,
+                    auth = "Bearer $authKey"
                 )
 
             if (videoLibraryResponse.success) {
