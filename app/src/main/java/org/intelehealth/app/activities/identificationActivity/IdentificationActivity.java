@@ -96,6 +96,7 @@ import org.intelehealth.app.databinding.ActivityIdentificationBinding;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.FileUtils;
@@ -120,7 +121,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-public class IdentificationActivity extends AppCompatActivity implements SurveyCallback, ViewPagerCallback, PregnancyOutcomeCallback {
+public class IdentificationActivity extends BaseActivity implements SurveyCallback, ViewPagerCallback, PregnancyOutcomeCallback {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;

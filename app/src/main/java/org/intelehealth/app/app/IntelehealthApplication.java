@@ -215,28 +215,32 @@ public class IntelehealthApplication extends MultiDexApplication implements
      * so when app create open it and close on app terminate
      */
     public void initSocketConnection() {
-        DateTimeResource.build(this);
         Log.d(TAG, "initSocketConnection: ");
-        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
-            Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
-            String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
-                    + sessionManager.getProviderID()
-                    + "&name=" + sessionManager.getChwname();
-            if (!socketManager.isConnected()) socketManager.connect(socketUrl);
+        if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().isEmpty()) {
+            Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+            if (!socketManager.isConnected()) socketManager.connect(getSocketUrl());
             initRtcConfig();
         }
     }
 
     private void initRtcConfig() {
         new RtcEngine.Builder()
-                .callUrl(BuildConfig.LIVE_KIT_URL)
-                .socketUrl(BuildConfig.SOCKET_URL + "?userId="
-                        + sessionManager.getProviderID()
-                        + "&name=" + sessionManager.getChwname())
+                .callUrl(getLiveKitUrl())
+                .socketUrl(getSocketUrl())
                 .callIntentClass(NASVideoActivity.class)
                 .chatIntentClass(NASChatActivity.class)
                 .callLogIntentClass(NASCallLogActivity.class)
                 .build().saveConfig(this);
+    }
+
+    public String getSocketUrl() {
+        return "https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
+                + sessionManager.getProviderID()
+                + "&name=" + sessionManager.getChwname();
+    }
+
+    public String getLiveKitUrl() {
+        return "wss://" + sessionManager.getServerUrl() + ":9090";
     }
 
     @Override

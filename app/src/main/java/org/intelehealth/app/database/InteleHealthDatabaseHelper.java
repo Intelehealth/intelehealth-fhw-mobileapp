@@ -3,6 +3,7 @@ package org.intelehealth.app.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -178,7 +179,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "family_name TEXT," +
             "voided TEXT DEFAULT '0'," +
             "modified_date TEXT," +
-            "sync TEXT DEFAULT 'false' " +
+            "sync TEXT DEFAULT 'false' "+
             ")";
 
 
@@ -279,7 +280,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
         db.execSQL(CREATE_RTC_LOGS);
         db.execSQL(CREATE_APPOINTMENTS);
+        dbUpgradeToVersion6(db);
         uuidInsert(db);
+
         database = db;
 
     }
@@ -297,10 +300,25 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                 //upgrade logic from version 4 to 5
                 db.execSQL("ALTER TABLE tbl_visit_attribute ADD COLUMN visit_id TEXT");
                 break;
+            case 5:
+                //upgrade logic from version 5 to 6
+                dbUpgradeToVersion6(db);
+                break;
             default:
                 throw new IllegalStateException(
                         "onUpgrade() with unknown oldVersion " + oldVersion);
         }
+    }
+
+    /**
+     * db version: 6
+     * adding required db changes here
+     */
+    private void dbUpgradeToVersion6(SQLiteDatabase db) {
+        try {
+            db.execSQL("ALTER TABLE tbl_provider ADD COLUMN useruuid TEXT");
+            db.execSQL("ALTER TABLE tbl_provider ADD COLUMN role TEXT");
+        }catch (Exception ignored){}
     }
 
 

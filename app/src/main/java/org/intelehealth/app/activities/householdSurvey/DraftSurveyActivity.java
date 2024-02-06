@@ -25,6 +25,7 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.pushRequestApiCall.Attribute;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -36,7 +37,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DraftSurveyActivity extends AppCompatActivity {
+public class DraftSurveyActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private SearchPatientAdapter draftSurveyAdapter;
     private Context context = DraftSurveyActivity.this;

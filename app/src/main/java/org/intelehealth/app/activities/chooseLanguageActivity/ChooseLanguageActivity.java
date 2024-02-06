@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONException;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ChooseLanguageActivity extends AppCompatActivity {
+public class ChooseLanguageActivity extends BaseActivity {
 
 
     Button SaveButton;

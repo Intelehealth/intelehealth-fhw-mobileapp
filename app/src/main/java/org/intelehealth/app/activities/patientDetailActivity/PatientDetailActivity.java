@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +51,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.shared.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -120,7 +122,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_ru_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
-public class PatientDetailActivity extends AppCompatActivity {
+public class PatientDetailActivity extends BaseActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName, patientFName, patientLName;
     String mGender;
@@ -450,7 +452,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        registerReceiver(reMyreceive, filter);
+        ContextCompat.registerReceiver(context,reMyreceive, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
         super.onStart();
     }
 

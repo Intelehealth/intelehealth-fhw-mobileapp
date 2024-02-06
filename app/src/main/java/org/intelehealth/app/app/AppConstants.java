@@ -27,7 +27,7 @@ import org.intelehealth.app.syncModule.SyncWorkManager;
 public class AppConstants {
     //Constants
     public static final String DATABASE_NAME = "localrecords.db";
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
     public static final String IMAGE_APP_ID = "app2";

@@ -80,6 +80,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -111,6 +112,7 @@ import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescript
 import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.Base64Utils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -179,7 +181,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class VisitSummaryActivity extends AppCompatActivity /*implements PrinterObserver*/ {
+public class VisitSummaryActivity extends BaseActivity /*implements PrinterObserver*/ {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
@@ -460,13 +462,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     public void registerBroadcastReceiverDynamically() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
+        ContextCompat.registerReceiver(context,broadcastReceiverForIamgeDownlaod, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        registerReceiver(downloadPrescriptionService, filter);
+        ContextCompat.registerReceiver(context,downloadPrescriptionService, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
 
@@ -4269,7 +4271,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            registerReceiver(receiver, filter);
+            ContextCompat.registerReceiver(context,receiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
             isReceiverRegistered = true;
         }
     }

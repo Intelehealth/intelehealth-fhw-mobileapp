@@ -37,6 +37,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.models.DocumentObject;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -45,7 +46,7 @@ import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class AdditionalDocumentsActivity extends AppCompatActivity {
+public class AdditionalDocumentsActivity extends BaseActivity {
 
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private String patientUuid;

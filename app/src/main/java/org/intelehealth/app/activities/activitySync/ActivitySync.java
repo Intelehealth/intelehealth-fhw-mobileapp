@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.shared.BaseActivity;
 
 
-public class ActivitySync extends AppCompatActivity {
+public class ActivitySync extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

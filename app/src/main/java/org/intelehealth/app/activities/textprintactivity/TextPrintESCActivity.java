@@ -77,6 +77,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
@@ -93,7 +94,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class TextPrintESCActivity extends AppCompatActivity implements View.OnClickListener,
+public class TextPrintESCActivity extends BaseActivity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, PrinterObserver {
 
     private WebView mWebView;

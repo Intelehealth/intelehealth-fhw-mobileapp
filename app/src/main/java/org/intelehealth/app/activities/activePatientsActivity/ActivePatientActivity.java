@@ -46,6 +46,7 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.ActivePatientModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -53,7 +54,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class ActivePatientActivity extends AppCompatActivity {
+public class ActivePatientActivity extends BaseActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
     SessionManager sessionManager = null;

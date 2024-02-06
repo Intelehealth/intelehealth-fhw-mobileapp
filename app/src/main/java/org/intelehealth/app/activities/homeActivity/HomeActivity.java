@@ -78,6 +78,7 @@ import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
@@ -115,7 +116,7 @@ import io.reactivex.schedulers.Schedulers;
  * Home Screen
  */
 
-public class HomeActivity extends AppCompatActivity /* implements BluetoothService.OnBluetoothScanCallback, BTAdapter.ItemClickListener */ {
+public class HomeActivity extends BaseActivity /* implements BluetoothService.OnBluetoothScanCallback, BTAdapter.ItemClickListener */ {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
@@ -936,6 +937,8 @@ public class HomeActivity extends AppCompatActivity /* implements BluetoothServi
             }
         }
 */
+        IntelehealthApplication.getInstance().disconnectSocket();
+
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -966,11 +969,12 @@ public class HomeActivity extends AppCompatActivity /* implements BluetoothServi
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(context,syncBroadcastReceiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
 
        /* // bluetooth receiver register in oncreate
         IntentFilter b_filter = new IntentFilter();
         b_filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+
         b_filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
         b_filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         registerReceiver(bluetoothReceiver, b_filter);

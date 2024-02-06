@@ -16,6 +16,12 @@ public class ProviderDTO {
     @SerializedName("family_name")
     @Expose
     private String familyName;
+    @SerializedName("role")
+    @Expose
+    private String role;
+    @SerializedName("useruuid")
+    @Expose
+    private String useruuid;
     @SerializedName("voided")
     @Expose
     private Integer voided;
@@ -58,6 +64,22 @@ public class ProviderDTO {
 
     public void setVoided(Integer voided) {
         this.voided = voided;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getUseruuid() {
+        return useruuid;
+    }
+
+    public void setUseruuid(String useruuid) {
+        this.useruuid = useruuid;
     }
 
 }

@@ -62,6 +62,7 @@ import org.intelehealth.app.models.prescriptionUpload.ObsPrescResponse;
 import org.intelehealth.app.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.LocaleHelper;
@@ -81,7 +82,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class PrescriptionActivity extends AppCompatActivity {
+public class PrescriptionActivity extends BaseActivity {
 
     private static final String TAG = PrescriptionActivity.class.getSimpleName();
 

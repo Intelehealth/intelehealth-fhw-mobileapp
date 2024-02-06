@@ -41,6 +41,7 @@ import com.healthcubed.ezdxlib.model.TestName;*/
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.shared.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ import java.util.List;
  * Github: prajwalmw
  */
 
-public class DevicesActivity extends AppCompatActivity /*implements BluetoothService.OnBluetoothEventCallback*/ {
+public class DevicesActivity extends BaseActivity /*implements BluetoothService.OnBluetoothEventCallback*/ {
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;

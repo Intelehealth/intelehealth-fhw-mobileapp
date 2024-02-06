@@ -45,6 +45,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.databinding.ActivityCameraBinding;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.BitmapUtils;
 
 import java.io.File;
@@ -62,7 +63,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class CameraActivity extends AppCompatActivity {
+public class CameraActivity extends BaseActivity {
 
     public static final int TAKE_IMAGE = 205;
     /**

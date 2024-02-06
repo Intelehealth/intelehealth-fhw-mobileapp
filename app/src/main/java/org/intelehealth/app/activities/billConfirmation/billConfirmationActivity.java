@@ -87,6 +87,7 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.app.utilities.FileUtils;
@@ -108,7 +109,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-public class billConfirmationActivity extends AppCompatActivity implements PrinterObserver {
+public class billConfirmationActivity extends BaseActivity implements PrinterObserver {
 
     Toolbar toolbar;
     String patientName, patientVillage, patientOpenID, patientHideVisitID, patientPhoneNum, visitType, patientVisitID, billType;

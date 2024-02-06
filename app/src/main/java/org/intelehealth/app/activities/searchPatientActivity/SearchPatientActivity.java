@@ -46,6 +46,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
@@ -61,7 +62,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SearchPatientActivity extends AppCompatActivity {
+public class SearchPatientActivity extends BaseActivity {
     SearchView searchView;
     String query;
     private SearchPatientAdapter recycler;

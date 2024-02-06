@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import org.intelehealth.app.shared.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,7 +58,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
-public class ComplaintNodeActivity extends AppCompatActivity {
+public class ComplaintNodeActivity extends BaseActivity {
     final String TAG = "Complaint Node Activity";
 
     String patientUuid;

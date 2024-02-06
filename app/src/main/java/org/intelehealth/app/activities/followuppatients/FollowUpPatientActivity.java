@@ -23,6 +23,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -41,7 +42,7 @@ import java.util.Locale;
  * Github : @nishitagoyal
  */
 
-public class FollowUpPatientActivity extends AppCompatActivity {
+public class FollowUpPatientActivity extends BaseActivity {
 
     private FollowUpPatientAdapter recycler;
     RecyclerView recyclerView;

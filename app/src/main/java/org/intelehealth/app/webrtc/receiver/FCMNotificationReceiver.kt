@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeActivity
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
@@ -42,8 +43,8 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
                     nurseName = sessionManager.chwname
                     callType = CallType.VIDEO
-                    url = BuildConfig.LIVE_KIT_URL
-                    socketUrl = BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
+                    url = IntelehealthApplication.getInstance().liveKitUrl
+                    socketUrl = IntelehealthApplication.getInstance().socketUrl
                     PatientsDAO().getPatientName(roomId).apply {
                         patientName = get(0).name
                     }
