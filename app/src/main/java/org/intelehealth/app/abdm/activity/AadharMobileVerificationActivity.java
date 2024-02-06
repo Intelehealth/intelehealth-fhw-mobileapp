@@ -465,22 +465,20 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 // 2. if already exist user than isNew = false.
                                 Log.d("callOTPForVerificationApi: ", "onSuccess: " + otpVerificationResponse.toString());
 
-                                Intent intent = null;
                                 if (otpVerificationResponse.getIsNew()) {
+                                 //   if (!otpVerificationResponse.getIsNew()) {  // todo: testing -> comment later and uncomment above.
                                     // New user -> than fetch address suggestions and take to ABHA address screen.
-                                    List<String> addressList = callFetchAbhaAddressSuggestionsApi(otpVerificationResponse);
-                                    if (addressList.size() > 0)
-                                        intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
+                                    callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
                                 } else {
                                     // Already user exist -> than take to Patient Registration screen.
-                                    intent = new Intent(context, IdentificationActivity_New.class);
+                                    Intent intent = new Intent(context, IdentificationActivity_New.class);
+                                    intent.putExtra("payload", otpVerificationResponse);
+                                    intent.putExtra("accessToken", accessToken);
+                                    startActivity(intent);
+                                    finish();
                                 } // todo: uncomment later.
 
                              //   intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: remove this later: testing...
-                                intent.putExtra("payload", otpVerificationResponse);
-                                intent.putExtra("accessToken", accessToken);
-                                startActivity(intent);
-                                finish();
                             }
 
                             @Override
@@ -497,8 +495,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
     }
 
-    private List<String> callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse otpVerificationResponse) {
-        List<String> addressList = new ArrayList<>();
+    private ArrayList<String> callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse otpVerificationResponse, String accessToken) {
+        ArrayList<String> addressList = new ArrayList<>();
         // api - start
         String url = UrlModifiers.getEnrollABHASuggestionUrl();
         EnrollSuggestionRequestBody body = new EnrollSuggestionRequestBody();
@@ -523,6 +521,15 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                     }
                                     for (String phrAddress : enrollSuggestionResponse.getAbhaAddressList()) {
                                         addressList.add(phrAddress);
+                                    }
+
+                                    if (addressList.size() > 0) {
+                                        Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
+                                        intent.putStringArrayListExtra("addressList", addressList);
+                                        intent.putExtra("payload", otpVerificationResponse);
+                                        intent.putExtra("accessToken", accessToken);
+                                        startActivity(intent);
+                                        finish();
                                     }
                                 }
                             }

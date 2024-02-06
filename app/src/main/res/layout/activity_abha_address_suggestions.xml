@@ -72,8 +72,8 @@
                 android:layout_marginHorizontal="@dimen/margin_14"
                 android:layout_below="@+id/sub_title"
                 android:paddingHorizontal="@dimen/margin_10"
-                android:layout_marginTop="@dimen/margin_14"
-                app:chipSpacingHorizontal="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_16"
+                app:chipSpacingHorizontal="@dimen/margin_14"
                 app:singleSelection="true">
 
 <!--              Todo: Just for testing. Comment this chips later as we are creating dynamically...-->
