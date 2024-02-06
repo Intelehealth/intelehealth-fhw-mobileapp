@@ -1,10 +1,10 @@
 package org.intelehealth.app.networkApiCalls;
 
 
-import com.google.gson.JsonObject;
-
 import org.intelehealth.app.abdm.model.AadharApiBody;
-import org.intelehealth.app.abdm.model.AadharOTPResponse;
+import org.intelehealth.app.abdm.model.MobileLoginApiBody;
+import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
+import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
@@ -39,7 +39,6 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.app.models.statewise_location.State;
-import org.json.JSONObject;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -210,14 +209,22 @@ public interface ApiInterface {
     Single<TokenResponse> GET_TOKEN(@Url String url);
 
     @POST
-    Single<AadharOTPResponse> GET_OTP_FOR_AADHAR(@Url String url,
-                                                 @Header("Authorization") String accessToken,
-                                                 @Body AadharApiBody aadharApiBody);
+    Single<OTPResponse> GET_OTP_FOR_AADHAR(@Url String url,
+                                           @Header("Authorization") String accessToken,
+                                           @Body AadharApiBody aadharApiBody);
+    @POST
+    Single<OTPResponse> GET_OTP_FOR_MOBILE(@Url String url,
+                                           @Header("Authorization") String accessToken,
+                                           @Body MobileLoginApiBody mobileLoginApiBody);
 
     @POST
     Single<OTPVerificationResponse> PUSH_OTP_FOR_VERIFICATION(@Url String url,
                                                                   @Header("Authorization") String accessToken,
                                                                   @Body OTPVerificationRequestBody otpVerificationRequestBody);
+    @POST
+    Single<MobileLoginOnOTPVerifiedResponse> PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(@Url String url,
+                                                                                    @Header("Authorization") String accessToken,
+                                                                                    @Body OTPVerificationRequestBody otpVerificationRequestBody);
 
     @POST
     Single<EnrollSuggestionResponse> PUSH_ENROLL_ABHA_ADDRESS_SUGGESTION(@Url String url,

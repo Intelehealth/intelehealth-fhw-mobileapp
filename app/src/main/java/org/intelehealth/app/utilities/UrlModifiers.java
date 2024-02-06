@@ -117,4 +117,10 @@ public class UrlModifiers {
     public static String getEnrollABHASuggestionUrl() {
         return BuildConfig.SERVER_URL + "/abha/enrollSuggestion";
     }
+    public static String getMobileLoginVerificationUrl() {
+        return BuildConfig.SERVER_URL + "/abha/loginOTPReq";
+    }
+    public static String getOTPForMobileLoginVerificationUrl() {
+        return BuildConfig.SERVER_URL + "/abha/loginOTPVerify";
+    }
 }

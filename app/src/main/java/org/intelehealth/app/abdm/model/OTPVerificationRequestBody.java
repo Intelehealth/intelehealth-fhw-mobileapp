@@ -20,6 +20,9 @@ public class OTPVerificationRequestBody {
     @SerializedName("mobileNo")
     @Expose
     private String mobileNo;
+    @SerializedName("scope")
+    @Expose
+    private String scope;
 
     public String getOtp() {
         return otp;
@@ -45,4 +48,11 @@ public class OTPVerificationRequestBody {
         this.mobileNo = mobileNo;
     }
 
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
 }

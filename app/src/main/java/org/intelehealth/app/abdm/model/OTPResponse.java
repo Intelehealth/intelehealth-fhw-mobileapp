@@ -8,7 +8,7 @@ package org.intelehealth.app.abdm.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-public class AadharOTPResponse {
+public class OTPResponse {
 
     @SerializedName("txnId")
     @Expose
