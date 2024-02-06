@@ -13,8 +13,8 @@ import org.intelehealth.ezazi.ui.prescription.data.PrescriptionRepository
  **/
 class PrescriptionViewModel(val repository: PrescriptionRepository) : BaseViewModel() {
 
-    fun getPrescriptions(visitId: String) = executeLocalQuery {
-        repository.fetchPrescription(visitId)
+    fun getPrescriptions(visitId: String, creatorId: String) = executeLocalQuery {
+        repository.fetchPrescription(visitId, creatorId)
     }.asLiveData()
 
     companion object {

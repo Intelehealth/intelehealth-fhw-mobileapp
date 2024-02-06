@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="plan"
+            type="org.intelehealth.ezazi.models.dto.ObsDTO" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvPrescriptionPlan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/list_container_padding"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_list_item"
+            android:padding="@dimen/screen_container_padding">
+
+            <TextView
+                android:id="@+id/txtPlanContent"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="@{plan.value}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/intro_text_1" />
+
+            <TextView
+                android:id="@+id/txtPlanDate"
+                style="@style/Theme.EZazi.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_padding"
+                android:text="@{plan.dateWithDrName()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtPlanContent"
+                tools:text="Dr.Vishal 25 Jan, 2023 12:00 PM" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPrescriptionPlanViewMore"
+                style="@style/Theme.EZazi.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/view_more"
+                app:layout_constraintBottom_toBottomOf="@id/txtPlanDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/txtPlanDate" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

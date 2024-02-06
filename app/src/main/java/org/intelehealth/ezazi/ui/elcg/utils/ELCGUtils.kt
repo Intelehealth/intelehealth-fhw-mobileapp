@@ -7,10 +7,9 @@ import org.intelehealth.ezazi.database.dao.EncounterDAO
 import org.intelehealth.ezazi.database.dao.ObsDAO
 import org.intelehealth.ezazi.database.dao.ProviderDAO
 import org.intelehealth.ezazi.models.dto.EncounterDTO
-import org.intelehealth.ezazi.models.dto.ObsDTO
 import org.intelehealth.ezazi.ui.elcg.model.ELCGData
 import org.intelehealth.ezazi.ui.elcg.model.ELCGGraph
-import org.intelehealth.ezazi.ui.elcg.model.StageHeader
+import org.intelehealth.ezazi.ui.elcg.model.CategoryHeader
 import org.intelehealth.ezazi.utilities.SessionManager
 import org.intelehealth.klivekit.chat.model.ItemHeader
 import java.util.LinkedList
@@ -46,7 +45,7 @@ object ELCGUtils {
         val stage2Encounters = encounters.filter { it.encounterTypeName.contains("Stage2") }
 
         if (stage2Encounters.isNotEmpty()) {
-            elcgDataList.add(StageHeader(R.string.stage_2))
+            elcgDataList.add(CategoryHeader(R.string.stage_2))
             elcgDataList.addAll(
                 getHourWiseElcgDataList(
                     stage2Encounters, MAX_ENCOUNTER_STAGE_2, elcgGraph, 2
@@ -55,7 +54,7 @@ object ELCGUtils {
         }
 
         if (stage1Encounters.isNotEmpty()) {
-            elcgDataList.add(StageHeader(R.string.stage_1))
+            elcgDataList.add(CategoryHeader(R.string.stage_1))
             elcgDataList.addAll(
                 getHourWiseElcgDataList(
                     stage1Encounters, MAX_ENCOUNTER_STAGE_1, elcgGraph, 1

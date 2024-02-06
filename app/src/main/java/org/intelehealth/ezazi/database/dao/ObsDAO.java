@@ -88,6 +88,7 @@ public class ObsDAO {
             values.put("uuid", obsDTOS.getUuid());
             values.put("encounteruuid", obsDTOS.getEncounteruuid());
             values.put("creator", obsDTOS.getCreator());
+            values.put("creatoruuid", obsDTOS.getCreatorUuid());
             values.put("conceptuuid", obsDTOS.getConceptuuid());
             values.put("comment", obsDTOS.getComment());
             values.put("value", obsDTOS.getValue());
@@ -117,6 +118,7 @@ public class ObsDAO {
             values.put("uuid", UUID.randomUUID().toString());
             values.put("encounteruuid", obsDTO.getEncounteruuid());
             values.put("creator", obsDTO.getCreator());
+            values.put("creatoruuid", obsDTO.getCreatorUuid());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
@@ -152,6 +154,7 @@ public class ObsDAO {
             values.put("uuid", obsDTO.getUuid());
             values.put("encounteruuid", obsDTO.getEncounteruuid());
             values.put("creator", obsDTO.getCreator());
+            values.put("creatoruuid", obsDTO.getCreatorUuid());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
@@ -187,6 +190,7 @@ public class ObsDAO {
 
             values.put("encounteruuid", obsDTO.getEncounteruuid());
             values.put("creator", obsDTO.getCreator());
+            values.put("creatoruuid", obsDTO.getCreatorUuid());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
@@ -240,6 +244,7 @@ public class ObsDAO {
                 values.put("uuid", UUID.randomUUID().toString());
                 values.put("encounteruuid", ob.getEncounteruuid());
                 values.put("creator", ob.getCreator());
+                values.put("creatoruuid", ob.getCreatorUuid());
                 values.put("conceptuuid", ob.getConceptuuid());
                 values.put("comment", ob.getComment());
                 values.put("value", ob.getValue());
@@ -498,6 +503,7 @@ public class ObsDAO {
             values.put("uuid", UUID.randomUUID().toString());
             values.put("encounteruuid", obsDTO.getEncounteruuid());
             values.put("creator", obsDTO.getCreator());
+            values.put("creatoruuid", obsDTO.getCreatorUuid());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());

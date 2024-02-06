@@ -16,7 +16,7 @@ import java.util.LinkedList
  * Mob   : +919727206702
  */
 class Adapter(context: Context, objectsList: LinkedList<ItemHeader>) :
-    StageHeaderAdapter(context, objectsList) {
+    CategoryHeaderAdapter(context, objectsList) {
 
     override fun getItemViewType(position: Int): Int {
         if (getItem(position).isHeader()) return HEADER

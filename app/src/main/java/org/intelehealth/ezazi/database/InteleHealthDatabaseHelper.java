@@ -149,6 +149,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "value TEXT," +
             "comment TEXT," +
             "creator TEXT," +
+            "creatoruuid TEXT,"+
             "voided TEXT DEFAULT '0'," +
             "obsservermodifieddate TEXT," +
             "modified_date TEXT," +

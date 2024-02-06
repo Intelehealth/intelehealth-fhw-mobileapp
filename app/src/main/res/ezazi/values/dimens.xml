@@ -13,7 +13,7 @@
     <dimen name="forgot_pwd_size">@dimen/std_12sp</dimen>
     <dimen name="form_top_margin">@dimen/std_16dp</dimen>
     <dimen name="input_label_size">@dimen/std_12sp</dimen>
-    <dimen name="input_inner_size">@dimen/std_14sp</dimen>
+    <dimen name="input_inner_size">@dimen/std_16sp</dimen>
     <dimen name="screen_title_top_margin">@dimen/std_56dp</dimen>
     <dimen name="actionbar_size">56dp</dimen>
     <dimen name="button_text_size">@dimen/std_14sp</dimen>
@@ -34,7 +34,7 @@
     <dimen name="alert_icon_size">@dimen/std_36dp</dimen>
     <dimen name="heading1">@dimen/std_16sp</dimen>
     <dimen name="heading2">@dimen/std_14sp</dimen>
-    <dimen name="body">@dimen/std_12sp</dimen>
+    <dimen name="body">@dimen/std_16sp</dimen>
     <dimen name="caption">@dimen/std_12sp</dimen>
     <dimen name="input_hint_text_size">@dimen/std_10sp</dimen>
     <dimen name="between_text_margin">@dimen/std_4dp</dimen>

@@ -1,9 +1,7 @@
 package org.intelehealth.ezazi.ui.elcg.adapter.viewholder
 
-import org.intelehealth.ezazi.databinding.RowItemElcgDataBinding
 import org.intelehealth.ezazi.databinding.RowItemElcgStageHeaderBinding
-import org.intelehealth.ezazi.ui.elcg.model.ELCGData
-import org.intelehealth.ezazi.ui.elcg.model.StageHeader
+import org.intelehealth.ezazi.ui.elcg.model.CategoryHeader
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
 
 /**
@@ -14,7 +12,7 @@ import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
 class ELCGStageHeaderHolder(private val binding: RowItemElcgStageHeaderBinding) : BaseViewHolder(
     binding.root
 ) {
-    fun bind(stage: StageHeader) {
+    fun bind(stage: CategoryHeader) {
         binding.stage = binding.tvStage.context.resources.getString(stage.stage)
     }
 }

@@ -35,6 +35,8 @@ public class Medicine implements Serializable, ItemHeader {
 
     private String createdAt;
 
+    private String creatorName;
+
     public String getMedicineFullName() {
         return medicineFullName;
     }
@@ -218,5 +220,21 @@ public class Medicine implements Serializable, ItemHeader {
     @Override
     public String createdDate() {
         return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public String dateWithDrName() {
+        return creatorName + " " + createdAt;
     }
 }

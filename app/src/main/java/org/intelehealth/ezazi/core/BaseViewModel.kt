@@ -55,7 +55,7 @@ open class BaseViewModel(
     }
 
     fun <L> executeLocalQuery(
-        queryCall:  () -> L?
+        queryCall: () -> L?
     ) = flow {
         val localData = queryCall.invoke()
         localData?.let { emit(Result.Success(localData, "")) } ?: kotlin.run {
@@ -83,18 +83,22 @@ open class BaseViewModel(
 
             Result.Status.SUCCESS -> {
                 loadingData.postValue(false)
-                if (it.data != null) {
-                    println("data ${Gson().toJson(it.data)}")
-                    callback(it.data)
-                }
+                it.data?.let { data ->
+                    println("data ${Gson().toJson(data)}")
+                    callback(data)
+                } ?: failResult.postValue(it.message ?: "")
             }
 
             Result.Status.ERROR -> {
                 println("ERROR ${it.message}")
                 loadingData.postValue(false)
-//                errorResult.postValue(it.data)
+                errorResult.postValue(Throwable(it.message))
             }
         }
+    }
+
+    fun updateFailResult(message: String) {
+        failResult.postValue(message)
     }
 
     companion object {

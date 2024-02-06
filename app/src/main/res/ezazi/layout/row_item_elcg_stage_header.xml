@@ -15,11 +15,11 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvStage"
-            style="@style/Theme.EZazi.Screen.Title"
+            style="@style/Theme.EZazi.Text.Stage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/screen_padding"
+            android:paddingVertical="@dimen/screen_container_padding"
             android:text="@{stage}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

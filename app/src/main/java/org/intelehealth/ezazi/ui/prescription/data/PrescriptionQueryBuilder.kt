@@ -9,14 +9,18 @@ import org.intelehealth.ezazi.partogram.PartogramConstants.Params
  * Mob   : +919727206702
  **/
 class PrescriptionQueryBuilder : QueryBuilder() {
-    fun buildPrescriptionQuery(visitId: String): String {
-        return select("O.uuid, O.conceptuuid, O.value, O.created_date, O.creator ")
+    fun buildPrescriptionQuery(visitId: String, creatorId: String): String {
+        return select("O.uuid, O.conceptuuid, O.value, O.created_date, O.creator, P.given_name ")
             .from(" tbl_obs O ")
             .join(" LEFT JOIN tbl_encounter E ON E.uuid = O.encounteruuid ")
             .joinPlus(" LEFT JOIN tbl_visit V ON V.uuid = E.visituuid ")
+            .joinPlus(" LEFT JOIN tbl_provider P ON P.useruuid = O.creatoruuid AND P.role = 'Organizational: Doctor'")
             .where(
-                " WHERE  V.uuid = '$visitId' AND O.conceptuuid IN ('${Params.MEDICINE.conceptId}', " +
-                        "'${Params.PLAN.conceptId}', '${Params.OXYTOCIN.conceptId}', '${Params.IV_FLUID.conceptId}') "
+                " V.uuid = '$visitId' AND O.conceptuuid IN ('" +
+                        "${Params.PRESCRIBED_MEDICINE.conceptId}', " +
+                        "'${Params.PLAN.conceptId}', " +
+                        "'${Params.PRESCRIBED_OXYTOCIN.conceptId}', " +
+                        "'${Params.PRESCRIBED_IV_FLUID.conceptId}') "
             ).build()
     }
 }

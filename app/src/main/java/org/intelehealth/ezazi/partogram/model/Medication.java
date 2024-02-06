@@ -27,6 +27,15 @@ public class Medication implements Serializable, ItemHeader {
     @SerializedName("infusionStatus")
     private String infusionStatus;
     private String createdAt;
+    private String creatorName;
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
 
     public String getType() {
         return type;
@@ -69,8 +78,7 @@ public class Medication implements Serializable, ItemHeader {
     }
 
     private boolean isValidInfusion() {
-        return infusionRate != null && infusionRate.length() > 0
-                && infusionStatus != null && infusionStatus.length() > 0;
+        return infusionRate != null && infusionRate.length() > 0 && infusionStatus != null && infusionStatus.length() > 0;
     }
 
     public String toJson() {
@@ -86,5 +94,21 @@ public class Medication implements Serializable, ItemHeader {
     @Override
     public String createdDate() {
         return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String dateWithDrName() {
+        return creatorName + " " + createdAt;
+    }
+
+    public String content() {
+        if (type != null && !type.isEmpty()) {
+            return type + ", Infusion Rate: " + infusionRate;
+        } else {
+            return "Strength: " + strength + ", Infusion Rate: " + infusionRate;
+        }
     }
 }

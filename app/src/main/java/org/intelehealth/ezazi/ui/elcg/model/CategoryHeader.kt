@@ -7,7 +7,7 @@ import org.intelehealth.klivekit.chat.model.ItemHeader
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-data class StageHeader(val stage: Int) : ItemHeader {
+data class CategoryHeader(val stage: Int) : ItemHeader {
     override fun isHeader(): Boolean = true
 
     override fun createdDate(): String = ""

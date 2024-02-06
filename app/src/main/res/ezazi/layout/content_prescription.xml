@@ -21,7 +21,6 @@
             android:layout_marginHorizontal="@dimen/screen_container_padding"
             android:layout_marginTop="@dimen/screen_container_padding"
             android:layout_marginBottom="@dimen/screen_padding"
-            android:background="@drawable/white_child_container_bg"
             android:fadeScrollbars="false"
             android:padding="@dimen/screen_container_padding"
             android:scrollbars="none"
@@ -41,6 +40,15 @@
             android:gravity="center"
             android:text="@string/no_prescription"
             app:drawableTopCompat="@drawable/ic_vector_prescription"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/prescriptionProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

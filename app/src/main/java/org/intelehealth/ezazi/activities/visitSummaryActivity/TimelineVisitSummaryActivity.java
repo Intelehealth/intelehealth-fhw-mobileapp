@@ -58,6 +58,7 @@ import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
+import org.intelehealth.ezazi.ui.prescription.activity.PrescriptionActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
@@ -105,7 +106,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private Button endStageButton;
     private int stageNo = 0;
     private String isVCEPresent = "";
-    private Button fabc, fabv, fabSOS;
+    private Button fabc, fabv, fabSOS, fabPrescription;
     private TextView outcomeTV;
     public static final String TAG = "TimelineVisitSummary";
 
@@ -189,7 +190,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         fabv.setOnClickListener(view -> {
             showDoctorSelectionDialog(false);
         });
-
+        fabPrescription.setOnClickListener(view -> PrescriptionActivity.startPrescriptionActivity(TimelineVisitSummaryActivity.this, visitUuid));
     }
 
     @Override
@@ -348,6 +349,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         fabv = findViewById(R.id.btnVideoOnOff);
         outcomeTV = findViewById(R.id.outcomeTV);
         fabc = findViewById(R.id.btnFlipCamera);
+        fabPrescription = findViewById(R.id.btnPrescription);
         recyclerView = findViewById(R.id.recyclerview_timeline);
         endStageButton = findViewById(R.id.btnEndStage);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
@@ -990,7 +992,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             long updated = new VisitAttributeListDAO().updateVisitAttribute(visitUuid, UuidDictionary.DECISION_PENDING, "false");
             if (updated > 0) {
                 try {
-                    isDecisionPending= false; //reset flag
+                    isDecisionPending = false; //reset flag
                     layoutPendingFlag.setVisibility(View.GONE);
                     VisitsDAO visitsDAO = new VisitsDAO();
                     visitsDAO.updateVisitSync(visitUuid, "false");

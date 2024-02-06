@@ -354,7 +354,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     private void saveAndUpdateFinalListOfMedicines() {
         List<Medicine> medicinesList = new ArrayList<>();
         for (ItemHeader item : adapter.getList()) {
-            if (item instanceof Medicine medicine) medicinesList.add((Medicine) item);
+            if (item instanceof Medicine) medicinesList.add((Medicine) item);
         }
         medicineListChangeListener.onMedicineListChanged(medicinesList, deletedMedicines);
         dismiss();

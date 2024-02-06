@@ -1098,5 +1098,8 @@
     <string name="outcome_decision_stage_1">Please enter the outcome of Stage 1</string>
     <string name="patient_age_validation">Age must be greater than 13 years</string>
     <string name="outcome_decision_stage_2">Please enter the outcome of Stage 2</string>
-
+    <string name="lbl_plan">Plan</string>
+    <string name="lbl_medicine">Medicine</string>
+    <string name="lbl_oxytocin">Oxytocin</string>
+    <string name="lbl_iv_fluid">IV Fluid</string>
 </resources>

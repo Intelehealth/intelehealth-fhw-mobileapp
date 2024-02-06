@@ -74,7 +74,10 @@ public class PartogramConstants {
         MEDICINE("Medicine", "c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca"),
         ASSESSMENT("Assessment", "67a050c1-35e5-451c-a4ab-fff9d57b0db1"),
         PLAN("Plan", "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
-        SUPERVISOR_DOCTOR("Supervisor Doctor", "7a9cb7bc-9ab9-4ff0-ae82-7a1bd2cca93e");
+        SUPERVISOR_DOCTOR("Supervisor Doctor", "7a9cb7bc-9ab9-4ff0-ae82-7a1bd2cca93e"),
+        PRESCRIBED_OXYTOCIN("Prescribed Oxytocin (U/L, drops/min)", "6eef8ae6-e6b3-46f1-a58c-393bd6d0e8c8"),
+        PRESCRIBED_MEDICINE("Prescribed Medicine", "ce75ed49-0eac-44f0-ac91-bcf9c5d1d700"),
+        PRESCRIBED_IV_FLUID("Prescribed IV Fluids", "0c21f925-d225-48ce-9e98-bb1cc5638e04");
 
         public final String value;
         public final String conceptId;
