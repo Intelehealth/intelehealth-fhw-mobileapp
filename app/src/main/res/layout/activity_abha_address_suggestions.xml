@@ -68,11 +68,47 @@
                 android:id="@+id/chipGrp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginHorizontal="@dimen/margin_14"
                 android:layout_below="@+id/sub_title"
                 android:paddingHorizontal="@dimen/margin_10"
-                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginTop="@dimen/margin_14"
+                app:chipSpacingHorizontal="@dimen/margin_16"
                 app:singleSelection="true">
 
+<!--              Todo: Just for testing. Comment this chips later as we are creating dynamically...-->
+              <!--  <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="prajwalw@sbx"
+                    android:checked="true"
+                    app:checkedIconVisible="true"
+                    style="@style/ChipStyle"/>
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="prajuuu@sbx"
+                    style="@style/ChipStyle" />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="aparna@sbx"
+                    style="@style/ChipStyle" />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kavita@sbx"
+                    style="@style/ChipStyle" />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="hello@sbx"
+                    style="@style/ChipStyle" />
+-->
             </com.google.android.material.chip.ChipGroup>
 
         </RelativeLayout>
@@ -97,7 +133,7 @@
         android:paddingTop="@dimen/common_button_padding_top"
         android:paddingEnd="@dimen/common_button_padding_right"
         android:paddingBottom="@dimen/common_button_padding_bottom"
-        android:text="Send OTP" />
+        android:text="@string/submit" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

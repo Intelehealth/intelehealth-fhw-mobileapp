@@ -485,6 +485,14 @@
         </item>
     </style>
 
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/white</item>
+        <item name="chipStrokeColor">@color/colorPrimaryDark</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+
+
+    </style>
 
     <style name="AppTheme.switchColorStyle" parent="Theme.AppCompat.Light">
         <!-- colorAccent is used as the default value for colorControlActivated,
