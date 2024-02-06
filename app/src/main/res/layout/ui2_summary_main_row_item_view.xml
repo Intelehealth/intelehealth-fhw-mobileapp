@@ -20,10 +20,11 @@
         <TextView
             android:id="@+id/tv_complain_label"
             style="@style/label_misc_txt_14sp_dark_bold"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:gravity="center"
+            android:layout_toStartOf="@+id/tv_change"
+            android:gravity="start"
             android:lineSpacingExtra="1sp"
             android:text="Abdominal pain" />
 

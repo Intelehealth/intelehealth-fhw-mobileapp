@@ -83,6 +83,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import timber.log.Timber;
+
 public class VisitCreationActivity extends BaseActivity implements VisitCreationActionListener {
 
     private static final String TAG = VisitCreationActivity.class.getSimpleName();
@@ -1001,6 +1003,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             JSONObject jsonObject = new JSONObject();
             try {
                 physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
+                if (physicalStringLocale != null && !sessionManager.getAppLanguage().equals("en")) {
+                    Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
+                    physicalStringLocale = physicalStringLocale.replaceAll("picture taken", getString(R.string.picture_taken));
+                    Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
+                }
                 String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(physicalStringLocale);
                 if (matchDate != null) {
                     for (String date : matchDate) {
@@ -1013,7 +1020,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 jsonObject.put("l-" + sessionManager.getAppLanguage(), physicalStringLocale);
                 //}
                 physicalStringWithLocaleJsonString = jsonObject.toString();
-                Log.v(TAG, physicalStringWithLocaleJsonString);
+                Timber.tag(TAG).v(physicalStringWithLocaleJsonString);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
