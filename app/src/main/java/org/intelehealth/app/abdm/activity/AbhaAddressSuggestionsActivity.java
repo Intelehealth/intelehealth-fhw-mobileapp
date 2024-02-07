@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,9 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAadharMobileVerificationBinding;
 import org.intelehealth.app.databinding.ActivityAbhaAddressSuggestionsBinding;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.SnackbarUtils;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.WindowsUtils;
 
@@ -39,6 +43,8 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     private String txnID, accessToken, selectedChip = "";
     private ArrayList<String> phrAddressList = new ArrayList<>();
     private OTPVerificationResponse otpVerificationResponse;
+    SnackbarUtils snackbarUtils;
+    SessionManager sessionManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,8 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         binding = ActivityAbhaAddressSuggestionsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         WindowsUtils.setStatusBarColor(AbhaAddressSuggestionsActivity.this);  // changing status bar color
+        snackbarUtils = new SnackbarUtils();
+        sessionManager = new SessionManager(context);
 
         Intent intent = getIntent();
         accessToken = intent.getStringExtra("accessToken");
@@ -149,5 +157,14 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         if (binding.chipGrp.getChildCount() == 0) // ie. by default the auto-generated address will be selected.
             chip.setChecked(true);
         binding.chipGrp.addView(chip);
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+      //  super.onBackPressed();
+        snackbarUtils.showSnackConstraintLayoutParentSuccess(context, binding.layoutParent,
+                StringUtils.getMessageTranslated(getString(R.string.please_click_on_submit_button_to_proceed), sessionManager.getAppLanguage()),
+                true);
     }
 }
