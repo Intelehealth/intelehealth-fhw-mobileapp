@@ -6,6 +6,9 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -32,6 +35,7 @@ import org.intelehealth.klivekit.call.utils.IntentUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
+import org.intelehealth.klivekit.utils.extensions.startSupportedForeground
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.random.Random
@@ -212,7 +216,8 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
             CallNotificationHandler.outGoingCallNotificationBuilder(messageBody, this)
 
         notificationManager.notify(notificationId, notificationCompatBuilder.build())
-        startForeground(notificationId, notificationCompatBuilder.build())
+        startSupportedForeground(notificationId, notificationCompatBuilder.build())
+
 
         playRingtoneInEarpiece(messageBody)
 
@@ -244,7 +249,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
         CallNotificationHandler.getOnGoingCallNotificationBuilder(this, messageBody).apply {
             notificationManager.notify(notificationId, build())
-            startForeground(notificationId, build())
+            startSupportedForeground(notificationId, build())
         }
 
         if (messageBody.isVideoCall().not()) {
@@ -269,7 +274,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         notification.flags = Notification.FLAG_INSISTENT
 
         notificationManager.notify(notificationId, notification)
-        startForeground(notificationId, notification)
+        startSupportedForeground(notificationId, notification)
         if (ringtone.isPlaying) ringtone.stop()
         if (normalStatus) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
