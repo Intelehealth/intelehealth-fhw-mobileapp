@@ -89,6 +89,7 @@ import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
+import org.intelehealth.videolibrary.utils.VideoLibraryManager;
 
 import java.io.File;
 import java.text.ParseException;
@@ -136,6 +137,7 @@ public class HomeActivity extends BaseActivity {
 
     private void saveToken() {
         Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        VideoLibraryManager.setBaseUrl(sessionManager.getServerUrl());
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }
 
