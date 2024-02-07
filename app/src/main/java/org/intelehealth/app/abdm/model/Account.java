@@ -99,4 +99,17 @@ public class Account {
         this.kycVerified = kycVerified;
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "aBHANumber='" + aBHANumber + '\'' +
+                ", preferredAbhaAddress='" + preferredAbhaAddress + '\'' +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", dob='" + dob + '\'' +
+                ", status='" + status + '\'' +
+                ", profilePhoto='" + profilePhoto + '\'' +
+                ", kycVerified=" + kycVerified +
+                '}';
+    }
 }

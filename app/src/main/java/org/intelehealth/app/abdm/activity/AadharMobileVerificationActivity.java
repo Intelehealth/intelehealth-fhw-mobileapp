@@ -343,9 +343,12 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Log.d("callOTPForMobileLoginVerificationApi", "onSuccess: " + mobileLoginOnOTPVerifiedResponse.toString());
                                 if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
                                     if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is atleast one (1) account.
+
                                         if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
                                             // ie. there are more than 1 accounts for this mobile number than show -> Accounts selection screen.
                                             Intent intent = new Intent(context, AccountSelectionLoginActivity.class);
+                                            String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                            intent.putExtra("X_TOKEN", X_TOKEN);
                                             intent.putExtra("payload", mobileLoginOnOTPVerifiedResponse);
                                             intent.putExtra("accessToken", accessToken);
                                             startActivity(intent);
@@ -356,6 +359,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                             String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
                                             callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
                                         }
+
                                     }
                                 }
                             }

@@ -64,7 +64,14 @@
             android:gravity="top"
             />
 
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_accounts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_below="@id/sub_title"
+            android:layout_marginTop="@dimen/margin_14"
+            tools:listitem="@layout/layout_abhaaccounts"/>
 
     </RelativeLayout>
     </ScrollView>
