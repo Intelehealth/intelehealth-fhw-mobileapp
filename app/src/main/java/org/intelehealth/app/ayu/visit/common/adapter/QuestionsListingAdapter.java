@@ -1103,17 +1103,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (!havingNestedQuestion) {
                 havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
             }
-            Log.v(TAG, "havingNestedQuestion - "+havingNestedQuestion);
-            Log.v(TAG, "isRootNodeQuestion - "+isRootNodeQuestion);
-            Log.v(TAG, "Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType() - "+(Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType()));
-            Log.v(TAG, "selectedNode.isContainsTheQuestionBeforeOptions() - "+(selectedNode.isContainsTheQuestionBeforeOptions()));
+            Log.v(TAG, "havingNestedQuestion - " + havingNestedQuestion);
+            Log.v(TAG, "isRootNodeQuestion - " + isRootNodeQuestion);
+            Log.v(TAG, "Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType() - " + (Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType()));
+            Log.v(TAG, "selectedNode.isContainsTheQuestionBeforeOptions() - " + (selectedNode.isContainsTheQuestionBeforeOptions()));
             if (!isRootNodeQuestion && (havingNestedQuestion || Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType())) {
                 holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
                 //questionTextView.setText(options.get(0).findDisplay());
                 holder.nestedQuestionsListingAdapter.clearItems();
 
                 if (havingNestedQuestion || selectedNode.isContainsTheQuestionBeforeOptions()) {
-                    Log.v(TAG, "options - "+(new Gson().toJson(options)));
+                    Log.v(TAG, "options - " + (new Gson().toJson(options)));
 
                     if (mIsEditMode) {
                         for (int i = 0; i < options.size(); i++) {
@@ -1121,7 +1121,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         }
                     } else if (holder.selectedNestedOptionIndex > 0) {
                         holder.selectedNestedOptionIndex = 0;
-                        Log.v(TAG, "holder.selectedNestedOptionIndex 1 - "+(holder.selectedNestedOptionIndex));
+                        Log.v(TAG, "holder.selectedNestedOptionIndex 1 - " + (holder.selectedNestedOptionIndex));
                         holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
                        /* for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
                             if (options.size() < i) {
@@ -2705,7 +2705,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void addDateView(Node node, GenericViewHolder holder, int index) {
-        holder.singleComponentContainer.removeAllViews();
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
