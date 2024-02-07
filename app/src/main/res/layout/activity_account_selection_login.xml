@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/layoutParent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,6 +24,7 @@
             android:id="@+id/iv_back_arrow_terms"
             android:layout_width="@dimen/back_arrow_width"
             android:layout_height="@dimen/back_arrow_height"
+            android:visibility="gone"
             android:src="@drawable/ui2_ic_arrow_back_new" />
 
         <TextView
@@ -56,8 +58,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="26dp"
-            android:text="*Please select the ABHA address through which you wish to login."
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:text="@string/abha_account_selection"
             android:textAppearance="@style/sub_title"
             android:textColor="@null"
             android:textSize="@null"
@@ -70,14 +72,14 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_below="@id/sub_title"
-            android:layout_marginTop="@dimen/margin_14"
+            android:layout_marginTop="@dimen/margin_16"
             tools:listitem="@layout/layout_abhaaccounts"/>
 
     </RelativeLayout>
     </ScrollView>
 
     <Button
-        android:id="@+id/submitABHAAddressBtn"
+        android:id="@+id/submitABHAAccountBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

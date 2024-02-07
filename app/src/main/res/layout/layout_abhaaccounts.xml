@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutParent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginHorizontal="@dimen/margin_20"
     android:layout_marginVertical="@dimen/margin_10"
     android:background="@drawable/textbox_outline"
-    android:padding="@dimen/margin_14">
+    android:paddingHorizontal="@dimen/margin_12"
+    android:paddingVertical="@dimen/margin_10">
 
     <ImageView
         android:id="@+id/ivCheckedIcon"
@@ -23,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginStart="@dimen/margin_14"
+        android:gravity="center"
         android:layout_toEndOf="@+id/ivCheckedIcon">
 
     <TextView
@@ -38,6 +41,7 @@
         android:id="@+id/tvFullname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
         android:text="Prajwal Maruti Waingankar"
         android:textSize="@dimen/edittext_textsize_16sp"
         android:gravity="center_vertical"

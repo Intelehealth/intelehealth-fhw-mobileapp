@@ -747,6 +747,7 @@
     <string name="abha_number">ABHA number?</string>
     <string name="do_you_have_your_abha_number">Do you have your ABHA number?</string>
     <string name="please_click_on_submit_button_to_proceed">Please click on submit button to proceed.</string>
+    <string name="abha_account_selection">*Please select the ABHA address through which you wish to login.</string>
 
 
 </resources>

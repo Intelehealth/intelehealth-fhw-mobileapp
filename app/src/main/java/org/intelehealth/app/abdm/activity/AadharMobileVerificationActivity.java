@@ -348,6 +348,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                             // ie. there are more than 1 accounts for this mobile number than show -> Accounts selection screen.
                                             Intent intent = new Intent(context, AccountSelectionLoginActivity.class);
                                             String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+
                                             intent.putExtra("X_TOKEN", X_TOKEN);
                                             intent.putExtra("payload", mobileLoginOnOTPVerifiedResponse);
                                             intent.putExtra("accessToken", accessToken);

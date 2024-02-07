@@ -50,7 +50,9 @@
         tools:replace="allowBackup">
         <activity
             android:name=".abdm.activity.AccountSelectionLoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".abdm.activity.AbhaAddressSuggestionsActivity"
             android:exported="false"

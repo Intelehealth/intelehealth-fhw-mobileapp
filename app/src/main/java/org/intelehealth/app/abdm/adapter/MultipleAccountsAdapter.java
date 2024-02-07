@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
@@ -24,6 +26,7 @@ public class MultipleAccountsAdapter extends RecyclerView.Adapter<MultipleAccoun
     private Context context;
     private List<Account> accountList;
     private MultipleAccountsAdapter.OnItemClick onItemClick;
+    private int checkedPosition = -1;
 
     public MultipleAccountsAdapter(Context context, List<Account> accountList, MultipleAccountsAdapter.OnItemClick onItemClick) {
         this.context = context;
@@ -34,7 +37,7 @@ public class MultipleAccountsAdapter extends RecyclerView.Adapter<MultipleAccoun
     @NonNull
     @Override
     public MultipleAccountsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_account_selection_login, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_abhaaccounts, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -45,7 +48,29 @@ public class MultipleAccountsAdapter extends RecyclerView.Adapter<MultipleAccoun
         holder.tvFullname.setText(account.getName());
 
         holder.itemView.setOnClickListener(v -> {
-            onItemClick.OnItemSelected(account);
+            if (checkedPosition == -1) {
+                if ((Integer) holder.itemView.getTag() == R.drawable.textbox_outline) {
+                    holder.ivCheckedIcon.setVisibility(View.VISIBLE);
+                    holder.itemView.setBackground(context.getDrawable(R.drawable.ui2_chat_bubble_square_round));
+                    holder.itemView.setTag(R.drawable.ui2_chat_bubble_square_round);
+                    checkedPosition = position;
+                    onItemClick.OnItemSelected(account, true);
+                }
+            }
+            else if ((Integer) holder.itemView.getTag() == R.drawable.ui2_chat_bubble_square_round) {
+                holder.ivCheckedIcon.setVisibility(View.GONE);
+                holder.itemView.setBackground(context.getDrawable(R.drawable.textbox_outline));
+                holder.itemView.setTag(R.drawable.textbox_outline);
+                checkedPosition = -1;
+                onItemClick.OnItemSelected(account, false);
+            }
+            else {
+                holder.ivCheckedIcon.setVisibility(View.GONE);
+                holder.itemView.setBackground(context.getDrawable(R.drawable.textbox_outline));
+                holder.itemView.setTag(R.drawable.textbox_outline);
+              //  onItemClick.OnItemSelected(account, false);
+            }
+
         });
     }
 
@@ -62,10 +87,11 @@ public class MultipleAccountsAdapter extends RecyclerView.Adapter<MultipleAccoun
             tvAbhaAddress = itemView.findViewById(R.id.tvAbhaAddress);
             tvFullname = itemView.findViewById(R.id.tvFullname);
             ivCheckedIcon = itemView.findViewById(R.id.ivCheckedIcon);
+            itemView.setTag(R.drawable.textbox_outline);
         }
     }
 
     public interface OnItemClick {
-        void OnItemSelected(Account account);
+        void OnItemSelected(Account account, boolean isChecked);
     }
 }
