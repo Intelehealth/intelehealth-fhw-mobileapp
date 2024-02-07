@@ -97,7 +97,7 @@ public class AccountSelectionLoginActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.d("callFetchUserProfileAPI", "onError: " + e.toString());
+                                Log.e("callFetchUserProfileAPI", "onError: " + e.toString());
                             }
                         });
             }

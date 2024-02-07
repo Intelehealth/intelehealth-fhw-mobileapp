@@ -246,7 +246,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             @Override
                             public void onError(Throwable e) {
                                 binding.sendOtpBtn.setEnabled(true);
-                                Log.d(TAG, "onError: callMobileNumberVerificationApi: " + e.getMessage());
+                                Log.e(TAG, "onError: callMobileNumberVerificationApi: " + e.getMessage());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 cpd.dismiss();
                             }
@@ -296,7 +296,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.d(TAG, "onError: AadharResponse: " + e.getMessage());
+                                Log.e(TAG, "onError: AadharResponse: " + e.getMessage());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
                                 cpd.dismiss();
@@ -367,7 +367,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             @Override
                             public void onError(Throwable e) {
                                 cpd.dismiss();
-                                Log.d("callOTPForMobileLoginVerificationApi", "onError: " + e.toString());
+                                Log.e("callOTPForMobileLoginVerificationApi", "onError: " + e.toString());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
                             }
@@ -419,7 +419,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.d("callFetchUserProfileAPI", "onError: " + e.toString());
+                                Log.e("callFetchUserProfileAPI", "onError: " + e.toString());
                             }
                         });
             }
@@ -489,7 +489,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             public void onError(Throwable e) {
                                 binding.sendOtpBtn.setEnabled(true);
                                 cpd.dismiss();
-                                Log.d("callOTPForVerificationApi: ", "onError: " + e.toString());
+                                Log.e("callOTPForVerificationApi: ", "onError: " + e.toString());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -540,7 +540,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.d(TAG, "onError: suggestion" + e.toString());
+                                Log.e(TAG, "onError: suggestion" + e.toString());
                             }
                         });
             }
