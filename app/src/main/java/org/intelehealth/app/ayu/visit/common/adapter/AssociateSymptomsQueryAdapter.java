@@ -195,7 +195,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                                 }*/
                                 //}
-                                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 600, mIsEditMode);
+                                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 600, mIsEditMode, false);
                             }
 
                             @Override
@@ -373,7 +373,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 holder.node.setSelected(false);
                 holder.node.setDataCaptured(false);
                 // scroll little bit
-                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode);
+                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode, false);
             }
         });
 
@@ -429,7 +429,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         }
                     });
                     // scroll little bit
-                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode);
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode, false);
                 }
 
 
@@ -490,7 +490,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                 String dateString = simpleDateFormat.format(date);
                 displayDateButton.setText(dateString);
-                VisitUtils.scrollNow(mRecyclerView, 400, 0, 400, mIsEditMode);
+                VisitUtils.scrollNow(mRecyclerView, 400, 0, 400, mIsEditMode, false);
                 AdapterUtils.setToDefault(submitButton);
                 AdapterUtils.setToDefault(skipButton);
             }
@@ -513,7 +513,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         node.setSelected(false);
                         node.setSelected(false);
                         //mOnItemSelection.onSelect(node, index);
-                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode);
+                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode, false);
                     }
                 });
 
@@ -557,7 +557,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                         }
                     });
-                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode);
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode, false);
                 }
             }
         });

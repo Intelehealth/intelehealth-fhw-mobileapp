@@ -2809,9 +2809,8 @@ public class Node implements Serializable {
 
                     }
                 } else {
-                    Timber.tag(TAG).i("ipt: ******************START********************************* %s", level);
-                    Timber.tag(TAG).i("ipt: nested question %s", question);
-                    Timber.tag(TAG).i("ipt: nested question level - %s", level);
+                    Log.i(TAG, "ipt: nested question " + question);
+                    Log.i(TAG, "ipt: nested question level - " + level);
                     if (level > 0 && level % 2 != 0)
                         if (question.startsWith("▻"))
                             question = bullet_hollow + " " + question.substring(1);
@@ -3406,8 +3405,8 @@ public class Node implements Serializable {
                 Node innerNode = optionsList.get(i);
                 if (innerNode.isSelected()) {
                     Log.v(TAG, innerNode.isRequired() + " = isNestedMandatory - " + innerNode.findDisplay() + " innerNode.isDataCaptured() - " + innerNode.isDataCaptured());
-                    if (innerNode.isRequired() && innerNode.isDataCaptured()) {
-                        countSelected++;
+                    countSelected++;
+                    if (innerNode.isRequired()) {
                         //if (innerNode.optionsList != null && !innerNode.optionsList.isEmpty()) {
                         if (!innerNode.isTerminal()) {
                             if (!innerNode.isNestedMandatoryOptionsAnswered()) {

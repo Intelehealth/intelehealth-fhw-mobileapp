@@ -156,9 +156,9 @@ public class PhysicalExaminationFragment extends Fragment {
                             recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
                         }
                     }, 100);*/
-                        VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode);
+                        VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode, false);
 
-                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode);
+                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode, false);
 
                         mActionListener.onProgress((int) 100 / physicalExam.getTotalNumberOfExams());
                         // }
