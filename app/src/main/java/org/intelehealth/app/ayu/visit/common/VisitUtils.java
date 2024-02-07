@@ -34,9 +34,9 @@ public class VisitUtils {
     }
 
 
-    public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy, boolean isEditMode) {
-        Log.v("VisitUtils", "scrollNow isEditMode - " + isEditMode);
-        if (!isEditMode)
+    public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy, boolean isEditMode, boolean isAlreadyLoaded) {
+        Log.v("VisitUtils", "scrollNow isEditMode - " + isEditMode +"\tisAlreadyLoaded - "+isAlreadyLoaded);
+        if (!isEditMode && !isAlreadyLoaded)
             recyclerView.postDelayed(() -> recyclerView.smoothScrollBy(dx, dy), delayMills);
     }
 

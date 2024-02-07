@@ -267,7 +267,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
             // avoid the scroll for old data change
             if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                 Log.v("onSelect", "Scrolling index - " + index);
-                VisitUtils.scrollNow(recyclerView, 100, 0, 1000, mIsEditMode);
+                VisitUtils.scrollNow(recyclerView, 100, 0, 1000, mIsEditMode, false);
                 return;
             }
             if (isSkipped) {
@@ -323,9 +323,9 @@ public class VisitReasonQuestionsFragment extends Fragment {
 //                    mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
 //            }
 
-            VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode);
+            VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode, false);
 
-            VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode);
+            VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode, false);
 
 
             mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
