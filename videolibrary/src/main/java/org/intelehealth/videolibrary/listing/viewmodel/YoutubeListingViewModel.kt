@@ -3,19 +3,16 @@ package org.intelehealth.videolibrary.listing.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import org.intelehealth.videolibrary.listing.data.ListingDataSource
 import org.intelehealth.videolibrary.listing.data.ListingRepository
 import org.intelehealth.videolibrary.restapi.RetrofitProvider
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
-import org.intelehealth.videolibrary.restapi.response.Video
 import org.intelehealth.videolibrary.restapi.response.VideoLibraryResponse
+import org.intelehealth.videolibrary.utils.ResponseChecker
 
 class YoutubeListingViewModel : ViewModel() {
 
@@ -34,8 +31,13 @@ class YoutubeListingViewModel : ViewModel() {
         viewModelScope.launch {
             repository.fetchVideos(packageName, auth)
                 .flowOn(Dispatchers.IO)
-                .collect {
-                    _response.postValue(it)
+                .collect { videoLibraryResponse ->
+                    val responseChecker = ResponseChecker(videoLibraryResponse)
+                    if (responseChecker.isNotAuthorized) {
+                        // TODO
+                    } else {
+                        _response.postValue(videoLibraryResponse.body())
+                    }
                 }
         }
     }

@@ -11,7 +11,7 @@ class ListingDataSource(private val service: VideoLibraryApiClient) {
     suspend fun fetchVideos(
         packageName: String,
         auth: String
-    ): Flow<VideoLibraryResponse> = flow {
+    ): Flow<Response<VideoLibraryResponse?>> = flow {
         emit(service.fetchVideos(packageName, auth))
     }
 

@@ -12,6 +12,6 @@ interface VideoLibraryApiClient {
     suspend fun fetchVideos(
         @Path("package") packageName: String,
         @Header("Authorization") auth: String
-    ): VideoLibraryResponse
+    ): Response<VideoLibraryResponse?>
 
 }
