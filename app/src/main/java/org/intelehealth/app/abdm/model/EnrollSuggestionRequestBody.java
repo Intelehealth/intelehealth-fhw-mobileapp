@@ -13,6 +13,9 @@ public class EnrollSuggestionRequestBody {
     @SerializedName("txnId")
     @Expose
     private String txnId;
+    @SerializedName("abhaAddress")
+    @Expose
+    private String abhaAddress;
 
     public String getTxnId() {
         return txnId;
@@ -22,4 +25,19 @@ public class EnrollSuggestionRequestBody {
         this.txnId = txnId;
     }
 
+    public String getAbhaAddress() {
+        return abhaAddress;
+    }
+
+    public void setAbhaAddress(String abhaAddress) {
+        this.abhaAddress = abhaAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "EnrollSuggestionRequestBody{" +
+                "txnId='" + txnId + '\'' +
+                ", abhaAddress='" + abhaAddress + '\'' +
+                '}';
+    }
 }

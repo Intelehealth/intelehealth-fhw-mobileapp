@@ -233,6 +233,10 @@ public interface ApiInterface {
                                                                @Header("Authorization") String accessToken,
                                                                @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
     @POST
+    Single<ResponseBody> PUSH_SET_PREFERRED_ABHA_ADDRESS(@Url String url,
+                                                               @Header("Authorization") String accessToken,
+                                                               @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
+    @POST
     Single<AbhaProfileResponse> PUSH_ABHA_PROFILE(@Url String url,
                                                                     @Header("Authorization") String accessToken,
                                                                     @Header("X-TOKEN") String xToken,
