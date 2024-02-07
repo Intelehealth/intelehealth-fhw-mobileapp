@@ -462,13 +462,13 @@ public class VisitSummaryActivity extends BaseActivity /*implements PrinterObser
     public void registerBroadcastReceiverDynamically() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        ContextCompat.registerReceiver(context,broadcastReceiverForIamgeDownlaod, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_EXPORTED);
     }
 
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        ContextCompat.registerReceiver(context,downloadPrescriptionService, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(this,downloadPrescriptionService, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
 
@@ -4271,7 +4271,7 @@ public class VisitSummaryActivity extends BaseActivity /*implements PrinterObser
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            ContextCompat.registerReceiver(context,receiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
+            ContextCompat.registerReceiver(this,receiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
             isReceiverRegistered = true;
         }
     }

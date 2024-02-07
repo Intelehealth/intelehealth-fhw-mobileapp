@@ -969,7 +969,7 @@ public class HomeActivity extends BaseActivity /* implements BluetoothService.On
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        ContextCompat.registerReceiver(context,syncBroadcastReceiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(this,syncBroadcastReceiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
 
        /* // bluetooth receiver register in oncreate
         IntentFilter b_filter = new IntentFilter();

@@ -452,7 +452,7 @@ public class PatientDetailActivity extends BaseActivity {
 
     @Override
     protected void onStart() {
-        ContextCompat.registerReceiver(context,reMyreceive, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(this,reMyreceive, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
         super.onStart();
     }
 
