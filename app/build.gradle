@@ -9,10 +9,10 @@ apply from: "environment.gradle"
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
-//static def getDateTime() {
-//    DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
-//    return df.format(new Date());
-//}
+static def getDateTime() {
+    DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
+    return df.format(new Date());
+}
 
 android {
     namespace 'org.intelehealth.app'
@@ -31,7 +31,7 @@ android {
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-     //   archivesBaseName = "nas " + versionName + " - " + getDateTime()
+        archivesBaseName = "nas -" + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
