@@ -49,11 +49,11 @@ public class ConsentActivity extends AppCompatActivity {
                           //  Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: testing purpose -> comment later.
                           //  Intent intent = new Intent(context, AccountSelectionLoginActivity.class); // todo: testing purpose -> comment later.
                             Intent intent = new Intent(context, AadharMobileVerificationActivity.class);  // todo: uncomment later.
-                           /* if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK)
+                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK)
                                 intent.putExtra("hasABHA", true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
                             else
                                 intent.putExtra("hasABHA", false);  // ie. Aadhar AND Mobile api to call. // here Aadhar api is used.
-                            */// todo: testing purpose -> uncomment later this block.
+                            // todo: testing purpose -> uncomment later this block.
 
                             startActivity(intent);
                             finish();

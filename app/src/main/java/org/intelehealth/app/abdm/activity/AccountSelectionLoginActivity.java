@@ -106,7 +106,7 @@ public class AccountSelectionLoginActivity extends AppCompatActivity {
         binding.submitABHAAccountBtn.setOnClickListener(v -> {
             if (selectedAccount != null) {
                 // pass this account payload to fetch details api and move to Identification screen...
-                Toast.makeText(context, "Success: " + selectedAccount.getName(), Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(context, "Success: " + selectedAccount.getName(), Toast.LENGTH_SHORT).show();
                 callFetchUserProfileAPI(selectedAccount.getABHANumber(), txnId, X_TOKEN);
             }
             else {
