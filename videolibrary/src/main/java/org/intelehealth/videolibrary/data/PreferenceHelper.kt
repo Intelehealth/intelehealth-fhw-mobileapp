@@ -3,7 +3,7 @@ package org.intelehealth.videolibrary.data
 import android.content.Context
 import android.content.SharedPreferences
 
-class SessionManager(private val context: Context) {
+class PreferenceHelper(context: Context) {
 
     private var pref: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null

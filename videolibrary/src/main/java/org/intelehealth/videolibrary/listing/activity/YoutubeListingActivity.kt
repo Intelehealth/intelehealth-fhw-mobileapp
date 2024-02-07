@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import org.intelehealth.videolibrary.R
 import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import org.intelehealth.videolibrary.constants.Constants
-import org.intelehealth.videolibrary.data.SessionManager
+import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
@@ -24,7 +24,7 @@ import org.intelehealth.videolibrary.restapi.response.VideoLibraryResponse
 class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
     private var binding: ActivityYoutubeListingBinding? = null
-    private var sessionManager: SessionManager? = null
+    private var preferenceHelper: PreferenceHelper? = null
 
     private var authKey: String? = null
     private var packageName: String? = null
@@ -40,8 +40,8 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
     }
 
     private fun setData() {
-        sessionManager = SessionManager(applicationContext)
-        authKey = sessionManager?.getJwtAuthToken()
+        preferenceHelper = PreferenceHelper(applicationContext)
+        authKey = preferenceHelper?.getJwtAuthToken()
         packageName = applicationContext.packageName
     }
 
