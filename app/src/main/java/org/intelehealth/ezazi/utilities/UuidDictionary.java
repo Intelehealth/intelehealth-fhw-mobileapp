@@ -139,4 +139,9 @@ public class UuidDictionary {
     public static final String END_2ND_STAGE_OTHER = "d319ebbc-5260-4eff-aa3f-2af11b177ec4";
 
     public static final String DECISION_PENDING = "2bfbfd6c-7714-4432-a7e8-b0130889c2ff";
+
+    public static final String MEDICINE_PRESCRIBED = "ce75ed49-0eac-44f0-ac91-bcf9c5d1d700";//Medicine Prescribed
+    public static final String OXYTOCIN_PRESCRIBED = "6eef8ae6-e6b3-46f1-a58c-393bd6d0e8c8";//Oxytocin U/l, Drops per min, Prescribed
+    public static final String IV_FLUID_PRESCRIBED = "0c21f925-d225-48ce-9e98-bb1cc5638e04";//IV fluids Prescribed
+
 }

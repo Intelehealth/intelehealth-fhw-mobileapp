@@ -363,7 +363,7 @@
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
                 android:focusable="true"
                 android:hint="@string/bed_number"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:maxLength="3"

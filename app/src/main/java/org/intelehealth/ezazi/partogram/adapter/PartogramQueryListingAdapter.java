@@ -59,6 +59,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
     private TextView selectedTextview;
     boolean isToastShownTemperature, isToastShownPulse, isToastShownContraction, isToastShownFHR, isToastShownSysBP, isToastShownDysBP;
+    private String mVisitUuid;
 
     //    private static JSONObject ivFluidsJsonObject = new JSONObject();
 //    private static JSONObject oxytocinDataObject = new JSONObject();
@@ -80,14 +81,15 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private int currentChildFocusedIndex = -1;
     private PartogramConstants.AccessMode accessMode;
 
-    public PartogramQueryListingAdapter(RecyclerView recyclerView, Context context, List<PartogramItemData> itemList, OnItemSelection onItemSelection) {
+    public PartogramQueryListingAdapter(RecyclerView recyclerView, String visitUuid, Context context, List<PartogramItemData> itemList, OnItemSelection onItemSelection) {
         mContext = context;
+        mVisitUuid = visitUuid;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
     }
 
     public void setAccessMode(PartogramConstants.AccessMode accessMode) {
-        Log.d(TAG, "setAccessMode: accessMode :: kk :: "+accessMode);
+        Log.d(TAG, "setAccessMode: accessMode :: kk :: " + accessMode);
         this.accessMode = accessMode;
     }
 
@@ -361,7 +363,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
         binding.clMedicineCountView.setOnClickListener(v -> {
             @SuppressLint("SetTextI18n")
-            MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), (updated, deleted) -> {
+            MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), mVisitUuid, (updated, deleted) -> {
                 info.setMedicines(updated);
                 info.setDeletedMedicines(deleted);
                 setupMedicineCountView(binding.tvMedicineCount, updated);

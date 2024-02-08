@@ -113,4 +113,13 @@
     <string name="elcg_patient_labour_onset">Labour Onset</string>
     <string name="elcg_patient_raptured_membranes">Raptured Membrances</string>
     <string name="observation_by">Observation by %1$s</string>
+    <string name="administer">Administer</string>
+    <string name="view_prescription">View Prescription</string>
+    <string name="hide">Hide</string>
+    <string name="lbl_prescription">Prescription</string>
+    <string name="lbl_medicine_administration">Medicine Administration</string>
+    <string name="medicines_not_prescribed">Medicines not prescribed yet!</string>
+    <string name="iv_fluids_not_prescribed">IV Fluid not prescribed yet!</string>
+    <string name="view_prescribed_iv_fluids">View prescribed IV Fluids</string>
+
 </resources>
