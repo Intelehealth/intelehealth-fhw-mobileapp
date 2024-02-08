@@ -38,9 +38,16 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
         setContentView(binding?.root)
 
         setToolbar()
+        setSwipeToRefreshLayout()
         initializeData()
         setObservers()
         setVideoLibraryRecyclerView()
+    }
+
+    private fun setSwipeToRefreshLayout() {
+        binding?.swipeToRefresh?.setOnRefreshListener {
+            viewmodel?.fetchVideosFromServer(packageName!!, authKey!!)
+        }
     }
 
     private fun setObservers() {
@@ -58,7 +65,11 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
                 this.adapter = adapter
                 this.layoutManager = LinearLayoutManager(this@YoutubeListingActivity)
             }
+
             binding?.progressBar?.visibility = View.GONE
+            if (binding?.swipeToRefresh?.isRefreshing == true) {
+                binding?.swipeToRefresh?.isRefreshing = false
+            }
         }
 
         // used for detecting if the JWT token is expired
@@ -120,5 +131,10 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
             it.putExtra(Constants.VIDEO_ID, videoId)
         }
         startActivity(intent)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewmodel?.deleteAllVideos()
     }
 }
