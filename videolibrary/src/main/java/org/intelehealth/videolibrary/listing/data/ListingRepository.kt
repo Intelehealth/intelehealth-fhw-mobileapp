@@ -11,4 +11,7 @@ class ListingRepository(private val source: ListingDataSource) {
 
     fun fetchVideosFromDb() = source.fetchVideosFromDb()
 
+    suspend fun deleteAll() {
+        source.deleteAll()
+    }
 }

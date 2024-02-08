@@ -63,7 +63,10 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
         // used for detecting if the JWT token is expired
         viewmodel?.tokenExpiredObserver?.observe(this) {
-
+            if (it) {
+                setResult(Constants.JWT_TOKEN_EXPIRED)
+                finish()
+            }
         }
     }
 

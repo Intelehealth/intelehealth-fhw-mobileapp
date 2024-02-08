@@ -26,4 +26,7 @@ class ListingDataSource(
 
     fun fetchVideosFromDb(): Flow<List<Video>> = libraryDao.getAll()
 
+    suspend fun deleteAll() {
+        libraryDao.deleteAll()
+    }
 }

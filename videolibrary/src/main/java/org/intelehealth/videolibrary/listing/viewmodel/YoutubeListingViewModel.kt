@@ -53,4 +53,9 @@ class YoutubeListingViewModel(service: VideoLibraryApiClient, dao: LibraryDao) :
 
     fun fetchVideosFromDb() = repository.fetchVideosFromDb().asLiveData()
 
+    fun deleteAllVideos() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAll()
+        }
+    }
 }

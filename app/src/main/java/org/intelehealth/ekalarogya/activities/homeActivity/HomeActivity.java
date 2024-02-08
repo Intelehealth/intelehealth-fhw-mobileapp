@@ -38,6 +38,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -76,6 +80,7 @@ import org.intelehealth.ekalarogya.utilities.ConfigUtils;
 import org.intelehealth.ekalarogya.utilities.DialogUtils;
 import org.intelehealth.ekalarogya.utilities.DownloadMindMaps;
 import org.intelehealth.ekalarogya.utilities.Logger;
+import org.intelehealth.ekalarogya.utilities.NavigationUtils;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.OfflineLogin;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
@@ -89,6 +94,7 @@ import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
+import org.intelehealth.videolibrary.constants.Constants;
 import org.intelehealth.videolibrary.utils.VideoLibraryManager;
 
 import java.io.File;
@@ -134,6 +140,17 @@ public class HomeActivity extends BaseActivity {
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView lastSyncTextView, lastSyncAgo, newPatient_textview, findPatients_textview, todaysVisits_textview, activeVisits_textview, videoLibrary_textview, help_textview, unUploadedVisitNotificationTV;
     Toolbar toolbar;
+
+    ActivityResultLauncher<Intent> result = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<>() {
+        @Override
+        public void onActivityResult(ActivityResult o) {
+            if (o.getResultCode() == Constants.JWT_TOKEN_EXPIRED) {
+                sessionManager.setJwtAuthToken(null);
+                NavigationUtils navigationUtils = new NavigationUtils();
+                navigationUtils.triggerSignOutOn401Response(context);
+            }
+        }
+    });
 
     private void saveToken() {
         Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
@@ -376,7 +393,7 @@ public class HomeActivity extends BaseActivity {
     private void videoLibrary() {
         try {
             Intent intent = new Intent(this, Class.forName("org.intelehealth.videolibrary.listing.activity.YoutubeListingActivity"));
-            startActivity(intent);
+            result.launch(intent);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
