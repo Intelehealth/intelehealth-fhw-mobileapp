@@ -309,6 +309,33 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     }
 
+    private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
+        Log.d(TAG, "setAutoFillValuesViaAadhar: " + otpVerificationResponse.toString());
+
+        String profileImage = otpVerificationResponse.getABHAProfile().getPhoto();
+        if (profileImage != null) {
+            displayAbhaProfilePhotoAndStoreInFile(profileImage);
+        }
+
+        mFirstNameEditText.setText(otpVerificationResponse.getABHAProfile().getFirstName());
+        mMiddleNameEditText.setText(otpVerificationResponse.getABHAProfile().getMiddleName());
+        mLastNameEditText.setText(otpVerificationResponse.getABHAProfile().getLastName());
+
+        if (otpVerificationResponse.getABHAProfile().getGender().equalsIgnoreCase("M"))
+            mGenderMaleRadioButton.setChecked(true);
+        else if (otpVerificationResponse.getABHAProfile().getGender().equalsIgnoreCase("F"))
+            mGenderFemaleRadioButton.setChecked(true);
+        else
+            mGenderOthersRadioButton.setChecked(true);
+
+        // dob and age
+        setAbhaDOBToEditText(otpVerificationResponse.getABHAProfile().getDob());    // aadhar -> 25-08-1978
+
+        // mobile no.
+        if (otpVerificationResponse.getABHAProfile().getMobile() != null)
+            mPhoneNumberEditText.setText(otpVerificationResponse.getABHAProfile().getMobile());
+    }
+
     private void setAutoFillValuesViaMobile(AbhaProfileResponse abhaProfileResponse) {
         Log.d(TAG, "setAutoFillValuesViaMobile: " + abhaProfileResponse.toString());
 
@@ -376,10 +403,19 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         setAbhaAgeToEditText(dobToDb);
     }
 
-    private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
-        mFirstNameEditText.setText(otpVerificationResponse.getABHAProfile().getFirstName());
-        mMiddleNameEditText.setText(otpVerificationResponse.getABHAProfile().getMiddleName());
-        mLastNameEditText.setText(otpVerificationResponse.getABHAProfile().getLastName());
+    private void setAbhaDOBToEditText(String dob) { // aadhar -> 01-07-1998
+        String[] dateSplit = dob.split("-");
+        String day = dateSplit[0];
+        String month = dateSplit[1];
+        String year = dateSplit[2];
+
+        dob = year + "-" + month + "-" + day;
+        dobToDb = dob;
+        Log.d(TAG, "setAutoFillValuesViaAadhar: " + dobToDb);   // 1998-07-01
+        mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
+
+        // age
+        setAbhaAgeToEditText(dobToDb);
     }
 
     private int mSelectedMobileNumberValidationLength = 0;
