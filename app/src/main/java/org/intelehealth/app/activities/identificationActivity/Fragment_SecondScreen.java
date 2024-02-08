@@ -209,7 +209,7 @@ public class Fragment_SecondScreen extends Fragment {
         // District
         mDistrictNameSpinner.setVisibility(View.GONE);
         mDistrictET.setVisibility(View.VISIBLE);
-        mDistrictET.setText(abhaProfileResponse.getDistrictName()); // Thane.
+        mDistrictET.setText(abhaProfileResponse.getDistrictName());
 
         // City/Village/Town
         String village_town = (abhaProfileResponse.getTownName() != null) ?
@@ -221,7 +221,22 @@ public class Fragment_SecondScreen extends Fragment {
     }
 
     private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
-        
+        mPostalCodeEditText.setText(otpVerificationResponse.getABHAProfile().getPinCode());
+
+        // State
+        mStateNameSpinner.setVisibility(View.GONE);
+        mStateEditText.setVisibility(View.VISIBLE);
+        mStateEditText.setText(otpVerificationResponse.getABHAProfile().getStateCode());    // todo: handle this.
+
+        // District
+        mDistrictNameSpinner.setVisibility(View.GONE);
+        mDistrictET.setVisibility(View.VISIBLE);
+        mDistrictET.setText(otpVerificationResponse.getABHAProfile().getDistrictCode());    // todo: handle this.
+
+        // City/Village/Town
+      //  mCityVillageET.setText(village_town); // todo: handle this.
+
+        mAddress1EditText.setText(otpVerificationResponse.getABHAProfile().getAddress());
     }
 
     class MyTextWatcher implements TextWatcher {

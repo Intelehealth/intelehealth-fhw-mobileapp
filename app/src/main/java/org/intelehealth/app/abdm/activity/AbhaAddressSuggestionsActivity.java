@@ -171,7 +171,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                                         otpVerificationResponse.toString() + " \nabha profile: " + otpVerificationResponse.getABHAProfile().toString());
 
                                 Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
-                                dataIntent.putExtra("payload", otpVerificationResponse);
+                                dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
                                 dataIntent.putExtra("accessToken", accessToken);
                                 startActivity(dataIntent);
                                 finish();

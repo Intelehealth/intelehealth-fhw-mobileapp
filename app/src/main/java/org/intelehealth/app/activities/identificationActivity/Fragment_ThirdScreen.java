@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.MOBILE_PAYLOAD;
+import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
 import static org.intelehealth.app.utilities.StringUtils.inputFilter_Others;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
@@ -69,6 +71,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.model.AbhaProfileResponse;
+import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -112,6 +116,8 @@ public class Fragment_ThirdScreen extends Fragment {
     PatientsDAO patientsDAO = new PatientsDAO();
     String patientID_edit;
     boolean patient_detail = false;
+    private OTPVerificationResponse otpVerificationResponse;
+    private AbhaProfileResponse abhaProfileResponse;
 
 
     @Nullable
@@ -189,6 +195,19 @@ public class Fragment_ThirdScreen extends Fragment {
             } else {
                 // do nothing...
             }
+
+            // abdm - start
+            if (getArguments().containsKey(PAYLOAD)) {
+                otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
+                if (otpVerificationResponse != null)
+                    setAutoFillValuesViaAadhar(otpVerificationResponse);
+            }
+            else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
+                abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
+                if (abhaProfileResponse != null)
+                    setAutoFillValuesViaMobile(abhaProfileResponse);
+            }
+            // abdm - end
         }
 
         mCasteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -518,6 +537,14 @@ public class Fragment_ThirdScreen extends Fragment {
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromThirdScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
+
+        // abha - start
+        if (abhaProfileResponse != null)
+            bundle.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+        if (otpVerificationResponse != null)
+            bundle.putSerializable(PAYLOAD, otpVerificationResponse);
+        // abha - end
+
         secondScreen.setArguments(bundle); // passing data to Fragment
 
         getActivity().getSupportFragmentManager()
@@ -725,9 +752,17 @@ public class Fragment_ThirdScreen extends Fragment {
                 intent.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
                 intent.putExtra("tag", "newPatient");
                 intent.putExtra("hasPrescription", "false");
+
                 Bundle args = new Bundle();
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
+                // abha - start
+                if (abhaProfileResponse != null)
+                    args.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+                if (otpVerificationResponse != null)
+                    args.putSerializable(PAYLOAD, otpVerificationResponse);
+                // abha - end
                 intent.putExtra("BUNDLE", args);
+
                 getActivity().startActivity(intent);
                 getActivity().finish();
             }
