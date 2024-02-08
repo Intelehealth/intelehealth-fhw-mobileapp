@@ -5,12 +5,16 @@ import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import org.intelehealth.videolibrary.model.Video
+import org.intelehealth.videolibrary.room.dao.LibraryDao
 import org.intelehealth.videolibrary.utils.getApplicationName
 import java.util.Locale
 
 
-@Database(entities = [], version = 1)
+@Database(entities = [Video::class], version = 1)
 abstract class VideoLibraryDatabase : RoomDatabase() {
+
+    abstract fun libraryDao(): LibraryDao
 
     companion object {
 

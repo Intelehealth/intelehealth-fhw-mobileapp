@@ -5,8 +5,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.videolibrary.R
 import org.intelehealth.videolibrary.callbacks.VideoClickedListener
@@ -14,14 +14,19 @@ import org.intelehealth.videolibrary.constants.Constants
 import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
+import org.intelehealth.videolibrary.listing.viewmodel.LibraryViewModelFactory
 import org.intelehealth.videolibrary.listing.viewmodel.YoutubeListingViewModel
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
+import org.intelehealth.videolibrary.restapi.RetrofitProvider
+import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
+import org.intelehealth.videolibrary.room.VideoLibraryDatabase
+import org.intelehealth.videolibrary.room.dao.LibraryDao
 
 class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
     private var binding: ActivityYoutubeListingBinding? = null
     private var preferenceHelper: PreferenceHelper? = null
-    private val viewmodel: YoutubeListingViewModel by viewModels()
+    private var viewmodel: YoutubeListingViewModel? = null
 
     private var authKey: String? = null
     private var packageName: String? = null
@@ -31,34 +36,44 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
         binding = ActivityYoutubeListingBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        setData()
         setToolbar()
+        initializeData()
         setObservers()
         setVideoLibraryRecyclerView()
     }
 
     private fun setObservers() {
-        viewmodel.response.observe(this) {
-            if (it.success) {
-                val adapter = YoutubeListingAdapter(
-                    it.projectLibraryData.videos,
-                    lifecycle,
-                    this@YoutubeListingActivity
-                )
+        viewmodel?.fetchVideosFromDb()?.observe(this) {
+            val adapter = YoutubeListingAdapter(it, lifecycle, this@YoutubeListingActivity)
 
-                binding?.recyclerview?.adapter = adapter
-                binding?.recyclerview?.setHasFixedSize(true)
-                binding?.recyclerview?.layoutManager =
-                    LinearLayoutManager(this@YoutubeListingActivity)
-                binding?.progressBar?.visibility = View.GONE
+            binding?.recyclerview?.apply {
+                this.adapter = adapter
+                this.layoutManager = LinearLayoutManager(this@YoutubeListingActivity)
             }
+            binding?.progressBar?.visibility = View.GONE
+        }
+
+        viewmodel?.tokenExpiredObserver?.observe(this) {
+
         }
     }
 
-    private fun setData() {
+    private fun initializeData() {
         preferenceHelper = PreferenceHelper(applicationContext)
         authKey = "Bearer ${preferenceHelper?.getJwtAuthToken()}"
         packageName = applicationContext.packageName
+
+        val service: VideoLibraryApiClient = RetrofitProvider.apiService
+        val dao: LibraryDao =
+            VideoLibraryDatabase.getInstance(this@YoutubeListingActivity).libraryDao()
+
+        viewmodel = ViewModelProvider(
+            owner = this@YoutubeListingActivity,
+            factory = LibraryViewModelFactory(
+                service = service,
+                dao = dao
+            )
+        )[YoutubeListingViewModel::class.java]
     }
 
     private fun setToolbar() {
@@ -77,7 +92,7 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
     private fun setVideoLibraryRecyclerView() {
         binding?.progressBar?.visibility = View.VISIBLE
-        viewmodel.fetchVideos(packageName!!, authKey!!)
+        viewmodel?.fetchVideos(packageName!!, authKey!!)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

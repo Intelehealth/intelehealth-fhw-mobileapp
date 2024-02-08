@@ -8,7 +8,7 @@ import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import org.intelehealth.videolibrary.databinding.ItemVideoListingBinding
-import org.intelehealth.videolibrary.restapi.response.Video
+import org.intelehealth.videolibrary.model.Video
 
 internal class YoutubeListingAdapter(
     private val videoIds: List<Video>,

@@ -1,6 +1,7 @@
 package org.intelehealth.videolibrary.restapi.response
 
 import com.google.gson.annotations.SerializedName
+import org.intelehealth.videolibrary.model.Video
 
 data class ProjectLibraryData(
 
