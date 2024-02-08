@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.MOBILE_PAYLOAD;
+import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
 import static org.intelehealth.app.utilities.StringUtils.inputFilter_Name;
 
 import android.content.Context;
@@ -39,6 +41,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.model.AbhaProfileResponse;
+import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
 import org.intelehealth.app.activities.identificationActivity.model.StateData;
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
@@ -164,6 +168,7 @@ public class Fragment_SecondScreen extends Fragment {
         mCityVillageET.addTextChangedListener(new MyTextWatcher(mCityVillageET));
         firstScreen = new Fragment_FirstScreen();
         fragment_thirdScreen = new Fragment_ThirdScreen();
+
         if (getArguments() != null) {
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
             fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
@@ -175,6 +180,25 @@ public class Fragment_SecondScreen extends Fragment {
             } else {
                 // do nothing...
             }
+
+            // abdm - start
+          /*  if (getArguments().containsKey(PAYLOAD)) {
+                OTPVerificationResponse otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
+                if (otpVerificationResponse != null) {
+                    mFirstNameEditText.setText(otpVerificationResponse.getABHAProfile().getFirstName());
+                    mMiddleNameEditText.setText(otpVerificationResponse.getABHAProfile().getMiddleName());
+                    mLastNameEditText.setText(otpVerificationResponse.getABHAProfile().getLastName());
+                }
+            }
+            else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
+                AbhaProfileResponse abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
+                if (abhaProfileResponse != null) {
+                    mFirstNameEditText.setText(abhaProfileResponse.getFirstName());
+                    mMiddleNameEditText.setText(abhaProfileResponse.getMiddleName());
+                    mLastNameEditText.setText(abhaProfileResponse.getLastName());
+                }
+            }*/
+            // abdm - end
         }
     }
 

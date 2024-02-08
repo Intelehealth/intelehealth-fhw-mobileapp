@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
@@ -22,6 +24,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +65,7 @@ import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
+import org.intelehealth.app.utilities.CameraUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.IReturnValues;
@@ -116,6 +120,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     String patientID_edit;
     boolean patient_detail = false;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
+    private OTPVerificationResponse otpVerificationResponse;
+    private AbhaProfileResponse abhaProfileResponse;
 
 
     @Nullable
@@ -188,28 +194,42 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         fragment_secondScreen = new Fragment_SecondScreen();
         if (getArguments() != null) {
-            patientdto = (PatientDTO) getArguments().getSerializable("patientDTO");
-            //   patientID_edit = getArguments().getString("patientUuid");
-            patient_detail = getArguments().getBoolean("patient_detail");
-            fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
+            if (getArguments().containsKey("patientDTO"))
+                patientdto = (PatientDTO) getArguments().getSerializable("patientDTO");
+            Log.d(TAG, "firstscreen: " + patientdto.getAddress1());
+
+            if (getArguments().containsKey("patient_detail"))
+                patient_detail = getArguments().getBoolean("patient_detail");
+
+            if (getArguments().containsKey("fromSecondScreen"))
+                fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
 
             if (getArguments().containsKey(PAYLOAD)) {
-                OTPVerificationResponse otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
-                if (otpVerificationResponse != null) {
-                    mFirstNameEditText.setText(otpVerificationResponse.getABHAProfile().getFirstName());
-                    mMiddleNameEditText.setText(otpVerificationResponse.getABHAProfile().getMiddleName());
-                    mLastNameEditText.setText(otpVerificationResponse.getABHAProfile().getLastName());
-                }
+                otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
+                if (otpVerificationResponse != null)
+                    setAutoFillValuesViaAadhar(otpVerificationResponse);
             }
             else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
-                AbhaProfileResponse abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
-                if (abhaProfileResponse != null) {
-                    mFirstNameEditText.setText(abhaProfileResponse.getFirstName());
-                    mMiddleNameEditText.setText(abhaProfileResponse.getMiddleName());
-                    mLastNameEditText.setText(abhaProfileResponse.getLastName());
-                }
+                abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
+                if (abhaProfileResponse != null)
+                    setAutoFillValuesViaMobile(abhaProfileResponse);
             }
         }
+
+       /* // todo: uncomment later - start
+        AbhaProfileResponse abhaProfileResponse = new AbhaProfileResponse();
+        abhaProfileResponse.setFirstName("Prajwal");
+        abhaProfileResponse.setMiddleName("Maruti");
+        abhaProfileResponse.setLastName("Waingankar");
+        abhaProfileResponse.setGender("M");
+        abhaProfileResponse.setDayOfBirth("01");
+        abhaProfileResponse.setMonthOfBirth("07");
+        abhaProfileResponse.setYearOfBirth("1998");
+        abhaProfileResponse.setMobile("7304154312");
+
+        setAutoFillValuesViaMobile(abhaProfileResponse);
+        // todo: uncomment later - end*/
+
 
         if (patient_detail)
             frag1_nxt_btn_main.setText(getString(R.string.save));
@@ -287,6 +307,79 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         setMobileNumberLimit();
 
 
+    }
+
+    private void setAutoFillValuesViaMobile(AbhaProfileResponse abhaProfileResponse) {
+        Log.d(TAG, "setAutoFillValuesViaMobile: " + abhaProfileResponse.toString());
+
+        String profileImage = abhaProfileResponse.getProfilePhoto();
+        if (profileImage != null) {
+            displayAbhaProfilePhotoAndStoreInFile(profileImage);
+        }
+
+        mFirstNameEditText.setText(abhaProfileResponse.getFirstName());
+        mMiddleNameEditText.setText(abhaProfileResponse.getMiddleName());
+        mLastNameEditText.setText(abhaProfileResponse.getLastName());
+
+        if (abhaProfileResponse.getGender().equalsIgnoreCase("M"))
+            mGenderMaleRadioButton.setChecked(true);
+        else if (abhaProfileResponse.getGender().equalsIgnoreCase("F"))
+            mGenderFemaleRadioButton.setChecked(true);
+        else
+            mGenderOthersRadioButton.setChecked(true);
+
+        // dob and age
+        setAbhaDOBToEditText(abhaProfileResponse.getDayOfBirth(), abhaProfileResponse.getMonthOfBirth(), abhaProfileResponse.getYearOfBirth());
+
+        // mobile no.
+        if (abhaProfileResponse.getMobile() != null)
+            mPhoneNumberEditText.setText(abhaProfileResponse.getMobile());
+    }
+
+    private void displayAbhaProfilePhotoAndStoreInFile(String profileImage) {
+        byte[] decodedString = Base64.decode(profileImage, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+        String patientTemp = "";
+        if (patientUuid.equalsIgnoreCase("")) {
+            patientTemp = patientdto.getUuid();
+        } else {
+            patientTemp = patientUuid;
+        }
+
+        File filePath = new File(AppConstants.IMAGE_PATH + patientTemp);
+        if (!filePath.exists()) {
+            filePath.mkdir();
+        }
+
+        CameraUtils cameraUtils = new CameraUtils(getActivity(), patientTemp, filePath.toString());
+        mCurrentPhotoPath = cameraUtils.compressImageAndSave(decodedByte);
+
+        patient_imgview.setImageBitmap(decodedByte);
+    }
+
+    private void setAbhaAgeToEditText(String dob) {
+        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dob).split(" ");
+        int mAgeYears = Integer.parseInt(ymdData[0]);
+        int mAgeMonths = Integer.parseInt(ymdData[1]);
+        int mAgeDays = Integer.parseInt(ymdData[2]);
+        String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+        mAgeEditText.setText(age);
+    }
+
+    private void setAbhaDOBToEditText(String day, String month, String year) {
+        dobToDb = year + "-" + month + "-" + day;
+        Log.d(TAG, "setAutoFillValuesViaMobile: " + dobToDb);   // 1998-07-01
+        mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
+
+        // age
+        setAbhaAgeToEditText(dobToDb);
+    }
+
+    private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
+        mFirstNameEditText.setText(otpVerificationResponse.getABHAProfile().getFirstName());
+        mMiddleNameEditText.setText(otpVerificationResponse.getABHAProfile().getMiddleName());
+        mLastNameEditText.setText(otpVerificationResponse.getABHAProfile().getLastName());
     }
 
     private int mSelectedMobileNumberValidationLength = 0;
@@ -742,7 +835,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     private void onPatientCreateClicked() {
         uuid = UUID.randomUUID().toString();
-        Log.v(TAG, "reltion: " + patientID_edit);
+        Log.v(TAG, "reltion: " + patientID_edit + ", " + patientdto.toString());
         if (patient_detail) {
         } else {
             patientdto.setUuid(uuid);
@@ -882,6 +975,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 bundle.putBoolean("patient_detail", patient_detail);
                 fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
+                Log.d(TAG, "onPatientCreateClicked: " + patientdto.toString());
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.frame_firstscreen, fragment_secondScreen)
@@ -934,4 +1028,5 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         }
     }
+
 }

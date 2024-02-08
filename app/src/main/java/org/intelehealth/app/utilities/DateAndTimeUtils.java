@@ -534,6 +534,7 @@ public class DateAndTimeUtils {
 
             // finalDate = day + " " + monthString + " " + year;
             finalDate = monthString + " " + day + ", " + year;
+            Log.d(TAG, "getDisplayDateForApp: " + finalDate);
 
         }
         return finalDate;

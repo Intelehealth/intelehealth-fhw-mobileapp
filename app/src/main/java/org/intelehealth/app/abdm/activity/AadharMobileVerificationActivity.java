@@ -157,7 +157,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         });
     }
 
-    private void callGenerateTokenApi() {
+    private void callGenerateTokenApi() {   // Step 1.
         cpd.show(getString(R.string.otp_sending));
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
      //   binding.sendOtpBtn.setEnabled(true);    // todo: for testing purpose
@@ -208,7 +208,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
     }
 
-    private void callMobileNumberVerificationApi(String accessToken) {
+    private void callMobileNumberVerificationApi(String accessToken) {  // mobile: Step 2
         // payload - start
         MobileLoginApiBody mobileLoginApiBody = new MobileLoginApiBody();
         mobileLoginApiBody.setScope(SCOPE);
@@ -313,7 +313,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
      * @param txnId: txnId received in success response.
      * @param otp : otp received via. SMS
      */
-    private void callOTPForMobileLoginVerificationApi(String txnId, String otp) {
+    private void callOTPForMobileLoginVerificationApi(String txnId, String otp) {   // Mobile: Step 3
         cpd = new CustomProgressDialog(context);
         cpd.show("Verifying OTP...");
         Log.d("callOTPForVerificationApi: ", "parameters: " + txnId + ", " + otp);

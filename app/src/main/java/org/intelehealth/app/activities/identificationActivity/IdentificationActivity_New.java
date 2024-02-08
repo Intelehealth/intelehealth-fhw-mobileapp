@@ -142,12 +142,15 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
                 }
 
             }
+            else {
+                abdmAutoFillScreensWithValues(firstScreen, intentRx);
+            }
 
             /*if (intentRx.hasExtra("payload")) {
                 abdmAutoFillScreensWithValues(firstScreen, intentRx);
             }*/
 
-            abdmAutoFillScreensWithValues(firstScreen, intentRx);
+
         }
 
     }
