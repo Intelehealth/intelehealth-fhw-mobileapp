@@ -100,7 +100,9 @@ public class Fragment_SecondScreen extends Fragment {
     boolean patient_detail = false;
     private StateDistMaster mStateDistMaster;
     private EditText mStateEditText;
-
+    private OTPVerificationResponse otpVerificationResponse;
+    private AbhaProfileResponse abhaProfileResponse;
+    
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -182,24 +184,44 @@ public class Fragment_SecondScreen extends Fragment {
             }
 
             // abdm - start
-          /*  if (getArguments().containsKey(PAYLOAD)) {
-                OTPVerificationResponse otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
-                if (otpVerificationResponse != null) {
-                    mFirstNameEditText.setText(otpVerificationResponse.getABHAProfile().getFirstName());
-                    mMiddleNameEditText.setText(otpVerificationResponse.getABHAProfile().getMiddleName());
-                    mLastNameEditText.setText(otpVerificationResponse.getABHAProfile().getLastName());
-                }
+            if (getArguments().containsKey(PAYLOAD)) {
+                otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
+                if (otpVerificationResponse != null)
+                    setAutoFillValuesViaAadhar(otpVerificationResponse);
             }
             else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
-                AbhaProfileResponse abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
-                if (abhaProfileResponse != null) {
-                    mFirstNameEditText.setText(abhaProfileResponse.getFirstName());
-                    mMiddleNameEditText.setText(abhaProfileResponse.getMiddleName());
-                    mLastNameEditText.setText(abhaProfileResponse.getLastName());
-                }
-            }*/
+                abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
+                if (abhaProfileResponse != null)
+                    setAutoFillValuesViaMobile(abhaProfileResponse);
+            }
             // abdm - end
         }
+    }
+
+    private void setAutoFillValuesViaMobile(AbhaProfileResponse abhaProfileResponse) {
+        mPostalCodeEditText.setText(abhaProfileResponse.getPincode());
+
+        // State
+        mStateNameSpinner.setVisibility(View.GONE);
+        mStateEditText.setVisibility(View.VISIBLE);
+        mStateEditText.setText(abhaProfileResponse.getStateName());
+
+        // District
+        mDistrictNameSpinner.setVisibility(View.GONE);
+        mDistrictET.setVisibility(View.VISIBLE);
+        mDistrictET.setText(abhaProfileResponse.getDistrictName()); // Thane.
+
+        // City/Village/Town
+        String village_town = (abhaProfileResponse.getTownName() != null) ?
+                abhaProfileResponse.getTownName() :
+                (abhaProfileResponse.getVillageName() != null) ? abhaProfileResponse.getVillageName() : ""; // checks if both are not null town and village.
+        mCityVillageET.setText(village_town);
+
+        mAddress1EditText.setText(abhaProfileResponse.getAddress());
+    }
+
+    private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
+        
     }
 
     class MyTextWatcher implements TextWatcher {
@@ -537,6 +559,11 @@ public class Fragment_SecondScreen extends Fragment {
         mCountryNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (abhaProfileResponse != null)
+                    return;
+                if (otpVerificationResponse != null)
+                    return;
+
                 if (i != 0) {
                     mCountryName = adapterView.getItemAtPosition(i).toString();
                     mCountryNameEn = mCountryList[i];
@@ -657,6 +684,7 @@ public class Fragment_SecondScreen extends Fragment {
         patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
         patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
         patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameSpinner.getSelectedItem().toString() : mStateName));
+
         if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null)
             patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
         if (!sessionManager.getAppLanguage().equals("en")) {
@@ -675,6 +703,14 @@ public class Fragment_SecondScreen extends Fragment {
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
+
+        // abha - start
+        if (abhaProfileResponse != null)
+            bundle.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+        if (otpVerificationResponse != null)
+            bundle.putSerializable(PAYLOAD, otpVerificationResponse);
+        // abha - end
+
         firstScreen.setArguments(bundle); // passing data to Fragment
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -687,7 +723,9 @@ public class Fragment_SecondScreen extends Fragment {
         boolean cancel = false;
         View focusView = null;
         if (!mPostalCodeEditText.getText().toString().equals("")) {
-            if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase(sessionManager.getAppLanguage().equals("en") ? "India" : "भारत") && mPostalCodeEditText.getText().toString().trim().length() != 6) {
+            if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase
+                    (sessionManager.getAppLanguage().equals("en") ? "India" : "भारत") &&
+                    mPostalCodeEditText.getText().toString().trim().length() != 6) {
                 mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
                 mPostalCodeErrorTextView.setText(getString(R.string.postal_code_6_dig_invalid_txt));
                 mPostalCodeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -713,7 +751,7 @@ public class Fragment_SecondScreen extends Fragment {
             mCountryNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
         }
 
-        if (mStateNameSpinner.getSelectedItemPosition() == 0) {
+        if (mStateNameSpinner.getVisibility() == View.VISIBLE && mStateNameSpinner.getSelectedItemPosition() == 0) {
             mStateNameErrorTextView.setVisibility(View.VISIBLE);
             mStateNameErrorTextView.setText(getString(R.string.error_field_required));
             mStateNameSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -722,6 +760,16 @@ public class Fragment_SecondScreen extends Fragment {
         } else {
             mStateNameErrorTextView.setVisibility(View.GONE);
             mStateNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+        }
+        if (mStateEditText.getVisibility() == View.VISIBLE && mStateEditText.getText().toString().equals("")) {
+            mStateNameErrorTextView.setVisibility(View.VISIBLE);
+            mStateNameErrorTextView.setText(getString(R.string.error_field_required));
+            mStateEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mStateEditText.requestFocus();
+            return;
+        } else {
+            mStateNameErrorTextView.setVisibility(View.GONE);
+            mStateEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
         if (mDistrictNameSpinner.getVisibility() == View.VISIBLE && mDistrictNameSpinner.getSelectedItemPosition() == 0) {
@@ -775,14 +823,34 @@ public class Fragment_SecondScreen extends Fragment {
 
             patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
             patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
-            patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameSpinner.getSelectedItem().toString() : mStateName));
-            if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null)
-                patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
+
+            if (!mStateName.isEmpty()) {    // abdm auto-fill
+                mStateNameSpinner.setVisibility(View.GONE);
+                mStateEditText.setVisibility(View.VISIBLE);
+                patientDTO.setStateprovince(mStateName);
+            }
+            else {
+                patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameSpinner.getSelectedItem().toString() : mStateName));
+            }
+
+            if (!mDistName.isEmpty()) { // abdm auto-fill
+                mDistrictNameSpinner.setVisibility(View.GONE);
+                mDistrictET.setVisibility(View.VISIBLE);
+                patientDTO.setCityvillage(mDistName + ":" + mCityVillageName);
+            }
+            else {
+                if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null)
+                    patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ?
+                            mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
+            }
 
             if (!sessionManager.getAppLanguage().equals("en")) {
                 patientDTO.setCountry(StringUtils.getValue(mCountryNameEn));
-                patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameEn : mStateName));
-                patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistNameEn : mDistName) + ":" + mCityVillageName));
+                if (mStateNameSpinner.getVisibility() == View.VISIBLE)
+                    patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameEn : mStateName));
+
+                if (mDistrictNameSpinner.getVisibility() == View.VISIBLE)
+                    patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistNameEn : mDistName) + ":" + mCityVillageName));
 
             }
             patientDTO.setAddress1(mAddress1EditText.getText().toString());
@@ -809,6 +877,14 @@ public class Fragment_SecondScreen extends Fragment {
                 bundle.putBoolean("fromSecondScreen", true);
                 //   bundle.putString("patientUuid", patientID_edit);
                 bundle.putBoolean("patient_detail", patient_detail);
+
+                // abha - start
+                if (abhaProfileResponse != null)
+                    bundle.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+                if (otpVerificationResponse != null)
+                    bundle.putSerializable(PAYLOAD, otpVerificationResponse);
+                // abha - end
+
                 fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 
                 getActivity().getSupportFragmentManager()

@@ -1009,6 +1009,13 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 bundle.putSerializable("patientDTO", (Serializable) patientdto);
                 bundle.putBoolean("fromFirstScreen", true);
                 bundle.putBoolean("patient_detail", patient_detail);
+
+                if (otpVerificationResponse != null)
+                    bundle.putSerializable(PAYLOAD, otpVerificationResponse);
+
+                if (abhaProfileResponse != null)
+                    bundle.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+
                 fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
                 Log.d(TAG, "onPatientCreateClicked: " + patientdto.toString());

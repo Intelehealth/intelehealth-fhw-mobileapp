@@ -92,7 +92,7 @@ public class AbhaProfileResponse implements Serializable {
     private String subdistrictName;
     @SerializedName("villageName")
     @Expose
-    private Object villageName;
+    private String villageName;
     @SerializedName("townName")
     @Expose
     private String townName;
@@ -326,11 +326,11 @@ public class AbhaProfileResponse implements Serializable {
         this.subdistrictName = subdistrictName;
     }
 
-    public Object getVillageName() {
+    public String getVillageName() {
         return villageName;
     }
 
-    public void setVillageName(Object villageName) {
+    public void setVillageName(String villageName) {
         this.villageName = villageName;
     }
 
