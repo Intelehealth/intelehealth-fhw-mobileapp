@@ -27,7 +27,7 @@ abstract class VideoLibraryDatabase : RoomDatabase() {
                     INSTANCE = it
                 }
             }
-        
+
         /**
          * Set up the database configuration.
          * The SQLite database is only created when it's accessed for the first time.
