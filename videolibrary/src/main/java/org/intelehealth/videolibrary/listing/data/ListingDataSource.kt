@@ -13,11 +13,11 @@ class ListingDataSource(
     private val libraryDao: LibraryDao
 ) {
 
-    suspend fun fetchVideos(
+    suspend fun fetchVideosFromServer(
         packageName: String,
         auth: String
     ): Flow<Response<VideoLibraryResponse?>> = flow {
-        emit(service.fetchVideos(packageName, auth))
+        emit(service.fetchVideosFromServer(packageName, auth))
     }
 
     suspend fun insertVideosToDb(videos: List<Video>) {
@@ -25,4 +25,5 @@ class ListingDataSource(
     }
 
     fun fetchVideosFromDb(): Flow<List<Video>> = libraryDao.getAll()
+
 }

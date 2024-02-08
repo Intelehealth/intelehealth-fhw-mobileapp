@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.videolibrary.R
@@ -43,9 +44,16 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
     }
 
     private fun setObservers() {
-        viewmodel?.fetchVideosFromDb()?.observe(this) {
-            val adapter = YoutubeListingAdapter(it, lifecycle, this@YoutubeListingActivity)
 
+        // used for fetching data from the db
+        viewmodel?.fetchVideosFromDb()?.observe(this) {
+            if (it.isEmpty()) {
+                binding?.progressBar?.visibility = View.VISIBLE
+                viewmodel?.fetchVideosFromServer(packageName!!, authKey!!)
+                return@observe
+            }
+
+            val adapter = YoutubeListingAdapter(it, lifecycle, this@YoutubeListingActivity)
             binding?.recyclerview?.apply {
                 this.adapter = adapter
                 this.layoutManager = LinearLayoutManager(this@YoutubeListingActivity)
@@ -53,6 +61,7 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
             binding?.progressBar?.visibility = View.GONE
         }
 
+        // used for detecting if the JWT token is expired
         viewmodel?.tokenExpiredObserver?.observe(this) {
 
         }
@@ -92,7 +101,7 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
     private fun setVideoLibraryRecyclerView() {
         binding?.progressBar?.visibility = View.VISIBLE
-        viewmodel?.fetchVideos(packageName!!, authKey!!)
+        viewmodel?.fetchVideosFromDb()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

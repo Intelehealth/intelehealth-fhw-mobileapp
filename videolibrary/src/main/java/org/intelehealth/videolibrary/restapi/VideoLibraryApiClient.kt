@@ -9,7 +9,7 @@ import retrofit2.http.Path
 interface VideoLibraryApiClient {
 
     @GET("api/video-library/getVideosByPackageId/{package}")
-    suspend fun fetchVideos(
+    suspend fun fetchVideosFromServer(
         @Path("package") packageName: String,
         @Header("Authorization") auth: String
     ): Response<VideoLibraryResponse?>

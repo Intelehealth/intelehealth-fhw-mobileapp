@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.intelehealth.videolibrary.listing.data.ListingDataSource
 import org.intelehealth.videolibrary.listing.data.ListingRepository
@@ -27,9 +28,10 @@ class YoutubeListingViewModel(service: VideoLibraryApiClient, dao: LibraryDao) :
         repository = ListingRepository(dataSource)
     }
 
-    fun fetchVideos(packageName: String, auth: String) {
+    fun fetchVideosFromServer(packageName: String, auth: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.fetchVideos(packageName, auth)
+            delay(5000)
+            repository.fetchVideosFromServer(packageName, auth)
                 .collect { response ->
                     handleResponses(response)
                 }
