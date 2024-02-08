@@ -19,7 +19,8 @@
     <string name="call_outgoing">আউটগোয়িং কল</string>
     <string name="call_ongoing">চলমান কল</string>
     <string name="call_unknown">অজানা</string>
-    <string name="call_incoming">Incoming Call</string>
+    <string name="call_incoming">ইনকামিং কল</string>
+    <string name="call_logs">কল লগ</string>
     <string name="calling">কলিং</string>
 
     <string name="an_hour_ago">এক ঘণ্টা আগে</string>
@@ -33,4 +34,8 @@
     <string name="yesterday">গতকাল</string>
     <string name="yesterday_at">গতকাল এ</string>
     <string name="now">এখন</string>
+
+    <string name="decline">প্রত্যাখ্যান</string>
+    <string name="accept">গ্রহণ করুন</string>
+    <string name="hang_up">লেগে থাকা</string>
 </resources>

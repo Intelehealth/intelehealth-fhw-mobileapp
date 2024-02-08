@@ -21,6 +21,7 @@
     <string name="call_unknown">مجهول</string>
     <string name="call_incoming">مكالمة واردة</string>
     <string name="calling">الاتصال</string>
+    <string name="call_logs">سجلات المكالمات</string>
 
     <string name="an_hour_ago">منذ ساعة</string>
     <string name="hours_ago">%1$s منذ ساعات</string>
@@ -32,5 +33,9 @@
     <string name="today_at">اليوم في</string>
     <string name="yesterday">أمس</string>
     <string name="yesterday_at">البارحة عند</string>
-    <string name="now">Now</string>
+    <string name="now">الآن</string>
+
+    <string name="decline">رفض المكالمة</string>
+    <string name="accept">يقبل</string>
+    <string name="hang_up">يشنق</string>
 </resources>

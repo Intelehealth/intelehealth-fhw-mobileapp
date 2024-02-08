@@ -53,7 +53,6 @@ class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClick
             it.setDisplayHomeAsUpEnabled(true)
             it.title = getString(R.string.call_logs)
         }
-        binding.callLogAppBar.toolbar.title = getString(R.string.call_logs)
         binding.callLogAppBar.toolbar.setNavigationOnClickListener { finishAfterTransition() }
     }
 

@@ -70,8 +70,6 @@
     <string name="permission_denied">تم رفض الإذن\n</string>
     <string name="incoming_voice_call">مكالمة صوتية واردة</string>
     <string name="incoming_call">مكالمة واردة</string>
-    <string name="decline">رفض المكالمة</string>
-    <string name="accept">يقبل</string>
     <string name="doctor_profile_picture">صورة الملف الشخصي للطبيب</string>
     <string name="poor_connection">اتصال ضعيف</string>
     <string name="remote_participant_mic_off_status">حالة إيقاف تشغيل ميكروفون المشارك عن بعد</string>

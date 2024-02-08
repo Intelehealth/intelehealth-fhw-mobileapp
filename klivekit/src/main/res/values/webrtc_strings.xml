@@ -21,6 +21,7 @@
     <string name="call_unknown">Unknown</string>
     <string name="call_incoming">Incoming Call</string>
     <string name="calling">Calling</string>
+    <string name="call_logs">Call Logs</string>
 
     <string name="an_hour_ago">An hr ago</string>
     <string name="hours_ago">%1$s hrs ago</string>
@@ -33,4 +34,8 @@
     <string name="yesterday">Yesterday</string>
     <string name="yesterday_at">Yesterday at</string>
     <string name="now">Now</string>
+
+    <string name="decline">Decline</string>
+    <string name="accept">Accept</string>
+    <string name="hang_up">Hang Up</string>
 </resources>
