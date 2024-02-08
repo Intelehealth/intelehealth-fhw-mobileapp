@@ -10,6 +10,11 @@ import org.intelehealth.videolibrary.room.dao.LibraryDao
 import org.intelehealth.videolibrary.utils.getApplicationName
 import java.util.Locale
 
+/**
+ * Created by Arpan Sircar. on 08-02-2024.
+ * Email : arpan@intelehealth.org
+ * Mob   : +919123116015
+ **/
 
 @Database(entities = [Video::class], version = 1)
 abstract class VideoLibraryDatabase : RoomDatabase() {

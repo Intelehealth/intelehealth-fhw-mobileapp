@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.videolibrary.R
@@ -22,6 +21,12 @@ import org.intelehealth.videolibrary.restapi.RetrofitProvider
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.room.VideoLibraryDatabase
 import org.intelehealth.videolibrary.room.dao.LibraryDao
+
+/**
+ * Created by Arpan Sircar. on 08-02-2024.
+ * Email : arpan@intelehealth.org
+ * Mob   : +919123116015
+ **/
 
 class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
@@ -131,10 +136,5 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
             it.putExtra(Constants.VIDEO_ID, videoId)
         }
         startActivity(intent)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewmodel?.deleteAllVideos()
     }
 }

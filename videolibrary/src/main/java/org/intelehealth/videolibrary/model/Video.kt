@@ -4,6 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Created by Arpan Sircar. on 08-02-2024.
+ * Email : arpan@intelehealth.org
+ * Mob   : +919123116015
+ **/
+
 @Entity(tableName = "tbl_video_library")
 data class Video(
 

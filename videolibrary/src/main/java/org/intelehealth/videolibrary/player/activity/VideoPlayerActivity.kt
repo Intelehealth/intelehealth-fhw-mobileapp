@@ -14,6 +14,12 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFram
 import org.intelehealth.videolibrary.R
 import org.intelehealth.videolibrary.databinding.ActivityVideoPlayerBinding
 
+/**
+ * Created by Arpan Sircar. on 08-02-2024.
+ * Email : arpan@intelehealth.org
+ * Mob   : +919123116015
+ **/
+
 class VideoPlayerActivity : AppCompatActivity() {
 
     private var binding: ActivityVideoPlayerBinding? = null

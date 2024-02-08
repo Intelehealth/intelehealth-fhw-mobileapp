@@ -10,6 +10,12 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import org.intelehealth.videolibrary.databinding.ItemVideoListingBinding
 import org.intelehealth.videolibrary.model.Video
 
+/**
+ * Created by Arpan Sircar. on 08-02-2024.
+ * Email : arpan@intelehealth.org
+ * Mob   : +919123116015
+ **/
+
 internal class YoutubeListingAdapter(
     private val videoIds: List<Video>,
     private val lifecycle: Lifecycle,
