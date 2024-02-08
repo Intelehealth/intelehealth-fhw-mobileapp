@@ -199,13 +199,15 @@ public class Fragment_ThirdScreen extends Fragment {
             // abdm - start
             if (getArguments().containsKey(PAYLOAD)) {
                 otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
-                if (otpVerificationResponse != null)
-                    setAutoFillValuesViaAadhar(otpVerificationResponse);
+                    /*if (otpVerificationResponse != null)
+                        setAutoFillValuesViaAadhar(otpVerificationResponse);*/  // todo: handle later
             }
             else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
                 abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
+/*
                 if (abhaProfileResponse != null)
                     setAutoFillValuesViaMobile(abhaProfileResponse);
+*/  // todo: handle later
             }
             // abdm - end
         }
