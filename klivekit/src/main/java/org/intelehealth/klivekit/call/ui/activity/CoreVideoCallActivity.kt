@@ -78,15 +78,11 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         PreferenceHelper(applicationContext)
     }
 
-    private val neededPermissions = arrayOf(
-        Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA
-    ).apply {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this[this.lastIndex + 1] = Manifest.permission.MANAGE_OWN_CALLS
-        }
-
-        return@apply
-    }
+    private val neededPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) arrayOf(
+        Manifest.permission.MANAGE_OWN_CALLS,
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.CAMERA
+    ) else arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
 
 
     // initiate the incoming call ringtone
@@ -302,6 +298,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     private fun startConnecting() {
+        Timber.d { "permissions ${neededPermissions.size}" }
         permissionRegistry.requestPermissions(neededPermissions).observe(this) {
             if (it.allGranted()) {
                 startCallTimer()

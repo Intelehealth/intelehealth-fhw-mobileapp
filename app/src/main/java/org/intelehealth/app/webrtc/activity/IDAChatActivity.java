@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.fcm.utils.NotificationHandler;
@@ -40,13 +41,14 @@ public class IDAChatActivity extends ChatActivity {
 
     private static Intent buildExtra(Intent chatIntent, RtcArgs args, Context context) {
         try {
+            String nurseName = new ProviderDAO().getProviderName(args.getDoctorUuid());
             chatIntent.putExtra("patientName", args.getPatientName());
             chatIntent.putExtra("visitUuid", args.getVisitId());
             chatIntent.putExtra("patientUuid", args.getPatientId());
             chatIntent.putExtra("fromUuid", args.getNurseId()); // provider uuid
             chatIntent.putExtra("isForVideo", false);
             chatIntent.putExtra("toUuid", args.getDoctorUuid());
-            chatIntent.putExtra("hwName", new SessionManager(context).getChwname());
+            chatIntent.putExtra("hwName", nurseName);
             chatIntent.putExtra("openMrsId", new PatientsDAO().getOpenmrsId(args.getPatientId()));
         } catch (DAOException e) {
             throw new RuntimeException(e);
