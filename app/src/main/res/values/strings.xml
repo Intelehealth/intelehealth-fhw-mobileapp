@@ -714,6 +714,7 @@
     <string name="config_file_error">config file error</string>
     <string name="internet_connected_txt">Connected to Internet!</string>
     <string name="not_connected_txt">Not connected to Internet!</string>
+    <string name="wait_for_the_doctor_message">Please wait for the doctor message!</string>
     <string name="config_error">Config Error</string>
 
     <string name="notification_message"></string>

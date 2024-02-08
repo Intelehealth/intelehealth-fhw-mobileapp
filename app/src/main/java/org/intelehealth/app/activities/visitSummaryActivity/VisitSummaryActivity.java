@@ -118,6 +118,7 @@ import org.intelehealth.app.utilities.Base64Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.webrtc.activity.NASChatActivity;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -683,7 +684,8 @@ public class VisitSummaryActivity extends BaseActivity /*implements PrinterObser
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EncounterDAO encounterDAO = new EncounterDAO();
+                startTextChat(view);
+                /*EncounterDAO encounterDAO = new EncounterDAO();
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
@@ -691,7 +693,7 @@ public class VisitSummaryActivity extends BaseActivity /*implements PrinterObser
                 chatIntent.putExtra("patientName", patientName);
                 chatIntent.putExtra("visitUuid", visitUuid);
                 chatIntent.putExtra("patientUuid", patientUuid);
-                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+                chatIntent.putExtra("fromUuid", *//*sessionManager.getProviderID()*//* encounterDTO.getProvideruuid()); // provider uuid
 
                 if (rtcConnectionDTO != null) {
                     try {
@@ -704,7 +706,7 @@ public class VisitSummaryActivity extends BaseActivity /*implements PrinterObser
                 } else {
                     chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
                 }
-                startActivity(chatIntent);
+                startActivity(chatIntent);*/
             }
         });
         mLayout = findViewById(R.id.summary_layout);
@@ -2318,6 +2320,30 @@ public class VisitSummaryActivity extends BaseActivity /*implements PrinterObser
         db.setTransactionSuccessful();
         db.endTransaction();
         return isExists;
+    }
+
+
+    /**
+     * starting chat activity here
+     * @param view
+     */
+    public void startTextChat(View view) {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUUID);
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
+        RtcArgs args = new RtcArgs();
+        if (rtcConnectionDTO != null) {
+            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
+            args.setPatientId(patientUuid);
+            args.setPatientName(patientName);
+            args.setVisitId(visitUUID);
+            args.setNurseId(encounterDTO.getProvideruuid());
+            NASChatActivity.startChatActivity(VisitSummaryActivity.this, args);
+        } else {
+            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void setLocale(String appLanguage) {

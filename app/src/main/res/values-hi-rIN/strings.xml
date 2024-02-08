@@ -712,6 +712,7 @@
     <string name = "cancelled_txt">रद्द किया गया</string>
     <string name = "please_upload_visit">कृपया अपॉइंटमेंट बुक करने से पहले विज़िट अपलोड करें।</string>
     <string name = "appointment_booked_successfully">अपॉइंटमेंट सफलतापूर्वक बुक हो गया!</string>
+    <string name="wait_for_the_doctor_message">कृपया डॉक्टर के मैसेज की प्रतीक्षा करें!</string>
     <string name="appointment_booked_failed">अपॉइंटमेंट बुक करना विफल रहा!</string>
     <string name = "postal_code_invalid_txt">कृपया मान्य पोस्टल कोड दर्ज करें</string>
     <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करने में विफल!</string>
