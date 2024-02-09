@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
+import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.MOBILE_PAYLOAD;
+import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
@@ -86,6 +88,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.model.AbhaProfileResponse;
+import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
@@ -180,6 +184,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private NetworkUtils networkUtils;
     String tag = "";
     private TableRow trAddress2;
+    private OTPVerificationResponse otpVerificationResponse;
+    private AbhaProfileResponse abhaProfileResponse;
 
     @Override
     public void onBackPressed() {
@@ -226,6 +232,23 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setUuid(intent.getStringExtra("patientUuid"));
             }
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
+
+            // abdm - start
+            if (intent.hasExtra("BUNDLE")) {
+                Bundle args = intent.getBundleExtra("BUNDLE");
+                if (args.containsKey(PAYLOAD)) {
+                    otpVerificationResponse = (OTPVerificationResponse) args.getSerializable(PAYLOAD);
+                    if (otpVerificationResponse != null) {
+                      //  setAutoFillValuesViaAadhar(otpVerificationResponse);
+                    }
+                } else if (args.containsKey(MOBILE_PAYLOAD)) {
+                    abhaProfileResponse = (AbhaProfileResponse) args.getSerializable(MOBILE_PAYLOAD);
+                    if (abhaProfileResponse != null) {
+                      //  setAutoFillValuesViaMobile(abhaProfileResponse);
+                    }
+                }
+            }
+            // abdm - end
         }
 
         initUI();
@@ -1136,16 +1159,29 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             city_village = district_city[1];
         }
 
-        if (district != null) {
-            patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
-        } else {
-            patientdistrict.setText(getResources().getString(R.string.no_district_added));
-        }
+        if (otpVerificationResponse != null || abhaProfileResponse != null) {
+            if (district != null)
+                patientdistrict.setText(district);
+            else
+                patientdistrict.setText(getResources().getString(R.string.no_district_added));
 
-        if (city_village != null) {
-            village.setText(city_village);
-        } else {
-            village.setText(getResources().getString(R.string.no_city_added));
+            if (city_village != null)
+                village.setText(city_village);
+            else
+                village.setText(getResources().getString(R.string.no_city_added));
+        }
+        else {
+            if (district != null) {
+                patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
+            } else {
+                patientdistrict.setText(getResources().getString(R.string.no_district_added));
+            }
+
+            if (city_village != null) {
+                village.setText(city_village);
+            } else {
+                village.setText(getResources().getString(R.string.no_city_added));
+            }
         }
         // end - city and district
 

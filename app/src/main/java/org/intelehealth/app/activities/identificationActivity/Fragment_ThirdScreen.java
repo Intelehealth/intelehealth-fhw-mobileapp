@@ -104,11 +104,13 @@ public class Fragment_ThirdScreen extends Fragment {
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
-    private EditText mRelationNameEditText, mOccupationEditText, mNationalIDEditText;
+    private EditText mRelationNameEditText, mOccupationEditText, mNationalIDEditText,
+    mAbhaNumberEditText, mAbhaAddressEditText;
     private Spinner mCasteSpinner, mEducationSpinner, mEconomicstatusSpinner;
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag3_btn_back, frag3_btn_next;
-    private TextView mRelationNameErrorTextView, mOccupationErrorTextView, mCasteErrorTextView, mEducationErrorTextView, mEconomicErrorTextView;
+    private TextView mRelationNameErrorTextView, mOccupationErrorTextView, mCasteErrorTextView, mEducationErrorTextView,
+            mEconomicErrorTextView, mAbhaNumberErrorTextView, mAbhaAddressErrorTextView;
     ImagesDAO imagesDAO = new ImagesDAO();
     private Fragment_SecondScreen secondScreen;
     boolean fromThirdScreen = false, fromSecondScreen = false;
@@ -163,6 +165,12 @@ public class Fragment_ThirdScreen extends Fragment {
         mNationalIDEditText = view.findViewById(R.id.national_ID_editText);
         mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(24)}); //all capital input
 
+        mAbhaNumberEditText = view.findViewById(R.id.abhaNo_editText);
+        mAbhaNumberErrorTextView = view.findViewById(R.id.abhaNo_error);
+
+        mAbhaAddressEditText = view.findViewById(R.id.abhaAddress_editText);
+        mAbhaAddressErrorTextView = view.findViewById(R.id.abhaAddress_error);
+
         mOccupationEditText = view.findViewById(R.id.occupation_editText);
         mCasteSpinner = view.findViewById(R.id.caste_spinner);
         mEducationSpinner = view.findViewById(R.id.education_spinner);
@@ -199,15 +207,15 @@ public class Fragment_ThirdScreen extends Fragment {
             // abdm - start
             if (getArguments().containsKey(PAYLOAD)) {
                 otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
-                    /*if (otpVerificationResponse != null)
-                        setAutoFillValuesViaAadhar(otpVerificationResponse);*/  // todo: handle later
+                    if (otpVerificationResponse != null) {
+                        setAutoFillValuesViaAadhar(otpVerificationResponse);
+                    }
             }
             else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
                 abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
-/*
-                if (abhaProfileResponse != null)
+                if (abhaProfileResponse != null) {
                     setAutoFillValuesViaMobile(abhaProfileResponse);
-*/  // todo: handle later
+                }
             }
             // abdm - end
         }
@@ -256,6 +264,18 @@ public class Fragment_ThirdScreen extends Fragment {
 
             }
         });
+    }
+
+    private void setAutoFillValuesViaMobile(AbhaProfileResponse abhaProfileResponse) {
+        mAbhaNumberEditText.setText(abhaProfileResponse.getABHANumber());
+        mAbhaAddressEditText.setText(abhaProfileResponse.getPreferredAbhaAddress());
+
+    }
+
+    private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
+        mAbhaNumberEditText.setText(otpVerificationResponse.getABHAProfile().getABHANumber());
+        mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0)); // todo: Only in case of Aadahr api: here array is returned so which to take in case of multiple items.
+
     }
 
     class MyTextWatcher implements TextWatcher {
@@ -377,6 +397,12 @@ public class Fragment_ThirdScreen extends Fragment {
 
         if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().isEmpty())
             mNationalIDEditText.setText(patientDTO.getNationalID());
+
+        if (patientDTO.getAbhaNumber() != null && !patientDTO.getAbhaNumber().isEmpty())
+            mAbhaNumberEditText.setText(patientDTO.getAbhaNumber());
+
+        if (patientDTO.getAbhaAddress() != null && !patientDTO.getAbhaAddress().isEmpty())
+            mAbhaAddressEditText.setText(patientDTO.getAbhaAddress());
 
         // setting screen in edit for spinners...
         if (fromThirdScreen || fromSecondScreen) {
@@ -531,6 +557,8 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
+        patientDTO.setAbhaNumber(mAbhaNumberEditText.getText().toString());
+        patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString());
         patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
@@ -559,6 +587,8 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
+        patientDTO.setAbhaNumber(mAbhaNumberEditText.getText().toString());
+        patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString());
         patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));

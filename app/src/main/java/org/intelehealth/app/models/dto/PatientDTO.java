@@ -79,6 +79,9 @@ public class PatientDTO implements Serializable {
 
     private VisitDTO visitDTO;
 
+    private String abhaAddress;
+    private String abhaNumber;
+
     public String getUuid() {
         return uuid;
     }
@@ -320,6 +323,22 @@ public class PatientDTO implements Serializable {
         this.visitDTO = visitDTO;
     }
 
+    public String getAbhaAddress() {
+        return abhaAddress;
+    }
+
+    public void setAbhaAddress(String abhaAddress) {
+        this.abhaAddress = abhaAddress;
+    }
+
+    public String getAbhaNumber() {
+        return abhaNumber;
+    }
+
+    public void setAbhaNumber(String abhaNumber) {
+        this.abhaNumber = abhaNumber;
+    }
+
     @Override
     public String toString() {
         return "PatientDTO{" +
@@ -343,9 +362,18 @@ public class PatientDTO implements Serializable {
                 ", patientAttributesDTOList=" + patientAttributesDTOList +
                 ", dead=" + dead +
                 ", syncd=" + syncd +
+                ", son_dau_wife='" + son_dau_wife + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", nationalID='" + nationalID + '\'' +
+                ", caste='" + caste + '\'' +
+                ", createdDate='" + createdDate + '\'' +
+                ", providerUUID='" + providerUUID + '\'' +
                 ", emergency=" + emergency +
                 ", visit_startdate='" + visit_startdate + '\'' +
                 ", prescription_exists=" + prescription_exists +
+                ", visitDTO=" + visitDTO +
+                ", abhaAddress='" + abhaAddress + '\'' +
+                ", abhaNumber='" + abhaNumber + '\'' +
                 '}';
     }
 }
