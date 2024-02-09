@@ -49,7 +49,11 @@ class OutcomePendingVisitFragment : Fragment(R.layout.fragment_visit_status_list
 
     private fun loadOutcomePendingVisits() {
         recyclerView = binding.rvVisitStatus
-        viewMode.outcomePendingVisits(0, 20, SessionManager(IntelehealthApplication.getAppContext()).providerID)
+        viewMode.outcomePendingVisits(
+            0,
+            20,
+            SessionManager(IntelehealthApplication.getAppContext()).providerID
+        )
             .observe(viewLifecycleOwner) {
                 viewMode.handleResponse(it) { visits ->
                     Timber.d { "Outcome Pending Visit old ${Gson().toJson(visits)}" }
@@ -121,7 +125,7 @@ class OutcomePendingVisitFragment : Fragment(R.layout.fragment_visit_status_list
                 IntelehealthApplication.getAppContext().unregisterReceiver(visitOutOfTimeReceiver)
                 isReceiverRegistered = false
             } catch (e: IllegalArgumentException) {
-                Log.d("TAG", "onPause: check msg : "+e.localizedMessage)
+                Log.d("TAG", "onPause: check msg : " + e.localizedMessage)
                 e.printStackTrace()
             }
         }
