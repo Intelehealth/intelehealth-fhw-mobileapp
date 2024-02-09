@@ -12,8 +12,6 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
@@ -116,7 +114,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private boolean hwHasEditAccess = true;
     private boolean isNewEncounterCreated = false;
     private boolean isDecisionPending;
-    private String fromScreen = "";
     private ConstraintLayout layoutPendingFlag;
     private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -160,12 +157,16 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION));
+       /* registerReceiver(visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION));
         registerReceiver(mMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
         registerReceiver(syncBroadcastReceiver, new IntentFilter(AppConstants.SYNC_INTENT_ACTION));
-        registerReceiver(checkEncounterEditMode, new IntentFilter(AppConstants.CURRENT_ENC_EDIT_INTENT_ACTION));
-        //if (fromScreen != null && !fromScreen.isEmpty() && fromScreen.equalsIgnoreCase("searchPatient"))
-          //  checkForOutcomePending(visitUuid);
+        registerReceiver(checkEncounterEditMode, new IntentFilter(AppConstants.CURRENT_ENC_EDIT_INTENT_ACTION));*/
+
+        ContextCompat.registerReceiver(TimelineVisitSummaryActivity.this, visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION), ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(TimelineVisitSummaryActivity.this, mMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION), ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(TimelineVisitSummaryActivity.this, syncBroadcastReceiver, new IntentFilter(AppConstants.SYNC_INTENT_ACTION), ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(TimelineVisitSummaryActivity.this, checkEncounterEditMode, new IntentFilter(AppConstants.CURRENT_ENC_EDIT_INTENT_ACTION), ContextCompat.RECEIVER_EXPORTED);
+
         manageVisibilityOfPendingFlag();
     }
 
@@ -379,7 +380,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             providerID = intent.getStringExtra("providerID");
             whichScreenUserCameFromTag = intent.getStringExtra("tag");
             isDecisionPending = intent.getBooleanExtra("isDecisionPending", false);
-            fromScreen = intent.getStringExtra("fromScreen");
+
+            // manageVisibilityOfPendingFlag();
 
             hwHasEditAccess = new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID());
 
@@ -388,7 +390,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             }
 
             fetchAllEncountersFromVisitForTimelineScreen(visitUuid); // fetch all records...
-
         }
 
         setTitle(patientName);
@@ -460,7 +461,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             }
         });
 
-        // manageVisibilityOfPendingFlag();
+        manageVisibilityOfPendingFlag();
 
 
         mCountDownTimer.cancel();
@@ -469,23 +470,16 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     }
 
     private void manageVisibilityOfPendingFlag() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "flagcheckmanageVisibi isDecisionPending: " + isDecisionPending);
-                TextView tvPendingDecision = findViewById(R.id.tv_message_pending_outcome);
-                layoutPendingFlag = findViewById(R.id.layout_decision_pending);
-                ImageView ivCloseMessage = findViewById(R.id.iv_close_decision_pending);
-                layoutPendingFlag.setVisibility(isDecisionPending ? View.VISIBLE : View.GONE);
-                ivCloseMessage.setOnClickListener(view -> layoutPendingFlag.setVisibility(View.GONE));
-                if (stageNo == 1) {
-                    tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_1));
-                } else if (stageNo == 2) {
-                    tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_2));
-                }
-            }
-        });
-
+        TextView tvPendingDecision = findViewById(R.id.tv_message_pending_outcome);
+        layoutPendingFlag = findViewById(R.id.layout_decision_pending);
+        ImageView ivCloseMessage = findViewById(R.id.iv_close_decision_pending);
+        layoutPendingFlag.setVisibility(isDecisionPending ? View.VISIBLE : View.GONE);
+        ivCloseMessage.setOnClickListener(view -> layoutPendingFlag.setVisibility(View.GONE));
+        if (stageNo == 1) {
+            tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_1));
+        } else if (stageNo == 2) {
+            tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_2));
+        }
     }
 
     private void showLabourBottomSheetDialog(boolean hasMotherDeceased) {
@@ -1002,7 +996,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             long updated = new VisitAttributeListDAO().updateVisitAttribute(visitUuid, UuidDictionary.DECISION_PENDING, "false");
             if (updated > 0) {
                 try {
-                    isDecisionPending = false; //reset flag
+                    isDecisionPending= false; //reset flag
                     layoutPendingFlag.setVisibility(View.GONE);
                     VisitsDAO visitsDAO = new VisitsDAO();
                     visitsDAO.updateVisitSync(visitUuid, "false");
@@ -1042,16 +1036,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         checkInternetAndUploadVisitEncounter(true);*/
     }
 
-    private boolean checkForOutcomePending(String visitUuid) {
-        new Thread(() -> {
-            // if (fromScreen != null && !fromScreen.isEmpty() && fromScreen.equalsIgnoreCase("searchPatient")) {
-            //check for outcome pending visit
-            isDecisionPending = new VisitAttributeListDAO().checkIsVisitOutcomePending(visitUuid);
-            Log.d("TAG", " checkForOutcomePending isDecisionPending:run " + isDecisionPending);
-            // }
-        }).start();
-        return isDecisionPending;
-    }
 
 //    public static PendingIntent getPendingIntent(Context context, RtcArgs args) {
 //        Intent shiftChangeIntent = new Intent(context, HomeActivity.class);

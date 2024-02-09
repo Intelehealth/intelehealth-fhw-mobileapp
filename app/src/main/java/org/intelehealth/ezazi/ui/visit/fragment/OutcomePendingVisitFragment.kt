@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -31,6 +32,7 @@ import org.intelehealth.ezazi.utilities.SessionManager
 class OutcomePendingVisitFragment : Fragment(R.layout.fragment_visit_status_list) {
     private lateinit var binding: FragmentVisitStatusListBinding
     lateinit var recyclerView: RecyclerView
+    private var isReceiverRegistered = false
 
     private val viewMode: VisitViewModel by lazy {
         ViewModelProvider(
@@ -47,23 +49,32 @@ class OutcomePendingVisitFragment : Fragment(R.layout.fragment_visit_status_list
 
     private fun loadOutcomePendingVisits() {
         recyclerView = binding.rvVisitStatus
-        viewMode.outcomePendingVisits(0, 20, SessionManager(requireContext()).providerID)
+        viewMode.outcomePendingVisits(0, 20, SessionManager(IntelehealthApplication.getAppContext()).providerID)
             .observe(viewLifecycleOwner) {
                 viewMode.handleResponse(it) { visits ->
-                    Timber.d { "Outcome Pending Visit ${Gson().toJson(visits)}" }
-                    bindDataToUI(it)
+                    Timber.d { "Outcome Pending Visit old ${Gson().toJson(visits)}" }
+                    val adapter = DecisionPendingVisitsAdapter(
+                        visits,
+                        IntelehealthApplication.getAppContext()
+                    )
+                    recyclerView.adapter = adapter
+                    adapter.notifyDataSetChanged()
                 }
             }
     }
 
     override fun onResume() {
         super.onResume()
-        ContextCompat.registerReceiver(
-            requireContext(),
-            visitOutOfTimeReceiver,
-            IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION),
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
+
+        if (!isReceiverRegistered) {
+            ContextCompat.registerReceiver(
+                IntelehealthApplication.getAppContext(),
+                visitOutOfTimeReceiver,
+                IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION),
+                ContextCompat.RECEIVER_EXPORTED
+            )
+            isReceiverRegistered = true
+        }
         loadOutcomePendingVisits()
     }
 
@@ -98,8 +109,21 @@ class OutcomePendingVisitFragment : Fragment(R.layout.fragment_visit_status_list
         }
     }
 
-    override fun onDetach() {
+    /*override fun onDetach() {
         super.onDetach()
         requireContext().unregisterReceiver(visitOutOfTimeReceiver)
+    }*/
+
+    override fun onPause() {
+        super.onPause()
+        if (isReceiverRegistered) {
+            try {
+                IntelehealthApplication.getAppContext().unregisterReceiver(visitOutOfTimeReceiver)
+                isReceiverRegistered = false
+            } catch (e: IllegalArgumentException) {
+                Log.d("TAG", "onPause: check msg : "+e.localizedMessage)
+                e.printStackTrace()
+            }
+        }
     }
 }

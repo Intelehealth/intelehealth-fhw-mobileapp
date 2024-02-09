@@ -1015,7 +1015,7 @@
     <string name="password_reset_success">Password reset successful</string>
 
 
-    <string name="gender">Gendar</string>
+    <string name="gender">Gender</string>
     <string name="are_you_head_of_the_family">Are you head of the family?</string>
     <string name="what_is_your_occupation">What is your occupation?</string>
     <string name="do_you_have_a_bank_account">Do you have bank account?</string>
@@ -1098,5 +1098,7 @@
     <string name="outcome_decision_stage_1">Please enter the outcome of Stage 1</string>
     <string name="patient_age_validation">Age must be greater than 13 years</string>
     <string name="outcome_decision_stage_2">Please enter the outcome of Stage 2</string>
+    <string name="view_prescription">View Prescription</string>
+    <string name="administer">Administer</string>
 
 </resources>

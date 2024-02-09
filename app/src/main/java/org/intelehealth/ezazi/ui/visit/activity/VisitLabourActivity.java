@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
@@ -50,7 +51,9 @@ public class VisitLabourActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        //registerReceiver(syncBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_EXPORTED);
+
     }
 
     @Override

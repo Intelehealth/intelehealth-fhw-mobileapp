@@ -43,6 +43,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -553,7 +554,9 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
     @Override
     protected void onStart() {
-        registerReceiver(reMyreceive, filter);
+       // registerReceiver(reMyreceive, filter);
+        ContextCompat.registerReceiver(this, reMyreceive, filter, ContextCompat.RECEIVER_EXPORTED);
+
         super.onStart();
     }
 
