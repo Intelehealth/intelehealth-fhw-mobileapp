@@ -10,6 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.intelehealth.videolibrary.listing.data.ListingDataSource
 import org.intelehealth.videolibrary.listing.data.ListingRepository
+import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.restapi.response.VideoLibraryResponse
 import org.intelehealth.videolibrary.room.dao.LibraryDao
@@ -58,6 +59,8 @@ class YoutubeListingViewModel(service: VideoLibraryApiClient, dao: LibraryDao) :
     }
 
     fun fetchVideosFromDb() = repository.fetchVideosFromDb().asLiveData()
+
+    fun areListsSame(list1: List<Video>?, list2: List<Video>?) = list1 == list2
 
     fun deleteAllVideos() {
         viewModelScope.launch(Dispatchers.IO) {

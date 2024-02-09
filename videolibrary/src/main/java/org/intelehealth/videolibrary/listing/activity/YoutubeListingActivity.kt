@@ -16,6 +16,7 @@ import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
 import org.intelehealth.videolibrary.listing.viewmodel.LibraryViewModelFactory
 import org.intelehealth.videolibrary.listing.viewmodel.YoutubeListingViewModel
+import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
 import org.intelehealth.videolibrary.restapi.RetrofitProvider
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
@@ -36,6 +37,7 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
     private var authKey: String? = null
     private var packageName: String? = null
+    private var videoList: List<Video>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +61,28 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
         // used for fetching data from the db
         viewmodel?.fetchVideosFromDb()?.observe(this) {
+
+            // to fetch the videos from the server in case the db is empty
             if (it.isEmpty()) {
                 binding?.progressBar?.visibility = View.VISIBLE
                 viewmodel?.fetchVideosFromServer(packageName!!, authKey!!)
                 return@observe
             }
+
+            // to check if the same videos are being set or not
+            // this is to prevent flickering issue as Flows are constantly updating our listing
+            if (viewmodel?.areListsSame(videoList, it) == true) {
+                if (binding?.progressBar?.visibility == View.VISIBLE) {
+                    binding?.progressBar?.visibility = View.GONE
+                }
+                if (binding?.swipeToRefresh?.isRefreshing == true) {
+                    binding?.swipeToRefresh?.isRefreshing = false
+                }
+                return@observe
+            }
+
+            // caching the list of videos fetched to maintain a record and prevent constant updates
+            videoList = it
 
             val adapter = YoutubeListingAdapter(it, lifecycle, this@YoutubeListingActivity)
             binding?.recyclerview?.apply {

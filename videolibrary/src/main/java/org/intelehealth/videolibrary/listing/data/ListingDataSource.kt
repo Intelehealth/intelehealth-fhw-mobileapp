@@ -27,6 +27,7 @@ class ListingDataSource(
     }
 
     suspend fun insertVideosToDb(videos: List<Video>) {
+        libraryDao.deleteAll()
         libraryDao.insertAll(videos)
     }
 
