@@ -1,10 +1,14 @@
 
 package org.intelehealth.ezazi.models.dto;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ObsDTO {
+import org.intelehealth.klivekit.chat.model.ItemHeader;
+
+public class ObsDTO implements ItemHeader {
 
     @SerializedName("uuid")
     @Expose
@@ -27,11 +31,22 @@ public class ObsDTO {
     @SerializedName("creator")
     @Expose
     private String creator;
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
     @SerializedName("voided")
     @Expose
     private Integer voided;
 
     private String name;
+
+    private String createdDate;
 
     public String getUuid() {
         return uuid;
@@ -103,5 +118,16 @@ public class ObsDTO {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean isHeader() {
+        return false;
+    }
+
+    @NonNull
+    @Override
+    public String createdDate() {
+        return null;
     }
 }

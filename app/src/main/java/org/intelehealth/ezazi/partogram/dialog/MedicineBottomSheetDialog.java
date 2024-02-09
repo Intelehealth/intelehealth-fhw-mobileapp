@@ -446,6 +446,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
 
     private void setupMedicines() {
         binding.clMedicineListContainer.setVisibility(View.VISIBLE);
+        binding.tvLblAdministerMedicine.setVisibility(View.VISIBLE);
+
         medicineDetailsList = new GetMedicineData().getMedicineDetails(getActivity());
 
         String[] medicineItem = new String[medicineDetailsList.size()];
@@ -602,6 +604,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             public void onAnimationEnd(Animation animation) {
                 binding.clPrescribedMedicinesRoot.setVisibility(View.GONE);
                 binding.clMedicineListContainer.setVisibility(View.VISIBLE);
+                binding.tvLblAdministerMedicine.setVisibility(View.VISIBLE);
+
             }
 
             @Override
@@ -652,9 +656,13 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
         if (isMedicinePrescribed) {
             binding.clPrescribedMedicinesRoot.setVisibility(View.VISIBLE);
             binding.clMedicineListContainer.setVisibility(View.GONE);
+            binding.tvLblAdministerMedicine.setVisibility(View.GONE);
+
         } else {
             binding.clPrescribedMedicinesRoot.setVisibility(View.GONE);
             binding.clMedicineListContainer.setVisibility(View.VISIBLE);
+            binding.tvLblAdministerMedicine.setVisibility(View.VISIBLE);
+
             if (adapter != null) binding.btnSaveMedicines.setEnabled(adapter.getItemCount() > 0);
         }
 

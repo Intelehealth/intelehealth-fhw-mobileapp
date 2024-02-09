@@ -121,5 +121,12 @@
     <string name="medicines_not_prescribed">Medicines not prescribed yet!</string>
     <string name="iv_fluids_not_prescribed">IV Fluid not prescribed yet!</string>
     <string name="view_prescribed_iv_fluids">View prescribed IV Fluids</string>
+    <string name="lbl_iv_fluid_administration">IV Fluid Administration</string>
+    <string name="sure_want_to_administer_iv_fluid">Are you sure you want to administer this IV Fluid?</string>
+    <string name="lbl_administration">Administration</string>
+    <string name="sure_want_to_administer_oxytocin">Are you sure you want to administer this Oxytocin?</string>
+    <string name="view_prescribed_oxytocin">View prescribed Oxytocin</string>
+    <string name="oxytocin_not_prescribed">Oxytocin not prescribed yet!</string>
+    <string name="lbl_oxytocin_administration">Oxytocin Administration</string>
 
 </resources>

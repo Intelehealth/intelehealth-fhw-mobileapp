@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clMedicineDialogRoot"
+        android:id="@+id/clIvFluidDialogRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:backgroundTint="@color/white"
@@ -20,8 +25,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvLblAdministerMedicine"
+            android:id="@+id/tvLblAdministerIvFluid"
             style="@style/Theme.EZazi.Screen.Title"
             android:layout_width="wrap_content"
             android:layout_marginHorizontal="@dimen/screen_padding"
@@ -30,12 +36,12 @@
             android:contentDescription="@string/lbl_add_new_medicine"
             android:text="@string/lbl_administration"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetAppBar"
-            app:layout_constraintBottom_toTopOf="@+id/clMedicineListContainer"
+            app:layout_constraintBottom_toTopOf="@+id/clIvFluidListContainer"
             app:layout_constraintStart_toStartOf="parent"
-            />
+           />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clMedicineListContainer"
+            android:id="@+id/clIvFluidListContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/screen_padding"
@@ -43,13 +49,13 @@
             android:background="@drawable/container_bg_rounded"
             android:contentDescription="@string/content_item_container"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/tvLblAdministerMedicine"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/tvLblAdministerIvFluid">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvMedicines"
+                android:id="@+id/rvIvFluids"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/screen_container_padding"
@@ -59,26 +65,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="1"
-                tools:listitem="@layout/row_item_medicine" />
+                tools:listitem="@layout/row_item_iv_fluid_oxytocin_administer" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAddMoreMedicine"
-                style="@style/Theme.EZazi.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/screen_container_padding"
-                android:layout_marginVertical="@dimen/screen_container_padding"
-                android:paddingStart="@dimen/screen_padding"
-                android:paddingTop="@dimen/screen_container_padding"
-                android:paddingEnd="@dimen/screen_padding"
-                android:paddingBottom="@dimen/screen_container_padding"
-                android:text="@string/lbl_add_new_medicine"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvMedicines" />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSaveMedicines"
+                android:id="@+id/btnSaveIvFluids"
                 style="@style/Theme.EZazi.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -86,12 +76,12 @@
                 android:layout_marginVertical="@dimen/screen_padding"
                 android:text="@string/save_button"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnViewPrescriptionMedicine"
+                app:layout_constraintEnd_toStartOf="@+id/btnViewPrescriptionIvFluid"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <!-- New MaterialButton to the right of the Save button -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnViewPrescriptionMedicine"
+                android:id="@+id/btnViewPrescriptionIvFluid"
                 style="@style/Theme.EZazi.Button.White"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -101,24 +91,11 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btnSaveMedicines" />
+                app:layout_constraintStart_toEndOf="@+id/btnSaveIvFluids" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--  <com.google.android.material.button.MaterialButton
-              android:id="@+id/btnSaveMedicines"
-              style="@style/Theme.EZazi.Button"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginHorizontal="@dimen/screen_padding"
-              android:layout_marginVertical="@dimen/screen_padding"
-              android:text="@string/save_button"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent" />-->
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clAddNewMedicineRoot"
+            android:id="@+id/clPrescribedIvFluidRoot"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/dialog_transparency_bg"
@@ -130,30 +107,8 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <include
-                android:id="@+id/includeAddNewMedicineDialog"
-                layout="@layout/view_add_new_medicine_new"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clPrescribedMedicinesRoot"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            android:background="@color/dialog_transparency_bg"
-            android:clickable="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <include
-                android:id="@+id/includedPrescribedMedicines"
-                layout="@layout/view_prescribed_medicine"
+                android:id="@+id/includedPrescribedIvFluids"
+                layout="@layout/view_prescribed_iv_fluids"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -162,5 +117,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
+
