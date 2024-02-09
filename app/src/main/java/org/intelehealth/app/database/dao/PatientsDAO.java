@@ -76,6 +76,8 @@ public class PatientsDAO {
             values.put("city_village", patient.getCityvillage());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", patient.getDead());
+            values.put("abha_number", patient.getAbhaNumber());
+            values.put("abha_address", patient.getAbhaAddress());
             values.put("sync", patient.getSyncd());
             createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
@@ -113,6 +115,8 @@ public class PatientsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatientPhoto());
             values.put("dead", patientDTO.getDead());
+            values.put("abha_number", patientDTO.getAbhaNumber());
+            values.put("abha_address", patientDTO.getAbhaAddress());
             values.put("sync", false);
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
             if (patientAttributesList != null)
@@ -158,6 +162,8 @@ public class PatientsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatientPhoto());
             values.put("dead", false);
+            values.put("abha_number", patientDTO.getAbhaNumber());
+            values.put("abha_address", patientDTO.getAbhaAddress());
             values.put("sync", false);
 
             insertPatientAttributes(patientDTO.getPatientAttributesDTOList(), db);
@@ -494,6 +500,8 @@ public class PatientsDAO {
                     patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
                     patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
                     patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                    patientDTO.setAbhaNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_number")));
+                    patientDTO.setAbhaAddress(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address")));
                     patientDTOList.add(patientDTO);
                 }
             }
