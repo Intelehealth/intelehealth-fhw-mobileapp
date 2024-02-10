@@ -22,6 +22,7 @@ import java.util.LinkedList
 class PrescriptionRepository(val database: SQLiteDatabase) {
     fun fetchPrescription(visitId: String, creatorId: String): List<ItemHeader> {
         PrescriptionQueryBuilder().buildPrescriptionQuery(visitId, creatorId).apply {
+            Timber.d { "Prescription Query => $this" }
             val cursor = database.rawQuery(this, null)
             retrievePrescription(cursor).apply {
                 return obsMappingToPrescription(this)
@@ -47,6 +48,7 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
     }
 
     private fun obsMappingToPrescription(obsList: List<ObsDTO>): List<ItemHeader> {
+        Timber.d { "Prescription => ${Gson().toJson(obsList)}" }
         val prescriptions = LinkedList<ItemHeader>()
         val plans = obsList.filter { it.conceptuuid.equals(Params.PLAN.conceptId) }
         val medicines =
@@ -59,6 +61,7 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
 
             prescriptions.add(CategoryHeader(R.string.lbl_plan))
             prescriptions.addAll(plans.map {
+                it.noOfLine = 100
                 if (it.name.contains("Dr").not()) it.name = "Dr.${it.name}"
                 return@map it
             })

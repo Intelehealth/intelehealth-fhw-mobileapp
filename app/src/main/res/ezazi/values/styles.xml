@@ -201,6 +201,7 @@
 
     <style name="Theme.EZazi.Caption" parent="Theme.EZazi.Body">
         <item name="android:textSize">@dimen/caption</item>
+        <item name="android:textColor">@color/gray_4</item>
     </style>
 
     <style name="Theme.EZazi.Search" parent="">

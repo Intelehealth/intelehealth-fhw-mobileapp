@@ -851,7 +851,8 @@
     <string name="end2StageButton">End Second Stage</string>
     <string name="add_out_of_time_reason">Add Reason</string>
     <string name="update_out_of_time_reason">Update Reason</string>
-    <string name="view_more">View More</string>
+    <string name="view_more">View more</string>
+    <string name="view_less">View less</string>
     <string name="notificationTimeline_Description">You can start entering the data now</string>
     <string name="click_to_enter"><u>Click to Enter</u></string>
     <string name="missed_interval"><u>Missed</u></string>

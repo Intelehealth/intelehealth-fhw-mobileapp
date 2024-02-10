@@ -23,7 +23,7 @@ import java.util.LinkedList;
  **/
 public class MedicineAdapter extends CategoryHeaderAdapter {
     public static final int MEDICINE = 10003;
-    private BaseViewHolder.ViewHolderClickListener clickListener;
+    protected BaseViewHolder.ViewHolderClickListener clickListener;
     private int expandedItemPosition = -1;
 
     private PartogramConstants.AccessMode accessMode;

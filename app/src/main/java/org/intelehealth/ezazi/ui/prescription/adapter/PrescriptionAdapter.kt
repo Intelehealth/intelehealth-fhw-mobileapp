@@ -39,6 +39,7 @@ class PrescriptionAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         if (item.isHeader().not() && item is ObsDTO && holder is PrescriptionPlanHolder) {
+            if (clickListener != null) holder.setViewClickListener(clickListener)
             holder.bind(item)
         } else super.onBindViewHolder(holder, position)
     }

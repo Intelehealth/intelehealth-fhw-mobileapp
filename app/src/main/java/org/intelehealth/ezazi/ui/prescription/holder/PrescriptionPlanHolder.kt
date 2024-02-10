@@ -13,5 +13,7 @@ class PrescriptionPlanHolder(val binding: RowItemPrescriptionPlanBinding) :
     BaseViewHolder(binding.root) {
     fun bind(plan: ObsDTO) {
         binding.plan = plan
+        binding.btnPrescriptionPlanViewMore.setOnClickListener(this)
+        binding.btnPrescriptionPlanViewMore.tag = plan
     }
 }

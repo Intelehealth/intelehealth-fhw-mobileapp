@@ -9,6 +9,7 @@ import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.ezazi.R
 import org.intelehealth.ezazi.databinding.ActivityPrescriptionEzaziBinding
+import org.intelehealth.ezazi.models.dto.ObsDTO
 import org.intelehealth.ezazi.partogram.PartogramConstants
 import org.intelehealth.ezazi.ui.prescription.adapter.PrescriptionAdapter
 import org.intelehealth.ezazi.ui.prescription.viewmodel.PrescriptionViewModel
@@ -98,6 +99,10 @@ class PrescriptionActivity : BaseActionBarActivity(), BaseViewHolder.ViewHolderC
         view ?: return
         if (view.id == R.id.btnExpandCollapseIndicator) {
             adapter.setExpandedItemPosition(position)
+        } else if (view.id == R.id.btnPrescriptionPlanViewMore) {
+            val obs: ObsDTO = view.tag as ObsDTO
+            obs.updateVisibleContentLine()
+            adapter.notifyItemChanged(position)
         }
     }
 }

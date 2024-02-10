@@ -47,6 +47,12 @@ public class ObsDTO implements ItemHeader {
 
     private String name;
 
+    private int noOfLine;
+
+    private final int minLine = 2;
+
+    private int contentLine = minLine;
+
     public String getUuid() {
         return uuid;
     }
@@ -148,5 +154,27 @@ public class ObsDTO implements ItemHeader {
 
     public void setCreatorUuid(String creatorUuid) {
         this.creatorUuid = creatorUuid;
+    }
+
+    public void setNoOfLine(int noOfLine) {
+        this.noOfLine = noOfLine;
+    }
+
+    public int getNoOfLine() {
+        return noOfLine;
+    }
+
+    public void updateVisibleContentLine() {
+        if (noOfLine > minLine && contentLine == minLine) {
+            contentLine = noOfLine;
+        } else contentLine = minLine;
+    }
+
+    public int getContentLine() {
+        return contentLine;
+    }
+
+    public int getMinLine() {
+        return minLine;
     }
 }

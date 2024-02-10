@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="plan"
             type="org.intelehealth.ezazi.models.dto.ObsDTO" />
@@ -16,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/list_container_padding"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="0dp"
+        app:cardCornerRadius="@dimen/std_8dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="3"
+                android:maxLines="@{plan.contentLine}"
                 android:text="@{plan.value}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +60,8 @@
                 style="@style/Theme.EZazi.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/view_more"
+                android:text="@{plan.contentLine == plan.minLine ? @string/view_more : @string/view_less}"
+                android:visibility="@{plan.noOfLine > plan.minLine ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@id/txtPlanDate"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/txtPlanDate" />

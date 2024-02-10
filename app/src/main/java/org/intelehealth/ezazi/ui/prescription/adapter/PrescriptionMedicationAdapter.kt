@@ -4,11 +4,9 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.ezazi.databinding.RowItemPrescriptionMedicationBinding
-import org.intelehealth.ezazi.models.dto.ObsDTO
 import org.intelehealth.ezazi.partogram.adapter.MedicineAdapter
 import org.intelehealth.ezazi.partogram.model.Medication
 import org.intelehealth.ezazi.ui.prescription.holder.PrescriptionMedicationHolder
-import org.intelehealth.ezazi.ui.prescription.holder.PrescriptionPlanHolder
 import org.intelehealth.klivekit.chat.model.ItemHeader
 import java.util.LinkedList
 

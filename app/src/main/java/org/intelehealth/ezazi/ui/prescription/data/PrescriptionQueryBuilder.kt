@@ -16,7 +16,8 @@ class PrescriptionQueryBuilder : QueryBuilder() {
             .joinPlus(" LEFT JOIN tbl_visit V ON V.uuid = E.visituuid ")
             .joinPlus(" LEFT JOIN tbl_provider P ON P.useruuid = O.creatoruuid AND P.role = 'Organizational: Doctor'")
             .where(
-                " V.uuid = '$visitId' AND O.conceptuuid IN ('" +
+                " V.uuid = '$visitId' AND P.role != 'Organizational: Nurse' " +
+                        "AND O.conceptuuid IN ('" +
                         "${Params.PRESCRIBED_MEDICINE.conceptId}', " +
                         "'${Params.PLAN.conceptId}', " +
                         "'${Params.PRESCRIBED_OXYTOCIN.conceptId}', " +
