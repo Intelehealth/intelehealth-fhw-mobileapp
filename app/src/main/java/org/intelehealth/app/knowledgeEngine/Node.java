@@ -2756,7 +2756,7 @@ public class Node implements Serializable {
                 Timber.tag(TAG).i("ipt: getText %s", mOptions.get(i).getText());
                 Timber.tag(TAG).i("ipt: answer %s", answer);
                 Timber.tag(TAG).i("ipt: question %s", question);
-                if (answer.equals("%") && level!=0) {
+                if (answer.equals("%") && level != 0) {
                     level = level - 1;
                 }
 
@@ -2814,23 +2814,29 @@ public class Node implements Serializable {
                     if (level > 0 && level % 2 != 0)
                         if (question.startsWith("▻"))
                             question = bullet_hollow + " " + question.substring(1);
-                    if (!answer.equals("%")) {
+                    if (level == 0) {
+                        stringsList.add(question + next_line);
+
+                    } else if (!answer.equals("%")) {
                         stringsList.add(question + next_line);
                     }
 
-                    Timber.tag(TAG).i("ipt: nested question %s", question);
-                    Timber.tag(TAG).i("ipt: nested answer stringsList%s", stringsList);
-                    String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
 
-                    Timber.tag(TAG).i("ipt: nested answer %s", temp1);
-                    temp1 = temp1.replaceAll("<br/>•", ",");
-                    if (level == 0)
-                        if (temp1.startsWith("▻") && temp1.chars().filter(ch -> ch == '▻').count() > 1)
-                            temp1 = bullet_hollow + " " + temp1.substring(1);
-                    Timber.tag(TAG).v("ipt: nested answer %s", temp1);
-                    stringsList.add(temp1);
-                    // cleanup duplicate text
-                    String lastVal = "";
+
+
+                Timber.tag(TAG).i("ipt: nested question %s", question);
+                Timber.tag(TAG).i("ipt: nested answer stringsList%s", stringsList);
+                String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
+
+                Timber.tag(TAG).i("ipt: nested answer %s", temp1);
+                temp1 = temp1.replaceAll("<br/>•", ",");
+                if (level == 0)
+                    if (temp1.startsWith("▻") && temp1.chars().filter(ch -> ch == '▻').count() > 1)
+                        temp1 = bullet_hollow + " " + temp1.substring(1);
+                Timber.tag(TAG).v("ipt: nested answer %s", temp1);
+                stringsList.add(temp1);
+                // cleanup duplicate text
+                String lastVal = "";
                     /*for (int j = 0; j < stringsList.size(); j++) {
                         String v = stringsList.get(j).replaceAll(right_pointing, "").trim().replaceAll(bullet_hollow, "").trim();
                         Log.v(TAG, "ipt: nested answer v" + v);
@@ -2839,85 +2845,102 @@ public class Node implements Serializable {
                         }
                         lastVal = v;
                     }*/
-                    if (stringsList.contains(bullet_hollow + NOT_ANSWERED + next_line) || stringsList.contains(right_pointing + NOT_ANSWERED + next_line)) {
-                        //stringsList.clear();
-                        stringsList.remove(stringsList.size() - 1);
-                    }
-                    Timber.tag(TAG).i("ipt: stringsList %s", stringsList);
-                    Timber.tag(TAG).i("ipt: ******************END********************************* %s", level);
+                if (stringsList.contains(bullet_hollow + NOT_ANSWERED + next_line) || stringsList.contains(right_pointing + NOT_ANSWERED + next_line)) {
+                    //stringsList.clear();
+                    stringsList.remove(stringsList.size() - 1);
                 }
-            } else if (mOptions.get(i).getText() != null &&
-                    ((mOptions.get(i).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("అనుబంధ లక్షణాలు"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
+                Timber.tag(TAG).i("ipt: stringsList %s", stringsList);
+                Timber.tag(TAG).i("ipt: ******************END********************************* %s", level);
+            }
+        } else if (mOptions.get(i).getText() != null &&
+                ((mOptions.get(i).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS))
+                        || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
+                        || (mOptions.get(i).getText().equalsIgnoreCase("అనుబంధ లక్షణాలు"))
+                        || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))
+                        || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
+                        || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
 
-                if (!mOptions.get(i).isTerminal()) {
-                    stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
-                }
+            if (!mOptions.get(i).isTerminal()) {
+                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+            }
 
-                if (mOptions.get(i).getOptionsList().size() > 0) {
+            if (mOptions.get(i).getOptionsList().size() > 0) {
 
-                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
+                for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
 
-                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
-                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
+                    if (mOptions.get(i).getOptionsList().get(j).isSelected()
+                            || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
 
-                            if (!mOptions.get(i).isTerminal()) {
-                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
-                            }
+                        if (!mOptions.get(i).isTerminal()) {
+                            stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                            stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
                         }
                     }
                 }
-            } else {
-                //in case of weird null exception...
             }
+        } else {
+            //in case of weird null exception...
+        }
 
-            // to add Patient denies entry
-            if (mOptions.get(i).isNoSelected()) {
-                if (!flag) {
-                    flag = true;
-                    stringsListNoSelected.add("Patient denies -" + next_line);
-                }
-                stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
-                Timber.tag(TAG).e("ipt: %s", stringsListNoSelected);
+        // to add Patient denies entry
+        if (mOptions.get(i).isNoSelected()) {
+            if (!flag) {
+                flag = true;
+                stringsListNoSelected.add("Patient denies -" + next_line);
             }
-
+            stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+            Timber.tag(TAG).e("ipt: %s", stringsListNoSelected);
         }
 
+    }
 
-        if (stringsListNoSelected.size() > 0) {
-            stringsList.addAll(stringsListNoSelected);
+
+        if(stringsListNoSelected.size()>0)
+
+    {
+        stringsList.addAll(stringsListNoSelected);
+    }
+        Timber.tag(TAG).
+
+    i("ipt: stringsList: %s",stringsList);
+
+    String mLanguage = "";
+        for(
+    int i = 0; i<stringsList.size();i++)
+
+    {
+
+        if (!stringsList.get(i).isEmpty()) {
+            mLanguage = mLanguage.concat(stringsList.get(i));
         }
-        Timber.tag(TAG).i("ipt: stringsList: %s", stringsList);
 
-        String mLanguage = "";
-        for (int i = 0; i < stringsList.size(); i++) {
+    }
+        Timber.tag(TAG).
 
-            if (!stringsList.get(i).isEmpty()) {
-                mLanguage = mLanguage.concat(stringsList.get(i));
-            }
+    i("ipt: formQuestionAnswer: %s",mLanguage);
 
-        }
-        Timber.tag(TAG).i("ipt: formQuestionAnswer: %s", mLanguage);
+    mLanguage =mLanguage.replaceAll(",<br/>•",",");
+        if(mLanguage.endsWith(","))
 
-        mLanguage = mLanguage.replaceAll(",<br/>•", ",");
-        if (mLanguage.endsWith(",")) {
-            mLanguage = mLanguage.substring(0, mLanguage.length() - 1);
-        }
-        Timber.tag(TAG).i("ipt: formQuestionAnswer: %s", mLanguage);
+    {
+        mLanguage = mLanguage.substring(0, mLanguage.length() - 1);
+    }
+        Timber.tag(TAG).
 
-        if (mLanguage.equalsIgnoreCase("")) {
-            mLanguage = (level == 0 ? bullet_hollow : right_pointing) + NOT_ANSWERED + next_line;
-        }
-        Timber.tag(TAG).i("ipt: +++++++++++++++++++++++++++++++++++END+++++++++++++++++++++++++++++++++++++++++++++");
+    i("ipt: formQuestionAnswer: %s",mLanguage);
+
+        if(mLanguage.equalsIgnoreCase(""))
+
+    {
+        mLanguage = (level == 0 ? bullet_hollow : right_pointing) + NOT_ANSWERED + next_line;
+    }
+        Timber.tag(TAG).
+
+    i("ipt: +++++++++++++++++++++++++++++++++++END+++++++++++++++++++++++++++++++++++++++++++++");
 
         return mLanguage;
-    }
+}
 
     @Override
     public String toString() {

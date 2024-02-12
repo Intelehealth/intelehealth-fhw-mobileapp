@@ -31,8 +31,10 @@ import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -251,7 +253,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
         }
         return view;
     }
-
+    private Set<String> mLoadedIds = new HashSet<String>();
     private class DefaultOnItemSelection implements OnItemSelection {
 
         private final RecyclerView recyclerView;
@@ -267,9 +269,11 @@ public class VisitReasonQuestionsFragment extends Fragment {
             // avoid the scroll for old data change
             if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                 Log.v("onSelect", "Scrolling index - " + index);
-                VisitUtils.scrollNow(recyclerView, 100, 0, 1000, mIsEditMode, false);
+                VisitUtils.scrollNow(recyclerView, 100, 0, 1000, mIsEditMode, mLoadedIds.contains(node.getId()));
                 return;
             }
+
+            Log.v("onSelect QuestionsListingAdapter", "mLoadedIds - " + mLoadedIds);
             if (isSkipped) {
                 boolean isRequiredToUnselectParent = mQuestionsListingAdapter.geItems().get(index).getOptionsList() == null || mQuestionsListingAdapter.geItems().get(index).size() <= 1;
                 if (isRequiredToUnselectParent) {
@@ -323,13 +327,14 @@ public class VisitReasonQuestionsFragment extends Fragment {
 //                    mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
 //            }
 
-            VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode, false);
+            VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode, mLoadedIds.contains(node.getId()));
 
-            VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode, false);
+            VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode, mLoadedIds.contains(node.getId()));
 
 
             mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
             ((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).setStackFromEnd(false);
+            mLoadedIds.add(node.getId());
         }
 
         @Override

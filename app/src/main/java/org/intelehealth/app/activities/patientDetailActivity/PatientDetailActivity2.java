@@ -1462,15 +1462,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             }
         }
 
-        for (int i = 0; i <= distDataList.size(); i++) {
-            if (distDataList.get(i).getName().equalsIgnoreCase(district)) {
-                if (language.equalsIgnoreCase("hi"))
-                    desiredVal = distDataList.get(i).getNameHindi();
-                else if (language.equalsIgnoreCase("en"))
-                    desiredVal = distDataList.get(i).getName();
-                break;
+        if (distDataList != null && !distDataList.isEmpty())
+            for (int i = 0; i <= distDataList.size(); i++) {
+                if (distDataList.get(i).getName().equalsIgnoreCase(district)) {
+                    if (language.equalsIgnoreCase("hi"))
+                        desiredVal = distDataList.get(i).getNameHindi();
+                    else if (language.equalsIgnoreCase("en"))
+                        desiredVal = distDataList.get(i).getName();
+                    break;
+                }
             }
-        }
 
         return desiredVal;
     }

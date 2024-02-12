@@ -7,6 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DecimalFormat;
 
 public class VisitUtils {
+    public static String getSplitLangByIndex(String text, int requiredIndex) {
+        String[] val = text.trim().split(" ");
+        if (val.length - 1 >= requiredIndex) {
+            return val[requiredIndex];
+        } else {
+            return "";
+        }
+    }
+
     public static boolean checkNodeValidByGenderAndAge(String patientGender, float floatAgeYearMonth, String nodeGender, String minAge, String maxAge) {
 
         float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
@@ -46,6 +55,7 @@ public class VisitUtils {
         if (locale.equalsIgnoreCase("hi")) {
 
             result = result.replace("Question not answered", " सवाल का जवाब नहीं दिया")
+                    .replace("Frequency", "आवृत्ति")
                     .replace("Patient reports -", " पेशेंट ने सूचित किया -")
                     .replace("Patient denies -", " पेशेंट ने मना कर दिया -")
                     .replace("Hours", "घंटे").replace("Days", "दिन")
@@ -58,6 +68,7 @@ public class VisitUtils {
                     .replace("times per year", "प्रति वर्ष बार");
         } else if (locale.equalsIgnoreCase("or")) {
             result = result.replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
+                    .replace("Frequency", "ଆବୃତ୍ତି")
                     .replace("Patient reports -", " ରୋଗୀ ରିପୋର୍ଟ -")
                     .replace("Patient denies -", " ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")
                     .replace("Hours", "ଘଣ୍ଟା").replace("Days", "ଦିନ")
