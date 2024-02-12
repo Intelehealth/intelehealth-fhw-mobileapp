@@ -2756,7 +2756,7 @@ public class Node implements Serializable {
                 Timber.tag(TAG).i("ipt: getText %s", mOptions.get(i).getText());
                 Timber.tag(TAG).i("ipt: answer %s", answer);
                 Timber.tag(TAG).i("ipt: question %s", question);
-                if (answer.equals("%")) {
+                if (answer.equals("%") && level!=0) {
                     level = level - 1;
                 }
 
