@@ -79,7 +79,12 @@ public class PatientDTO implements Serializable {
 
     private VisitDTO visitDTO;
 
+    @SerializedName("abha_address")
+    @Expose
     private String abhaAddress;
+
+    @SerializedName("abha_number")
+    @Expose
     private String abhaNumber;
 
     public String getUuid() {
