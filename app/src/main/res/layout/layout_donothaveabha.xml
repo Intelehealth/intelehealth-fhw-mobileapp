@@ -48,8 +48,23 @@
                     android:padding="14dp"
                     android:singleLine="true"
                     android:maxLength="12"
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginHorizontal="@dimen/margin_20dp"
                     />
+
+                <TextView
+                    android:id="@+id/aadhar_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/margin_20dp"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,8 +92,24 @@
                     android:singleLine="true"
                     android:inputType="phone"
                     android:maxLength="10"
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginHorizontal="@dimen/margin_20dp"
                     />
+
+                <TextView
+                    android:id="@+id/mobile_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/margin_20dp"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>

@@ -577,29 +577,52 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         return addressList;
     }
 
+
     private boolean checkValidation() {
         if (hasABHA) {
             return areInputFieldsValid_HasABHA();
         } else {
             if (binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().isEmpty()) {
-                binding.layoutDoNotHaveABHANumber.aadharNoBox.setError(getString(R.string.error_field_required));
+                binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
+                binding.layoutDoNotHaveABHANumber.aadharError.setText(getString(R.string.error_field_required));
                 binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 return false;
+            }
+            else {
+                binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.GONE);
+                binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             }
             if (binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().isEmpty()) {
-                binding.layoutDoNotHaveABHANumber.mobileNoBox.setError(getString(R.string.error_field_required));
+                binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
+                binding.layoutDoNotHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                 binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 return false;
             }
+            else {
+                binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.GONE);
+                binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            }
+
             if (binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().length() < 12) {
-                binding.layoutDoNotHaveABHANumber.aadharNoBox.setError("Enter 12 digits");
+                binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
+                binding.layoutDoNotHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
                 binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 return false;
             }
+            else {
+                binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.GONE);
+                binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            }
+
             if (binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().length() < 10) {
-                binding.layoutDoNotHaveABHANumber.mobileNoBox.setError(getString(R.string.enter_10_digits));
+                binding.layoutDoNotHaveABHANumber.mobileNoBox.setVisibility(View.VISIBLE);
+                binding.layoutDoNotHaveABHANumber.mobileNoBox.setText(getString(R.string.enter_10_digits));
                 binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 return false;
+            }
+            else {
+                binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.GONE);
+                binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             }
         }
 
@@ -617,36 +640,42 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     }
 
     private boolean areInputFieldsValid_HasABHA() {
-        if (!optionSelected.isEmpty() && optionSelected.equals("username")) {   // Aadhar field
+        if (!optionSelected.isEmpty() && optionSelected.equals("username")) {
+
             // aadhar validation - start
             String aadharNo = binding.layoutHaveABHANumber.edittextUsername.getText().toString().replace(" ", "").trim();
             if (aadharNo.isEmpty()) {
-                binding.layoutHaveABHANumber.edittextUsername.setError(getString(R.string.error_field_required));
+                binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
+                binding.layoutHaveABHANumber.aadharError.setText(getString(R.string.error_field_required));
                 binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 return false;
             } else if (aadharNo.length() != 12) {
-                binding.layoutHaveABHANumber.edittextUsername.setError("Enter 12 digit");
+                binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
+                binding.layoutHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
                 return false;
             } else {
                 binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-                // return true;
+                binding.layoutHaveABHANumber.aadharError.setVisibility(View.GONE);
             }
             // aadhar validaiton - end
 
             // mobile for aadhar - start
             String mobile = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().replace(" ", "").trim();
             Log.v(TAG, mobile);
+
             if (mobile.isEmpty()) {
-                binding.layoutHaveABHANumber.edittextMobileNumber.setError(getString(R.string.error_field_required));
+                binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
+                binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                 binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 return false;
             } else if (/*code.equalsIgnoreCase("91") &&*/ mobile.length() != 10) {
-                binding.layoutHaveABHANumber.edittextMobileNumber.setError(getString(R.string.enter_10_digits));
-                //  tvMobileError.setText(getString(R.string.enter_10_digits));
+                binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
+                binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
                 binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 return false;
             } else {
                 binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                binding.layoutHaveABHANumber.mobileError.setVisibility(View.GONE);
                 return true;
             }
             // mobile for aadhar - end
@@ -660,16 +689,19 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             //  Log.v(TAG, code);
             String mobile = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().replace(" ", "").trim();
             Log.v(TAG, mobile);
+
             if (mobile.isEmpty()) {
-                binding.layoutHaveABHANumber.edittextMobileNumber.setError(getString(R.string.error_field_required));
+                binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
+                binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                 binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 return false;
             } else if (/*code.equalsIgnoreCase("91") &&*/ mobile.length() != 10) {
-                binding.layoutHaveABHANumber.edittextMobileNumber.setError(getString(R.string.enter_10_digits));
-                //  tvMobileError.setText(getString(R.string.enter_10_digits));
+                binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
+                binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
                 binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 return false;
             } else {
+                binding.layoutHaveABHANumber.mobileError.setVisibility(View.GONE);
                 binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                 return true;
             }

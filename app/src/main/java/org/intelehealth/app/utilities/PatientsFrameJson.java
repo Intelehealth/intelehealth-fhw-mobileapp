@@ -118,19 +118,23 @@ public class PatientsFrameJson {
                 identifier.setPreferred(true);
                 identifierList.add(identifier);
 
-                // Identifier - Abha address
-                identifier = new Identifier();
-                identifier.setIdentifierType("59077d8f-8bee-4a6f-a1a8-64365a297da6");
-                identifier.setLocation(session.getLocationUuid());
-                identifier.setIdentifier(patientDTOList.get(i).getAbhaAddress());
-                identifierList.add(identifier);
+                if (patientDTOList.get(i).getAbhaAddress() != null) {
+                    // Identifier - Abha address
+                    identifier = new Identifier();
+                    identifier.setIdentifierType("59077d8f-8bee-4a6f-a1a8-64365a297da6");
+                    identifier.setLocation(session.getLocationUuid());
+                    identifier.setIdentifier(patientDTOList.get(i).getAbhaAddress());
+                    identifierList.add(identifier);
+                }
 
-                // Identifier - Abha number
-                identifier = new Identifier();
-                identifier.setIdentifierType("6ad4e308-33aa-4afc-9879-6033d1984876");
-                identifier.setLocation(session.getLocationUuid());
-                identifier.setIdentifier(patientDTOList.get(i).getAbhaNumber());
-                identifierList.add(identifier);
+                if (patientDTOList.get(i).getAbhaNumber() != null) {
+                    // Identifier - Abha number
+                    identifier = new Identifier();
+                    identifier.setIdentifierType("6ad4e308-33aa-4afc-9879-6033d1984876");
+                    identifier.setLocation(session.getLocationUuid());
+                    identifier.setIdentifier(patientDTOList.get(i).getAbhaNumber());
+                    identifierList.add(identifier);
+                }
 
                 patient.setIdentifiers(identifierList);
                 patientList.add(patient);

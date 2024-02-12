@@ -1883,4 +1883,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="send_otp">Send OTP</string>
     <string name="verify">Verify</string>
     <string name="please_enter_otp_received">Please enter OTP received.</string>
+    <string name="enter_12_digits">Enter 12 digits</string>
 </resources>
