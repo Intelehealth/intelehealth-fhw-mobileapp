@@ -63,6 +63,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -1744,8 +1745,11 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         if (mActivePatientAdapter != null)
             mActivePatientAdapter.notifyDataSetChanged();
 
-        registerReceiver(mCardMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
-        registerReceiver(visitOutOfTimeReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION));
+        //registerReceiver(mCardMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
+        //registerReceiver(visitOutOfTimeReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION));
+        ContextCompat.registerReceiver(this, mCardMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION), ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(this, visitOutOfTimeReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION), ContextCompat.RECEIVER_EXPORTED);
+
         loadVisits();
         //        sync();
 //        recreate();
@@ -1755,7 +1759,9 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        //registerReceiver(syncBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_EXPORTED);
+
         showBadge();
         requestPermission();
         if (mActivePatientAdapter != null)

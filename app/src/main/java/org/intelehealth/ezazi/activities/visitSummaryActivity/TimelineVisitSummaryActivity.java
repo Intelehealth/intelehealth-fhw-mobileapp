@@ -158,10 +158,16 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION));
+       /* registerReceiver(visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION));
         registerReceiver(mMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
         registerReceiver(syncBroadcastReceiver, new IntentFilter(AppConstants.SYNC_INTENT_ACTION));
-        registerReceiver(checkEncounterEditMode, new IntentFilter(AppConstants.CURRENT_ENC_EDIT_INTENT_ACTION));
+        registerReceiver(checkEncounterEditMode, new IntentFilter(AppConstants.CURRENT_ENC_EDIT_INTENT_ACTION));*/
+
+        ContextCompat.registerReceiver(TimelineVisitSummaryActivity.this, visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_DECISION_PENDING_ACTION), ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(TimelineVisitSummaryActivity.this, mMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION), ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(TimelineVisitSummaryActivity.this, syncBroadcastReceiver, new IntentFilter(AppConstants.SYNC_INTENT_ACTION), ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(TimelineVisitSummaryActivity.this, checkEncounterEditMode, new IntentFilter(AppConstants.CURRENT_ENC_EDIT_INTENT_ACTION), ContextCompat.RECEIVER_EXPORTED);
+
         manageVisibilityOfPendingFlag();
     }
 

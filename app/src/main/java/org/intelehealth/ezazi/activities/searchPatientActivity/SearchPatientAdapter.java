@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import java.util.List;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
@@ -30,6 +33,7 @@ import org.intelehealth.klivekit.utils.DateTimeUtils;
 public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdapter.Myholder> {
     List<PatientDTO> patients;
     private Context context;
+    boolean isDecisionPending = false;
 
     public SearchPatientAdapter(List<PatientDTO> patients, Context context) {
         this.patients = patients;
@@ -152,9 +156,10 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 intent.putExtra("name", patient.getFirstname() + " " + patient.getLastname());
                 intent.putExtra("patientNameTimeline", patientName);
                 intent.putExtra("tag", "exisiting");
+                intent.putExtra("fromScreen", "searchPatient");
+                //intent.putExtra("isDecisionPending", checkForOutcomePending(visitUUID));
                 context.startActivity(intent);
             }
         }
     }
-
 }

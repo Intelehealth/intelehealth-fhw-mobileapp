@@ -31,9 +31,12 @@ import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.databinding.DialogIvfluidOptionsBinding;
 import org.intelehealth.ezazi.databinding.PartoLablRadioViewMedicineBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewEzaziBinding;
+import org.intelehealth.ezazi.databinding.PartoLblRadioViewIvFluidBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewOxytocinBinding;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
+import org.intelehealth.ezazi.partogram.dialog.IVFluidBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.dialog.MedicineBottomSheetDialog;
+import org.intelehealth.ezazi.partogram.dialog.OxytocinBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.model.Medication;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
@@ -44,6 +47,7 @@ import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,6 +63,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
     private TextView selectedTextview;
     boolean isToastShownTemperature, isToastShownPulse, isToastShownContraction, isToastShownFHR, isToastShownSysBP, isToastShownDysBP;
+    private String mVisitUuid;
 
     //    private static JSONObject ivFluidsJsonObject = new JSONObject();
 //    private static JSONObject oxytocinDataObject = new JSONObject();
@@ -80,14 +85,15 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private int currentChildFocusedIndex = -1;
     private PartogramConstants.AccessMode accessMode;
 
-    public PartogramQueryListingAdapter(RecyclerView recyclerView, Context context, List<PartogramItemData> itemList, OnItemSelection onItemSelection) {
+    public PartogramQueryListingAdapter(RecyclerView recyclerView, String visitUuid, Context context, List<PartogramItemData> itemList, OnItemSelection onItemSelection) {
         mContext = context;
+        mVisitUuid = visitUuid;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
     }
 
     public void setAccessMode(PartogramConstants.AccessMode accessMode) {
-        Log.d(TAG, "setAccessMode: accessMode :: kk :: "+accessMode);
+        Log.d(TAG, "setAccessMode: accessMode :: kk :: " + accessMode);
         this.accessMode = accessMode;
     }
 
@@ -361,7 +367,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
         binding.clMedicineCountView.setOnClickListener(v -> {
             @SuppressLint("SetTextI18n")
-            MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), (updated, deleted) -> {
+            MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), mVisitUuid, (updated, deleted) -> {
                 info.setMedicines(updated);
                 info.setDeletedMedicines(deleted);
                 setupMedicineCountView(binding.tvMedicineCount, updated);
@@ -393,19 +399,77 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private void showRadioOptionBoxForIVFluid(View tempView, ParamInfo info, TextView selected, String title) {
         PartoLblRadioViewEzaziBinding binding = PartoLblRadioViewEzaziBinding.bind(tempView);
         View ivFluidDetails = binding.ivFluidOptions.getRoot();
+        Log.d(TAG, "showRadioOptionBoxForIVFluid: iv data: " + new Gson().toJson(info.getMedicationsForFluid()));
+
+        binding.clIvFluidCountView.setOnClickListener(v -> {
+            @SuppressLint("SetTextI18n")
+            IVFluidBottomSheetDialog dialog = IVFluidBottomSheetDialog.getInstance(info.getMedicationsForFluid(), mVisitUuid, (updated, deleted) -> {
+                info.setMedicationsForFluid(updated);
+                Log.d(TAG, "showRadioOptionBoxForIVFluid: updated ivs : " + new Gson().toJson(updated));
+                if (updated.size() > 0) {
+                    //Medication medicationLatest = updated.get(updated.size() - 1);
+                    info.setMedicationsForFluid(updated);
+                    setivFluidDataNew(binding, info);
+                   /* Medication ivFluidDataForDb = new Medication();
+                   ivFluidDataForDb.setType(medicationLatest.getType());
+                    ivFluidDataForDb.setInfusionStatus(medicationLatest.getInfusionStatus());
+                    ivFluidDataForDb.setStrength(medicationLatest.getStrength());
+                    info.setMedication(ivFluidDataForDb);
+                    info.setCapturedValue(ivFluidDataForDb.toJson());
+                     binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(medicationLatest.getType());
+                    binding.ivFluidOptions.viewInfusionRate.etvData.setText(medicationLatest.getInfusionRate());
+                    binding.ivFluidOptions.viewInfusionStatus.tvData.setText(medicationLatest.getInfusionStatus());
+                       Log.d(TAG, "showRadioOptionBoxForIVFluid: db data  : " + new Gson().toJson(ivFluidDataForDb));*/
+
+
+                }
+            });
+            dialog.setAccessMode(accessMode);
+            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+        });
         handleRadioCheckListener(tempView, info, new OnRadioCheckedListener() {
             @Override
             public void onCheckedYes() {
+                binding.clIvFluidCountView.setVisibility(View.VISIBLE);
                 ivFluidDetails.setVisibility(View.VISIBLE);
-                setIvFluidDetails(info, binding);
+                // setIvFluidDetails(info, binding);
+                setivFluidDataNew(binding, info);
                 showIVFluidOptionsDetails(title, info, tempView, binding);
             }
 
             @Override
             public void onCheckedNo() {
+                binding.clIvFluidCountView.setVisibility(View.GONE);
                 ivFluidDetails.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void setivFluidDataNew(PartoLblRadioViewEzaziBinding binding, ParamInfo info) {
+        List<Medication> allAdministerIvFluidsList = info.getMedicationsForFluid();
+        if (allAdministerIvFluidsList.size() > 0) {
+            Medication ivFluidData = allAdministerIvFluidsList.get(0);
+            //Medication ivFluidData = getMedication(info);//old
+            //Medication ivFluidData = getMedicationNew(medicationLatest1.toJson());
+            Medication ivFluidDataForDb = new Medication();
+
+            ivFluidDataForDb.setInfusionStatus(ivFluidData.getInfusionStatus());
+            ivFluidDataForDb.setInfusionRate(ivFluidData.getInfusionRate());
+            String ivFluidType = ivFluidData.getType();
+            Log.d(TAG, "setivFluidDataNew: ivFluidType :" + ivFluidType);
+            if (ivFluidType.equals("Ringer Lactate") || ivFluidType.equals("Normal Saline") || ivFluidType.equals("Dextrose 5% (D5)")) {
+                ivFluidDataForDb.setType(ivFluidType);
+                binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(ivFluidData.getType());
+            } else {
+                ivFluidDataForDb.setType("Other");
+                ivFluidDataForDb.setOtherType(ivFluidData.getOtherType());
+                binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(ivFluidData.getOtherType());
+            }
+            binding.ivFluidOptions.viewInfusionRate.etvData.setText(ivFluidData.getInfusionRate());
+            binding.ivFluidOptions.viewInfusionStatus.tvData.setText(ivFluidData.getInfusionStatus());
+            info.setMedication(ivFluidDataForDb);
+            info.setCapturedValue(ivFluidDataForDb.toJson());
+        }
     }
 
     private void uncheckAllOptions(DialogIvfluidOptionsBinding binding) {
@@ -744,16 +808,48 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private void showRadioOptionBoxForOxytocin(final View tempView, final ParamInfo info, TextView selected, String title) {
         PartoLblRadioViewOxytocinBinding binding = PartoLblRadioViewOxytocinBinding.bind(tempView);
         View oxytocinDetails = binding.includeLayoutPartoOxytocin.getRoot();
+
+        Log.d(TAG, "showRadioOptionBoxForOxytocin: iv data: " + new Gson().toJson(info.getMedicationsForOxytocin()));
+
+        binding.clOxytocinCountView.setOnClickListener(v -> {
+            @SuppressLint("SetTextI18n")
+            OxytocinBottomSheetDialog dialog = OxytocinBottomSheetDialog.getInstance(info.getMedicationsForOxytocin(), mVisitUuid, (updated, deleted) -> {
+                info.setMedicationsForOxytocin(updated);
+                Log.d(TAG, "showRadioOptionBoxForOxytocin: updated ivs : " + new Gson().toJson(updated));
+                if (updated.size() > 0) {
+                    //Medication medicationLatest = updated.get(updated.size() - 1);
+                    info.setMedicationsForOxytocin(updated);
+                    setOxytocinDataNew(binding, info);
+                   /* Medication ivFluidDataForDb = new Medication();
+                   ivFluidDataForDb.setType(medicationLatest.getType());
+                    ivFluidDataForDb.setInfusionStatus(medicationLatest.getInfusionStatus());
+                    ivFluidDataForDb.setStrength(medicationLatest.getStrength());
+                    info.setMedication(ivFluidDataForDb);
+                    info.setCapturedValue(ivFluidDataForDb.toJson());
+                     binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(medicationLatest.getType());
+                    binding.ivFluidOptions.viewInfusionRate.etvData.setText(medicationLatest.getInfusionRate());
+                    binding.ivFluidOptions.viewInfusionStatus.tvData.setText(medicationLatest.getInfusionStatus());
+                       Log.d(TAG, "showRadioOptionBoxForIVFluid: db data  : " + new Gson().toJson(ivFluidDataForDb));*/
+
+
+                }
+            });
+            dialog.setAccessMode(accessMode);
+            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+        });
         handleRadioCheckListener(tempView, info, new OnRadioCheckedListener() {
             @Override
             public void onCheckedYes() {
+                binding.clOxytocinCountView.setVisibility(View.VISIBLE);
                 oxytocinDetails.setVisibility(View.VISIBLE);
-                setOxytocinDetails(info, binding);
+                //setOxytocinDetails(info, binding);
+                setOxytocinDataNew(binding, info);
                 showOxytocinOptionsDetails(title, info, tempView, binding);
             }
 
             @Override
             public void onCheckedNo() {
+                binding.clOxytocinCountView.setVisibility(View.GONE);
                 oxytocinDetails.setVisibility(View.GONE);
             }
         });
@@ -769,15 +865,14 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         info.setCapturedValue(oxytocinData.toJson());
     }
 
+
     private Medication getMedication(ParamInfo info) {
         try {
             Gson gson = new Gson();
             Medication oxytocinData = gson.fromJson(info.getCapturedValue(), Medication.class);
             if (oxytocinData == null) oxytocinData = info.getMedication();
-            Log.e(TAG, "setOxytocinDetails: " + oxytocinData.toJson());
             return oxytocinData;
         } catch (JsonSyntaxException e) {
-            Log.e(TAG, "catch setOxytocinDetails: " + info.getMedication().toJson());
             return info.getMedication();
         }
     }
@@ -803,15 +898,20 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
-                    int value = Integer.parseInt(s.toString());
+                    //if (s.toString().contains("(U/L)")) {
+                    String cleanedString = s.toString().replace("(U/L)", "").trim();
+
+                    int value = Integer.parseInt(cleanedString);
                     if (value <= 10 && value > 0) {
-                        info.getMedication().setStrength(s.toString());
+                        info.getMedication().setStrength(cleanedString);
                         info.saveJson();
                     } else {
                         binding.includeLayoutPartoOxytocin.viewStrength.etvData.setText("");
                         Context context = binding.includeLayoutPartoOxytocin.viewStrength.etvData.getContext();
                         Toast.makeText(context, "Strength must be in range of 1 to 10", Toast.LENGTH_LONG).show();
                     }
+                    // }
+
                 } else {
                     info.getMedication().setStrength(null);
                     info.saveJson();
@@ -872,6 +972,27 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             Toast.makeText(mContext, mContext.getString(R.string.diastolic_bp_range_toast_err, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS), Toast.LENGTH_LONG).show();
             dataEditText.requestFocus();
             isToastShownDysBP = true;
+        }
+    }
+
+    private void setOxytocinDataNew(PartoLblRadioViewOxytocinBinding binding, ParamInfo info) {
+        List<Medication> allAdministerOxytocinsList = info.getMedicationsForOxytocin();
+        if (allAdministerOxytocinsList.size() > 0) {
+            Medication oxytocinData = allAdministerOxytocinsList.get(0);
+            Medication oxytocinDataForDb = new Medication();
+            String strengthValue = oxytocinData.getStrength();
+            if (oxytocinData.getStrength().contains("(U/L)")) {
+                strengthValue = oxytocinData.getStrength().replace("(U/L)", "").trim();
+            }
+
+            binding.includeLayoutPartoOxytocin.viewStrength.etvData.setText(strengthValue);
+            binding.includeLayoutPartoOxytocin.viewInfusionRate.etvData.setText(oxytocinData.getInfusionRate());
+            binding.includeLayoutPartoOxytocin.viewInfusionStatus.tvData.setText(oxytocinData.getInfusionStatus());
+            oxytocinDataForDb.setStrength(strengthValue);
+            oxytocinDataForDb.setInfusionStatus(oxytocinData.getInfusionStatus());
+            oxytocinDataForDb.setInfusionRate(oxytocinData.getInfusionRate());
+            info.setMedication(oxytocinDataForDb);
+            info.setCapturedValue(oxytocinDataForDb.toJson());
         }
     }
 }

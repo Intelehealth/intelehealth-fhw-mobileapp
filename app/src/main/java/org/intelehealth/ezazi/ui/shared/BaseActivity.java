@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.IntentCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.ShiftChangeData;
+import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.database.dao.SyncDAO;
@@ -140,7 +142,9 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(shiftedPatientReceiver, new IntentFilter(AppConstants.getShiftedPatientReceiver()));
+        //registerReceiver(shiftedPatientReceiver, new IntentFilter(AppConstants.getShiftedPatientReceiver()));
+        ContextCompat.registerReceiver(BaseActivity.this, shiftedPatientReceiver, new IntentFilter(AppConstants.getShiftedPatientReceiver()), ContextCompat.RECEIVER_EXPORTED);
+
     }
 
     @Override

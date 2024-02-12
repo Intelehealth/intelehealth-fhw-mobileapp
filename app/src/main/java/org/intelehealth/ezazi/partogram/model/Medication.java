@@ -1,8 +1,11 @@
 package org.intelehealth.ezazi.partogram.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
 
 import org.intelehealth.klivekit.chat.model.ItemHeader;
@@ -23,10 +26,38 @@ public class Medication implements Serializable, ItemHeader {
 
     @SerializedName("infusionRate")
     private String infusionRate;
+    @SerializedName("otherType")
+    private String otherType;
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getOtherType() {
+        return otherType;
+    }
+
+    public void setOtherType(String otherType) {
+        this.otherType = otherType;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+    private Medication medication;
 
     @SerializedName("infusionStatus")
     private String infusionStatus;
     private String createdAt;
+    private String obsUuid;
+
+    public String getObsUuid() {
+        return obsUuid;
+    }
+
+    public void setObsUuid(String obsUuid) {
+        this.obsUuid = obsUuid;
+    }
     private String creatorName;
 
     public String getCreatorName() {

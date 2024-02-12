@@ -1016,7 +1016,7 @@
     <string name="password_reset_success">Password reset successful</string>
 
 
-    <string name="gender">Gendar</string>
+    <string name="gender">Gender</string>
     <string name="are_you_head_of_the_family">Are you head of the family?</string>
     <string name="what_is_your_occupation">What is your occupation?</string>
     <string name="do_you_have_a_bank_account">Do you have bank account?</string>

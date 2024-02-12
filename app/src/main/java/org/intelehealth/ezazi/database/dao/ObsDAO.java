@@ -355,9 +355,13 @@ public class ObsDAO {
     public List<ObsDTO> getOBSByEncounterUUID(String encounteruuid) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //UuidDictionary.IV_FLUIDS, UuidDictionary.OXYTOCIN_UL_DROPS_MIN
+
         //take All obs except image obs
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0'",
-                new String[]{encounteruuid});
+       /* Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' ",
+                new String[]{encounteruuid});*/
+        String query = "SELECT * FROM tbl_obs WHERE encounteruuid = ? AND (voided='0' OR (voided='1' AND (conceptuuid= ?  OR conceptuuid= ?)))";
+        Cursor idCursor = db.rawQuery(query, new String[]{encounteruuid, UuidDictionary.IV_FLUIDS, UuidDictionary.OXYTOCIN_UL_DROPS_MIN});
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -367,6 +371,7 @@ public class ObsDAO {
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
                 obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
+                obsDTO.setCreatedDate(idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date")));
                 obsDTOList.add(obsDTO);
             }
         }
@@ -374,6 +379,7 @@ public class ObsDAO {
 
         return obsDTOList;
     }
+
 
     public List<ObsDTO> getOBSByEncounterUUIDWithoughtMedicines(String encounteruuid) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
@@ -986,4 +992,83 @@ public class ObsDAO {
 
         return total;
     }
+
+    public List<ObsDTO> getAllPrescribedMedicinesByDoctor(String visitUuid) {
+        //query to get all prescribed medicines by dr
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        List<ObsDTO> prescribedObsList = new ArrayList<>();
+        ObsDTO obsDTO;
+        String query = "SELECT * FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by e.encounter_time";
+        Cursor idCursor = db.rawQuery(query, new String[]{visitUuid, UuidDictionary.MEDICINE_PRESCRIBED});
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
+                String value = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+                obsDTO.setValue(value);
+                if (!value.equalsIgnoreCase("No")) {
+                    prescribedObsList.add(obsDTO);
+                }
+            }
+        }
+        idCursor.close();
+        return prescribedObsList;
+    }
+
+    public List<ObsDTO> getAllPrescribedIvFluidsByDoctor(String visitUuid) {
+        //query to get all prescribed IvFluids by dr
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        List<ObsDTO> prescribedObsList = new ArrayList<>();
+        ObsDTO obsDTO;
+        String query = "SELECT o.uuid,o.conceptuuid, o.value,o.modified_date FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by o.modified_date DESC";
+        Cursor idCursor = db.rawQuery(query, new String[]{visitUuid, UuidDictionary.IV_FLUID_PRESCRIBED});
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
+                String value = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+                String modified_date = idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date"));
+                obsDTO.setValue(value);
+                obsDTO.setCreatedDate(modified_date);
+
+                if (!value.equalsIgnoreCase("No")) {
+                    prescribedObsList.add(obsDTO);
+                }
+            }
+        }
+        idCursor.close();
+        return prescribedObsList;
+    }
+
+    public List<ObsDTO> getAllPrescribedOxytocinsByDoctor(String visitUuid) {
+        //query to get all prescribed Oxytocins by dr
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        List<ObsDTO> prescribedObsList = new ArrayList<>();
+        ObsDTO obsDTO;
+        String query = "SELECT o.uuid,o.conceptuuid, o.value,o.modified_date FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by o.modified_date DESC";
+        Cursor idCursor = db.rawQuery(query, new String[]{visitUuid, UuidDictionary.OXYTOCIN_PRESCRIBED});
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
+                String value = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+                String modified_date = idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date"));
+                obsDTO.setValue(value);
+                obsDTO.setCreatedDate(modified_date);
+
+                if (!value.equalsIgnoreCase("No")) {
+                    prescribedObsList.add(obsDTO);
+                }
+            }
+        }
+        idCursor.close();
+        return prescribedObsList;
+    }
+
 }

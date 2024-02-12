@@ -605,4 +605,25 @@ public class DateAndTimeUtils {
         return 0;
     }
 
+    public static String formatDateTimeNew(String inputDateString) {
+        String formattedDate ="";
+        if (inputDateString != null && !inputDateString.isEmpty()){
+            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+            Date date;
+            try {
+                date = inputDateFormat.parse(inputDateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return "";
+            }
+
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
+            formattedDate = outputDateFormat.format(date);
+            return formattedDate;
+        }
+        return formattedDate;
+
+    }
+
+
 }

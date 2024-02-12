@@ -114,4 +114,20 @@
     <string name="elcg_patient_raptured_membranes">Raptured Membrances</string>
     <string name="observation_by">Observation by %1$s</string>
     <string name="no_prescription">No Prescription</string>
+    <string name="administer">Administer</string>
+    <string name="view_prescription">View Prescription</string>
+    <string name="hide">Hide</string>
+    <string name="lbl_prescription">Prescription</string>
+    <string name="lbl_medicine_administration">Medicine Administration</string>
+    <string name="medicines_not_prescribed">Medicines not prescribed yet!</string>
+    <string name="iv_fluids_not_prescribed">IV Fluid not prescribed yet!</string>
+    <string name="view_prescribed_iv_fluids">View prescribed IV Fluids</string>
+    <string name="lbl_iv_fluid_administration">IV Fluid Administration</string>
+    <string name="sure_want_to_administer_iv_fluid">Are you sure you want to administer this IV Fluid?</string>
+    <string name="lbl_administration">Administration</string>
+    <string name="sure_want_to_administer_oxytocin">Are you sure you want to administer this Oxytocin?</string>
+    <string name="view_prescribed_oxytocin">View prescribed Oxytocin</string>
+    <string name="oxytocin_not_prescribed">Oxytocin not prescribed yet!</string>
+    <string name="lbl_oxytocin_administration">Oxytocin Administration</string>
+
 </resources>

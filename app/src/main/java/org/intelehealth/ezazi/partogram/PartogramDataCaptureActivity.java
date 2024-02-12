@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
 import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
@@ -493,8 +494,24 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                             if (obsDTO.getConceptuuid().equals(UuidDictionary.MEDICINE)) {
                                 info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
                                 info.convertToMedicine(obsDTO.getUuid(), obsDTO.getValue());
+                                Log.d(TAG, "setEditData: medicine data : " + obsDTO.getValue());
+                            } else if (obsDTO.getConceptuuid().equals(UuidDictionary.IV_FLUIDS)) {
+                                Log.d(TAG, "setEditData: value :: IV_FLUIDS " + obsDTO.getValue());
+                                if (obsDTO.getValue() !=null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
+                                    info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
+                                    info.getMedication(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(),obsDTO.getConceptuuid());
+                                }
+                            }else if (obsDTO.getConceptuuid().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
+                                Log.d(TAG, "setEditData: value ::OXYTOCIN_UL_DROPS_MIN " + obsDTO.getValue());
+                                if (obsDTO.getValue() !=null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
+                                    info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
+                                    info.getMedication(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(),obsDTO.getConceptuuid());
+                                }
                             } else {
                                 info.setCapturedValue(obsDTO.getValue());
+                                Log.d(TAG, "detailssetEditData: check forvalue : " + obsDTO.getValue());
+                                Log.d(TAG, "detailssetEditData: check context : " + obsDTO.getConceptuuid());
+
                             }
                             break;
                         }
@@ -551,7 +568,8 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
         setEditData();
 
-        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, partogramItemData -> {
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, mVisitUUID,
+                this, mItemList, partogramItemData -> {
 
         });
         partogramQueryListingAdapter.setAccessMode(accessMode);
@@ -585,8 +603,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             }
 
         }
+
         setEditData();
-        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, mVisitUUID, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(PartogramItemData partogramItemData) {
 
@@ -624,8 +643,10 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 mItemList.add(partogramItemData);
             }
         }
+
         setEditData();
-        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, partogramItemData -> {
+
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, mVisitUUID, this, mItemList, partogramItemData -> {
         });
         partogramQueryListingAdapter.setAccessMode(accessMode);
         mRecyclerView.setAdapter(partogramQueryListingAdapter);

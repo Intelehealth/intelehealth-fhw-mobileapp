@@ -370,6 +370,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         holder.cardview.setClickable(true); // added by Mithun
                         holder.cardview.setEnabled(true);
                     }*/
+                    Log.d("TAG", "onBindViewHolder: kkisDecisionPending : "+isDecisionPending);
 
                     if (!isNewEncounterCreated && position == 0 && !isDecisionPending) {
                         holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);

@@ -6,6 +6,9 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.klivekit.chat.model.ItemHeader;
+
+public class ObsDTO implements ItemHeader {
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
@@ -34,6 +37,15 @@ public class ObsDTO implements ItemHeader {
     @Expose
     private String creator;
 
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+
     @SerializedName("creatoruuid")
     @Expose
     private String creatorUuid;
@@ -46,6 +58,8 @@ public class ObsDTO implements ItemHeader {
     private Integer voided;
 
     private String name;
+
+    private String createdDate;
 
     private int noOfLine;
 
@@ -123,6 +137,17 @@ public class ObsDTO implements ItemHeader {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean isHeader() {
+        return false;
+    }
+
+    @NonNull
+    @Override
+    public String createdDate() {
+        return null;
     }
 
     public void setCreatedDate(String createdDate) {

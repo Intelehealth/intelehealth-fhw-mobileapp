@@ -3,6 +3,7 @@ package org.intelehealth.ezazi.partogram.model;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.ezazi.models.dto.ObsDTO;
@@ -13,9 +14,13 @@ import org.intelehealth.ezazi.utilities.UuidDictionary;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ParamInfo implements Serializable {
@@ -38,6 +43,7 @@ public class ParamInfo implements Serializable {
 //    private HashMap<String, String> jsonMap;
 
     private Medication medication;
+    private List<Medication> medicationList;
 
     public boolean isEachEncounterField() {
         return eachEncounterField;
@@ -50,6 +56,8 @@ public class ParamInfo implements Serializable {
     private RadioOptions checkedRadioOption = RadioOptions.NO_VALUE;
 
     private List<Medicine> medicines;
+    private List<Medication> ivFluidsList;
+    private List<Medication> oxytocinList;
 
     public boolean isFiveHourField() {
         return isFiveHourField;
@@ -61,6 +69,7 @@ public class ParamInfo implements Serializable {
 
     private List<Medicine> deletedMedicines;
     private boolean isFiveHourField;
+    private List<Medicine> prescribedMedicines;
 
     public enum RadioOptions {
         YES, NO, NO_VALUE
@@ -180,11 +189,9 @@ public class ParamInfo implements Serializable {
     }
 
     public void saveJson() {
-        if ((getConceptUUID().equals(UuidDictionary.IV_FLUIDS) && getMedication().isValidIVFluid())
-                || (getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN) && getMedication().isValidOxytocin()))
+        if ((getConceptUUID().equals(UuidDictionary.IV_FLUIDS) && getMedication().isValidIVFluid()) || (getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN) && getMedication().isValidOxytocin()))
             setCapturedValue(getMedication().toJson());
-        else
-            setCapturedValue(RadioOptions.NO.name());
+        else setCapturedValue(RadioOptions.NO.name());
     }
 
 //    public void saveValueInJsonMap(String key, String value) {
@@ -199,7 +206,9 @@ public class ParamInfo implements Serializable {
 
     public boolean isValidJson() {
         Log.e("ParamInfo", "isValidJson: " + getParamName() + " checked: " + checkedRadioOption);
-        Log.e("ParamInfo", "isValidJson: " + getParamName() + " value: " + getMedication().toJson());
+        Log.d("ParamInfo", "isValidJson:getConceptUUID():: " + getConceptUUID());
+        Log.d("ParamInfo", "isValidJson:getCapturedValue():: " + getCapturedValue());
+
         if (getConceptUUID().equals(UuidDictionary.IV_FLUIDS) || getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
             if (getCapturedValue() == null) return true;
             else if (checkedRadioOption == RadioOptions.NO) return true;
@@ -244,6 +253,11 @@ public class ParamInfo implements Serializable {
     public List<Medicine> getMedicines() {
         if (medicines == null) medicines = new ArrayList<>();
         return medicines;
+    }
+
+    public List<Medicine> getPrescribedMedicines() {
+        if (prescribedMedicines == null) prescribedMedicines = new ArrayList<>();
+        return prescribedMedicines;
     }
 
     public void convertToMedicine(String obsUuid, String value) {
@@ -298,4 +312,135 @@ public class ParamInfo implements Serializable {
         }
         return true;
     }
+
+    public void convertToPrescribedMedicine(String obsUuid, String value) {
+        Log.d("TAG", "convertToPrescribedMedicine: value :: " + value);
+        Medicine medicine = new Medicine();
+        medicine.setObsUuid(obsUuid);
+        medicine.dbFormatToMedicineObject(value);
+        getPrescribedMedicines().add(medicine);
+    }
+
+    /*  public void convertToIvFluidMedication(String obsUuid, String value) {
+          Log.d("TAG", "convertToIvFluidMedication: value :: " + value);
+          Medication medication = new Medication();
+          medication.setObsUuid(obsUuid);
+          medication.getMedication(value);
+          getMedicines().add(medication);
+      }*/
+
+
+    public Medication getMedication(String obsUUid, String value, String createdDate, String conceptUUID) {
+        Log.d("TAG", "getMedication: value : " + value);
+        try {
+            Gson gson = new Gson();
+            Medication medicationData = gson.fromJson(value, Medication.class);
+            if (medicationData == null) {
+                medicationData = getMedication();
+            }
+            Medication medication = new Medication();
+            medication = gson.fromJson(value, Medication.class);
+            medication.setObsUuid(obsUUid);
+            String createdAt = formatDateTimeNew(createdDate);
+            medication.setCreatedAt(createdAt);
+            String status = medicationData.getInfusionStatus();
+            String statusAdminister = "";
+            if (status.equalsIgnoreCase("start")) {
+                statusAdminister = "Started";
+            } else if (status.equalsIgnoreCase("continue")) {
+                statusAdminister = "Continued";
+            } else if (status.equalsIgnoreCase("stop")) {
+                statusAdminister = "Stopped";
+            }
+            Log.d("TAG", "getMedication: conceptUUID : " + conceptUUID);
+            medicationData.setInfusionStatus(statusAdminister);
+            //medication = getMedication();
+            if (conceptUUID != null && !conceptUUID.isEmpty()) {
+                if (conceptUUID.equals(UuidDictionary.IV_FLUIDS)) {
+                    String ivFluidType = medication.getType();
+
+                    if (ivFluidType.equals("Ringer Lactate") || ivFluidType.equals("Normal Saline") || ivFluidType.equals("Dextrose 5% (D5)")) {
+                        medication.setType(ivFluidType);
+                    } else {
+                        medication.setType("Other");
+                        medication.setOtherType(medication.getOtherType());
+                    }
+                    getMedicationsForFluid().add(medication);
+
+                } else if (conceptUUID.equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
+                    String strength = medicationData.getStrength() + " (U/L)";
+                    medicationData.setStrength(strength);
+                    medication.setStrength(strength);
+                    getMedicationsForOxytocin().add(medication);
+                    List<Medication> datalist = getMedicationsForOxytocin();
+                    Log.d("TAG", "getMedication: datalist: " + new Gson().toJson(datalist));
+                }
+            }
+            return medicationData;
+        } catch (JsonSyntaxException e) {
+            return getMedication();
+        }
+    }
+
+
+    public List<Medication> getMedicationsForFluid() {
+        if (ivFluidsList == null) ivFluidsList = new ArrayList<>();
+        return ivFluidsList;
+    }
+
+    public void setMedicationsForFluid(List<Medication> ivFluidsList) {
+        this.ivFluidsList = ivFluidsList;
+    }
+
+    private String formatDateTime(String inputDateTime) {
+        Log.d("TAG", "formatDateTime: inputDateTime : " + inputDateTime);
+        try {
+            // Input format
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+
+            // Output format
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+
+            // Parse input datetime
+            Date date = inputFormat.parse(inputDateTime);
+
+            // Format the date
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ""; // Handle the exception according to your requirements
+        }
+    }
+
+    public String formatDateTimeNew(String inputDateString) {
+        String formattedDate = "";
+        if (inputDateString != null && !inputDateString.isEmpty()) {
+            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+            Date date;
+            try {
+                date = inputDateFormat.parse(inputDateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return "";
+            }
+
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
+            formattedDate = outputDateFormat.format(date);
+            return formattedDate;
+        }
+        return formattedDate;
+
+    }
+
+
+    public List<Medication> getMedicationsForOxytocin() {
+        if (oxytocinList == null) oxytocinList = new ArrayList<>();
+        return oxytocinList;
+    }
+
+    public void setMedicationsForOxytocin(List<Medication> oxytocinList) {
+        this.oxytocinList = oxytocinList;
+    }
+
+
 }
