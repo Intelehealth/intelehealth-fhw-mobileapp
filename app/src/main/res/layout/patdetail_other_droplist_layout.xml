@@ -148,6 +148,63 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:text="ABHA number"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/abhaNo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="14sp" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:text="ABHA address"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/abhaAddress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:visibility="gone"
                     android:layout_weight="2">
 

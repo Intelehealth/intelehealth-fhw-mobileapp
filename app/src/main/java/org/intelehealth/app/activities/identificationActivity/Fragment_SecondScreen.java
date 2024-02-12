@@ -681,6 +681,12 @@ public class Fragment_SecondScreen extends Fragment {
             //Log.v(TAG, "distList[i] - " + distList[i]);
         }
 
+        if (distList[0].equalsIgnoreCase(getResources().getString(R.string.select_spinner))) {
+            mDistrictNameSpinner.setVisibility(View.GONE);
+            mDistrictET.setVisibility(View.VISIBLE);
+            mDistrictET.setText(district);
+            return;
+        }
         districtAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.simple_spinner_item_1, distList);
         districtAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
@@ -700,8 +706,16 @@ public class Fragment_SecondScreen extends Fragment {
         patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
         patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameSpinner.getSelectedItem().toString() : mStateName));
 
-        if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null)
-            patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
+        if (!mDistName.isEmpty()) { // abdm auto-fill
+            mDistrictNameSpinner.setVisibility(View.GONE);
+            mDistrictET.setVisibility(View.VISIBLE);
+            patientDTO.setCityvillage(mDistName + ":" + mCityVillageName);
+        }
+        else {
+            if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null)
+                patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
+        }
+
         if (!sessionManager.getAppLanguage().equals("en")) {
             patientDTO.setCountry(StringUtils.getValue(mCountryNameEn));
             patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameEn : mStateName));
@@ -924,6 +938,12 @@ public class Fragment_SecondScreen extends Fragment {
                 intent.putExtra("hasPrescription", "false");
                 Bundle args = new Bundle();
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
+                // abha - start
+                if (abhaProfileResponse != null)
+                    args.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+                if (otpVerificationResponse != null)
+                    args.putSerializable(PAYLOAD, otpVerificationResponse);
+                // abha - end
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
                 getActivity().finish();

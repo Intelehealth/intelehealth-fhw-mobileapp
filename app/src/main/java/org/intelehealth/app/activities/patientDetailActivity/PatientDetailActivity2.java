@@ -148,7 +148,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
-            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
+            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
+    patientAbhaNumber, patientAbhaAddress;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -261,6 +262,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             intent2.putExtra("patient_detail", true);
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
+            // abha - start
+            if (abhaProfileResponse != null)
+                args.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+            if (otpVerificationResponse != null)
+                args.putSerializable(PAYLOAD, otpVerificationResponse);
+            // abha - end
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
             finish();
@@ -273,6 +280,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             intent2.putExtra("patient_detail", true);
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
+            // abha - start
+            if (abhaProfileResponse != null)
+                args.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+            if (otpVerificationResponse != null)
+                args.putSerializable(PAYLOAD, otpVerificationResponse);
+            // abha - end
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
             finish();
@@ -285,6 +298,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             intent2.putExtra("patient_detail", true);
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
+            // abha - start
+            if (abhaProfileResponse != null)
+                args.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+            if (otpVerificationResponse != null)
+                args.putSerializable(PAYLOAD, otpVerificationResponse);
+            // abha - end
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
             finish();
@@ -539,6 +558,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
         patientNationalID = findViewById(R.id.national_ID);
+        patientAbhaNumber = findViewById(R.id.abhaNo);
+        patientAbhaAddress = findViewById(R.id.abhaAddress);
         patientoccupation = findViewById(R.id.occupation);
         patientcaste = findViewById(R.id.caste);
         patienteducation = findViewById(R.id.education);
@@ -791,7 +812,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+                "patient_photo", "abha_number", "abha_address"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -811,6 +832,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patientDTO.setAbhaNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_number")));
+                patientDTO.setAbhaAddress(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1159,30 +1182,31 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             city_village = district_city[1];
         }
 
-        if (otpVerificationResponse != null || abhaProfileResponse != null) {
-            if (district != null)
-                patientdistrict.setText(district);
-            else
-                patientdistrict.setText(getResources().getString(R.string.no_district_added));
-
-            if (city_village != null)
-                village.setText(city_village);
-            else
-                village.setText(getResources().getString(R.string.no_city_added));
-        }
-        else {
+        // district = start
             if (district != null) {
-                patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
+                try {
+                    patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
+                }
+                catch (Exception e) {
+                   // if (otpVerificationResponse != null || abhaProfileResponse != null) {
+                        if (district != null)
+                            patientdistrict.setText(district);
+                        else
+                            patientdistrict.setText(getResources().getString(R.string.no_district_added));
+                  //  }
+                }
+
             } else {
                 patientdistrict.setText(getResources().getString(R.string.no_district_added));
             }
+        // district = end
 
+        // city - start
             if (city_village != null) {
                 village.setText(city_village);
             } else {
                 village.setText(getResources().getString(R.string.no_city_added));
             }
-        }
         // end - city and district
 
         // setting postal code
@@ -1438,6 +1462,20 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientNationalID.setText(patientDTO.getNationalID());
         } else {
             patientNationalID.setText(getResources().getString(R.string.not_provided));
+        }
+
+        // setting abha number value
+        if (patientDTO.getAbhaNumber() != null && !patientDTO.getAbhaNumber().equals("")) {
+            patientAbhaNumber.setText(patientDTO.getAbhaNumber());
+        } else {
+            patientAbhaNumber.setText(getResources().getString(R.string.not_provided));
+        }
+
+        // setting abha address value
+        if (patientDTO.getAbhaAddress() != null && !patientDTO.getAbhaAddress().equals("")) {
+            patientAbhaAddress.setText(patientDTO.getAbhaAddress());
+        } else {
+            patientAbhaAddress.setText(getResources().getString(R.string.not_provided));
         }
 
         // setting occupation value

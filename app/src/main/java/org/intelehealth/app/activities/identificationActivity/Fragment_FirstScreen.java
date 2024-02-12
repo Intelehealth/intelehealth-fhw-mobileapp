@@ -1041,6 +1041,13 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 intent.putExtra("hasPrescription", "false");
                 Bundle args = new Bundle();
                 args.putSerializable("patientDTO", (Serializable) patientdto);
+                // abha - start
+                if (abhaProfileResponse != null)
+                    args.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+                if (otpVerificationResponse != null)
+                    args.putSerializable(PAYLOAD, otpVerificationResponse);
+                // abha - end
+
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
                 getActivity().finish();

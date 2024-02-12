@@ -133,6 +133,15 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
 
                 Bundle args = intentRx.getBundleExtra("BUNDLE");
                 patientdto = (PatientDTO) args.getSerializable("patientDTO");
+
+                // abdm - start
+                if (args.containsKey(PAYLOAD)) {
+                    otpVerificationResponse = (OTPVerificationResponse) args.getSerializable(PAYLOAD);
+                } else if (args.containsKey(MOBILE_PAYLOAD)) {
+                    abhaProfileResponse = (AbhaProfileResponse) args.getSerializable(MOBILE_PAYLOAD);
+                }
+                // abdm - end
+
                 if (screenName.equalsIgnoreCase("personal_edit")) {
                     setscreen(firstScreen);
                 } else if (screenName.equalsIgnoreCase("address_edit")) {
@@ -211,8 +220,15 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("fromThirdScreen", true);
         bundle.putBoolean("patient_detail", true);
-        fragment.setArguments(bundle); // passing data to Fragment
 
+        if (otpVerificationResponse != null) {
+            bundle.putSerializable(PAYLOAD, otpVerificationResponse);
+        }
+        else if (abhaProfileResponse != null) {
+            bundle.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
+        }
+
+        fragment.setArguments(bundle); // passing data to Fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, fragment).commit();
     }
 
