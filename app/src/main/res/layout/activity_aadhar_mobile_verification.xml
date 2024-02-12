@@ -127,8 +127,39 @@
                     app:OtpViewType="line"
                     android:textColor="@color/colorPrimaryDark"
                     tools:text="123456"/>
-
             </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_resendOTP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:orientation="horizontal"
+                android:layout_alignStart="@id/sendOtpBtn"
+                android:layout_marginTop="@dimen/otp_pinview_margin_top"
+                android:layout_below="@+id/fl_otpBox">
+
+                <TextView
+                    android:id="@+id/resendTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_otp_received"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
+
+                <TextView
+                    android:id="@+id/resendBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/resendTxt"
+                    android:layout_marginStart="@dimen/tv_resend_otp_margin_start"
+                    android:text="@string/resend_otp_in"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/common_label_text_size" />
+
+            </RelativeLayout>
+
 
             <Button
                 android:id="@+id/sendOtpBtn"
@@ -138,7 +169,7 @@
                 android:background="@drawable/ui2_common_primary_bg_with_state"
                 android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
                 android:drawableTint="@color/iconTintWhite"
-                android:layout_below="@+id/fl_otpBox"
+                android:layout_below="@+id/rl_resendOTP"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:layout_centerHorizontal="true"
@@ -146,7 +177,7 @@
                 android:paddingTop="@dimen/common_button_padding_top"
                 android:paddingEnd="@dimen/common_button_padding_right"
                 android:paddingBottom="@dimen/common_button_padding_bottom"
-                android:text="Send OTP" />
+                android:text="@string/send_otp" />
 
             <!--
                         <RelativeLayout
