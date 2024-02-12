@@ -64,7 +64,7 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="14dp"
                 android:clipToOutline="true"
-                android:src="@drawable/otp_background_img" />
+                android:src="@drawable/otp_temporary" />
 
             <TextView
                 android:id="@+id/we_will_sen"
