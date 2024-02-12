@@ -834,6 +834,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
                 patientDTO.setAbhaNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_number")));
                 patientDTO.setAbhaAddress(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address")));
+
             } while (idCursor.moveToNext());
         }
         idCursor.close();
