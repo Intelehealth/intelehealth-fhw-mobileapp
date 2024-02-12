@@ -84,7 +84,7 @@ object CallHandlerUtils {
         calleeId = callArgs.nurseId!!,
         calleeName = callArgs.nurseName!!,
         roomId = callArgs.roomId!!,
-        roomName = callArgs.patientName!!,
+        roomName = callArgs.patientName?:"",
         callMode = callArgs.callMode,
         callStatus = callArgs.callStatus,
         callTime = System.currentTimeMillis().toString(),

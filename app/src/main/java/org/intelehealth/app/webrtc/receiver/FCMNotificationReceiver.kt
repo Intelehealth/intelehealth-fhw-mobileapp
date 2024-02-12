@@ -46,7 +46,11 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     url = IntelehealthApplication.getInstance().liveKitUrl
                     socketUrl = IntelehealthApplication.getInstance().socketUrl
                     PatientsDAO().getPatientName(roomId).apply {
-                        patientName = get(0).name
+                        patientName = ""
+                        if(isNotEmpty()){
+                            patientName = get(0).name
+                        }
+
                     }
                 }.also { arg ->
                     Timber.tag(TAG).d("onMessageReceived: $arg")
