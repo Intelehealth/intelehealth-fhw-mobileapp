@@ -437,8 +437,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                         chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
                         chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");
                         chief_complaint_value = chief_complaint_value.trim();
-                        while (chief_complaint_value.endsWith(",")){
-                            chief_complaint_value = chief_complaint_value.substring(0, chief_complaint_value.length()-1).trim();
+                        while (chief_complaint_value.endsWith(",")) {
+                            chief_complaint_value = chief_complaint_value.substring(0, chief_complaint_value.length() - 1).trim();
                         }
                     }
                 }
@@ -536,23 +536,27 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM");
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 followupDate = StringUtils.en__hi_dob(followupDate);
-            followupDate_txt.setText(getResources().getString(R.string.follow_up_on) + " " + followupDate);
-            followup_info.setText(getResources().getString(R.string.please_take) + " " + patientName + getResources().getString(R.string.s_follow_up_visit));
+            if (followupDate != null && !followupDate.isEmpty()) {
+                followupDate_txt.setText(getResources().getString(R.string.follow_up_on) + " " + followupDate);
+                followup_info.setText(getResources().getString(R.string.please_take) + " " + patientName + getResources().getString(R.string.s_follow_up_visit));
 
-            if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(originalFollowUpDate, "yyyy-MM-dd")) {
-                String followUpAcceptText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                    followUpAcceptText = StringUtils.en__hi_dob(followUpAcceptText);
-                followup_accept_text.setText(followUpAcceptText);
+                if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(originalFollowUpDate, "yyyy-MM-dd")) {
+                    String followUpAcceptText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        followUpAcceptText = StringUtils.en__hi_dob(followUpAcceptText);
+                    followup_accept_text.setText(followUpAcceptText);
+                } else {
+                    followup_accept_text.setText(getResources().getString(R.string.follow_up_date_arrived));
+                }
             } else {
-                followup_accept_text.setText(getResources().getString(R.string.follow_up_date_arrived));
+                followup_relative_block.setVisibility(View.GONE);
+                yes_no_followup_relative.setVisibility(View.GONE);
             }
 
             Log.v("vd", "vd: " + followup_info);
         } else {
             followup_relative_block.setVisibility(View.GONE);
             yes_no_followup_relative.setVisibility(View.GONE);
-
         }
 
         yes_followup_btn.setOnClickListener(v -> {
