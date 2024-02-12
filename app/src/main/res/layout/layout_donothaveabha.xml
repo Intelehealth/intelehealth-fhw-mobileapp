@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fl_doNotHaveABHANumber"
+    android:layout_marginHorizontal="@dimen/margin_20dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -48,7 +49,6 @@
                     android:padding="14dp"
                     android:singleLine="true"
                     android:maxLength="12"
-                    android:layout_marginHorizontal="@dimen/margin_20dp"
                     />
 
                 <TextView
@@ -56,7 +56,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/margin_20dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
@@ -92,7 +91,6 @@
                     android:singleLine="true"
                     android:inputType="phone"
                     android:maxLength="10"
-                    android:layout_marginHorizontal="@dimen/margin_20dp"
                     />
 
                 <TextView
@@ -100,7 +98,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/margin_20dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
