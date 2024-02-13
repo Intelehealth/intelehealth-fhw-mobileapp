@@ -119,7 +119,7 @@ public class IdentificationActivity extends AppCompatActivity implements
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
-    private ArrayAdapter<CharSequence> educationAdapter, casteAdapter,economicStatusAdapter, hohRelationshipAdapter, maritalAdapter;
+    private ArrayAdapter<CharSequence> educationAdapter, casteAdapter, economicStatusAdapter, hohRelationshipAdapter, maritalAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -2250,9 +2250,7 @@ public class IdentificationActivity extends AppCompatActivity implements
             }
         });
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v ->
-
-        {
+        fab.setOnClickListener(v -> {
             if (patientID_edit != null) {
                 onPatientUpdateClicked(patient1);
             } else {
@@ -2367,7 +2365,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             for (int index = start; index < end - 1; index++) {
                 int type = Character.getType(source.charAt(index));
-                if(type == Character.SURROGATE || type == Character.OTHER_SYMBOL) {
+                if (type == Character.SURROGATE || type == Character.OTHER_SYMBOL) {
                     return "";
                 }
             }
@@ -2384,7 +2382,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 char c = charSequence.charAt(i);
                 if (isCharAllowed(c)) // put your condition here
                     sb.append(c);
-                else if (c=='.' || c=='&' || c=='(' || c==')' || c=='\'' || c=='-' || c=='#' || c=='@' || c=='%' || c=='/' || c==':' || c==',')
+                else if (c == '.' || c == '&' || c == '(' || c == ')' || c == '\'' || c == '-' || c == '#' || c == '@' || c == '%' || c == '/' || c == ':' || c == ',')
                     sb.append(c);
                 else
                     keepOriginal = false;
@@ -2401,6 +2399,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 }
             }
         }
+
         private boolean isCharAllowed(char c) {
             return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);   // This allows only alphabets, digits and spaces.
         }
@@ -2415,7 +2414,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 char c = charSequence.charAt(i);
                 if (isCharAllowed(c)) // put your condition here
                     sb.append(c);
-                else if (c=='.')
+                else if (c == '.')
                     sb.append(c);
                 else
                     keepOriginal = false;
@@ -2432,6 +2431,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 }
             }
         }
+
         private boolean isCharAllowed(char c) {
             return Character.isLetter(c) || Character.isSpaceChar(c);   // This allows only alphabets, digits and spaces.
         }
@@ -2669,7 +2669,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     medicalHistoryList = new Gson().fromJson(value, new TypeToken<List<MedicalHistory>>() {
                     }.getType());
-                    if(medicalHistoryList.size()>0)
+                    if (medicalHistoryList.size() > 0)
                         addMedicalHistoryButton.setVisibility(View.GONE);
                     medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
                     medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
@@ -2682,7 +2682,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     smokingHistoryList = new Gson().fromJson(value, new TypeToken<List<SmokingHistory>>() {
                     }.getType());
-                    if(smokingHistoryList.size()>0)
+                    if (smokingHistoryList.size() > 0)
                         addSmokingStatusButton.setVisibility(View.GONE);
                     smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(),
                             this, updatedContext, this);
@@ -2695,7 +2695,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     tobaccoHistoryList = new Gson().fromJson(value, new TypeToken<List<TobaccoHistory>>() {
                     }.getType());
-                    if(tobaccoHistoryList.size()>0)
+                    if (tobaccoHistoryList.size() > 0)
                         addTobaccoStatusButton.setVisibility(View.GONE);
                     tobaccoHistoryAdapter = new TobaccoHistoryAdapter(tobaccoHistoryList, sessionManager.getAppLanguage(),
                             this, updatedContext, this);
@@ -2709,7 +2709,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     alcoholConsumptionHistoryList = new Gson().fromJson(value, new TypeToken<List<AlcoholConsumptionHistory>>() {
                     }.getType());
-                    if(alcoholConsumptionHistoryList.size()>0)
+                    if (alcoholConsumptionHistoryList.size() > 0)
                         addAlcoholConsumptionButton.setVisibility(View.GONE);
                     alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
                     alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
@@ -5989,7 +5989,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(medicalHistoryViewPager);
         binding.cardViewMedicalHistory.requestFocus();
-        if(medicalHistoryList.size()==1)
+        if (medicalHistoryList.size() == 1)
             addMedicalHistoryButton.setVisibility(View.GONE);
 
     }
@@ -6015,7 +6015,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
         smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(smokingHistoryViewPager);
-        if(smokingHistoryList.size()==1)
+        if (smokingHistoryList.size() == 1)
             addSmokingStatusButton.setVisibility(View.GONE);
     }
 
@@ -6039,7 +6039,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
         alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(alcoholViewPager);
-        if(alcoholConsumptionHistoryList.size()==1)
+        if (alcoholConsumptionHistoryList.size() == 1)
             addAlcoholConsumptionButton.setVisibility(View.GONE);
     }
 
@@ -6275,7 +6275,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         tobaccoHistoryViewPager.setCurrentItem(tobaccoHistoryList.size() - 1);
         tobaccoHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(tobaccoHistoryViewPager);
-        if(tobaccoHistoryList.size()==1)
+        if (tobaccoHistoryList.size() == 1)
             addTobaccoStatusButton.setVisibility(View.GONE);
     }
 
@@ -6288,7 +6288,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         tobaccoHistoryViewPager.setCurrentItem(tobaccoHistoryList.size() - 1);
         tobaccoHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(tobaccoHistoryViewPager);
-        if(position == 0)
+        if (position == 0)
             addTobaccoStatusButton.setVisibility(View.GONE);
     }
 

@@ -299,9 +299,10 @@ public class PatientsDAO {
                     listPatientNames.add(familyMemberRes);
 //                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
                 }
-            } else familyMemberRes.setName(
-                    context.getString(org.intelehealth.klivekit.R.string.call_unknown)
-            );
+            } else {
+                familyMemberRes.setName(context.getString(org.intelehealth.klivekit.R.string.call_unknown));
+                listPatientNames.add(familyMemberRes);
+            }
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException s) {
@@ -310,7 +311,6 @@ public class PatientsDAO {
         } finally {
             db.endTransaction();
         }
-        listPatientNames.add(familyMemberRes);
         return listPatientNames;
     }
 
