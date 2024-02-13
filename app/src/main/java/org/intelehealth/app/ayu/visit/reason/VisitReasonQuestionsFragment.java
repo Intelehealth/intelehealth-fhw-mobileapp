@@ -267,9 +267,12 @@ public class VisitReasonQuestionsFragment extends Fragment {
             Log.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
             Log.v("onSelect QuestionsListingAdapter", "node - " + node.getText());
             // avoid the scroll for old data change
+            String parentRootQuestionId = mCurrentNode.getOptionsList().get(index).getId();
+            Log.v("onSelect", "parentRootQuestionId - " + parentRootQuestionId);
             if (mCurrentComplainNodeOptionsIndex - index >= 1) {
+                mLoadedIds.add(parentRootQuestionId);
                 Log.v("onSelect", "Scrolling index - " + index);
-                VisitUtils.scrollNow(recyclerView, 100, 0, 1000, mIsEditMode, mLoadedIds.contains(node.getId()));
+                VisitUtils.scrollNow(recyclerView, 100, 0, 1000, mIsEditMode, mLoadedIds.contains(parentRootQuestionId));
                 return;
             }
 
@@ -327,14 +330,14 @@ public class VisitReasonQuestionsFragment extends Fragment {
 //                    mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
 //            }
 
-            VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode, mLoadedIds.contains(node.getId()));
+            VisitUtils.scrollNow(recyclerView, 300, 0, 500, mIsEditMode, mLoadedIds.contains(parentRootQuestionId));
 
-            VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode, mLoadedIds.contains(node.getId()));
+            VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode, mLoadedIds.contains(parentRootQuestionId));
 
 
             mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
             ((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).setStackFromEnd(false);
-            mLoadedIds.add(node.getId());
+            mLoadedIds.add(parentRootQuestionId);
         }
 
         @Override
