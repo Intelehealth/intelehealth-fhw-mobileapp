@@ -41,9 +41,7 @@ public class Medication implements Serializable, ItemHeader {
         this.otherType = otherType;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
+
     private Medication medication;
 
     @SerializedName("infusionStatus")

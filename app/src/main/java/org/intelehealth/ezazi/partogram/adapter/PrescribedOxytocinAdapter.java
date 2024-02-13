@@ -9,9 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.ezazi.databinding.RowItemOxtocinPrescriptionBinding;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.model.Medication;
-import org.intelehealth.ezazi.partogram.viewholder.PrescribedIvFluidViewHolder;
 import org.intelehealth.ezazi.partogram.viewholder.PrescribedOxytocinViewHolder;
-import org.intelehealth.ezazi.ui.elcg.adapter.StageHeaderAdapter;
+import org.intelehealth.ezazi.ui.elcg.adapter.CategoryHeaderAdapter;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 
@@ -21,7 +20,7 @@ import java.util.LinkedList;
  * Created by Kaveri Zaware on 09-02-2024
  * email - kaveri@intelehealth.org
  **/
-public class PrescribedOxytocinAdapter extends StageHeaderAdapter {
+public class PrescribedOxytocinAdapter extends CategoryHeaderAdapter {
     private BaseViewHolder.ViewHolderClickListener clickListener;
     private int expandedItemPosition = -1;
 

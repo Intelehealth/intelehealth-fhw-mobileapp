@@ -58,6 +58,7 @@ public class ParamInfo implements Serializable {
     private List<Medicine> medicines;
     private List<Medication> ivFluidsList;
     private List<Medication> oxytocinList;
+    private List<Plan> plansList;
 
     public boolean isFiveHourField() {
         return isFiveHourField;
@@ -442,5 +443,29 @@ public class ParamInfo implements Serializable {
         this.oxytocinList = oxytocinList;
     }
 
+    public void setPlans(List<Plan> plansList) {
+        this.plansList = plansList;
+    }
+
+    public List<Plan> getPlans() {
+        if (plansList == null) plansList = new ArrayList<>();
+        return plansList;
+    }
+
+    public void collectAllPlansInList(String obsUuid, String value, String createdDate) {
+        Log.d("TAG", "collectAllPlansInList:createdDate: " + createdDate);
+        try {
+            Plan plan = new Plan();
+            plan.setObsUuid(obsUuid);
+            plan.setPlanDetails(value);
+            //String createdAt = formatDateTimeNew(createdDate);
+            plan.setCreatedDate(createdDate);
+            getPlans().add(plan);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("TAG", "collectAllPlansInList: " + e.getLocalizedMessage());
+        }
+
+    }
 
 }

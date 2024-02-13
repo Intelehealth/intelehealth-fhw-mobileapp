@@ -10,7 +10,7 @@ import org.intelehealth.ezazi.databinding.RowItemMedicinePrescriptionBinding;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.partogram.viewholder.PrescribedMedicineViewHolder;
-import org.intelehealth.ezazi.ui.elcg.adapter.StageHeaderAdapter;
+import org.intelehealth.ezazi.ui.elcg.adapter.CategoryHeaderAdapter;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 
@@ -20,7 +20,7 @@ import java.util.LinkedList;
  * Created by Kaveri Zaware on 06-02-2024
  * email - kaveri@intelehealth.org
  **/
-public class PrescribedMedicinesAdapter extends StageHeaderAdapter {
+public class PrescribedMedicinesAdapter extends CategoryHeaderAdapter {
     private BaseViewHolder.ViewHolderClickListener clickListener;
     private int expandedItemPosition = -1;
 

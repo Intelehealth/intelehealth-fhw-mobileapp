@@ -1070,5 +1070,4 @@ public class ObsDAO {
         idCursor.close();
         return prescribedObsList;
     }
-
 }

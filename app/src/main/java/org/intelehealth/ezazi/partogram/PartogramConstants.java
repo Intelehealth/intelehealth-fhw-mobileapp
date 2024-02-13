@@ -358,10 +358,42 @@ public class PartogramConstants {
 
         sectionParamInfoMap.put(SECTION_LIST[4], stringList);//Medication
 
+
+       /* paramInfo = new ParamInfo();
+        paramInfo.setParamSectionName(SECTION_LIST[4]);
+        paramInfo.setParamName("Medicine");
+        paramInfo.setParamDateType(RADIO_SELECT_TYPE);
+        paramInfo.setOptions(new String[]{"Yes", "No"});
+        //paramInfo.setValues(new String[]{"Y", "N"});
+        paramInfo.setConceptUUID("c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca");
+        //paramInfo.setOnlyOneHourField(true);
+        paramInfo.setEachEncounterField(true);
+        stringList.add(paramInfo);*/
+
         //Shared Decision Making
         stringList = new ArrayList<>();
 
+
         paramInfo = new ParamInfo();
+        paramInfo.setParamSectionName(SECTION_LIST[5]);
+        paramInfo.setParamName("Assessment");
+        paramInfo.setParamDateType(RADIO_SELECT_TYPE);
+        paramInfo.setConceptUUID("67a050c1-35e5-451c-a4ab-fff9d57b0db1");
+        paramInfo.setOptions(new String[]{"Yes", "No"});
+        //paramInfo.setOnlyOneHourField(true);
+        paramInfo.setEachEncounterField(true);
+        stringList.add(paramInfo);
+
+        paramInfo = new ParamInfo();
+        paramInfo.setParamSectionName(SECTION_LIST[5]);
+        paramInfo.setParamName("Plan");
+        paramInfo.setParamDateType(RADIO_SELECT_TYPE);
+        paramInfo.setConceptUUID("162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        //paramInfo.setOnlyOneHourField(true);
+        paramInfo.setEachEncounterField(true);
+        stringList.add(paramInfo);
+
+       /* paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[5]);
         paramInfo.setParamName("Assessment");
         paramInfo.setParamDateType(INPUT_TXT_TYPE);
@@ -377,7 +409,7 @@ public class PartogramConstants {
         paramInfo.setConceptUUID("162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         //paramInfo.setOnlyOneHourField(true);
         paramInfo.setEachEncounterField(true);
-        stringList.add(paramInfo);
+        stringList.add(paramInfo);*/
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[5]);

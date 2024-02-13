@@ -10,7 +10,7 @@ import org.intelehealth.ezazi.databinding.RowItemIvFluidOxytocinAdministerBindin
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.model.Medication;
 import org.intelehealth.ezazi.partogram.viewholder.IVFluidAdministerViewHolder;
-import org.intelehealth.ezazi.ui.elcg.adapter.StageHeaderAdapter;
+import org.intelehealth.ezazi.ui.elcg.adapter.CategoryHeaderAdapter;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 
@@ -20,7 +20,7 @@ import java.util.LinkedList;
  * Created by Kaveri Zaware on 08-02-2024
  * email - kaveri@intelehealth.org
  **/
-public class IvFluidAdministerDataAdapter extends StageHeaderAdapter {
+public class IvFluidAdministerDataAdapter extends CategoryHeaderAdapter {
     private BaseViewHolder.ViewHolderClickListener clickListener;
     private int expandedItemPosition = -1;
 

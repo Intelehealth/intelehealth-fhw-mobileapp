@@ -494,24 +494,28 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                             if (obsDTO.getConceptuuid().equals(UuidDictionary.MEDICINE)) {
                                 info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
                                 info.convertToMedicine(obsDTO.getUuid(), obsDTO.getValue());
-                                Log.d(TAG, "setEditData: medicine data : " + obsDTO.getValue());
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.IV_FLUIDS)) {
-                                Log.d(TAG, "setEditData: value :: IV_FLUIDS " + obsDTO.getValue());
-                                if (obsDTO.getValue() !=null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
+                                if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                     info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                    info.getMedication(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(),obsDTO.getConceptuuid());
+                                    info.getMedication(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(), obsDTO.getConceptuuid());
                                 }
-                            }else if (obsDTO.getConceptuuid().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
-                                Log.d(TAG, "setEditData: value ::OXYTOCIN_UL_DROPS_MIN " + obsDTO.getValue());
-                                if (obsDTO.getValue() !=null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
+                            } else if (obsDTO.getConceptuuid().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
+                                if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                     info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                    info.getMedication(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(),obsDTO.getConceptuuid());
+                                    info.getMedication(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(), obsDTO.getConceptuuid());
+                                }
+                            } else if (obsDTO.getConceptuuid().equals(UuidDictionary.PLAN)) {
+                                Log.d(TAG, "ccsetEditData: value ::PLAN: " + obsDTO.getValue());
+                                Log.d(TAG, "ccsetEditData: date ::PLAN: " + obsDTO.getCreatedDate());
+
+                                if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
+                                    Log.d(TAG, "ccsetEditData:11 value ::PLAN: " + obsDTO.getValue());
+                                    Log.d(TAG, "ccsetEditData:11 date ::PLAN: " + obsDTO.getCreatedDate());
+                                    //info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
+                                    //info.collectAllPlansInList(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate());
                                 }
                             } else {
                                 info.setCapturedValue(obsDTO.getValue());
-                                Log.d(TAG, "detailssetEditData: check forvalue : " + obsDTO.getValue());
-                                Log.d(TAG, "detailssetEditData: check context : " + obsDTO.getConceptuuid());
-
                             }
                             break;
                         }

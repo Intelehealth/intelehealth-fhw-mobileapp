@@ -30,6 +30,7 @@ import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.databinding.DialogIvfluidOptionsBinding;
 import org.intelehealth.ezazi.databinding.PartoLablRadioViewMedicineBinding;
+import org.intelehealth.ezazi.databinding.PartoLablRadioViewPlanBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewEzaziBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewIvFluidBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewOxytocinBinding;
@@ -37,10 +38,12 @@ import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.dialog.IVFluidBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.dialog.MedicineBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.dialog.OxytocinBottomSheetDialog;
+import org.intelehealth.ezazi.partogram.dialog.PlanBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.model.Medication;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
+import org.intelehealth.ezazi.partogram.model.Plan;
 import org.intelehealth.ezazi.partogram.model.ValidatePartogramFields;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
@@ -139,6 +142,10 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         tempView = View.inflate(mContext, R.layout.parto_lbl_radio_view_oxytocin, null);
                     } else if (!paramInfo.getConceptUUID().isEmpty() && paramInfo.getConceptUUID().equals(UuidDictionary.MEDICINE)) {
                         tempView = View.inflate(mContext, R.layout.parto_labl_radio_view_medicine, null);
+                    } else if (!paramInfo.getConceptUUID().isEmpty() && paramInfo.getConceptUUID().equals(UuidDictionary.PLAN)) {
+                        tempView = View.inflate(mContext, R.layout.parto_labl_radio_view_plan, null);
+                    } else if (!paramInfo.getConceptUUID().isEmpty() && paramInfo.getConceptUUID().equals(UuidDictionary.ASSESSMENT)) {
+                        tempView = View.inflate(mContext, R.layout.parto_labl_radio_view_assessment, null);
                     }
                     if (tempView != null) {
                         showRadioOptionBox(tempView, position, i);
@@ -358,6 +365,12 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 break;
             case UuidDictionary.MEDICINE:
                 showRadioOptionBoxForMedicine(tempView, info, selected, title);
+                break;
+            case UuidDictionary.PLAN:
+                showRadioOptionBoxForPlan(tempView, info, selected, title);
+                break;
+            case UuidDictionary.ASSESSMENT:
+              //  showRadioOptionBoxForAssessment(tempView, info, selected, title);
                 break;
         }
     }
@@ -994,5 +1007,67 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             info.setMedication(oxytocinDataForDb);
             info.setCapturedValue(oxytocinDataForDb.toJson());
         }
+    }
+
+    private void showRadioOptionBoxForPlan(View tempView, ParamInfo info, TextView selected, String title) {
+        PartoLablRadioViewPlanBinding binding = PartoLablRadioViewPlanBinding.bind(tempView);
+
+        binding.clPlanCountView.setOnClickListener(v -> {
+            @SuppressLint("SetTextI18n")
+            PlanBottomSheetDialog dialog = PlanBottomSheetDialog.getInstance(info.getPlans(), mVisitUuid, (updated, deleted) -> {
+                info.setPlans(updated);
+                //info.setDeletedMedicines(deleted);
+                setupPlansCountView(binding.tvPlanCount, updated);
+            });
+            dialog.setAccessMode(accessMode);
+            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+        });
+/*
+        handleRadioCheckListener(tempView, info, new OnRadioCheckedListener() {
+            @Override
+            public void onCheckedYes() {
+                binding.clPlanCountView.setVisibility(View.VISIBLE);
+                setupPlansCountView(binding.tvPlanCount, info.getPlans());
+            }
+
+            @Override
+            public void onCheckedNo() {
+                binding.clPlanCountView.setVisibility(View.GONE);
+            }
+        });
+*/
+
+    }
+    private void showRadioOptionBoxForAssessment(View tempView, ParamInfo info, TextView selected, String title) {
+        PartoLablRadioViewMedicineBinding binding = PartoLablRadioViewMedicineBinding.bind(tempView);
+
+        binding.clMedicineCountView.setOnClickListener(v -> {
+            @SuppressLint("SetTextI18n")
+            MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), mVisitUuid, (updated, deleted) -> {
+                info.setMedicines(updated);
+                info.setDeletedMedicines(deleted);
+                setupMedicineCountView(binding.tvMedicineCount, updated);
+            });
+            dialog.setAccessMode(accessMode);
+            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+        });
+        handleRadioCheckListener(tempView, info, new OnRadioCheckedListener() {
+            @Override
+            public void onCheckedYes() {
+                binding.clMedicineCountView.setVisibility(View.VISIBLE);
+                setupMedicineCountView(binding.tvMedicineCount, info.getMedicines());
+            }
+
+            @Override
+            public void onCheckedNo() {
+                binding.clMedicineCountView.setVisibility(View.GONE);
+            }
+        });
+
+    }
+    @SuppressLint("SetTextI18n")
+    private void setupPlansCountView(TextView textView, List<Plan> updated) {
+        if (updated.size() == 0) textView.setText(mContext.getString(R.string.lbl_add));
+        else textView.setText("" + updated.size());
     }
 }

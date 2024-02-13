@@ -24,4 +24,9 @@ class PrescriptionViewModel(val repository: PrescriptionRepository) : BaseViewMo
             }
         }
     }
-}
+
+    fun gePlantPrescriptions(visitId: String, creatorId: String) = executeLocalQuery {
+        repository.fetchPlansPrescription(visitId, creatorId)
+    }.asLiveData()
+
+    }

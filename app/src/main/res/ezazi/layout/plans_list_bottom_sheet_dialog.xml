@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPlanDialogRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/white"
+        android:orientation="vertical"
+        app:enableEdgeToEdge="true"
+        app:layout_behavior="org.intelehealth.ezazi.partogram.behavior.LockableBottomSheetBehavior">
+
+        <include
+            android:id="@+id/bottomSheetAppBar"
+            layout="@layout/bottom_sheet_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvLblAdministerPlan"
+            style="@style/Theme.EZazi.Screen.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/screen_padding"
+            android:layout_marginBottom="@dimen/screen_padding"
+            android:contentDescription="@string/lbl_add_new_plan"
+            android:text="@string/lbl_administration"
+            app:layout_constraintBottom_toTopOf="@+id/clPlanListContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottomSheetAppBar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPlanListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/screen_padding"
+            android:layout_marginBottom="@dimen/screen_padding"
+            android:background="@drawable/container_bg_rounded"
+            android:contentDescription="@string/content_item_container"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLblAdministerPlan">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPlan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/screen_container_padding"
+                android:contentDescription="@string/content_added_medicine_list"
+                android:padding="@dimen/screen_container_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/row_item_prescription_plan" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddMorePlan"
+                style="@style/Theme.EZazi.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/screen_container_padding"
+                android:layout_marginVertical="@dimen/screen_container_padding"
+                android:paddingStart="@dimen/screen_padding"
+                android:paddingTop="@dimen/screen_container_padding"
+                android:paddingEnd="@dimen/screen_padding"
+                android:paddingBottom="@dimen/screen_container_padding"
+                android:text="@string/lbl_add_new_plan"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvPlan" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSavePlan"
+                style="@style/Theme.EZazi.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/screen_container_padding"
+                android:layout_marginVertical="@dimen/screen_padding"
+                android:text="@string/save_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnViewPrescriptionPlan"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- New MaterialButton to the right of the Save button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewPrescriptionPlan"
+                style="@style/Theme.EZazi.Button.White"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/screen_container_padding"
+                android:layout_marginVertical="@dimen/screen_padding"
+                android:text="@string/view_prescription"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btnSavePlan" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clAddNewPlanRoot"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/dialog_transparency_bg"
+            android:clickable="false"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/includeAddNewPlanDialog"
+                layout="@layout/view_add_new_plan"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPrescribedPlanRoot"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/dialog_transparency_bg"
+            android:clickable="false"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/includedPrescribedPlan"
+                layout="@layout/view_prescribed_plans"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

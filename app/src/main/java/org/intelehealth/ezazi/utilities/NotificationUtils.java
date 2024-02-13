@@ -230,7 +230,7 @@ public class NotificationUtils {
 
     }
 
-    public static int getPendingIntentFlag() {
+/*    public static int getPendingIntentFlag() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
                 ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT : PendingIntent.FLAG_UPDATE_CURRENT;
     }*/
