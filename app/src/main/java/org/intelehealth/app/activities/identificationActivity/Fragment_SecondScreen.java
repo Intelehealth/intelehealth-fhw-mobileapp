@@ -681,7 +681,7 @@ public class Fragment_SecondScreen extends Fragment {
             //Log.v(TAG, "distList[i] - " + distList[i]);
         }
 
-        if (distList[0].equalsIgnoreCase(getResources().getString(R.string.select_spinner))) {
+        if (distList.length == 1 && distList[0].equalsIgnoreCase(getResources().getString(R.string.select_spinner))) {
             mDistrictNameSpinner.setVisibility(View.GONE);
             mDistrictET.setVisibility(View.VISIBLE);
             mDistrictET.setText(district);
