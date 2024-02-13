@@ -120,6 +120,7 @@
                 android:layout_marginTop="@dimen/rv_help_videos_margin_top"
                 android:textColor="@color/edittext_hint_color"
                 android:visibility="gone"
+                tools:visibility="visible"
                 />
 
             <androidx.recyclerview.widget.RecyclerView

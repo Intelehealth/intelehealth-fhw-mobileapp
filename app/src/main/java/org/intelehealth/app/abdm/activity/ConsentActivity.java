@@ -1,6 +1,7 @@
 package org.intelehealth.app.abdm.activity;
 
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
+import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +22,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
 
@@ -29,6 +31,8 @@ import java.util.Locale;
 public class ConsentActivity extends AppCompatActivity {
     private Button btn_accept_privacy;
     private Context context = ConsentActivity.this;
+    public static final String ABHA_CONSENT = "ABHA_CONSENT";
+    public static final String hasABHA = "hasABHA";
 
 
     @Override
@@ -41,6 +45,22 @@ public class ConsentActivity extends AppCompatActivity {
 
         btn_accept_privacy = findViewById(R.id.btn_accept_privacy); // ACCEPT BTN
         ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
+
+        // check internet - start
+        if (!NetworkConnection.isOnline(ConsentActivity.this)) {    // no internet.
+            showOKDialog(context, getDrawable(R.drawable.ui2_ic_warning_internet),
+                    getString(R.string.error_network), getString(R.string.you_need_an_active_internet_connection_to_use_this_feature),
+                    getString(R.string.ok), new DialogUtils.CustomDialogListener() {
+                        @Override
+                        public void onDialogActionDone(int action) {
+                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                // take user to Identification activity.
+                                declinePP(null);
+                            }
+                        }
+                    });
+        }
+        // check internet - end
 
         ivBack.setOnClickListener(v -> {
             finish();
@@ -57,11 +77,11 @@ public class ConsentActivity extends AppCompatActivity {
                           //  Intent intent = new Intent(context, AccountSelectionLoginActivity.class); // todo: testing purpose -> comment later.
                             Intent intent = new Intent(context, AadharMobileVerificationActivity.class);  // todo: uncomment later.
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK)
-                                intent.putExtra("hasABHA", true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
+                                intent.putExtra(hasABHA, true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
                             else
-                                intent.putExtra("hasABHA", false);  // ie. Aadhar AND Mobile api to call. // here Aadhar api is used.
-                            // todo: testing purpose -> uncomment later this block.
-
+                                intent.putExtra(hasABHA, false);  // ie. Aadhar AND Mobile api to call. // here Aadhar api is used.
+                            
+                            intent.putExtra(ABHA_CONSENT, true);
                             startActivity(intent);
                             finish();
                         }
@@ -74,6 +94,7 @@ public class ConsentActivity extends AppCompatActivity {
     public void declinePP(View view) {  // DECLINE BTN
         setResult(AppConstants.CONSENT_DECLINE);
         Intent intent = new Intent(this, IdentificationActivity_New.class); // ie. normal flow.
+        intent.putExtra(ABHA_CONSENT, false);
         startActivity(intent);
         finish();
     }

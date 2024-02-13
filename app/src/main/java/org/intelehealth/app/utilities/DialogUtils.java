@@ -100,11 +100,6 @@ public class DialogUtils {
         Button negative_btn = convertView.findViewById(R.id.negative_btn);
 
         icon.setImageDrawable(drawable);
-       /* dialog_title.setText("Close patient registration?");
-        dialog_subtitle.setText("Are you sure you want to close the patient registration?");
-        positive_btn.setText("No");
-        negative_btn.setText("Yes");*/
-
         dialog_title.setText(title);
         dialog_subtitle.setText(subTitle);
         positive_btn.setText(positiveBtnTxt);
@@ -123,6 +118,39 @@ public class DialogUtils {
         });
 
         positive_btn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+        });
+
+        alertDialog.show();
+    }
+    public static void showOKDialog(Context context, Drawable drawable, String title,
+                                                 String subTitle, String okBtnTxt,
+                                                 CustomDialogListener customDialogListener) {
+
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_error_and_button, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.dialog_icon);
+        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
+        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
+        Button neutral_btn = convertView.findViewById(R.id.positive_btn);
+
+        icon.setImageDrawable(drawable);
+        dialog_title.setText(title);
+        dialog_subtitle.setText(subTitle);
+        neutral_btn.setText(okBtnTxt);
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+
+        neutral_btn.setOnClickListener(v -> {
             alertDialog.dismiss();
             customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });

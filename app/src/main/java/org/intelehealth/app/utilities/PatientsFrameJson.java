@@ -118,7 +118,7 @@ public class PatientsFrameJson {
                 identifier.setPreferred(true);
                 identifierList.add(identifier);
 
-                if (patientDTOList.get(i).getAbhaAddress() != null) {
+                if (!patientDTOList.get(i).getAbhaAddress().equalsIgnoreCase("NA")) {
                     // Identifier - Abha address
                     identifier = new Identifier();
                     identifier.setIdentifierType("59077d8f-8bee-4a6f-a1a8-64365a297da6");
@@ -127,7 +127,7 @@ public class PatientsFrameJson {
                     identifierList.add(identifier);
                 }
 
-                if (patientDTOList.get(i).getAbhaNumber() != null) {
+                if (!patientDTOList.get(i).getAbhaNumber().equalsIgnoreCase("NA")) {
                     // Identifier - Abha number
                     identifier = new Identifier();
                     identifier.setIdentifierType("6ad4e308-33aa-4afc-9879-6033d1984876");

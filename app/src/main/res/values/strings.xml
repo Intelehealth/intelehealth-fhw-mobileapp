@@ -1884,4 +1884,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="verify">Verify</string>
     <string name="please_enter_otp_received">Please enter OTP received.</string>
     <string name="enter_12_digits">Enter 12 digits</string>
+    <string name="you_need_an_active_internet_connection_to_use_this_feature">You need an active internet connection to use this feature.</string>
 </resources>
