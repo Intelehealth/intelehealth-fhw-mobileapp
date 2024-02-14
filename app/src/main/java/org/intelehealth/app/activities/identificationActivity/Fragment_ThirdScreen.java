@@ -274,8 +274,7 @@ public class Fragment_ThirdScreen extends Fragment {
 
     private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
         mAbhaNumberEditText.setText(otpVerificationResponse.getABHAProfile().getABHANumber());
-        mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0)); // todo: Only in case of Aadahr api: here array is returned so which to take in case of multiple items.
-
+        mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
     }
 
     class MyTextWatcher implements TextWatcher {

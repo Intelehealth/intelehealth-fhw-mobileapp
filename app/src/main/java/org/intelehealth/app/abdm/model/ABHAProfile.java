@@ -59,6 +59,12 @@ public class ABHAProfile implements Serializable {
     @SerializedName("abhaType")
     @Expose
     private Object abhaType;
+    @SerializedName("stateName")
+    @Expose
+    private String stateName;
+    @SerializedName("districtName")
+    @Expose
+    private String districtName;
     @SerializedName("ABHANumber")
     @Expose
     private String aBHANumber;
@@ -176,6 +182,22 @@ public class ABHAProfile implements Serializable {
 
     public void setAbhaType(Object abhaType) {
         this.abhaType = abhaType;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
     }
 
     public String getABHANumber() {

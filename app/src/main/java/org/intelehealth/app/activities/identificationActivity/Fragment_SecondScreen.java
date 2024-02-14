@@ -226,15 +226,15 @@ public class Fragment_SecondScreen extends Fragment {
         // State
         mStateNameSpinner.setVisibility(View.GONE);
         mStateEditText.setVisibility(View.VISIBLE);
-        mStateEditText.setText(otpVerificationResponse.getABHAProfile().getStateCode());    // todo: handle this.
+        mStateEditText.setText(otpVerificationResponse.getABHAProfile().getStateName());
 
         // District
         mDistrictNameSpinner.setVisibility(View.GONE);
         mDistrictET.setVisibility(View.VISIBLE);
-        mDistrictET.setText(otpVerificationResponse.getABHAProfile().getDistrictCode());    // todo: handle this.
+        mDistrictET.setText(otpVerificationResponse.getABHAProfile().getDistrictName());
 
         // City/Village/Town
-      //  mCityVillageET.setText(village_town); // todo: handle this.
+        //  mCityVillageET.setText(village_town); // todo: handle this.
 
         mAddress1EditText.setText(otpVerificationResponse.getABHAProfile().getAddress());
     }
