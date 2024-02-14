@@ -29,7 +29,7 @@
             android:layout_marginHorizontal="@dimen/screen_padding"
             android:layout_marginBottom="@dimen/screen_padding"
             android:contentDescription="@string/lbl_add_new_plan"
-            android:text="@string/lbl_administration"
+            android:text="@string/planned_by_you"
             app:layout_constraintBottom_toTopOf="@+id/clPlanListContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetAppBar" />
@@ -59,7 +59,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="1"
-                tools:listitem="@layout/row_item_prescription_plan" />
+                tools:listitem="@layout/row_item_prescription_followed" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddMorePlan"

@@ -330,8 +330,11 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         boolean isValidDiastolicBP = true;
         boolean isValidTemperature = true;
         boolean isValidDuration = true;
+        boolean isValidPlan = true;
 
         List<String> voidedMedicines = new ArrayList<>();
+        List<String> voidedPlans = new ArrayList<>();
+
         for (int i = 0; i < mItemList.size(); i++) {
             for (int j = 0; j < mItemList.get(i).getParamInfoList().size(); j++) {
                 ParamInfo info = mItemList.get(i).getParamInfoList().get(j);
@@ -372,12 +375,19 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         isValidDuration = ValidatePartogramFields.isValidParameter(info.getCapturedValue(), UuidDictionary.DURATION_OF_CONTRACTION);
                     }
 
+                    //plan and assessment
                     if (info.getConceptUUID().equals(UuidDictionary.MEDICINE)) {
                         isValidMedicine = info.isValidMedicine();
                         if (isValidMedicine && info.getCheckedRadioOption() != ParamInfo.RadioOptions.NO) {
                             obsDTOList.addAll(info.getMedicinesObsList(mEncounterUUID, new SessionManager(this).getCreatorID()));
                         }
                         voidedMedicines = info.getVoidedMedicineUuid();
+                    } else if (info.getConceptUUID().equals(UuidDictionary.PLAN)) {
+                        //isValidPlan = info.isValidMedicine();
+                        // if (isValidMedicine && info.getCheckedRadioOption() != ParamInfo.RadioOptions.NO) {
+                        obsDTOList.addAll(info.getPlansObsList(mEncounterUUID, new SessionManager(this).getCreatorID()));
+                        // }
+                        voidedPlans = info.getVoidedPlansUuid();
                     } else {
                         ObsDTO obsDTOData = buildObservation(info);
 
@@ -431,7 +441,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
             try {
                 if (accessMode == PartogramConstants.AccessMode.EDIT) {
-
+                    Log.d(TAG, "saveObs: access mode : "+accessMode);
                     //new logic
                     for (int i = 0; i < obsDTOList.size(); i++) {
                         ObsDTO obsDTO = obsDTOList.get(i);
@@ -441,9 +451,13 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                             obsDAO.insertObs(obsDTO);
                         }
                     }
+                    Log.d(TAG, "saveObs: voidedMedicines  : "+voidedMedicines.size());
 
                     if (voidedMedicines.size() > 0) {
                         obsDAO.markedAsVoidedObsToDb(voidedMedicines);
+                    }
+                    if (voidedPlans.size() > 0) {
+                        obsDAO.markedAsVoidedObsToDb(voidedPlans);
                     }
                 } else {
                     obsDAO.insertObsToDb(obsDTOList, TAG);
@@ -511,8 +525,8 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                                 if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                     Log.d(TAG, "ccsetEditData:11 value ::PLAN: " + obsDTO.getValue());
                                     Log.d(TAG, "ccsetEditData:11 date ::PLAN: " + obsDTO.getCreatedDate());
-                                    //info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                    //info.collectAllPlansInList(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate());
+                                    info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
+                                    info.collectAllPlansInList(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate());
                                 }
                             } else {
                                 info.setCapturedValue(obsDTO.getValue());

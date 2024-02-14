@@ -41,7 +41,7 @@ public class VisitAttributeListDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            Log.d("SPECI", "SIZEVISTATTR: Total attr => " + visitAttributeDTOS.size());
+            //Log.d("SPECI", "SIZEVISTATTR: Total attr => " + visitAttributeDTOS.size());
             for (VisitAttributeDTO visitAttribute : visitAttributeDTOS) {
                 if (checkVisitAttributesExist(visitAttribute, db))
                     updateVisitAttributes(visitAttribute, db);
@@ -76,8 +76,8 @@ public class VisitAttributeListDAO {
         String where = "visit_uuid=? AND visit_attribute_type_uuid=?";
         String whereArgs[] = {attribute.getVisitUuid(), attribute.getVisitAttributeTypeUuid()};
         try {
-            Log.d("SPECI", "SIZEVISTATTR: Visit Id => " + attribute.getVisitUuid());
-            Log.d("SPECI", "SIZEVISTATTR: VisitAttributeTypeUuid => " + attribute.getVisitAttributeTypeUuid());
+            //Log.d("SPECI", "SIZEVISTATTR: Visit Id => " + attribute.getVisitUuid());
+            //Log.d("SPECI", "SIZEVISTATTR: VisitAttributeTypeUuid => " + attribute.getVisitAttributeTypeUuid());
 //            values.put("speciality_value", visitDTO.getValue());
             values.put("voided", attribute.getVoided());
             values.put("sync", "1");
@@ -86,9 +86,9 @@ public class VisitAttributeListDAO {
             createdRecordsCount = db.update("tbl_visit_attribute", values, where, whereArgs);
 
             if (createdRecordsCount != -1) {
-                Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                //Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
             } else {
-                Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                //Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
             }
         } catch (SQLException e) {
             isCreated = false;
@@ -119,9 +119,9 @@ public class VisitAttributeListDAO {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             if (createdRecordsCount != -1) {
-                Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                //Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
             } else {
-                Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                //Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
             }
 //            }
         } catch (SQLException e) {

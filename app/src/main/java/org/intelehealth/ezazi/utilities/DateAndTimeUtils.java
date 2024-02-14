@@ -606,14 +606,16 @@ public class DateAndTimeUtils {
     }
 
     public static String formatDateTimeNew(String inputDateString) {
-        String formattedDate ="";
-        if (inputDateString != null && !inputDateString.isEmpty()){
+        Log.d(TAG, "formatDateTimeNew: inmethod :"+inputDateString);
+        String formattedDate = "";
+        if (inputDateString != null && !inputDateString.isEmpty()) {
             SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
             Date date;
             try {
                 date = inputDateFormat.parse(inputDateString);
             } catch (ParseException e) {
                 e.printStackTrace();
+                Log.d(TAG, "formatDateTimeNew: emsg:" + e.getLocalizedMessage());
                 return "";
             }
 

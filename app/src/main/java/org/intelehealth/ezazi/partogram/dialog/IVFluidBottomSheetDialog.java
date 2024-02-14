@@ -117,6 +117,7 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
         setButtonClickListener();
         setToolbarNavClick();
         addBottomMarginIfVersion13();
+        changeSaveButtonStatus();
     }
 
 
@@ -169,6 +170,7 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
 
     @SuppressLint("ClickableViewAccessibility")
     private void setButtonClickListener() {
+        Log.d(TAG, "setButtonClickListener: accessMode : " + accessMode);
         binding.btnSaveIvFluids.setOnClickListener(this);
         binding.btnSaveIvFluids.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
         binding.btnViewPrescriptionIvFluid.setOnClickListener(this);
@@ -176,12 +178,13 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
 
     private void setIvFluidsListView() {
         binding.btnSaveIvFluids.setEnabled(ivFluidsList.size() > 0);
-        binding.btnSaveIvFluids.setEnabled(ivFluidsList.size() > 0);
         binding.rvIvFluids.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new IvFluidAdministerDataAdapter(requireContext(), ivFluidsList);
         adapter.setAccessMode(accessMode);
         adapter.setClickListener(this);
         binding.rvIvFluids.setAdapter(adapter);
+        changeSaveButtonStatus();
+
     }
 
     @Override
@@ -242,7 +245,9 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
 */
 
     private void changeSaveButtonStatus() {
-        if (adapter != null) binding.btnSaveIvFluids.setEnabled(adapter.getItemCount() > 0);
+        if (adapter != null) {
+            binding.btnSaveIvFluids.setEnabled(adapter.getItemCount() > 0 && accessMode != PartogramConstants.AccessMode.READ);
+        }
     }
 
     @Override
@@ -292,7 +297,6 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
     }
 
     private void getPrescribedMedicinesDetails() {
-        changeSaveButtonStatus();
         List<ObsDTO> mPrescribedIvFluidsList = new ObsDAO().getAllPrescribedIvFluidsByDoctor(mVisitUUID);
         if (mPrescribedIvFluidsList != null && mPrescribedIvFluidsList.size() > 0) {
             manageUIVisibilityAsPerData(true);
@@ -320,7 +324,13 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
         Gson gson = new Gson();
         Medication ivFluidData = gson.fromJson(value, Medication.class);
         ivFluidData.setObsUuid(obsUuid);
-        ivFluidData.setCreatedAt(DateAndTimeUtils.formatDateTimeNew(createdDate));
+        //ivFluidData.setCreatedAt(DateAndTimeUtils.formatDateTimeNew(createdDate));
+        Log.d(TAG, "convertToPrescribedIvFluid: createdDate : " + createdDate);
+        if (!createdDate.isEmpty() && createdDate.contains("'T'")) {
+            ivFluidData.setCreatedAt(DateAndTimeUtils.formatDateTimeNew(createdDate));
+        } else {
+            ivFluidData.setCreatedAt(createdDate);
+        }
         String status = ivFluidData.getInfusionStatus();
         String statusAdminister = "";
         if (status.equalsIgnoreCase("start")) {
@@ -335,7 +345,7 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
     }
 
     private String getFormattedDate(String inputDateString) {
-        Log.d(TAG, "getFormattedDate: inputDateString : "+inputDateString);
+        Log.d(TAG, "getFormattedDate: inputDateString : " + inputDateString);
         String formattedDate = "";
         if (inputDateString != null && !inputDateString.isEmpty()) {
             SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -356,18 +366,19 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
     private void manageUIVisibilityAsPerData(boolean isMedicinePrescribed) {
         if (isMedicinePrescribed) {
             binding.clPrescribedIvFluidRoot.setVisibility(View.VISIBLE);
-            binding.clIvFluidListContainer.setVisibility(View.GONE);
-            binding.tvLblAdministerIvFluid.setVisibility(View.GONE);
+            binding.clIvFluidListContainer.setVisibility(View.VISIBLE);
+            binding.tvLblAdministerIvFluid.setVisibility(View.VISIBLE);
 
         } else {
             binding.clPrescribedIvFluidRoot.setVisibility(View.GONE);
             binding.clIvFluidListContainer.setVisibility(View.VISIBLE);
             binding.tvLblAdministerIvFluid.setVisibility(View.VISIBLE);
 
-            if (adapter != null) {
+           /* if (adapter != null) {
                 binding.btnSaveIvFluids.setEnabled(adapter.getItemCount() > 0);
             }
-            binding.btnSaveIvFluids.setEnabled(ivFluidsList.size() > 0);
+            binding.btnSaveIvFluids.setEnabled(ivFluidsList.size() > 0);*/
+            changeSaveButtonStatus();
 
         }
 

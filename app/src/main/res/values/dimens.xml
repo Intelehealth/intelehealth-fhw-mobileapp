@@ -163,4 +163,6 @@
     <dimen name="std_720dp">720dp</dimen>
     <dimen name="stage_stroke_size">0.5dp</dimen>
     <dimen name="std_13dp">13dp</dimen>
+    <dimen name="common_padding_medication">2dp</dimen>
+
 </resources>

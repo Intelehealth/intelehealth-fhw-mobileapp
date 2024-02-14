@@ -130,8 +130,11 @@
     <string name="oxytocin_not_prescribed">Oxytocin not prescribed yet!</string>
     <string name="lbl_oxytocin_administration">Oxytocin Administration</string>
     <string name="lbl_assessment">Assessment</string>
-    <string name="lbl_add_new_plan">Add New Plan</string>
+    <string name="lbl_add_new_plan">Add Plan</string>
     <string name="enter_here">Enter here</string>
     <string name="lbl_plan_administration">Plan Administration</string>
+    <string name="follow">Follow</string>
+    <string name="planned_by_you">Planned by You</string>
+    <string name="assess_from_doctor">Assess from Doctor</string>
 
 </resources>

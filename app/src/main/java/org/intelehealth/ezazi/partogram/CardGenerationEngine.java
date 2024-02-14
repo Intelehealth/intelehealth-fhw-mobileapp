@@ -119,7 +119,7 @@ public class CardGenerationEngine {
                             syncUtils.syncBackground();
                         }
                     } else if (latestEncounterName.toLowerCase().contains("stage2")) {
-                        Log.d(TAG, "scanForNewCardEligibility: minutes : " + minutes);
+                        //Log.d(TAG, "scanForNewCardEligibility: minutes : " + minutes);
 
                         if (minutes >= 15) {
                             //out of time -decision pending
@@ -129,7 +129,7 @@ public class CardGenerationEngine {
                                 // get next encounter name
                                 String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
                                 if (nextEncounterTypeName != null) {
-                                    Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
+                                    //Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
                                     createNewEncounter(visitUid, nextEncounterTypeName);
                                 }
                             }

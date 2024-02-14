@@ -32,8 +32,8 @@ import org.intelehealth.ezazi.databinding.DialogIvfluidOptionsBinding;
 import org.intelehealth.ezazi.databinding.PartoLablRadioViewMedicineBinding;
 import org.intelehealth.ezazi.databinding.PartoLablRadioViewPlanBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewEzaziBinding;
-import org.intelehealth.ezazi.databinding.PartoLblRadioViewIvFluidBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewOxytocinBinding;
+import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.dialog.IVFluidBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.dialog.MedicineBottomSheetDialog;
@@ -43,14 +43,11 @@ import org.intelehealth.ezazi.partogram.model.Medication;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
-import org.intelehealth.ezazi.partogram.model.Plan;
-import org.intelehealth.ezazi.partogram.model.ValidatePartogramFields;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1010,18 +1007,23 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     private void showRadioOptionBoxForPlan(View tempView, ParamInfo info, TextView selected, String title) {
+        Log.d(TAG, "showRadioOptionBoxForPlan: ");
         PartoLablRadioViewPlanBinding binding = PartoLablRadioViewPlanBinding.bind(tempView);
 
         binding.clPlanCountView.setOnClickListener(v -> {
             @SuppressLint("SetTextI18n")
             PlanBottomSheetDialog dialog = PlanBottomSheetDialog.getInstance(info.getPlans(), mVisitUuid, (updated, deleted) -> {
                 info.setPlans(updated);
-                //info.setDeletedMedicines(deleted);
+                info.setDeletedPlans(deleted);
+                //info.setCapturedValue(updated);
                 setupPlansCountView(binding.tvPlanCount, updated);
             });
             dialog.setAccessMode(accessMode);
             dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
         });
+        setupPlansCountView(binding.tvPlanCount, info.getPlans());
+
+
 /*
         handleRadioCheckListener(tempView, info, new OnRadioCheckedListener() {
             @Override
@@ -1036,6 +1038,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             }
         });
 */
+
 
     }
     private void showRadioOptionBoxForAssessment(View tempView, ParamInfo info, TextView selected, String title) {
@@ -1066,7 +1069,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     }
     @SuppressLint("SetTextI18n")
-    private void setupPlansCountView(TextView textView, List<Plan> updated) {
+    private void setupPlansCountView(TextView textView, List<ObsDTO> updated) {
         if (updated.size() == 0) textView.setText(mContext.getString(R.string.lbl_add));
         else textView.setText("" + updated.size());
     }

@@ -174,14 +174,13 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
     }
 
     private void setOxytocinListView() {
-        Log.d(TAG, "setOxytocinListView: oxytocinsList.size() :"+oxytocinsList.size());
-        Log.d(TAG, "setOxytocinListView: listdat: "+new Gson().toJson(oxytocinsList));
         binding.btnSaveOxytocins.setEnabled(oxytocinsList.size() > 0);
         binding.rvOxytocins.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new OxytocinAdministerDataAdapter(requireContext(), oxytocinsList);
         adapter.setAccessMode(accessMode);
         adapter.setClickListener(this);
         binding.rvOxytocins.setAdapter(adapter);
+        changeSaveButtonStatus();
     }
 
     @Override
@@ -242,7 +241,10 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
 */
 
     private void changeSaveButtonStatus() {
-        if (adapter != null) binding.btnSaveOxytocins.setEnabled(adapter.getItemCount() > 0);
+        //if (adapter != null) binding.btnSaveOxytocins.setEnabled(adapter.getItemCount() > 0);
+        if (adapter != null) {
+            binding.btnSaveOxytocins.setEnabled(adapter.getItemCount() > 0 && accessMode != PartogramConstants.AccessMode.READ);
+        }
     }
 
     @Override
@@ -319,9 +321,13 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
     public void convertToPrescribedOxytocin(String obsUuid, String value, String createdDate) {
         Gson gson = new Gson();
         Medication oxytocinData = gson.fromJson(value, Medication.class);
-        Log.d(TAG, "convertToPrescribedOxytocin: oxytocinData : "+new Gson().toJson(oxytocinData));
         oxytocinData.setObsUuid(obsUuid);
-        oxytocinData.setCreatedAt(DateAndTimeUtils.formatDateTimeNew(createdDate));
+
+        if(!createdDate.isEmpty( ) && createdDate.contains("'T'")){
+            oxytocinData.setCreatedAt(DateAndTimeUtils.formatDateTimeNew(createdDate));
+        }else{
+            oxytocinData.setCreatedAt(createdDate);
+        }
         String status = oxytocinData.getInfusionStatus();
         String statusAdminister = "";
         if (status.equalsIgnoreCase("start")) {
@@ -334,12 +340,10 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
         oxytocinData.setInfusionStatus(statusAdminister);
         String strength = oxytocinData.getStrength() + " (U/L)";
         oxytocinData.setStrength(strength);
-        Log.d(TAG, "convertToPrescribedOxytocin: oxytocinDatafinal : "+new Gson().toJson(oxytocinData));
         prescribedOxytocins.add(oxytocinData);
     }
 
     private String getFormattedDate(String inputDateString) {
-        Log.d(TAG, "getFormattedDate: inputDateString : " + inputDateString);
         String formattedDate = "";
         if (inputDateString != null && !inputDateString.isEmpty()) {
             SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -360,8 +364,8 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
     private void manageUIVisibilityAsPerData(boolean isMedicinePrescribed) {
         if (isMedicinePrescribed) {
             binding.clPrescribedOxytocinRoot.setVisibility(View.VISIBLE);
-            binding.clOxytocinListContainer.setVisibility(View.GONE);
-            binding.tvLblAdministerOxytocin.setVisibility(View.GONE);
+            binding.clOxytocinListContainer.setVisibility(View.VISIBLE);
+            binding.tvLblAdministerOxytocin.setVisibility(View.VISIBLE);
 
         } else {
             binding.clPrescribedOxytocinRoot.setVisibility(View.GONE);

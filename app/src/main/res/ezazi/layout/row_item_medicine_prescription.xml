@@ -59,7 +59,7 @@
             android:id="@+id/btnMedicineAdminister"
             style="@style/Theme.EZazi.Button"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/btn_administer_height"
             android:layout_marginTop="@dimen/list_container_padding"
             android:contentDescription="@string/content_expand_collapse_indicator"
             android:text="@string/administer"

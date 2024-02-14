@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.ui.prescription.holder
 
+import android.view.View
 import org.intelehealth.ezazi.databinding.RowItemPrescriptionPlanBinding
 import org.intelehealth.ezazi.models.dto.ObsDTO
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
@@ -10,10 +11,17 @@ import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
  * Mob   : +919727206702
  **/
 class PrescriptionPlanHolder(val binding: RowItemPrescriptionPlanBinding) :
-    BaseViewHolder(binding.root) {
-    fun bind(plan: ObsDTO) {
+        BaseViewHolder(binding.root) {
+    fun bind(plan: ObsDTO, makeVisible: Boolean) {
         binding.plan = plan
         binding.btnPrescriptionPlanViewMore.setOnClickListener(this)
+        binding.btnFollowPlan.setOnClickListener(this)
         binding.btnPrescriptionPlanViewMore.tag = plan
+        if (makeVisible) {
+            binding.btnFollowPlan.visibility = View.VISIBLE
+        } else {
+            binding.btnFollowPlan.visibility = View.GONE
+
+        }
     }
 }

@@ -270,9 +270,6 @@ public class ObsDAO {
     }
 
     public boolean markedAsVoidedObsToDb(List<String> obsUuids) throws DAOException {
-       /* ##remove##kz if (obsDTO.size() > 0) {
-            return false;
-        }*/
         Log.e(TAG, "markedAsVoidedObsToDb: " + new Gson().toJson(obsUuids));
         boolean isUpdated = true;
         int updatedCount = 0;
@@ -358,10 +355,10 @@ public class ObsDAO {
         //UuidDictionary.IV_FLUIDS, UuidDictionary.OXYTOCIN_UL_DROPS_MIN
 
         //take All obs except image obs
-       /* Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' ",
-                new String[]{encounteruuid});*/
-        String query = "SELECT * FROM tbl_obs WHERE encounteruuid = ? AND (voided='0' OR (voided='1' AND (conceptuuid= ?  OR conceptuuid= ?)))";
-        Cursor idCursor = db.rawQuery(query, new String[]{encounteruuid, UuidDictionary.IV_FLUIDS, UuidDictionary.OXYTOCIN_UL_DROPS_MIN});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' ",
+                new String[]{encounteruuid});
+      /*  String query = "SELECT * FROM tbl_obs WHERE encounteruuid = ? AND (voided='0' OR (voided='1' AND (conceptuuid= ?  OR conceptuuid= ?)))";
+        Cursor idCursor = db.rawQuery(query, new String[]{encounteruuid, UuidDictionary.IV_FLUIDS, UuidDictionary.OXYTOCIN_UL_DROPS_MIN});*/
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {

@@ -11,7 +11,7 @@
 
         <variable
             name="plan"
-            type="org.intelehealth.ezazi.partogram.model.Plan" />
+            type="org.intelehealth.ezazi.models.dto.ObsDTO"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,6 +68,7 @@
                     android:backgroundTint="@color/white"
                     android:gravity="start"
                     android:hint="@string/enter_here"
+                    android:text="@{plan.value}"
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
                     android:lineSpacingExtra="@dimen/std_4dp"

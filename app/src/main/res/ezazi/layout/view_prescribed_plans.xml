@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/screen_padding"
             android:contentDescription="@string/lbl_add_new_medicine"
-            android:text="@string/lbl_prescription"
+            android:text="@string/assess_from_doctor"
             app:layout_constraintBottom_toTopOf="@+id/clPlansListContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

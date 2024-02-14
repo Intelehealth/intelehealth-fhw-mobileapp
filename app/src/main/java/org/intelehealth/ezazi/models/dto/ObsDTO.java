@@ -1,12 +1,18 @@
 
 package org.intelehealth.ezazi.models.dto;
 
+import static org.intelehealth.ezazi.utilities.DateAndTimeUtils.formatDateTimeNew;
+
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
 
@@ -126,12 +132,22 @@ public class ObsDTO implements ItemHeader {
     }
 
 
-       public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 
     public String getCreatedDate() {
-        return DateTimeUtils.utcToLocalDate(createdDate, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
+        Log.d("TAG", "getCreatedDate: createdDate : " + createdDate);
+        if (createdDate != null && !createdDate.isEmpty()) {
+            if (createdDate.contains("T")) {
+                return formatDateTimeNew(createdDate);
+            } else if (createdDate.contains("am") || createdDate.contains("pm")) {
+                return createdDate;
+            } else {
+                return DateTimeUtils.utcToLocalDate(createdDate, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
+            }
+        }
+        return "";
     }
 
     public String dateWithDrName() {
@@ -178,4 +194,20 @@ public class ObsDTO implements ItemHeader {
     public int getMinLine() {
         return minLine;
     }
+
+    public boolean isValidPlan() {
+        return value != null && value.length() > 0;
+    }
+
+    public ObsDTO toObs(String encounterId, String creator) {
+        ObsDTO obs = new ObsDTO();
+        obs.setUuid(uuid);
+        obs.setConceptuuid(UuidDictionary.PLAN);
+        obs.setValue(value);
+        obs.setCreator(creator);
+        obs.setEncounteruuid(encounterId);
+        Log.e("plans", "toObs: " + new Gson().toJson(obs));
+        return obs;
+    }
+
 }

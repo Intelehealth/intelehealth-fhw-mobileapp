@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
+import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 
@@ -58,7 +59,7 @@ public class ParamInfo implements Serializable {
     private List<Medicine> medicines;
     private List<Medication> ivFluidsList;
     private List<Medication> oxytocinList;
-    private List<Plan> plansList;
+    private List<ObsDTO> plansList;
 
     public boolean isFiveHourField() {
         return isFiveHourField;
@@ -71,6 +72,8 @@ public class ParamInfo implements Serializable {
     private List<Medicine> deletedMedicines;
     private boolean isFiveHourField;
     private List<Medicine> prescribedMedicines;
+    private List<ObsDTO> deletedPlans;
+
 
     public enum RadioOptions {
         YES, NO, NO_VALUE
@@ -333,6 +336,8 @@ public class ParamInfo implements Serializable {
 
     public Medication getMedication(String obsUUid, String value, String createdDate, String conceptUUID) {
         Log.d("TAG", "getMedication: value : " + value);
+        Log.d("TAG", "getMedication: createdDate : " + createdDate);
+
         try {
             Gson gson = new Gson();
             Medication medicationData = gson.fromJson(value, Medication.class);
@@ -342,8 +347,14 @@ public class ParamInfo implements Serializable {
             Medication medication = new Medication();
             medication = gson.fromJson(value, Medication.class);
             medication.setObsUuid(obsUUid);
-            String createdAt = formatDateTimeNew(createdDate);
-            medication.setCreatedAt(createdAt);
+           // String createdAt = formatDateTimeNew(createdDate);
+            //medication.setCreatedAt(createdAt);
+
+            if(!createdDate.isEmpty( ) && createdDate.contains("'T'")){
+                medication.setCreatedAt(DateAndTimeUtils.formatDateTimeNew(createdDate));
+            }else{
+                medication.setCreatedAt(createdDate);
+            }
             String status = medicationData.getInfusionStatus();
             String statusAdminister = "";
             if (status.equalsIgnoreCase("start")) {
@@ -355,6 +366,8 @@ public class ParamInfo implements Serializable {
             }
             Log.d("TAG", "getMedication: conceptUUID : " + conceptUUID);
             medicationData.setInfusionStatus(statusAdminister);
+            //medication.setInfusionStatus(statusAdminister);
+
             //medication = getMedication();
             if (conceptUUID != null && !conceptUUID.isEmpty()) {
                 if (conceptUUID.equals(UuidDictionary.IV_FLUIDS)) {
@@ -379,6 +392,7 @@ public class ParamInfo implements Serializable {
             }
             return medicationData;
         } catch (JsonSyntaxException e) {
+            e.printStackTrace();
             return getMedication();
         }
     }
@@ -443,11 +457,11 @@ public class ParamInfo implements Serializable {
         this.oxytocinList = oxytocinList;
     }
 
-    public void setPlans(List<Plan> plansList) {
+    public void setPlans(List<ObsDTO> plansList) {
         this.plansList = plansList;
     }
 
-    public List<Plan> getPlans() {
+    public List<ObsDTO> getPlans() {
         if (plansList == null) plansList = new ArrayList<>();
         return plansList;
     }
@@ -455,9 +469,9 @@ public class ParamInfo implements Serializable {
     public void collectAllPlansInList(String obsUuid, String value, String createdDate) {
         Log.d("TAG", "collectAllPlansInList:createdDate: " + createdDate);
         try {
-            Plan plan = new Plan();
-            plan.setObsUuid(obsUuid);
-            plan.setPlanDetails(value);
+            ObsDTO plan = new ObsDTO();
+            plan.setUuid(obsUuid);
+            plan.setValue(value);
             //String createdAt = formatDateTimeNew(createdDate);
             plan.setCreatedDate(createdDate);
             getPlans().add(plan);
@@ -467,5 +481,34 @@ public class ParamInfo implements Serializable {
         }
 
     }
+    public List<ObsDTO> getPlansObsList(String encounterId, String creator) {
+        ArrayList<ObsDTO> obsList = new ArrayList<>();
+        for (ObsDTO obsDTO : getPlans()) {
 
+            obsList.add(obsDTO.toObs(encounterId, creator));
+        }
+        return obsList;
+    }
+
+    public List<String> getVoidedPlansUuid() {
+        ArrayList<String> voided = new ArrayList<>();
+        for (ObsDTO obsDTO : getDeletedPlans()) {
+            if (obsDTO.getUuid() != null && obsDTO.getUuid().length() > 0) {
+                voided.add(obsDTO.getUuid());
+            }
+        }
+        return voided;
+    }
+    public void setDeletedPlans(List<ObsDTO> deletedPlans) {
+        this.deletedPlans = deletedPlans;
+    }
+
+    public List<ObsDTO> getDeletedPlans() {
+        if (deletedPlans == null) deletedPlans = new ArrayList<>();
+        //if (checkedRadioOption == RadioOptions.NO && getMedicines().size() > 0) {
+        if (getPlans().size() > 0) {
+            deletedPlans.addAll(getPlans());
+        }
+        return deletedPlans;
+    }
 }

@@ -20,7 +20,8 @@ public class BindingAdapters {
             } else {
                 displayText = medication.getType();
             }
-            textView.setText(displayText);
+
+            textView.setText("Type : " + displayText);
         }
     }
 }

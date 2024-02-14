@@ -12,9 +12,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +20,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -32,18 +29,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
-import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.databinding.PlansListBottomSheetDialogBinding;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
-import org.intelehealth.ezazi.partogram.adapter.MedicineAdapter;
 import org.intelehealth.ezazi.partogram.adapter.PlansByHealthWorkerAdapter;
-import org.intelehealth.ezazi.partogram.adapter.PrescribedMedicinesAdapter;
-import org.intelehealth.ezazi.partogram.model.Plan;
+import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.prescription.adapter.PrescriptionAdapter;
 import org.intelehealth.ezazi.ui.prescription.data.PrescriptionRepository;
-import org.intelehealth.ezazi.ui.prescription.viewmodel.PrescriptionViewModel;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
 import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.ScreenUtils;
@@ -55,13 +48,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements BaseViewHolder.ViewHolderClickListener, View.OnClickListener {
+public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
+        BaseViewHolder.ViewHolderClickListener, View.OnClickListener {
     private static final String TAG = "PlanBottomSheetDialog";
     private static String mVisitUUID;
     private LinkedList<ItemHeader> plansList;
 
     private PlanListChangeListener planListChangeListener;
-    private List<Plan> deletedPlans;
+    private List<ObsDTO> deletedPlans;
     private PlansListBottomSheetDialogBinding binding;
     private PlansByHealthWorkerAdapter adapter;
 
@@ -75,19 +69,50 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
         this.accessMode = accessMode;
     }
 
+    @Override
+    public void onViewHolderViewClicked(@Nullable View view, int position) {
+        if (view == null)
+            return;
+        if (view.getId() == R.id.btnEditPlan) {
+            if (adapter.getItem(position) instanceof ObsDTO obsDTO) {
+                binding.includeAddNewPlanDialog.setPlan(obsDTO);
+                binding.includeAddNewPlanDialog.setUpdatePosition(position);
+                binding.clAddNewPlanRoot.setVisibility(View.VISIBLE);
+                binding.btnAddMorePlan.setVisibility(View.GONE);
+                binding.includeAddNewPlanDialog.btnAddPlanAdd.setText(getString(R.string.update));
+            }
+        } else if (view.getId() == R.id.btnDeletePlan) {
+            showConfirmationDialog(position);
+        } else if (view.getId() == R.id.btnExpandCollapseIndicator) {
+            adapter.setExpandedItemPosition(position);
+        } else if (view.getId() == R.id.btnPrescriptionPlanViewMore) {
+            ObsDTO obs = (ObsDTO) view.getTag();
+            obs.updateVisibleContentLine();
+            adapter.notifyItemChanged(position);
+        } else if (view.getId() == R.id.btnFollowPlan) {
+            closePrescribedPlanDialog();
+            if (prescriptionAdapter.getItem(position) instanceof ObsDTO obsDTO) {
+                Log.d(TAG, "onViewHolderViewClicked: ");
+                binding.includeAddNewPlanDialog.setPlan(obsDTO);
+                //binding.includeAddNewPlanDialog.setUpdatePosition(position);
+                binding.clAddNewPlanRoot.setVisibility(View.VISIBLE);
+                binding.btnAddMorePlan.setVisibility(View.GONE);
+                binding.includeAddNewPlanDialog.btnAddPlanAdd.setText(getString(R.string.lbl_add));
+            }
+        }
+    }
+
     public interface PlanListChangeListener {
-        void onPlanListChanged(List<Plan> updated, List<Plan> deleted);
+        void onPlanListChanged(List<ObsDTO> updated, List<ObsDTO> deleted);
     }
 
     public void setListener(PlanListChangeListener listener) {
         this.planListChangeListener = listener;
     }
 
-    public static PlanBottomSheetDialog getInstance(List<Plan> plansList, String visitUuid,
-                                                    PlanListChangeListener listener) {
+    public static PlanBottomSheetDialog getInstance(List<ObsDTO> plansList, String visitUuid, PlanListChangeListener listener) {
         PlanBottomSheetDialog dialog = new PlanBottomSheetDialog();
         dialog.setPlans(new ArrayList<>(plansList));
-        //dialog.setPrescribedMedicines(new ArrayList<>(prescribedMedicines));
         mVisitUUID = visitUuid;
         dialog.setListener(listener);
         return dialog;
@@ -98,7 +123,7 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
         super(R.layout.plans_list_bottom_sheet_dialog);
     }
 
-    public void setPlans(List<Plan> plansList) {
+    public void setPlans(List<ObsDTO> plansList) {
         this.plansList = new LinkedList<>();
         this.plansList.addAll(plansList);
     }
@@ -122,7 +147,6 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
         behavior.setPeekHeight(ScreenUtils.getInstance(requireContext()).getHeight());
         behavior.addBottomSheetCallback(getCallback(behavior));
 
-        getPrescribedMedicineDetails();
         showPrescribedPlansDialog();
         setPlanListView();
         setButtonClickListener();
@@ -133,8 +157,6 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
         addBottomMarginIfVersion13();
     }
 
-    private void getPrescribedMedicineDetails() {
-    }
 
     private void addBottomMarginIfVersion13() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -276,50 +298,19 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
         binding.rvPlan.setAdapter(adapter);
     }
 
-    @Override
-    public void onViewHolderViewClicked(@Nullable View view, int position) {
-        if (view == null) return;
-        if (view.getId() == R.id.btnEditMedicine) {
-            if (adapter.getItem(position) instanceof Plan plan) {
-                binding.includeAddNewPlanDialog.setPlan(plan);
-                binding.includeAddNewPlanDialog.setUpdatePosition(position);
-                binding.clAddNewPlanRoot.setVisibility(View.VISIBLE);
-                binding.btnAddMorePlan.setVisibility(View.GONE);
-                binding.includeAddNewPlanDialog.btnAddPlanAdd.setText(getString(R.string.update));
-            }
-        } else if (view.getId() == R.id.btnMedicineDelete) {
-            showConfirmationDialog(position);
-        } else if (view.getId() == R.id.clMedicineRowItemRoot) {
-            adapter.setExpandedItemPosition(position);
-        } else if (view.getId() == R.id.btnExpandCollapseIndicator) {
-            adapter.setExpandedItemPosition(position);
-        } else if (view.getId() == R.id.btnExpandCollapseIndicator1) {
-            prescriptionAdapter.setExpandedItemPosition(position);
-        } else if (view.getId() == R.id.btnMedicineAdminister) {
-            closePrescribedPlanDialog();
-            if (prescriptionAdapter.getItem(position) instanceof Plan plan) {
-                binding.includeAddNewPlanDialog.setPlan(plan);
-                //binding.includeAddNewMedicineDialog.setUpdatePosition(position);
-                binding.clAddNewPlanRoot.setVisibility(View.VISIBLE);
-                binding.btnAddMorePlan.setVisibility(View.GONE);
-                binding.includeAddNewPlanDialog.btnAddPlanAdd.setText(getString(R.string.lbl_add));
-            }
-        }
-    }
-
     private void showConfirmationDialog(int position) {
         ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(requireContext()).content(getString(R.string.alert_delete_medicine)).positiveButtonLabel(R.string.button_delete).negativeButtonLabel(R.string.no).build();
 
         dialog.setListener(() -> {
-            addToDeletedMedicinesList((Plan) adapter.getItem(position));
+            addToDeletedMedicinesList((ObsDTO) adapter.getItem(position));
             adapter.remove(position);
         });
         dialog.show(getChildFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void addToDeletedMedicinesList(Plan item) {
+    private void addToDeletedMedicinesList(ObsDTO item) {
         if (deletedPlans == null) deletedPlans = new ArrayList<>();
-        if (item.getObsUuid() != null) deletedPlans.add(item);
+        if (item.getUuid() != null) deletedPlans.add(item);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -327,7 +318,7 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnAddMorePlan:
-                setupMedicines();
+                setupPlan();
                 openNewPlanDialog();
                 binding.btnAddMorePlan.setVisibility(View.GONE);
                 binding.includeAddNewPlanDialog.btnAddPlanAdd.setText(getString(R.string.lbl_add));
@@ -335,13 +326,13 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
             case R.id.btnAddPlanAdd:
                 binding.btnAddMorePlan.setVisibility(View.VISIBLE);
                 closeNewPlanDialog();
-                Plan plan = validatePlanFormInput();
+                ObsDTO plan = validatePlanFormInput();
                 if (plan.isValidPlan()) {
                     int updated = -1;
                     if (binding.includeAddNewPlanDialog.getUpdatePosition() != null) {
                         updated = binding.includeAddNewPlanDialog.getUpdatePosition();
                         if (binding.includeAddNewPlanDialog.getPlan() != null)
-                            plan.setObsUuid(binding.includeAddNewPlanDialog.getPlan().getObsUuid());
+                            plan.setUuid(binding.includeAddNewPlanDialog.getPlan().getUuid());
                     }
                     if (updated > -1) adapter.updateItemAt(updated, plan);
                     else adapter.addItem(plan);
@@ -353,7 +344,7 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
                 binding.btnAddMorePlan.setVisibility(View.VISIBLE);
                 closeNewPlanDialog();
                 break;
-            case R.id.btnSaveMedicines:
+            case R.id.btnSavePlan:
                 saveAndUpdateFinalListOfMedicines();
                 break;
             case R.id.btnViewPrescriptionMedicine:
@@ -363,11 +354,11 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
     }
 
     private void saveAndUpdateFinalListOfMedicines() {
-        List<Plan> medicinesList = new ArrayList<>();
+        List<ObsDTO> plansList = new ArrayList<>();
         for (ItemHeader item : adapter.getList()) {
-            if (item instanceof Plan) medicinesList.add((Plan) item);
+            if (item instanceof ObsDTO) plansList.add((ObsDTO) item);
         }
-        planListChangeListener.onPlanListChanged(medicinesList, deletedPlans);
+        planListChangeListener.onPlanListChanged(plansList, deletedPlans);
         dismiss();
     }
 
@@ -378,16 +369,16 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
         validatePlanFormInput();
     }
 
-    private Plan validatePlanFormInput() {
-        Plan plan = new Plan();
-        plan.setPlanDetails(binding.includeAddNewPlanDialog.etNewPlan.getText().toString());
+    private ObsDTO validatePlanFormInput() {
+        ObsDTO plan = new ObsDTO();
+        plan.setValue(binding.includeAddNewPlanDialog.etNewPlan.getText().toString());
 
         binding.includeAddNewPlanDialog.btnAddPlanAdd.setEnabled(plan.isValidPlan());
         return plan;
     }
 
     private void buildAddNewPlanDialog() {
-        setupMedicines();
+        setupPlan();
         binding.includeAddNewPlanDialog.etNewPlan.addTextChangedListener(listener);
     }
 
@@ -398,7 +389,7 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
         }
     };
 
-    private void setupMedicines() {
+    private void setupPlan() {
         binding.clPlanListContainer.setVisibility(View.VISIBLE);
         binding.tvLblAdministerPlan.setVisibility(View.VISIBLE);
     }
@@ -408,7 +399,7 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
         if (adapter != null && adapter.getList().size() > 0) {
             for (String item : medicineItem) {
                 for (ItemHeader medItem : adapter.getList()) {
-                    if (medItem instanceof Plan medicine && !medicine.getPlanDetails().equals(item)) {
+                    if (medItem instanceof ObsDTO obsDTO && !obsDTO.getValue().equals(item)) {
                         filteredItems.add(item);
                     }
                 }
@@ -492,45 +483,6 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
         binding.clPrescribedPlanRoot.startAnimation(bottomDown);
     }
 
-/*
-    private void getPrescribedPlansDetails() {
-
-        List<ObsDTO> mPrescribedPlansList = new ObsDAO().getAllPrescribedPlansByDoctor(mVisitUUID);
-        if (mPrescribedPlansList != null && mPrescribedPlansList.size() > 0) {
-            manageUIVisibilityAsPerData(true);
-
-            prescribedMedicines = new ArrayList<>();
-            for (int i = 0; i < mPrescribedPlansList.size(); i++) {
-                ObsDTO obsDTO = mPrescribedPlansList.get(i);
-                convertToPrescribedMedicine(obsDTO.getUuid(), obsDTO.getValue());
-            }
-            setPrescribedMedicines(prescribedMedicines);
-            binding.includedPrescribedPlan.rvPrescribedPlans.setLayoutManager(new LinearLayoutManager(requireContext()));
-            prescribedMedicinesAdapter = new PrescribedMedicinesAdapter(requireContext(), prescribedMedicinesList);
-            prescribedMedicinesAdapter.setAccessMode(accessMode);
-            prescribedMedicinesAdapter.setClickListener(this);
-            binding.includedPrescribedPlan.rvPrescribedPlans.setAdapter(prescribedMedicinesAdapter);
-        } else {
-            //There is no prescribed medicines
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.medicines_not_prescribed), Toast.LENGTH_LONG).show();
-            manageUIVisibilityAsPerData(false);
-
-        }
-    }
-*/
-
-   /* public void convertToPrescribedMedicine(String obsUuid, String value) {
-        Plan plan = new Plan();
-        plan.setObsUuid(obsUuid);
-        plan.dbFormatToMedicineObject(value);
-        prescribedMedicines.add(plan);
-    }
-
-    public List<Plan> getPrescribedPlans() {
-        if (prescribedPlans == null) prescribedPlans = new ArrayList<>();
-        return prescribedPlans;
-    }*/
-
     private void manageUIVisibilityAsPerData(boolean isPlanPrescribed) {
         if (isPlanPrescribed) {
             binding.clPrescribedPlanRoot.setVisibility(View.VISIBLE);
@@ -558,15 +510,18 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements 
             binding.includedPrescribedPlan.rvPrescribedPlans.setLayoutManager(new LinearLayoutManager(requireContext()));
             prescriptionAdapter = new PrescriptionAdapter(requireContext(), linkedListPlansPrescription);
             prescriptionAdapter.setAccessMode(accessMode);
-            prescriptionAdapter.setClickListener(this);
-            binding.includedPrescribedPlan.rvPrescribedPlans.setAdapter(prescriptionAdapter);
-            prescriptionAdapter.updateItems(new ArrayList<>(plansPrescriptionList));
+            //prescriptionAdapter.updateItems(new ArrayList<>(plansPrescriptionList));
             ///adapter.setClickListener(PrescriptionActivity.this);
-            prescriptionAdapter.setAccessMode(PartogramConstants.AccessMode.READ);
+            //prescriptionAdapter.manageFollowPlanButtonVisibility(true);
+            prescriptionAdapter.setClickListener(this);
+            prescriptionAdapter.manageFollowUpButtonVisibility(true);
+            binding.includedPrescribedPlan.rvPrescribedPlans.setAdapter(prescriptionAdapter);
+
         } else {
             //viewMode.updateFailResult(getString(R.string.no_prescription));
         }
 
     }
+
 }
 

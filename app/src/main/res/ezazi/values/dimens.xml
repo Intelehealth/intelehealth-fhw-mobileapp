@@ -297,4 +297,6 @@
     <dimen name="elcg_alert_icon_size">@dimen/std_36dp</dimen>
     <dimen name="elcg_alert_text_size">@dimen/std_12sp</dimen>
     <dimen name="timeline_bottom_menu_icon_size">@dimen/std_16dp</dimen>
+    <dimen name="btn_administer_height">30dp</dimen>
+
 </resources>

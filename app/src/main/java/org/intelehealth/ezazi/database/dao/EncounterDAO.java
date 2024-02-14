@@ -78,7 +78,7 @@ public class EncounterDAO {
                 db.update("tbl_encounter", values, "uuid = ?", new String[]{encounter.getUuid()});
                 return true;
             } else {
-                Log.d("VALUES:", "VALUES: " + values);
+                //Log.d("VALUES:", "VALUES: " + values);
                 createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
         } catch (SQLException e) {
