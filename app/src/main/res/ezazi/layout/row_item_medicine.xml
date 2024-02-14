@@ -18,103 +18,117 @@
             type="org.intelehealth.ezazi.partogram.PartogramConstants.AccessMode" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/clMedicineRowItemRoot"
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cvPrescriptionMedication"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/list_container_padding"
-        android:background="@drawable/selector_list_item">
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/std_8dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clMedicineNameRow"
+            android:id="@+id/clMedicineRowItemRoot"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/selector_list_item"
-            android:padding="@dimen/screen_container_padding">
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/list_container_padding"
+            android:background="@drawable/selector_list_item">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvParamName"
-                style="@style/Theme.EZazi.Body"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/list_container_padding"
-                android:layout_marginEnd="@dimen/screen_container_padding"
-                android:layout_weight="2"
-                android:text="@{medicine.name}"
-                android:textColor="@color/gray_6"
-                android:textSize="@dimen/body"
-                app:layout_constraintEnd_toStartOf="@id/btnEditMedicine"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clMedicineNameRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector_list_item"
+                android:padding="@dimen/screen_container_padding">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvParamName"
+                    style="@style/Theme.EZazi.Body"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_container_padding"
+                    android:layout_marginEnd="@dimen/screen_container_padding"
+                    android:layout_weight="2"
+                    android:text="@{medicine.name}"
+                    android:textColor="@color/gray_6"
+                    android:textSize="@dimen/body"
+                    app:layout_constraintEnd_toStartOf="@id/btnEditMedicine"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Medicine Name" />
+
+                <TextView
+                    android:id="@+id/txtMedicineDate"
+                    style="@style/Theme.EZazi.Caption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal_padding"
+                    android:text="@{medicine.dateWithDrName()}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvParamName"
+                    tools:text="Dr.Vishal 25 Jan, 2023 12:00 PM" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnExpandCollapseIndicator"
+                    style="@style/Theme.EZazi.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/list_container_padding"
+                    android:contentDescription="@string/content_expand_collapse_indicator"
+                    android:paddingStart="@dimen/list_container_padding"
+                    android:paddingEnd="@dimen/list_container_padding"
+                    android:rotation="0"
+                    app:icon="@drawable/ic_dropdown"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMedicineDelete"
+                    style="@style/Theme.EZazi.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/list_container_padding"
+                    android:contentDescription="@string/content_expand_collapse_indicator"
+                    android:paddingStart="@dimen/list_container_padding"
+                    android:paddingEnd="@dimen/list_container_padding"
+                    android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
+                    app:icon="@drawable/ic_delete"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btnExpandCollapseIndicator"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEditMedicine"
+                    style="@style/Theme.EZazi.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/list_container_padding"
+                    android:contentDescription="@string/content_expand_collapse_indicator"
+                    android:paddingStart="@dimen/list_container_padding"
+                    android:paddingEnd="@dimen/list_container_padding"
+                    android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
+                    app:icon="@drawable/ic_mode_edit"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btnMedicineDelete"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/includeMedicineDetails"
+                layout="@layout/view_medicine_details"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingTop="@dimen/list_container_padding"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Medicine Name" />
+                app:layout_constraintTop_toBottomOf="@id/clMedicineNameRow"
+                bind:medDetails="@{medicine}" />
 
-            <TextView
-                android:id="@+id/txtMedicineDate"
-                style="@style/Theme.EZazi.Caption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_padding"
-                android:text="@{medicine.dateWithDrName()}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvParamName"
-                tools:text="Dr.Vishal 25 Jan, 2023 12:00 PM" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnExpandCollapseIndicator"
-                style="@style/Theme.EZazi.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/list_container_padding"
-                android:contentDescription="@string/content_expand_collapse_indicator"
-                android:paddingStart="@dimen/list_container_padding"
-                android:paddingEnd="@dimen/list_container_padding"
-                android:rotation="0"
-                app:icon="@drawable/ic_dropdown"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnMedicineDelete"
-                style="@style/Theme.EZazi.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/list_container_padding"
-                android:contentDescription="@string/content_expand_collapse_indicator"
-                android:paddingStart="@dimen/list_container_padding"
-                android:paddingEnd="@dimen/list_container_padding"
-                android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
-                app:icon="@drawable/ic_delete"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnExpandCollapseIndicator"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnEditMedicine"
-                style="@style/Theme.EZazi.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/list_container_padding"
-                android:contentDescription="@string/content_expand_collapse_indicator"
-                android:paddingStart="@dimen/list_container_padding"
-                android:paddingEnd="@dimen/list_container_padding"
-                android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
-                app:icon="@drawable/ic_mode_edit"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnMedicineDelete"
-                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include
-            android:id="@+id/includeMedicineDetails"
-            layout="@layout/view_medicine_details"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingTop="@dimen/list_container_padding"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clMedicineNameRow"
-            bind:medDetails="@{medicine}" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

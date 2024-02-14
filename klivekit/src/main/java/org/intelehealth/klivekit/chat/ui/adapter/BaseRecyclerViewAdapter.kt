@@ -11,6 +11,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
  * Mob   : +919727206702
  **/
 abstract class BaseRecyclerViewAdapter<I>(
-    private val ctx: Context,
-    private var lists: MutableList<I>
+    ctx: Context,
+    lists: MutableList<I>
 ) : BaseRecyclerViewHolderAdapter<I, ViewHolder>(ctx, lists)

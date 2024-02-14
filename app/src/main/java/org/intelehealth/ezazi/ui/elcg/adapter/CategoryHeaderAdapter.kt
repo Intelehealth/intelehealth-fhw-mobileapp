@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.ezazi.databinding.RowItemElcgStageHeaderBinding
+import org.intelehealth.ezazi.models.dto.ObsDTO
 import org.intelehealth.ezazi.ui.elcg.adapter.viewholder.ELCGStageHeaderHolder
 import org.intelehealth.ezazi.ui.elcg.model.CategoryHeader
+import org.intelehealth.ezazi.ui.prescription.adapter.PrescriptionAdapter
 import org.intelehealth.klivekit.chat.model.ItemHeader
 import org.intelehealth.klivekit.chat.ui.adapter.BaseRecyclerViewAdapter
 import java.util.LinkedList
@@ -18,6 +20,10 @@ import java.util.LinkedList
 abstract class CategoryHeaderAdapter(context: Context, objectsList: LinkedList<ItemHeader>) :
     BaseRecyclerViewAdapter<ItemHeader>(context, objectsList) {
 
+    override fun getItemViewType(position: Int): Int {
+        return if(getItem(position).isHeader()) HEADER
+        else super.getItemViewType(position)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == HEADER) {
             val binding = RowItemElcgStageHeaderBinding.inflate(inflater, parent, false)
