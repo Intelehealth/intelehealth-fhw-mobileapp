@@ -126,41 +126,43 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                 Log.v("node", "isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
                 Log.v("node", "enableExclusiveOption - " + node.isEnableExclusiveOption());
                 Log.v("node", "isExclusiveOption - " + node.isExclusiveOption());
-                if (!mParentNode.isMultiChoice()) {
-                    if (mParentNode.isEnableExclusiveOption()) {
-                        if (!node.isExclusiveOption()) {
+                try {
+                    if (!mParentNode.isMultiChoice()) {
+                        if (mParentNode.isEnableExclusiveOption()) {
+                            if (!node.isExclusiveOption()) {
+                                for (int i = 0; i < mItemList.size(); i++) {
+                                    if (!mItemList.get(i).isExclusiveOption())
+                                        mItemList.get(i).setSelected(false);
+                                }
+                            }
+                            mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
+                        } else {
                             for (int i = 0; i < mItemList.size(); i++) {
-                                if (!mItemList.get(i).isExclusiveOption())
+                                if (i == index) {
+                                    //mItemList.get(i).setSelected(i == index);
+                                    mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
+                                } else {
+                                    mItemList.get(i).setSelected(false);
+                                }
+                            }
+                        }
+                    } else {
+                        if (node.isExcludedFromMultiChoice()) {
+                            for (int i = 0; i < mItemList.size(); i++) {
+                                if (i != index && !mItemList.get(i).isExclusiveOption())
+                                    mItemList.get(i).setSelected(false);
+                            }
+                        } else {
+                            for (int i = 0; i < mItemList.size(); i++) {
+                                if (mItemList.get(i).isExcludedFromMultiChoice() && !node.isExclusiveOption())
                                     mItemList.get(i).setSelected(false);
                             }
                         }
                         mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
-                    } else {
-                        for (int i = 0; i < mItemList.size(); i++) {
-                            if (i == index) {
-                                //mItemList.get(i).setSelected(i == index);
-                                mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
-                            } else {
-                                mItemList.get(i).setSelected(false);
-                            }
-                        }
                     }
-                } else {
-                    if (node.isExcludedFromMultiChoice()) {
-                        for (int i = 0; i < mItemList.size(); i++) {
-                            if (i != index && !mItemList.get(i).isExclusiveOption())
-                                mItemList.get(i).setSelected(false);
-                        }
-                    } else {
-                        for (int i = 0; i < mItemList.size(); i++) {
-                            if (mItemList.get(i).isExcludedFromMultiChoice() && !node.isExclusiveOption())
-                                mItemList.get(i).setSelected(false);
-                        }
-                    }
-                    mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
-                }
-                mOnItemSelection.onSelect(mItemList.get(index), false);
-                notifyDataSetChanged();
+                    mOnItemSelection.onSelect(mItemList.get(index), false);
+                    notifyDataSetChanged();
+                }catch (Exception e){}
             });
 
         }
