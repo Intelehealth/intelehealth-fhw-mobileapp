@@ -333,7 +333,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         boolean isValidPlan = true;
 
         List<String> voidedMedicines = new ArrayList<>();
-        List<String> voidedPlans = new ArrayList<>();
+        //List<String> voidedPlans = new ArrayList<>();
 
         for (int i = 0; i < mItemList.size(); i++) {
             for (int j = 0; j < mItemList.get(i).getParamInfoList().size(); j++) {
@@ -386,8 +386,10 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         //isValidPlan = info.isValidMedicine();
                         // if (isValidMedicine && info.getCheckedRadioOption() != ParamInfo.RadioOptions.NO) {
                         obsDTOList.addAll(info.getPlansObsList(mEncounterUUID, new SessionManager(this).getCreatorID()));
+                        Log.e("obsDTOList", "obsDTOList: " + new Gson().toJson(obsDTOList));
+
                         // }
-                        voidedPlans = info.getVoidedPlansUuid();
+                        //voidedPlans = info.getVoidedPlansUuid();
                     } else {
                         ObsDTO obsDTOData = buildObservation(info);
 
@@ -441,7 +443,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
             try {
                 if (accessMode == PartogramConstants.AccessMode.EDIT) {
-                    Log.d(TAG, "saveObs: access mode : "+accessMode);
+                    Log.d(TAG, "saveObs: access mode : " + accessMode);
                     //new logic
                     for (int i = 0; i < obsDTOList.size(); i++) {
                         ObsDTO obsDTO = obsDTOList.get(i);
@@ -451,14 +453,14 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                             obsDAO.insertObs(obsDTO);
                         }
                     }
-                    Log.d(TAG, "saveObs: voidedMedicines  : "+voidedMedicines.size());
+                    Log.d(TAG, "saveObs: voidedMedicines  : " + voidedMedicines.size());
 
                     if (voidedMedicines.size() > 0) {
                         obsDAO.markedAsVoidedObsToDb(voidedMedicines);
                     }
-                    if (voidedPlans.size() > 0) {
+                  /*  if (voidedPlans.size() > 0) {
                         obsDAO.markedAsVoidedObsToDb(voidedPlans);
-                    }
+                    }*/
                 } else {
                     obsDAO.insertObsToDb(obsDTOList, TAG);
                 }
@@ -491,6 +493,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         obsDTOData.setConceptuuid(info.getConceptUUID());
         obsDTOData.setValue(info.getCapturedValue());
         obsDTOData.setComment(PartogramAlertEngine.getAlertName(info));
+        obsDTOData.setCreatorUuid(new SessionManager(this).getCreatorID());
         return obsDTOData;
     }
 

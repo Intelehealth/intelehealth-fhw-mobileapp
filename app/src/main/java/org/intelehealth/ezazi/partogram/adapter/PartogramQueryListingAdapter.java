@@ -1007,7 +1007,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     private void showRadioOptionBoxForPlan(View tempView, ParamInfo info, TextView selected, String title) {
-        Log.d(TAG, "showRadioOptionBoxForPlan: ");
+        Log.d(TAG, "showRadioOptionBoxForPlan: list: "+new Gson().toJson(info.getPlans()));
         PartoLablRadioViewPlanBinding binding = PartoLablRadioViewPlanBinding.bind(tempView);
 
         binding.clPlanCountView.setOnClickListener(v -> {

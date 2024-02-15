@@ -94,6 +94,7 @@ public class VisitCompletionHelper {
         obsDTO.setEncounteruuid(encounterUuid);
         obsDTO.setValue(value);
         obsDTO.setConceptuuid(conceptId);
+        obsDTO.setCreatorUuid(sessionManager.getCreatorID());
         return obsDTO;
     }
 

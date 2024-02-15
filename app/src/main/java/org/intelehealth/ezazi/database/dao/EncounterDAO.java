@@ -437,6 +437,7 @@ public class EncounterDAO {
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setUuid(UUID.randomUUID().toString());
             obsDTO.setEncounteruuid(encounteruuid);
+            obsDTO.setCreatorUuid(sessionManager.getCreatorID());
             obsDTO.setValue("emergency");
             obsDAO.insertObs(obsDTO);
         }

@@ -322,9 +322,12 @@ public class ObsDAO {
 
 
     public List<ObsDTO> obsDTOList(String encounteruuid) {
+        Log.d(TAG, "obsDTOList: kzcheckencounteruuid : "+encounteruuid);
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
+        String query =  "SELECT * FROM tbl_obs where encounteruuid = '"+ encounteruuid + "' AND (conceptuuid != '07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba' AND conceptuuid != '200b7a45-77bc-4986-b879-cc727f5f7d5b') AND sync IN ('0', 'FALSE', 'false')";
+        Log.d(TAG, "obsDTOList:kk query: "+query);
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND sync IN ('0', 'FALSE', 'false')",
                 new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
 
@@ -339,6 +342,8 @@ public class ObsDAO {
                     obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
                     obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
                     obsDTO.setVoided(Integer.parseInt(idCursor.getString(idCursor.getColumnIndexOrThrow("voided"))));
+                    obsDTO.setCreatorUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creatoruuid")));
+                    Log.d(TAG, "obsDTOList: creatoruuid : "+obsDTO.getCreatorUuid());
                     obsDTOList.add(obsDTO);
                 }
             }
@@ -705,6 +710,7 @@ public class ObsDAO {
             values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             values.put("voided", "0");
             values.put("sync", "0");
+            values.put("creatoruuid", sessionManager.getCreatorID());
             db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
             //   db.setTransactionSuccessful();
@@ -728,6 +734,7 @@ public class ObsDAO {
         obsDTO.setValue(value);
         obsDTO.setCreator(creatorId);
         obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_TYPE);
+        obsDTO.setCreatorUuid(creatorId);
         try {
             new ObsDAO().insertObs(obsDTO);
         } catch (DAOException e) {
@@ -752,6 +759,7 @@ public class ObsDAO {
         obsDTO.setValue(value);
         obsDTO.setCreator(creatorId);
         obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_TYPE);
+        obsDTO.setCreatorUuid(creatorId);
         Log.e(TAG, "createEncounterType: from screen =>" + from);
         return obsDTO;
     }

@@ -302,6 +302,7 @@ public class SmoothUpgrade {
                     ObsDTO.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
                     ObsDTO.setEncounteruuid(encounterUuid);
                     ObsDTO.setCreator("8af2f1eb-d7d1-452e-b211-9610947ee80d");
+                    ObsDTO.setCreatorUuid(sessionManager.getCreatorID());
 
                     try {
                         obsDAO.insertObs(ObsDTO);

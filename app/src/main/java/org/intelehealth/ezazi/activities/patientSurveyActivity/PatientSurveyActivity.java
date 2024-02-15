@@ -197,6 +197,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDTO.setEncounteruuid(uuid);
         obsDTO.setValue(mComments.getText().toString());
         obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
+        obsDTO.setCreatorUuid(sessionManager.getCreatorID());
         obsDTOList.add(obsDTO);
         try {
             obsDAO.insertObsToDb(obsDTOList, TAG);

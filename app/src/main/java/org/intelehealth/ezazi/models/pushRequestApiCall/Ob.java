@@ -22,6 +22,18 @@ public class Ob {
     @Expose
     private int voided;
 
+    @SerializedName("creatoruuid")
+    @Expose
+    private String creatorUuid;
+
+    public String getCreatorUuid() {
+        return creatorUuid;
+    }
+
+    public void setCreatorUuid(String creatorUuid) {
+        this.creatorUuid = creatorUuid;
+    }
+
     public String getUuid() {
         return uuid;
     }

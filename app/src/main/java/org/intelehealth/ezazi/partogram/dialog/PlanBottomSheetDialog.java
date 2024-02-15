@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -486,8 +487,8 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
     private void manageUIVisibilityAsPerData(boolean isPlanPrescribed) {
         if (isPlanPrescribed) {
             binding.clPrescribedPlanRoot.setVisibility(View.VISIBLE);
-            binding.clPlanListContainer.setVisibility(View.GONE);
-            binding.tvLblAdministerPlan.setVisibility(View.GONE);
+            binding.clPlanListContainer.setVisibility(View.VISIBLE);
+            binding.tvLblAdministerPlan.setVisibility(View.VISIBLE);
 
         } else {
             binding.clPrescribedPlanRoot.setVisibility(View.GONE);
@@ -505,8 +506,10 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
 
         plansPrescriptionList = new PrescriptionRepository(AppConstants.inteleHealthDatabaseHelper.getReadableDatabase()).fetchPlansPrescription(mVisitUUID, creatorId);
         LinkedList<ItemHeader> linkedListPlansPrescription = new LinkedList<>(plansPrescriptionList);
+        Log.d(TAG, "loadPrescriptions: plansPrescriptionList size: "+plansPrescriptionList);
+        if (plansPrescriptionList != null && plansPrescriptionList.size() > 0) {
+            manageUIVisibilityAsPerData(true);
 
-        if (plansPrescriptionList != null && !plansPrescriptionList.isEmpty()) {
             binding.includedPrescribedPlan.rvPrescribedPlans.setLayoutManager(new LinearLayoutManager(requireContext()));
             prescriptionAdapter = new PrescriptionAdapter(requireContext(), linkedListPlansPrescription);
             prescriptionAdapter.setAccessMode(accessMode);
@@ -518,6 +521,9 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
             binding.includedPrescribedPlan.rvPrescribedPlans.setAdapter(prescriptionAdapter);
 
         } else {
+            manageUIVisibilityAsPerData(false);
+            //Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.oxytocin_not_prescribed), Toast.LENGTH_LONG).show();
+
             //viewMode.updateFailResult(getString(R.string.no_prescription));
         }
 

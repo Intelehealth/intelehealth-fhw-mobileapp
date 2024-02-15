@@ -48,9 +48,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:contentDescription="@string/content_expand_collapse_indicator"
+                    app:icon="@drawable/ic_delete"
                     android:paddingStart="@dimen/list_container_padding"
                     android:paddingEnd="@dimen/list_container_padding"
-                    app:icon="@drawable/ic_delete"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
