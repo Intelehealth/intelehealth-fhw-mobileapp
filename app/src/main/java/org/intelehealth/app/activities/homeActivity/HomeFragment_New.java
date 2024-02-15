@@ -270,7 +270,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             int countReceivedPrescription = getCurrentMonthsVisits(true);
 
             int total = pendingCountTotalVisits + countReceivedPrescription;
-            try {
+            //try {
                 requireActivity().runOnUiThread(() -> {
                     String prescCountText = countReceivedPrescription + " " + getResources().getString(R.string.out_of) + " " + total + " " + getResources().getString(R.string.received).toLowerCase();
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -278,7 +278,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                     }
                     prescriptionCountTextView.setText(prescCountText);
                 });
-            }catch (Exception ignored){}
+            //}catch (Exception ignored){}
         });
 
         //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.

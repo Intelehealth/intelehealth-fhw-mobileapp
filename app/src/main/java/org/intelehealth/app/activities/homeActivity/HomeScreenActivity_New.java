@@ -1287,6 +1287,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
+        unregisterReceiver(syncBroadcastReceiver);
     }
 
 
