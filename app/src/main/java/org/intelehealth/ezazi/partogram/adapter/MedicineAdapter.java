@@ -36,6 +36,12 @@ public class MedicineAdapter extends CategoryHeaderAdapter {
         this.clickListener = clickListener;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (getItem(position) instanceof Medicine) return MEDICINE;
+        else return super.getItemViewType(position);
+    }
+
     public void setExpandedItemPosition(int expandedItemPosition) {
         if (expandedItemPosition == this.expandedItemPosition) {
             this.expandedItemPosition = -1;

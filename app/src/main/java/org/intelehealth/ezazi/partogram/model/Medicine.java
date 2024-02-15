@@ -7,9 +7,11 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.io.Serializable;
 
@@ -219,7 +221,7 @@ public class Medicine implements Serializable, ItemHeader {
     @NonNull
     @Override
     public String createdDate() {
-        return createdAt;
+        return DateTimeUtils.utcToLocalDate(createdAt, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
     }
 
     public void setCreatedAt(String createdAt) {
@@ -235,6 +237,6 @@ public class Medicine implements Serializable, ItemHeader {
     }
 
     public String dateWithDrName() {
-        return creatorName + " " + createdAt;
+        return creatorName + " " + createdDate();
     }
 }

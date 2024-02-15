@@ -49,6 +49,7 @@ import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.ScreenUtils;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -149,9 +150,13 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             params.bottomMargin = params.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
             binding.btnSaveMedicines.setLayoutParams(params);
 
-            ConstraintLayout.LayoutParams params1 = (ConstraintLayout.LayoutParams) binding.clAddNewMedicineRoot.getLayoutParams();
-            params1.bottomMargin = params1.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
-            binding.clAddNewMedicineRoot.setLayoutParams(params1);
+            ConstraintLayout.LayoutParams paramsPres = (ConstraintLayout.LayoutParams) binding.btnViewPrescriptionMedicine.getLayoutParams();
+            paramsPres.bottomMargin = params.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
+            binding.btnViewPrescriptionMedicine.setLayoutParams(paramsPres);
+
+//            ConstraintLayout.LayoutParams params1 = (ConstraintLayout.LayoutParams) binding.clAddNewMedicineRoot.getLayoutParams();
+//            params1.bottomMargin = params1.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
+//            binding.clAddNewMedicineRoot.setLayoutParams(params1);
 
             ConstraintLayout.LayoutParams params2 = (ConstraintLayout.LayoutParams) binding.includedPrescribedMedicines.btnHidePrescribedDialog.getLayoutParams();
             params2.bottomMargin = params2.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
@@ -419,7 +424,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
         medicine.setDurationUnit(binding.includeAddNewMedicineDialog.autoCompleteMedicineDurationUnit.getText().toString());
         medicine.setDuration(binding.includeAddNewMedicineDialog.etMedicineDuration.getText().toString());
         medicine.setRemark(binding.includeAddNewMedicineDialog.etRemark.getText().toString());
-
+        medicine.setCreatedAt(DateTimeUtils.getCurrentDateWithDBFormat());
+        medicine.setCreatorName("You");
         binding.includeAddNewMedicineDialog.btnAddMedicineAdd.setEnabled(medicine.isValidMedicine());
         return medicine;
     }

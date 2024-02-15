@@ -34,6 +34,12 @@ public class PrescribedMedicinesAdapter extends CategoryHeaderAdapter {
         this.clickListener = clickListener;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (getItem(position).isHeader()) return HEADER;
+        else return super.getItemViewType(position);
+    }
+
     public void setExpandedItemPosition(int expandedItemPosition) {
         if (expandedItemPosition == this.expandedItemPosition) {
             this.expandedItemPosition = -1;
@@ -53,8 +59,11 @@ public class PrescribedMedicinesAdapter extends CategoryHeaderAdapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RowItemMedicinePrescriptionBinding binding = RowItemMedicinePrescriptionBinding.inflate(getInflater(), parent, false);
-        return new PrescribedMedicineViewHolder(binding);
+        if (viewType != HEADER) {
+            RowItemMedicinePrescriptionBinding binding = RowItemMedicinePrescriptionBinding.inflate(getInflater(), parent, false);
+            return new PrescribedMedicineViewHolder(binding);
+        }
+        return super.onCreateViewHolder(parent, viewType);
     }
 
     @Override

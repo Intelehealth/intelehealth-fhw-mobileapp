@@ -23,10 +23,8 @@ class PrescriptionAdapter(
     private var followPlanButtonVisible: Boolean = true
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).isHeader()) HEADER
-        else if (getItem(position) is ObsDTO) PLAN
-        else if (getItem(position) is Medicine) MEDICINE
-        else if (getItem(position) is Medication) MEDICATION
+        val item = getItem(position)
+        return if(item is ObsDTO && item.isHeader().not()) PLAN
         else super.getItemViewType(position)
     }
 

@@ -418,6 +418,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                 fabc.setEnabled(false);
                 fabv.setEnabled(false);
                 fabSOS.setEnabled(false);
+                fabPrescription.setEnabled(false);
                 endStageButton.setEnabled(false);
             }
 
@@ -433,6 +434,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             fabc.setVisibility(View.GONE);
             fabv.setVisibility(View.GONE);
             fabSOS.setVisibility(View.GONE);
+            fabPrescription.setVisibility(View.GONE);
         }
 
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
