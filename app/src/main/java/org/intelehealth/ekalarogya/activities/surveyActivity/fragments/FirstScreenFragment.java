@@ -1,16 +1,13 @@
 package org.intelehealth.ekalarogya.activities.surveyActivity.fragments;
 
 import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity.patientAttributesDTOList;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfCheckboxesEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getIndex;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getOtherStringEdit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyStrings;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyValue;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -47,7 +44,7 @@ public class FirstScreenFragment extends Fragment {
     private FragmentFirstScreenBinding binding;
     private String patientUuid;
     private final PatientsDAO patientsDAO = new PatientsDAO();
-    private Context updatedContext = null;
+    private Resources updatedResources = null;
     private SessionManager sessionManager;
 
     @Override
@@ -56,7 +53,7 @@ public class FirstScreenFragment extends Fragment {
         Intent intent = requireActivity().getIntent();
         if (intent != null)
             patientUuid = intent.getStringExtra("patientUuid");
-        updatedContext = ((SurveyActivity) requireActivity()).getUpdatedContext();
+        updatedResources = ((SurveyActivity) requireActivity()).getUpdatedResources();
         sessionManager = ((SurveyActivity) requireActivity()).getSessionManager();
     }
 
@@ -98,7 +95,7 @@ public class FirstScreenFragment extends Fragment {
             }
             try {
                 insertData();
-            } catch ( DAOException exception ) {
+            } catch (DAOException exception) {
                 exception.printStackTrace();
             }
         });
@@ -191,8 +188,8 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
         patientAttributesDTO.setValue(StringUtils.getSurveyStrings(binding.religionDropDown.getSelectedItem().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
@@ -234,8 +231,8 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("electricityStatus"));
         patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                 ((RadioButton) binding.householdElectricityRadioGroup.findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
@@ -263,8 +260,8 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
         patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                 ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById(binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
@@ -292,8 +289,8 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
         patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                 ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
@@ -305,8 +302,8 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnHealth"));
         patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                 ((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
@@ -318,8 +315,8 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnEducation"));
         patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                 ((RadioButton) binding.educationExpenditureRadioGroup.findViewById(binding.educationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
@@ -346,7 +343,7 @@ public class FirstScreenFragment extends Fragment {
             do {
                 try {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
-                } catch ( DAOException e ) {
+                } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
@@ -354,7 +351,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("religion")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        value1 = getSurveyStrings(value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        value1 = getSurveyStrings(value1, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
                         int position = getIndex(binding.religionDropDown, value1);
                         binding.religionDropDown.setSelection(position);
                     }
@@ -388,7 +385,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("electricityStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.householdElectricityRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        setSelectedCheckboxes(binding.householdElectricityRadioGroup, value1, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -412,7 +409,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("runningWaterAvailability")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.householdRunningWaterRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        setSelectedCheckboxes(binding.householdRunningWaterRadioGroup, value1, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -436,7 +433,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("averageAnnualHouseholdIncome")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.averageAnnualHouseholdIncomeRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        setSelectedCheckboxes(binding.averageAnnualHouseholdIncomeRadioGroup, value1, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -444,7 +441,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("averageExpenditureOnHealth")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.annualHealthExpenditureRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        setSelectedCheckboxes(binding.annualHealthExpenditureRadioGroup, value1, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -452,7 +449,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("averageExpenditureOnEducation")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.educationExpenditureRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        setSelectedCheckboxes(binding.educationExpenditureRadioGroup, value1, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -471,7 +468,7 @@ public class FirstScreenFragment extends Fragment {
                 religionAdapter = ArrayAdapter.createFromResource(requireContext(), religionId, android.R.layout.simple_spinner_dropdown_item);
             }
             binding.religionDropDown.setAdapter(religionAdapter);
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             Logger.logE("FirstScreenFragment", "#648", e);
         }
     }

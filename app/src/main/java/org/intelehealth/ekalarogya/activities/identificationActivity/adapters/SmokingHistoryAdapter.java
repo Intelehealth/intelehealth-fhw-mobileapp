@@ -3,6 +3,7 @@ package org.intelehealth.ekalarogya.activities.identificationActivity.adapters;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSmokingHistoryStrings;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,21 +21,21 @@ public class SmokingHistoryAdapter extends RecyclerView.Adapter<SmokingHistoryAd
 
     private final List<SmokingHistory> smokingHistoryList;
     private final String locale;
-    private final Context context;
-    private final Context updatedContext;
+    private final Resources resources;
+    private final Resources updatedResources;
     private final ViewPagerCallback callback;
 
     public SmokingHistoryAdapter(
             List<SmokingHistory> smokingHistoryList,
             String locale,
-            Context context,
-            Context updatedContext,
+            Resources resources,
+            Resources updatedResources,
             ViewPagerCallback callback
     ) {
         this.smokingHistoryList = smokingHistoryList;
         this.locale = locale;
-        this.context = context;
-        this.updatedContext = updatedContext;
+        this.resources = resources;
+        this.updatedResources = updatedResources;
         this.callback = callback;
     }
 
@@ -46,7 +47,7 @@ public class SmokingHistoryAdapter extends RecyclerView.Adapter<SmokingHistoryAd
                 parent,
                 false
         );
-        return new SmokingViewHolder(binding, context, locale, updatedContext, callback);
+        return new SmokingViewHolder(binding, resources, locale, updatedResources, callback);
     }
 
     @Override
@@ -61,25 +62,25 @@ public class SmokingHistoryAdapter extends RecyclerView.Adapter<SmokingHistoryAd
 
     static class SmokingViewHolder extends RecyclerView.ViewHolder {
         public LayoutSmokingHistoryBinding binding;
-        public Context context;
+        public Resources resources;
         public String locale;
         public int position;
-        public Context updatedContext;
+        public Resources updatedResources;
         public ViewPagerCallback callback;
         public SmokingHistory smokingHistory;
 
         public SmokingViewHolder(
                 @NonNull LayoutSmokingHistoryBinding binding,
-                Context context,
+                Resources resources,
                 String locale,
-                Context updatedContext,
+                Resources updatedResources,
                 ViewPagerCallback callback
         ) {
             super(binding.getRoot());
             this.binding = binding;
             this.locale = locale;
-            this.context = context;
-            this.updatedContext = updatedContext;
+            this.resources = resources;
+            this.updatedResources = updatedResources;
             binding.llSmokingHistory.setOnClickListener(v -> callback.getSmokingHistory(smokingHistory, position));
         }
 
@@ -87,12 +88,12 @@ public class SmokingHistoryAdapter extends RecyclerView.Adapter<SmokingHistoryAd
             this.smokingHistory = history;
             this.position = position;
 
-            binding.tvSmokingHistory.setText(getSmokingHistoryStrings(history.getSmokingStatus(), updatedContext, context, locale));
+            binding.tvSmokingHistory.setText(getSmokingHistoryStrings(history.getSmokingStatus(), updatedResources, resources, locale));
 
             if (!history.getRateOfSmoking().equalsIgnoreCase("-") && !history.getDurationOfSmoking().equalsIgnoreCase("-")) {
-                binding.tvSmokingRate.setText(getSmokingHistoryStrings(history.getRateOfSmoking(), updatedContext, context, locale));
-                binding.tvSmokingDuration.setText(getSmokingHistoryStrings(history.getDurationOfSmoking(), updatedContext, context, locale));
-                binding.tvSmokingFrequency.setText(getSmokingHistoryStrings(history.getFrequencyOfSmoking(), updatedContext, context, locale));
+                binding.tvSmokingRate.setText(getSmokingHistoryStrings(history.getRateOfSmoking(), updatedResources, resources, locale));
+                binding.tvSmokingDuration.setText(getSmokingHistoryStrings(history.getDurationOfSmoking(), updatedResources, resources, locale));
+                binding.tvSmokingFrequency.setText(getSmokingHistoryStrings(history.getFrequencyOfSmoking(), updatedResources, resources, locale));
                 binding.llSmoking.setVisibility(View.VISIBLE);
             }
         }

@@ -6,6 +6,7 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheck
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ public class AlcoholConsumptionHistoryDialog extends DialogFragment {
     private AlcoholConsumptionCallback callback;
     private Bundle bundle;
     private int position;
-    private Context updatedContext;
+    private Resources updatedResources;
     private SessionManager sessionManager;
 
     @Override
@@ -46,7 +47,7 @@ public class AlcoholConsumptionHistoryDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-        updatedContext = ((IdentificationActivity) requireActivity()).getUpdatedContext();
+        updatedResources = ((IdentificationActivity) requireActivity()).getUpdatedResources();
         sessionManager = new SessionManager(requireContext());
     }
 
@@ -139,8 +140,8 @@ public class AlcoholConsumptionHistoryDialog extends DialogFragment {
         // History of alcohol consumption
         alcoholConsumptionHistory.setHistoryOfAlcoholConsumption(getAlcoholHistory(
                 ((RadioButton) binding.alcoholConsumptionRadioGroup.findViewById(binding.alcoholConsumptionRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
 
@@ -148,22 +149,22 @@ public class AlcoholConsumptionHistoryDialog extends DialogFragment {
             // Rate of alcohol consumption
             alcoholConsumptionHistory.setRateOfAlcoholConsumption(getAlcoholHistory(
                     ((RadioButton) binding.alcoholConsumptionRateRadioGroup.findViewById(binding.alcoholConsumptionRateRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    requireContext(),
-                    updatedContext,
+                    requireContext().getResources(),
+                    updatedResources,
                     sessionManager.getAppLanguage()
             ));
             // Duration of alcohol consumption
             alcoholConsumptionHistory.setDurationOfAlcoholConsumption(getAlcoholHistory(
                     ((RadioButton) binding.durationOfAlcoholConsumptionRadioGroup.findViewById(binding.durationOfAlcoholConsumptionRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    requireContext(),
-                    updatedContext,
+                    requireContext().getResources(),
+                    updatedResources,
                     sessionManager.getAppLanguage()
             ));
 
             alcoholConsumptionHistory.setFrequencyOfAlcoholConsumption(getAlcoholHistory(
                     ((RadioButton) binding.frequencyOfConsumptionRadioGroup.findViewById(binding.frequencyOfConsumptionRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    requireContext(),
-                    updatedContext,
+                    requireContext().getResources(),
+                    updatedResources,
                     sessionManager.getAppLanguage()
             ));
         }
@@ -175,17 +176,17 @@ public class AlcoholConsumptionHistoryDialog extends DialogFragment {
         position = bundle.getInt("position");
 
         String historyOfAlcoholConsumption = bundle.getString("historyOfAlcoholConsumption");
-        setSelectedCheckboxes(binding.alcoholConsumptionRadioGroup, historyOfAlcoholConsumption, updatedContext, requireContext(), sessionManager.getAppLanguage());
+        setSelectedCheckboxes(binding.alcoholConsumptionRadioGroup, historyOfAlcoholConsumption, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
         if (historyOfAlcoholConsumption.equalsIgnoreCase("Yes")) {
             String rateOfAlcoholConsumption = bundle.getString("rateOfAlcoholConsumption");
-            setSelectedCheckboxes(binding.alcoholConsumptionRateRadioGroup, rateOfAlcoholConsumption, updatedContext, requireContext(), sessionManager.getAppLanguage());
+            setSelectedCheckboxes(binding.alcoholConsumptionRateRadioGroup, rateOfAlcoholConsumption, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
             String durationOfAlcoholConsumption = bundle.getString("durationOfAlcoholConsumption");
-            setSelectedCheckboxes(binding.durationOfAlcoholConsumptionRadioGroup, durationOfAlcoholConsumption, updatedContext, requireContext(), sessionManager.getAppLanguage());
+            setSelectedCheckboxes(binding.durationOfAlcoholConsumptionRadioGroup, durationOfAlcoholConsumption, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
             String frequencyOfAlcoholConsumption = bundle.getString("frequencyOfAlcoholConsumption");
-            setSelectedCheckboxes(binding.frequencyOfConsumptionRadioGroup, frequencyOfAlcoholConsumption, updatedContext, requireContext(), sessionManager.getAppLanguage());
+            setSelectedCheckboxes(binding.frequencyOfConsumptionRadioGroup, frequencyOfAlcoholConsumption, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
         }
     }
 }

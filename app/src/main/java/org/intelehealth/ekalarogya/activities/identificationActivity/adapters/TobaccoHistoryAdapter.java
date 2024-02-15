@@ -1,11 +1,9 @@
 package org.intelehealth.ekalarogya.activities.identificationActivity.adapters;
 
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getSmokingHistoryStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getTobaccoHistoryStrings;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.ViewPagerCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.TobaccoHistory;
-import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.TobaccoHistory;
-import org.intelehealth.ekalarogya.databinding.LayoutTobaccoHistoryBinding;
 import org.intelehealth.ekalarogya.databinding.LayoutTobaccoHistoryBinding;
 
 import java.util.List;
@@ -23,21 +19,21 @@ public class TobaccoHistoryAdapter extends RecyclerView.Adapter<TobaccoHistoryAd
 
     private final List<TobaccoHistory> tobaccoHistoryList;
     private final String locale;
-    private final Context context;
-    private final Context updatedContext;
+    private final Resources resources;
+    private final Resources updatedResources;
     private final ViewPagerCallback callback;
 
     public TobaccoHistoryAdapter(
             List<TobaccoHistory> tobaccoHistoryList,
             String locale,
-            Context context,
-            Context updatedContext,
+            Resources resources,
+            Resources updatedResources,
             ViewPagerCallback callback
     ) {
         this.tobaccoHistoryList = tobaccoHistoryList;
         this.locale = locale;
-        this.context = context;
-        this.updatedContext = updatedContext;
+        this.resources = resources;
+        this.updatedResources = updatedResources;
         this.callback = callback;
     }
 
@@ -49,7 +45,7 @@ public class TobaccoHistoryAdapter extends RecyclerView.Adapter<TobaccoHistoryAd
                 parent,
                 false
         );
-        return new TobaccoHistoryAdapter.TobaccoViewHolder(binding, context, locale, updatedContext, callback);
+        return new TobaccoHistoryAdapter.TobaccoViewHolder(binding, resources, locale, updatedResources, callback);
     }
 
     @Override
@@ -64,25 +60,25 @@ public class TobaccoHistoryAdapter extends RecyclerView.Adapter<TobaccoHistoryAd
 
     static class TobaccoViewHolder extends RecyclerView.ViewHolder {
         public LayoutTobaccoHistoryBinding binding;
-        public Context context;
+        public Resources resources;
         public String locale;
         public int position;
-        public Context updatedContext;
+        public Resources updatedResources;
         public ViewPagerCallback callback;
         public TobaccoHistory tobaccoHistory;
 
         public TobaccoViewHolder(
                 @NonNull LayoutTobaccoHistoryBinding binding,
-                Context context,
+                Resources resources,
                 String locale,
-                Context updatedContext,
+                Resources updatedResources,
                 ViewPagerCallback callback
         ) {
             super(binding.getRoot());
             this.binding = binding;
             this.locale = locale;
-            this.context = context;
-            this.updatedContext = updatedContext;
+            this.resources = resources;
+            this.updatedResources = updatedResources;
             binding.llTobaccoHistory.setOnClickListener(v -> callback.getTobaccoHistory(tobaccoHistory, position));
         }
 
@@ -90,7 +86,7 @@ public class TobaccoHistoryAdapter extends RecyclerView.Adapter<TobaccoHistoryAd
             this.tobaccoHistory = history;
             this.position = position;
 
-            binding.tvTobaccoHistory.setText(getTobaccoHistoryStrings(history.getChewTobaccoStatus(), updatedContext, context, locale));
+            binding.tvTobaccoHistory.setText(getTobaccoHistoryStrings(history.getChewTobaccoStatus(), updatedResources, resources, locale));
 
 /*
             if (!history.getRateOfSmoking().equalsIgnoreCase("-") && !history.getDurationOfSmoking().equalsIgnoreCase("-")) {

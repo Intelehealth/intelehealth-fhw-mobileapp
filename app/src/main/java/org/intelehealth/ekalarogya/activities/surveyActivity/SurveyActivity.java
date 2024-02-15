@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import org.intelehealth.ekalarogya.R;
@@ -21,6 +22,7 @@ public class SurveyActivity extends AppCompatActivity {
     public static List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
     private SessionManager sessionManager = null;
     private Context updatedContext = getBaseContext();
+    private Resources updatedResources, originalResources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +43,12 @@ public class SurveyActivity extends AppCompatActivity {
         Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
         configuration.setLocale(new Locale("en"));
         updatedContext = getBaseContext().createConfigurationContext(configuration);
+        updatedResources = updatedContext.getResources();
+        originalResources = this.getResources();
     }
 
-    public Context getUpdatedContext() {
-        return updatedContext;
+    public Resources getUpdatedResources() {
+        return updatedResources;
     }
 
     public SessionManager getSessionManager() {

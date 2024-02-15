@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -142,6 +143,7 @@ public class PatientDetailActivity extends BaseActivity {
     private Context updatedContext;
     float float_ageYear_Month;
     public static final String HOUSEHOLD_ATTR_UUID = "10720d1a-1471-431b-be28-285d64767093";
+    private Resources updatedResources, originalResources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -271,6 +273,8 @@ public class PatientDetailActivity extends BaseActivity {
         Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
         configuration.setLocale(new Locale("en"));
         updatedContext = context.createConfigurationContext(configuration);
+        updatedResources = updatedContext.getResources();
+        originalResources = this.context.getResources();
     }
 
     private void startVisitConfirmation(String startNewAdviceBy) {
@@ -825,7 +829,7 @@ public class PatientDetailActivity extends BaseActivity {
 //                }
 
                 if (patient_new.getEducation_level() != null && !patient_new.getEducation_level().equalsIgnoreCase("")) {
-                    String education = getEducationStrings(patient_new.getEducation_level(), updatedContext, context, sessionManager.getAppLanguage());
+                    String education = getEducationStrings(patient_new.getEducation_level(), updatedResources, originalResources, sessionManager.getAppLanguage());
                     education_statusView.setText(education);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String education = switch_or_education_edit(patient_new.getEducation_level());
@@ -972,7 +976,7 @@ public class PatientDetailActivity extends BaseActivity {
                 occuView.setText(patient_new.getOccupation());
             }*/
 
-            String education = getOccupationString(patient_new.getOccupation(), updatedContext, context, sessionManager.getAppLanguage());
+            String education = getOccupationString(patient_new.getOccupation(), updatedResources, originalResources, sessionManager.getAppLanguage());
             occuView.setText(education);
 
         } else {

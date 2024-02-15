@@ -2,15 +2,11 @@ package org.intelehealth.ekalarogya.activities.surveyActivity.fragments;
 
 import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity.patientAttributesDTOList;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfCheckboxesEmpty;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfEmpty;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getOtherStringEdit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSelectedCheckboxes;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyStrings;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyValue;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -18,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,7 +36,6 @@ import org.intelehealth.ekalarogya.models.dto.PatientAttributesDTO;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
 import java.util.UUID;
@@ -52,7 +46,7 @@ public class ThirdScreenFragment extends Fragment {
     private FragmentThirdScreenBinding binding;
     private String patientUuid;
     private final PatientsDAO patientsDAO = new PatientsDAO();
-    private Context updatedContext = null;
+    private Resources updatedResources = null;
     private SessionManager sessionManager;
 
     @Override
@@ -61,7 +55,7 @@ public class ThirdScreenFragment extends Fragment {
         Intent intent = requireActivity().getIntent();
         if (intent != null)
             patientUuid = intent.getStringExtra("patientUuid");
-        updatedContext = ((SurveyActivity) requireActivity()).getUpdatedContext();
+        updatedResources = ((SurveyActivity) requireActivity()).getUpdatedResources();
         sessionManager = ((SurveyActivity) requireActivity()).getSessionManager();
     }
 
@@ -239,8 +233,8 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("foodItemsPreparedInTwentyFourHours"));
         patientAttributesDTO.setValue(getSelectedCheckboxes(
                 binding.foodCookedInTwentyFourHoursLinearLayout,
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage(),
                 "-"
         ));
@@ -362,7 +356,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("defecatedInOpen")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.openDefecationRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        setSelectedCheckboxes(binding.openDefecationRadioGroup, value1, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -392,7 +386,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("foodItemsPreparedInTwentyFourHours")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.foodCookedInTwentyFourHoursLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        setSelectedCheckboxes(binding.foodCookedInTwentyFourHoursLinearLayout, value1, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
                     }
                 }
 

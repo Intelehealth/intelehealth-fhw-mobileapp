@@ -6,6 +6,7 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheck
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +21,9 @@ import androidx.fragment.app.DialogFragment;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.SmokingHistoryCallback;
-import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.AlcoholConsumptionHistory;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.SmokingHistory;
 import org.intelehealth.ekalarogya.databinding.DialogSmokingHistoryBinding;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -35,7 +34,7 @@ public class SmokingHistoryDialog extends DialogFragment {
     private SmokingHistoryCallback callback;
     private Bundle bundle;
     private int position;
-    private Context updatedContext;
+    private Resources updatedResources;
     private SessionManager sessionManager;
 
     @Override
@@ -48,7 +47,7 @@ public class SmokingHistoryDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-        updatedContext = ((IdentificationActivity) requireActivity()).getUpdatedContext();
+        updatedResources = ((IdentificationActivity) requireActivity()).getUpdatedResources();
         sessionManager = new SessionManager(requireContext());
     }
 
@@ -139,8 +138,8 @@ public class SmokingHistoryDialog extends DialogFragment {
         // History of smoking
         smokingHistory.setSmokingStatus(getSmokingHistoryStrings(
                 ((RadioButton) binding.smokerRadioGroup.findViewById(binding.smokerRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
 
@@ -148,24 +147,24 @@ public class SmokingHistoryDialog extends DialogFragment {
             // Rate of smoking
             smokingHistory.setRateOfSmoking(getSmokingHistoryStrings(
                     ((RadioButton) binding.rateOfConsumptionRadioGroup.findViewById(binding.rateOfConsumptionRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    requireContext(),
-                    updatedContext,
+                    requireContext().getResources(),
+                    updatedResources,
                     sessionManager.getAppLanguage()
             ));
 
             // Duration of smoking
             smokingHistory.setDurationOfSmoking(getSmokingHistoryStrings(
                     ((RadioButton) binding.durationOfSmokingRadioGroup.findViewById(binding.durationOfSmokingRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    requireContext(),
-                    updatedContext,
+                    requireContext().getResources(),
+                    updatedResources,
                     sessionManager.getAppLanguage()
             ));
 
             // Frequency of Smoking
             smokingHistory.setFrequencyOfSmoking(getSmokingHistoryStrings(
                     ((RadioButton) binding.frequencyOfConsumptionRadioGroup.findViewById(binding.frequencyOfConsumptionRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    requireContext(),
-                    updatedContext,
+                    requireContext().getResources(),
+                    updatedResources,
                     sessionManager.getAppLanguage()
             ));
         }
@@ -177,21 +176,21 @@ public class SmokingHistoryDialog extends DialogFragment {
         position = bundle.getInt("position");
 
         String smokingStatus = bundle.getString("smokingStatus");
-        if (smokingStatus.equalsIgnoreCase(updatedContext.getString(R.string.smoker)))
+        if (smokingStatus.equalsIgnoreCase(updatedResources.getString(R.string.smoker)))
             binding.smokerRadioButton.setChecked(true);
         else
             binding.nonSmokerRadioButton.setChecked(true);
 
-        if (smokingStatus.equalsIgnoreCase(updatedContext.getString(R.string.smoker))) {
+        if (smokingStatus.equalsIgnoreCase(updatedResources.getString(R.string.smoker))) {
 
             String rateOfSmoking = bundle.getString("rateOfSmoking");
-            setSelectedCheckboxes(binding.rateOfConsumptionRadioGroup, rateOfSmoking, updatedContext, requireContext(), sessionManager.getAppLanguage());
+            setSelectedCheckboxes(binding.rateOfConsumptionRadioGroup, rateOfSmoking, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
             String durationOfSmoking = bundle.getString("durationOfSmoking");
-            setSelectedCheckboxes(binding.durationOfSmokingRadioGroup, durationOfSmoking, updatedContext, requireContext(), sessionManager.getAppLanguage());
+            setSelectedCheckboxes(binding.durationOfSmokingRadioGroup, durationOfSmoking, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
             String frequencyOfSmoking = bundle.getString("frequencyOfSmoking");
-            setSelectedCheckboxes(binding.frequencyOfConsumptionRadioGroup, frequencyOfSmoking, updatedContext, requireContext(), sessionManager.getAppLanguage());
+            setSelectedCheckboxes(binding.frequencyOfConsumptionRadioGroup, frequencyOfSmoking, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
         }
     }
 }

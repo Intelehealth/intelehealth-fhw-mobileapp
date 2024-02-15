@@ -3,6 +3,7 @@ package org.intelehealth.ekalarogya.activities.identificationActivity.adapters;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getMedicalHistoryStrings;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +21,15 @@ public class MedicalHistoryAdapter extends RecyclerView.Adapter<MedicalHistoryAd
 
     private final List<MedicalHistory> medicalHistoryList;
     private final String locale;
-    private final Context context;
-    private final Context updatedContext;
+    private final Resources resources;
+    private final Resources updatedResources;
     private final ViewPagerCallback callback;
 
-    public MedicalHistoryAdapter(List<MedicalHistory> medicalHistoryList, String locale, Context context, Context updatedContext, ViewPagerCallback callback) {
+    public MedicalHistoryAdapter(List<MedicalHistory> medicalHistoryList, String locale, Resources resources, Resources updatedResources, ViewPagerCallback callback) {
         this.medicalHistoryList = medicalHistoryList;
         this.locale = locale;
-        this.context = context;
-        this.updatedContext = updatedContext;
+        this.resources = resources;
+        this.updatedResources = updatedResources;
         this.callback = callback;
     }
 
@@ -40,7 +41,7 @@ public class MedicalHistoryAdapter extends RecyclerView.Adapter<MedicalHistoryAd
                 parent,
                 false
         );
-        return new MedicalViewHolder(binding, context, locale, updatedContext, callback);
+        return new MedicalViewHolder(binding, resources, locale, updatedResources, callback);
     }
 
     @Override
@@ -56,25 +57,25 @@ public class MedicalHistoryAdapter extends RecyclerView.Adapter<MedicalHistoryAd
     static class MedicalViewHolder extends RecyclerView.ViewHolder {
 
         public LayoutMedicalHistoryBinding binding;
-        public Context context;
+        public Resources resources;
         public String locale;
         public int position;
-        public Context updatedContext;
+        public Resources updatedResources;
         public ViewPagerCallback callback;
         public MedicalHistory medicalHistory;
 
         public MedicalViewHolder(
                 @NonNull LayoutMedicalHistoryBinding binding,
-                Context context,
+                Resources resources,
                 String locale,
-                Context updatedContext,
+                Resources updatedResources,
                 ViewPagerCallback callback
         ) {
             super(binding.getRoot());
             this.binding = binding;
-            this.context = context;
+            this.resources = resources;
             this.locale = locale;
-            this.updatedContext = updatedContext;
+            this.updatedResources = updatedResources;
             binding.llMedicalHistory.setOnClickListener(v -> callback.getMedicalHistory(medicalHistory, position));
         }
 
@@ -82,11 +83,11 @@ public class MedicalHistoryAdapter extends RecyclerView.Adapter<MedicalHistoryAd
             this.medicalHistory = medicalHistory;
             this.position = position;
 
-            binding.tvHypertension.setText(getMedicalHistoryStrings(medicalHistory.getHypertension(), updatedContext, context, locale));
-            binding.tvDiabetes.setText(getMedicalHistoryStrings(medicalHistory.getDiabetes(), updatedContext, context, locale));
-            binding.tvArthritis.setText(getMedicalHistoryStrings(medicalHistory.getArthritis(), updatedContext, context, locale));
-            binding.tvAnaemia.setText(getMedicalHistoryStrings(medicalHistory.getAnaemia(), updatedContext, context, locale));
-            binding.tvAnySurgeries.setText(getMedicalHistoryStrings(medicalHistory.getAnySurgeries(), updatedContext, context, locale));
+            binding.tvHypertension.setText(getMedicalHistoryStrings(medicalHistory.getHypertension(), updatedResources, resources, locale));
+            binding.tvDiabetes.setText(getMedicalHistoryStrings(medicalHistory.getDiabetes(), updatedResources, resources, locale));
+            binding.tvArthritis.setText(getMedicalHistoryStrings(medicalHistory.getArthritis(), updatedResources, resources, locale));
+            binding.tvAnaemia.setText(getMedicalHistoryStrings(medicalHistory.getAnaemia(), updatedResources, resources, locale));
+            binding.tvAnySurgeries.setText(getMedicalHistoryStrings(medicalHistory.getAnySurgeries(), updatedResources, resources, locale));
 
             if (medicalHistory.getAnySurgeries().equalsIgnoreCase("Yes")) {
                 binding.tvReasonForSurgery.setText(medicalHistory.getReasonForSurgery());

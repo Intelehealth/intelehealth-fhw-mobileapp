@@ -3,6 +3,7 @@ package org.intelehealth.ekalarogya.activities.identificationActivity.adapters;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getAlcoholHistory;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.ViewPagerCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.AlcoholConsumptionHistory;
-import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.SmokingHistory;
 import org.intelehealth.ekalarogya.databinding.LayoutAlcoholConsumptionHistoryBinding;
 
 import java.util.List;
@@ -21,21 +21,21 @@ public class AlcoholConsumptionHistoryAdapter extends RecyclerView.Adapter<Alcoh
 
     private final List<AlcoholConsumptionHistory> consumptionHistoryList;
     private final String locale;
-    private final Context context;
-    private final Context updatedContext;
+    private final Resources resources;
+    private final Resources updatedResources;
     private final ViewPagerCallback callback;
 
     public AlcoholConsumptionHistoryAdapter(
             List<AlcoholConsumptionHistory> consumptionHistoryList,
             String locale,
-            Context context,
-            Context updatedContext,
+            Resources resources,
+            Resources updatedResources,
             ViewPagerCallback callback
     ) {
         this.consumptionHistoryList = consumptionHistoryList;
         this.locale = locale;
-        this.context = context;
-        this.updatedContext = updatedContext;
+        this.resources = resources;
+        this.updatedResources = updatedResources;
         this.callback = callback;
     }
 
@@ -47,7 +47,7 @@ public class AlcoholConsumptionHistoryAdapter extends RecyclerView.Adapter<Alcoh
                 parent,
                 false
         );
-        return new ConsumptionHistoryViewHolder(binding, context, locale, updatedContext, callback);
+        return new ConsumptionHistoryViewHolder(binding, resources, locale, updatedResources, callback);
     }
 
     @Override
@@ -62,25 +62,25 @@ public class AlcoholConsumptionHistoryAdapter extends RecyclerView.Adapter<Alcoh
 
     static class ConsumptionHistoryViewHolder extends RecyclerView.ViewHolder {
         public LayoutAlcoholConsumptionHistoryBinding binding;
-        public Context context;
+        public Resources resources;
         public String locale;
         public int position;
-        public Context updatedContext;
+        public Resources updatedResources;
         public ViewPagerCallback callback;
         public AlcoholConsumptionHistory alcoholConsumptionHistory;
 
         public ConsumptionHistoryViewHolder(
                 @NonNull LayoutAlcoholConsumptionHistoryBinding binding,
-                Context context,
+                Resources resources,
                 String locale,
-                Context updatedContext,
+                Resources updatedResources,
                 ViewPagerCallback callback
         ) {
             super(binding.getRoot());
             this.binding = binding;
             this.locale = locale;
-            this.context = context;
-            this.updatedContext = updatedContext;
+            this.resources = resources;
+            this.updatedResources = updatedResources;
             binding.llAlcoholHistory.setOnClickListener(v -> callback.getAlcoholHistory(alcoholConsumptionHistory, position));
         }
 
@@ -88,12 +88,12 @@ public class AlcoholConsumptionHistoryAdapter extends RecyclerView.Adapter<Alcoh
             this.alcoholConsumptionHistory = history;
             this.position = position;
 
-            binding.tvConsumptionHistory.setText(getAlcoholHistory(history.getHistoryOfAlcoholConsumption(), updatedContext, context, locale));
+            binding.tvConsumptionHistory.setText(getAlcoholHistory(history.getHistoryOfAlcoholConsumption(), updatedResources, resources, locale));
 
             if (!history.getRateOfAlcoholConsumption().equalsIgnoreCase("-") && !history.getDurationOfAlcoholConsumption().equalsIgnoreCase("-")) {
-                binding.tvConsumptionRate.setText(getAlcoholHistory(history.getRateOfAlcoholConsumption(), updatedContext, context, locale));
-                binding.tvConsumptionDuration.setText(getAlcoholHistory(history.getDurationOfAlcoholConsumption(), updatedContext, context, locale));
-                binding.tvAlcoholConsumptionFrequency.setText(getAlcoholHistory(history.getFrequencyOfAlcoholConsumption(), updatedContext, context, locale));
+                binding.tvConsumptionRate.setText(getAlcoholHistory(history.getRateOfAlcoholConsumption(), updatedResources, resources, locale));
+                binding.tvConsumptionDuration.setText(getAlcoholHistory(history.getDurationOfAlcoholConsumption(), updatedResources, resources, locale));
+                binding.tvAlcoholConsumptionFrequency.setText(getAlcoholHistory(history.getFrequencyOfAlcoholConsumption(), updatedResources, resources, locale));
                 binding.llAlcoholConsumption.setVisibility(View.VISIBLE);
             }
         }

@@ -1,15 +1,13 @@
 package org.intelehealth.ekalarogya.activities.identificationActivity.dialogs;
 
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getSmokingHistoryStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getTobaccoHistoryStrings;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -21,9 +19,7 @@ import androidx.fragment.app.DialogFragment;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.TobaccoHistoryCallback;
-import org.intelehealth.ekalarogya.activities.identificationActivity.callback.TobaccoHistoryCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.TobaccoHistory;
-import org.intelehealth.ekalarogya.databinding.DialogSmokingHistoryBinding;
 import org.intelehealth.ekalarogya.databinding.DialogTobaccoHistoryBinding;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 
@@ -36,7 +32,7 @@ public class TobaccoHistoryDialog extends DialogFragment {
     private TobaccoHistoryCallback callback;
     private Bundle bundle;
     private int position;
-    private Context updatedContext;
+    private Resources updatedResources;
     private SessionManager sessionManager;
 
     @Override
@@ -49,7 +45,7 @@ public class TobaccoHistoryDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-        updatedContext = ((IdentificationActivity) requireActivity()).getUpdatedContext();
+        updatedResources = ((IdentificationActivity) requireActivity()).getUpdatedResources();
         sessionManager = new SessionManager(requireContext());
     }
 
@@ -144,8 +140,8 @@ public class TobaccoHistoryDialog extends DialogFragment {
         // History of smoking
         tobaccoHistory.setChewTobaccoStatus(getTobaccoHistoryStrings(
                 ((RadioButton) binding.tobaccoRadioGroup.findViewById(binding.tobaccoRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
 
@@ -184,7 +180,7 @@ public class TobaccoHistoryDialog extends DialogFragment {
         position = bundle.getInt("position");
 
         String tobaccoStatus = bundle.getString("TobaccoStatus");
-        if (tobaccoStatus.equalsIgnoreCase(updatedContext.getString(R.string.survey_yes)))
+        if (tobaccoStatus.equalsIgnoreCase(updatedResources.getString(R.string.survey_yes)))
             binding.yesTobaccoRadioButton.setChecked(true);
         else
             binding.noTobaccoRadioButton.setChecked(true);

@@ -6,6 +6,7 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheck
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,7 @@ public class MedicalHistoryDialog extends DialogFragment {
     public static final String TAG = "MedicalHistoryDialog";
     private DialogMedicalHistoryBinding binding;
     private MedicalHistoryCallback callback;
-    private Context updatedContext;
+    private Resources updatedResources;
     private SessionManager sessionManager;
     private Bundle bundle;
     private int position;
@@ -47,7 +48,7 @@ public class MedicalHistoryDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-        updatedContext = ((IdentificationActivity) requireActivity()).getUpdatedContext();
+        updatedResources = ((IdentificationActivity) requireActivity()).getUpdatedResources();
         sessionManager = new SessionManager(requireContext());
     }
 
@@ -145,36 +146,36 @@ public class MedicalHistoryDialog extends DialogFragment {
 
         medicalHistory.setHypertension(getMedicalHistoryStrings(
                 ((RadioButton) binding.hypertensionRadioGroup.findViewById(binding.hypertensionRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
 
         medicalHistory.setDiabetes(getMedicalHistoryStrings(
                 ((RadioButton) binding.diabetesRadioGroup.findViewById(binding.diabetesRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
 
         medicalHistory.setArthritis(getMedicalHistoryStrings(
                 ((RadioButton) binding.arthritisRadioGroup.findViewById(binding.arthritisRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
 
         medicalHistory.setAnaemia(getMedicalHistoryStrings(
                 ((RadioButton) binding.anaemiaRadioGroup.findViewById(binding.anaemiaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
 
         medicalHistory.setAnySurgeries(getMedicalHistoryStrings(
                 ((RadioButton) binding.anySurgeriesRadioGroup.findViewById(binding.anySurgeriesRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
 
@@ -188,19 +189,19 @@ public class MedicalHistoryDialog extends DialogFragment {
         position = bundle.getInt("position");
 
         String hypertensionText = bundle.getString("hypertension");
-        setSelectedCheckboxes(binding.hypertensionRadioGroup, hypertensionText, updatedContext, requireContext(), sessionManager.getAppLanguage());
+        setSelectedCheckboxes(binding.hypertensionRadioGroup, hypertensionText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
         String diabetesText = bundle.getString("diabetes");
-        setSelectedCheckboxes(binding.diabetesRadioGroup, diabetesText, updatedContext, requireContext(), sessionManager.getAppLanguage());
+        setSelectedCheckboxes(binding.diabetesRadioGroup, diabetesText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
         String arthritisText = bundle.getString("arthritis");
-        setSelectedCheckboxes(binding.arthritisRadioGroup, arthritisText, updatedContext, requireContext(), sessionManager.getAppLanguage());
+        setSelectedCheckboxes(binding.arthritisRadioGroup, arthritisText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
         String anaemiaText = bundle.getString("anaemia");
-        setSelectedCheckboxes(binding.anaemiaRadioGroup, anaemiaText, updatedContext, requireContext(), sessionManager.getAppLanguage());
+        setSelectedCheckboxes(binding.anaemiaRadioGroup, anaemiaText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
         String anySurgeries = bundle.getString("anySurgeries");
-        setSelectedCheckboxes(binding.anySurgeriesRadioGroup, anySurgeries, updatedContext, requireContext(), sessionManager.getAppLanguage());
+        setSelectedCheckboxes(binding.anySurgeriesRadioGroup, anySurgeries, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
         String reasonForSurgery = bundle.getString("reasonForSurgery");
         if (anySurgeries.equalsIgnoreCase("Yes")) {

@@ -3,8 +3,8 @@ package org.intelehealth.ekalarogya.activities.surveyActivity.fragments;
 import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity.patientAttributesDTOList;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +38,7 @@ public class SecondScreenFragment extends Fragment {
     private FragmentSecondScreenBinding binding;
     private String patientUuid;
     private final PatientsDAO patientsDAO = new PatientsDAO();
-    private Context updatedContext = null;
+    private Resources updatedResources = null;
     private SessionManager sessionManager;
 
     @Override
@@ -48,7 +47,7 @@ public class SecondScreenFragment extends Fragment {
         Intent intent = requireActivity().getIntent();
         if (intent != null)
             patientUuid = intent.getStringExtra("patientUuid");
-        updatedContext = ((SurveyActivity) requireActivity()).getUpdatedContext();
+        updatedResources = ((SurveyActivity) requireActivity()).getUpdatedResources();
         sessionManager = ((SurveyActivity) requireActivity()).getSessionManager();
     }
 
@@ -82,8 +81,8 @@ public class SecondScreenFragment extends Fragment {
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
         patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                 ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
+                requireContext().getResources(),
+                updatedResources,
                 sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
@@ -130,7 +129,7 @@ public class SecondScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("mgnregaCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.mgnregaRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        setSelectedCheckboxes(binding.mgnregaRadioGroup, value1, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
                     }
                 }
             } while (idCursor1.moveToNext());
