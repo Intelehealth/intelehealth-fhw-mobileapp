@@ -267,7 +267,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
             Log.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
             Log.v("onSelect QuestionsListingAdapter", "node - " + node.getText());
             // avoid the scroll for old data change
-            String parentRootQuestionId = mCurrentNode.getOptionsList().get(index).getId();
+            String parentRootQuestionId = mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex).getId();
             Log.v("onSelect", "parentRootQuestionId - " + parentRootQuestionId);
             if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                 mLoadedIds.add(parentRootQuestionId);

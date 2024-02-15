@@ -28,7 +28,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentOnAttachListener;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -69,7 +68,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     TextView textlayout_find_patient;
     NetworkUtils networkUtils;
     ImageView ivInternet;
-    private TextView mUpcomingAppointmentCountTextView;
+    private TextView mUpcomingAppointmentCountTextView,mCountPendingFollowupVisitsTextView;
     private Executor initUIExecutor = Executors.newSingleThreadExecutor();
 
     @Override
@@ -219,6 +218,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             Log.d(TAG, "clickListeners: iv_hamburger null");
         }*/
         mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
+        mCountPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
+        mUpcomingAppointmentCountTextView.setText("0 "+ getString(R.string.upcoming));
+        mCountPendingFollowupVisitsTextView.setText("0 " + getString(R.string.pending));
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(StringUtils.translateLocation(sessionManager.getLocationName(), sessionManager.getAppLanguage()));
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ui2_ic_location_home, 0, 0, 0);
@@ -294,8 +296,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             int count = countPendingFollowupVisits();
 
             requireActivity().runOnUiThread(() -> {
-                TextView countPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
-                countPendingFollowupVisitsTextView.setText(count + " " + getResources().getString(R.string.pending));
+
+                mCountPendingFollowupVisitsTextView.setText(count + " " + getResources().getString(R.string.pending));
             });
         });
     }
