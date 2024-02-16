@@ -152,7 +152,7 @@ public class Fragment_SecondScreen extends Fragment {
 //        mCityVillageET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         mCityVillageET.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Others}); //maxlength 50
         mAddress1EditText = view.findViewById(R.id.address1_edittext);
-        mAddress1EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)}); //maxlength 50
+        mAddress1EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(150)}); //maxlength 150
         mAddress2EditText = view.findViewById(R.id.address2_edittext);
         mAddress2EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)}); //maxlength 50
         mPostalCodeErrorTextView = view.findViewById(R.id.postalcode_error);
