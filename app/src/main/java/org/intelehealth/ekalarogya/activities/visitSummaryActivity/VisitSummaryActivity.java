@@ -847,6 +847,9 @@ public class VisitSummaryActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
+                // Upload button disabled to prevent multiple insertion of data
+                uploadButton.setEnabled(false);
+
                 if (complaint.getValue() == null || complaint.getValue().isEmpty() || complaint.getValue().equalsIgnoreCase("")) {
                     Toast.makeText(getBaseContext(), getString(R.string.complaint_required), Toast.LENGTH_SHORT).show();
                     return;
@@ -1049,6 +1052,7 @@ public class VisitSummaryActivity extends BaseActivity {
 
                             }
                             uploaded = true;
+                            uploadButton.setEnabled(true);
 //                            editComplaint.setVisibility(View.GONE);
                         }
                     }, 4000);
