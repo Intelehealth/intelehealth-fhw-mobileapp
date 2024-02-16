@@ -11,6 +11,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_radio_options"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:background="@drawable/white_child_container_bg"
             android:paddingStart="@dimen/screen_container_padding"

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -392,11 +394,28 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
                 String formattedDate = dateFormat.format(currentDate);
                 medication.setCreatedAt(formattedDate);
                 ivFluidsList.add(0, medication);
-                // Notify the adapter that a new item is inserted at position 0
                 adapter.notifyItemInserted(0);
                 changeSaveButtonStatus();
             }
         }
+    }
+
+    private void manageHeightOfPrescribedIVFluidUI() {
+        ConstraintLayout clIvFluidListContainer = binding.clIvFluidListContainer;
+
+// Calculate 70% of the screen height
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int screenHeight = displayMetrics.heightPixels;
+        int maxContainerHeight = (int) (screenHeight * 0.4);
+
+// Set the maximum height for clIvFluidListContainer
+        clIvFluidListContainer.setMaxHeight(maxContainerHeight);
+
+// When you want to show the container:
+        clIvFluidListContainer.setVisibility(View.VISIBLE);
+
+// When you want to hide the container:
+        clIvFluidListContainer.setVisibility(View.GONE);
     }
 }
 

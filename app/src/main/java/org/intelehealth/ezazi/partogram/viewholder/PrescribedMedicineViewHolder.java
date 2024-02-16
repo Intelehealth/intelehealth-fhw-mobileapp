@@ -23,11 +23,16 @@ public class PrescribedMedicineViewHolder extends BaseViewHolder {
         this.binding = binding;
     }
 
-    public void bind(Medicine medicine) {
+    public void bind(Medicine medicine, boolean makeVisible) {
         binding.setMedicine(medicine);
         binding.btnMedicineAdminister.setOnClickListener(this);
         binding.btnExpandCollapseIndicator1.setOnClickListener(this);
         binding.clMedicinePrescriptionRowItemRoot1.setOnClickListener(this);
+        if (makeVisible) {
+            binding.btnMedicineAdminister.setVisibility(View.VISIBLE);
+        } else {
+            binding.btnMedicineAdminister.setVisibility(View.GONE);
+        }
     }
 
     public void expandDetails(boolean isExpanded) {

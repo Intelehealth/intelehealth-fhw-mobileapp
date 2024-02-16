@@ -96,7 +96,7 @@
                     android:contentDescription="@string/content_expand_collapse_indicator"
                     android:paddingStart="@dimen/list_container_padding"
                     android:paddingEnd="@dimen/list_container_padding"
-                    android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:icon="@drawable/ic_delete"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/btnExpandCollapseIndicator"
@@ -111,12 +111,15 @@
                     android:contentDescription="@string/content_expand_collapse_indicator"
                     android:paddingStart="@dimen/list_container_padding"
                     android:paddingEnd="@dimen/list_container_padding"
-                    android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:icon="@drawable/ic_mode_edit"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/btnMedicineDelete"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+<!--
+            android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
+-->
 
             <include
                 android:id="@+id/includeMedicineDetails"

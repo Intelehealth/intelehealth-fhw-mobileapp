@@ -243,7 +243,7 @@ public class PatientsFrameJson {
                         ob.setValue(obs.getValue());
                         ob.setComment(obs.getComment());
                         ob.setVoided(obs.getVoided());
-                        ob.setCreatorUuid(obs.getCreatorUuid());
+                        //ob.setCreatorUuid(obs.getCreatorUuid());
                         obsList.add(ob);
 
                         //   }

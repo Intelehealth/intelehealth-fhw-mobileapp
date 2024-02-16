@@ -10,12 +10,12 @@
             type="Integer" />
 
         <variable
-            name="plan"
+            name="assessment"
             type="org.intelehealth.ezazi.models.dto.ObsDTO"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clContainerNewPlan"
+        android:id="@+id/clContainerNewAssessment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_menu_bg"
@@ -27,17 +27,17 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvLblAddNewPlan"
+            android:id="@+id/tvLblAddNewAssessment"
             style="@style/Theme.EZazi.Screen.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/lbl_add_new_plan"
-            android:text="@string/lbl_add_new_plan"
+            android:contentDescription="@string/lbl_add_new_assessment"
+            android:text="@string/lbl_add_new_assessment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clAddNewPlanInputBox"
+            android:id="@+id/clAddNewAssessmentInputBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/screen_padding"
@@ -47,7 +47,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLblAddNewPlan">
+            app:layout_constraintTop_toBottomOf="@id/tvLblAddNewAssessment">
 
             <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
                 android:id="@+id/etLayoutMotherDeceased"
@@ -62,13 +62,13 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etNewPlan"
+                    android:id="@+id/etNewAssessment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
                     android:gravity="start"
                     android:hint="@string/enter_here"
-                    android:text="@{plan.value}"
+                    android:text="@{assessment.value}"
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
                     android:lineSpacingExtra="@dimen/std_4dp"
@@ -79,7 +79,7 @@
             </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAddPlanCancel"
+                android:id="@+id/btnAddAssessmentCancel"
                 style="@style/Theme.EZazi.Button.White"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -88,12 +88,12 @@
                 android:contentDescription="@string/cancel"
                 android:text="@string/cancel"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnAddPlanAdd"
+                app:layout_constraintEnd_toStartOf="@id/btnAddAssessmentAdd"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/etLayoutMotherDeceased" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAddPlanAdd"
+                android:id="@+id/btnAddAssessmentAdd"
                 style="@style/Theme.EZazi.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                 android:text="@string/lbl_add"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btnAddPlanCancel" />
+                app:layout_constraintStart_toEndOf="@id/btnAddAssessmentCancel" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

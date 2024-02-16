@@ -199,13 +199,16 @@ public class ObsDTO implements ItemHeader {
         return value != null && value.length() > 0;
     }
 
-    public ObsDTO toObs(String encounterId, String creator) {
+    public ObsDTO toObs(String encounterId, String creator, String createdDate,String conceptUuid) {
+        Log.d("TAG", "toObs: creator : " + creator);
         ObsDTO obs = new ObsDTO();
         obs.setUuid(uuid);
-        obs.setConceptuuid(UuidDictionary.PLAN);
+        obs.setConceptuuid(conceptUuid);
         obs.setValue(value);
         obs.setCreator(creator);
         obs.setEncounteruuid(encounterId);
+        obs.setCreatorUuid(creator);
+        obs.setObsServerModifiedDate(creator);
         Log.e("plans", "toObs: " + new Gson().toJson(obs));
         return obs;
     }

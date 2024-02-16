@@ -24,6 +24,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -34,9 +35,11 @@ import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.setupActivity.LocationArrayAdapter;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
+import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.databinding.MedicinesListBottomSheetDialogBinding;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
+import org.intelehealth.ezazi.partogram.adapter.AdministerMedicinesAdapter;
 import org.intelehealth.ezazi.partogram.adapter.MedicineAdapter;
 import org.intelehealth.ezazi.partogram.adapter.PrescribedMedicinesAdapter;
 import org.intelehealth.ezazi.partogram.behavior.LockableBottomSheetBehavior;
@@ -47,6 +50,8 @@ import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
 import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.ScreenUtils;
+import org.intelehealth.ezazi.utilities.SessionManager;
+import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
@@ -69,7 +74,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
     private MedicineListChangeListener medicineListChangeListener;
     private List<Medicine> deletedMedicines;
     private MedicinesListBottomSheetDialogBinding binding;
-    private MedicineAdapter adapter;
+    private AdministerMedicinesAdapter adapter;
 
     private PartogramConstants.AccessMode accessMode;
     private List<Medicine> medicineDetailsList;
@@ -129,9 +134,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
         behavior.setPeekHeight(ScreenUtils.getInstance(requireContext()).getHeight());
         behavior.addBottomSheetCallback(getCallback(behavior));
 
-        getPrescribedMedicineDetails();
-        showPrescribedMedicinesDialog();
         setMedicineListView();
+        showPrescribedMedicinesDialog();
         setButtonClickListener();
         setToolbarNavClick();
         buildAddNewMedicineDialog();
@@ -139,9 +143,6 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
         setupInputFilter();
 
         addBottomMarginIfVersion13();
-    }
-
-    private void getPrescribedMedicineDetails() {
     }
 
     private void addBottomMarginIfVersion13() {
@@ -295,9 +296,10 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
         binding.btnSaveMedicines.setEnabled(medicines.size() > 0);
         // if (medicines.size() == 0) openNewMedicineDialog();
         binding.rvMedicines.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new MedicineAdapter(requireContext(), medicines);
+        adapter = new AdministerMedicinesAdapter(requireContext(), medicines);
         adapter.setAccessMode(accessMode);
         adapter.setClickListener(this);
+        adapter.manageFollowUpButtonVisibility(false);
         binding.rvMedicines.setAdapter(adapter);
     }
 
@@ -316,7 +318,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             showConfirmationDialog(position);
         } else if (view.getId() == R.id.clMedicineRowItemRoot) {
             adapter.setExpandedItemPosition(position);
-        } else if (view.getId() == R.id.btnExpandCollapseIndicator) {
+        } else if (view.getId() == R.id.btnExpandCollapseIndicator1) {
             adapter.setExpandedItemPosition(position);
         } else if (view.getId() == R.id.btnExpandCollapseIndicator1) {
             prescribedMedicinesAdapter.setExpandedItemPosition(position);
@@ -369,7 +371,10 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
                             medicine.setObsUuid(binding.includeAddNewMedicineDialog.getMedicine().getObsUuid());
                     }
                     if (updated > -1) adapter.updateItemAt(updated, medicine);
-                    else adapter.addItem(medicine);
+                    else {
+                        //adapter.addItem(medicine);
+                        adapter.addItemAt(0, medicine);
+                    }
                     clearAddNewMedicineForm();
                     changeSaveButtonStatus();
                 }
@@ -425,7 +430,12 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
         medicine.setDuration(binding.includeAddNewMedicineDialog.etMedicineDuration.getText().toString());
         medicine.setRemark(binding.includeAddNewMedicineDialog.etRemark.getText().toString());
         medicine.setCreatedAt(DateTimeUtils.getCurrentDateWithDBFormat());
-        medicine.setCreatorName("You");
+        //medicine.setCreatorName("You");
+        try {
+            medicine.setCreatorName(new ProviderDAO().getCreatorGivenName(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID()));
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
         binding.includeAddNewMedicineDialog.btnAddMedicineAdd.setEnabled(medicine.isValidMedicine());
         return medicine;
     }
@@ -585,6 +595,9 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
     }
 
     private void showPrescribedMedicinesDialog() {
+        if (adapter != null)
+            adapter.manageFollowUpButtonVisibility(false);
+
         //animated dialog open
         binding.clPrescribedMedicinesRoot.setVisibility(View.VISIBLE);
         Animation bottomUp = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_bottom);
@@ -595,10 +608,10 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             closePrescribedMedicineDialog();
             setMedicineListView();
         });
+
     }
 
     private void closePrescribedMedicineDialog() {
-
         Animation bottomDown = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_bottom);
         bottomDown.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -633,10 +646,16 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
                 convertToPrescribedMedicine(obsDTO.getUuid(), obsDTO.getValue());
             }
             setPrescribedMedicines(prescribedMedicines);
-            binding.includedPrescribedMedicines.rvPrescribedMedicines.setLayoutManager(new LinearLayoutManager(requireContext()));
+            //binding.includedPrescribedMedicines.rvPrescribedMedicines.setLayoutManager(new LinearLayoutManager(requireContext()));
+            LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+            layoutManager.setOrientation(RecyclerView.VERTICAL);
+            layoutManager.setInitialPrefetchItemCount(3);
+            binding.includedPrescribedMedicines.rvPrescribedMedicines.setLayoutManager(layoutManager);
             prescribedMedicinesAdapter = new PrescribedMedicinesAdapter(requireContext(), prescribedMedicinesList);
             prescribedMedicinesAdapter.setAccessMode(accessMode);
             prescribedMedicinesAdapter.setClickListener(this);
+            adapter.manageFollowUpButtonVisibility(true);
+
             binding.includedPrescribedMedicines.rvPrescribedMedicines.setAdapter(prescribedMedicinesAdapter);
         } else {
             //There is no prescribed medicines
@@ -663,7 +682,6 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             binding.clPrescribedMedicinesRoot.setVisibility(View.VISIBLE);
             binding.clMedicineListContainer.setVisibility(View.GONE);
             binding.tvLblAdministerMedicine.setVisibility(View.GONE);
-
         } else {
             binding.clPrescribedMedicinesRoot.setVisibility(View.GONE);
             binding.clMedicineListContainer.setVisibility(View.VISIBLE);

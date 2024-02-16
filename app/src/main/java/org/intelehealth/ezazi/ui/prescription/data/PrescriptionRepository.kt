@@ -163,5 +163,34 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
 
         return prescriptions
     }
+    fun fetchAssessmentPrescription(visitId: String, creatorId: String): List<ItemHeader> {
+        PrescriptionQueryBuilder().buildAssessmentPrescriptionQuery(visitId, creatorId).apply {
+            Timber.d { "Assessment presc Query => $this" }
+            val cursor = database.rawQuery(this, null)
+            retrievePrescription(cursor).apply {
+                return obsMappingToAssessmentPrescription(this)
+            }
+        }
+    }
+    private fun obsMappingToAssessmentPrescription(obsList: List<ObsDTO>): List<ItemHeader> {
+        Timber.d { "Prescription plan => ${Gson().toJson(obsList)}" }
+        val prescriptions = LinkedList<ItemHeader>()
+        val plans = obsList.filter { it.conceptuuid.equals(Params.ASSESSMENT.conceptId) }
+        /*val medicines =
+                obsList.filter { it.conceptuuid.equals(Params.PRESCRIBED_MEDICINE.conceptId) }*/
+
+        if (plans.isNotEmpty()) {
+
+            prescriptions.add(CategoryHeader(R.string.lbl_plan))
+            prescriptions.addAll(plans.map {
+                it.noOfLine = 100
+                if (it.name.contains("Dr").not()) it.name = "Dr.${it.name}"
+                return@map it
+            })
+            Timber.d { "Plan ${Gson().toJson(plans)}" }
+        }
+
+        return prescriptions
+    }
 
 }

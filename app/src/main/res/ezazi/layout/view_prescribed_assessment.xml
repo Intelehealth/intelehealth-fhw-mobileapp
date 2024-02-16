@@ -18,19 +18,19 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvLblAddNewPlans"
+            android:id="@+id/tvLblAddNewAssessments"
             style="@style/Theme.EZazi.Screen.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/screen_padding"
             android:contentDescription="@string/lbl_add_new_medicine"
-            android:text="@string/planned_from_doctor"
-            app:layout_constraintBottom_toTopOf="@+id/clPlansListContainer"
+            android:text="@string/assess_from_doctor"
+            app:layout_constraintBottom_toTopOf="@+id/clAssessmentsListContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clPlansListContainer"
+            android:id="@+id/clAssessmentsListContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/screen_padding"
@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPrescribedPlans"
+                android:id="@+id/rvPrescribedAssessments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/screen_container_padding"

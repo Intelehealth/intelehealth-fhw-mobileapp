@@ -16,14 +16,10 @@ import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 
 import java.util.LinkedList;
 
-/**
- * Created by Kaveri Zaware on 06-02-2024
- * email - kaveri@intelehealth.org
- **/
-public class PrescribedMedicinesAdapter extends CategoryHeaderAdapter {
+public class AdministerMedicinesAdapter extends CategoryHeaderAdapter {
     private BaseViewHolder.ViewHolderClickListener clickListener;
     private int expandedItemPosition = -1;
-
+    private boolean followPlanButtonVisible;
     private PartogramConstants.AccessMode accessMode;
 
     public void setAccessMode(PartogramConstants.AccessMode accessMode) {
@@ -52,7 +48,7 @@ public class PrescribedMedicinesAdapter extends CategoryHeaderAdapter {
         }
     }
 
-    public PrescribedMedicinesAdapter(@NonNull Context ctx, @NonNull LinkedList<ItemHeader> lists) {
+    public AdministerMedicinesAdapter(@NonNull Context ctx, @NonNull LinkedList<ItemHeader> lists) {
         super(ctx, lists);
     }
 
@@ -71,8 +67,13 @@ public class PrescribedMedicinesAdapter extends CategoryHeaderAdapter {
         if (holder instanceof PrescribedMedicineViewHolder medicineViewHolder) {
             medicineViewHolder.setViewClickListener(clickListener);
             medicineViewHolder.setAccessMode(accessMode);
-            medicineViewHolder.bind((Medicine) getItem(position),true);
+            medicineViewHolder.bind((Medicine) getItem(position),followPlanButtonVisible);
             medicineViewHolder.expandDetails(expandedItemPosition == position);
         } else super.onBindViewHolder(holder, position);
+    }
+
+    public void manageFollowUpButtonVisibility(boolean makeBtnVisible) {
+        followPlanButtonVisible = makeBtnVisible;
+
     }
 }

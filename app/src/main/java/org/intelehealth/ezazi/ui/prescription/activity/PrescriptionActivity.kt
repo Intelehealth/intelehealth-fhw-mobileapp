@@ -43,6 +43,7 @@ class PrescriptionActivity : BaseActionBarActivity(), BaseViewHolder.ViewHolderC
     private fun setupPrescriptionView() {
         adapter = PrescriptionAdapter(this, LinkedList())
         binding.contentPrescription.rvPrescription.setupLinearView(adapter)
+        adapter.manageFollowUpButtonVisibility(false)
         loadPrescriptions()
         observeState()
     }

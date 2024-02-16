@@ -29,12 +29,14 @@ import com.google.gson.JsonSyntaxException;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.databinding.DialogIvfluidOptionsBinding;
+import org.intelehealth.ezazi.databinding.PartoLablRadioViewAssessmentBinding;
 import org.intelehealth.ezazi.databinding.PartoLablRadioViewMedicineBinding;
 import org.intelehealth.ezazi.databinding.PartoLablRadioViewPlanBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewEzaziBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewOxytocinBinding;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
+import org.intelehealth.ezazi.partogram.dialog.AssessmentBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.dialog.IVFluidBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.dialog.MedicineBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.dialog.OxytocinBottomSheetDialog;
@@ -367,7 +369,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 showRadioOptionBoxForPlan(tempView, info, selected, title);
                 break;
             case UuidDictionary.ASSESSMENT:
-              //  showRadioOptionBoxForAssessment(tempView, info, selected, title);
+                showRadioOptionBoxForAssessment(tempView, info, selected, title);
                 break;
         }
     }
@@ -1042,34 +1044,28 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     }
     private void showRadioOptionBoxForAssessment(View tempView, ParamInfo info, TextView selected, String title) {
-        PartoLablRadioViewMedicineBinding binding = PartoLablRadioViewMedicineBinding.bind(tempView);
+        PartoLablRadioViewAssessmentBinding binding = PartoLablRadioViewAssessmentBinding.bind(tempView);
 
-        binding.clMedicineCountView.setOnClickListener(v -> {
+        binding.clAssessmentCountView.setOnClickListener(v -> {
             @SuppressLint("SetTextI18n")
-            MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), mVisitUuid, (updated, deleted) -> {
-                info.setMedicines(updated);
-                info.setDeletedMedicines(deleted);
-                setupMedicineCountView(binding.tvMedicineCount, updated);
+            AssessmentBottomSheetDialog dialog = AssessmentBottomSheetDialog.getInstance(info.getAssessments(), mVisitUuid, (updated, deleted) -> {
+                info.setAssessments(updated);
+               //info.setDeletedMedicines(deleted);
+                setupAssessmentCountView(binding.tvAssessmentCount, updated);
             });
             dialog.setAccessMode(accessMode);
             dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
         });
-        handleRadioCheckListener(tempView, info, new OnRadioCheckedListener() {
-            @Override
-            public void onCheckedYes() {
-                binding.clMedicineCountView.setVisibility(View.VISIBLE);
-                setupMedicineCountView(binding.tvMedicineCount, info.getMedicines());
-            }
-
-            @Override
-            public void onCheckedNo() {
-                binding.clMedicineCountView.setVisibility(View.GONE);
-            }
-        });
+        setupAssessmentCountView(binding.tvAssessmentCount, info.getAssessments());
 
     }
     @SuppressLint("SetTextI18n")
     private void setupPlansCountView(TextView textView, List<ObsDTO> updated) {
+        if (updated.size() == 0) textView.setText(mContext.getString(R.string.lbl_add));
+        else textView.setText("" + updated.size());
+    }
+    @SuppressLint("SetTextI18n")
+    private void setupAssessmentCountView(TextView textView, List<ObsDTO> updated) {
         if (updated.size() == 0) textView.setText(mContext.getString(R.string.lbl_add));
         else textView.setText("" + updated.size());
     }

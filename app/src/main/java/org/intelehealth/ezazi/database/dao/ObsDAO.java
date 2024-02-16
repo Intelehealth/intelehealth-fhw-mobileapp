@@ -696,6 +696,7 @@ public class ObsDAO {
 
     public boolean insert_Obs(String encounteruuid, String creatorID, String value, String conceptId) throws DAOException {
         boolean isUpdated = false;
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //  db.beginTransaction();
         ContentValues values = new ContentValues();
@@ -1003,7 +1004,7 @@ public class ObsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         List<ObsDTO> prescribedObsList = new ArrayList<>();
         ObsDTO obsDTO;
-        String query = "SELECT * FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by e.encounter_time";
+        String query = "SELECT o.uuid,o.conceptuuid,o.value,o.obsservermodifieddate FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by e.encounter_time";
         Cursor idCursor = db.rawQuery(query, new String[]{visitUuid, UuidDictionary.MEDICINE_PRESCRIBED});
 
         if (idCursor.getCount() != 0) {
@@ -1013,6 +1014,9 @@ public class ObsDAO {
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 String value = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
                 obsDTO.setValue(value);
+                String modified_date = idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date"));
+                obsDTO.setCreatedDate(modified_date);
+
                 if (!value.equalsIgnoreCase("No")) {
                     prescribedObsList.add(obsDTO);
                 }
@@ -1074,5 +1078,38 @@ public class ObsDAO {
         }
         idCursor.close();
         return prescribedObsList;
+    }
+
+    public String getCreatorNameByObsUuid(String obsUuid) {
+        Log.d(TAG, "getCreatorNameByObsUuid: obsUuid : " + obsUuid);
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String creatorName = "";
+        String query = "select p.given_name from tbl_obs as o LEFT JOIN tbl_provider as p  ON P.useruuid = O.creatoruuid AND P.role = 'Organizational: Nurse' where o.uuid = ?";
+        Cursor idCursor = db.rawQuery(query, new String[]{obsUuid});
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                creatorName = idCursor.getString(idCursor.getColumnIndexOrThrow("given_name"));
+                Log.d(TAG, "getCreatorNameByObsUuid: creatorName: " + creatorName);
+            }
+        }
+        idCursor.close();
+        return creatorName;
+    }
+    public String getCreatorNameByObsUuidMedicine(String obsUuid) {
+        Log.d(TAG, "getCreatorNameByObsUuidMedicine: obsUuid : " + obsUuid);
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String creatorName = "";
+        String query = "select p.given_name from tbl_obs as o LEFT JOIN tbl_provider as p  ON P.useruuid = O.creatoruuid where o.uuid = ?";
+        Log.d(TAG, "getCreatorNameByObsUuidMedicine: query : "+query);
+        Cursor idCursor = db.rawQuery(query, new String[]{obsUuid});
+        Log.d(TAG, "getCreatorNameByObsUuidMedicine: idCursor  count : "+idCursor.getCount());
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                creatorName = idCursor.getString(idCursor.getColumnIndexOrThrow("given_name"));
+                Log.d(TAG, "getCreatorNameByObsUuidMedicine: creatorName: " + creatorName);
+            }
+        }
+        idCursor.close();
+        return creatorName;
     }
 }

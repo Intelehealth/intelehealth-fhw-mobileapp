@@ -390,6 +390,14 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
                         // }
                         //voidedPlans = info.getVoidedPlansUuid();
+                    } else if (info.getConceptUUID().equals(UuidDictionary.ASSESSMENT)) {
+                        //isValidPlan = info.isValidMedicine();
+                        // if (isValidMedicine && info.getCheckedRadioOption() != ParamInfo.RadioOptions.NO) {
+                        obsDTOList.addAll(info.getAssessmentsObsList(mEncounterUUID, new SessionManager(this).getCreatorID()));
+                        Log.e("obsDTOList", "obsDTOList: " + new Gson().toJson(obsDTOList));
+
+                        // }
+                        //voidedPlans = info.getVoidedPlansUuid();
                     } else {
                         ObsDTO obsDTOData = buildObservation(info);
 
@@ -510,7 +518,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         if (obsDTO.getConceptuuid().equals(info.getConceptUUID())) {
                             if (obsDTO.getConceptuuid().equals(UuidDictionary.MEDICINE)) {
                                 info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                info.convertToMedicine(obsDTO.getUuid(), obsDTO.getValue());
+                                info.convertToMedicine(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate());
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.IV_FLUIDS)) {
                                 if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                     info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
@@ -522,15 +530,13 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                                     info.getMedication(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(), obsDTO.getConceptuuid());
                                 }
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.PLAN)) {
-                                Log.d(TAG, "ccsetEditData: value ::PLAN: " + obsDTO.getValue());
-                                Log.d(TAG, "ccsetEditData: date ::PLAN: " + obsDTO.getCreatedDate());
-
-                                if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
-                                    Log.d(TAG, "ccsetEditData:11 value ::PLAN: " + obsDTO.getValue());
-                                    Log.d(TAG, "ccsetEditData:11 date ::PLAN: " + obsDTO.getCreatedDate());
-                                    info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                    info.collectAllPlansInList(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate());
-                                }
+                                //if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
+                                info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
+                                info.collectAllPlansInList(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate());
+                                // }
+                            } else if (obsDTO.getConceptuuid().equals(UuidDictionary.ASSESSMENT)) {
+                                info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
+                                info.collectAllAssessmentsInList(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate());
                             } else {
                                 info.setCapturedValue(obsDTO.getValue());
                             }
