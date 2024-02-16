@@ -839,6 +839,14 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             } else {
                                 holder.submitButton.setVisibility(View.GONE);
                             }
+                        } else {
+
+                            for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
+                                if (!mItemList.get(i).isSelected()) { // here, all those that are not selected nested - options those will be removed thus, keeping only the current selection options - nested options visible.
+                                    mItemList.remove(i);
+                                    notifyItemRemoved(i);
+                                }
+                            }
                         }
                         if (!node.isSelected()) {
                             node.unselectAllNestedNode();
@@ -936,6 +944,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             //holder.singleComponentContainer.setVisibility(View.VISIBLE);
 
                         } else {
+                            // start
+
+                            // end
                             changeInputVisibility(mItemList.get(index).isMultiChoice(), holder.singleComponentContainer);
 //                            holder.singleComponentContainer.removeAllViews();
                             //holder.superNestedContainerLinearLayout.removeAllViews();
