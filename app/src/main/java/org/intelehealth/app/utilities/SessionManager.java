@@ -61,6 +61,8 @@ public class SessionManager {
     public static final String PATIENT_HISTORY = "PATIENT_HISTORY_";
     public static final String FAMILY_HISTORY = "FAMILY_HISTORY_";
 
+    public static final String TOKEN = "TOKEN";
+
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -519,6 +521,19 @@ public class SessionManager {
 
     public void removeVisitEditCache(String key) {
         editor.remove(key);
+        editor.commit();
+    }
+
+    /**
+     * handling token here
+     */
+    // get the visit edit cache data as json string
+    public String getToken() {
+        return pref.getString(TOKEN, "");
+    }
+
+    public void setToken(String valueJson) {
+        editor.putString(TOKEN, valueJson);
         editor.commit();
     }
 }
