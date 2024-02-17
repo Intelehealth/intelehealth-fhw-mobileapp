@@ -1,6 +1,7 @@
 package org.intelehealth.app.networkApiCalls;
 
 
+import org.intelehealth.app.networkApiCalls.interceptors.LogoutInterceptor;
 import org.intelehealth.app.networkApiCalls.interceptors.TokenSetupInterceptor;
 
 import java.util.concurrent.TimeUnit;
@@ -39,6 +40,7 @@ public class ApiClient {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client.addInterceptor(loggingInterceptor);
         client.addInterceptor(new TokenSetupInterceptor());
+        client.addInterceptor(new LogoutInterceptor());
         client.connectTimeout(60, TimeUnit.SECONDS);
         client.readTimeout(60, TimeUnit.SECONDS);
         client.writeTimeout(60, TimeUnit.SECONDS);

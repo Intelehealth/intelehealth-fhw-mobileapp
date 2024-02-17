@@ -1874,4 +1874,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="otp_sending">OTP Sending...</string>
     <string name="general_exam_title">" सामान्य जाँच:"</string>
     <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
+    <string name="token_expired">Token Expired</string>
 </resources>
