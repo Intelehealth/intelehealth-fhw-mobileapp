@@ -5,6 +5,7 @@ import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -68,7 +69,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     TextView textlayout_find_patient;
     NetworkUtils networkUtils;
     ImageView ivInternet;
-    private TextView mUpcomingAppointmentCountTextView,mCountPendingFollowupVisitsTextView;
+    private TextView mUpcomingAppointmentCountTextView, mCountPendingFollowupVisitsTextView;
     private Executor initUIExecutor = Executors.newSingleThreadExecutor();
 
     @Override
@@ -188,6 +189,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     }
 
     private void initUI() {
+        Activity activity = getActivity();
         sessionManager = new SessionManager(requireActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
         layoutToolbar.setVisibility(View.VISIBLE);
@@ -219,7 +221,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         }*/
         mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
         mCountPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
-        mUpcomingAppointmentCountTextView.setText("0 "+ getString(R.string.upcoming));
+        mUpcomingAppointmentCountTextView.setText("0 " + getString(R.string.upcoming));
         mCountPendingFollowupVisitsTextView.setText("0 " + getString(R.string.pending));
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(StringUtils.translateLocation(sessionManager.getLocationName(), sessionManager.getAppLanguage()));
@@ -270,21 +272,24 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             int countReceivedPrescription = getCurrentMonthsVisits(true);
 
             int total = pendingCountTotalVisits + countReceivedPrescription;
-            requireActivity().runOnUiThread(() -> {
-                String prescCountText = countReceivedPrescription + " " + getResources().getString(R.string.out_of) + " " + total + " " + getResources().getString(R.string.received).toLowerCase();
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
-                }
-                prescriptionCountTextView.setText(prescCountText);
-            });
+
+            if (isAdded() && activity != null) {
+                activity.runOnUiThread(() -> {
+                    String prescCountText = countReceivedPrescription + " " + activity.getString(R.string.out_of) + " " + total + " " + activity.getString(R.string.received).toLowerCase();
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
+                    }
+                    prescriptionCountTextView.setText(prescCountText);
+                });
+            }
         });
 
         //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         new Thread(() -> {
             int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
-            if (getActivity() != null) {
-                requireActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits)));
+            if (isAdded() && activity != null) {
+                activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + activity.getString(R.string.unclosed_visits)));
             }
         }).start();
 
