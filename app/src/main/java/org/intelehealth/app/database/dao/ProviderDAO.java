@@ -164,7 +164,7 @@ public class ProviderDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ProviderDTO providerDTO = null;
         //if db in transaction then return null
-        if(db.inTransaction()) return null;
+        if (db.inTransaction()) return null;
         db.beginTransaction();
 
         try {
@@ -284,7 +284,7 @@ public class ProviderDAO {
         String[] whereargs = {uuid};
         try {
             values.put("sync", synced);
-           // values.put("uuid", uuid);
+            // values.put("uuid", uuid);
             int i = db.update("tbl_provider", values, whereclause, whereargs);
             Logger.logD("profile", "updated" + i);
             db.setTransactionSuccessful();
@@ -338,6 +338,7 @@ public class ProviderDAO {
 
         return providerDTOList;
     }
+
     public boolean updateLoggedInUserProfileImage(String imagepath, String uuid) throws DAOException {
 
         boolean isUpdated = false;
@@ -367,13 +368,13 @@ public class ProviderDAO {
         return isUpdated;
     }
 
-    public String getProviderName(String userUuid) throws DAOException {
+    public String getProviderName(String userUuid, String columnName) throws DAOException {
         String fullname = "";
         String givenname = "", familyname = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            String query = "select * from tbl_provider where useruuid = ?";
+            String query = "select * from tbl_provider where " + columnName + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{userUuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {

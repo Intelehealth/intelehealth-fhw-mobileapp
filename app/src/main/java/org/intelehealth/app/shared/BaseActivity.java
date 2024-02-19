@@ -10,6 +10,7 @@ import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
+import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
@@ -43,7 +44,7 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
         args.setNurseId(chatMessage.getToUser());
         args.setDoctorUuid(chatMessage.getFromUser());
         try {
-            String title = new ProviderDAO().getProviderName(args.getDoctorUuid());
+            String title = new ProviderDAO().getProviderName(args.getDoctorUuid(), ProviderDTO.Columns.USER_UUID.value);
             new AppNotification.Builder(this)
                     .title(title)
                     .body(chatMessage.getMessage())
