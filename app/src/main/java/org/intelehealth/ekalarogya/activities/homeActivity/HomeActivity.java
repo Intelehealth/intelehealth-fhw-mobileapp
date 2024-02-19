@@ -152,9 +152,12 @@ public class HomeActivity extends BaseActivity {
         }
     });
 
+    private void saveVideoManagerURL() {
+        VideoLibraryManager.setBaseUrl(sessionManager.getServerUrl());
+    }
+
     private void saveToken() {
         Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
-        VideoLibraryManager.setBaseUrl(sessionManager.getServerUrl());
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }
 
@@ -164,6 +167,7 @@ public class HomeActivity extends BaseActivity {
         setLocale(HomeActivity.this);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
+        saveVideoManagerURL();
         Log.e(TAG, "onCreate: server url=>" + sessionManager.getServerUrl());
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
