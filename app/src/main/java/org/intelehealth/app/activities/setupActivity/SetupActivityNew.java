@@ -68,6 +68,8 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
+import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.io.BufferedReader;
@@ -78,6 +80,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -371,7 +374,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
         if (location != null) {
             Log.i(TAG, location.getDisplay());
-            TestSetup(BuildConfig.SERVER_URL, userName, password, admin_password, location);
+            //TestSetup(BuildConfig.SERVER_URL, userName, password, admin_password, location);
+            getJWTToken(BuildConfig.SERVER_URL, userName, password, admin_password, location);
             Log.d(TAG, "attempting setup");
         }
     }
@@ -381,8 +385,59 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
+    /**
+     * calling api here to get token
+     * @param urlString
+     * @param username
+     * @param password
+     * @param admin_password
+     * @param location
+     */
+    private void getJWTToken(String urlString, String username, String password,
+                             String admin_password, Location location) {
         cpd.show(getString(R.string.please_wait));
+        String finalURL = "https://" + urlString.concat(":3030/auth/login");
+        AuthJWTBody authBody = new AuthJWTBody(username, password, true);
+        Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
+
+        authJWTResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AuthJWTResponse authJWTResponse) {
+                        // in case of error password
+                        if (!authJWTResponse.getStatus()) {
+                            showErrorDialog();
+                            return;
+                        }
+
+                        sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        TestSetup(urlString, username, password, admin_password, location);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //resetViews();
+                        showErrorDialog();
+                        cpd.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
+        //cpd.show(getString(R.string.please_wait));
         Log.d(TAG, "TestSetup: ");
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);

@@ -32,6 +32,8 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.app.models.statewise_location.State;
+import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
+import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
 import org.json.JSONObject;
 
 import io.reactivex.Observable;
@@ -197,4 +199,11 @@ public interface ApiInterface {
     @POST("attribute/{attributeUuid}")
     Observable<ResponseBody> PROFILE_ATTRIBUTE_UPDATE(@Path("attributeUuid") String attributeUuid,
                                                       @Body ProfileUpdateAttribute profileUpdateAttribute, @Header("Authorization") String authHeader);
+
+    @Headers({"Accept: application/json"})
+    @POST
+    Observable<AuthJWTResponse> AUTH_LOGIN_JWT_API(
+            @Url String url,
+            @Body AuthJWTBody authJWTBody
+    );
 }

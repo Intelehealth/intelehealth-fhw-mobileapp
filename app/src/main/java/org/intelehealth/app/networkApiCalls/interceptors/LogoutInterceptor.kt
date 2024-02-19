@@ -2,8 +2,10 @@ package org.intelehealth.app.networkApiCalls.interceptors
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import okhttp3.internal.closeQuietly
 import org.intelehealth.app.R
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.utilities.NavigationUtils
 import java.io.IOException
 
 /**
@@ -16,10 +18,13 @@ class LogoutInterceptor :Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         //Not going to check 401 on some api which port is not 3004
         //that's why added the logic
-        if (chain.request().url.port != 3004) {
+        if (chain.request().url.port == 3004) {
             val response = chain.proceed(chain.request())
+            response.closeQuietly()
             if(response.code == 401){
                 //do logout
+                val navigationUtils = NavigationUtils()
+                navigationUtils.triggerSignOutOn401Response(IntelehealthApplication.getInstance())
                 throw LogoutException()
             }
         }

@@ -61,7 +61,7 @@ public class SessionManager {
     public static final String PATIENT_HISTORY = "PATIENT_HISTORY_";
     public static final String FAMILY_HISTORY = "FAMILY_HISTORY_";
 
-    public static final String TOKEN = "TOKEN";
+    private static final String JWT_AUTH_TOKEN = "JWT_AUTH_TOKEN";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -514,6 +514,7 @@ public class SessionManager {
         editor.putString(key, valueJson);
         editor.commit();
     }
+
     // get the visit edit cache data as json string
     public String getVisitEditCache(String key) {
         return pref.getString(key, "");
@@ -528,12 +529,12 @@ public class SessionManager {
      * handling token here
      */
     // get the visit edit cache data as json string
-    public String getToken() {
-        return pref.getString(TOKEN, "");
+    public void setJwtAuthToken(String token) {
+        editor.putString(JWT_AUTH_TOKEN, token);
+        editor.commit();
     }
 
-    public void setToken(String valueJson) {
-        editor.putString(TOKEN, valueJson);
-        editor.commit();
+    public String getJwtAuthToken() {
+        return pref.getString(JWT_AUTH_TOKEN, "");
     }
 }

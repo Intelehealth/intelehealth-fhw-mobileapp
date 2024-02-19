@@ -14,7 +14,7 @@ import org.intelehealth.app.utilities.SessionManager
 class TokenSetupInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val sessionManager = SessionManager(IntelehealthApplication.getAppContext())
-        val token = sessionManager.token
+        val token = sessionManager.jwtAuthToken
         var modifiedRequest = chain.request()
         //Not going to add token on some api with 3004 port
         //that's why added the logic
