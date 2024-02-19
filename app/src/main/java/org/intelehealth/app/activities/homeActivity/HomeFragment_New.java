@@ -293,7 +293,16 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             }
         }).start();
 
-        getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener);
+       // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
+        Executors.newSingleThreadExecutor().execute(() -> {
+            int count = countPendingFollowupVisits();
+
+            requireActivity().runOnUiThread(() -> {
+
+                mCountPendingFollowupVisitsTextView.setText(count + " " + getResources().getString(R.string.pending));
+            });
+        });
+        getUpcomingAppointments();
     }
 
     private void startExecutor() {
