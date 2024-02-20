@@ -242,5 +242,9 @@ public interface ApiInterface {
                                                                     @Header("X-TOKEN") String xToken,
                                                                     @Body AbhaProfileRequestBody abhaProfileRequestBody);
 
+    @GET
+    Single<ResponseBody> GET_ABHA_CARD(@Url String url,
+                                       @Header("Authorization") String accessToken,
+                                       @Header("X-TOKEN") String xToken);
 
 }
