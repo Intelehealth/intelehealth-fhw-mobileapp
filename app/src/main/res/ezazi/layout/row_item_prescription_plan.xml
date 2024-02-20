@@ -72,17 +72,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/txtPlanDate" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnFollowPlan"
-                style="@style/Theme.EZazi.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/btn_administer_height"
-                android:text="@string/follow"
-                android:visibility="gone"
-                android:enabled="@{accessMode != AccessMode.READ}"
-                app:layout_constraintBottom_toBottomOf="@id/btnPrescriptionPlanViewMore"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/btnPrescriptionPlanViewMore" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

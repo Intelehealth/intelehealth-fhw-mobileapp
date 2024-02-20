@@ -17,14 +17,13 @@ import java.util.LinkedList
  * Mob   : +919727206702
  **/
 class PrescriptionAdapter(
-        context: Context,
-        items: LinkedList<ItemHeader>
+    context: Context,
+    items: LinkedList<ItemHeader>
 ) : PrescriptionMedicationAdapter(context, items) {
-    private var followPlanButtonVisible: Boolean = true
 
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
-        return if(item is ObsDTO && item.isHeader().not()) PLAN
+        return if (item is ObsDTO && item.isHeader().not()) PLAN
         else super.getItemViewType(position)
     }
 
@@ -39,15 +38,11 @@ class PrescriptionAdapter(
         val item = getItem(position)
         if (item.isHeader().not() && item is ObsDTO && holder is PrescriptionPlanHolder) {
             if (clickListener != null) holder.setViewClickListener(clickListener)
-            holder.bind(item, followPlanButtonVisible)
+            holder.bind(item)
         } else super.onBindViewHolder(holder, position)
     }
 
     companion object {
         const val PLAN = 10001
-    }
-
-    fun manageFollowUpButtonVisibility(makeBtnVisible: Boolean) {
-        followPlanButtonVisible = makeBtnVisible
     }
 }

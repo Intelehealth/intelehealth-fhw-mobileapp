@@ -5,4 +5,5 @@
     <string name="content_item_container">Item container</string>
     <string name="content_new_medicine_container">New Medicine Container</string>
     <string name="content_view_more">View More</string>
+    <string name="content_view_prescription">View Prescription</string>
 </resources>

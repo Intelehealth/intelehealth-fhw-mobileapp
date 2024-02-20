@@ -98,16 +98,17 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
             ObsDTO obs = (ObsDTO) view.getTag();
             obs.updateVisibleContentLine();
             adapter.notifyItemChanged(position);
-        } else if (view.getId() == R.id.btnFollowPlan) {
-            closePrescribedPlanDialog();
-            if (prescriptionAdapter.getItem(position) instanceof ObsDTO obsDTO) {
-                binding.includeAddNewPlanDialog.setPlan(obsDTO);
-                //binding.includeAddNewPlanDialog.setUpdatePosition(position);
-                binding.clAddNewPlanRoot.setVisibility(View.VISIBLE);
-                binding.btnAddMorePlan.setVisibility(View.GONE);
-                binding.includeAddNewPlanDialog.btnAddPlanAdd.setText(getString(R.string.lbl_add));
-            }
         }
+//        else if (view.getId() == R.id.btnFollowPlan) {
+//            closePrescribedPlanDialog();
+//            if (prescriptionAdapter.getItem(position) instanceof ObsDTO obsDTO) {
+//                binding.includeAddNewPlanDialog.setPlan(obsDTO);
+//                //binding.includeAddNewPlanDialog.setUpdatePosition(position);
+//                binding.clAddNewPlanRoot.setVisibility(View.VISIBLE);
+//                binding.btnAddMorePlan.setVisibility(View.GONE);
+//                binding.includeAddNewPlanDialog.btnAddPlanAdd.setText(getString(R.string.lbl_add));
+//            }
+//        }
     }
 
     public interface PlanListChangeListener {
@@ -285,7 +286,7 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
         binding.btnSavePlan.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
         binding.clAddNewPlanRoot.setClickable(false);
         binding.clAddNewPlanRoot.setOnTouchListener((v, event) -> true);
-        binding.btnViewPrescriptionPlan.setOnClickListener(this);
+        binding.bottomSheetAppBar.btnViewPrescription.setOnClickListener(this);
     }
 
     private void setPlanListView() {
@@ -363,7 +364,7 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
             case R.id.btnSavePlan:
                 saveAndUpdateFinalListOfMedicines();
                 break;
-            case R.id.btnViewPrescriptionPlan:
+            case R.id.btnViewPrescription:
                 showPrescribedPlansDialog();
                 break;
         }
@@ -532,7 +533,6 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
             ///adapter.setClickListener(PrescriptionActivity.this);
             //prescriptionAdapter.manageFollowPlanButtonVisibility(true);
             prescriptionAdapter.setClickListener(this);
-            prescriptionAdapter.manageFollowUpButtonVisibility(true);
             binding.includedPrescribedPlan.rvPrescribedPlans.setAdapter(prescriptionAdapter);
 
         } else {

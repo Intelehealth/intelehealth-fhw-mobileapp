@@ -96,16 +96,17 @@ public class AssessmentBottomSheetDialog extends BottomSheetDialogFragment imple
             ObsDTO obs = (ObsDTO) view.getTag();
             obs.updateVisibleContentLine();
             adapter.notifyItemChanged(position);
-        } else if (view.getId() == R.id.btnFollowPlan) {
-            closePrescribedPlanDialog();
-            if (prescriptionAdapter.getItem(position) instanceof ObsDTO obsDTO) {
-                binding.includeAddNewAssessmentDialog.setAssessment(obsDTO);
-                //binding.includeAddNewPlanDialog.setUpdatePosition(position);
-                binding.clAddNewAssessmentRoot.setVisibility(View.VISIBLE);
-                binding.btnAddMoreAssessment.setVisibility(View.GONE);
-                binding.includeAddNewAssessmentDialog.btnAddAssessmentAdd.setText(getString(R.string.lbl_add));
-            }
         }
+//        else if (view.getId() == R.id.btnFollowPlan) {
+//            closePrescribedPlanDialog();
+//            if (prescriptionAdapter.getItem(position) instanceof ObsDTO obsDTO) {
+//                binding.includeAddNewAssessmentDialog.setAssessment(obsDTO);
+//                //binding.includeAddNewPlanDialog.setUpdatePosition(position);
+//                binding.clAddNewAssessmentRoot.setVisibility(View.VISIBLE);
+//                binding.btnAddMoreAssessment.setVisibility(View.GONE);
+//                binding.includeAddNewAssessmentDialog.btnAddAssessmentAdd.setText(getString(R.string.lbl_add));
+//            }
+//        }
     }
 
     public interface AssessmentListChangeListener {
@@ -283,7 +284,7 @@ public class AssessmentBottomSheetDialog extends BottomSheetDialogFragment imple
         binding.btnSaveAssessment.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
         binding.clAddNewAssessmentRoot.setClickable(false);
         binding.clAddNewAssessmentRoot.setOnTouchListener((v, event) -> true);
-        binding.btnViewPrescriptionAssessment.setOnClickListener(this);
+        binding.bottomSheetAppBar.btnViewPrescription.setOnClickListener(this);
     }
 
     private void setPlanListView() {
@@ -361,7 +362,7 @@ public class AssessmentBottomSheetDialog extends BottomSheetDialogFragment imple
             case R.id.btnSaveAssessment:
                 saveAndUpdateFinalListOfMedicines();
                 break;
-            case R.id.btnViewPrescriptionAssessment:
+            case R.id.btnViewPrescription:
                 showPrescribedAssessmentsDialog();
                 break;
         }
@@ -530,7 +531,6 @@ public class AssessmentBottomSheetDialog extends BottomSheetDialogFragment imple
             ///adapter.setClickListener(PrescriptionActivity.this);
             //prescriptionAdapter.manageFollowPlanButtonVisibility(true);
             prescriptionAdapter.setClickListener(this);
-            prescriptionAdapter.manageFollowUpButtonVisibility(true);
             binding.includedPrescribedAssessment.rvPrescribedAssessments.setAdapter(prescriptionAdapter);
 
         } else {

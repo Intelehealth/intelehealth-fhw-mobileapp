@@ -11,17 +11,10 @@ import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
  * Mob   : +919727206702
  **/
 class PrescriptionPlanHolder(val binding: RowItemPrescriptionPlanBinding) :
-        BaseViewHolder(binding.root) {
-    fun bind(plan: ObsDTO, makeVisible: Boolean) {
+    BaseViewHolder(binding.root) {
+    fun bind(plan: ObsDTO) {
         binding.plan = plan
         binding.btnPrescriptionPlanViewMore.setOnClickListener(this)
-        binding.btnFollowPlan.setOnClickListener(this)
         binding.btnPrescriptionPlanViewMore.tag = plan
-        if (makeVisible) {
-            binding.btnFollowPlan.visibility = View.VISIBLE
-        } else {
-            binding.btnFollowPlan.visibility = View.GONE
-
-        }
     }
 }

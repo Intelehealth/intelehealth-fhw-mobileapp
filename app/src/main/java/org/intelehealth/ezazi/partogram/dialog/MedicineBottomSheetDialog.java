@@ -151,9 +151,9 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             params.bottomMargin = params.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
             binding.btnSaveMedicines.setLayoutParams(params);
 
-            ConstraintLayout.LayoutParams paramsPres = (ConstraintLayout.LayoutParams) binding.btnViewPrescriptionMedicine.getLayoutParams();
-            paramsPres.bottomMargin = params.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
-            binding.btnViewPrescriptionMedicine.setLayoutParams(paramsPres);
+//            ConstraintLayout.LayoutParams paramsPres = (ConstraintLayout.LayoutParams) binding.btnViewPrescriptionMedicine.getLayoutParams();
+//            paramsPres.bottomMargin = params.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
+//            binding.btnViewPrescriptionMedicine.setLayoutParams(paramsPres);
 
 //            ConstraintLayout.LayoutParams params1 = (ConstraintLayout.LayoutParams) binding.clAddNewMedicineRoot.getLayoutParams();
 //            params1.bottomMargin = params1.bottomMargin + getResources().getDimensionPixelOffset(R.dimen.screen_padding) + dpToPx(16);
@@ -289,7 +289,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
         binding.btnSaveMedicines.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
         binding.clAddNewMedicineRoot.setClickable(false);
         binding.clAddNewMedicineRoot.setOnTouchListener((v, event) -> true);
-        binding.btnViewPrescriptionMedicine.setOnClickListener(this);
+        binding.bottomSheetAppBar.btnViewPrescription.setOnClickListener(this);
     }
 
     private void setMedicineListView() {
@@ -353,13 +353,13 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnAddMoreMedicine:
+            case R.id.btnAddMoreMedicine -> {
                 setupMedicines();
                 openNewMedicineDialog();
                 binding.btnAddMoreMedicine.setVisibility(View.GONE);
                 binding.includeAddNewMedicineDialog.btnAddMedicineAdd.setText(getString(R.string.lbl_add));
-                break;
-            case R.id.btnAddMedicineAdd:
+            }
+            case R.id.btnAddMedicineAdd -> {
                 binding.btnAddMoreMedicine.setVisibility(View.VISIBLE);
                 closeNewMedicineDialog();
                 Medicine medicine = validateMedicineFormInput();
@@ -379,17 +379,13 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
                     clearAddNewMedicineForm();
                     changeSaveButtonStatus();
                 }
-                break;
-            case R.id.btnAddMedicineCancel:
+            }
+            case R.id.btnAddMedicineCancel -> {
                 binding.btnAddMoreMedicine.setVisibility(View.VISIBLE);
                 closeNewMedicineDialog();
-                break;
-            case R.id.btnSaveMedicines:
-                saveAndUpdateFinalListOfMedicines();
-                break;
-            case R.id.btnViewPrescriptionMedicine:
-                showPrescribedMedicinesDialog();
-                break;
+            }
+            case R.id.btnSaveMedicines -> saveAndUpdateFinalListOfMedicines();
+            case R.id.btnViewPrescription -> showPrescribedMedicinesDialog();
         }
     }
 

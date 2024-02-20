@@ -98,7 +98,7 @@
     <string name="add_details_for_labour_completed">Please add details for labour completed</string>
     <string name="please_enter_reason_deceased">Please enter deceased reason</string>
     <string name="stage_2_labour_complete">Stage 2 Newborn Details</string>
-    <string name="lbl_add_new_medicine">Add New Medicine</string>
+    <string name="lbl_add_new_medicine">Add Medicine</string>
     <string name="hint_other_medicines">Other Medicines</string>
     <string name="hint_medicine">Medicine*</string>
     <string name="lbl_add">Add</string>
@@ -134,10 +134,10 @@
     <string name="enter_here">Enter here</string>
     <string name="lbl_plan_administration">Plan Administration</string>
     <string name="follow">Follow</string>
-    <string name="planned_by_you">Plan by You</string>
+    <string name="planned_by_you">Planned by You</string>
     <string name="assess_from_doctor">Assessment from Doctor</string>
     <string name="plans_not_prescribed">Plans not prescribed yet!</string>
-    <string name="planned_from_doctor">Plan from Doctor</string>
+    <string name="planned_from_doctor">Planned from Doctor</string>
     <string name="assess_by_you">Assessment by You</string>
     <string name="lbl_add_new_assessment">Add Assessment</string>
     <string name="assessment_not_prescribed">Assessment not prescribed yet!</string>
