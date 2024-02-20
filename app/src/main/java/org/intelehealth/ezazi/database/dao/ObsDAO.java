@@ -94,6 +94,7 @@ public class ObsDAO {
             values.put("value", obsDTOS.getValue());
             values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("created_date", obsDTOS.getCreatedDate(true));
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -123,6 +124,7 @@ public class ObsDAO {
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("created_date", obsDTO.getCreatedDate(true));
             values.put("voided", "0");
             values.put("sync", "false");
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -195,6 +197,7 @@ public class ObsDAO {
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            //values.put("created_date", obsDTO.getCreatedDate(true));
             values.put("voided", "0");
             values.put("sync", "false");
 
@@ -249,6 +252,7 @@ public class ObsDAO {
                 values.put("comment", ob.getComment());
                 values.put("value", ob.getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("created_date", ob.getCreatedDate(true));
                 values.put("voided", "0");
                 values.put("sync", "false");    //Earlier was set to FALSE which caused the issue.
                 insertedCount = db.insert("tbl_obs", null, values);
@@ -322,12 +326,12 @@ public class ObsDAO {
 
 
     public List<ObsDTO> obsDTOList(String encounteruuid) {
-        Log.d(TAG, "obsDTOList: kzcheckencounteruuid : "+encounteruuid);
+        Log.d(TAG, "obsDTOList: kzcheckencounteruuid : " + encounteruuid);
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
-        String query =  "SELECT * FROM tbl_obs where encounteruuid = '"+ encounteruuid + "' AND (conceptuuid != '07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba' AND conceptuuid != '200b7a45-77bc-4986-b879-cc727f5f7d5b') AND sync IN ('0', 'FALSE', 'false')";
-        Log.d(TAG, "obsDTOList:kk query: "+query);
+        String query = "SELECT * FROM tbl_obs where encounteruuid = '" + encounteruuid + "' AND (conceptuuid != '07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba' AND conceptuuid != '200b7a45-77bc-4986-b879-cc727f5f7d5b') AND sync IN ('0', 'FALSE', 'false')";
+        Log.d(TAG, "obsDTOList:kk query: " + query);
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND sync IN ('0', 'FALSE', 'false')",
                 new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
 
@@ -343,7 +347,8 @@ public class ObsDAO {
                     obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
                     obsDTO.setVoided(Integer.parseInt(idCursor.getString(idCursor.getColumnIndexOrThrow("voided"))));
                     obsDTO.setCreatorUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creatoruuid")));
-                    Log.d(TAG, "obsDTOList: creatoruuid : "+obsDTO.getCreatorUuid());
+                    obsDTO.setCreatedDate(idCursor.getString(idCursor.getColumnIndexOrThrow("created_date")));
+                    Log.d(TAG, "obsDTOList: creatoruuid : " + obsDTO.getCreatorUuid());
                     obsDTOList.add(obsDTO);
                 }
             }
@@ -360,7 +365,7 @@ public class ObsDAO {
         //UuidDictionary.IV_FLUIDS, UuidDictionary.OXYTOCIN_UL_DROPS_MIN
 
         //take All obs except image obs
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' ",
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' ORDER BY created_date DESC",
                 new String[]{encounteruuid});
       /*  String query = "SELECT * FROM tbl_obs WHERE encounteruuid = ? AND (voided='0' OR (voided='1' AND (conceptuuid= ?  OR conceptuuid= ?)))";
         Cursor idCursor = db.rawQuery(query, new String[]{encounteruuid, UuidDictionary.IV_FLUIDS, UuidDictionary.OXYTOCIN_UL_DROPS_MIN});*/
@@ -373,7 +378,7 @@ public class ObsDAO {
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
                 obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
-                obsDTO.setCreatedDate(idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date")));
+                obsDTO.setCreatedDate(idCursor.getString(idCursor.getColumnIndexOrThrow("created_date")));
                 obsDTOList.add(obsDTO);
             }
         }
@@ -736,6 +741,7 @@ public class ObsDAO {
         obsDTO.setCreator(creatorId);
         obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_TYPE);
         obsDTO.setCreatorUuid(creatorId);
+        obsDTO.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
         try {
             new ObsDAO().insertObs(obsDTO);
         } catch (DAOException e) {
@@ -761,6 +767,7 @@ public class ObsDAO {
         obsDTO.setCreator(creatorId);
         obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_TYPE);
         obsDTO.setCreatorUuid(creatorId);
+        obsDTO.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
         Log.e(TAG, "createEncounterType: from screen =>" + from);
         return obsDTO;
     }
@@ -1004,7 +1011,7 @@ public class ObsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         List<ObsDTO> prescribedObsList = new ArrayList<>();
         ObsDTO obsDTO;
-        String query = "SELECT o.uuid,o.conceptuuid,o.value,o.obsservermodifieddate FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by e.encounter_time";
+        String query = "SELECT o.uuid,o.conceptuuid,o.value,o.obsservermodifieddate,created_date FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by e.encounter_time";
         Cursor idCursor = db.rawQuery(query, new String[]{visitUuid, UuidDictionary.MEDICINE_PRESCRIBED});
 
         if (idCursor.getCount() != 0) {
@@ -1014,8 +1021,8 @@ public class ObsDAO {
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 String value = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
                 obsDTO.setValue(value);
-                String modified_date = idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date"));
-                obsDTO.setCreatedDate(modified_date);
+                String created_date = idCursor.getString(idCursor.getColumnIndexOrThrow("created_date"));
+                obsDTO.setCreatedDate(created_date);
 
                 if (!value.equalsIgnoreCase("No")) {
                     prescribedObsList.add(obsDTO);
@@ -1031,7 +1038,7 @@ public class ObsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         List<ObsDTO> prescribedObsList = new ArrayList<>();
         ObsDTO obsDTO;
-        String query = "SELECT o.uuid,o.conceptuuid, o.value,o.modified_date FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by o.modified_date DESC";
+        String query = "SELECT o.uuid,o.conceptuuid, o.value,o.modified_date,created_date FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by o.modified_date DESC";
         Cursor idCursor = db.rawQuery(query, new String[]{visitUuid, UuidDictionary.IV_FLUID_PRESCRIBED});
 
         if (idCursor.getCount() != 0) {
@@ -1040,9 +1047,9 @@ public class ObsDAO {
                 obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 String value = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
-                String modified_date = idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date"));
+                String created_date = idCursor.getString(idCursor.getColumnIndexOrThrow("created_date"));
                 obsDTO.setValue(value);
-                obsDTO.setCreatedDate(modified_date);
+                obsDTO.setCreatedDate(created_date);
 
                 if (!value.equalsIgnoreCase("No")) {
                     prescribedObsList.add(obsDTO);
@@ -1058,7 +1065,7 @@ public class ObsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         List<ObsDTO> prescribedObsList = new ArrayList<>();
         ObsDTO obsDTO;
-        String query = "SELECT o.uuid,o.conceptuuid, o.value,o.modified_date FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by o.modified_date DESC";
+        String query = "SELECT o.uuid,o.conceptuuid, o.value,o.modified_date,created_date FROM tbl_obs as o LEFT JOIN tbl_encounter as e on o.encounteruuid = e.uuid where e.visituuid = ? and  o.voided='0' AND o.conceptuuid = ? order by o.modified_date DESC";
         Cursor idCursor = db.rawQuery(query, new String[]{visitUuid, UuidDictionary.OXYTOCIN_PRESCRIBED});
 
         if (idCursor.getCount() != 0) {
@@ -1067,9 +1074,9 @@ public class ObsDAO {
                 obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 String value = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
-                String modified_date = idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date"));
+                String created_date = idCursor.getString(idCursor.getColumnIndexOrThrow("created_date"));
                 obsDTO.setValue(value);
-                obsDTO.setCreatedDate(modified_date);
+                obsDTO.setCreatedDate(created_date);
 
                 if (!value.equalsIgnoreCase("No")) {
                     prescribedObsList.add(obsDTO);
@@ -1095,18 +1102,15 @@ public class ObsDAO {
         idCursor.close();
         return creatorName;
     }
+
     public String getCreatorNameByObsUuidMedicine(String obsUuid) {
-        Log.d(TAG, "getCreatorNameByObsUuidMedicine: obsUuid : " + obsUuid);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String creatorName = "";
         String query = "select p.given_name from tbl_obs as o LEFT JOIN tbl_provider as p  ON P.useruuid = O.creatoruuid where o.uuid = ?";
-        Log.d(TAG, "getCreatorNameByObsUuidMedicine: query : "+query);
         Cursor idCursor = db.rawQuery(query, new String[]{obsUuid});
-        Log.d(TAG, "getCreatorNameByObsUuidMedicine: idCursor  count : "+idCursor.getCount());
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 creatorName = idCursor.getString(idCursor.getColumnIndexOrThrow("given_name"));
-                Log.d(TAG, "getCreatorNameByObsUuidMedicine: creatorName: " + creatorName);
             }
         }
         idCursor.close();

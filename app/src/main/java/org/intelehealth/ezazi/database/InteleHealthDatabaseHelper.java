@@ -153,9 +153,14 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "voided TEXT DEFAULT '0'," +
             "obsservermodifieddate TEXT," +
             "modified_date TEXT," +
-            "created_date TEXT DEFAULT CURRENT_TIMESTAMP ," +
+            "created_date TEXT ," +
             "sync TEXT DEFAULT 'false' " +
             ")";
+
+/*
+            "created_date TEXT DEFAULT CURRENT_TIMESTAMP ," +
+*/
+
     SessionManager sessionManager = null;
 
     public static final String CREATE_PATIENT_ATTRIBUTE_MASTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute_master (" +

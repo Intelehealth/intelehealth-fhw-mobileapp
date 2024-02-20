@@ -10,6 +10,12 @@
         <variable
             name="plan"
             type="org.intelehealth.ezazi.models.dto.ObsDTO" />
+
+        <import type="org.intelehealth.ezazi.partogram.PartogramConstants.AccessMode" />
+        <variable
+            name="accessMode"
+            type="org.intelehealth.ezazi.partogram.PartogramConstants.AccessMode" />
+
     </data>
 
     <androidx.cardview.widget.CardView
@@ -73,6 +79,7 @@
                 android:layout_height="@dimen/btn_administer_height"
                 android:text="@string/follow"
                 android:visibility="gone"
+                android:enabled="@{accessMode != AccessMode.READ}"
                 app:layout_constraintBottom_toBottomOf="@id/btnPrescriptionPlanViewMore"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/btnPrescriptionPlanViewMore" />

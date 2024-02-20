@@ -44,9 +44,10 @@ public class ObsDTO implements ItemHeader {
     @Expose
     private String creatorUuid;
 
-    @SerializedName("created_date")
+    @SerializedName("obsDateTime")
     @Expose
     private String createdDate;
+
     @SerializedName("voided")
     @Expose
     private Integer voided;
@@ -136,22 +137,18 @@ public class ObsDTO implements ItemHeader {
         this.createdDate = createdDate;
     }
 
-    public String getCreatedDate() {
+    public String getCreatedDate(boolean utcDateOnly) {
+        Log.d("TAG", "getCreatedDate: utcDateOnly : " + utcDateOnly);
         Log.d("TAG", "getCreatedDate: createdDate : " + createdDate);
-        if (createdDate != null && !createdDate.isEmpty()) {
-            if (createdDate.contains("T")) {
-                return formatDateTimeNew(createdDate);
-            } else if (createdDate.contains("am") || createdDate.contains("pm")) {
-                return createdDate;
-            } else {
-                return DateTimeUtils.utcToLocalDate(createdDate, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
-            }
+        if (utcDateOnly) {
+            return createdDate;
+        } else {
+            return DateTimeUtils.utcToLocalDate(createdDate, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
         }
-        return "";
     }
 
     public String dateWithDrName() {
-        return name + " " + getCreatedDate();
+        return name + " " + getCreatedDate(false);
     }
 
     @Override
@@ -199,8 +196,11 @@ public class ObsDTO implements ItemHeader {
         return value != null && value.length() > 0;
     }
 
-    public ObsDTO toObs(String encounterId, String creator, String createdDate,String conceptUuid) {
+    public ObsDTO toObs(String encounterId, String creator, String createdDate, String conceptUuid) {
         Log.d("TAG", "toObs: creator : " + creator);
+        Log.d("TAG", "toObs: createdDate : " + createdDate);
+
+
         ObsDTO obs = new ObsDTO();
         obs.setUuid(uuid);
         obs.setConceptuuid(conceptUuid);
@@ -208,7 +208,9 @@ public class ObsDTO implements ItemHeader {
         obs.setCreator(creator);
         obs.setEncounteruuid(encounterId);
         obs.setCreatorUuid(creator);
-        obs.setObsServerModifiedDate(creator);
+        obs.setCreatedDate(createdDate);
+        Log.d("TAG", "toObs: createdDate : " + obs.getCreatedDate(true));
+        //obs.setCreatedDate(DateTimeUtils.getISTDateInUTCDate(createdDate));
         Log.e("plans", "toObs: " + new Gson().toJson(obs));
         return obs;
     }

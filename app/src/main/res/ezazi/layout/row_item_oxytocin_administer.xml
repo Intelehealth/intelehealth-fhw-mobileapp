@@ -27,15 +27,13 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvOxytocinDetails"
-            style="@style/Theme.EZazi.Heading2"
+            style="@style/Theme.EZazi.Text.Dialog.Content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/screen_container_padding"
             android:layout_weight="2"
             android:padding="@dimen/common_padding"
             android:text="@{`Strength : ` + medication.strength}"
-            android:textColor="@color/gray_6"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvOxytocinInfusionRate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,7 +41,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvOxytocinInfusionRate"
-            style="@style/Theme.EZazi.Heading2"
+            style="@style/Theme.EZazi.Text.Dialog.Content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/screen_container_padding"
@@ -51,21 +49,19 @@
             android:paddingStart="@dimen/common_padding"
             android:paddingEnd="@dimen/common_padding"
             android:text="@{`IV Infusion Rate : ` + medication.infusionRate}"
-            android:textColor="@color/gray_6"
             app:layout_constraintBottom_toTopOf="@+id/tvOxytocinDateTime"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvOxytocinDateTime"
-            style="@style/Theme.EZazi.Heading2"
+            style="@style/Theme.EZazi.Caption"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/screen_container_padding"
             android:layout_weight="2"
             android:padding="@dimen/common_padding"
             android:text="@{medication.createdAt}"
-            android:textColor="@color/gray_6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvOxytocinInfusionRate"
             app:layout_constraintVertical_bias="0.5" />
@@ -79,8 +75,6 @@
             android:contentDescription="@string/content_expand_collapse_indicator"
             android:padding="@dimen/common_padding"
             android:text='@{medication.infusionStatus.equalsIgnoreCase("start") ? "Started" : (medication.infusionStatus.equalsIgnoreCase("continue") ? "Continued" : (medication.infusionStatus.equalsIgnoreCase("stop") ? "Stopped" : medication.infusionStatus))}'
-            android:textColor="@color/gray_6"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

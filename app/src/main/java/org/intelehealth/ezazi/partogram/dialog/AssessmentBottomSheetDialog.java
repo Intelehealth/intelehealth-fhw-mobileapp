@@ -46,6 +46,7 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -327,10 +328,10 @@ public class AssessmentBottomSheetDialog extends BottomSheetDialogFragment imple
                 try {
                     assessment.setName(new ProviderDAO().getCreatorGivenName(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID()));
                     assessment.dateWithDrName();
-                    Date currentDate = new Date();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
-                    String formattedDate = dateFormat.format(currentDate);
-                    assessment.setCreatedDate(formattedDate);
+                    //Date currentDate = new Date();
+                    //SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
+                    //String formattedDate = dateFormat.format(currentDate);
+                    assessment.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
                 } catch (DAOException e) {
                     e.printStackTrace();
                     throw new RuntimeException(e);
@@ -534,7 +535,7 @@ public class AssessmentBottomSheetDialog extends BottomSheetDialogFragment imple
 
         } else {
             manageUIVisibilityAsPerData(false);
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.assessment_not_prescribed), Toast.LENGTH_LONG).show();
+            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.assessment_not_prescribed), Toast.LENGTH_SHORT).show();
 
             //viewMode.updateFailResult(getString(R.string.no_prescription));
         }

@@ -40,7 +40,7 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
                 model.conceptuuid = cursor.getString(cursor.getColumnIndexOrThrow("conceptuuid"))
                 model.creator = cursor.getString(cursor.getColumnIndexOrThrow("creator"))
                 model.name = cursor.getString(cursor.getColumnIndexOrThrow("given_name"))
-                model.createdDate = cursor.getString(cursor.getColumnIndexOrThrow("created_date"))
+                model.setCreatedDate(cursor.getString(cursor.getColumnIndexOrThrow("created_date")))
                 prescriptionObs.add(model)
             } while (cursor.moveToNext())
         }
@@ -76,7 +76,7 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
                         if (name.contains("Dr").not()) return@let "Dr.$name"
                         else return@let name
                     }
-                    setCreatedAt(it.createdDate)
+                    setCreatedAt(it.getCreatedDate(false))
                     dbFormatToMedicineObject(it.value)
                 }
             }.apply {
@@ -97,7 +97,7 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
                         if (name.contains("Dr").not()) return@let "Dr.$name"
                         else return@let name
                     }
-                    setCreatedAt(it.createdDate)
+                    setCreatedAt(it.getCreatedDate(false))
                     return@apply
                 }
             }.apply {
@@ -118,7 +118,7 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
                         if (name.contains("Dr").not()) return@let "Dr.$name"
                         else return@let name
                     }
-                    setCreatedAt(it.createdDate)
+                    setCreatedAt(it.getCreatedDate(false))
                     return@apply
                 }
             }.apply {

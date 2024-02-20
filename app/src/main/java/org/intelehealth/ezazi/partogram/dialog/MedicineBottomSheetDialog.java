@@ -33,6 +33,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.setupActivity.LocationArrayAdapter;
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
@@ -318,7 +319,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             showConfirmationDialog(position);
         } else if (view.getId() == R.id.clMedicineRowItemRoot) {
             adapter.setExpandedItemPosition(position);
-        } else if (view.getId() == R.id.btnExpandCollapseIndicator1) {
+        } else if (view.getId() == R.id.btnExpandCollapseIndicator) {
             adapter.setExpandedItemPosition(position);
         } else if (view.getId() == R.id.btnExpandCollapseIndicator1) {
             prescribedMedicinesAdapter.setExpandedItemPosition(position);
@@ -363,6 +364,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
                 binding.btnAddMoreMedicine.setVisibility(View.VISIBLE);
                 closeNewMedicineDialog();
                 Medicine medicine = validateMedicineFormInput();
+                medicine.setCreatedAt(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
                 if (medicine.isValidMedicine()) {
                     int updated = -1;
                     if (binding.includeAddNewMedicineDialog.getUpdatePosition() != null) {
@@ -644,8 +646,9 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             for (int i = 0; i < mPrescribedMedicinesList.size(); i++) {
                 ObsDTO obsDTO = mPrescribedMedicinesList.get(i);
                 convertToPrescribedMedicine(obsDTO.getUuid(), obsDTO.getValue());
+                obsDTO.setName("");
             }
-            setPrescribedMedicines(prescribedMedicines);
+                      setPrescribedMedicines(prescribedMedicines);
             //binding.includedPrescribedMedicines.rvPrescribedMedicines.setLayoutManager(new LinearLayoutManager(requireContext()));
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
             layoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -659,7 +662,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             binding.includedPrescribedMedicines.rvPrescribedMedicines.setAdapter(prescribedMedicinesAdapter);
         } else {
             //There is no prescribed medicines
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.medicines_not_prescribed), Toast.LENGTH_LONG).show();
+            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.medicines_not_prescribed), Toast.LENGTH_SHORT).show();
             manageUIVisibilityAsPerData(false);
 
         }

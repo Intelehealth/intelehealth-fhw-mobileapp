@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.activities.searchPatientActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -157,8 +158,9 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 intent.putExtra("patientNameTimeline", patientName);
                 intent.putExtra("tag", "exisiting");
                 intent.putExtra("fromScreen", "searchPatient");
-                //intent.putExtra("isDecisionPending", checkForOutcomePending(visitUUID));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+
             }
         }
     }

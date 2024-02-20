@@ -52,6 +52,7 @@ import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.databinding.DialogOutOfTimeEzaziBinding;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
+import org.intelehealth.ezazi.models.dto.VisitAttributeDTO;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
@@ -115,6 +116,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private boolean hwHasEditAccess = true;
     private boolean isNewEncounterCreated = false;
     private boolean isDecisionPending;
+    private String fromScreen;
     private ConstraintLayout layoutPendingFlag;
     private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -382,8 +384,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             providerID = intent.getStringExtra("providerID");
             whichScreenUserCameFromTag = intent.getStringExtra("tag");
             isDecisionPending = intent.getBooleanExtra("isDecisionPending", false);
-
-            // manageVisibilityOfPendingFlag();
+            fromScreen = intent.getStringExtra("fromScreen");
 
             hwHasEditAccess = new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID());
 
@@ -465,25 +466,40 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             }
         });
 
-        manageVisibilityOfPendingFlag();
-
-
         mCountDownTimer.cancel();
         mCountDownTimer.start();
+       //manageVisibilityOfPendingFlag();
+
 
     }
 
     private void manageVisibilityOfPendingFlag() {
-        TextView tvPendingDecision = findViewById(R.id.tv_message_pending_outcome);
-        layoutPendingFlag = findViewById(R.id.layout_decision_pending);
-        ImageView ivCloseMessage = findViewById(R.id.iv_close_decision_pending);
-        layoutPendingFlag.setVisibility(isDecisionPending ? View.VISIBLE : View.GONE);
-        ivCloseMessage.setOnClickListener(view -> layoutPendingFlag.setVisibility(View.GONE));
-        if (stageNo == 1) {
-            tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_1));
-        } else if (stageNo == 2) {
-            tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_2));
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(!fromScreen.isEmpty() && fromScreen.equals("searchPatient")){
+                    isDecisionPending = new VisitAttributeListDAO().checkIsVisitOutcomePending(visitUuid);
+                }
+            }
+        });
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "manageVisibilityOfPendingFlag: isDecisionPending:"+isDecisionPending);
+                TextView tvPendingDecision = findViewById(R.id.tv_message_pending_outcome);
+                layoutPendingFlag = findViewById(R.id.layout_decision_pending);
+                ImageView ivCloseMessage = findViewById(R.id.iv_close_decision_pending);
+                layoutPendingFlag.setVisibility(isDecisionPending ? View.VISIBLE : View.GONE);
+                ivCloseMessage.setOnClickListener(view -> layoutPendingFlag.setVisibility(View.GONE));
+                if (stageNo == 1) {
+                    tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_1));
+                } else if (stageNo == 2) {
+                    tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_2));
+                }
+            }
+        });
+
     }
 
     private void showLabourBottomSheetDialog(boolean hasMotherDeceased) {

@@ -33,9 +33,14 @@ import org.intelehealth.ezazi.models.pushRequestApiCall.Person;
 import org.intelehealth.ezazi.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Visit;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class PatientsFrameJson {
     private static final String TAG = "PatientsFrameJson";
@@ -230,20 +235,25 @@ public class PatientsFrameJson {
             if (!encounterDTO.getEncounterTypeUuid().equalsIgnoreCase(UuidDictionary.EMERGENCY)) {
                 List<Ob> obsList = new ArrayList<>();
                 List<ObsDTO> obsDTOList = obsDAO.obsDTOList(encounterDTO.getUuid());
-                Log.d(TAG, "fetchEncounterObs: obsDTOList : "+new Gson().toJson(obsDTOList));
+                Log.d(TAG, "fetchEncounterObs: obsDTOList : " + new Gson().toJson(obsDTOList));
                 Ob ob = new Ob();
                 for (ObsDTO obs : obsDTOList) {
                     if (obs != null && obs.getValue() != null) {
                         // if (!obs.getValue().isEmpty()) {  // commented for the case - if user update any value with empty field then it should proceed
                         ob = new Ob();
                         //Do not set obs uuid in case of emergency encounter type .Some error occuring in open MRS if passed
-                        Log.d(TAG, "fetchEncounterObs:obs.getCreatorUuid() ::  "+obs.getCreatorUuid());
+                        Log.d(TAG, "fetchEncounterObs:obs.getCreatorUuid() ::  " + obs.getCreatorUuid());
                         ob.setUuid(obs.getUuid());
                         ob.setConcept(obs.getConceptuuid());
                         ob.setValue(obs.getValue());
                         ob.setComment(obs.getComment());
                         ob.setVoided(obs.getVoided());
-                        //ob.setCreatorUuid(obs.getCreatorUuid());
+                        Log.d(TAG, "fetchEncounterObs: obs.getCreatedDate : "+obs.getCreatedDate(true));
+                        ob.setCreatedDate(obs.getCreatedDate(true));
+                        Log.d(TAG, "fetchEncounterObs: date in push : " + ob.getCreatedDate());
+                        //ob.setCreatedDate(AppConstants.dateAndTimeUtils.currentDateTime());
+                        //ob.setCreatedDate(DateTimeUtils.convertISTDateToISO8601(obs.getCreatedDate()));//send obs date time here
+                        // Log.d(TAG, "fetchEncounterObs: finaldate push: " + DateTimeUtils.convertISTDateToISO8601(obs.getCreatedDate()));
                         obsList.add(ob);
 
                         //   }
@@ -288,4 +298,5 @@ public class PatientsFrameJson {
 
         return isExists;
     }
+
 }

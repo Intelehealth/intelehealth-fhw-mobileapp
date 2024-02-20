@@ -48,6 +48,7 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -329,10 +330,10 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
                 try {
                     plan.setName(new ProviderDAO().getCreatorGivenName(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID()));
                     plan.dateWithDrName();
-                    Date currentDate = new Date();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
-                    String formattedDate = dateFormat.format(currentDate);
-                    plan.setCreatedDate(formattedDate);
+                    // Date currentDate = new Date();
+                    //SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
+                    //String formattedDate = dateFormat.format(currentDate);
+                    plan.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
                 } catch (DAOException e) {
                     e.printStackTrace();
                     throw new RuntimeException(e);
@@ -536,7 +537,7 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
 
         } else {
             manageUIVisibilityAsPerData(false);
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.plans_not_prescribed), Toast.LENGTH_LONG).show();
+            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.plans_not_prescribed), Toast.LENGTH_SHORT).show();
 
             //viewMode.updateFailResult(getString(R.string.no_prescription));
         }

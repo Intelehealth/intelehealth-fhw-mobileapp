@@ -22,6 +22,7 @@ import java.io.Serializable;
  **/
 
 public class Medicine implements Serializable, ItemHeader {
+    private static final String TAG = "Medicine";
     private String obsUuid;
     private String name;
     private String strength;
@@ -202,14 +203,17 @@ public class Medicine implements Serializable, ItemHeader {
         }
     }
 
-    public ObsDTO toObs(String encounterId, String creator) {
+    public ObsDTO toObs(String encounterId, String creator, String createdDate) {
+        Log.d(TAG, "toObs: createdDate medicine : " + createdDate);
         ObsDTO obs = new ObsDTO();
         obs.setUuid(obsUuid);
         obs.setConceptuuid(UuidDictionary.MEDICINE);
         obs.setValue(toDBFormat().trim());
         obs.setCreator(creator);
         obs.setEncounteruuid(encounterId);
-        Log.e("Medicine", "toObs: " + new Gson().toJson(obs));
+        obs.setCreatedDate(createdDate);
+        obs.setName("");
+        Log.e("Medicine", "toObs:medicine " + new Gson().toJson(obs));
         return obs;
     }
 
@@ -226,6 +230,10 @@ public class Medicine implements Serializable, ItemHeader {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     public String getCreatorName() {

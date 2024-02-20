@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.databinding.OxytocinListBottomSheetDialogBinding;
@@ -35,6 +36,7 @@ import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.ScreenUtils;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -302,7 +304,7 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
             prescribedOxytocins = new ArrayList<>();
             for (int i = 0; i < mPrescribedOxytocinList.size(); i++) {
                 ObsDTO obsDTO = mPrescribedOxytocinList.get(i);
-                convertToPrescribedOxytocin(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate());
+                convertToPrescribedOxytocin(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(true));
             }
             setPrescribedMedicines(prescribedOxytocins);
             binding.includedPrescribedOxytocins.rvPrescribedOxytocins.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -312,22 +314,19 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
             binding.includedPrescribedOxytocins.rvPrescribedOxytocins.setAdapter(prescribedOxytocinAdapter);
         } else {
             //There is no prescribed medicines
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.oxytocin_not_prescribed), Toast.LENGTH_LONG).show();
+            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.oxytocin_not_prescribed), Toast.LENGTH_SHORT).show();
             manageUIVisibilityAsPerData(false);
 
         }
     }
 
     public void convertToPrescribedOxytocin(String obsUuid, String value, String createdDate) {
+        Log.d(TAG, "convertToPrescribedOxytocin: createdDate : " + createdDate);
         Gson gson = new Gson();
         Medication oxytocinData = gson.fromJson(value, Medication.class);
         oxytocinData.setObsUuid(obsUuid);
 
-        if(!createdDate.isEmpty( ) && createdDate.contains("'T'")){
-            oxytocinData.setCreatedAt(DateAndTimeUtils.formatDateTimeNew(createdDate));
-        }else{
-            oxytocinData.setCreatedAt(createdDate);
-        }
+        oxytocinData.setCreatedAt(createdDate);
         String status = oxytocinData.getInfusionStatus();
         String statusAdminister = "";
         if (status.equalsIgnoreCase("start")) {
@@ -341,24 +340,6 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
         String strength = oxytocinData.getStrength() + " (U/L)";
         oxytocinData.setStrength(strength);
         prescribedOxytocins.add(oxytocinData);
-    }
-
-    private String getFormattedDate(String inputDateString) {
-        String formattedDate = "";
-        if (inputDateString != null && !inputDateString.isEmpty()) {
-            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            Date date;
-            try {
-                date = inputDateFormat.parse(inputDateString);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return formattedDate;
-            }
-            SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
-            formattedDate = outputDateFormat.format(date);
-        }
-
-        return formattedDate;
     }
 
     private void manageUIVisibilityAsPerData(boolean isMedicinePrescribed) {
@@ -380,13 +361,17 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
     }
 
     private void addItemInList(int position) {
+
         if (prescribedOxytocinAdapter.getItem(position) instanceof Medication medication) {
             if (oxytocinsList != null) {
-                Date currentDate = new Date();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
-                String formattedDate = dateFormat.format(currentDate);
-                medication.setCreatedAt(formattedDate);
+                //Date currentDate = new Date();
+                //SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
+                // String formattedDate = dateFormat.format(currentDate);
+                medication.setCreatedAt(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+                Log.d(TAG, "addItemInList: date in utc : " + DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+                Log.d(TAG, "addItemInList:date: " + DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
                 oxytocinsList.add(0, medication);
+                Log.d(TAG, "addItemInList: listoxy : " + new Gson().toJson(oxytocinsList));
                 // Notify the adapter that a new item is inserted at position 0
                 adapter.notifyItemInserted(0);
                 changeSaveButtonStatus();

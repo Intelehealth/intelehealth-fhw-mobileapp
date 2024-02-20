@@ -75,6 +75,15 @@ public class ParamInfo implements Serializable {
     private boolean isFiveHourField;
     private List<Medicine> prescribedMedicines;
     private List<ObsDTO> deletedPlans;
+    private String createdDate;
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public enum RadioOptions {
         YES, NO, NO_VALUE
@@ -271,7 +280,8 @@ public class ParamInfo implements Serializable {
         medicine.setObsUuid(obsUuid);
         medicine.dbFormatToMedicineObject(value);
         medicine.setCreatedAt(createdDate);
-        String creatorName = new ObsDAO().getCreatorNameByObsUuidMedicine(obsUuid);
+       //String creatorName = new ObsDAO().getCreatorNameByObsUuidMedicine(obsUuid);
+        String creatorName = new ObsDAO().getCreatorNameByObsUuid(obsUuid);
         medicine.setCreatorName(creatorName);
         getMedicines().add(medicine);
     }
@@ -292,7 +302,7 @@ public class ParamInfo implements Serializable {
         ArrayList<ObsDTO> obsList = new ArrayList<>();
         for (Medicine medicine : getMedicines()) {
 
-            obsList.add(medicine.toObs(encounterId, creator));
+            obsList.add(medicine.toObs(encounterId, creator, medicine.getCreatedAt()));
         }
         return obsList;
     }
@@ -351,14 +361,9 @@ public class ParamInfo implements Serializable {
             Medication medication = new Medication();
             medication = gson.fromJson(value, Medication.class);
             medication.setObsUuid(obsUUid);
-            // String createdAt = formatDateTimeNew(createdDate);
-            //medication.setCreatedAt(createdAt);
 
-            if (!createdDate.isEmpty() && createdDate.contains("'T'")) {
-                medication.setCreatedAt(DateAndTimeUtils.formatDateTimeNew(createdDate));
-            } else {
-                medication.setCreatedAt(createdDate);
-            }
+            medication.setCreatedAt(createdDate);
+
             String status = medicationData.getInfusionStatus();
             String statusAdminister = "";
             if (status.equalsIgnoreCase("start")) {
@@ -493,7 +498,7 @@ public class ParamInfo implements Serializable {
         ArrayList<ObsDTO> obsList = new ArrayList<>();
         for (ObsDTO obsDTO : getPlans()) {
 
-            obsList.add(obsDTO.toObs(encounterId, creator, obsDTO.getCreatedDate(), UuidDictionary.PLAN));
+            obsList.add(obsDTO.toObs(encounterId, creator, obsDTO.getCreatedDate(true), UuidDictionary.PLAN));
         }
         return obsList;
     }
@@ -553,7 +558,7 @@ public class ParamInfo implements Serializable {
         ArrayList<ObsDTO> obsList = new ArrayList<>();
         for (ObsDTO obsDTO : getAssessments()) {
 
-            obsList.add(obsDTO.toObs(encounterId, creator, obsDTO.getCreatedDate(), UuidDictionary.ASSESSMENT));
+            obsList.add(obsDTO.toObs(encounterId, creator, obsDTO.getCreatedDate(true), UuidDictionary.ASSESSMENT));
         }
         return obsList;
     }

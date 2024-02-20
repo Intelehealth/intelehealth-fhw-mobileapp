@@ -59,7 +59,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="1"
-                tools:listitem="@layout/row_item_medicine_prescription" />
+                tools:listitem="@layout/row_item_medicine" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddMoreMedicine"

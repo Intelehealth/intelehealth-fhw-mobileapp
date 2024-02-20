@@ -50,6 +50,7 @@ import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -467,6 +468,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             ivFluidDataForDb.setInfusionStatus(ivFluidData.getInfusionStatus());
             ivFluidDataForDb.setInfusionRate(ivFluidData.getInfusionRate());
+
             String ivFluidType = ivFluidData.getType();
             Log.d(TAG, "setivFluidDataNew: ivFluidType :" + ivFluidType);
             if (ivFluidType.equals("Ringer Lactate") || ivFluidType.equals("Normal Saline") || ivFluidType.equals("Dextrose 5% (D5)")) {
@@ -543,7 +545,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     selected.setText(otherFluidValue);
                     ivTypeValue.setText(otherFluidValue);
                     Log.d(TAG, "custom dialog: otherval :  " + otherFluidValue);
-                    info.getMedication().setType(otherFluidValue);
+                    //info.getMedication().setType(otherFluidValue);
+                    info.getMedication().setOtherType(otherFluidValue);
+                    info.getMedication().setType("Other");
                     info.saveJson();
 //                    saveIvFluidDataInJson(info, otherFluidValue, IvFluidTypes.type.name());
 
@@ -989,6 +993,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     private void setOxytocinDataNew(PartoLblRadioViewOxytocinBinding binding, ParamInfo info) {
         List<Medication> allAdministerOxytocinsList = info.getMedicationsForOxytocin();
+        Log.d(TAG, "setOxytocinDataNew: allAdministerOxytocinsList : "+allAdministerOxytocinsList.size());
         if (allAdministerOxytocinsList.size() > 0) {
             Medication oxytocinData = allAdministerOxytocinsList.get(0);
             Medication oxytocinDataForDb = new Medication();
@@ -1005,11 +1010,14 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             oxytocinDataForDb.setInfusionRate(oxytocinData.getInfusionRate());
             info.setMedication(oxytocinDataForDb);
             info.setCapturedValue(oxytocinDataForDb.toJson());
+            Log.d(TAG, "setOxytocinDataNew: date :" + DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+            info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+            Log.d(TAG, "setOxytocinDataNew: infodate : "+info.getCreatedDate());
         }
     }
 
     private void showRadioOptionBoxForPlan(View tempView, ParamInfo info, TextView selected, String title) {
-        Log.d(TAG, "showRadioOptionBoxForPlan: list: "+new Gson().toJson(info.getPlans()));
+        Log.d(TAG, "showRadioOptionBoxForPlan: list: " + new Gson().toJson(info.getPlans()));
         PartoLablRadioViewPlanBinding binding = PartoLablRadioViewPlanBinding.bind(tempView);
 
         binding.clPlanCountView.setOnClickListener(v -> {
@@ -1043,6 +1051,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
 
     }
+
     private void showRadioOptionBoxForAssessment(View tempView, ParamInfo info, TextView selected, String title) {
         PartoLablRadioViewAssessmentBinding binding = PartoLablRadioViewAssessmentBinding.bind(tempView);
 
@@ -1050,7 +1059,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             @SuppressLint("SetTextI18n")
             AssessmentBottomSheetDialog dialog = AssessmentBottomSheetDialog.getInstance(info.getAssessments(), mVisitUuid, (updated, deleted) -> {
                 info.setAssessments(updated);
-               //info.setDeletedMedicines(deleted);
+                //info.setDeletedMedicines(deleted);
                 setupAssessmentCountView(binding.tvAssessmentCount, updated);
             });
             dialog.setAccessMode(accessMode);
@@ -1059,11 +1068,13 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         setupAssessmentCountView(binding.tvAssessmentCount, info.getAssessments());
 
     }
+
     @SuppressLint("SetTextI18n")
     private void setupPlansCountView(TextView textView, List<ObsDTO> updated) {
         if (updated.size() == 0) textView.setText(mContext.getString(R.string.lbl_add));
         else textView.setText("" + updated.size());
     }
+
     @SuppressLint("SetTextI18n")
     private void setupAssessmentCountView(TextView textView, List<ObsDTO> updated) {
         if (updated.size() == 0) textView.setText(mContext.getString(R.string.lbl_add));

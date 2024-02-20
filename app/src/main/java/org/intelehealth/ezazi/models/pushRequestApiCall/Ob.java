@@ -26,6 +26,18 @@ public class Ob {
     @Expose
     private String creatorUuid;
 
+    @SerializedName("obsDateTime")
+    @Expose
+    private String createdDate;
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public String getCreatorUuid() {
         return creatorUuid;
     }

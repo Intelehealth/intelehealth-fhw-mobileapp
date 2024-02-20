@@ -25,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.databinding.IvFluidListBottomSheetDialogBinding;
@@ -38,6 +39,7 @@ import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.ScreenUtils;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -306,7 +308,7 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
             prescribedIvFluids = new ArrayList<>();
             for (int i = 0; i < mPrescribedIvFluidsList.size(); i++) {
                 ObsDTO obsDTO = mPrescribedIvFluidsList.get(i);
-                convertToPrescribedIvFluid(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate());
+                convertToPrescribedIvFluid(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(true));
             }
             setPrescribedMedicines(prescribedIvFluids);
             binding.includedPrescribedIvFluids.rvPrescribedIvFluids.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -316,7 +318,7 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
             binding.includedPrescribedIvFluids.rvPrescribedIvFluids.setAdapter(prescribedIvFluidAdapter);
         } else {
             //There is no prescribed medicines
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.iv_fluids_not_prescribed), Toast.LENGTH_LONG).show();
+            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.iv_fluids_not_prescribed), Toast.LENGTH_SHORT).show();
             manageUIVisibilityAsPerData(false);
 
         }
@@ -328,11 +330,9 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
         ivFluidData.setObsUuid(obsUuid);
         //ivFluidData.setCreatedAt(DateAndTimeUtils.formatDateTimeNew(createdDate));
         Log.d(TAG, "convertToPrescribedIvFluid: createdDate : " + createdDate);
-        if (!createdDate.isEmpty() && createdDate.contains("'T'")) {
-            ivFluidData.setCreatedAt(DateAndTimeUtils.formatDateTimeNew(createdDate));
-        } else {
-            ivFluidData.setCreatedAt(createdDate);
-        }
+
+        ivFluidData.setCreatedAt(createdDate);
+
         String status = ivFluidData.getInfusionStatus();
         String statusAdminister = "";
         if (status.equalsIgnoreCase("start")) {
@@ -389,10 +389,10 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
     private void addItemInList(int position) {
         if (prescribedIvFluidAdapter.getItem(position) instanceof Medication medication) {
             if (ivFluidsList != null) {
-                Date currentDate = new Date();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
-                String formattedDate = dateFormat.format(currentDate);
-                medication.setCreatedAt(formattedDate);
+                //Date currentDate = new Date();
+                //SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault());
+                //String formattedDate = dateFormat.format(currentDate);
+                medication.setCreatedAt(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
                 ivFluidsList.add(0, medication);
                 adapter.notifyItemInserted(0);
                 changeSaveButtonStatus();

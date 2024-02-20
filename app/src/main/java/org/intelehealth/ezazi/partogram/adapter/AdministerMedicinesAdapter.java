@@ -6,9 +6,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.ezazi.databinding.RowItemMedicineBinding;
 import org.intelehealth.ezazi.databinding.RowItemMedicinePrescriptionBinding;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.model.Medicine;
+import org.intelehealth.ezazi.partogram.viewholder.MedicineViewHolder;
 import org.intelehealth.ezazi.partogram.viewholder.PrescribedMedicineViewHolder;
 import org.intelehealth.ezazi.ui.elcg.adapter.CategoryHeaderAdapter;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
@@ -56,18 +58,18 @@ public class AdministerMedicinesAdapter extends CategoryHeaderAdapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType != HEADER) {
-            RowItemMedicinePrescriptionBinding binding = RowItemMedicinePrescriptionBinding.inflate(getInflater(), parent, false);
-            return new PrescribedMedicineViewHolder(binding);
+            RowItemMedicineBinding binding = RowItemMedicineBinding.inflate(getInflater(), parent, false);
+            return new MedicineViewHolder(binding);
         }
         return super.onCreateViewHolder(parent, viewType);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof PrescribedMedicineViewHolder medicineViewHolder) {
+        if (holder instanceof MedicineViewHolder medicineViewHolder) {
             medicineViewHolder.setViewClickListener(clickListener);
             medicineViewHolder.setAccessMode(accessMode);
-            medicineViewHolder.bind((Medicine) getItem(position),followPlanButtonVisible);
+            medicineViewHolder.bind((Medicine) getItem(position));
             medicineViewHolder.expandDetails(expandedItemPosition == position);
         } else super.onBindViewHolder(holder, position);
     }

@@ -27,14 +27,12 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvIvFluidDetails"
-            style="@style/Theme.EZazi.Heading2"
+            style="@style/Theme.EZazi.Body"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/screen_container_padding"
             android:layout_weight="2"
             android:padding="@dimen/common_padding"
-            android:textColor="@color/gray_6"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvIvFluidInfusionRate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -44,7 +42,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvIvFluidInfusionRate"
-            style="@style/Theme.EZazi.Heading2"
+            style="@style/Theme.EZazi.Body"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/screen_container_padding"
@@ -52,21 +50,19 @@
             android:paddingStart="@dimen/common_padding"
             android:paddingEnd="@dimen/common_padding"
             android:text="@{`IV Infusion Rate : ` + medication.infusionRate}"
-            android:textColor="@color/gray_6"
             app:layout_constraintBottom_toTopOf="@+id/tvIvFluidDateTime"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvIvFluidDateTime"
-            style="@style/Theme.EZazi.Heading2"
+            style="@style/Theme.EZazi.Caption"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/screen_container_padding"
             android:layout_weight="2"
             android:padding="@dimen/common_padding"
             android:text="@{medication.createdAt}"
-            android:textColor="@color/gray_6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvIvFluidInfusionRate"
             app:layout_constraintVertical_bias="0.5"

@@ -35,7 +35,8 @@ class PrescriptionQueryBuilder : QueryBuilder() {
                         " V.uuid = '$visitId' AND P.role != 'Organizational: Nurse' " +
                                 "AND O.voided = '0' AND O.conceptuuid IN (" +
                                 "'${Params.PLAN.conceptId}') "
-                ).build()
+                ).orderBy("O.created_date")
+                .orderIn("DESC").build()
     }
 
     fun buildAssessmentPrescriptionQuery(visitId: String, creatorId: String): String {
@@ -48,6 +49,8 @@ class PrescriptionQueryBuilder : QueryBuilder() {
                         " V.uuid = '$visitId' AND P.role != 'Organizational: Nurse' " +
                                 "AND O.voided = '0' AND O.conceptuuid IN (" +
                                 "'${Params.ASSESSMENT.conceptId}') "
-                ).build()
+                )
+                .orderBy("O.created_date")
+                .orderIn("DESC").build()
     }
 }

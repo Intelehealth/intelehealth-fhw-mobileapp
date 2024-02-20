@@ -8,7 +8,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.io.Serializable;
 
@@ -30,7 +32,7 @@ public class Medication implements Serializable, ItemHeader {
     private String otherType;
 
     public String getCreatedAt() {
-        return createdAt;
+        return DateTimeUtils.utcToLocalDate(createdAt, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
     }
 
     public String getOtherType() {
@@ -56,6 +58,7 @@ public class Medication implements Serializable, ItemHeader {
     public void setObsUuid(String obsUuid) {
         this.obsUuid = obsUuid;
     }
+
     private String creatorName;
 
     public String getCreatorName() {
