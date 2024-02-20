@@ -667,6 +667,12 @@ public class HomeActivity extends BaseActivity {
                 }
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+
+            try {
+                voidUnSyncedOldVisits();
+            } catch (ParseException exception) {
+                throw new RuntimeException(exception);
+            }
         }
     };
 
