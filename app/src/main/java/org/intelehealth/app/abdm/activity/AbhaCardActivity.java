@@ -8,7 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
@@ -49,6 +53,17 @@ public class AbhaCardActivity extends AppCompatActivity {
                 }).start();
             }
         }
+
+        binding.includeLayout.negativeBtn.setText(getString(R.string.download));
+        binding.includeLayout.positiveBtn.setText(getString(R.string.share));
+
+        binding.includeLayout.positiveBtn.setOnClickListener(v -> {
+            // share intent
+        });
+
+        binding.includeLayout.negativeBtn.setOnClickListener(v -> {
+            // download intent
+        });
     }
 
     private void displayAbhaCardPhotoAndStoreInFile(String profileImage) {
@@ -66,6 +81,7 @@ public class AbhaCardActivity extends AppCompatActivity {
 
         CameraUtils cameraUtils = new CameraUtils(AbhaCardActivity.this, filename, filePath.toString());
         mCurrentPhotoPath = cameraUtils.compressImageAndSave(decodedByte);
+        Log.d("TAG", "displayAbhaCardPhotoAndStoreInFile: " + mCurrentPhotoPath);   // /storage/emulated/0/Android/data/org.intelehealth.app/files/Pictures/91-7533-7132-6608.jpg
 
         runOnUiThread(new Runnable() {
             @Override

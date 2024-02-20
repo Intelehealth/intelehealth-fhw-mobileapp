@@ -2,4 +2,5 @@
 <resources>
     <string name="otp_verification">OTP Verification</string>
     <string name="abha_card">ABHA Card</string>
+    <string name="download">Download</string>
 </resources>

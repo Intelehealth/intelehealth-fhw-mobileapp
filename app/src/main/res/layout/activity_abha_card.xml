@@ -8,12 +8,13 @@
     tools:context=".abdm.activity.AbhaCardActivity">
 
     <include
+        android:id="@+id/includeLayout"
         layout="@layout/layout_twobuttonsbottom" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/ll_buttons"
+        android:layout_above="@id/includeLayout"
         android:fillViewport="true">
 
     <RelativeLayout
@@ -51,11 +52,12 @@
             android:id="@+id/ivAbhaCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="center"
             android:layout_below="@id/ll_action_bar"
-            android:layout_centerInParent="true"
             android:layout_marginHorizontal="@dimen/back_arrow_margin_start"
-            android:layout_marginTop="@dimen/margin_40dp"
-            android:src="@drawable/addpatient_icon" />
+            android:layout_marginVertical="@dimen/back_arrow_margin_start"
+            tools:src="@drawable/addpatient_icon" />
 
     </RelativeLayout>
     </ScrollView>
