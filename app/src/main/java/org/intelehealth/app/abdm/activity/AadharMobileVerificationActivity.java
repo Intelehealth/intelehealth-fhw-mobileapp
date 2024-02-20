@@ -1,5 +1,7 @@
 package org.intelehealth.app.abdm.activity;
 
+import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -33,6 +35,8 @@ import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAadharMobileVerificationBinding;
+import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
@@ -77,6 +81,21 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         binding.ivBackArrow.setOnClickListener(v -> {
             finish();
         });
+
+        // check internet - start
+        if (!NetworkConnection.isOnline(context)) {    // no internet.
+            showOKDialog(context, getDrawable(R.drawable.ui2_ic_warning_internet),
+                    getString(R.string.error_network), getString(R.string.you_need_an_active_internet_connection_to_use_this_feature),
+                    getString(R.string.ok), new DialogUtils.CustomDialogListener() {
+                        @Override
+                        public void onDialogActionDone(int action) {
+                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                finish();
+                            }
+                        }
+                    });
+        }
+        // check internet - end
 
         Intent intent = getIntent();
         hasABHA = intent.getBooleanExtra("hasABHA", false);

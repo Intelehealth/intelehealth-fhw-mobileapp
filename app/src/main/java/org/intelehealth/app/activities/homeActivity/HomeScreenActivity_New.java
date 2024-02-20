@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.homeActivity;
 
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
+import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;

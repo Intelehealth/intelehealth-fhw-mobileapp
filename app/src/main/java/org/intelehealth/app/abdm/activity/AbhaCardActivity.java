@@ -1,5 +1,7 @@
 package org.intelehealth.app.abdm.activity;
 
+import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -21,6 +23,8 @@ import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAbhaCardBinding;
 import org.intelehealth.app.utilities.CameraUtils;
+import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
@@ -49,6 +53,7 @@ public class AbhaCardActivity extends AppCompatActivity {
         binding.ivBackArrow.setOnClickListener(v -> {
             finish();
         });
+
 
         Intent intent = getIntent();
         mobileLoginOnOTPVerifiedResponse = (MobileLoginOnOTPVerifiedResponse) intent.getSerializableExtra("data");
