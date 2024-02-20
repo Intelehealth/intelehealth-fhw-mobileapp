@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.model.AadharApiBody;
+import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
@@ -29,7 +30,6 @@ import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
-import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAadharMobileVerificationBinding;
@@ -41,7 +41,6 @@ import org.intelehealth.app.utilities.WindowsUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -49,7 +48,6 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 public class AadharMobileVerificationActivity extends AppCompatActivity {
     private Context context = AadharMobileVerificationActivity.this;
@@ -132,7 +130,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 // via. mobile login
                                 mobileNo = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().trim();
                                 callOTPForMobileLoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
-                            } else {
+                            }
+                            else {
                                 if (abhaCard) {
                                     callOTPForMobileLoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
                                 }
@@ -223,11 +222,17 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
                                 //   binding.sendOtpBtn.setTag("d4933b4b-0d08-43f5-b699-c588db8742c9"); // todo testing purpose...
                                 if (hasABHA) {
-                                    if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("username")) {
-                                        callAadharMobileVerificationApi(accessToken);   // via. aadharEnroll api
-                                    } else if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("mobile")) {
+                                    if (abhaCard) {
                                         // call mobile api.
                                         callMobileNumberVerificationApi(accessToken);
+                                    }
+                                    else {
+                                        if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("username")) {
+                                            callAadharMobileVerificationApi(accessToken);   // via. aadharEnroll api
+                                        } else if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("mobile")) {
+                                            // call mobile api.
+                                            callMobileNumberVerificationApi(accessToken);
+                                        }
                                     }
                                 } else {
                                     callAadharMobileVerificationApi(accessToken);   // via. aadharEnroll api
@@ -404,7 +409,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                     // TODO: Handle abha card implementation here.... 16th Feb - start
                                     if (abhaCard) {
                                         String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-                                        callGETAbhaCardApi(X_TOKEN, accessToken);
+                                        callGETAbhaCardApi(X_TOKEN, accessToken, mobileLoginOnOTPVerifiedResponse);
                                     }
                                     else {
                                         // TODO: Handle abha card implementation here.... 16th Feb - end
@@ -448,26 +453,34 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
     /**
      * This api is used to call the GET Abha card api which returns a base64 encoded image.
+     *
      * @param xToken
      * @param accessToken
+     * @param mobileLoginOnOTPVerifiedResponse
      */
-    private void callGETAbhaCardApi(String xToken, String accessToken) {
+    private void callGETAbhaCardApi(String xToken, String accessToken, MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
         Log.d(TAG, "callGETAbhaCardApi: " + accessToken + " : " + xToken);
         String url = UrlModifiers.getABHACardUrl();
-        Single<ResponseBody> responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, xToken);
+        Single<AbhaCardResponseBody> responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, xToken);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 responseBodySingle
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                        .subscribe(new DisposableSingleObserver<AbhaCardResponseBody>() {
                             @Override
-                            public void onSuccess(ResponseBody responseBody) {
-                                Log.d("callGETAbhaCardApi", "onSuccess: " + responseBody.toString());
+                            public void onSuccess(AbhaCardResponseBody abhaCardResponseBody) {
+                                if (abhaCardResponseBody != null) {
+                                    Log.d("callGETAbhaCardApi", "onSuccess: " + abhaCardResponseBody.toString());
 
-                                // TODO: here it will return base64 encoded image.
-
+                                    // TODO: here it will return base64 encoded image.
+                                    Intent intent = new Intent(context, AbhaCardActivity.class);
+                                    intent.putExtra("payload", abhaCardResponseBody);
+                                    intent.putExtra("data", mobileLoginOnOTPVerifiedResponse);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             }
 
                             @Override

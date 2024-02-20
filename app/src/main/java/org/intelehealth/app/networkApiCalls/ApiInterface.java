@@ -2,6 +2,7 @@ package org.intelehealth.app.networkApiCalls;
 
 
 import org.intelehealth.app.abdm.model.AadharApiBody;
+import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
@@ -243,8 +244,8 @@ public interface ApiInterface {
                                                                     @Body AbhaProfileRequestBody abhaProfileRequestBody);
 
     @GET
-    Single<ResponseBody> GET_ABHA_CARD(@Url String url,
-                                       @Header("Authorization") String accessToken,
-                                       @Header("X-TOKEN") String xToken);
+    Single<AbhaCardResponseBody> GET_ABHA_CARD(@Url String url,
+                                               @Header("Authorization") String accessToken,
+                                               @Header("X-TOKEN") String xToken);
 
 }

@@ -8,7 +8,9 @@ package org.intelehealth.app.abdm.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable {
 
     @SerializedName("ABHANumber")
     @Expose

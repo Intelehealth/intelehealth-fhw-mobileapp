@@ -944,5 +944,7 @@
     <string name="please_enter_otp_received">Please enter OTP received.</string>
     <string name="enter_12_digits">Enter 12 digits</string>
     <string name="you_need_an_active_internet_connection_to_use_this_feature">You need an active internet connection to use this feature.</string>
+    <string name="otp_verification">OTP Verification</string>
+    <string name="abha_card">ABHA Card</string>
 
 </resources>

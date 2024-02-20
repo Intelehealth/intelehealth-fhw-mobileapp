@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_buttons"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_marginTop="@dimen/common_title_margin_top"
+    android:layout_marginBottom="20dp"
+    android:orientation="horizontal"
+    android:weightSum="2">
+
+    <Button
+        android:id="@+id/negative_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_24"
+        android:layout_marginEnd="@dimen/common_edittext_margin_top"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:layout_weight="1"
+        android:background="@drawable/ui2_common_primary_bg_disabled"
+        android:lineHeight="@dimen/button_line_height"
+        android:padding="@dimen/hamburger_margin_top"
+        android:text="@string/decline"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/common_button_text_size"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/positive_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/common_edittext_margin_top"
+        android:layout_marginEnd="@dimen/margin_24"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:layout_weight="1"
+        android:background="@drawable/ui2_common_primary_bg"
+        android:lineHeight="@dimen/button_line_height"
+        android:padding="@dimen/hamburger_margin_top"
+        android:text="@string/accept_new"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_button_text_size" />
+
+</LinearLayout>

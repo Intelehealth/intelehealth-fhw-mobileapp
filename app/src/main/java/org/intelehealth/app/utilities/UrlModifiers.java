@@ -130,6 +130,6 @@ public class UrlModifiers {
         return BuildConfig.SERVER_URL + "/abha/profile";
     }
     public static String getABHACardUrl() {
-        return BuildConfig.SERVER_URL + "/abha/getProfile";
+        return BuildConfig.SERVER_URL + "/abha/getCard";
     }
 }

@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_margin_start"
-                    android:text="OTP Verification"
+                    android:text="@string/otp_verification"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/setup_privacy_screen_info"
                     android:textStyle="bold" />
