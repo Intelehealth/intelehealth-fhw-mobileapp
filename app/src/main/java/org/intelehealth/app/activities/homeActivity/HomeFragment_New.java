@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -112,7 +113,17 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             @Override
             public void onFinished(int eventFlag) {
                 Log.v(TAG, "onFinished");
-                initUI();
+                Activity activity = getActivity();
+                if (isAdded() && activity != null) {
+                    initUI();
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            initUI();
+                        }
+                    }, 2000);
+                }
             }
         });
 
@@ -293,7 +304,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             }
         }).start();
 
-       // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
+        // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
         Executors.newSingleThreadExecutor().execute(() -> {
             int count = countPendingFollowupVisits();
 
@@ -427,7 +438,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
                 int finalTotalUpcomingApps = totalUpcomingApps;
                 if (mUpcomingAppointmentCountTextView != null) {
-                    requireActivity().runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + getResources().getString(R.string.upcoming)));
+                    if (isAdded() && getActivity() != null)
+                        getActivity().runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + getResources().getString(R.string.upcoming)));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

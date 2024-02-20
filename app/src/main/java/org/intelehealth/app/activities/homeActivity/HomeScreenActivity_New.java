@@ -1279,14 +1279,17 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         IntelehealthApplication.getInstance().disconnectSocket();
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
+        syncUtils.syncBackground();
+        sessionManager.setReturningUser(false);
+        sessionManager.setLogout(true);
+        unregisterReceiver(syncBroadcastReceiver);
+
         Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
 
-        syncUtils.syncBackground();
-        sessionManager.setReturningUser(false);
-        sessionManager.setLogout(true);
+
     }
 
 
