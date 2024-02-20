@@ -79,7 +79,6 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
 
     private PartogramConstants.AccessMode accessMode;
     private List<Medicine> medicineDetailsList;
-    private String[] formArray;
     private PrescribedMedicinesAdapter prescribedMedicinesAdapter;
     private LinkedList<ItemHeader> prescribedMedicinesList;
     private List<Medicine> prescribedMedicines;
@@ -463,8 +462,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
     };
 
     private void setupMedicines() {
-        binding.clMedicineListContainer.setVisibility(View.VISIBLE);
-        binding.tvLblAdministerMedicine.setVisibility(View.VISIBLE);
+//        binding.clMedicineListContainer.setVisibility(View.VISIBLE);
+//        binding.tvLblAdministerMedicine.setVisibility(View.VISIBLE);
 
         medicineDetailsList = new GetMedicineData().getMedicineDetails(getActivity());
 
@@ -585,7 +584,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
     }
 
     private void setFormArray() {
-        formArray = requireContext().getResources().getStringArray(R.array.medicine_form);
+        String[] formArray = requireContext().getResources().getStringArray(R.array.medicine_form);
         AutoCompleteTextView formDropdown = binding.includeAddNewMedicineDialog.autoCompleteMedicineForm;
         setupAutoCompleteAdapter(formArray, formDropdown);
     }
@@ -624,8 +623,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             @Override
             public void onAnimationEnd(Animation animation) {
                 binding.clPrescribedMedicinesRoot.setVisibility(View.GONE);
-                binding.clMedicineListContainer.setVisibility(View.VISIBLE);
-                binding.tvLblAdministerMedicine.setVisibility(View.VISIBLE);
+//                binding.clMedicineListContainer.setVisibility(View.VISIBLE);
+//                binding.tvLblAdministerMedicine.setVisibility(View.VISIBLE);
 
             }
 
@@ -648,7 +647,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
                 convertToPrescribedMedicine(obsDTO.getUuid(), obsDTO.getValue());
                 obsDTO.setName("");
             }
-                      setPrescribedMedicines(prescribedMedicines);
+            setPrescribedMedicines(prescribedMedicines);
             //binding.includedPrescribedMedicines.rvPrescribedMedicines.setLayoutManager(new LinearLayoutManager(requireContext()));
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
             layoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -683,12 +682,12 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
     private void manageUIVisibilityAsPerData(boolean isMedicinePrescribed) {
         if (isMedicinePrescribed) {
             binding.clPrescribedMedicinesRoot.setVisibility(View.VISIBLE);
-            binding.clMedicineListContainer.setVisibility(View.GONE);
-            binding.tvLblAdministerMedicine.setVisibility(View.GONE);
+//            binding.clMedicineListContainer.setVisibility(View.GONE);
+//            binding.tvLblAdministerMedicine.setVisibility(View.GONE);
         } else {
             binding.clPrescribedMedicinesRoot.setVisibility(View.GONE);
-            binding.clMedicineListContainer.setVisibility(View.VISIBLE);
-            binding.tvLblAdministerMedicine.setVisibility(View.VISIBLE);
+//            binding.clMedicineListContainer.setVisibility(View.VISIBLE);
+//            binding.tvLblAdministerMedicine.setVisibility(View.VISIBLE);
 
             if (adapter != null) binding.btnSaveMedicines.setEnabled(adapter.getItemCount() > 0);
         }
