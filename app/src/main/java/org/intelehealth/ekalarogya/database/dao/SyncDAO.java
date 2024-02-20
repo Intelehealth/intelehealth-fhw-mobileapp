@@ -295,8 +295,11 @@ public class SyncDAO {
 
                 Logger.logD("End Pull request", "Ended");
                 sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
-                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
+
+                Intent intent = new Intent(AppConstants.SYNC_INTENT_ACTION);
+                intent.putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE);
+                intent.setPackage(context.getPackageName());
+                IntelehealthApplication.getAppContext().sendBroadcast(intent);
             }
 
             @Override
