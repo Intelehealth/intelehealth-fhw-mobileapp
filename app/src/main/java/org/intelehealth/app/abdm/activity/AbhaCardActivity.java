@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -20,6 +21,9 @@ import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAbhaCardBinding;
 import org.intelehealth.app.utilities.CameraUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.SnackbarUtils;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.WindowsUtils;
 
 import java.io.File;
@@ -30,6 +34,8 @@ public class AbhaCardActivity extends AppCompatActivity {
     private String base64CardImage, mCurrentPhotoPath;
     private AbhaCardResponseBody abhaCardResponseBody;
     private MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse;
+    SnackbarUtils snackbarUtils;
+    SessionManager sessionManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,12 @@ public class AbhaCardActivity extends AppCompatActivity {
         binding = ActivityAbhaCardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         WindowsUtils.setStatusBarColor(AbhaCardActivity.this);  // changing status bar color
+        snackbarUtils = new SnackbarUtils();
+        sessionManager = new SessionManager(context);
+
+        binding.ivBackArrow.setOnClickListener(v -> {
+            finish();
+        });
 
         Intent intent = getIntent();
         mobileLoginOnOTPVerifiedResponse = (MobileLoginOnOTPVerifiedResponse) intent.getSerializableExtra("data");
@@ -56,13 +68,22 @@ public class AbhaCardActivity extends AppCompatActivity {
 
         binding.includeLayout.negativeBtn.setText(getString(R.string.download));
         binding.includeLayout.positiveBtn.setText(getString(R.string.share));
+        binding.includeLayout.positiveBtn.setVisibility(View.GONE);
 
+/*
         binding.includeLayout.positiveBtn.setOnClickListener(v -> {
             // share intent
         });
+*/
 
         binding.includeLayout.negativeBtn.setOnClickListener(v -> {
             // download intent
+            if (mCurrentPhotoPath != null)
+                snackbarUtils.showSnackRelativeLayoutParentSuccess(context, binding.layoutParent,
+                        StringUtils.getMessageTranslated(getString(R.string.abha_card_is_already_downloaded) /*+ " to: " + mCurrentPhotoPath*/,
+                                sessionManager.getAppLanguage()), true);
+            else
+                displayAbhaCardPhotoAndStoreInFile(base64CardImage);
         });
     }
 

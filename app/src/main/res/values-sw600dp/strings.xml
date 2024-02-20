@@ -101,4 +101,5 @@
     <string name="otp_verification">OTP Verification</string>
     <string name="abha_card">ABHA Card</string>
     <string name="download">Download</string>
+    <string name="abha_card_is_already_downloaded">ABHA Card is already downloaded.</string>
 </resources>
