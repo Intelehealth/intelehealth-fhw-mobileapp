@@ -1214,7 +1214,7 @@
     <string name="prescription_pulse">Pulse (bpm): %1$s</string>
     <string name="prescription_temperature">Temperature (F): %1$s</string>
     <string name="prescription_respiratory_rate">Respiratory Rate: %1$s</string>
-    <string name="prescription_spo2">SpO2 (%): %1$s</string>
+    <string name="prescription_spo2">SpO2 (%%): %1$s</string>
     <string name="prescription_haemoglobin">Haemoglobin: %1$s</string>
     <string name="prescription_blood_group">Blood Group: %1$s</string>
     <string name="prescription_sugar_fasting">Sugar Level (Fasting): %1$s</string>

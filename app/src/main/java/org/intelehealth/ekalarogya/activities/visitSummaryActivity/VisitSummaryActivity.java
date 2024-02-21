@@ -133,6 +133,7 @@ import org.intelehealth.ekalarogya.appointment.dao.AppointmentDAO;
 import org.intelehealth.ekalarogya.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.ekalarogya.appointment.model.CancelRequest;
 import org.intelehealth.ekalarogya.appointment.model.CancelResponse;
+import org.intelehealth.ekalarogya.builder.PrescriptionBuilder;
 import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
 import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
 import org.intelehealth.ekalarogya.database.dao.ObsDAO;
@@ -145,6 +146,7 @@ import org.intelehealth.ekalarogya.database.dao.VisitsDAO;
 import org.intelehealth.ekalarogya.knowledgeEngine.Node;
 import org.intelehealth.ekalarogya.models.ClsDoctorDetails;
 import org.intelehealth.ekalarogya.models.Patient;
+import org.intelehealth.ekalarogya.models.VitalsObject;
 import org.intelehealth.ekalarogya.models.dto.EncounterDTO;
 import org.intelehealth.ekalarogya.models.dto.ObsDTO;
 import org.intelehealth.ekalarogya.models.dto.RTCConnectionDTO;
@@ -251,6 +253,7 @@ public class VisitSummaryActivity extends BaseActivity {
     private boolean isRespiratory = false;
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     int patientAge = 0;
+    String visitStartDate = "";
 
     private void collectChatConnectionInfoFromFirebase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
@@ -590,11 +593,14 @@ public class VisitSummaryActivity extends BaseActivity {
                 }
 
                 if (hasPrescription.equalsIgnoreCase("true")) {
-//                    try {
-//                        doWebViewPrint();
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
+                    getVisitStartDate();
+
+                    String fileNamePatientName = patientName.replace(" ", "-");
+                    String fileNameOpenMrsId = patient.getOpenmrs_id();
+                    String fileNameVisitID = visitUUID.substring(visitUUID.length() - 5);
+
+                    String fileName = fileNamePatientName.concat("-").concat(fileNameOpenMrsId).concat("-").concat(visitStartDate).concat("-").concat(fileNameVisitID).concat(".pdf");
+                    buildAndSavePrescription(fileName);
 
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     EditText editText = new EditText(VisitSummaryActivity.this);
@@ -1902,6 +1908,52 @@ public class VisitSummaryActivity extends BaseActivity {
             }
         });
         getAppointmentDetails(visitUuid);
+    }
+
+    private void buildAndSavePrescription(String fileName) {
+        PrescriptionBuilder builder = new PrescriptionBuilder(this);
+        builder.setPatientData(patient, visitStartDate);
+        builder.setVitals(getVitals());
+        builder.setComplaintData(complaint.getValue());
+        builder.setDiagnosis(diagnosisReturned);
+        builder.setMedication(medicalAdvice_string);
+        builder.setTests(testsReturned);
+        builder.setAdvice(adviceReturned);
+        builder.setFollowUp(followUpDate);
+        builder.build(fileName);
+    }
+
+    private VitalsObject getVitals() {
+        VitalsObject vitalsObject = new VitalsObject();
+        vitalsObject.setHeight(height.getValue());
+        vitalsObject.setWeight(weight.getValue());
+        vitalsObject.setBmi(mBMI);
+        vitalsObject.setBpsys(bpSys.getValue());
+        vitalsObject.setBpdia(bpDias.getValue());
+        vitalsObject.setPulse(pulse.getValue());
+        vitalsObject.setTemperature(temperature.getValue());
+        vitalsObject.setResp(resp.getValue());
+        vitalsObject.setHsb(hemoglobin.getValue());
+        vitalsObject.setBlood(blood.getValue());
+        vitalsObject.setSugarfasting(sugarfasting.getValue());
+        vitalsObject.setSugarrandom(sugarrandom.getValue());
+        vitalsObject.setSpo2(spO2.getValue());
+        return vitalsObject;
+    }
+
+    private void getVisitStartDate() {
+        String[] columnsToReturn = {"startdate"};
+        String visitIdOrderBy = "startdate";
+        String visitIDSelection = "uuid = ?";
+        String[] visitIDArgs = {visitUuid};
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+
+        final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIdOrderBy);
+        visitIDCursor.moveToLast();
+        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
+        visitIDCursor.close();
+
+        visitStartDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
     }
 
     private void bmiColorCode(String bmiValue) {

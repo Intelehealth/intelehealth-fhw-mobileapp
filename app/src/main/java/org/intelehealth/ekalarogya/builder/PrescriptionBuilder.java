@@ -117,26 +117,34 @@ public class PrescriptionBuilder {
 
         binding.getRoot().measure(
                 View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(metrics.heightPixels, View.MeasureSpec.EXACTLY)
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         );
 
-        binding.getRoot().layout(0, 0, metrics.widthPixels, metrics.heightPixels);
+        binding.getRoot().layout(0, 0, metrics.widthPixels, binding.getRoot().getMeasuredHeight());
 
         int viewHeight = binding.getRoot().getMeasuredHeight();
-        int viewWidth = binding.getRoot().getMinimumWidth();
+        int viewWidth = metrics.widthPixels;
+        int pageHeight = metrics.heightPixels;
+
+        int numberOfPages = (int) Math.ceil((double) viewHeight / pageHeight);
 
         PdfDocument pdfDocument = new PdfDocument();
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
-                viewWidth,
-                viewHeight,
-                1
-        ).create();
 
-        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
-        Canvas canvas = page.getCanvas();
+        for (int i = 0; i < numberOfPages; ++i) {
+            // Calculate the content height for each page
+            int contentHeightForThisPage = Math.min(viewHeight - pageHeight * i, pageHeight);
 
-        binding.getRoot().draw(canvas);
-        pdfDocument.finishPage(page);
+            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(viewWidth, contentHeightForThisPage, i + 1).create();
+            PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+
+            Canvas canvas = page.getCanvas();
+            int savedState = canvas.save();
+            canvas.translate(0, -pageHeight * i);
+            binding.getRoot().draw(canvas);
+            canvas.restoreToCount(savedState);
+
+            pdfDocument.finishPage(page);
+        }
 
         File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File filePath = new File(downloadsDir, fileName);
