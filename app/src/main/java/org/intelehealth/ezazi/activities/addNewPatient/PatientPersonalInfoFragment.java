@@ -2,17 +2,6 @@ package org.intelehealth.ezazi.activities.addNewPatient;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__bn_dob;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__gu_dob;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__kn_dob;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__ml_dob;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__mr_dob;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__ru_dob;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__ta_dob;
-import static org.intelehealth.ezazi.utilities.StringUtils.en__te_dob;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -22,14 +11,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -48,11 +39,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -61,7 +52,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.cameraActivity.CameraActivity;
@@ -79,10 +69,7 @@ import org.intelehealth.ezazi.ui.dialog.CalendarDialog;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
-import org.intelehealth.ezazi.utilities.DateOfBirthCalculator;
-import org.intelehealth.ezazi.utilities.EditTextUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
-import org.intelehealth.ezazi.utilities.IReturnValues;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidGenerator;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
@@ -407,7 +394,7 @@ public class PatientPersonalInfoFragment extends Fragment {
                 mAlternateNumber.setText(mAlternateNumberString);
                 String dateOfBirth = getSelectedDob(mContext);
                 tvDobForDb.setText(dateOfBirth);
-                Log.d(TAG, "updatePatientDetailsFromSecondScreen: dateOfBirth : "+dateOfBirth);
+                Log.d(TAG, "updatePatientDetailsFromSecondScreen: dateOfBirth : " + dateOfBirth);
                 if (dateOfBirth != null && !dateOfBirth.isEmpty()) {
                     mDOB.setText(dateOfBirth);
                     String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dateOfBirth).split(" ");
@@ -748,7 +735,29 @@ public class PatientPersonalInfoFragment extends Fragment {
         Intent cameraIntent = new Intent(getActivity(), CameraActivity.class);
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientTemp);
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath.toString());
-        startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+        cameraLauncher.launch(cameraIntent);
+    }
+
+    private final ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Log.i(TAG, "Result OK");
+                    bindProfilePicture(result.getData());
+                }
+            }
+    );
+
+    private void bindProfilePicture(Intent intent) {
+        mCurrentPhotoPath = intent.getStringExtra("RESULT");
+        Log.v("IdentificationActivity", mCurrentPhotoPath);
+        RequestBuilder<Drawable> requestBuilder = Glide.with(requireContext())
+                .asDrawable().sizeMultiplier(0.25f);
+        Glide.with(requireActivity())
+                .load(new File(mCurrentPhotoPath))
+                .thumbnail(requestBuilder)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true).into(ivProfilePhoto);
     }
 
     private void onPatientCreateClicked() {
@@ -1048,7 +1057,7 @@ public class PatientPersonalInfoFragment extends Fragment {
     }
 
     public void setSelectedDob(Context context, String dob) {
-        Log.d(TAG, "setSelectedDob: dob kk :"+dob);
+        Log.d(TAG, "setSelectedDob: dob kk :" + dob);
         SharedPreferences pref = context.getApplicationContext().getSharedPreferences("dobPatient", 0);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("dobPatient", dob);
@@ -1120,7 +1129,7 @@ public class PatientPersonalInfoFragment extends Fragment {
                  /*   selectedDobMonth = "";
                     selectedDobDay = "";
                     selectedDobYear = "";*/
-                } else if (mDOB.getText().toString().isEmpty()){
+                } else if (mDOB.getText().toString().isEmpty()) {
                     calculateDob(Integer.parseInt(val));
                     tvErrorAge.setVisibility(View.GONE);
                     cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
@@ -1188,13 +1197,13 @@ public class PatientPersonalInfoFragment extends Fragment {
 
             // Format the Date object to the desired output format
             String formattedDate = outputDateFormat.format(inputDate);
-            Log.d(TAG, "calculateDob: formattedDate : "+formattedDate);
+            Log.d(TAG, "calculateDob: formattedDate : " + formattedDate);
             setSelectedDob(mContext, birthDateString);
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
-}
+    }
 
     private void setScrollToFocusedItem() {
         if (requireView().findFocus() != null) {

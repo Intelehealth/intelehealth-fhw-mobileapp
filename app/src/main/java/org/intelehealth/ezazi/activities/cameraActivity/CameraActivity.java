@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -24,6 +23,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.exifinterface.media.ExifInterface;
 
 import com.google.android.cameraview.CameraView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -40,6 +40,7 @@ import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.utilities.BitmapUtils;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -94,9 +95,9 @@ public class CameraActivity extends AppCompatActivity {
     private String mDialogMessage = null;
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
-    private boolean fabClickFlag=true;
+    private boolean fabClickFlag = true;
 
-    private CameraView.Callback mCallback
+    private final CameraView.Callback mCallback
             = new CameraView.Callback() {
 
         @Override
@@ -322,13 +323,10 @@ public class CameraActivity extends AppCompatActivity {
 
         if (mCameraView != null) mCameraView.addCallback(mCallback);
         if (mFab != null) {
-            mFab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mCameraView != null && fabClickFlag==true) {
-                        fabClickFlag=false;
-                        mCameraView.takePicture();
-                    }
+            mFab.setOnClickListener(v -> {
+                if (mCameraView != null && fabClickFlag == true) {
+                    fabClickFlag = false;
+                    mCameraView.takePicture();
                 }
             });
         }
@@ -338,7 +336,7 @@ public class CameraActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (mCameraView != null) mCameraView.stop();
-//        CameraActivityPermissionsDispatcher.startCameraWithPermissionCheck(this);
+        CameraActivityPermissionsDispatcher.startCameraWithPermissionCheck(this);
     }
 
     @Override
@@ -372,7 +370,7 @@ public class CameraActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        CameraActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        CameraActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @NeedsPermission(Manifest.permission.CAMERA)
@@ -430,12 +428,5 @@ public class CameraActivity extends AppCompatActivity {
             mBackgroundHandler = new Handler(thread.getLooper());
         }
         return mBackgroundHandler;
-    }
-
-    @Override
-    public void onBackPressed() {
-        //do nothing
-        finish();
-
     }
 }

@@ -21,18 +21,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvLblAdministerMedicine"
-            style="@style/Theme.EZazi.Screen.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginBottom="@dimen/screen_padding"
-            android:contentDescription="@string/lbl_add_new_medicine"
-            android:text="@string/lbl_administration"
-            app:layout_constraintBottom_toTopOf="@+id/clMedicineListContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bottomSheetAppBar" />
+<!--        <com.google.android.material.textview.MaterialTextView-->
+<!--            android:id="@+id/tvLblAdministerMedicine"-->
+<!--            style="@style/Theme.EZazi.Screen.Title"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="@dimen/screen_padding"-->
+<!--            android:layout_marginBottom="@dimen/screen_padding"-->
+<!--            android:contentDescription="@string/lbl_add_new_medicine"-->
+<!--            android:text="@string/lbl_administration"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/clMedicineListContainer"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/bottomSheetAppBar" />-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clMedicineListContainer"
@@ -46,7 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLblAdministerMedicine">
+            app:layout_constraintTop_toBottomOf="@id/bottomSheetAppBar">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMedicines"
@@ -61,22 +61,21 @@
                 tools:itemCount="1"
                 tools:listitem="@layout/row_item_medicine" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAddMoreMedicine"
-                style="@style/Theme.EZazi.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/screen_container_padding"
-                android:layout_marginVertical="@dimen/screen_container_padding"
-                android:paddingStart="@dimen/screen_padding"
-                android:paddingTop="@dimen/screen_container_padding"
-                android:paddingEnd="@dimen/screen_padding"
-                android:paddingBottom="@dimen/screen_container_padding"
-                android:text="@string/lbl_add_new_medicine"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvMedicines" />
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/btnAddMoreMedicine"-->
+<!--                style="@style/Theme.EZazi.Button.Small"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginHorizontal="@dimen/screen_container_padding"-->
+<!--                android:layout_marginVertical="@dimen/screen_container_padding"-->
+<!--                android:paddingStart="@dimen/screen_padding"-->
+<!--                android:paddingTop="@dimen/screen_container_padding"-->
+<!--                android:paddingEnd="@dimen/screen_padding"-->
+<!--                android:paddingBottom="@dimen/screen_container_padding"-->
+<!--                android:text="@string/lbl_add_new_medicine"-->
+<!--                android:textStyle="bold"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/rvMedicines" />-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveMedicines"
@@ -87,17 +86,17 @@
                 android:layout_marginVertical="@dimen/screen_padding"
                 android:text="@string/save_button"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnViewPrescriptionMedicine"
+                app:layout_constraintEnd_toStartOf="@+id/btnAddMoreMedicine"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <!-- New MaterialButton to the right of the Save button -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnViewPrescriptionMedicine"
-                style="@style/Theme.EZazi.Button.White"
+                android:id="@+id/btnAddMoreMedicine"
+                style="@style/Theme.EZazi.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/screen_container_padding"
-                android:text="@string/view_prescription"
+                android:text="@string/lbl_add_new_medicine"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btnSaveMedicines"

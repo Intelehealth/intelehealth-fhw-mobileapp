@@ -28,8 +28,7 @@ import org.intelehealth.ezazi.utilities.SessionManager
 class DecisionPendingVisitsAdapter(
     private val itemList: List<PatientDTO>,
     private val context: Context
-) :
-    RecyclerView.Adapter<DecisionPendingVisitsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<DecisionPendingVisitsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ListItemActivePatientEzaziBinding = ListItemActivePatientEzaziBinding.inflate(
@@ -83,7 +82,8 @@ class DecisionPendingVisitsAdapter(
                 val patientColumns =
                     arrayOf("first_name", "middle_name", "last_name", "gender", "date_of_birth")
                 val db = AppConstants.inteleHealthDatabaseHelper.writeDb
-                val idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null
+                val idCursor = db.query(
+                    "tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null
                 )
                 var visit_id = ""
                 var end_date = ""

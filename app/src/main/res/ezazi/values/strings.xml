@@ -98,7 +98,7 @@
     <string name="add_details_for_labour_completed">Please add details for labour completed</string>
     <string name="please_enter_reason_deceased">Please enter deceased reason</string>
     <string name="stage_2_labour_complete">Stage 2 Newborn Details</string>
-    <string name="lbl_add_new_medicine">Add New Medicine</string>
+    <string name="lbl_add_new_medicine">Add Medicine</string>
     <string name="hint_other_medicines">Other Medicines</string>
     <string name="hint_medicine">Medicine*</string>
     <string name="lbl_add">Add</string>
@@ -119,23 +119,28 @@
     <string name="hide">Hide</string>
     <string name="lbl_prescription">Prescription</string>
     <string name="lbl_medicine_administration">Medicine Administration</string>
+    <string name="medicines_not_prescribed">Medicines not prescribed yet!</string>
+    <string name="iv_fluids_not_prescribed">IV Fluid not prescribed yet!</string>
     <string name="view_prescribed_iv_fluids">View prescribed IV Fluids</string>
     <string name="lbl_iv_fluid_administration">IV Fluid Administration</string>
     <string name="sure_want_to_administer_iv_fluid">Are you sure you want to administer this IV Fluid?</string>
     <string name="lbl_administration">Administration</string>
     <string name="sure_want_to_administer_oxytocin">Are you sure you want to administer this Oxytocin?</string>
     <string name="view_prescribed_oxytocin">View prescribed Oxytocin</string>
+    <string name="oxytocin_not_prescribed">Oxytocin not prescribed yet!</string>
     <string name="lbl_oxytocin_administration">Oxytocin Administration</string>
     <string name="lbl_assessment">Assessment</string>
     <string name="lbl_add_new_plan">Add Plan</string>
     <string name="enter_here">Enter here</string>
     <string name="lbl_plan_administration">Plan Administration</string>
     <string name="follow">Follow</string>
-    <string name="planned_by_you">Plan by You</string>
+    <string name="planned_by_you">Planned by You</string>
     <string name="assess_from_doctor">Assessment from Doctor</string>
-    <string name="planned_from_doctor">Plan from Doctor</string>
+    <string name="plans_not_prescribed">Plans not prescribed yet!</string>
+    <string name="planned_from_doctor">Planned from Doctor</string>
     <string name="assess_by_you">Assessment by You</string>
     <string name="lbl_add_new_assessment">Add Assessment</string>
+    <string name="assessment_not_prescribed">Assessment not prescribed yet!</string>
     <string name="lbl_assessment_administration">Assessment Administration</string>
 
 </resources>

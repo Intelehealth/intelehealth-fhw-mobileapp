@@ -177,7 +177,7 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
         Log.d(TAG, "setButtonClickListener: accessMode : " + accessMode);
         binding.btnSaveIvFluids.setOnClickListener(this);
         binding.btnSaveIvFluids.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
-        binding.btnViewPrescriptionIvFluid.setOnClickListener(this);
+        binding.bottomSheetAppBar.btnViewPrescription.setOnClickListener(this);
     }
 
     private void setIvFluidsListView() {
@@ -217,7 +217,7 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
             case R.id.btnSaveIvFluids:
                 saveAndUpdateFinalListOfMedicines();
                 break;
-            case R.id.btnViewPrescriptionIvFluid:
+            case R.id.btnViewPrescription:
                 showPrescribedMedicinesDialog();
                 break;
         }
@@ -274,8 +274,6 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
     }
 
     private void closePrescribedIvFluidDialog() {
-        binding.clIvFluidListContainer.setVisibility(View.VISIBLE);
-        binding.tvLblAdministerIvFluid.setVisibility(View.VISIBLE);
 
         Animation bottomDown = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_bottom);
         bottomDown.setAnimationListener(new Animation.AnimationListener() {
@@ -287,9 +285,6 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
             @Override
             public void onAnimationEnd(Animation animation) {
                 binding.clPrescribedIvFluidRoot.setVisibility(View.GONE);
-                binding.clIvFluidListContainer.setVisibility(View.VISIBLE);
-                binding.tvLblAdministerIvFluid.setVisibility(View.VISIBLE);
-
             }
 
             @Override
@@ -367,13 +362,8 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
     private void manageUIVisibilityAsPerData(boolean isMedicinePrescribed) {
         if (isMedicinePrescribed) {
             binding.clPrescribedIvFluidRoot.setVisibility(View.VISIBLE);
-            binding.clIvFluidListContainer.setVisibility(View.VISIBLE);
-            binding.tvLblAdministerIvFluid.setVisibility(View.VISIBLE);
-
         } else {
             binding.clPrescribedIvFluidRoot.setVisibility(View.GONE);
-            binding.clIvFluidListContainer.setVisibility(View.VISIBLE);
-            binding.tvLblAdministerIvFluid.setVisibility(View.VISIBLE);
 
            /* if (adapter != null) {
                 binding.btnSaveIvFluids.setEnabled(adapter.getItemCount() > 0);
@@ -397,24 +387,6 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
                 changeSaveButtonStatus();
             }
         }
-    }
-
-    private void manageHeightOfPrescribedIVFluidUI() {
-        ConstraintLayout clIvFluidListContainer = binding.clIvFluidListContainer;
-
-// Calculate 70% of the screen height
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int screenHeight = displayMetrics.heightPixels;
-        int maxContainerHeight = (int) (screenHeight * 0.4);
-
-// Set the maximum height for clIvFluidListContainer
-        clIvFluidListContainer.setMaxHeight(maxContainerHeight);
-
-// When you want to show the container:
-        clIvFluidListContainer.setVisibility(View.VISIBLE);
-
-// When you want to hide the container:
-        clIvFluidListContainer.setVisibility(View.GONE);
     }
 }
 

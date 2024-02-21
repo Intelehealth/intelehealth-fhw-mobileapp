@@ -40,7 +40,7 @@ class VisitStatusActivity : BaseActivity() {
             it.setHomeButtonEnabled(true)
             it.setDisplayHomeAsUpEnabled(true)
         }
-        binding.toolbar.setNavigationOnClickListener { v -> onBackNavigate() }
+        binding.toolbar.setNavigationOnClickListener { _ -> finish() }
 
     }
 
@@ -61,8 +61,5 @@ class VisitStatusActivity : BaseActivity() {
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(containerId, fragment)
         fragmentTransaction.commit()
-    }
-    protected fun onBackNavigate() {
-        onBackPressed()
     }
 }

@@ -62,23 +62,6 @@
                 tools:listitem="@layout/row_item_prescription_followed" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAddMorePlan"
-                style="@style/Theme.EZazi.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/screen_container_padding"
-                android:layout_marginVertical="@dimen/screen_container_padding"
-                android:paddingStart="@dimen/screen_padding"
-                android:paddingTop="@dimen/screen_container_padding"
-                android:paddingEnd="@dimen/screen_padding"
-                android:paddingBottom="@dimen/screen_container_padding"
-                android:text="@string/lbl_add_new_plan"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvPlan" />
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSavePlan"
                 style="@style/Theme.EZazi.Button"
                 android:layout_width="0dp"
@@ -87,22 +70,21 @@
                 android:layout_marginVertical="@dimen/screen_padding"
                 android:text="@string/save_button"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnViewPrescriptionPlan"
+                app:layout_constraintEnd_toStartOf="@+id/btnAddMorePlan"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <!-- New MaterialButton to the right of the Save button -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnViewPrescriptionPlan"
-                style="@style/Theme.EZazi.Button.White"
+                android:id="@+id/btnAddMorePlan"
+                style="@style/Theme.EZazi.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/screen_container_padding"
-                android:layout_marginVertical="@dimen/screen_padding"
-                android:text="@string/view_prescription"
+                android:text="@string/lbl_add_new_medicine"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btnSavePlan" />
+                app:layout_constraintStart_toEndOf="@+id/btnSavePlan"
+                app:layout_constraintTop_toTopOf="@id/btnSavePlan" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

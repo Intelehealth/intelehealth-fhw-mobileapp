@@ -22,53 +22,34 @@
             style="@style/Theme.EZazi.Screen.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/screen_padding"
-            android:contentDescription="@string/lbl_add_new_medicine"
+            android:contentDescription="@string/planned_from_doctor"
             android:text="@string/assess_from_doctor"
-            app:layout_constraintBottom_toTopOf="@+id/clAssessmentsListContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clAssessmentsListContainer"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHidePrescribedDialog"
+            style="@style/Theme.EZazi.Button.Icon.Blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_clear"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPrescribedAssessments"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/screen_padding"
             android:layout_marginBottom="@dimen/screen_padding"
             android:background="@drawable/container_bg_rounded"
-            android:contentDescription="@string/content_item_container"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/btnHidePrescribedDialog"
+            android:contentDescription="@string/content_added_medicine_list"
+            android:padding="@dimen/screen_container_padding"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPrescribedAssessments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/screen_container_padding"
-                android:contentDescription="@string/content_added_medicine_list"
-                android:padding="@dimen/screen_container_padding"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:itemCount="1"
-                tools:listitem="@layout/row_item_prescription_plan" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnHidePrescribedDialog"
-            style="@style/Theme.EZazi.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginVertical="@dimen/screen_padding"
-            android:text="@string/hide"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnHidePrescribedDialog"
+            tools:itemCount="1"
+            tools:listitem="@layout/row_item_prescription_plan" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

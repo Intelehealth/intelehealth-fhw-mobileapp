@@ -147,8 +147,6 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
         Timber.d { "Prescription plan => ${Gson().toJson(obsList)}" }
         val prescriptions = LinkedList<ItemHeader>()
         val plans = obsList.filter { it.conceptuuid.equals(Params.PLAN.conceptId) }
-        /*val medicines =
-                obsList.filter { it.conceptuuid.equals(Params.PRESCRIBED_MEDICINE.conceptId) }*/
 
         if (plans.isNotEmpty()) {
 

@@ -172,7 +172,7 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
     private void setButtonClickListener() {
         binding.btnSaveOxytocins.setOnClickListener(this);
         binding.btnSaveOxytocins.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
-        binding.btnViewPrescriptionOxytocin.setOnClickListener(this);
+        binding.bottomSheetAppBar.btnViewPrescription.setOnClickListener(this);
     }
 
     private void setOxytocinListView() {
@@ -211,7 +211,7 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
             case R.id.btnSaveOxytocins:
                 saveAndUpdateFinalListOfMedicines();
                 break;
-            case R.id.btnViewPrescriptionOxytocin:
+            case R.id.btnViewPrescription:
                 showPrescribedMedicinesDialog();
                 break;
         }
@@ -269,8 +269,6 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
     }
 
     private void closePrescribedOxytocinDialog() {
-        binding.clOxytocinListContainer.setVisibility(View.VISIBLE);
-        binding.tvLblAdministerOxytocin.setVisibility(View.VISIBLE);
 
         Animation bottomDown = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_bottom);
         bottomDown.setAnimationListener(new Animation.AnimationListener() {
@@ -282,9 +280,6 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
             @Override
             public void onAnimationEnd(Animation animation) {
                 binding.clPrescribedOxytocinRoot.setVisibility(View.GONE);
-                binding.clOxytocinListContainer.setVisibility(View.VISIBLE);
-                binding.tvLblAdministerOxytocin.setVisibility(View.VISIBLE);
-
             }
 
             @Override
@@ -344,13 +339,9 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
     private void manageUIVisibilityAsPerData(boolean isMedicinePrescribed) {
         if (isMedicinePrescribed) {
             binding.clPrescribedOxytocinRoot.setVisibility(View.VISIBLE);
-            binding.clOxytocinListContainer.setVisibility(View.VISIBLE);
-            binding.tvLblAdministerOxytocin.setVisibility(View.VISIBLE);
 
         } else {
             binding.clPrescribedOxytocinRoot.setVisibility(View.GONE);
-            binding.clOxytocinListContainer.setVisibility(View.VISIBLE);
-            binding.tvLblAdministerOxytocin.setVisibility(View.VISIBLE);
             binding.btnSaveOxytocins.setEnabled(oxytocinsList.size() > 0);
             if (adapter != null) {
                 binding.btnSaveOxytocins.setEnabled(adapter.getItemCount() > 0);

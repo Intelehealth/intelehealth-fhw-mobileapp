@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -16,7 +17,18 @@
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
             app:navigationIcon="@drawable/selector_dialog_cancel"
-            app:popupTheme="@style/Theme.EZazi.PopupOverlay" />
+            app:popupTheme="@style/Theme.EZazi.PopupOverlay">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewPrescription"
+                style="@style/Theme.EZazi.Button.Icon.Blue"
+                android:layout_width="@dimen/action_btn_min_width"
+                android:layout_height="@dimen/action_btn_min_width"
+                android:layout_gravity="end"
+                android:contentDescription="@string/content_view_prescription"
+                app:icon="@drawable/ic_vector_prescription"
+                app:iconTint="?colorPrimary" />
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 </layout>
