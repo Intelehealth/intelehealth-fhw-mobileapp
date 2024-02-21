@@ -14,6 +14,7 @@ import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Created by Vaghela Mithun R. on 06-09-2023 - 17:14.
@@ -49,7 +50,18 @@ public class Medicine implements Serializable, ItemHeader {
     }
 
     private String remark;
-    private String medicineFullName;
+
+     private String medicineFullName;
+
+    public boolean isRecordFromLocalDb() {
+        return isRecordFromLocalDb;
+    }
+
+    public void setRecordFromLocalDb(boolean recordFromLocalDb) {
+        isRecordFromLocalDb = recordFromLocalDb;
+    }
+
+    private boolean isRecordFromLocalDb;
 
     public String getForm() {
         return form;
@@ -205,14 +217,13 @@ public class Medicine implements Serializable, ItemHeader {
 
     public ObsDTO toObs(String encounterId, String creator, String createdDate) {
         Log.d(TAG, "toObs: createdDate medicine : " + createdDate);
+        Log.d(TAG, "obsuuidtoObs: after obsuuid : " + obsUuid);
         ObsDTO obs = new ObsDTO();
-        obs.setUuid(obsUuid);
         obs.setConceptuuid(UuidDictionary.MEDICINE);
         obs.setValue(toDBFormat().trim());
         obs.setCreator(creator);
         obs.setEncounteruuid(encounterId);
         obs.setCreatedDate(createdDate);
-        obs.setName("");
         Log.e("Medicine", "toObs:medicine " + new Gson().toJson(obs));
         return obs;
     }

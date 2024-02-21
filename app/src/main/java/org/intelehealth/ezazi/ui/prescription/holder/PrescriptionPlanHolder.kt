@@ -15,13 +15,6 @@ class PrescriptionPlanHolder(val binding: RowItemPrescriptionPlanBinding) :
     fun bind(plan: ObsDTO, makeVisible: Boolean) {
         binding.plan = plan
         binding.btnPrescriptionPlanViewMore.setOnClickListener(this)
-        binding.btnFollowPlan.setOnClickListener(this)
         binding.btnPrescriptionPlanViewMore.tag = plan
-        if (makeVisible) {
-            binding.btnFollowPlan.visibility = View.VISIBLE
-        } else {
-            binding.btnFollowPlan.visibility = View.GONE
-
-        }
-    }
+           }
 }

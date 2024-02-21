@@ -44,13 +44,26 @@ public class ObsDTO implements ItemHeader {
     @Expose
     private String creatorUuid;
 
-    @SerializedName("obsDateTime")
+    @SerializedName("obsDatetime")
     @Expose
     private String createdDate;
 
     @SerializedName("voided")
     @Expose
     private Integer voided;
+
+    public String getObsDateTime() {
+        return obsDateTime;
+    }
+
+    public void setObsDateTime(String obsDateTime) {
+        this.obsDateTime = obsDateTime;
+    }
+
+    @SerializedName("obsDateTime") //added this param temporary bcz push pull api parameters are not same
+    @Expose
+    private String obsDateTime;
+
 
     private String name;
 

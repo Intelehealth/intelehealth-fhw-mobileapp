@@ -73,7 +73,7 @@
             android:layout_marginEnd="@dimen/screen_container_padding"
             android:layout_weight="2"
             android:padding="@dimen/common_padding"
-            android:text="@{medDetails.type}"
+            android:text="@{medDetails.form}"
             android:textColor="@color/gray_6"
             android:textSize="@dimen/body"
             app:layout_constraintEnd_toEndOf="parent"

@@ -96,15 +96,6 @@ public class AssessmentBottomSheetDialog extends BottomSheetDialogFragment imple
             ObsDTO obs = (ObsDTO) view.getTag();
             obs.updateVisibleContentLine();
             adapter.notifyItemChanged(position);
-        } else if (view.getId() == R.id.btnFollowPlan) {
-            closePrescribedPlanDialog();
-            if (prescriptionAdapter.getItem(position) instanceof ObsDTO obsDTO) {
-                binding.includeAddNewAssessmentDialog.setAssessment(obsDTO);
-                //binding.includeAddNewPlanDialog.setUpdatePosition(position);
-                binding.clAddNewAssessmentRoot.setVisibility(View.VISIBLE);
-                binding.btnAddMoreAssessment.setVisibility(View.GONE);
-                binding.includeAddNewAssessmentDialog.btnAddAssessmentAdd.setText(getString(R.string.lbl_add));
-            }
         }
     }
 
@@ -316,6 +307,7 @@ public class AssessmentBottomSheetDialog extends BottomSheetDialogFragment imple
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnAddMoreAssessment:
+                closePrescribedPlanDialog();
                 setupAssessment();
                 openNewAssessmentDialog();
                 binding.btnAddMoreAssessment.setVisibility(View.GONE);
@@ -535,7 +527,6 @@ public class AssessmentBottomSheetDialog extends BottomSheetDialogFragment imple
 
         } else {
             manageUIVisibilityAsPerData(false);
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.assessment_not_prescribed), Toast.LENGTH_SHORT).show();
 
             //viewMode.updateFailResult(getString(R.string.no_prescription));
         }

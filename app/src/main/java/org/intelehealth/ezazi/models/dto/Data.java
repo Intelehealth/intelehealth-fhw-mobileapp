@@ -48,7 +48,9 @@ public class Data {
     @Expose
     private List<VisitAttributeDTO> visitAttributeList = null;
 
-
+    /*@SerializedName("obslist")
+    @Expose
+    private List<ObsDTOTemp> obsDTO = null;*/
 
     public List<PatientDTO> getPatientDTO() {
         return patientDTO;
@@ -101,10 +103,14 @@ public class Data {
     public List<ObsDTO> getObsDTO() {
         return obsDTO;
     }
+   /* public List<ObsDTOTemp> getObsDTOTemp() {
+        return obsDTO;
+    }*/
 
     public void setObsDTO(List<ObsDTO> obsDTO) {
         this.obsDTO = obsDTO;
     }
+
 
     public List<LocationDTO> getLocationDTO() {
         return locationDTO;

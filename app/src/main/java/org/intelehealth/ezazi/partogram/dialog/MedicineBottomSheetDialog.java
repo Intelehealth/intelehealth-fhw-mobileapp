@@ -52,6 +52,7 @@ import org.intelehealth.ezazi.ui.shared.TextChangeListener;
 import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.ScreenUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
+import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
@@ -61,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Vaghela Mithun R. on 06-09-2023 - 17:49.
@@ -368,12 +370,17 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
                 if (medicine.isValidMedicine()) {
                     int updated = -1;
                     if (binding.includeAddNewMedicineDialog.getUpdatePosition() != null) {
+                        Log.d(TAG, "12onClick: in if1");
                         updated = binding.includeAddNewMedicineDialog.getUpdatePosition();
-                        if (binding.includeAddNewMedicineDialog.getMedicine() != null)
-                            medicine.setObsUuid(binding.includeAddNewMedicineDialog.getMedicine().getObsUuid());
+                        if (binding.includeAddNewMedicineDialog.getMedicine() != null) {
+                            Log.d(TAG, "12onClick: in if2");
+                            Log.d(TAG, "12obsuuidonClick: before obsuuid : " + binding.includeAddNewMedicineDialog.getMedicine().getObsUuid());
+                            //  medicine.setObsUuid(binding.includeAddNewMedicineDialog.getMedicine().getObsUuid());
+                        }
                     }
                     if (updated > -1) adapter.updateItemAt(updated, medicine);
                     else {
+                        Log.d(TAG, "onClick: in else add");
                         //adapter.addItem(medicine);
                         adapter.addItemAt(0, medicine);
                     }
@@ -431,6 +438,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
         medicine.setDurationUnit(binding.includeAddNewMedicineDialog.autoCompleteMedicineDurationUnit.getText().toString());
         medicine.setDuration(binding.includeAddNewMedicineDialog.etMedicineDuration.getText().toString());
         medicine.setRemark(binding.includeAddNewMedicineDialog.etRemark.getText().toString());
+        medicine.setType(binding.includeAddNewMedicineDialog.autoCompleteMedicineForm.getText().toString());
         medicine.setCreatedAt(DateTimeUtils.getCurrentDateWithDBFormat());
         //medicine.setCreatorName("You");
         try {
@@ -648,7 +656,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
                 convertToPrescribedMedicine(obsDTO.getUuid(), obsDTO.getValue());
                 obsDTO.setName("");
             }
-                      setPrescribedMedicines(prescribedMedicines);
+            setPrescribedMedicines(prescribedMedicines);
             //binding.includedPrescribedMedicines.rvPrescribedMedicines.setLayoutManager(new LinearLayoutManager(requireContext()));
             LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
             layoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -662,7 +670,6 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment impleme
             binding.includedPrescribedMedicines.rvPrescribedMedicines.setAdapter(prescribedMedicinesAdapter);
         } else {
             //There is no prescribed medicines
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.medicines_not_prescribed), Toast.LENGTH_SHORT).show();
             manageUIVisibilityAsPerData(false);
 
         }

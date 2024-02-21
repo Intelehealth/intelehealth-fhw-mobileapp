@@ -314,7 +314,6 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
             binding.includedPrescribedOxytocins.rvPrescribedOxytocins.setAdapter(prescribedOxytocinAdapter);
         } else {
             //There is no prescribed medicines
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.oxytocin_not_prescribed), Toast.LENGTH_SHORT).show();
             manageUIVisibilityAsPerData(false);
 
         }

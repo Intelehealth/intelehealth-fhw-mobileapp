@@ -76,6 +76,15 @@ public class ParamInfo implements Serializable {
     private List<Medicine> prescribedMedicines;
     private List<ObsDTO> deletedPlans;
     private String createdDate;
+    private String obsUuid;
+
+    public String getObsUuid() {
+        return obsUuid;
+    }
+
+    public void setObsUuid(String obsUuid) {
+        this.obsUuid = obsUuid;
+    }
 
     public String getCreatedDate() {
         return createdDate;
@@ -280,9 +289,10 @@ public class ParamInfo implements Serializable {
         medicine.setObsUuid(obsUuid);
         medicine.dbFormatToMedicineObject(value);
         medicine.setCreatedAt(createdDate);
-       //String creatorName = new ObsDAO().getCreatorNameByObsUuidMedicine(obsUuid);
+        //String creatorName = new ObsDAO().getCreatorNameByObsUuidMedicine(obsUuid);
         String creatorName = new ObsDAO().getCreatorNameByObsUuid(obsUuid);
         medicine.setCreatorName(creatorName);
+        medicine.setRecordFromLocalDb(true);
         getMedicines().add(medicine);
     }
 
@@ -299,10 +309,12 @@ public class ParamInfo implements Serializable {
     }
 
     public List<ObsDTO> getMedicinesObsList(String encounterId, String creator) {
+        Log.d("TAG", "getMedicinesObsList: finallist:: " + new Gson().toJson(getMedicines()));
         ArrayList<ObsDTO> obsList = new ArrayList<>();
         for (Medicine medicine : getMedicines()) {
 
-            obsList.add(medicine.toObs(encounterId, creator, medicine.getCreatedAt()));
+            if (!medicine.isRecordFromLocalDb())
+                obsList.add(medicine.toObs(encounterId, creator, medicine.getCreatedAt()));
         }
         return obsList;
     }
@@ -477,6 +489,8 @@ public class ParamInfo implements Serializable {
 
     public void collectAllPlansInList(String obsUuid, String value, String createdDate) {
         Log.d("TAG", "collectAllPlansInList:createdDate: " + createdDate);
+        Log.d("TAG", "collectAllPlansInList:value: " + value);
+
         try {
             ObsDTO plan = new ObsDTO();
             Log.d("TAG", "collectAllPlansInList: obsUuid: " + obsUuid);

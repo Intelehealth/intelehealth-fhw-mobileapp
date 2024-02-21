@@ -11,7 +11,6 @@ import static org.intelehealth.ezazi.utilities.UuidDictionary.OUT_OF_TIME;
 import static org.intelehealth.ezazi.utilities.UuidDictionary.REFER_TYPE;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,15 +28,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
-import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.prescription.PrescDataModel;
 import org.intelehealth.ezazi.builder.QueryBuilder;
-import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
-import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
 import org.intelehealth.ezazi.ui.visit.model.VisitOutcome;
-import org.intelehealth.ezazi.ui.visit.model.VisitOutcomeListener;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
@@ -94,7 +89,7 @@ public class ObsDAO {
             values.put("value", obsDTOS.getValue());
             values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("created_date", obsDTOS.getCreatedDate(true));
+            values.put("created_date", obsDTOS.getObsDateTime());
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -109,6 +104,7 @@ public class ObsDAO {
     }
 
     public boolean insertObs(ObsDTO obsDTO) throws DAOException {
+        Log.d(TAG, "checkmedinsertObs: value:"+obsDTO.getValue());
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -182,6 +178,7 @@ public class ObsDAO {
 
     public boolean updateObs(ObsDTO obsDTO) {
         Log.d(TAG, "1111updateObs: uuid for update : " + obsDTO.getUuid());
+        Log.d(TAG, "checkmedupdateObs: value:"+obsDTO.getValue());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor cursor = null;
@@ -197,7 +194,7 @@ public class ObsDAO {
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            //values.put("created_date", obsDTO.getCreatedDate(true));
+            values.put("created_date", obsDTO.getCreatedDate(true));
             values.put("voided", "0");
             values.put("sync", "false");
 
@@ -330,8 +327,8 @@ public class ObsDAO {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
-        String query = "SELECT * FROM tbl_obs where encounteruuid = '" + encounteruuid + "' AND (conceptuuid != '07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba' AND conceptuuid != '200b7a45-77bc-4986-b879-cc727f5f7d5b') AND sync IN ('0', 'FALSE', 'false')";
-        Log.d(TAG, "obsDTOList:kk query: " + query);
+        //String query = "SELECT * FROM tbl_obs where encounteruuid = '" + encounteruuid + "' AND (conceptuuid != '07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba' AND conceptuuid != '200b7a45-77bc-4986-b879-cc727f5f7d5b') AND sync IN ('0', 'FALSE', 'false')";
+        //Log.d(TAG, "obsDTOList:kk query: " + query);
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND sync IN ('0', 'FALSE', 'false')",
                 new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
 
@@ -567,6 +564,7 @@ public class ObsDAO {
             values.put("comment", "");
             values.put("value", "-");
             values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+            //values.put("created_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             values.put("voided", "0");
             values.put("sync", "false");
 

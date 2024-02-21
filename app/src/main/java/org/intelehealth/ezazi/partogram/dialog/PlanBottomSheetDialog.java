@@ -98,15 +98,6 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
             ObsDTO obs = (ObsDTO) view.getTag();
             obs.updateVisibleContentLine();
             adapter.notifyItemChanged(position);
-        } else if (view.getId() == R.id.btnFollowPlan) {
-            closePrescribedPlanDialog();
-            if (prescriptionAdapter.getItem(position) instanceof ObsDTO obsDTO) {
-                binding.includeAddNewPlanDialog.setPlan(obsDTO);
-                //binding.includeAddNewPlanDialog.setUpdatePosition(position);
-                binding.clAddNewPlanRoot.setVisibility(View.VISIBLE);
-                binding.btnAddMorePlan.setVisibility(View.GONE);
-                binding.includeAddNewPlanDialog.btnAddPlanAdd.setText(getString(R.string.lbl_add));
-            }
         }
     }
 
@@ -318,6 +309,7 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnAddMorePlan:
+                closePrescribedPlanDialog();
                 setupPlan();
                 openNewPlanDialog();
                 binding.btnAddMorePlan.setVisibility(View.GONE);
@@ -537,7 +529,6 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
 
         } else {
             manageUIVisibilityAsPerData(false);
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.plans_not_prescribed), Toast.LENGTH_SHORT).show();
 
             //viewMode.updateFailResult(getString(R.string.no_prescription));
         }

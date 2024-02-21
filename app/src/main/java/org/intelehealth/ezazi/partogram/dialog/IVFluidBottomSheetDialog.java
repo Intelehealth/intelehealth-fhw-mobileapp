@@ -318,7 +318,6 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
             binding.includedPrescribedIvFluids.rvPrescribedIvFluids.setAdapter(prescribedIvFluidAdapter);
         } else {
             //There is no prescribed medicines
-            Toast.makeText(IntelehealthApplication.getAppContext(), getResources().getString(R.string.iv_fluids_not_prescribed), Toast.LENGTH_SHORT).show();
             manageUIVisibilityAsPerData(false);
 
         }

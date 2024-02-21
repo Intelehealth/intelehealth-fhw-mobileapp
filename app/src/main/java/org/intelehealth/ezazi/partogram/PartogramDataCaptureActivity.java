@@ -355,9 +355,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         isValidIVFluid = info.isValidJson();
                     }
 
-                    if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
+                  /*  if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
                         isValidOxytocin = info.isValidJson();
-                    }
+                    }*/
                     if (info.getConceptUUID().equals(UuidDictionary.BASELINE_FHR)) {
                         isValidBaselineFHR = ValidatePartogramFields.isValidParameter(info.getCapturedValue(), UuidDictionary.BASELINE_FHR);
                     }
@@ -391,26 +391,71 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         obsDTOList.addAll(info.getAssessmentsObsList(mEncounterUUID, new SessionManager(this).getCreatorID()));
 
                     } else if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
-                        if (isValidOxytocin && info.getCheckedRadioOption() != ParamInfo.RadioOptions.NO) {
-                            info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
-                            ObsDTO obsDTOData = buildObservation(info);
+                        isValidOxytocin = info.isValidJson();
+                        info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+                        ObsDTO obsDTOData = buildObservation(info);
 
-                            String uuid = obsDAO.getObsuuid(mEncounterUUID, info.getConceptUUID());
-                            obsDTOData.setUuid(uuid);
-                            obsDTOList.add(obsDTOData);
+                        String uuid = obsDAO.getObsuuid(mEncounterUUID, info.getConceptUUID());
+                        obsDTOData.setUuid(uuid);
 
+                        if (mObsDTOList != null && mObsDTOList.size() > 0) {
+                            for (int k = 0; k < mObsDTOList.size(); k++) {
+                                ObsDTO obsDTOFromDb = mObsDTOList.get(k);
+                                if (info.getConceptUUID().equals(obsDTOFromDb.getConceptuuid())) {
+                                    if (!info.getCapturedValue().equals(obsDTOFromDb.getValue()) && isValidOxytocin) {
+
+                                        if (uuid != null && !uuid.isEmpty()) {
+                                            //update
+                                            obsDTOList.add(obsDTOData);
+                                        } else {
+                                            //insert
+                                            if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
+                                                obsDTOList.add(obsDTOData);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "saveObs: captured val : " + info.getCapturedValue());
+                            if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
+                                obsDTOList.add(obsDTOData);
+                            }
                         }
+
                     } else if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) {
-                        if (isValidIVFluid && info.getCheckedRadioOption() != ParamInfo.RadioOptions.NO) {
+                        isValidIVFluid = info.isValidJson();
+                        info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+                        ObsDTO obsDTOData = buildObservation(info);
 
-                            info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
-                            ObsDTO obsDTOData = buildObservation(info);
+                        String uuid = obsDAO.getObsuuid(mEncounterUUID, info.getConceptUUID());
+                        obsDTOData.setUuid(uuid);
 
-                            String uuid = obsDAO.getObsuuid(mEncounterUUID, info.getConceptUUID());
-                            obsDTOData.setUuid(uuid);
-                            obsDTOList.add(obsDTOData);
+                        if (mObsDTOList != null && mObsDTOList.size() > 0) {
+                            for (int k = 0; k < mObsDTOList.size(); k++) {
+                                ObsDTO obsDTOFromDb = mObsDTOList.get(k);
+                                if (info.getConceptUUID().equals(obsDTOFromDb.getConceptuuid())) {
+                                    if (!info.getCapturedValue().equals(obsDTOFromDb.getValue()) && isValidIVFluid) {
 
+                                        if (uuid != null && !uuid.isEmpty()) {
+                                            //update
+                                            obsDTOList.add(obsDTOData);
+                                        } else {
+                                            //insert
+                                            if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
+                                                obsDTOList.add(obsDTOData);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "saveObs: captured val : " + info.getCapturedValue());
+                            if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
+                                obsDTOList.add(obsDTOData);
+                            }
                         }
+
                     } else {
                         info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
                         ObsDTO obsDTOData = buildObservation(info);
@@ -466,6 +511,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             try {
                 if (accessMode == PartogramConstants.AccessMode.EDIT) {
                     Log.d(TAG, "saveObs: access mode : " + accessMode);
+                    Log.d(TAG, "saveObs: obsDTOList size: " + obsDTOList.size());
                     //new logic
                     for (int i = 0; i < obsDTOList.size(); i++) {
                         ObsDTO obsDTO = obsDTOList.get(i);
@@ -480,9 +526,6 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                     if (voidedMedicines.size() > 0) {
                         obsDAO.markedAsVoidedObsToDb(voidedMedicines);
                     }
-                  /*  if (voidedPlans.size() > 0) {
-                        obsDAO.markedAsVoidedObsToDb(voidedPlans);
-                    }*/
                 } else {
                     obsDAO.insertObsToDb(obsDTOList, TAG);
                 }
@@ -517,7 +560,6 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         obsDTOData.setComment(PartogramAlertEngine.getAlertName(info));
         obsDTOData.setCreatorUuid(new SessionManager(this).getCreatorID());
         obsDTOData.setCreatedDate(info.getCreatedDate());
-        //obsDTOData.setCreatedDate(DateAndTimeUtils.getISTDateInUTCDate(info.getCreatedDate()));
         return obsDTOData;
     }
 
@@ -729,135 +771,38 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         return listOfFiveHoursFields.contains(encounterName);
     }
 
+
 /*
-    private void prepareDataForHalfHourlyOld() {
-        mItemList.clear();
-        for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
-            String section = PartogramConstants.SECTION_LIST[i];
-            List<ParamInfo> paramInfoList = new ArrayList<>();
-            for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
-                ParamInfo paramInfo = PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j);
-                paramInfo.setCurrentStage(mStageNumber);
-                if (mStageNumber == STAGE_1 && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isHalfHourField()) {
-                    paramInfoList.add(paramInfo);
-                } else if (mStageNumber == STAGE_2
-                        && !PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isOnlyOneHourField()
-                        && !PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
-                    paramInfoList.add(paramInfo);
-                } else if (mStageNumber == STAGE_2 && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
-                } else if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isEachEncounterField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
-                }
-            }
-            if (!paramInfoList.isEmpty()) {
-                PartogramItemData partogramItemData = new PartogramItemData();
-                partogramItemData.setParamSectionName(section);
-                partogramItemData.setParamInfoList(paramInfoList);
-                mItemList.add(partogramItemData);
-            }
+    private void compareLists(){
+        boolean areItemsInList2 = true;
 
-        }
-        setEditData();
-        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
-            @Override
-            public void onSelect(PartogramItemData partogramItemData) {
+// Iterate through the elements of list1
+        for ( item1 : list1) {
+            boolean foundEqual = false;
 
-            }
-        });
-        mRecyclerView.setAdapter(partogramQueryListingAdapter);
-    }
-*/
-/*
-private void prepareDataForFifteenMinsOld() {
-    // TODO: Add logic here for 15mins section... @Lincoln
-    mItemList.clear();
-    for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
-        String section = PartogramConstants.SECTION_LIST[i];
-        List<ParamInfo> paramInfoList = new ArrayList<>();
-        for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
-            if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
-                paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
-            }
-            if (checkFiveHourField(encounterName)) {
-                if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
-                }
-            }
-            if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isEachEncounterField()) {
-                paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
-            }
-
-        }
-        if (!paramInfoList.isEmpty()) {
-            PartogramItemData partogramItemData = new PartogramItemData();
-            partogramItemData.setParamSectionName(section);
-            partogramItemData.setParamInfoList(paramInfoList);
-            mItemList.add(partogramItemData);
-        }
-
-
-    }
-    setEditData();
-    PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, partogramItemData -> {
-    });
-    mRecyclerView.setAdapter(partogramQueryListingAdapter);
-}
-*/
-/*
-private void prepareDataForHourlyOld() {
-    mItemList.clear();
-    for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
-        String section = PartogramConstants.SECTION_LIST[i];
-        List<ParamInfo> paramInfoList = new ArrayList<>();
-        for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).size(); j++) {
-            if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isOnlyOneHourField()
-                    || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isHalfHourField()
-                    || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()
-                    || PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isEachEncounterField()) {
-                paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
-            }
-            if (checkFiveHourField(encounterName)) {
-                if (PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFiveHourField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
+            // Iterate through the elements of list2 to find a matching element
+            for (YourModelClass item2 : list2) {
+                // Compare the attributes or fields of YourModelClass
+                if (item1.equals(item2)) {
+                    foundEqual = true;
+                    break;
                 }
             }
 
-             */
-/*   if (mStageNumber == STAGE_2 && PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j).isFifteenMinField()) {
-                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section).get(j));
-                }*//*
-
-        }
-        if (!paramInfoList.isEmpty()) {
-            PartogramItemData partogramItemData = new PartogramItemData();
-            partogramItemData.setParamSectionName(section);
-            partogramItemData.setParamInfoList(paramInfoList);
-            mItemList.add(partogramItemData);
+            // If no matching element is found in list2, set the flag to false
+            if (!foundEqual) {
+                areItemsInList2 = false;
+                break;
+            }
         }
 
-
+        if (areItemsInList2) {
+            // All items in list1 are present in list2
+            // Your code here
+        } else {
+            // Not all items in list1 are present in list2
+            // Your code here
+        }
     }
-
-      */
-/*  for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
-            String section = PartogramConstants.SECTION_LIST[i];
-            List<ParamInfo> paramInfoList = PartogramConstants.getSectionParamInfoMasterMap(mStageNumber).get(section);
-            PartogramItemData partogramItemData = new PartogramItemData();
-            partogramItemData.setParamSectionName(section);
-            partogramItemData.setParamInfoList(paramInfoList);
-            mItemList.add(partogramItemData);
-        }*//*
-
-
-    setEditData();
-
-    PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, partogramItemData -> {
-
-    });
-    partogramQueryListingAdapter.setAccessMode(accessMode);
-    mRecyclerView.setAdapter(partogramQueryListingAdapter);
-}
 */
-
 }

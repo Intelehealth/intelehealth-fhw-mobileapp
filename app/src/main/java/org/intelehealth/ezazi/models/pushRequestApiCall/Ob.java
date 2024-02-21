@@ -26,7 +26,7 @@ public class Ob {
     @Expose
     private String creatorUuid;
 
-    @SerializedName("obsDateTime")
+    @SerializedName("obsDatetime")
     @Expose
     private String createdDate;
 
