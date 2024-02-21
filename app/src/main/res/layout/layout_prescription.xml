@@ -389,7 +389,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/lato_bold"
-            android:text="@string/prescription_recommended_investigation"
+            android:text="@string/prescription_general_advice"
             android:textSize="@dimen/heading_title_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -449,11 +449,10 @@
                 android:id="@+id/tv_dr_signature"
                 android:layout_width="125dp"
                 android:layout_height="125dp"
-                android:layout_gravity="end"
                 android:layout_marginTop="2dp"
                 android:fontFamily="@font/lato_bold"
+                android:gravity="center"
                 android:text="@string/sample_text"
-                android:textAlignment="textEnd"
                 android:textSize="@dimen/data_title_size" />
 
             <com.google.android.material.textview.MaterialTextView

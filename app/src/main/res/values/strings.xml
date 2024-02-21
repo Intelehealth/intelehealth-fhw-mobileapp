@@ -1222,6 +1222,7 @@
     <string name="prescription_diagnosis">Diagnosis</string>
     <string name="prescription_medication">Medication</string>
     <string name="prescription_recommended_investigation">Recommended Investigation</string>
+    <string name="prescription_general_advice">General Advice</string>
     <string name="prescription_follow_up">Follow Up</string>
 
 </resources>
