@@ -47,24 +47,21 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
         return prescriptionObs
     }
 
+    private fun filterObsByConceptId(conceptId: String, obsList: List<ObsDTO>): List<ObsDTO> {
+        return obsList.filter { it.conceptuuid.equals(conceptId) }
+    }
+
     private fun obsMappingToPrescription(obsList: List<ObsDTO>): List<ItemHeader> {
         Timber.d { "Prescription => ${Gson().toJson(obsList)}" }
         val prescriptions = LinkedList<ItemHeader>()
-        val plans = obsList.filter { it.conceptuuid.equals(Params.PLAN.conceptId) }
-        val medicines =
-            obsList.filter { it.conceptuuid.equals(Params.PRESCRIBED_MEDICINE.conceptId) }
-        val oxytocins =
-            obsList.filter { it.conceptuuid.equals(Params.PRESCRIBED_OXYTOCIN.conceptId) }
-        val ivFluids =
-            obsList.filter { it.conceptuuid.equals(Params.PRESCRIBED_IV_FLUID.conceptId) }
-        if (plans.isNotEmpty()) {
+        val plans = filterObsByConceptId(Params.PLAN.conceptId, obsList)
+        val medicines = filterObsByConceptId(Params.PRESCRIBED_MEDICINE.conceptId, obsList)
+        val oxytocins = filterObsByConceptId(Params.PRESCRIBED_OXYTOCIN.conceptId, obsList)
+        val ivFluids = filterObsByConceptId(Params.PRESCRIBED_IV_FLUID.conceptId, obsList)
 
+        if (plans.isNotEmpty()) {
             prescriptions.add(CategoryHeader(R.string.lbl_plan))
-            prescriptions.addAll(plans.map {
-                it.noOfLine = 100
-                if (it.name.contains("Dr").not()) it.name = "Dr.${it.name}"
-                return@map it
-            })
+            obsMappingToPlanPrescription(plans, prescriptions)
             Timber.d { "Plan ${Gson().toJson(plans)}" }
         }
 
@@ -76,7 +73,7 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
                         if (name.contains("Dr").not()) return@let "Dr.$name"
                         else return@let name
                     }
-                    setCreatedAt(it.getCreatedDate(false))
+                    createdAt = it.getCreatedDate(false)
                     dbFormatToMedicineObject(it.value)
                 }
             }.apply {
@@ -97,7 +94,7 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
                         if (name.contains("Dr").not()) return@let "Dr.$name"
                         else return@let name
                     }
-                    setCreatedAt(it.getCreatedDate(false))
+                    createdAt = it.getCreatedDate(false)
                     return@apply
                 }
             }.apply {
@@ -118,7 +115,7 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
                         if (name.contains("Dr").not()) return@let "Dr.$name"
                         else return@let name
                     }
-                    setCreatedAt(it.getCreatedDate(false))
+                    createdAt = it.getCreatedDate(false)
                     return@apply
                 }
             }.apply {
@@ -138,19 +135,19 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
             Timber.d { "Prescription Query => $this" }
             val cursor = database.rawQuery(this, null)
             retrievePrescription(cursor).apply {
-                return obsMappingToPlanPrescription(this)
+                val plan =  filterObsByConceptId(Params.PLAN.conceptId, this)
+                val prescriptions = LinkedList<ItemHeader>()
+                return obsMappingToPlanPrescription(plan, prescriptions)
             }
         }
     }
 
-    private fun obsMappingToPlanPrescription(obsList: List<ObsDTO>): List<ItemHeader> {
-        Timber.d { "Prescription plan => ${Gson().toJson(obsList)}" }
-        val prescriptions = LinkedList<ItemHeader>()
-        val plans = obsList.filter { it.conceptuuid.equals(Params.PLAN.conceptId) }
-
+    private fun obsMappingToPlanPrescription(
+        plans: List<ObsDTO>,
+        prescriptions: LinkedList<ItemHeader>
+    ): List<ItemHeader> {
+        Timber.d { "Prescription plan => ${Gson().toJson(plans)}" }
         if (plans.isNotEmpty()) {
-
-            prescriptions.add(CategoryHeader(R.string.lbl_plan))
             prescriptions.addAll(plans.map {
                 it.noOfLine = 100
                 if (it.name.contains("Dr").not()) it.name = "Dr.${it.name}"
@@ -161,34 +158,16 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
 
         return prescriptions
     }
+
     fun fetchAssessmentPrescription(visitId: String, creatorId: String): List<ItemHeader> {
         PrescriptionQueryBuilder().buildAssessmentPrescriptionQuery(visitId, creatorId).apply {
             Timber.d { "Assessment presc Query => $this" }
             val cursor = database.rawQuery(this, null)
             retrievePrescription(cursor).apply {
-                return obsMappingToAssessmentPrescription(this)
+                val plan =  filterObsByConceptId(Params.ASSESSMENT.conceptId, this)
+                val prescriptions = LinkedList<ItemHeader>()
+                return obsMappingToPlanPrescription(plan, prescriptions)
             }
         }
     }
-    private fun obsMappingToAssessmentPrescription(obsList: List<ObsDTO>): List<ItemHeader> {
-        Timber.d { "Prescription plan => ${Gson().toJson(obsList)}" }
-        val prescriptions = LinkedList<ItemHeader>()
-        val plans = obsList.filter { it.conceptuuid.equals(Params.ASSESSMENT.conceptId) }
-        /*val medicines =
-                obsList.filter { it.conceptuuid.equals(Params.PRESCRIBED_MEDICINE.conceptId) }*/
-
-        if (plans.isNotEmpty()) {
-
-            prescriptions.add(CategoryHeader(R.string.lbl_plan))
-            prescriptions.addAll(plans.map {
-                it.noOfLine = 100
-                if (it.name.contains("Dr").not()) it.name = "Dr.${it.name}"
-                return@map it
-            })
-            Timber.d { "Plan ${Gson().toJson(plans)}" }
-        }
-
-        return prescriptions
-    }
-
 }
