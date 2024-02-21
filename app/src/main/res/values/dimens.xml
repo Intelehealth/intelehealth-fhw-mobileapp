@@ -48,4 +48,8 @@
     <dimen name="offset">30dp</dimen>
     <dimen name="pageMarginAndOffset">50dp</dimen>
 
+    // Prescription
+    <dimen name="heading_title_size">15sp</dimen>
+    <dimen name="data_title_size">13sp</dimen>
+
 </resources>

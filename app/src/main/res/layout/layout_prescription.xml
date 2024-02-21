@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sv_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_ekal_prescription_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_ekal_telemedicine_project"
+            android:textSize="27sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_ekal_e_prescription_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_subtitle"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_ekal_prescription_title" />
+
+        <View
+            android:id="@+id/v_subtitle_divider"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_ekal_e_prescription_subtitle" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_patient_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/heading_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_subtitle_divider" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_patient_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_age"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_patient_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_gender"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_age" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_patient_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_address"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_gender" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_patient_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_patient_id"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_address" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_patient_date_of_visit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_date_of_visit"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_id" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_presenting_complaints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_presenting_complaints"
+            android:textSize="@dimen/heading_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_date_of_visit" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_presenting_complaints_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_presenting_complaints" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_vitals"
+            android:textSize="@dimen/heading_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_presenting_complaints_data" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_height"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_weight"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_height" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_bmi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_bmi"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_weight" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_bp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_bp"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_bmi" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_pulse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_pulse"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_bp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_temperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_temperature"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_pulse" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_respiratory_rate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_respiratory_rate"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_temperature" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_spo2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_spo2"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_respiratory_rate" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_haemoglobin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_haemoglobin"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_spo2" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_blood_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_blood_group"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_haemoglobin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_sugar_fasting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_sugar_fasting"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_blood_group" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_vitals_sugar_random"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_sugar_random"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_sugar_fasting" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_diagnosis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_diagnosis"
+            android:textSize="@dimen/heading_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_sugar_random" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_diagnosis_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_diagnosis" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_medication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_medication"
+            android:textSize="@dimen/heading_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_diagnosis_data" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_medication_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_medication" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_tests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_recommended_investigation"
+            android:textSize="@dimen/heading_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_medication_data" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_tests_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_tests" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_general_advice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_recommended_investigation"
+            android:textSize="@dimen/heading_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_tests_data" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_general_advice_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_general_advice" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_follow_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/prescription_follow_up"
+            android:textSize="@dimen/heading_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_general_advice_data" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_follow_up_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/data_title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_follow_up" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_dr_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="50dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_follow_up_data">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_dr_signature"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/sample_text"
+                android:textAlignment="textEnd"
+                android:textSize="@dimen/data_title_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_dr_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/sample_text"
+                android:textAlignment="textEnd"
+                android:textSize="@dimen/data_title_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_dr_degree_specialization"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/sample_text"
+                android:textAlignment="textEnd"
+                android:textSize="@dimen/data_title_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_dr_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/sample_text"
+                android:textAlignment="textEnd"
+                android:textSize="@dimen/data_title_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_dr_registration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/sample_text"
+                android:textAlignment="textEnd"
+                android:textSize="@dimen/data_title_size" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
