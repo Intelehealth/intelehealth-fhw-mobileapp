@@ -268,6 +268,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 Log.e(TAG, "onError: callGenerateTokenApi: " + e.toString());
                                 binding.sendOtpBtn.setEnabled(true);
+                                binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                                 cancelResendAndHideView();
                                 cpd.dismiss();
                             }
@@ -325,6 +326,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             @Override
                             public void onError(Throwable e) {
                                 binding.sendOtpBtn.setEnabled(true);
+                                binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                                 binding.otpBox.setText("");
                                 Log.e(TAG, "onError: callMobileNumberVerificationApi: " + e.getMessage());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
@@ -383,6 +385,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Log.e(TAG, "onError: AadharResponse: " + e.getMessage());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
+                                binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                                 binding.otpBox.setText("");
                                 cancelResendAndHideView();
                                 cpd.dismiss();
@@ -471,6 +474,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Log.e("callOTPForMobileLoginVerificationApi", "onError: " + e.toString());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
+                                binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                                 binding.otpBox.setText("");
                                 cancelResendAndHideView();
                             }
@@ -517,6 +521,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 cpd.dismiss();
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
+                                binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                                 binding.otpBox.setText("");
                                 cancelResendAndHideView();
                             }
@@ -633,6 +638,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             @Override
                             public void onError(Throwable e) {
                                 binding.sendOtpBtn.setEnabled(true);
+                                binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                                 binding.otpBox.setText("");
                                 cpd.dismiss();
                                 Log.e("callOTPForVerificationApi: ", "onError: " + e.toString());
