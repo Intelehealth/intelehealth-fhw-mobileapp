@@ -112,7 +112,7 @@
                 android:layout_below="@+id/fl_aadhar_mobile"
                 android:layout_gravity="center"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/margin_20dp"
                 >
 
                 <com.mukesh.OtpView
@@ -126,6 +126,7 @@
                     app:OtpItemCount="6"
                     app:OtpViewType="line"
                     android:textColor="@color/colorPrimaryDark"
+                    android:paddingBottom="@dimen/margin_20dp"
                     tools:text="123456"/>
             </FrameLayout>
 
@@ -137,7 +138,6 @@
                 tools:visibility="visible"
                 android:orientation="horizontal"
                 android:layout_alignStart="@id/sendOtpBtn"
-                android:layout_marginTop="@dimen/otp_pinview_margin_top"
                 android:layout_below="@+id/fl_otpBox">
 
                 <TextView
