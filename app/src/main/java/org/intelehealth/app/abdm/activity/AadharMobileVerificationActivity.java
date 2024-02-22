@@ -106,8 +106,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             binding.layoutDoNotHaveABHANumber.flDoNotHaveABHANumber.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.flHaveABHANumber.setVisibility(View.VISIBLE);
 
-            if (abhaCard)
+            if (abhaCard) {
                 binding.layoutHaveABHANumber.buttonMobileNumber.setVisibility(View.GONE);
+                binding.layoutHaveABHANumber.buttonUsername.setEnabled(false);
+            }
             else
                 binding.layoutHaveABHANumber.buttonMobileNumber.setVisibility(View.VISIBLE);
 
