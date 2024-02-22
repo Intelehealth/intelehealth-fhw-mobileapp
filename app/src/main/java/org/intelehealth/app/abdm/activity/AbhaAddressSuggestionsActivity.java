@@ -110,9 +110,19 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
 
     private void callSetPreferredABHAAddressAPI(String selectedChip) {
         if (!selectedChip.isEmpty()) {   // here you set this value to the Setter of the response variable and pass it to identification screen.
-            List<String> phrAddrList = new ArrayList<>();
-            phrAddrList.add(selectedChip);
-            otpVerificationResponse.getABHAProfile().setPhrAddress(phrAddrList);
+            if (selectedChip.equalsIgnoreCase(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0))) {
+                Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
+                dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
+                dataIntent.putExtra("accessToken", accessToken);
+                startActivity(dataIntent);
+                finish();
+                return; // ie. selected is same as auto-generated than move ahead dont call setPrf api.
+            }
+            else {
+                List<String> phrAddrList = new ArrayList<>();
+                phrAddrList.add(selectedChip);
+                otpVerificationResponse.getABHAProfile().setPhrAddress(phrAddrList);
+            }
         }
 
         // api - start
