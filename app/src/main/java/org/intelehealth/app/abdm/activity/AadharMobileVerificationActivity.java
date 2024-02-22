@@ -179,8 +179,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
         binding.layoutHaveABHANumber.buttonUsername.setOnClickListener(v -> {
             optionSelected = "username";
-            binding.layoutHaveABHANumber.edittextUsername.setText("");
-            binding.layoutHaveABHANumber.edittextMobileNumber.setText("");
+            /*binding.layoutHaveABHANumber.edittextUsername.setText("");
+            binding.layoutHaveABHANumber.edittextMobileNumber.setText("");*/
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);  // show mobile no as well for aadhar as api requires it.
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.tvMobileError.setVisibility(View.GONE);
@@ -193,7 +193,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
         binding.layoutHaveABHANumber.buttonMobileNumber.setOnClickListener(v -> {
             optionSelected = "mobile";
-            binding.layoutHaveABHANumber.edittextUsername.setText("");
+         //   binding.layoutHaveABHANumber.edittextUsername.setText("");
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.tvMobileError.setVisibility(View.GONE);
@@ -206,7 +206,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
         if (abhaCard) {
             optionSelected = "username";
-            binding.layoutHaveABHANumber.edittextUsername.setText("");
+          //  binding.layoutHaveABHANumber.edittextUsername.setText("");
           //  binding.layoutHaveABHANumber.edittextMobileNumber.setText("");
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.GONE);  // in case of card, mobile no is not required...
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
