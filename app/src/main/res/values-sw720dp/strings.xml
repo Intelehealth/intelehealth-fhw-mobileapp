@@ -111,5 +111,7 @@
     <string name="please_select_an_abha_address_from_the_suggestions_below">*Please select an ABHA address from the suggestions below.</string>
     <string name="please_select_the_abha_account_through_which_you_wish_to_login">*Please select the ABHA account through which you wish to login.</string>
     <string name="mobile_login">Mobile Login</string>
+    <string name="enter_abha_number">Enter ABHA number</string>
+    <string name="enter_abha_address">Enter ABHA address</string>
 
 </resources>
