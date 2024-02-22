@@ -757,6 +757,16 @@
     <string name="abha_card">ABHA Card</string>
     <string name="download">Download</string>
     <string name="abha_card_is_already_downloaded">ABHA Card is already downloaded.</string>
+    <string name="enter_your_aadhar_card_number">Enter your Aadhar card number</string>
+    <string name="aadhar_number">Aadhar number</string>
+    <string name="verifying_otp">Verifying OTP...</string>
+    <string name="verify_your_aadhar_card_and_phone_number_for_data_security_and_privacy">Verify your aadhar card and phone number for data security and privacy.</string>
+    <string name="we_will_send_you_one_time_otp_on_your_aadhar_registered_mobile_number">We will send you one time OTP on your Aadhar registered mobile number.</string>
+    <string name="preferred_abha_address_is_set_successfully">Preferred ABHA address is set successfully!</string>
+    <string name="select_an_abha_address">Select an ABHA Address</string>
+    <string name="please_select_an_abha_address_from_the_suggestions_below">*Please select an ABHA address from the suggestions below.</string>
+    <string name="please_select_the_abha_account_through_which_you_wish_to_login">*Please select the ABHA account through which you wish to login.</string>
+    <string name="mobile_login">Mobile Login</string>
 
 
 </resources>

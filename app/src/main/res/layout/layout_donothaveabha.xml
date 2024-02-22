@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/textbox_outline"
                     android:inputType="number"
-                    android:hint="Enter your 12-digit Aadhar card number"
+                    android:hint="@string/enter_your_aadhar_card_number"
                     android:imeOptions="actionNext"
                     android:textColor="@null"
                     android:textSize="@null"

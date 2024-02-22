@@ -31,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_margin_start"
-                    android:text="Select an ABHA Address"
+                    android:text="@string/select_an_abha_address"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/setup_privacy_screen_info"
                     android:textStyle="bold" />
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="26dp"
-                android:text="*Please select an ABHA address from the suggestions below."
+                android:text="@string/please_select_an_abha_address_from_the_suggestions_below"
                 android:textAppearance="@style/sub_title"
                 android:textColor="@null"
                 android:textSize="@null"

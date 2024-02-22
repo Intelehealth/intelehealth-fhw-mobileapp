@@ -92,7 +92,7 @@ public class AccountSelectionLoginActivity extends AppCompatActivity {
 
         for (Account account : mobileLoginOnOTPVerifiedResponse.getAccounts()) {
             accountList.add(account);
-        } // todo: uncomment later. testing purpose.
+        }
 
         accountsAdapter = new MultipleAccountsAdapter(context, accountList, new MultipleAccountsAdapter.OnItemClick() {
             @Override
@@ -112,13 +112,11 @@ public class AccountSelectionLoginActivity extends AppCompatActivity {
         binding.submitABHAAccountBtn.setOnClickListener(v -> {
             if (selectedAccount != null) {
                 // pass this account payload to fetch details api and move to Identification screen...
-              //  Toast.makeText(context, "Success: " + selectedAccount.getName(), Toast.LENGTH_SHORT).show();
                 callFetchUserProfileAPI(selectedAccount.getABHANumber(), txnId, X_TOKEN);
             }
             else {
                 snackbarUtils.showSnackConstraintLayoutParentSuccess(context, binding.layoutParent,
-                        StringUtils.getMessageTranslated(getString(R.string.abha_account_selection), sessionManager.getAppLanguage()), false);
-
+                        StringUtils.getMessageTranslated(getString(R.string.please_select_the_abha_account_through_which_you_wish_to_login), sessionManager.getAppLanguage()), false);
             }
         });
     }

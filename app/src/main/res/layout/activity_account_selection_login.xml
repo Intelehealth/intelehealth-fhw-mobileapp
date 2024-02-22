@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
-            android:text="Mobile Login"
+            android:text="@string/mobile_login"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/setup_privacy_screen_info"
             android:textStyle="bold" />
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginHorizontal="@dimen/margin_20"
-            android:text="@string/abha_account_selection"
+            android:text="@string/please_select_the_abha_account_through_which_you_wish_to_login"
             android:textAppearance="@style/sub_title"
             android:textColor="@null"
             android:textSize="@null"

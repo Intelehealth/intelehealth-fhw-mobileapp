@@ -398,7 +398,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
      */
     private void callOTPForMobileLoginVerificationApi(String txnId, String otp) {   // Mobile: Step 3
         cpd = new CustomProgressDialog(context);
-        cpd.show("Verifying OTP...");
+        cpd.show(getString(R.string.verifying_otp));
         Log.d("callOTPForVerificationApi: ", "parameters: " + txnId + ", " + otp);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         binding.sendOtpBtn.setTag(null);    // resetting...
@@ -532,9 +532,6 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         binding.sendOtpBtn.setTag(null);    // resetting...
 
-        // todo: call fetch abha profile api here.
-        // Toast.makeText(context, "Mobile login is working...", Toast.LENGTH_SHORT).show();
-
         // payload - start
         String url = UrlModifiers.getABHAProfileUrl();
         AbhaProfileRequestBody requestBody = new AbhaProfileRequestBody();
@@ -584,7 +581,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
      */
     private void callOTPForVerificationApi(String txnId, String mobileNo, String otp) {
         cpd = new CustomProgressDialog(context);
-        cpd.show("Verifying OTP...");
+        cpd.show(getString(R.string.verifying_otp));
         Log.d("callOTPForVerificationApi: ", "parameters: " + txnId + ", " + mobileNo + ", " + otp);
 
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
@@ -617,7 +614,6 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Log.d("callOTPForVerificationApi: ", "onSuccess: " + otpVerificationResponse.toString());
 
                                 if (otpVerificationResponse.getIsNew()) {
-                                    //   if (!otpVerificationResponse.getIsNew()) {  // todo: testing -> comment later and uncomment above.
                                     // New user -> than fetch address suggestions and take to ABHA address screen.
                                     callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
                                 } else {
@@ -627,9 +623,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                     intent.putExtra("accessToken", accessToken);
                                     startActivity(intent);
                                     finish();
-                                } // todo: uncomment later.
-
-                                //   intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: remove this later: testing...
+                                }
                             }
 
                             @Override
@@ -748,7 +742,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         if (binding.flOtpBox.getVisibility() == View.VISIBLE) {
             if (binding.otpBox.getText() != null) {
                 if (binding.otpBox.getText().toString().isEmpty()) {
-                    Toast.makeText(context, "Please enter OTP received!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getString(R.string.please_enter_otp_received), Toast.LENGTH_LONG).show();
                     isValid = false;
                 }
             }
@@ -779,8 +773,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                     binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                     binding.layoutHaveABHANumber.aadharError.setVisibility(View.GONE);
                 }
-            }
-            // aadhar validaiton - end
+            }   // aadhar validaiton - end
+
 
             // mobile for aadhar - start
             String mobile = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().replace(" ", "").trim();
@@ -864,8 +858,17 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         if (countDownTimer != null)
             countDownTimer.cancel();    // reset any existing countdown.
 
-        if (binding.rlResendOTP.getVisibility() == View.VISIBLE)
+        if (binding.rlResendOTP.getVisibility() == View.VISIBLE)    // hide resend view
             binding.rlResendOTP.setVisibility(View.GONE);
+
+        if (binding.flOtpBox.getVisibility() == View.VISIBLE) { // hide otp view
+            binding.flOtpBox.setVisibility(View.GONE);
+            if (binding.otpBox.getText() != null) {
+                if (!binding.otpBox.getText().toString().isEmpty()) {
+                    binding.otpBox.setText("");
+                }
+            }
+        }
     }
 
     private void resendOtp() {

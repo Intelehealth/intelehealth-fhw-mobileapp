@@ -30,7 +30,7 @@
                 android:paddingTop="@dimen/options_button_padding_top"
                 android:paddingEnd="@dimen/options_button_padding_end"
                 android:paddingBottom="@dimen/options_button_padding_bottom"
-                android:text="Aadhar number"
+                android:text="@string/aadhar_number"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/btn_options_text_Size" />
 
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:maxLength="12"
                     android:background="@drawable/textbox_outline"
-                    android:hint="Enter your 12-digit Aadhar card number"
+                    android:hint="@string/enter_your_aadhar_card_number"
                     android:imeOptions="actionNext"
                     android:textColor="@null"
                     android:textSize="@null"

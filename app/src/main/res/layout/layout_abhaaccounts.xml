@@ -32,7 +32,7 @@
         android:id="@+id/tvAbhaAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="prajwal@sbx"
+        tools:text="prajwal@sbx"
         android:textSize="22sp"
         android:gravity="center_vertical"
         />
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_5"
-        android:text="Prajwal Maruti Waingankar"
+        tools:text="Prajwal Maruti Waingankar"
         android:textSize="@dimen/edittext_textsize_16sp"
         android:gravity="center_vertical"
         android:layout_below="@+id/tvAbhaAddress"
