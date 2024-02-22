@@ -89,7 +89,7 @@
                     android:textColorHint="@color/hint_color"
                     android:padding="14dp"
                     android:singleLine="true"
-                    android:inputType="phone"
+                    android:inputType="number"
                     android:maxLength="10"
                     />
 

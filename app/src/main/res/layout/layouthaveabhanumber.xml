@@ -198,7 +198,7 @@
                     android:background="@drawable/textbox_outline"
                     android:hint="@string/enter_mobile_no"
                     android:imeOptions="actionDone"
-                    android:inputType="phone"
+                    android:inputType="number"
                     android:lineSpacingExtra="3sp"
                     android:textColor="@null"
                     android:textSize="@null"
