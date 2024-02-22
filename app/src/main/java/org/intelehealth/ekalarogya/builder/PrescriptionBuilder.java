@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.databinding.LayoutPrescriptionBinding;
+import org.intelehealth.ekalarogya.knowledgeEngine.Node;
 import org.intelehealth.ekalarogya.models.Patient;
 import org.intelehealth.ekalarogya.models.VitalsObject;
 import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
@@ -88,14 +89,37 @@ public class PrescriptionBuilder {
     }
 
     public void setMedication(String medication) {
+        if (medication.contains("\n")) {
+            String[] medicationData = medication.split("\n");
+            medication = "";
+
+            for (String data : medicationData) {
+                medication = medication.concat(Node.big_bullet).concat(" ").concat(data).concat("\n");
+            }
+        }
         checkDataValidOrHideViews(binding.tvMedication, binding.tvMedicationData, medication);
     }
 
     public void setTests(String tests) {
+        tests = tests.replaceAll("\n\n", "\n");
         checkDataValidOrHideViews(binding.tvTests, binding.tvTestsData, tests);
     }
 
     public void setAdvice(String advice) {
+        if (advice.contains("\n")) {
+            String[] adviceData = advice.split("\n");
+            advice = "";
+
+            for (String data : adviceData) {
+                if (!data.isEmpty()) {
+                    advice = advice
+                            .concat(Node.big_bullet)
+                            .concat(" ")
+                            .concat(data)
+                            .concat("\n");
+                }
+            }
+        }
         checkDataValidOrHideViews(binding.tvGeneralAdvice, binding.tvGeneralAdviceData, advice);
     }
 
@@ -115,10 +139,7 @@ public class PrescriptionBuilder {
             windowManager.getDefaultDisplay().getMetrics(metrics);
         }
 
-        binding.getRoot().measure(
-                View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        );
+        binding.getRoot().measure(View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
         binding.getRoot().layout(0, 0, metrics.widthPixels, binding.getRoot().getMeasuredHeight());
 

@@ -1885,9 +1885,9 @@ public class VisitSummaryActivity extends BaseActivity {
         builder.setVitals(getVitals());
         builder.setComplaintData(formatComplaintData(complaint.getValue()));
         builder.setDiagnosis(diagnosisReturned);
-        builder.setMedication(medicalAdvice_string);
+        builder.setMedication(rxReturned);
         builder.setTests(testsReturned);
-        builder.setAdvice(adviceReturned);
+        builder.setAdvice(medicalAdvice_string);
         builder.setFollowUp(followUpDate);
         builder.build(fileName);
     }
