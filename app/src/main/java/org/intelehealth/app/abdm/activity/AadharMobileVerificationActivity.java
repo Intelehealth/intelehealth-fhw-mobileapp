@@ -41,12 +41,14 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.VerhoeffAlgorithm;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -695,6 +697,14 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         return addressList;
     }
 
+    public static boolean validateAadharNumber(String aadharNumber){
+        Pattern aadharPattern = Pattern.compile("\\d{12}");
+        boolean isValidAadhar = aadharPattern.matcher(aadharNumber).matches();
+        if(isValidAadhar){
+            isValidAadhar = VerhoeffAlgorithm.validateVerhoeff(aadharNumber);
+        }
+        return isValidAadhar;
+    }
 
     private boolean checkValidation() {
         boolean isValid = true;
@@ -712,6 +722,12 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 if (binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().length() < 12) {
                     binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
                     binding.layoutDoNotHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
+                    binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                    isValid = false;
+                }
+                else if (!validateAadharNumber(binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString())) {   // Verhoeff Algo check.
+                    binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
+                    binding.layoutDoNotHaveABHANumber.aadharError.setText(R.string.enter_valid_aadhar_number);
                     binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                     isValid = false;
                 }
@@ -769,6 +785,12 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 if (aadharNo.length() != 12) {
                     binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
                     binding.layoutHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
+                    isvalid = false;
+                }
+                else if (!validateAadharNumber(binding.layoutHaveABHANumber.edittextUsername.getText().toString())) {   // Verhoeff algo. check
+                    binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
+                    binding.layoutHaveABHANumber.aadharError.setText(R.string.enter_valid_aadhar_number);
+                    binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                     isvalid = false;
                 }
                 else {

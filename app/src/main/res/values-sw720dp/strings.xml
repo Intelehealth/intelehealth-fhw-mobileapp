@@ -113,5 +113,6 @@
     <string name="mobile_login">Mobile Login</string>
     <string name="enter_abha_number">Enter ABHA number</string>
     <string name="enter_abha_address">Enter ABHA address</string>
+    <string name="enter_valid_aadhar_number">Enter valid Aadhar number</string>
 
 </resources>
