@@ -236,6 +236,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Log.d(TAG, "onSuccess: TokenResponse: " + tokenResponse.toString());
                                 if (accessToken.isEmpty()) {    // if token empty
                                     Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                    cancelResendAndHideView();
                                     return;
                                 }
 
@@ -263,6 +264,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 Log.e(TAG, "onError: callGenerateTokenApi: " + e.toString());
                                 binding.sendOtpBtn.setEnabled(true);
+                                cancelResendAndHideView();
                                 cpd.dismiss();
                             }
                         });
@@ -322,6 +324,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 binding.otpBox.setText("");
                                 Log.e(TAG, "onError: callMobileNumberVerificationApi: " + e.getMessage());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                cancelResendAndHideView();
                                 cpd.dismiss();
                             }
                         });
@@ -377,6 +380,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
                                 binding.otpBox.setText("");
+                                cancelResendAndHideView();
                                 cpd.dismiss();
                             }
                         });
@@ -464,6 +468,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
                                 binding.otpBox.setText("");
+                                cancelResendAndHideView();
                             }
                         });
             }
@@ -509,6 +514,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
                                 binding.otpBox.setText("");
+                                cancelResendAndHideView();
                             }
                         });
             }
@@ -633,6 +639,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 cpd.dismiss();
                                 Log.e("callOTPForVerificationApi: ", "onError: " + e.toString());
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                cancelResendAndHideView();
                             }
                         });
                 // api - end
@@ -851,6 +858,14 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         }
         res.updateConfiguration(conf, dm);
         return context;
+    }
+
+    private void cancelResendAndHideView() {
+        if (countDownTimer != null)
+            countDownTimer.cancel();    // reset any existing countdown.
+
+        if (binding.rlResendOTP.getVisibility() == View.VISIBLE)
+            binding.rlResendOTP.setVisibility(View.GONE);
     }
 
     private void resendOtp() {
