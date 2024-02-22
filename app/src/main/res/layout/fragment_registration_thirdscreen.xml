@@ -97,7 +97,8 @@
 
                 <EditText
                     android:id="@+id/abhaNo_editText"
-                    style="@style/edittext_textcolor"
+                    style="@style/blur_txtview"
+                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
@@ -149,7 +150,8 @@
 
                 <EditText
                     android:id="@+id/abhaAddress_editText"
-                    style="@style/edittext_textcolor"
+                    style="@style/blur_txtview"
+                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
