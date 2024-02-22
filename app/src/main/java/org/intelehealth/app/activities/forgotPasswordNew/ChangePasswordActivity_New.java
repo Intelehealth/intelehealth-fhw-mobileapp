@@ -15,42 +15,34 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.gson.JsonObject;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
-import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
-import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
-import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
-import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.security.SecureRandom;
@@ -62,8 +54,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 public class ChangePasswordActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "ChangePasswordActivity_";
@@ -217,37 +207,32 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         String newPassword = etNewPassword.getText().toString();
         String confirmPassword = etNewPasswordConfirm.getText().toString();
         if (TextUtils.isEmpty(currentPassword)) {
-            result = false;
             tvErrorCurrentPassword.setVisibility(View.VISIBLE);
             tvErrorCurrentPassword.setText(getResources().getString(R.string.enter_current_password));
             etCurrentPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
         } else if (TextUtils.isEmpty(newPassword)) {
-            result = false;
             tvErrorNewPassword.setVisibility(View.VISIBLE);
             etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
         } else if (TextUtils.isEmpty(confirmPassword)) {
-            result = false;
             tvErrorConfirmPassword.setVisibility(View.VISIBLE);
             etNewPasswordConfirm.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-        } else if (newPassword.length() < 8) {
-            if (!isValid(etNewPassword.getText().toString())) {
-                tvErrorNewPassword.setText(getString(R.string.password_validation));
-                tvErrorNewPassword.setVisibility(View.VISIBLE);
-                etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-            }
-        } else if (newPassword.length() >= 8 && !isValid(etNewPassword.getText().toString())) {
+        } else if (!StringUtils.isValidPassword(newPassword)) {
+
+            tvErrorNewPassword.setText(getString(R.string.password_validation));
+            tvErrorNewPassword.setVisibility(View.VISIBLE);
+            etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+
+        } /*else if (newPassword.length() >= 8 && !isValid(etNewPassword.getText().toString())) {
             result = false;
             tvErrorNewPassword.setText(getString(R.string.password_validation));
             tvErrorNewPassword.setVisibility(View.VISIBLE);
             etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-        } else if (!newPassword.equals(confirmPassword)) {
-            result = false;
+        }*/ else if (!newPassword.equals(confirmPassword)) {
             etNewPasswordConfirm.setText("");
             tvErrorConfirmPassword.setText(getString(R.string.password_match));
             tvErrorConfirmPassword.setVisibility(View.VISIBLE);
             etNewPasswordConfirm.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
         } else if (currentPassword.equals(newPassword)) {
-            result = false;
             etNewPassword.setText("");
             etNewPasswordConfirm.setText("");
             tvErrorNewPassword.setText(getString(R.string.old_password_and_new_password_cannot_be_same));
@@ -347,7 +332,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         });
     }
 
-    public static boolean isValid(String passwordhere) {
+    /*public static boolean isValid(String passwordhere) {
         boolean hasUppercase = false;
         boolean hasLowercase = false;
         boolean hasDigit = false;
@@ -375,7 +360,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             else
                 return false;
         }
-    }
+    }*/
 
     @Override
     protected void onStart() {

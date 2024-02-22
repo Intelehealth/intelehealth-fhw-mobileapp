@@ -12,19 +12,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import com.bumptech.glide.util.LogTime;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import org.intelehealth.app.activities.prescription.PrescDataModel;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.NotificationModel;
-import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -501,7 +496,7 @@ public class EncounterDAO {
 
             Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and " +
                             "encounter_type_uuid = ?",
-                    new String[]{visitUUID, UuidDictionary.ENCOUNTER_VISIT_NOTE}); // ENCOUNTER_PATIENT_EXIT_SURVEY
+                    new String[]{visitUUID, UuidDictionary.ENCOUNTER_VISIT_COMPLETE}); // ENCOUNTER_PATIENT_EXIT_SURVEY
             EncounterDTO encounterDTO = new EncounterDTO();
             if (idCursor.getCount() > 0) {
                 return true;
