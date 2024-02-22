@@ -1225,4 +1225,7 @@
     <string name="prescription_general_advice">General Advice</string>
     <string name="prescription_follow_up">Follow Up</string>
 
+    <string name="prescription_dr_email">Email: %1$s</string>
+    <string name="prescription_dr_registration">Registration No: %1$s</string>
+
 </resources>

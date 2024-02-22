@@ -2,6 +2,7 @@ package org.intelehealth.ekalarogya.builder;
 
 import android.app.Activity;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.os.Environment;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.databinding.LayoutPrescriptionBinding;
 import org.intelehealth.ekalarogya.knowledgeEngine.Node;
+import org.intelehealth.ekalarogya.models.ClsDoctorDetails;
 import org.intelehealth.ekalarogya.models.Patient;
 import org.intelehealth.ekalarogya.models.VitalsObject;
 import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
@@ -125,6 +127,34 @@ public class PrescriptionBuilder {
 
     public void setFollowUp(String followUp) {
         checkDataValidOrHideViews(binding.tvFollowUp, binding.tvFollowUpData, followUp);
+    }
+
+    public void setDoctorData(ClsDoctorDetails clsDoctorDetails) {
+        binding.tvDrSignature.setText(clsDoctorDetails.getTextOfSign());
+        binding.tvDrSignature.setTypeface(getSignatureTypeface(clsDoctorDetails.getFontOfSign()));
+        binding.tvDrName.setText(clsDoctorDetails.getName());
+
+        String degreeSpecialization = clsDoctorDetails.getQualification().concat(", ").concat(clsDoctorDetails.getSpecialization());
+        binding.tvDrDegreeSpecialization.setText(degreeSpecialization);
+
+        binding.tvDrEmail.setText(context.getString(R.string.prescription_dr_email, clsDoctorDetails.getEmailId()));
+        binding.tvDrRegistration.setText(context.getString(R.string.prescription_dr_registration, clsDoctorDetails.getRegistrationNumber()));
+    }
+
+    private Typeface getSignatureTypeface(String font) {
+        String directory = "";
+
+        if (font.equalsIgnoreCase("youthness")) {
+            directory = "fonts/Youthness.ttf";
+        } else if (font.equalsIgnoreCase("asem")) {
+            directory = "fonts/Asem.otf";
+        } else if (font.equalsIgnoreCase("arty")) {
+            directory = "fonts/Arty.otf";
+        } else if (font.equalsIgnoreCase("almondita")) {
+            directory = "fonts/almondita.ttf";
+        }
+
+        return Typeface.createFromAsset(context.getAssets(), directory);
     }
 
     public void build(String fileName) {

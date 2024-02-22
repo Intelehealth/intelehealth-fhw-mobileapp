@@ -51,5 +51,6 @@
     // Prescription
     <dimen name="heading_title_size">15sp</dimen>
     <dimen name="data_title_size">13sp</dimen>
+    <dimen name="dr_signature_size">25sp</dimen>
 
 </resources>

@@ -1889,6 +1889,7 @@ public class VisitSummaryActivity extends BaseActivity {
         builder.setTests(testsReturned);
         builder.setAdvice(medicalAdvice_string);
         builder.setFollowUp(followUpDate);
+        builder.setDoctorData(objClsDoctorDetails);
         builder.build(fileName);
     }
 
