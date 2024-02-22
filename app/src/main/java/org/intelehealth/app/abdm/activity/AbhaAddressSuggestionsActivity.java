@@ -79,7 +79,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
             }
         }
 
-       /* createDynamicChips("prajwalw@sbx");
+      /*  createDynamicChips("prajwalw@sbx");
         createDynamicChips("prajuuu@sbx");
         createDynamicChips("aparna@sbx");
         createDynamicChips("kavita@sbx");
@@ -98,6 +98,12 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         }
 
         binding.submitABHAAddressBtn.setOnClickListener(v -> {
+            if (selectedChip.isEmpty()) {
+                Chip chip = binding.chipGrp.findViewById(binding.chipGrp.getChildAt(0).getId());
+                chip.setChecked(true);
+                selectedChip = chip.getText().toString().trim();
+            }
+
             callSetPreferredABHAAddressAPI(selectedChip);
         });
     }
