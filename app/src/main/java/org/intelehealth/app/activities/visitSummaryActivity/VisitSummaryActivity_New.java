@@ -3030,6 +3030,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                     visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_COMPLETE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    hasPrescription = "true";
+                }
             } while (encounterCursor.moveToNext());
 
         }
@@ -3042,7 +3045,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                hasPrescription = "true"; //if any kind of prescription data is present...
+                //hasPrescription = "true"; //if any kind of prescription data is present...
                 parseData(dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }

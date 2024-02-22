@@ -4253,4 +4253,10 @@ public final class StringUtils {
         }
     }
 
+    public static boolean isValidPassword(String passwd){
+        if(passwd==null || passwd.isEmpty()) return false;
+        //String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}"; // with special character
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}"; // without special character
+       return passwd.matches(pattern);
+    }
 }
