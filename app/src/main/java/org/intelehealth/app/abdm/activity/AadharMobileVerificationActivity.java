@@ -694,50 +694,46 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
 
     private boolean checkValidation() {
+        boolean isValid = true;
+
         if (hasABHA) {
-            return areInputFieldsValid_HasABHA();
+            isValid = areInputFieldsValid_HasABHA();
         } else {
             if (binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().isEmpty()) {
                 binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
                 binding.layoutDoNotHaveABHANumber.aadharError.setText(getString(R.string.error_field_required));
                 binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                return false;
+                isValid = false;
             }
-            else {
-                binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.GONE);
-                binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            else { // ie. aadhar no empty
+                if (binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().length() < 12) {
+                    binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
+                    binding.layoutDoNotHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
+                    binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                    isValid = false;
+                }
+                else {
+                    binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.GONE);
+                    binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                }
             }
             if (binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().isEmpty()) {
                 binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
                 binding.layoutDoNotHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                 binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                return false;
+                isValid = false;
             }
             else {
-                binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.GONE);
-                binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-            }
-
-            if (binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().length() < 12) {
-                binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
-                binding.layoutDoNotHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
-                binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                return false;
-            }
-            else {
-                binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.GONE);
-                binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-            }
-
-            if (binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().length() < 10) {
-                binding.layoutDoNotHaveABHANumber.mobileNoBox.setVisibility(View.VISIBLE);
-                binding.layoutDoNotHaveABHANumber.mobileNoBox.setText(getString(R.string.enter_10_digits));
-                binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                return false;
-            }
-            else {
-                binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.GONE);
-                binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                if (binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().length() < 10) {
+                    binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
+                    binding.layoutDoNotHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
+                    binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                    isValid = false;
+                }
+                else {
+                    binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.GONE);
+                    binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                }
             }
         }
 
@@ -746,15 +742,16 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             if (binding.otpBox.getText() != null) {
                 if (binding.otpBox.getText().toString().isEmpty()) {
                     Toast.makeText(context, "Please enter OTP received!", Toast.LENGTH_LONG).show();
-                    return false;
+                    isValid = false;
                 }
             }
         }
 
-        return true;
+        return isValid;
     }
 
     private boolean areInputFieldsValid_HasABHA() {
+        boolean isvalid = true;
         if (!optionSelected.isEmpty() && optionSelected.equals("username")) {
 
             // aadhar validation - start
@@ -763,14 +760,18 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
                 binding.layoutHaveABHANumber.aadharError.setText(getString(R.string.error_field_required));
                 binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                return false;
-            } else if (aadharNo.length() != 12) {
-                binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
-                binding.layoutHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
-                return false;
-            } else {
-                binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-                binding.layoutHaveABHANumber.aadharError.setVisibility(View.GONE);
+                isvalid = false;
+            }
+            else {
+                if (aadharNo.length() != 12) {
+                    binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
+                    binding.layoutHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
+                    isvalid = false;
+                }
+                else {
+                    binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                    binding.layoutHaveABHANumber.aadharError.setVisibility(View.GONE);
+                }
             }
             // aadhar validaiton - end
 
@@ -783,24 +784,25 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                     binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
                     binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                     binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                    return false;
-                } else if (/*code.equalsIgnoreCase("91") &&*/ mobile.length() != 10) {
-                    binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
-                    binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
-                    binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                    return false;
-                } else {
-                    binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-                    binding.layoutHaveABHANumber.mobileError.setVisibility(View.GONE);
-                    return true;
+                    isvalid = false;
+                }
+                else {
+                    if (/*code.equalsIgnoreCase("91") &&*/ mobile.length() != 10) {
+                        binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
+                        binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
+                        binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                        isvalid = false;
+                    }
+                    else {
+                        binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                        binding.layoutHaveABHANumber.mobileError.setVisibility(View.GONE);
+                    }
                 }
             }
             // mobile for aadhar - end
         }
         else if (!optionSelected.isEmpty() && optionSelected.equals("mobile")) {  // Phone number field
-            //  String code = countryCodePicker.getSelectedCountryCode();
-            //  mobile = mobile.replace(" ","");
-            //  Log.v(TAG, code);
+
             String mobile = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().replace(" ", "").trim();
             Log.v(TAG, mobile);
 
@@ -808,20 +810,23 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
                 binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                 binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                return false;
-            } else if (/*code.equalsIgnoreCase("91") &&*/ mobile.length() != 10) {
-                binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
-                binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
-                binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                return false;
-            } else {
-                binding.layoutHaveABHANumber.mobileError.setVisibility(View.GONE);
-                binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-                return true;
+                isvalid = false;
+            }
+            else {
+                if (/*code.equalsIgnoreCase("91") &&*/ mobile.length() != 10) {
+                    binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
+                    binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
+                    binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                    isvalid = false;
+                }
+                else {
+                    binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                    binding.layoutHaveABHANumber.mobileError.setVisibility(View.GONE);
+                }
             }
         }
 
-        return true;
+        return isvalid;
     }
 
     @Override
