@@ -1163,7 +1163,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } else {
             country = getResources().getString(R.string.no_country_added);
         }
-        patientcountry.setText(StringUtils.switch_hi_en_country(country, sessionManager.getAppLanguage()));
+        patientcountry.setText(StringUtils.switch_hi_en_country(country, sessionManager.getAppLanguage())); // empty in case of abha.
 
         // setting state
         String state;
