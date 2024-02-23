@@ -1,7 +1,6 @@
 package org.intelehealth.app.activities.prescription;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -838,8 +837,7 @@ public class PrescriptionBuilder {
         String isFollowUpScheduled = "";
         String[] followUpArrayData = followUpData.split(",");
 
-        if (followUpData.equalsIgnoreCase("")) {
-            isFollowUpScheduled = "No";
+        if (followUpData.equalsIgnoreCase("") || followUpData.equalsIgnoreCase("No")) {
             //checking any follow up exist or not
             //if not then return empty string
             //because we will disable follow up ui if follow up is empty

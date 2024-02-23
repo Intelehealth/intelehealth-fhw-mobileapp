@@ -61,7 +61,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -395,13 +394,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         // download btn - end
 
         // Follow up - start
-        if (followUpDate.equalsIgnoreCase("")) {
+       /* if (followUpDate.equalsIgnoreCase("")) {
             no_followup_txt.setVisibility(View.VISIBLE);
             followup_date_block.setVisibility(View.GONE);
         } else {
             no_followup_txt.setVisibility(View.GONE);
             followup_date_block.setVisibility(View.VISIBLE);
-        }
+        }*/
         // Follow up - end
 
         // Bottom Buttons - start
@@ -1383,6 +1382,22 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 } else {
                     followUpDate = value;
                 }
+
+                if (followUpDate == null || followUpDate.isEmpty() || followUpDate.equalsIgnoreCase("No")) {
+
+                    no_followup_txt.setVisibility(View.VISIBLE);
+                    followup_date_block.setVisibility(View.GONE);
+
+                    followup_subtext.setVisibility(View.GONE);
+                    break;
+                }else{
+                    no_followup_txt.setVisibility(View.GONE);
+                    followup_date_block.setVisibility(View.VISIBLE);
+
+                    followup_subtext.setVisibility(View.VISIBLE);
+
+                }
+
                 if (followup_date_block.getVisibility() != View.VISIBLE) {
                     followup_date_block.setVisibility(View.VISIBLE);
                 }
@@ -1393,6 +1408,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     followUpDate_format = StringUtils.en__hi_dob(followUpDate_format);
                 followup_date_txt.setText(followUpDate_format);
+                Log.v("Prescriotion", "followUpDate - " + followUpDate);
 
                 if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(followUpDate, "yyyy-MM-dd")) {
                     String followUpSubText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
@@ -1403,6 +1419,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 } else {
                     followup_subtext.setText(getResources().getString(R.string.follow_up_date_arrived));
                 }
+
+
+
 
                 //checkForDoctor();
                 break;
@@ -1766,6 +1785,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     followUpDate = "";
                     followup_date_txt.setText("");
                     //  followUpDateCard.setVisibility(View.GONE);
+
                 }
 
                 String[] columns = {"value", " conceptuuid"};
