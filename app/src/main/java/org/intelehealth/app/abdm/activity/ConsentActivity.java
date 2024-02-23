@@ -39,9 +39,7 @@ public class ConsentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consent);
-
-        // changing status bar color
-        WindowsUtils.setStatusBarColor(ConsentActivity.this);
+        WindowsUtils.setStatusBarColor(ConsentActivity.this);   // changing status bar color
 
         btn_accept_privacy = findViewById(R.id.btn_accept_privacy); // ACCEPT BTN
         ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
@@ -67,32 +65,15 @@ public class ConsentActivity extends AppCompatActivity {
         });
 
         btn_accept_privacy.setOnClickListener(v -> {
-            patientRegistrationDialog(context, getDrawable(R.drawable.dialog_icon_complete),
-                    getString(R.string.abha_number), getString(R.string.do_you_have_your_abha_number),
-                    getResources().getString(R.string.yes), getResources().getString(R.string.no),
-                    new DialogUtils.CustomDialogListener() {
-                        @Override
-                        public void onDialogActionDone(int action) {
-                          //  Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: testing purpose -> comment later.
-                          //  Intent intent = new Intent(context, AccountSelectionLoginActivity.class); // todo: testing purpose -> comment later.
-                            Intent intent = new Intent(context, AadharMobileVerificationActivity.class);  // todo: uncomment later.
-                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK)
-                                intent.putExtra(hasABHA, true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
-                            else
-                                intent.putExtra(hasABHA, false);  // ie. Aadhar AND Mobile api to call. // here Aadhar api is used.
-                            
-                            intent.putExtra(ABHA_CONSENT, true);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
-
+            Intent intent = new Intent(context, AadharMobileVerificationActivity.class);
+            intent.putExtra(hasABHA, false);
+            startActivity(intent);
         });
 
     }
 
     public void declinePP(View view) {  // DECLINE BTN
-        setResult(AppConstants.CONSENT_DECLINE);
+      //  setResult(AppConstants.CONSENT_DECLINE);
         Intent intent = new Intent(this, IdentificationActivity_New.class); // ie. normal flow.
         intent.putExtra(ABHA_CONSENT, false);
         startActivity(intent);

@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.onboarding;
 
+import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -16,11 +18,13 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity;
 import org.intelehealth.app.abdm.activity.ConsentActivity;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Locale;
@@ -31,6 +35,9 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
     private int mIntentFrom;
     String appLanguage, intentType;
     SessionManager sessionManager = null;
+    private Context context = PrivacyPolicyActivity_New.this;
+    public static final String hasABHA = "hasABHA";
+    public static final String ABHA_CONSENT = "ABHA_CONSENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +76,35 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
                 finish();
             }else {
-              //  Intent intent = new Intent(this, IdentificationActivity_New.class);
-                Intent intent = new Intent(this, ConsentActivity.class);
+                patientRegistrationDialog(context, getDrawable(R.drawable.dialog_icon_complete),
+                        getString(R.string.abha_number), getString(R.string.do_you_have_your_abha_number),
+                        getResources().getString(R.string.yes), getResources().getString(R.string.no),
+                        new DialogUtils.CustomDialogListener() {
+                            @Override
+                            public void onDialogActionDone(int action) {
+                                //  Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: testing purpose -> comment later.
+                                //  Intent intent = new Intent(context, AccountSelectionLoginActivity.class); // todo: testing purpose -> comment later.
+
+                                Intent intent;
+                                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                    intent = new Intent(context, AadharMobileVerificationActivity.class);
+                                    intent.putExtra(hasABHA, true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
+                                }
+                                else {
+                                    intent = new Intent(context, ConsentActivity.class);
+                                    intent.putExtra(hasABHA, false);  // ie. Aadhar AND Mobile api to call. // here Aadhar api is used.
+                                 //   intent.putExtra(ABHA_CONSENT, true);
+                                }
+
+                                startActivity(intent);
+                              //  finish();
+                            }
+                        });
+
+                //  Intent intent = new Intent(this, IdentificationActivity_New.class);
+               /* Intent intent = new Intent(this, ConsentActivity.class);
                 startActivity(intent);
-                finish();
+                finish();*/
             }
         });
 

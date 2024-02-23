@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -262,7 +263,11 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
                     new DialogUtils.CustomDialogListener() {
                 @Override
                 public void onDialogActionDone(int action) {
-                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) finish();
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        Intent intent = new Intent(context, HomeScreenActivity_New.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             });
         }

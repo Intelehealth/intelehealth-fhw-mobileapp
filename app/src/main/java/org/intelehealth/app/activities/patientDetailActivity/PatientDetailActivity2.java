@@ -191,6 +191,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        goToHomeScreen();
+    }
+
+    public void goToHomeScreen() {
+        Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
+        startActivity(i);
+        finish();
     }
 
     @Override
@@ -310,9 +317,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         cancelbtn.setOnClickListener(v -> {
-            Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
-            startActivity(i);
-            finish();
+            goToHomeScreen();
         });
 
         startVisitBtn.setOnClickListener(v -> {
