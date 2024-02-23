@@ -574,10 +574,16 @@ public class Fragment_SecondScreen extends Fragment {
         mCountryNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (abhaProfileResponse != null)
+                if (i != 0) {
+                    mCountryName = adapterView.getItemAtPosition(i).toString();
+                    mCountryNameEn = mCountryList[i];
+                }
+                if (abhaProfileResponse != null) {
                     return;
-                if (otpVerificationResponse != null)
+                }
+                if (otpVerificationResponse != null) {
                     return;
+                }
 
                 if (i != 0) {
                     mCountryName = adapterView.getItemAtPosition(i).toString();
