@@ -27,7 +27,7 @@
     <string name="url_invalid" translatable="false">താങ്കളുടെ URL പരിശോധിക്കുക</string>
     <string name="prefix_invalid" translatable="false">മറ്റൊരു പ്രിഫിക്സ് തിരഞ്ഞെടുക്കുക</string>
     <string name="error_invalid_username" translatable="false">യൂസർ നെയിം സാധുവല്ല</string>
-    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_email">ഈ ഇമെയിൽ വിലാസം അസാധുവാണ്</string>
     <string name="error_invalid_password" translatable="false">ഈ പാസ്സ്‌വേർഡ് വളരെ ചെറുതാണ്</string>
     <string name="error_incorrect_password" translatable="false">ഈ പാസ്സ്‌വേർഡ് വളരെ ചെറുതാണ്</string>
     <string name="error_field_required" translatable="false">18 വയസ്സിന് താഴെയുള്ളവർക്ക് ഈ മുറി ആവശ്യമാണ്</string>

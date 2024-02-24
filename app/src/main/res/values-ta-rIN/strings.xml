@@ -27,7 +27,7 @@
     <string name="url_invalid" translatable="false">உங்கள் உர்ல் ஐச் சரிபார்க்கவும்.</string>
     <string name="prefix_invalid" translatable="false">வேறு முன்னொட்டைத் தேர்ந்தெடுக்கவும்!</string>
     <string name="error_invalid_username" translatable="false">"இந்தப் பயனர்பெயர் தவறானது</string>
-    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_email">இந்த மின்னஞ்சல் முகவரி தவறானது</string>
     <string name="error_invalid_password" translatable="false">இந்தக் கடவுச்சொல் மிகவும் சிறியது</string>
     <string name="error_incorrect_password" translatable="false">உள்ளிடப்பட்ட பயனர்பெயர் மற்றும் கடவுச்சொல்லைச் சரிபார்க்கவும்</string>
     <string name="error_field_required" translatable="false">இந்தப் புலம் தேவை</string>

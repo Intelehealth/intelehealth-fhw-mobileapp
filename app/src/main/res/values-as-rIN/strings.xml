@@ -32,7 +32,7 @@
     <string name="url_invalid" translatable="false">আপোনাৰ URL পৰীক্ষা কৰক।</string>
     <string name="prefix_invalid" translatable="false">এটা বেলেগ উপসৰ্গ নিৰ্বাচন কৰক!</string>
     <string name="error_invalid_username" translatable="false">এই ব্যৱহাৰকাৰীনাম অবৈধ</string>
-    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_email">এই ইমেইল ঠিকনা অবৈধ</string>
     <string name="error_invalid_password" translatable="false">এই গুপ্তশব্দ অতি চুটি</string>
     <string name="error_incorrect_password" translatable="false">অনুগ্ৰহ কৰি ব্যৱহাৰকাৰীৰ নাম আৰু পাছৱৰ্ড দিয়া পৰীক্ষা কৰক</string>
     <string name="error_field_required" translatable="false">এই ক্ষেত্ৰখনৰ প্ৰয়োজন</string>
