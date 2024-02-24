@@ -30,6 +30,9 @@ class YoutubeListingViewModel(service: VideoLibraryApiClient, dao: LibraryDao) :
     private var _tokenExpiredObserver: MutableLiveData<Boolean> = MutableLiveData(false)
     var tokenExpiredObserver: LiveData<Boolean> = _tokenExpiredObserver
 
+    private var _emptyListObserver: MutableLiveData<Boolean> = MutableLiveData(false)
+    var emptyListObserver: LiveData<Boolean> = _emptyListObserver
+
     init {
         val dataSource = ListingDataSource(service, dao)
         repository = ListingRepository(dataSource)
@@ -52,6 +55,7 @@ class YoutubeListingViewModel(service: VideoLibraryApiClient, dao: LibraryDao) :
         } else {
             viewModelScope.launch(Dispatchers.IO) {
                 response.body()?.projectLibraryData?.videos?.let {
+                    _emptyListObserver.postValue(it.isEmpty())
                     repository.insertVideos(it)
                 }
             }

@@ -5,7 +5,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.videolibrary.R
@@ -38,6 +41,7 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
     private var authKey: String? = null
     private var packageName: String? = null
     private var videoList: List<Video>? = null
+    private var isCallToServer: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +57,7 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
     private fun setSwipeToRefreshLayout() {
         binding?.swipeToRefresh?.setOnRefreshListener {
-            viewmodel?.fetchVideosFromServer(packageName!!, authKey!!)
+            fetchVideosFromServer()
         }
     }
 
@@ -63,37 +67,28 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
         viewmodel?.fetchVideosFromDb()?.observe(this) {
 
             // to fetch the videos from the server in case the db is empty
-            if (it.isEmpty()) {
+            if (it.isEmpty() && !isCallToServer) {
+                isCallToServer = false
                 binding?.progressBar?.visibility = View.VISIBLE
-                viewmodel?.fetchVideosFromServer(packageName!!, authKey!!)
+                fetchVideosFromServer()
                 return@observe
             }
 
             // to check if the same videos are being set or not
             // this is to prevent flickering issue as Flows are constantly updating our listing
             if (viewmodel?.areListsSame(videoList, it) == true) {
-                if (binding?.progressBar?.visibility == View.VISIBLE) {
-                    binding?.progressBar?.visibility = View.GONE
-                }
-                if (binding?.swipeToRefresh?.isRefreshing == true) {
-                    binding?.swipeToRefresh?.isRefreshing = false
-                }
+                binding?.progressBar?.checkAndHideProgressBar()
+                binding?.swipeToRefresh?.checkAndHideProgressBar()
                 return@observe
             }
 
             // caching the list of videos fetched to maintain a record and prevent constant updates
             videoList = it
+            updateRecyclerView(it)
 
-            val adapter = YoutubeListingAdapter(it, lifecycle, this@YoutubeListingActivity)
-            binding?.recyclerview?.apply {
-                this.adapter = adapter
-                this.layoutManager = LinearLayoutManager(this@YoutubeListingActivity)
-            }
-
-            binding?.progressBar?.visibility = View.GONE
-            if (binding?.swipeToRefresh?.isRefreshing == true) {
-                binding?.swipeToRefresh?.isRefreshing = false
-            }
+            // Hiding the progress bars here is being handled by extension functions
+            binding?.progressBar?.checkAndHideProgressBar()
+            binding?.swipeToRefresh?.checkAndHideProgressBar()
         }
 
         // used for detecting if the JWT token is expired
@@ -102,6 +97,31 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
                 setResult(Constants.JWT_TOKEN_EXPIRED)
                 finish()
             }
+        }
+
+        // used for handling scenarios where there are no videos from the server
+        viewmodel?.emptyListObserver?.observe(this) {
+            if (it) {
+                Toast.makeText(
+                    this@YoutubeListingActivity,
+                    getString(R.string.no_videos_found_on_server),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                // Hiding the progress bars here is being handled by extension functions
+                binding?.swipeToRefresh?.checkAndHideProgressBar()
+                binding?.progressBar?.checkAndHideProgressBar()
+
+                updateRecyclerView(emptyList())
+            }
+        }
+    }
+
+    private fun updateRecyclerView(it: List<Video>) {
+        val adapter = YoutubeListingAdapter(it, lifecycle, this@YoutubeListingActivity)
+        binding?.recyclerview?.apply {
+            this.adapter = adapter
+            this.layoutManager = LinearLayoutManager(this@YoutubeListingActivity)
         }
     }
 
@@ -115,10 +135,8 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
             VideoLibraryDatabase.getInstance(this@YoutubeListingActivity).libraryDao()
 
         viewmodel = ViewModelProvider(
-            owner = this@YoutubeListingActivity,
-            factory = LibraryViewModelFactory(
-                service = service,
-                dao = dao
+            owner = this@YoutubeListingActivity, factory = LibraryViewModelFactory(
+                service = service, dao = dao
             )
         )[YoutubeListingViewModel::class.java]
     }
@@ -135,6 +153,11 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
             setDisplayShowTitleEnabled(true)
             title = getString(R.string.video_library)
         }
+    }
+
+    private fun fetchVideosFromServer() {
+        isCallToServer = true
+        viewmodel?.fetchVideosFromServer(packageName!!, authKey!!)
     }
 
     private fun setVideoLibraryRecyclerView() {
