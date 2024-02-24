@@ -49,7 +49,8 @@
     <string name="action_sign_in_short">સાઇન ઇન કરો</string>
     <string name="url_invalid">તમારો URL તપાસો</string>
     <string name="prefix_invalid">ભિન્ન ઉપસર્ગ પસંદ કરો!</string>
-    <string name="error_invalid_email">આ વપરાશકર્તા નામ અમાન્ય છે</string>
+    <string name="error_invalid_username">આ વપરાશકર્તા નામ અમાન્ય છે</string>
+    <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">આ પાસવર્ડ ખૂબ નાનો છે</string>
     <string name="error_incorrect_password">યુસરનેમ અને પાસવર્ડ ઉમેરો</string>
     <string name="error_field_required">આ ક્ષેત્ર જરૂરી છે</string>

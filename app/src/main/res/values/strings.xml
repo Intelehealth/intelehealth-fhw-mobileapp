@@ -48,7 +48,8 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="url_invalid">Check your URL.</string>
     <string name="prefix_invalid">Select a different prefix!</string>
-    <string name="error_invalid_email">This username is invalid</string>
+    <string name="error_invalid_username">This username is invalid</string>
+    <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_password_not_exist">This password does not exist.</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">Please check username and password entered</string>

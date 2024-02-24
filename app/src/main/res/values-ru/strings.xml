@@ -48,7 +48,8 @@
     <string name="action_sign_in_short" translatable="false">Войти</string>
     <string name="url_invalid" translatable="false">Проверьте свою URL-ссылку.</string>
     <string name="prefix_invalid" translatable="false">Выберите другой префикс!</string>
-    <string name="error_invalid_email" translatable="false">Это имя пользователя недействительно</string>
+    <string name="error_invalid_username" translatable="false">Это имя пользователя недействительно</string>
+    <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password" translatable="false">Пароль слишком короткий</string>
     <string name="error_incorrect_password" translatable="false">пожалуйста, проверьте имя пользователя и введенный пароль</string>
     <string name="error_field_required" translatable="false">Это поле обязательно для заполнения</string>

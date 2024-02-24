@@ -47,7 +47,8 @@
     <string name="action_sign_in_short">ಸೈನ್ ಇನ್ ಮಾಡಿ</string>
     <string name="url_invalid">ನಿಮ್ಮ  ಯು.ಆರ್.ಎಲ್. ಪರಿಶೀಲಿಸಿ.</string>
     <string name="prefix_invalid">ಬೇರೆ ಪೂರ್ವಪ್ರತ್ಯಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ!</string>
-    <string name="error_invalid_email">ಈ ಬಳಕೆದಾರರ ಹೆಸರು ಅಮಾನ್ಯವಾಗಿದೆ</string>
+    <string name="error_invalid_username">ಈ ಬಳಕೆದಾರರ ಹೆಸರು ಅಮಾನ್ಯವಾಗಿದೆ</string>
+    <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">ಈ ಪಾಸ್‌ವರ್ಡ್ ತುಂಬಾ ಚಿಕ್ಕದಾಗಿದೆ</string>
     <string name="error_incorrect_password">ದಯವಿಟ್ಟುಬಳಕೆದಾರರ ಹೆಸರು ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</string>
     <string name="error_field_required">ಈ ಸ್ಥಳವನ್ನು ತುಂಬಿರಿ</string>
