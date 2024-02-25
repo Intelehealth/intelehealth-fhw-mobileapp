@@ -4,6 +4,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'androidx.navigation.safeargs'
+    id 'org.jetbrains.kotlin.kapt'
     id 'kotlin-parcelize'
 }
 
@@ -20,9 +21,7 @@ static def getDateTime() {
 
 android {
     compileSdk 34
-    dataBinding {
-        enabled = true
-    }
+
     defaultConfig {
         applicationId "org.intelehealth.ezazi"
         minSdk 21
@@ -81,6 +80,12 @@ android {
             force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10'
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+        dataBinding true
+        buildConfig true
+    }
 }
 
 dependencies {
@@ -137,7 +142,7 @@ dependencies {
     androidTestImplementation 'androidx.work:work-testing:2.9.0'
 
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
-    annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
+    kapt "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
 
 //    implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
     implementation 'com.google.firebase:firebase-crashlytics:18.6.2'

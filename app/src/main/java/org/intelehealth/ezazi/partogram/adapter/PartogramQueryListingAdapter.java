@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,10 +36,10 @@ import org.intelehealth.ezazi.databinding.PartoLablRadioViewPlanBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewEzaziBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewOxytocinBinding;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
+import org.intelehealth.ezazi.models.uploadSurvey.Ob;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.dialog.AssessmentBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.dialog.IVFluidBottomSheetDialog;
-import org.intelehealth.ezazi.partogram.dialog.MedicineBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.dialog.OxytocinBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.dialog.PlanBottomSheetDialog;
 import org.intelehealth.ezazi.partogram.model.Medication;
@@ -48,12 +49,19 @@ import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
+import org.intelehealth.ezazi.ui.prescription.activity.AdministeredActivity;
+import org.intelehealth.ezazi.ui.prescription.listener.MedicineChangeListener;
+import org.intelehealth.ezazi.ui.prescription.data.MedicineSingleton;
+import org.intelehealth.ezazi.ui.prescription.fragment.PrescriptionFragment;
+import org.intelehealth.ezazi.ui.prescription.model.PrescriptionArg;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
+import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -379,14 +387,25 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         PartoLablRadioViewMedicineBinding binding = PartoLablRadioViewMedicineBinding.bind(tempView);
 
         binding.clMedicineCountView.setOnClickListener(v -> {
-            @SuppressLint("SetTextI18n")
-            MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), mVisitUuid, (updated, deleted) -> {
-                info.setMedicines(updated);
-                info.setDeletedMedicines(deleted);
-                setupMedicineCountView(binding.tvMedicineCount, updated);
+            PrescriptionArg arg = getMedicationArg(PrescriptionFragment.PrescriptionType.MEDICINE);
+            AdministeredActivity.startAdministeredActivity(mContext, arg);
+            MedicineSingleton.INSTANCE.setMedicineListener(new MedicineChangeListener() {
+                @Override
+                public void onMedicineListChanged(@NonNull List<? extends ItemHeader> updated) {
+                    List<Medicine> medicineList = new ArrayList<>();
+                    for (ItemHeader item : updated) {
+                        if (item instanceof Medicine) medicineList.add((Medicine) item);
+                    }
+                    info.setMedicines(medicineList);
+                    setupMedicineCountView(binding.tvMedicineCount, medicineList);
+                }
+
+                @NonNull
+                @Override
+                public LinkedList<ItemHeader> getExistingList() {
+                    return new LinkedList<>(info.getMedicines());
+                }
             });
-            dialog.setAccessMode(accessMode);
-            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
         });
         handleRadioCheckListener(tempView, info, new OnRadioCheckedListener() {
             @Override
@@ -409,36 +428,62 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         else textView.setText("" + updated.size());
     }
 
+    private PrescriptionArg getMedicationArg(PrescriptionFragment.PrescriptionType type) {
+        return new PrescriptionArg(
+                mVisitUuid,
+                type,
+                true,
+                PartogramConstants.AccessMode.WRITE);
+    }
+
     private void showRadioOptionBoxForIVFluid(View tempView, ParamInfo info, TextView selected, String title) {
         PartoLblRadioViewEzaziBinding binding = PartoLblRadioViewEzaziBinding.bind(tempView);
         View ivFluidDetails = binding.ivFluidOptions.getRoot();
         Log.d(TAG, "showRadioOptionBoxForIVFluid: iv data: " + new Gson().toJson(info.getMedicationsForFluid()));
 
         binding.clIvFluidCountView.setOnClickListener(v -> {
-            @SuppressLint("SetTextI18n")
-            IVFluidBottomSheetDialog dialog = IVFluidBottomSheetDialog.getInstance(info.getMedicationsForFluid(), mVisitUuid, (updated, deleted) -> {
-                info.setMedicationsForFluid(updated);
-                Log.d(TAG, "showRadioOptionBoxForIVFluid: updated ivs : " + new Gson().toJson(updated));
-                if (updated.size() > 0) {
-                    //Medication medicationLatest = updated.get(updated.size() - 1);
-                    info.setMedicationsForFluid(updated);
+            PrescriptionArg arg = getMedicationArg(PrescriptionFragment.PrescriptionType.IV_FLUID);
+            AdministeredActivity.startAdministeredActivity(mContext, arg);
+            MedicineSingleton.INSTANCE.setIvFluidListener(new MedicineChangeListener() {
+                @Override
+                public void onMedicineListChanged(@NonNull List<? extends ItemHeader> updated) {
+                    List<Medication> ivFluids = new ArrayList<>();
+                    for (ItemHeader item : updated) {
+                        if (item instanceof Medication) ivFluids.add((Medication) item);
+                    }
+                    info.setMedicationsForFluid(ivFluids);
                     setivFluidDataNew(binding, info);
-                   /* Medication ivFluidDataForDb = new Medication();
-                   ivFluidDataForDb.setType(medicationLatest.getType());
-                    ivFluidDataForDb.setInfusionStatus(medicationLatest.getInfusionStatus());
-                    ivFluidDataForDb.setStrength(medicationLatest.getStrength());
-                    info.setMedication(ivFluidDataForDb);
-                    info.setCapturedValue(ivFluidDataForDb.toJson());
-                     binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(medicationLatest.getType());
-                    binding.ivFluidOptions.viewInfusionRate.etvData.setText(medicationLatest.getInfusionRate());
-                    binding.ivFluidOptions.viewInfusionStatus.tvData.setText(medicationLatest.getInfusionStatus());
-                       Log.d(TAG, "showRadioOptionBoxForIVFluid: db data  : " + new Gson().toJson(ivFluidDataForDb));*/
+                }
 
-
+                @NonNull
+                @Override
+                public LinkedList<ItemHeader> getExistingList() {
+                    return new LinkedList<>(info.getMedicationsForFluid());
                 }
             });
-            dialog.setAccessMode(accessMode);
-            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//            @SuppressLint("SetTextI18n")
+//            IVFluidBottomSheetDialog dialog = IVFluidBottomSheetDialog.getInstance(info.getMedicationsForFluid(), mVisitUuid, (updated, deleted) -> {
+//                info.setMedicationsForFluid(updated);
+//                Log.d(TAG, "showRadioOptionBoxForIVFluid: updated ivs : " + new Gson().toJson(updated));
+//                if (updated.size() > 0) {
+//                    //Medication medicationLatest = updated.get(updated.size() - 1);
+//
+//                   /* Medication ivFluidDataForDb = new Medication();
+//                   ivFluidDataForDb.setType(medicationLatest.getType());
+//                    ivFluidDataForDb.setInfusionStatus(medicationLatest.getInfusionStatus());
+//                    ivFluidDataForDb.setStrength(medicationLatest.getStrength());
+//                    info.setMedication(ivFluidDataForDb);
+//                    info.setCapturedValue(ivFluidDataForDb.toJson());
+//                     binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(medicationLatest.getType());
+//                    binding.ivFluidOptions.viewInfusionRate.etvData.setText(medicationLatest.getInfusionRate());
+//                    binding.ivFluidOptions.viewInfusionStatus.tvData.setText(medicationLatest.getInfusionStatus());
+//                       Log.d(TAG, "showRadioOptionBoxForIVFluid: db data  : " + new Gson().toJson(ivFluidDataForDb));*/
+//
+//
+//                }
+//            });
+//            dialog.setAccessMode(accessMode);
+//            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
         });
         handleRadioCheckListener(tempView, info, new OnRadioCheckedListener() {
             @Override
@@ -828,30 +873,49 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         Log.d(TAG, "showRadioOptionBoxForOxytocin: iv data: " + new Gson().toJson(info.getMedicationsForOxytocin()));
 
         binding.clOxytocinCountView.setOnClickListener(v -> {
-            @SuppressLint("SetTextI18n")
-            OxytocinBottomSheetDialog dialog = OxytocinBottomSheetDialog.getInstance(info.getMedicationsForOxytocin(), mVisitUuid, (updated, deleted) -> {
-                info.setMedicationsForOxytocin(updated);
-                Log.d(TAG, "showRadioOptionBoxForOxytocin: updated ivs : " + new Gson().toJson(updated));
-                if (updated.size() > 0) {
-                    //Medication medicationLatest = updated.get(updated.size() - 1);
-                    info.setMedicationsForOxytocin(updated);
+            PrescriptionArg arg = getMedicationArg(PrescriptionFragment.PrescriptionType.OXYTOCIN);
+            AdministeredActivity.startAdministeredActivity(mContext, arg);
+            MedicineSingleton.INSTANCE.setOxytocinListener(new MedicineChangeListener() {
+                @Override
+                public void onMedicineListChanged(@NonNull List<? extends ItemHeader> updated) {
+                    List<Medication> oxytocins = new ArrayList<>();
+                    for (ItemHeader item : updated) {
+                        if (item instanceof Medication) oxytocins.add((Medication) item);
+                    }
+                    info.setMedicationsForOxytocin(oxytocins);
                     setOxytocinDataNew(binding, info);
-                   /* Medication ivFluidDataForDb = new Medication();
-                   ivFluidDataForDb.setType(medicationLatest.getType());
-                    ivFluidDataForDb.setInfusionStatus(medicationLatest.getInfusionStatus());
-                    ivFluidDataForDb.setStrength(medicationLatest.getStrength());
-                    info.setMedication(ivFluidDataForDb);
-                    info.setCapturedValue(ivFluidDataForDb.toJson());
-                     binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(medicationLatest.getType());
-                    binding.ivFluidOptions.viewInfusionRate.etvData.setText(medicationLatest.getInfusionRate());
-                    binding.ivFluidOptions.viewInfusionStatus.tvData.setText(medicationLatest.getInfusionStatus());
-                       Log.d(TAG, "showRadioOptionBoxForIVFluid: db data  : " + new Gson().toJson(ivFluidDataForDb));*/
+                }
 
-
+                @NonNull
+                @Override
+                public LinkedList<ItemHeader> getExistingList() {
+                    return new LinkedList<>(info.getMedicationsForOxytocin());
                 }
             });
-            dialog.setAccessMode(accessMode);
-            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//            @SuppressLint("SetTextI18n")
+//            OxytocinBottomSheetDialog dialog = OxytocinBottomSheetDialog.getInstance(info.getMedicationsForOxytocin(), mVisitUuid, (updated, deleted) -> {
+//                info.setMedicationsForOxytocin(updated);
+//                Log.d(TAG, "showRadioOptionBoxForOxytocin: updated ivs : " + new Gson().toJson(updated));
+//                if (updated.size() > 0) {
+//                    //Medication medicationLatest = updated.get(updated.size() - 1);
+//                    info.setMedicationsForOxytocin(updated);
+//                    setOxytocinDataNew(binding, info);
+//                   /* Medication ivFluidDataForDb = new Medication();
+//                   ivFluidDataForDb.setType(medicationLatest.getType());
+//                    ivFluidDataForDb.setInfusionStatus(medicationLatest.getInfusionStatus());
+//                    ivFluidDataForDb.setStrength(medicationLatest.getStrength());
+//                    info.setMedication(ivFluidDataForDb);
+//                    info.setCapturedValue(ivFluidDataForDb.toJson());
+//                     binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(medicationLatest.getType());
+//                    binding.ivFluidOptions.viewInfusionRate.etvData.setText(medicationLatest.getInfusionRate());
+//                    binding.ivFluidOptions.viewInfusionStatus.tvData.setText(medicationLatest.getInfusionStatus());
+//                       Log.d(TAG, "showRadioOptionBoxForIVFluid: db data  : " + new Gson().toJson(ivFluidDataForDb));*/
+//
+//
+//                }
+//            });
+//            dialog.setAccessMode(accessMode);
+//            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
         });
         handleRadioCheckListener(tempView, info, new OnRadioCheckedListener() {
             @Override
@@ -993,7 +1057,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     private void setOxytocinDataNew(PartoLblRadioViewOxytocinBinding binding, ParamInfo info) {
         List<Medication> allAdministerOxytocinsList = info.getMedicationsForOxytocin();
-        Log.d(TAG, "setOxytocinDataNew: allAdministerOxytocinsList : "+allAdministerOxytocinsList.size());
+        Log.d(TAG, "setOxytocinDataNew: allAdministerOxytocinsList : " + allAdministerOxytocinsList.size());
         if (allAdministerOxytocinsList.size() > 0) {
             Medication oxytocinData = allAdministerOxytocinsList.get(0);
             Medication oxytocinDataForDb = new Medication();
@@ -1012,7 +1076,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             info.setCapturedValue(oxytocinDataForDb.toJson());
             Log.d(TAG, "setOxytocinDataNew: date :" + DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
-            Log.d(TAG, "setOxytocinDataNew: infodate : "+info.getCreatedDate());
+            Log.d(TAG, "setOxytocinDataNew: infodate : " + info.getCreatedDate());
         }
     }
 
@@ -1021,15 +1085,34 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         PartoLablRadioViewPlanBinding binding = PartoLablRadioViewPlanBinding.bind(tempView);
 
         binding.clPlanCountView.setOnClickListener(v -> {
-            @SuppressLint("SetTextI18n")
-            PlanBottomSheetDialog dialog = PlanBottomSheetDialog.getInstance(info.getPlans(), mVisitUuid, (updated, deleted) -> {
-                info.setPlans(updated);
-                info.setDeletedPlans(deleted);
-                //info.setCapturedValue(updated);
-                setupPlansCountView(binding.tvPlanCount, updated);
+            PrescriptionArg arg = getMedicationArg(PrescriptionFragment.PrescriptionType.PLAN);
+            AdministeredActivity.startAdministeredActivity(mContext, arg);
+            MedicineSingleton.INSTANCE.setPlanListener(new MedicineChangeListener() {
+                @Override
+                public void onMedicineListChanged(@NonNull List<? extends ItemHeader> updated) {
+                    List<ObsDTO> plans = new ArrayList<>();
+                    for (ItemHeader item : updated) {
+                        if (item instanceof ObsDTO) plans.add((ObsDTO) item);
+                    }
+                    info.setPlans(plans);
+                    setupPlansCountView(binding.tvPlanCount, plans);
+                }
+
+                @NonNull
+                @Override
+                public LinkedList<ItemHeader> getExistingList() {
+                    return new LinkedList<>(info.getPlans());
+                }
             });
-            dialog.setAccessMode(accessMode);
-            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//            @SuppressLint("SetTextI18n")
+//            PlanBottomSheetDialog dialog = PlanBottomSheetDialog.getInstance(info.getPlans(), mVisitUuid, (updated, deleted) -> {
+//                info.setPlans(updated);
+//                info.setDeletedPlans(deleted);
+//                //info.setCapturedValue(updated);
+//
+//            });
+//            dialog.setAccessMode(accessMode);
+//            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
         });
         setupPlansCountView(binding.tvPlanCount, info.getPlans());
 
@@ -1056,14 +1139,34 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         PartoLablRadioViewAssessmentBinding binding = PartoLablRadioViewAssessmentBinding.bind(tempView);
 
         binding.clAssessmentCountView.setOnClickListener(v -> {
-            @SuppressLint("SetTextI18n")
-            AssessmentBottomSheetDialog dialog = AssessmentBottomSheetDialog.getInstance(info.getAssessments(), mVisitUuid, (updated, deleted) -> {
-                info.setAssessments(updated);
-                //info.setDeletedMedicines(deleted);
-                setupAssessmentCountView(binding.tvAssessmentCount, updated);
+            PrescriptionArg arg = getMedicationArg(PrescriptionFragment.PrescriptionType.ASSESSMENT);
+            AdministeredActivity.startAdministeredActivity(mContext, arg);
+            MedicineSingleton.INSTANCE.setAssessmentListener(new MedicineChangeListener() {
+                @Override
+                public void onMedicineListChanged(@NonNull List<? extends ItemHeader> updated) {
+                    List<ObsDTO> assessments = new ArrayList<>();
+                    for (ItemHeader item : updated) {
+                        if (item instanceof ObsDTO) assessments.add((ObsDTO) item);
+                    }
+                    info.setAssessments(assessments);
+                    //info.setDeletedMedicines(deleted);
+                    setupAssessmentCountView(binding.tvAssessmentCount, assessments);
+                }
+
+                @NonNull
+                @Override
+                public LinkedList<ItemHeader> getExistingList() {
+                    return new LinkedList<>(info.getAssessments());
+                }
             });
-            dialog.setAccessMode(accessMode);
-            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//            @SuppressLint("SetTextI18n")
+//            AssessmentBottomSheetDialog dialog = AssessmentBottomSheetDialog.getInstance(info.getAssessments(), mVisitUuid, (updated, deleted) -> {
+//                info.setAssessments(updated);
+//                //info.setDeletedMedicines(deleted);
+//                setupAssessmentCountView(binding.tvAssessmentCount, updated);
+//            });
+//            dialog.setAccessMode(accessMode);
+//            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
         });
         setupAssessmentCountView(binding.tvAssessmentCount, info.getAssessments());
 

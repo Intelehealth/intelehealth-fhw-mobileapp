@@ -7,6 +7,10 @@
 
         <import type="android.view.View" />
 
+        <variable
+            name="allowAdminister"
+            type="Boolean" />
+
         <import type="org.intelehealth.ezazi.partogram.PartogramConstants.AccessMode" />
 
         <variable
@@ -116,10 +120,24 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/btnMedicineDelete"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMedicineAdminister"
+                    style="@style/Theme.EZazi.Button.Icon.Edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="@dimen/screen_container_padding"
+                    android:contentDescription="@string/content_expand_collapse_indicator"
+                    android:enabled="@{accessMode != AccessMode.READ}"
+                    android:visibility="@{allowAdminister ? View.VISIBLE : View.GONE}"
+                    app:icon="@drawable/ic_medicine_administer"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btnExpandCollapseIndicator"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-<!--
-            android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
--->
+            <!--
+                        android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
+            -->
 
             <include
                 android:id="@+id/includeMedicineDetails"

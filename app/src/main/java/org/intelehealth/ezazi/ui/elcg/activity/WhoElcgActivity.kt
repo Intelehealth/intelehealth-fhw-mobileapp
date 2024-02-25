@@ -2,10 +2,7 @@ package org.intelehealth.ezazi.ui.elcg.activity
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.core.util.Pair
-import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import org.intelehealth.ezazi.R
@@ -14,7 +11,6 @@ import org.intelehealth.ezazi.models.dto.EncounterDTO
 import org.intelehealth.ezazi.ui.elcg.adapter.ELCGTabPagerAdapter
 import org.intelehealth.ezazi.ui.elcg.data.ELCGDataSource
 import org.intelehealth.ezazi.ui.elcg.data.ELCGRepository
-import org.intelehealth.ezazi.ui.elcg.utils.ELCGUtils
 import org.intelehealth.ezazi.ui.elcg.viewmodel.ELCGViewModel
 import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity
 
@@ -43,6 +39,7 @@ class WhoElcgActivity : BaseActionBarActivity() {
         binding = ActivityElcgViewBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
         super.onCreate(savedInstanceState)
+        setupActionBar()
         EXPAND_AVATAR_SIZE = resources.getDimension(R.dimen.patient_avatar_default_expand_size)
         COLLAPSE_IMAGE_SIZE = resources.getDimension(R.dimen.patient_avatar_default_collapsed_size)
         horizontalToolbarAvatarMargin = resources.getDimension(R.dimen.activity_horizontal_margin)

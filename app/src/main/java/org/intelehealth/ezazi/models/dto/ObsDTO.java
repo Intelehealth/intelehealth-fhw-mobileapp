@@ -16,7 +16,9 @@ import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
 
-public class ObsDTO implements ItemHeader {
+import java.io.Serializable;
+
+public class ObsDTO implements ItemHeader, Serializable {
 
     @SerializedName("uuid")
     @Expose
@@ -52,15 +54,16 @@ public class ObsDTO implements ItemHeader {
     @Expose
     private Integer voided;
 
-    public String getObsDateTime() {
-        return obsDateTime;
-    }
+//    public String getObsDateTime() {
+//        return obsDateTime;
+//    }
+//
+//    public void setObsDateTime(String obsDateTime) {
+//        this.obsDateTime = obsDateTime;
+//    }
 
-    public void setObsDateTime(String obsDateTime) {
-        this.obsDateTime = obsDateTime;
-    }
-
-    @SerializedName("obsDateTime") //added this param temporary bcz push pull api parameters are not same
+    @SerializedName("obsDateTime")
+    //added this param temporary bcz push pull api parameters are not same
     @Expose
     private String obsDateTime;
 
@@ -222,7 +225,7 @@ public class ObsDTO implements ItemHeader {
         obs.setEncounteruuid(encounterId);
         obs.setCreatorUuid(creator);
         obs.setCreatedDate(createdDate);
-        Log.d("TAG", "toObs: createdDate : " + obs.getCreatedDate(true));
+        Log.d("TAG", "toObs: createdDate : " + obs.createdDate());
         //obs.setCreatedDate(DateTimeUtils.getISTDateInUTCDate(createdDate));
         Log.e("plans", "toObs: " + new Gson().toJson(obs));
         return obs;

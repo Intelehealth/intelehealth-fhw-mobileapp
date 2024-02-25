@@ -37,7 +37,8 @@ open class PrescriptionMedicationAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         if (item.isHeader().not() && item is Medication && holder is PrescriptionMedicationHolder) {
-            holder.bind(item)
+            if (clickListener != null) holder.setViewClickListener(clickListener)
+            holder.bind(item, allowAdminister)
         } else super.onBindViewHolder(holder, position)
     }
 

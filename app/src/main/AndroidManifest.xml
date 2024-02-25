@@ -87,6 +87,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.prescription.activity.AdministeredActivity"
+            android:exported="false"
+            android:label="@string/administer"
+            android:parentActivityName=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"

@@ -475,6 +475,10 @@
         <item name="cornerSize">10%</item>
     </style>
 
+    <style name="ProfileShapeAppearanceOverlay.CornerSize50Percent" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="Theme.EZazi.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:button">@drawable/selector_checkbox</item>
     </style>

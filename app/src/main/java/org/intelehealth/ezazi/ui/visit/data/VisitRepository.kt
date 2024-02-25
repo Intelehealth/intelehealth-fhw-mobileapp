@@ -2,9 +2,14 @@ package org.intelehealth.ezazi.ui.visit.data
 
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import com.github.ajalt.timberkt.Timber
+import com.google.gson.Gson
+import org.intelehealth.ezazi.R
 import org.intelehealth.ezazi.builder.PatientQueryBuilder
 import org.intelehealth.ezazi.models.dto.PatientDTO
+import org.intelehealth.ezazi.ui.elcg.model.CategoryHeader
 import org.intelehealth.ezazi.ui.patient.PatientDataBinder
+import org.intelehealth.klivekit.chat.model.ItemHeader
 
 /**
  * Created by Vaghela Mithun R. on 16-01-2024 - 19:41.
@@ -12,12 +17,19 @@ import org.intelehealth.ezazi.ui.patient.PatientDataBinder
  * Mob   : +919727206702
  **/
 class VisitRepository(val database: SQLiteDatabase) {
-    private val TAG = "VisitRepository"
-    fun getOutcomePendingVisits(offset: Int, limit: Int, providerId: String): List<PatientDTO> {
+    fun getOutcomePendingVisits(offset: Int, limit: Int, providerId: String): List<ItemHeader> {
         PatientQueryBuilder().outcomePendingPatientQuery(offset, limit, providerId).apply {
             val cursor = database.rawQuery(this, null)
-            Log.d(TAG, "getOutcomePendingVisits: checkcusrsor count : "+cursor.count)
-            return PatientDataBinder().outcomePendingVisits(cursor)
+            PatientDataBinder().outcomePendingVisits(cursor).apply {
+                return filterOutcomePendingVisitByStage(this)
+            }
+        }
+    }
+
+    fun getOutcomePendingVisitsCount(providerId: String): Int {
+        PatientQueryBuilder().outcomePendingPatientCountQuery(providerId).apply {
+            val cursor = database.rawQuery(this, null)
+            return PatientDataBinder().getOutcomePendingCount(cursor)
         }
     }
 
@@ -32,6 +44,31 @@ class VisitRepository(val database: SQLiteDatabase) {
         PatientQueryBuilder().completedVisitPatientQuery(offset, limit, providerId).apply {
             val cursor = database.rawQuery(this, null)
             return PatientDataBinder().completedVisits(cursor)
+        }
+    }
+
+    private fun filterOutcomePendingVisitByStage(visits: List<PatientDTO>): List<ItemHeader> {
+        val outcomePendingVisits = arrayListOf<ItemHeader>()
+        val stage1Visits = visits.filter { it.stage.lowercase().contains("Stage-1".lowercase()) }
+        val stage2Visits = visits.filter { it.stage.lowercase().contains("Stage-2".lowercase()) }
+
+        if (stage2Visits.isNotEmpty()) {
+            outcomePendingVisits.add(CategoryHeader(R.string.stage_2))
+            outcomePendingVisits.addAll(stage2Visits)
+        }
+
+        if (stage1Visits.isNotEmpty()) {
+            outcomePendingVisits.add(CategoryHeader(R.string.stage_1))
+            outcomePendingVisits.addAll(stage1Visits)
+        }
+
+        return outcomePendingVisits
+    }
+
+    fun getOutcomePendingStatus(visitId: String): Boolean {
+        PatientQueryBuilder().outcomePendingStatusQuery(visitId).apply {
+            val cursor = database.rawQuery(this, null)
+            return PatientDataBinder().getOutcomePendingStatus(cursor)
         }
     }
 }

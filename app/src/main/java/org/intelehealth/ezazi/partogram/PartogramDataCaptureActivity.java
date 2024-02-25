@@ -87,6 +87,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_partogram_data_capture_ezazi);
         super.onCreate(savedInstanceState);
+        setupActionBar();
         mSaveTextView = findViewById(R.id.btnSave);
         mEpartogramTextView = findViewById(R.id.btnView);
         mRecyclerView = findViewById(R.id.rvQuery);
@@ -553,7 +554,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
     private ObsDTO buildObservation(ParamInfo info) {
         ObsDTO obsDTOData = new ObsDTO();
-        obsDTOData.setCreator(new SessionManager(this).getCreatorID());
+//        obsDTOData.setCreatorUuid(new SessionManager(this).getCreatorID());
         obsDTOData.setEncounteruuid(mEncounterUUID);
         obsDTOData.setConceptuuid(info.getConceptUUID());
         obsDTOData.setValue(info.getCapturedValue());
@@ -576,27 +577,27 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         if (obsDTO.getConceptuuid().equals(info.getConceptUUID())) {
                             if (obsDTO.getConceptuuid().equals(UuidDictionary.MEDICINE)) {
                                 info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                info.convertToMedicine(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(true));
+                                info.convertToMedicine(obsDTO);
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.IV_FLUIDS)) {
                                 if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                     info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                    info.getMedication(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(true), obsDTO.getConceptuuid());
+                                    info.getMedication(obsDTO);
                                 }
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
                                 if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                     info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                    info.getMedication(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(true), obsDTO.getConceptuuid());
+                                    info.getMedication(obsDTO);
                                 }
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.PLAN)) {
                                 //if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                 info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                info.collectAllPlansInList(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(true));
+                                info.collectAllPlansInList(obsDTO);
                                 // }
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.ASSESSMENT)) {
                                 info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                info.collectAllAssessmentsInList(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(true));
+                                info.collectAllAssessmentsInList(obsDTO);
                             } else {
-                                Log.d(TAG, "setEditData:savecheck: " + obsDTO.getCreatedDate(true));
+                                Log.d(TAG, "setEditData:savecheck: " + obsDTO.createdDate());
                                 //info.setCreatedDate(obsDTO.getCreatedDate());
                                 info.setCapturedValue(obsDTO.getValue());
                             }

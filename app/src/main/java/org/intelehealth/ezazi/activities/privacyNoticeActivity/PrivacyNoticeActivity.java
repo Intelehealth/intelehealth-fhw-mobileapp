@@ -54,7 +54,7 @@ public class PrivacyNoticeActivity extends BaseActionBarActivity implements View
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
         setContentView(R.layout.activity_privacy_notice_ezazi);
         super.onCreate(savedInstanceState);
-
+        setupActionBar();
         sessionManager = new SessionManager(this);
         privacy_textview = findViewById(R.id.privacy_text);
 //        privacy_textview.setAutoLinkMask(Linkify.ALL);

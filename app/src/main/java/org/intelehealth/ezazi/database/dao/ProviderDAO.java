@@ -331,4 +331,26 @@ public class ProviderDAO {
 
     }
 
+    public String getGivenNameByUserUuid(String userUuid)  {
+        String name = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        try {
+            String query = "select given_name from tbl_provider where useruuid = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{userUuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    name = cursor.getString(cursor.getColumnIndexOrThrow("given_name"));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+        } finally {
+            db.endTransaction();
+        }
+        return name;
+    }
+
 }

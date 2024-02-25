@@ -23,6 +23,7 @@ public class AddNewPatientActivity extends BaseActionBarActivity {
         setContentView(R.layout.activity_add_new_patient);
         super.onCreate(savedInstanceState);
         initUI();
+        setupActionBar();
     }
 
     @Override

@@ -69,7 +69,7 @@ public class AdministerMedicinesAdapter extends CategoryHeaderAdapter {
         if (holder instanceof MedicineViewHolder medicineViewHolder) {
             medicineViewHolder.setViewClickListener(clickListener);
             medicineViewHolder.setAccessMode(accessMode);
-            medicineViewHolder.bind((Medicine) getItem(position));
+            medicineViewHolder.bind((Medicine) getItem(position),false);
             medicineViewHolder.expandDetails(expandedItemPosition == position);
         } else super.onBindViewHolder(holder, position);
     }

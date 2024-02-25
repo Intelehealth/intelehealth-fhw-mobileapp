@@ -22,12 +22,15 @@ public class MedicineViewHolder extends BaseViewHolder {
         this.binding = binding;
     }
 
-    public void bind(Medicine medicine) {
+    public void bind(Medicine medicine, boolean allowAdminister) {
         binding.setMedicine(medicine);
         binding.btnEditMedicine.setOnClickListener(this);
         binding.btnMedicineDelete.setOnClickListener(this);
         binding.btnExpandCollapseIndicator.setOnClickListener(this);
         binding.clMedicineRowItemRoot.setOnClickListener(this);
+        binding.setAllowAdminister(allowAdminister);
+        binding.btnMedicineAdminister.setTag(medicine);
+        binding.btnMedicineAdminister.setOnClickListener(this);
     }
 
     public void expandDetails(boolean isExpanded) {

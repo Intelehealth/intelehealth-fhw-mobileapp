@@ -158,6 +158,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_patient_summary);
         super.onCreate(savedInstanceState);
+        setupActionBar();
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the org should hold the current lang fix.

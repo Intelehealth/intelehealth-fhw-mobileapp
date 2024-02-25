@@ -134,13 +134,14 @@
     <string name="enter_here">Enter here</string>
     <string name="lbl_plan_administration">Plan Administration</string>
     <string name="follow">Follow</string>
-    <string name="planned_by_you">Planned by You</string>
+    <string name="planned_by_you">Planned by HW</string>
     <string name="assess_from_doctor">Assessment from Doctor</string>
     <string name="plans_not_prescribed">Plans not prescribed yet!</string>
     <string name="planned_from_doctor">Planned from Doctor</string>
-    <string name="assess_by_you">Assessment by You</string>
+    <string name="assess_by_you">Assessment by HW</string>
     <string name="lbl_add_new_assessment">Add Assessment</string>
     <string name="assessment_not_prescribed">Assessment not prescribed yet!</string>
     <string name="lbl_assessment_administration">Assessment Administration</string>
-
+    <string name="hint_add_new_plan">Enter your plan here</string>
+    <string name="hint_add_new_assessment">Enter your assessment here</string>
 </resources>

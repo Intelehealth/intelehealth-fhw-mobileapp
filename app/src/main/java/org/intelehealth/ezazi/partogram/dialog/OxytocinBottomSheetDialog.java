@@ -299,7 +299,7 @@ public class OxytocinBottomSheetDialog extends BottomSheetDialogFragment impleme
             prescribedOxytocins = new ArrayList<>();
             for (int i = 0; i < mPrescribedOxytocinList.size(); i++) {
                 ObsDTO obsDTO = mPrescribedOxytocinList.get(i);
-                convertToPrescribedOxytocin(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(true));
+                convertToPrescribedOxytocin(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.createdDate());
             }
             setPrescribedMedicines(prescribedOxytocins);
             binding.includedPrescribedOxytocins.rvPrescribedOxytocins.setLayoutManager(new LinearLayoutManager(requireContext()));

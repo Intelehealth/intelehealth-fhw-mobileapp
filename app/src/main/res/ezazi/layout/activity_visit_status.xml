@@ -26,35 +26,43 @@
                 app:navigationIcon="@drawable/selector_actionbar_back"
                 app:popupTheme="@style/Theme.EZazi.PopupOverlay" />
 
-            <!--     <com.google.android.material.tabs.TabLayout
-                     android:id="@+id/tabsVisitStatus"
-                     android:layout_width="match_parent"
-                     android:layout_height="?actionBarSize"
-                     app:tabIndicatorColor="@color/blinkCardColor"
-                     app:tabMode="scrollable" />-->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabsVisitStatus"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:tabIndicatorColor="@color/blinkCardColor"
+                app:tabMode="scrollable" />
 
         </com.google.android.material.appbar.AppBarLayout>
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerOutcomePending"
-            android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginEnd="@dimen/screen_padding"
-            android:layout_height="match_parent"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-            <fragment
-                android:id="@+id/fragmentOutcomePending"
-                android:name="org.intelehealth.ezazi.ui.visit.fragment.OutcomePendingVisitFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </androidx.fragment.app.FragmentContainerView>
-         <!--   <FrameLayout
-                android:id="@+id/fragmentContainer"
-                android:layout_width="match_parent"
-                android:layout_marginStart="@dimen/screen_padding"
-                android:layout_marginEnd="@dimen/screen_padding"
-                android:layout_height="match_parent"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerVisitStatus"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/screen_padding"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+        <!--        <androidx.fragment.app.FragmentContainerView-->
+        <!--            android:id="@+id/fragmentContainerOutcomePending"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_marginStart="@dimen/screen_padding"-->
+        <!--            android:layout_marginEnd="@dimen/screen_padding"-->
+        <!--            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">-->
+
+        <!--            <fragment-->
+        <!--                android:id="@+id/fragmentOutcomePending"-->
+        <!--                android:name="org.intelehealth.ezazi.ui.visit.fragment.OutcomePendingVisitFragment"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent" />-->
+        <!--        </androidx.fragment.app.FragmentContainerView>-->
+        <!--   <FrameLayout
+               android:id="@+id/fragmentContainer"
+               android:layout_width="match_parent"
+               android:layout_marginStart="@dimen/screen_padding"
+               android:layout_marginEnd="@dimen/screen_padding"
+               android:layout_height="match_parent"
+               app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 -->
     </LinearLayout>
 </layout>

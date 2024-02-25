@@ -5,9 +5,21 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="org.intelehealth.ezazi.partogram.PartogramConstants.AccessMode" />
+
+        <variable
+            name="allowAdminister"
+            type="Boolean" />
+
         <variable
             name="medication"
             type="org.intelehealth.ezazi.partogram.model.Medication" />
+
+        <variable
+            name="accessMode"
+            type="org.intelehealth.ezazi.partogram.PartogramConstants.AccessMode" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -57,10 +69,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{medication.infusionStatus}"
+                android:visibility="@{allowAdminister ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Start" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMedicationAdminister"
+                style="@style/Theme.EZazi.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/screen_container_padding"
+                android:contentDescription="@string/content_expand_collapse_indicator"
+                android:enabled="@{accessMode != AccessMode.READ}"
+                android:text='@{medication.infusionStatus}'
+                android:visibility="@{allowAdminister ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

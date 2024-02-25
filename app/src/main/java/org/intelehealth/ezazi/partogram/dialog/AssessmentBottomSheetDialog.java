@@ -519,7 +519,8 @@ public class AssessmentBottomSheetDialog extends BottomSheetDialogFragment imple
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String creatorId = sessionManager.getCreatorID();
 
-        assessmentsPrescriptionList = new PrescriptionRepository(AppConstants.inteleHealthDatabaseHelper.getReadableDatabase()).fetchAssessmentPrescription(mVisitUUID, creatorId);
+        assessmentsPrescriptionList = new PrescriptionRepository(AppConstants.inteleHealthDatabaseHelper.getReadableDatabase())
+                .fetchAssessmentPrescription(mVisitUUID);
         LinkedList<ItemHeader> linkedListAssessmentsPrescription = new LinkedList<>(assessmentsPrescriptionList);
         Log.d(TAG, "loadPrescriptions: AssessmentsPrescriptionList size: " + assessmentsPrescriptionList);
         if (assessmentsPrescriptionList != null && assessmentsPrescriptionList.size() > 0) {

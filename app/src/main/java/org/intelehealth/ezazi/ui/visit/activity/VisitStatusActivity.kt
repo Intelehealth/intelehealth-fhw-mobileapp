@@ -20,16 +20,13 @@ import org.intelehealth.ezazi.ui.visit.fragment.OutcomePendingVisitFragment
  **/
 class VisitStatusActivity : BaseActivity() {
     private lateinit var binding: ActivityVisitStatusBinding
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVisitStatusBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupActionBar()
 
-        /*val fragmentContainer = findViewById<FrameLayout>(R.id.fragmentContainer)
-        replaceFragment(OutcomePendingVisitFragment(), fragmentContainer.id)
-*/
-    //setupTabs()
+        setupTabs()
     }
 
 
@@ -44,7 +41,7 @@ class VisitStatusActivity : BaseActivity() {
 
     }
 
-    /*private fun setupTabs() {
+    private fun setupTabs() {
         if (::binding.isInitialized) {
             val adapter = VisitTabPagerAdapter(this, supportFragmentManager, lifecycle)
             binding.viewPagerVisitStatus.adapter = adapter
@@ -55,11 +52,5 @@ class VisitStatusActivity : BaseActivity() {
                 tab.text = adapter.getTitle(position)
             }.attach()
         }
-    }*/
-    private fun replaceFragment(fragment: Fragment, containerId: Int) {
-        val fragmentManager: FragmentManager = supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(containerId, fragment)
-        fragmentTransaction.commit()
     }
 }

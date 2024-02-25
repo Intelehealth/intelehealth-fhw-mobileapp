@@ -6,7 +6,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
+import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
@@ -283,14 +285,17 @@ public class ParamInfo implements Serializable {
         return prescribedMedicines;
     }
 
-    public void convertToMedicine(String obsUuid, String value, String createdDate) {
-        Log.d("TAG", "convertToMedicine: value :: " + value);
+    public void convertToMedicine(ObsDTO obs) {
+        Log.d("TAG", "convertToMedicine: value :: " + obs.getValue());
         Medicine medicine = new Medicine();
-        medicine.setObsUuid(obsUuid);
-        medicine.dbFormatToMedicineObject(value);
-        medicine.setCreatedAt(createdDate);
+        medicine.setObsUuid(obs.getUuid());
+        medicine.dbFormatToMedicineObject(obs.getValue());
+        medicine.setCreatedAt(obs.createdDate());
         //String creatorName = new ObsDAO().getCreatorNameByObsUuidMedicine(obsUuid);
-        String creatorName = new ObsDAO().getCreatorNameByObsUuid(obsUuid);
+        if (obs.getCreatorUuid() == null) {
+            obs.setCreatorUuid(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID());
+        }
+        String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
         medicine.setCreatorName(creatorName);
         medicine.setRecordFromLocalDb(true);
         getMedicines().add(medicine);
@@ -308,13 +313,13 @@ public class ParamInfo implements Serializable {
         return deletedMedicines;
     }
 
-    public List<ObsDTO> getMedicinesObsList(String encounterId, String creator) {
+    public List<ObsDTO> getMedicinesObsList(String encounterId, String creatorUuid) {
         Log.d("TAG", "getMedicinesObsList: finallist:: " + new Gson().toJson(getMedicines()));
         ArrayList<ObsDTO> obsList = new ArrayList<>();
         for (Medicine medicine : getMedicines()) {
 
             if (!medicine.isRecordFromLocalDb())
-                obsList.add(medicine.toObs(encounterId, creator, medicine.getCreatedAt()));
+                obsList.add(medicine.toObs(encounterId, creatorUuid, medicine.getCreatedAt()));
         }
         return obsList;
     }
@@ -360,21 +365,24 @@ public class ParamInfo implements Serializable {
       }*/
 
 
-    public Medication getMedication(String obsUUid, String value, String createdDate, String conceptUUID) {
-        Log.d("TAG", "getMedication: value : " + value);
-        Log.d("TAG", "getMedication: createdDate : " + createdDate);
+    public Medication getMedication(ObsDTO obs) {
+        Log.d("TAG", "getMedication: value : " + obs.getValue());
+        Log.d("TAG", "getMedication: createdDate : " + obs.createdDate());
 
         try {
             Gson gson = new Gson();
-            Medication medicationData = gson.fromJson(value, Medication.class);
+            Medication medicationData = gson.fromJson(obs.getValue(), Medication.class);
             if (medicationData == null) {
                 medicationData = getMedication();
             }
             Medication medication = new Medication();
-            medication = gson.fromJson(value, Medication.class);
-            medication.setObsUuid(obsUUid);
-
-            medication.setCreatedAt(createdDate);
+            medication = gson.fromJson(obs.getValue(), Medication.class);
+            medication.setObsUuid(obs.getUuid());
+            if (obs.getCreatorUuid() == null) {
+                obs.setCreatorUuid(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID());
+            }
+            medication.setCreatorName(new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid()));
+            medication.setCreatedAt(obs.createdDate());
 
             String status = medicationData.getInfusionStatus();
             String statusAdminister = "";
@@ -385,13 +393,13 @@ public class ParamInfo implements Serializable {
             } else if (status.equalsIgnoreCase("stop")) {
                 statusAdminister = "Stopped";
             }
-            Log.d("TAG", "getMedication: conceptUUID : " + conceptUUID);
+            Log.d("TAG", "getMedication: conceptUUID : " + obs.getConceptuuid());
             medicationData.setInfusionStatus(statusAdminister);
             //medication.setInfusionStatus(statusAdminister);
 
             //medication = getMedication();
-            if (conceptUUID != null && !conceptUUID.isEmpty()) {
-                if (conceptUUID.equals(UuidDictionary.IV_FLUIDS)) {
+            if (obs.getConceptuuid() != null && !obs.getConceptuuid().isEmpty()) {
+                if (obs.getConceptuuid().equals(UuidDictionary.IV_FLUIDS)) {
                     String ivFluidType = medication.getType();
 
                     if (ivFluidType.equals("Ringer Lactate") || ivFluidType.equals("Normal Saline") || ivFluidType.equals("Dextrose 5% (D5)")) {
@@ -402,7 +410,7 @@ public class ParamInfo implements Serializable {
                     }
                     getMedicationsForFluid().add(medication);
 
-                } else if (conceptUUID.equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
+                } else if (obs.getConceptuuid().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
                     String strength = medicationData.getStrength() + " (U/L)";
                     medicationData.setStrength(strength);
                     medication.setStrength(strength);
@@ -487,18 +495,21 @@ public class ParamInfo implements Serializable {
         return plansList;
     }
 
-    public void collectAllPlansInList(String obsUuid, String value, String createdDate) {
-        Log.d("TAG", "collectAllPlansInList:createdDate: " + createdDate);
-        Log.d("TAG", "collectAllPlansInList:value: " + value);
+    public void collectAllPlansInList(ObsDTO obs) {
+        Log.d("TAG", "collectAllPlansInList:createdDate: " + obs.createdDate());
+        Log.d("TAG", "collectAllPlansInList:value: " + obs.getValue());
 
         try {
             ObsDTO plan = new ObsDTO();
-            Log.d("TAG", "collectAllPlansInList: obsUuid: " + obsUuid);
-            plan.setUuid(obsUuid);
-            plan.setValue(value);
+            Log.d("TAG", "collectAllPlansInList: obsUuid: " + obs.getUuid());
+            plan.setUuid(obs.getUuid());
+            plan.setValue(obs.getValue());
             //String createdAt = formatDateTimeNew(createdDate);
-            plan.setCreatedDate(createdDate);
-            String creatorName = new ObsDAO().getCreatorNameByObsUuid(obsUuid);
+            plan.setCreatedDate(obs.createdDate());
+            if (obs.getCreatorUuid() == null) {
+                obs.setCreatorUuid(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID());
+            }
+            String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
             plan.setName(creatorName);
             getPlans().add(plan);
         } catch (Exception e) {
@@ -512,7 +523,7 @@ public class ParamInfo implements Serializable {
         ArrayList<ObsDTO> obsList = new ArrayList<>();
         for (ObsDTO obsDTO : getPlans()) {
 
-            obsList.add(obsDTO.toObs(encounterId, creator, obsDTO.getCreatedDate(true), UuidDictionary.PLAN));
+            obsList.add(obsDTO.toObs(encounterId, creator, obsDTO.createdDate(), UuidDictionary.PLAN));
         }
         return obsList;
     }
@@ -540,16 +551,19 @@ public class ParamInfo implements Serializable {
         return deletedPlans;
     }
 
-    public void collectAllAssessmentsInList(String obsUuid, String value, String createdDate) {
-        Log.d("TAG", "collectAllAssessmentsInList:createdDate: " + createdDate);
+    public void collectAllAssessmentsInList(ObsDTO obs) {
+        Log.d("TAG", "collectAllAssessmentsInList:createdDate: " + obs.createdDate());
         try {
             ObsDTO assessment = new ObsDTO();
-            Log.d("TAG", "collectAllAssessmentsInList: obsUuid: " + obsUuid);
-            assessment.setUuid(obsUuid);
-            assessment.setValue(value);
+            Log.d("TAG", "collectAllAssessmentsInList: obsUuid: " + obs.getValue());
+            assessment.setUuid(obs.getUuid());
+            assessment.setValue(obs.getValue());
             //String createdAt = formatDateTimeNew(createdDate);
-            assessment.setCreatedDate(createdDate);
-            String creatorName = new ObsDAO().getCreatorNameByObsUuid(obsUuid);
+            assessment.setCreatedDate(obs.createdDate());
+            if (obs.getCreatorUuid() == null) {
+                obs.setCreatorUuid(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID());
+            }
+            String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
             assessment.setName(creatorName);
             getAssessments().add(assessment);
         } catch (Exception e) {
@@ -572,7 +586,7 @@ public class ParamInfo implements Serializable {
         ArrayList<ObsDTO> obsList = new ArrayList<>();
         for (ObsDTO obsDTO : getAssessments()) {
 
-            obsList.add(obsDTO.toObs(encounterId, creator, obsDTO.getCreatedDate(true), UuidDictionary.ASSESSMENT));
+            obsList.add(obsDTO.toObs(encounterId, creator, obsDTO.createdDate(), UuidDictionary.ASSESSMENT));
         }
         return obsList;
     }

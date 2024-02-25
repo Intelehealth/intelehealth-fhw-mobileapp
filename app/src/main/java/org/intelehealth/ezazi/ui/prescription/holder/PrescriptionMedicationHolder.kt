@@ -11,7 +11,10 @@ import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
  **/
 class PrescriptionMedicationHolder(val binding: RowItemPrescriptionMedicationBinding) :
     BaseViewHolder(binding.root) {
-    fun bind(medication: Medication) {
+    fun bind(medication: Medication, allowAdminister: Boolean) {
         binding.medication = medication
+        binding.allowAdminister = allowAdminister
+        binding.btnMedicationAdminister.tag = medication
+        binding.btnMedicationAdminister.setOnClickListener(this)
     }
 }

@@ -521,7 +521,8 @@ public class PlanBottomSheetDialog extends BottomSheetDialogFragment implements
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String creatorId = sessionManager.getCreatorID();
 
-        plansPrescriptionList = new PrescriptionRepository(AppConstants.inteleHealthDatabaseHelper.getReadableDatabase()).fetchPlansPrescription(mVisitUUID, creatorId);
+        plansPrescriptionList = new PrescriptionRepository(AppConstants.inteleHealthDatabaseHelper.getReadableDatabase())
+                .fetchPlansPrescription(mVisitUUID);
         LinkedList<ItemHeader> linkedListPlansPrescription = new LinkedList<>(plansPrescriptionList);
         Log.d(TAG, "loadPrescriptions: plansPrescriptionList size: " + plansPrescriptionList);
         if (plansPrescriptionList != null && plansPrescriptionList.size() > 0) {

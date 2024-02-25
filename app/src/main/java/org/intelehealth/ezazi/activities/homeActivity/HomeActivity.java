@@ -127,6 +127,7 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.StringUtils;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
@@ -1254,8 +1255,8 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         TextView tvDecisionPending = findViewById(R.id.tvDecisionPendingVisitLabel);
         if (db != null && db.isOpen()) {
             VisitRepository visitRepository = new VisitRepository(db);
-            List<PatientDTO> outcomePendingVisits = visitRepository.getOutcomePendingVisits(0, 10, sessionManager.getProviderID());
-            String decisionPending = getString(R.string.decision_pending, outcomePendingVisits.size());
+            int count = visitRepository.getOutcomePendingVisitsCount(sessionManager.getProviderID());
+            String decisionPending = getString(R.string.decision_pending, count);
             tvDecisionPending.setText(decisionPending);
         }
 

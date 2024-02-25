@@ -24,9 +24,14 @@ import java.util.LinkedList;
 public class MedicineAdapter extends CategoryHeaderAdapter {
     public static final int MEDICINE = 10003;
     protected BaseViewHolder.ViewHolderClickListener clickListener;
+    protected boolean allowAdminister = false;
     private int expandedItemPosition = -1;
 
     private PartogramConstants.AccessMode accessMode;
+
+    public void setAllowAdminister(boolean allowAdminister) {
+        this.allowAdminister = allowAdminister;
+    }
 
     public void setAccessMode(PartogramConstants.AccessMode accessMode) {
         this.accessMode = accessMode;
@@ -72,7 +77,7 @@ public class MedicineAdapter extends CategoryHeaderAdapter {
         if (holder instanceof MedicineViewHolder medicineViewHolder && getItem(position) instanceof Medicine) {
             if (clickListener != null) medicineViewHolder.setViewClickListener(clickListener);
             medicineViewHolder.setAccessMode(accessMode);
-            medicineViewHolder.bind((Medicine) getItem(position));
+            medicineViewHolder.bind((Medicine) getItem(position), allowAdminister);
             medicineViewHolder.expandDetails(expandedItemPosition == position);
         } else super.onBindViewHolder(holder, position);
     }

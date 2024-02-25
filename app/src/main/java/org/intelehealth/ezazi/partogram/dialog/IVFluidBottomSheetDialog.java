@@ -303,7 +303,7 @@ public class IVFluidBottomSheetDialog extends BottomSheetDialogFragment implemen
             prescribedIvFluids = new ArrayList<>();
             for (int i = 0; i < mPrescribedIvFluidsList.size(); i++) {
                 ObsDTO obsDTO = mPrescribedIvFluidsList.get(i);
-                convertToPrescribedIvFluid(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.getCreatedDate(true));
+                convertToPrescribedIvFluid(obsDTO.getUuid(), obsDTO.getValue(), obsDTO.createdDate());
             }
             setPrescribedMedicines(prescribedIvFluids);
             binding.includedPrescribedIvFluids.rvPrescribedIvFluids.setLayoutManager(new LinearLayoutManager(requireContext()));

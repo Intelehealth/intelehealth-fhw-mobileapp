@@ -221,7 +221,7 @@ public class Medicine implements Serializable, ItemHeader {
         ObsDTO obs = new ObsDTO();
         obs.setConceptuuid(UuidDictionary.MEDICINE);
         obs.setValue(toDBFormat().trim());
-        obs.setCreator(creator);
+        obs.setCreatorUuid(creator);
         obs.setEncounteruuid(encounterId);
         obs.setCreatedDate(createdDate);
         Log.e("Medicine", "toObs:medicine " + new Gson().toJson(obs));

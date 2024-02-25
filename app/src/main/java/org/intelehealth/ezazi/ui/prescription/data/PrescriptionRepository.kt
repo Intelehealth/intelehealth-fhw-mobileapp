@@ -11,6 +11,8 @@ import org.intelehealth.ezazi.partogram.model.Medication
 import org.intelehealth.ezazi.partogram.model.Medicine
 import org.intelehealth.ezazi.partogram.model.ParamInfo
 import org.intelehealth.ezazi.ui.elcg.model.CategoryHeader
+import org.intelehealth.ezazi.ui.prescription.fragment.PrescriptionFragment
+import org.intelehealth.ezazi.ui.prescription.fragment.PrescriptionFragment.PrescriptionType
 import org.intelehealth.klivekit.chat.model.ItemHeader
 import java.util.LinkedList
 
@@ -20,12 +22,97 @@ import java.util.LinkedList
  * Mob   : +919727206702
  **/
 class PrescriptionRepository(val database: SQLiteDatabase) {
-    fun fetchPrescription(visitId: String, creatorId: String): List<ItemHeader> {
-        PrescriptionQueryBuilder().buildPrescriptionQuery(visitId, creatorId).apply {
+    fun fetchPrescription(
+        visitId: String,
+        type: PrescriptionFragment.PrescriptionType,
+        allowAdminister: Boolean
+    ): List<ItemHeader> {
+        return when (type) {
+            PrescriptionType.FULL -> fetchFullPrescription(visitId)
+            PrescriptionType.PLAN -> fetchPlansPrescription(visitId)
+            PrescriptionType.ASSESSMENT -> fetchAssessmentPrescription(visitId)
+            PrescriptionType.MEDICINE -> fetchMedicinePrescription(visitId)
+            PrescriptionType.OXYTOCIN -> fetchOxytocinIvFluidPrescription(
+                visitId,
+                Params.PRESCRIBED_OXYTOCIN.conceptId
+            )
+
+            PrescriptionType.IV_FLUID -> fetchOxytocinIvFluidPrescription(
+                visitId,
+                Params.PRESCRIBED_IV_FLUID.conceptId
+            )
+        }
+//        PrescriptionQueryBuilder().buildPrescriptionQuery(visitId).apply {
+//            Timber.d { "Prescription Query => $this" }
+//            val cursor = database.rawQuery(this, null)
+//            retrievePrescription(cursor).apply {
+//                return obsMappingToPrescription(this)
+//            }
+//        }
+    }
+
+    private fun fetchFullPrescription(visitId: String): List<ItemHeader> {
+        PrescriptionQueryBuilder().buildPrescriptionQuery(visitId).apply {
             Timber.d { "Prescription Query => $this" }
             val cursor = database.rawQuery(this, null)
             retrievePrescription(cursor).apply {
                 return obsMappingToPrescription(this)
+            }
+        }
+    }
+
+    fun fetchPlansPrescription(visitId: String): List<ItemHeader> {
+        PrescriptionQueryBuilder().buildSingleItemPrescriptionQuery(visitId, Params.PLAN.conceptId)
+            .apply {
+                Timber.d { "Prescription Query => $this" }
+                val cursor = database.rawQuery(this, null)
+                retrievePrescription(cursor).apply {
+                    val prescriptions = LinkedList<ItemHeader>()
+                    return obsMappingToPlanAndAssessmentPrescription(this, prescriptions) {}
+                }
+            }
+    }
+
+    fun fetchAssessmentPrescription(visitId: String): List<ItemHeader> {
+        PrescriptionQueryBuilder().buildSingleItemPrescriptionQuery(
+            visitId,
+            Params.ASSESSMENT.conceptId
+        ).apply {
+            Timber.d { "Assessment presc Query => $this" }
+            val cursor = database.rawQuery(this, null)
+            retrievePrescription(cursor).apply {
+                val prescriptions = LinkedList<ItemHeader>()
+                return obsMappingToPlanAndAssessmentPrescription(this, prescriptions) {}
+            }
+        }
+    }
+
+    fun fetchMedicinePrescription(visitId: String): List<ItemHeader> {
+        PrescriptionQueryBuilder().buildSingleItemPrescriptionQuery(
+            visitId,
+            Params.PRESCRIBED_MEDICINE.conceptId
+        ).apply {
+            Timber.d { "MEDICINE presc Query => $this" }
+            val cursor = database.rawQuery(this, null)
+            retrievePrescription(cursor).apply {
+                val prescriptions = LinkedList<ItemHeader>()
+                mappingMedicines(this, prescriptions) { }
+                return prescriptions
+            }
+        }
+    }
+
+    fun fetchOxytocinIvFluidPrescription(visitId: String, conceptId: String): List<ItemHeader> {
+        PrescriptionQueryBuilder().buildSingleItemPrescriptionQuery(
+            visitId,
+            conceptId
+        ).apply {
+            Timber.d { "Oxytocin Iv Fluid presc Query => $this" }
+            val cursor = database.rawQuery(this, null)
+            retrievePrescription(cursor).apply {
+                val prescriptions = LinkedList<ItemHeader>()
+                mappingOxytocinIvFluid(this, prescriptions) { }
+                return prescriptions
             }
         }
     }
@@ -55,99 +142,107 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
         Timber.d { "Prescription => ${Gson().toJson(obsList)}" }
         val prescriptions = LinkedList<ItemHeader>()
         val plans = filterObsByConceptId(Params.PLAN.conceptId, obsList)
+        val assessments = filterObsByConceptId(Params.ASSESSMENT.conceptId, obsList)
         val medicines = filterObsByConceptId(Params.PRESCRIBED_MEDICINE.conceptId, obsList)
         val oxytocins = filterObsByConceptId(Params.PRESCRIBED_OXYTOCIN.conceptId, obsList)
         val ivFluids = filterObsByConceptId(Params.PRESCRIBED_IV_FLUID.conceptId, obsList)
 
         if (plans.isNotEmpty()) {
-            prescriptions.add(CategoryHeader(R.string.lbl_plan))
-            obsMappingToPlanPrescription(plans, prescriptions)
+            obsMappingToPlanAndAssessmentPrescription(plans, prescriptions) {
+                prescriptions.add(CategoryHeader(R.string.lbl_plan))
+            }
             Timber.d { "Plan ${Gson().toJson(plans)}" }
         }
 
-        if (medicines.isNotEmpty()) {
-            medicines.map {
-                Medicine().apply {
-                    obsUuid = it.uuid
-                    creatorName = it.name.let { name ->
-                        if (name.contains("Dr").not()) return@let "Dr.$name"
-                        else return@let name
-                    }
-                    createdAt = it.getCreatedDate(false)
-                    dbFormatToMedicineObject(it.value)
-                }
-            }.apply {
-                if (this.isNotEmpty()) {
-                    prescriptions.add(CategoryHeader(R.string.lbl_medicine))
-                    prescriptions.addAll(this)
-                    Timber.d { "Medicines ${Gson().toJson(this)}" }
-                }
+        if (assessments.isNotEmpty()) {
+            obsMappingToPlanAndAssessmentPrescription(assessments, prescriptions) {
+                prescriptions.add(CategoryHeader(R.string.lbl_assessment))
             }
+            Timber.d { "Assessments ${Gson().toJson(assessments)}" }
+        }
+
+        if (medicines.isNotEmpty()) {
+            mappingMedicines(medicines, prescriptions) {
+                prescriptions.add(CategoryHeader(R.string.lbl_medicine))
+            }
+//            medicines.map {
+//                Medicine().apply {
+//                    obsUuid = it.uuid
+//                    creatorName = it.name.let { name ->
+//                        if (name.contains("Dr").not()) return@let "Dr.$name"
+//                        else return@let name
+//                    }
+//                    createdAt = it.getCreatedDate(false)
+//                    dbFormatToMedicineObject(it.value)
+//                }
+//            }.apply {
+//                if (this.isNotEmpty()) {
+//                    prescriptions.add(CategoryHeader(R.string.lbl_medicine))
+//                    prescriptions.addAll(this)
+//                    Timber.d { "Medicines ${Gson().toJson(this)}" }
+//                }
+//            }
         }
 
         if (oxytocins.isNotEmpty()) {
-            oxytocins.filter {
-                it.value.isNotEmpty() && it.value.equals(ParamInfo.RadioOptions.NO.name).not()
-            }.map {
-                Gson().fromJson(it.value, Medication::class.java).apply {
-                    creatorName = it.name.let { name ->
-                        if (name.contains("Dr").not()) return@let "Dr.$name"
-                        else return@let name
-                    }
-                    createdAt = it.getCreatedDate(false)
-                    return@apply
-                }
-            }.apply {
-                if (this.isNotEmpty()) {
-                    prescriptions.add(CategoryHeader(R.string.lbl_oxytocin))
-                    prescriptions.addAll(this)
-                    Timber.d { "oxytocin ${Gson().toJson(obsList)}" }
-                }
+            mappingOxytocinIvFluid(oxytocins, prescriptions) {
+                prescriptions.add(CategoryHeader(R.string.lbl_oxytocin))
             }
+//            oxytocins.filter {
+//                it.value.isNotEmpty() && it.value.equals(ParamInfo.RadioOptions.NO.name).not()
+//            }.map {
+//                Gson().fromJson(it.value, Medication::class.java).apply {
+//                    creatorName = it.name.let { name ->
+//                        if (name.contains("Dr").not()) return@let "Dr.$name"
+//                        else return@let name
+//                    }
+//                    createdAt = it.getCreatedDate(false)
+//                    return@apply
+//                }
+//            }.apply {
+//                if (this.isNotEmpty()) {
+//                    prescriptions.add(CategoryHeader(R.string.lbl_oxytocin))
+//                    prescriptions.addAll(this)
+//                    Timber.d { "oxytocin ${Gson().toJson(obsList)}" }
+//                }
+//            }
         }
 //
         if (ivFluids.isNotEmpty()) {
-            ivFluids.filter {
-                it.value.isNotEmpty() && it.value.equals(ParamInfo.RadioOptions.NO.name).not()
-            }.map {
-                Gson().fromJson(it.value, Medication::class.java).apply {
-                    creatorName = it.name.let { name ->
-                        if (name.contains("Dr").not()) return@let "Dr.$name"
-                        else return@let name
-                    }
-                    createdAt = it.getCreatedDate(false)
-                    return@apply
-                }
-            }.apply {
-                if (this.isNotEmpty()) {
-                    prescriptions.add(CategoryHeader(R.string.lbl_iv_fluid))
-                    prescriptions.addAll(this)
-                    Timber.d { "IV Fluid ${Gson().toJson(this)}" }
-                }
+            mappingOxytocinIvFluid(ivFluids, prescriptions) {
+                prescriptions.add(CategoryHeader(R.string.lbl_iv_fluid))
             }
+//            ivFluids.filter {
+//                it.value.isNotEmpty() && it.value.equals(ParamInfo.RadioOptions.NO.name).not()
+//            }.map {
+//                Gson().fromJson(it.value, Medication::class.java).apply {
+//                    creatorName = it.name.let { name ->
+//                        if (name.contains("Dr").not()) return@let "Dr.$name"
+//                        else return@let name
+//                    }
+//                    createdAt = it.getCreatedDate(false)
+//                    return@apply
+//                }
+//            }.apply {
+//                if (this.isNotEmpty()) {
+//                    prescriptions.add(CategoryHeader(R.string.lbl_iv_fluid))
+//                    prescriptions.addAll(this)
+//                    Timber.d { "IV Fluid ${Gson().toJson(this)}" }
+//                }
+//            }
         }
 
         return prescriptions
     }
 
-    fun fetchPlansPrescription(visitId: String, creatorId: String): List<ItemHeader> {
-        PrescriptionQueryBuilder().buildPlansPrescriptionQuery(visitId, creatorId).apply {
-            Timber.d { "Prescription Query => $this" }
-            val cursor = database.rawQuery(this, null)
-            retrievePrescription(cursor).apply {
-                val plan =  filterObsByConceptId(Params.PLAN.conceptId, this)
-                val prescriptions = LinkedList<ItemHeader>()
-                return obsMappingToPlanPrescription(plan, prescriptions)
-            }
-        }
-    }
-
-    private fun obsMappingToPlanPrescription(
+    private fun obsMappingToPlanAndAssessmentPrescription(
         plans: List<ObsDTO>,
-        prescriptions: LinkedList<ItemHeader>
+        prescriptions: LinkedList<ItemHeader>,
+        header: () -> Unit
     ): List<ItemHeader> {
         Timber.d { "Prescription plan => ${Gson().toJson(plans)}" }
         if (plans.isNotEmpty()) {
+            header.invoke()
             prescriptions.addAll(plans.map {
                 it.noOfLine = 100
                 if (it.name.contains("Dr").not()) it.name = "Dr.${it.name}"
@@ -159,14 +254,53 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
         return prescriptions
     }
 
-    fun fetchAssessmentPrescription(visitId: String, creatorId: String): List<ItemHeader> {
-        PrescriptionQueryBuilder().buildAssessmentPrescriptionQuery(visitId, creatorId).apply {
-            Timber.d { "Assessment presc Query => $this" }
-            val cursor = database.rawQuery(this, null)
-            retrievePrescription(cursor).apply {
-                val plan =  filterObsByConceptId(Params.ASSESSMENT.conceptId, this)
-                val prescriptions = LinkedList<ItemHeader>()
-                return obsMappingToPlanPrescription(plan, prescriptions)
+    private fun mappingMedicines(
+        medicines: List<ObsDTO>,
+        prescriptions: LinkedList<ItemHeader>,
+        header: () -> Unit
+    ) {
+        if (medicines.isNotEmpty()) {
+            medicines.map {
+                Medicine().apply {
+                    obsUuid = it.uuid
+                    creatorName = it.name.let { name ->
+                        if (name.contains("Dr").not()) return@let "Dr.$name"
+                        else return@let name
+                    }
+                    createdAt = it.createdDate()
+                    dbFormatToMedicineObject(it.value)
+                }
+            }.apply {
+                if (this.isNotEmpty()) {
+                    header.invoke()
+                    prescriptions.addAll(this)
+                    Timber.d { "Medicines ${Gson().toJson(this)}" }
+                }
+            }
+        }
+    }
+
+    private fun mappingOxytocinIvFluid(
+        obsList: List<ObsDTO>,
+        prescriptions: LinkedList<ItemHeader>,
+        header: () -> Unit
+    ) {
+        obsList.filter {
+            it.value.isNotEmpty() && it.value.equals(ParamInfo.RadioOptions.NO.name).not()
+        }.map {
+            Gson().fromJson(it.value, Medication::class.java).apply {
+                creatorName = it.name.let { name ->
+                    if (name.contains("Dr").not()) return@let "Dr.$name"
+                    else return@let name
+                }
+                createdAt = it.createdDate()
+                return@apply
+            }
+        }.apply {
+            if (this.isNotEmpty()) {
+                header.invoke()
+                prescriptions.addAll(this)
+                Timber.d { "oxytocin ${Gson().toJson(obsList)}" }
             }
         }
     }

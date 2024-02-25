@@ -1103,4 +1103,5 @@
     <string name="lbl_medicine">Medicine</string>
     <string name="lbl_oxytocin">Oxytocin</string>
     <string name="lbl_iv_fluid">IV Fluid</string>
+    <string name="action_hide">Hide</string>
 </resources>

@@ -65,6 +65,7 @@ import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
 import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.visit.activity.VisitLabourActivity;
+import org.intelehealth.ezazi.ui.visit.data.VisitRepository;
 import org.intelehealth.ezazi.ui.visit.dialog.CompleteVisitOnEnd2StageDialog;
 import org.intelehealth.ezazi.ui.visit.dialog.CompleteVisitOnEndStage1Dialog;
 import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
@@ -177,6 +178,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_timeline_ezazi);
         super.onCreate(savedInstanceState);
+        setupActionBar();
         encounterDAO = new EncounterDAO();
 
         initUI();
@@ -198,7 +200,10 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         fabv.setOnClickListener(view -> {
             showDoctorSelectionDialog(false);
         });
-        fabPrescription.setOnClickListener(view -> PrescriptionActivity.startPrescriptionActivity(TimelineVisitSummaryActivity.this, visitUuid));
+        fabPrescription.setOnClickListener(view -> PrescriptionActivity.startPrescriptionActivity(
+                TimelineVisitSummaryActivity.this,
+                visitUuid)
+        );
     }
 
     @Override
@@ -468,37 +473,40 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         mCountDownTimer.cancel();
         mCountDownTimer.start();
-       //manageVisibilityOfPendingFlag();
+        //manageVisibilityOfPendingFlag();
 
 
     }
 
     private void manageVisibilityOfPendingFlag() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(!fromScreen.isEmpty() && fromScreen.equals("searchPatient")){
-                    isDecisionPending = new VisitAttributeListDAO().checkIsVisitOutcomePending(visitUuid);
-                }
-            }
-        });
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "manageVisibilityOfPendingFlag: isDecisionPending:"+isDecisionPending);
-                TextView tvPendingDecision = findViewById(R.id.tv_message_pending_outcome);
-                layoutPendingFlag = findViewById(R.id.layout_decision_pending);
-                ImageView ivCloseMessage = findViewById(R.id.iv_close_decision_pending);
-                layoutPendingFlag.setVisibility(isDecisionPending ? View.VISIBLE : View.GONE);
-                ivCloseMessage.setOnClickListener(view -> layoutPendingFlag.setVisibility(View.GONE));
-                if (stageNo == 1) {
-                    tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_1));
-                } else if (stageNo == 2) {
-                    tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_2));
-                }
-            }
-        });
+        VisitRepository repository = new VisitRepository(AppConstants.inteleHealthDatabaseHelper.getReadableDatabase());
+        boolean status = repository.getOutcomePendingStatus(visitUuid);
+        TextView tvPendingDecision = findViewById(R.id.tv_message_pending_outcome);
+        layoutPendingFlag = findViewById(R.id.layout_decision_pending);
+        MaterialButton ivCloseMessage = findViewById(R.id.iv_close_decision_pending);
+        layoutPendingFlag.setVisibility(status ? View.VISIBLE : View.GONE);
+        ivCloseMessage.setOnClickListener(view -> layoutPendingFlag.setVisibility(View.GONE));
+        if (stageNo == 1) {
+            tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_1));
+        } else if (stageNo == 2) {
+            tvPendingDecision.setText(getResources().getString(R.string.outcome_decision_stage_2));
+        }
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (!fromScreen.isEmpty() && fromScreen.equals("searchPatient")) {
+//                    isDecisionPending = new VisitAttributeListDAO().checkIsVisitOutcomePending(visitUuid);
+//                }
+//            }
+//        });
+//
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.d(TAG, "manageVisibilityOfPendingFlag: isDecisionPending:" + isDecisionPending);
+//
+//            }
+//        });
 
     }
 

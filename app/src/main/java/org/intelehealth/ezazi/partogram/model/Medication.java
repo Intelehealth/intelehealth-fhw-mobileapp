@@ -133,7 +133,7 @@ public class Medication implements Serializable, ItemHeader {
     }
 
     public String dateWithDrName() {
-        return creatorName + " " + createdAt;
+        return creatorName + " " + DateTimeUtils.utcToLocalDate(createdAt, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
     }
 
     public String content() {

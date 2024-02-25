@@ -72,6 +72,17 @@ public class PatientDataBinder {
         return patients;
     }
 
+    public int getOutcomePendingCount(Cursor cursor) {
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                count = cursor.getInt(cursor.getColumnIndexOrThrow("record"));
+            } while (cursor.moveToNext());
+        }
+
+        return count;
+    }
+
     public List<PatientDTO> completedVisits(Cursor searchCursor) {
         List<PatientDTO> patients = new ArrayList<>();
         if (searchCursor.moveToFirst()) {
@@ -117,5 +128,9 @@ public class PatientDataBinder {
         }
 
         return patients;
+    }
+
+    public boolean getOutcomePendingStatus(Cursor cursor) {
+        return cursor.getCount() > 0;
     }
 }

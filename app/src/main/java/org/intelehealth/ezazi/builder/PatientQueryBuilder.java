@@ -74,7 +74,7 @@ public class PatientQueryBuilder extends QueryBuilder {
                 "(SELECT uuid FROM tbl_encounter where visituuid = V.uuid and voided IN ('0', 'false', 'FALSE') " +
                 "AND encounter_type_uuid != '" + ENCOUNTER_VISIT_COMPLETE + "' ORDER BY encounter_time DESC limit 1) " +
                 "as latestEncounterId,  (SELECT value FROM tbl_visit_attribute where " +
-                "visit_attribute_type_uuid ='" +  DECISION_PENDING + "' AND visit_uuid = V.uuid) as outcomePending, " +
+                "visit_attribute_type_uuid ='" + DECISION_PENDING + "' AND visit_uuid = V.uuid) as outcomePending, " +
                 getCurrentStageCase())
                 .from("tbl_visit  V")
                 .join("LEFT OUTER JOIN tbl_patient P ON P.uuid = V.patientuuid " +
@@ -161,6 +161,7 @@ public class PatientQueryBuilder extends QueryBuilder {
         Log.e(TAG, "upcomingPatientQuery => " + query);
         return query;
     }
+
     public String outcomePendingPatientQuery(int offset, int limit, String providerId) {
         String query = select("P.date_of_birth, P.uuid, V.enddate, V. startdate,V.uuid as visitId, P.openmrs_id, P.dateCreated, " +
                 "CASE WHEN middle_name IS NULL THEN first_name || ' ' || last_name " +
@@ -178,6 +179,18 @@ public class PatientQueryBuilder extends QueryBuilder {
                 .offset(offset)
                 .build();
         Log.e(TAG, "outcomePendingPatientQuery => " + query);
+        return query;
+    }
+
+    public String outcomePendingPatientCountQuery(String providerId) {
+        String query = select("COUNT(*) as record")
+                .from(" tbl_visit V ")
+                .join(" LEFT JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid ")
+                .where(" V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
+                        "AND V.voided IN ('0', 'false', 'FALSE') AND VA.value = '" + providerId + "' " +
+                        "AND (SELECT value FROM tbl_visit_attribute where visit_attribute_type_uuid = '" + DECISION_PENDING + "' AND visit_uuid = V.uuid) = 'true'")
+                .build();
+        Log.e(TAG, "outcomePendingPatientCountQuery => " + query);
         return query;
     }
 
@@ -201,6 +214,14 @@ public class PatientQueryBuilder extends QueryBuilder {
                 .offset(offset)
                 .build();
         Log.e(TAG, "completedVisitPatientQuery => " + query);
+        return query;
+    }
+
+    public String outcomePendingStatusQuery(String visitId) {
+        String query = select(" value ")
+                .from(" tbl_visit_attribute ")
+                .where(" visit_attribute_type_uuid = '" + DECISION_PENDING + "' AND visit_uuid = '" + visitId + "' AND value = 'true'")
+                .build();
         return query;
     }
 }

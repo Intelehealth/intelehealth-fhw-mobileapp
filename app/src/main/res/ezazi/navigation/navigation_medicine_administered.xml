@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_medicine_administered"
+    app:startDestination="@id/fragmentAdministered">
+
+    <fragment
+        android:id="@+id/fragmentAdministered"
+        android:name="org.intelehealth.ezazi.ui.prescription.fragment.AdministeredFragment"
+        android:label="@string/administer"
+        tools:layout="@layout/fragment_administered">
+        <action
+            android:id="@+id/action_new_medicine"
+            app:destination="@id/fragmentNewMedicine" />
+        <action
+            android:id="@+id/action_view_prescription"
+            app:destination="@id/fragmentPrescription" />
+        <action
+            android:id="@+id/action_new_plan"
+            app:destination="@id/fragmentNewPlan" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentNewMedicine"
+        android:name="org.intelehealth.ezazi.ui.prescription.fragment.NewMedicineFragment"
+        android:label="@string/lbl_add_new_medicine"
+        tools:layout="@layout/fragment_new_medicine">
+        <argument
+            android:name="medicine"
+            app:argType="org.intelehealth.ezazi.partogram.model.Medicine"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentNewPlan"
+        android:name="org.intelehealth.ezazi.ui.prescription.fragment.NewPlanFragment"
+        android:label="@string/lbl_add_new_medicine"
+        tools:layout="@layout/fragment_new_plan">
+        <argument
+            android:name="plan"
+            app:argType="org.intelehealth.ezazi.models.dto.ObsDTO"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentPrescription"
+        android:name="org.intelehealth.ezazi.ui.prescription.fragment.PrescriptionFragment"
+        android:label="@string/prescription"
+        tools:layout="@layout/fragment_commen_listview">
+        <argument
+            android:name="prescription_arg"
+            app:argType="org.intelehealth.ezazi.ui.prescription.model.PrescriptionArg" />
+
+        <action
+            android:id="@+id/action_new_medicine"
+            app:destination="@id/fragmentNewMedicine" />
+
+    </fragment>
+</navigation>

@@ -1,15 +1,18 @@
 package org.intelehealth.ezazi.models.dto;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class PatientDTO implements Serializable {
+public class PatientDTO implements Serializable, ItemHeader {
 
     @SerializedName("uuid") //for patient uuid
     @Expose
@@ -326,5 +329,16 @@ public class PatientDTO implements Serializable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    @Override
+    public boolean isHeader() {
+        return false;
+    }
+
+    @NonNull
+    @Override
+    public String createdDate() {
+        return regDate();
     }
 }

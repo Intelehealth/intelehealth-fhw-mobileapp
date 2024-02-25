@@ -1,0 +1,10 @@
+21 Feb 2024
+===========
+1 - Implement same adapter for administer and prescription of oxytocin, ivfluid,
+    medicine, plan and assessment - DONE
+2 - Resolve bottom sheet recyclerview scrolling issue - DONE
+3 - Redesign outcome pending view with profile picture
+4 - Design wireframe for upcoming, completed visit flow
+5 - Add upcoming, completed visit view with outcome pending
+6 - Code cleanup to push in master
+7 - Redesign outcome pending alert view in timeline - DONE

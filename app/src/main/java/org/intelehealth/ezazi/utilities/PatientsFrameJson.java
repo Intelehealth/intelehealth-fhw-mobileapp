@@ -248,8 +248,8 @@ public class PatientsFrameJson {
                         ob.setValue(obs.getValue());
                         ob.setComment(obs.getComment());
                         ob.setVoided(obs.getVoided());
-                        Log.d(TAG, "fetchEncounterObs: obs.getCreatedDate : "+obs.getCreatedDate(true));
-                        ob.setCreatedDate(obs.getCreatedDate(true));
+                        Log.d(TAG, "fetchEncounterObs: obs.getCreatedDate : "+obs.createdDate());
+                        ob.setCreatedDate(obs.createdDate());
                         Log.d(TAG, "fetchEncounterObs: date in push : " + ob.getCreatedDate());
                         //ob.setCreatedDate(AppConstants.dateAndTimeUtils.currentDateTime());
                         //ob.setCreatedDate(DateTimeUtils.convertISTDateToISO8601(obs.getCreatedDate()));//send obs date time here

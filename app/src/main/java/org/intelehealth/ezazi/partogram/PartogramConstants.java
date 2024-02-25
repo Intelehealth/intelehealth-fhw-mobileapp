@@ -46,6 +46,8 @@ public class PartogramConstants {
 //            "Initials"
     };
 
+    public static String[] infusionStatus = new String[]{"Started", "Continued", "Stopped"};
+
     public enum Params {
         COMPANION("Companion", "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
         PAIN_RELIEF("Pain relief", "9d313f72-538f-11e6-9cfe-86f436325720"),
@@ -325,7 +327,7 @@ public class PartogramConstants {
         paramInfo.setParamName("Oxytocin (U/L, drops/min)");
         // paramInfo.setParamDateType(INPUT_TXT_TYPE);
         paramInfo.setParamDateType(RADIO_SELECT_TYPE);
-        paramInfo.setStatus(new String[]{"Started", "Continued", "Stopped"});
+        paramInfo.setStatus(infusionStatus);
         paramInfo.setConceptUUID("9d316d82-538f-11e6-9cfe-86f436325720");
         //paramInfo.setOnlyOneHourField(true);
         paramInfo.setEachEncounterField(true);
@@ -350,7 +352,7 @@ public class PartogramConstants {
         paramInfo.setRadioOptions(new String[]{"Yes", "No"});
         paramInfo.setOptions(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", "Other IV Fluid*"});
         paramInfo.setValues(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", AppConstants.OTHER_OPTION});
-        paramInfo.setStatus(new String[]{"Started", "Continued", "Stopped"});
+        paramInfo.setStatus(infusionStatus);
         paramInfo.setConceptUUID("98c5881f-b214-4597-83d4-509666e9a7c9");
         //paramInfo.setOnlyOneHourField(true);
         paramInfo.setEachEncounterField(true);

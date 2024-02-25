@@ -86,6 +86,7 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_search_patient_ezazi);
         super.onCreate(savedInstanceState);
+        setupActionBar();
         dataBinder = new PatientDataBinder();
         progressBar = findViewById(R.id.searchPatientProgress);
         // Get the intent, verify the action and get the query

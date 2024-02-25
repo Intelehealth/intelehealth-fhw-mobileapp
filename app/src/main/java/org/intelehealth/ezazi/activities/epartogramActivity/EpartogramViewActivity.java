@@ -65,6 +65,7 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_epartogram_ezazi);
         super.onCreate(savedInstanceState);
+        setupActionBar();
         sessionManager = new SessionManager(this);
         webArchiveFileDir = FileUtils.getProjectCatchDir(this);
         Timber.tag(TAG).d("webArchive =>%s", webArchiveFileDir);

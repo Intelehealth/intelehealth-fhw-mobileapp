@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="updatePosition"
+            type="Integer" />
+
+        <variable
+            name="plan"
+            type="org.intelehealth.ezazi.models.dto.ObsDTO" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContainerNewPlan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/content_new_medicine_container"
+        android:elevation="@dimen/std_20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clAddNewMedicineInputBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/screen_padding"
+            android:layout_marginBottom="@dimen/screen_padding"
+            android:background="@drawable/container_bg_rounded"
+            android:contentDescription="@string/content_item_container"
+            android:padding="@dimen/screen_container_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                android:id="@+id/etLayoutMotherDeceased"
+                style="@style/Theme.EZazi.Input.Login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/colorLoginInputStroke"
+                app:boxStrokeWidth="@dimen/input_stroke_size"
+                app:counterEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNewPlan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:gravity="start"
+                    android:hint="@string/enter_here"
+                    android:imeOptions="actionDone"
+                    android:inputType="textMultiLine"
+                    android:lineSpacingExtra="@dimen/std_4dp"
+                    android:lines="25"
+                    android:text="@{plan.value}"
+                    android:textColor="@color/colorInputText"
+                    android:textSize="@dimen/input_inner_size" />
+
+            </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddPlanCancel"
+                style="@style/Theme.EZazi.Button.White"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/screen_padding"
+                android:layout_marginEnd="@dimen/screen_container_padding"
+                android:contentDescription="@string/cancel"
+                android:text="@string/cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnAddPlanAdd"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddPlanAdd"
+                style="@style/Theme.EZazi.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/screen_container_padding"
+                android:contentDescription="@string/lbl_add_new_medicine"
+                android:text="@string/lbl_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnAddPlanCancel" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

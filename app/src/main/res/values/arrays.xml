@@ -1619,8 +1619,8 @@
     </string-array>
 
     <string-array name="visit_status_tabs">
-        <item>Upcoming</item>
         <item>Decision Pending</item>
+        <item>Upcoming</item>
         <item>Completed</item>
     </string-array>
 </resources>

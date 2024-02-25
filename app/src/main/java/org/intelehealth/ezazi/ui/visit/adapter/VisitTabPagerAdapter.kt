@@ -22,8 +22,8 @@ class VisitTabPagerAdapter(
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     private val tabs = context.resources.getStringArray(R.array.visit_status_tabs)
     private val fragments = arrayListOf(
-        UpcomingVisitFragment.newInstance(),
         OutcomePendingVisitFragment.newInstance(),
+        UpcomingVisitFragment.newInstance(),
         CompletedVisitFragment.newInstance()
     )
 

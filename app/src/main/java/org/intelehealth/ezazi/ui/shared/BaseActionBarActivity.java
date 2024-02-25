@@ -18,13 +18,8 @@ import java.util.Objects;
  * Mob   : +919727206702
  **/
 public abstract class BaseActionBarActivity extends BaseActivity {
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setupActionBar();
-    }
 
-    private void setupActionBar() {
+    protected void setupActionBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);

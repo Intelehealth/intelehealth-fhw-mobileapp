@@ -89,7 +89,7 @@ public class ObsDAO {
             values.put("value", obsDTOS.getValue());
             values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("created_date", obsDTOS.getObsDateTime());
+            values.put("created_date", obsDTOS.createdDate());
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -119,8 +119,8 @@ public class ObsDAO {
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("created_date", obsDTO.getCreatedDate(true));
+            values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+            values.put("created_date", obsDTO.createdDate());
             values.put("voided", "0");
             values.put("sync", "false");
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -193,8 +193,8 @@ public class ObsDAO {
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("created_date", obsDTO.getCreatedDate(true));
+            values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+            values.put("created_date", obsDTO.createdDate());
             values.put("voided", "0");
             values.put("sync", "false");
 
@@ -249,7 +249,7 @@ public class ObsDAO {
                 values.put("comment", ob.getComment());
                 values.put("value", ob.getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("created_date", ob.getCreatedDate(true));
+                values.put("created_date", ob.createdDate());
                 values.put("voided", "0");
                 values.put("sync", "false");    //Earlier was set to FALSE which caused the issue.
                 insertedCount = db.insert("tbl_obs", null, values);

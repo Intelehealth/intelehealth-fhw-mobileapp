@@ -6,4 +6,5 @@
     <string name="content_new_medicine_container">New Medicine Container</string>
     <string name="content_view_more">View More</string>
     <string name="content_view_prescription">View Prescription</string>
+    <string name="content_patient_profile_picture">Patient profile picture</string>
 </resources>
