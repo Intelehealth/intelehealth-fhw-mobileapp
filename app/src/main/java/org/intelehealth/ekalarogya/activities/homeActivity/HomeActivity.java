@@ -90,6 +90,7 @@ import org.intelehealth.ekalarogya.webrtc.activity.EkalCallLogActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
 import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.fcm.utils.FcmConstants;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
@@ -164,6 +165,7 @@ public class HomeActivity extends BaseActivity {
         setLocale(HomeActivity.this);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
+        checkIfFCMNotificationClicked();
         Log.e(TAG, "onCreate: server url=>" + sessionManager.getServerUrl());
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -307,6 +309,14 @@ public class HomeActivity extends BaseActivity {
         setLocale(HomeActivity.this);
 
         getOnBackPressedDispatcher().addCallback(backPressedCallback);
+    }
+
+    private void checkIfFCMNotificationClicked() {
+        Intent intent = getIntent();
+        String clickAction = intent.getStringExtra(FcmConstants.INTENT_CLICK_ACTION);
+        if (clickAction != null && clickAction.equalsIgnoreCase(FcmConstants.FCM_PLUGIN_HOME_ACTIVITY)) {
+            switchLocation();
+        }
     }
 
     @Override
@@ -832,7 +842,6 @@ public class HomeActivity extends BaseActivity {
 
     private void catchFCMMessageData() {
         if (getIntent().getExtras() != null) {
-            Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
             Bundle remoteMessage = getIntent().getExtras();
             try {
                 if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {

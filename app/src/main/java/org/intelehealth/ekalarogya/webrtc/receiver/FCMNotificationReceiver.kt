@@ -22,6 +22,7 @@ import org.intelehealth.ekalarogya.utilities.SessionManager
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity
 import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.fcm.FcmNotification
+import org.intelehealth.fcm.utils.FcmConstants
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallType
@@ -96,7 +97,15 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
     private fun sendNotification(notification: RemoteMessage.Notification?, context: Context) {
         val messageTitle = notification!!.title
         val messageBody = notification.body
-        val notificationIntent = Intent(context, HomeActivity::class.java)
+        val notificationIntent = Intent(context, HomeActivity::class.java).also {
+            when (notification.clickAction) {
+                FcmConstants.FCM_PLUGIN_HOME_ACTIVITY -> it.putExtra(
+                    FcmConstants.INTENT_CLICK_ACTION,
+                    notification.clickAction
+                )
+            }
+        }
+
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
             context,
