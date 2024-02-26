@@ -1114,4 +1114,29 @@ public class ObsDAO {
         idCursor.close();
         return creatorName;
     }
+
+    public boolean isOxytocinByHWExistInDb(String encounteruuid, String value) {
+        boolean isExist = false;
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ?  AND value =? AND conceptuuid = ?",
+                new String[]{encounteruuid, value, UuidDictionary.OXYTOCIN_UL_DROPS_MIN});
+
+        if (idCursor.getCount() != 0) {
+            isExist = true;
+        }
+        idCursor.close();
+        return isExist;
+    }
+
+    public boolean isIvFluidByHWExistInDb(String encounteruuid, String value) {
+        boolean isExist = false;
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND value =? AND conceptuuid = ?",
+                new String[]{encounteruuid, value, UuidDictionary.IV_FLUIDS});
+        if (idCursor.getCount() != 0) {
+            isExist = true;
+        }
+        idCursor.close();
+        return isExist;
+    }
 }

@@ -352,9 +352,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         diastolicBp = info.getCapturedValue();
                     }
 
-                    if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) {
+                  /*  if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) {
                         isValidIVFluid = info.isValidJson();
-                    }
+                    }*/
 
                   /*  if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
                         isValidOxytocin = info.isValidJson();
@@ -393,67 +393,41 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
                     } else if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
                         isValidOxytocin = info.isValidJson();
-                        info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
-                        ObsDTO obsDTOData = buildObservation(info);
-
                         String uuid = obsDAO.getObsuuid(mEncounterUUID, info.getConceptUUID());
-                        obsDTOData.setUuid(uuid);
+                        ObsDTO obs = buildOxytocinIvFluidData(uuid, info);
 
-                        if (mObsDTOList != null && mObsDTOList.size() > 0) {
-                            for (int k = 0; k < mObsDTOList.size(); k++) {
-                                ObsDTO obsDTOFromDb = mObsDTOList.get(k);
-                                if (info.getConceptUUID().equals(obsDTOFromDb.getConceptuuid())) {
-                                    if (!info.getCapturedValue().equals(obsDTOFromDb.getValue()) && isValidOxytocin) {
-
-                                        if (uuid != null && !uuid.isEmpty()) {
-                                            //update
-                                            obsDTOList.add(obsDTOData);
-                                        } else {
-                                            //insert
-                                            if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
-                                                obsDTOList.add(obsDTOData);
-                                            }
-                                        }
-                                    }
+                        if (isValidOxytocin) {
+                            boolean isExist = obsDAO.isOxytocinByHWExistInDb(mEncounterUUID, info.getMedication().toJson());
+                            if (!isExist) {
+                                obs.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+                                if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
+                                    obsDTOList.add(obs);
                                 }
-                            }
-                        } else {
-                            Log.d(TAG, "saveObs: captured val : " + info.getCapturedValue());
-                            if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
-                                obsDTOList.add(obsDTOData);
+                            } else {
+                                if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty() && info.getCapturedValue().equalsIgnoreCase("no")) {
+                                    obs.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+                                    obsDTOList.add(obs);
+                                }
                             }
                         }
 
                     } else if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) {
                         isValidIVFluid = info.isValidJson();
-                        info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
-                        ObsDTO obsDTOData = buildObservation(info);
-
                         String uuid = obsDAO.getObsuuid(mEncounterUUID, info.getConceptUUID());
-                        obsDTOData.setUuid(uuid);
+                        ObsDTO obs = buildOxytocinIvFluidData(uuid, info);
 
-                        if (mObsDTOList != null && mObsDTOList.size() > 0) {
-                            for (int k = 0; k < mObsDTOList.size(); k++) {
-                                ObsDTO obsDTOFromDb = mObsDTOList.get(k);
-                                if (info.getConceptUUID().equals(obsDTOFromDb.getConceptuuid())) {
-                                    if (!info.getCapturedValue().equals(obsDTOFromDb.getValue()) && isValidIVFluid) {
-
-                                        if (uuid != null && !uuid.isEmpty()) {
-                                            //update
-                                            obsDTOList.add(obsDTOData);
-                                        } else {
-                                            //insert
-                                            if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
-                                                obsDTOList.add(obsDTOData);
-                                            }
-                                        }
-                                    }
+                        if (isValidIVFluid) {
+                            boolean isExist = obsDAO.isIvFluidByHWExistInDb(mEncounterUUID, info.getMedication().toJson());
+                            if (!isExist) {
+                                obs.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+                                if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
+                                    obsDTOList.add(obs);
                                 }
-                            }
-                        } else {
-                            Log.d(TAG, "saveObs: captured val : " + info.getCapturedValue());
-                            if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
-                                obsDTOList.add(obsDTOData);
+                            } else {
+                                if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty() && info.getCapturedValue().equalsIgnoreCase("no")) {
+                                    obs.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+                                    obsDTOList.add(obs);
+                                }
                             }
                         }
 
@@ -479,13 +453,14 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             }
         }
 
+      /*  if (obsDTOList.isEmpty()) {
+           showErrorDialog(R.string.please_enter_field_value);
 
-        if (obsDTOList.isEmpty()) {
-            showErrorDialog(R.string.please_enter_field_value);
-        } /*else if (systolicBp != null && systolicBp.length() > 0
+        } *//*else if (systolicBp != null && systolicBp.length() > 0
                 && (diastolicBp == null || diastolicBp.length() == 0)) {
             showErrorDialog(R.string.error_diastolic_require);
-        } */ else if (!isValidOxytocin) {
+        } *//* else*/
+        if (!isValidOxytocin) {
             showErrorDialog(R.string.error_oxytocin);
         } else if (!isValidIVFluid) {
             showErrorDialog(R.string.error_iv_fluid);
@@ -511,24 +486,25 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
             try {
                 if (accessMode == PartogramConstants.AccessMode.EDIT) {
-                    Log.d(TAG, "saveObs: access mode : " + accessMode);
-                    Log.d(TAG, "saveObs: obsDTOList size: " + obsDTOList.size());
-                    //new logic
-                    for (int i = 0; i < obsDTOList.size(); i++) {
-                        ObsDTO obsDTO = obsDTOList.get(i);
-                        if (obsDTO.getUuid() != null) {
-                            obsDAO.updateObs(obsDTO);
-                        } else {
-                            obsDAO.insertObs(obsDTO);
+                    if (obsDTOList != null && obsDTOList.size() > 0) {
+                        Log.d(TAG, "saveObs: obsDTOList size: " + obsDTOList.size());
+                        //new logic
+                        for (int i = 0; i < obsDTOList.size(); i++) {
+                            ObsDTO obsDTO = obsDTOList.get(i);
+                            if (obsDTO.getUuid() != null) {
+                                obsDAO.updateObs(obsDTO);
+                            } else {
+                                obsDAO.insertObs(obsDTO);
+                            }
+                        }
+                        if (voidedMedicines.size() > 0) {
+                            obsDAO.markedAsVoidedObsToDb(voidedMedicines);
                         }
                     }
-                    Log.d(TAG, "saveObs: voidedMedicines  : " + voidedMedicines.size());
-
-                    if (voidedMedicines.size() > 0) {
-                        obsDAO.markedAsVoidedObsToDb(voidedMedicines);
-                    }
                 } else {
-                    obsDAO.insertObsToDb(obsDTOList, TAG);
+                    if (obsDTOList != null && obsDTOList.size() > 0) {
+                        obsDAO.insertObsToDb(obsDTOList, TAG);
+                    }
                 }
                 new EncounterDAO().updateEncounterSync("false", mEncounterUUID);
 
@@ -541,10 +517,11 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 if (isSynced) {
                     Toast.makeText(this, "Data uploaded successfully!", Toast.LENGTH_SHORT).show();
                     // AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);
-                    finish();
+                   // finish();
                 } else {
                     Toast.makeText(this, "Unable to upload the data!", Toast.LENGTH_SHORT).show();
                 }
+                finish();
 
             } catch (DAOException e) {
                 e.printStackTrace();
@@ -579,15 +556,31 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                                 info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
                                 info.convertToMedicine(obsDTO);
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.IV_FLUIDS)) {
-                                if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
+                                if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty()) {
+                                    info.setCapturedValue(obsDTO.getValue());
+                                    info.getMedication(obsDTO, obsDTO.getValue(), obsDTO.getCreatedDate(true), obsDTO.getConceptuuid());
+                                } else {
+                                    info.setCapturedValue(ParamInfo.RadioOptions.NO.name());
+                                    info.setCheckedRadioOption(ParamInfo.RadioOptions.NO);
+                                }
+                             /*   if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                     info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
                                     info.getMedication(obsDTO);
-                                }
+                                }*/
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
-                                if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
+                                //info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
+                                if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty()) {
+                                    info.setCapturedValue(obsDTO.getValue());
+                                    info.getMedication(obsDTO, obsDTO.getValue(), obsDTO.getCreatedDate(true), obsDTO.getConceptuuid());
+                                } else {
+                                    info.setCapturedValue(ParamInfo.RadioOptions.NO.name());
+                                    info.setCheckedRadioOption(ParamInfo.RadioOptions.NO);
+                                }
+
+                              /*  if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                     info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
                                     info.getMedication(obsDTO);
-                                }
+                                }*/
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.PLAN)) {
                                 //if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                 info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
@@ -806,4 +799,18 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         }
     }
 */
+
+    private ObsDTO buildOxytocinIvFluidData(String uuid, ParamInfo info) {
+        ObsDTO obs = new ObsDTO();
+        obs.setUuid(uuid);
+        obs.setConceptuuid(info.getConceptUUID());
+        //obs.setValue(info.getMedication().toJson());
+        obs.setValue(info.getCapturedValue());
+        obs.setCreator(new SessionManager(this).getCreatorID());
+        obs.setEncounteruuid(mEncounterUUID);
+        //obs.setCreatedDate(info.getCreatedDate());
+        obs.setCreatorUuid(new SessionManager(this).getCreatorID());
+        return obs;
+    }
+
 }

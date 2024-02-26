@@ -77,12 +77,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
         configureCrashReporting();
 
-      /*  RxJavaPlugins.setErrorHandler(throwable -> {
+        RxJavaPlugins.setErrorHandler(throwable -> {
              FirebaseCrashlytics.getInstance().recordException(throwable);
         });
         androidId = String
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
-                .replace(' ', '0');*/
+                .replace(' ', '0');
 
         String url = sessionManager.getServerUrl();
         if (url == null) {
@@ -149,7 +149,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
-       ///FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+       FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
     }
 

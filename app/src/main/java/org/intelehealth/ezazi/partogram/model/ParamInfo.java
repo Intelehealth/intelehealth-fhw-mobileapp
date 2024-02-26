@@ -365,7 +365,7 @@ public class ParamInfo implements Serializable {
       }*/
 
 
-    public Medication getMedication(ObsDTO obs) {
+    public Medication getMedication(ObsDTO obs, String value, String createdDate, String conceptUUID) {
         Log.d("TAG", "getMedication: value : " + obs.getValue());
         Log.d("TAG", "getMedication: createdDate : " + obs.createdDate());
 
@@ -383,6 +383,7 @@ public class ParamInfo implements Serializable {
             }
             medication.setCreatorName(new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid()));
             medication.setCreatedAt(obs.createdDate());
+            medicationData.setCreatedAt(createdDate);
 
             String status = medicationData.getInfusionStatus();
             String statusAdminister = "";

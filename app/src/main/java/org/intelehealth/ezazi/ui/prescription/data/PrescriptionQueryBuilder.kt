@@ -23,7 +23,8 @@ class PrescriptionQueryBuilder : QueryBuilder() {
                         "'${Params.ASSESSMENT.conceptId}', " +
                         "'${Params.PRESCRIBED_OXYTOCIN.conceptId}', " +
                         "'${Params.PRESCRIBED_IV_FLUID.conceptId}') "
-            ).build()
+            ).orderBy("O.created_date")
+                .orderIn("DESC").build()
     }
 
     fun buildSingleItemPrescriptionQuery(visitId: String, conceptId: String): String {

@@ -452,7 +452,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         if (item instanceof Medication) ivFluids.add((Medication) item);
                     }
                     info.setMedicationsForFluid(ivFluids);
-                    setivFluidDataNew(binding, info);
+                    setivFluidDataNew(binding, info, true);
                 }
 
                 @NonNull
@@ -491,7 +491,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 binding.clIvFluidCountView.setVisibility(View.VISIBLE);
                 ivFluidDetails.setVisibility(View.VISIBLE);
                 // setIvFluidDetails(info, binding);
-                setivFluidDataNew(binding, info);
+                setivFluidDataNew(binding, info, false);
                 showIVFluidOptionsDetails(title, info, tempView, binding);
             }
 
@@ -503,7 +503,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         });
     }
 
-    private void setivFluidDataNew(PartoLblRadioViewEzaziBinding binding, ParamInfo info) {
+    private void setivFluidDataNew(PartoLblRadioViewEzaziBinding binding, ParamInfo info, boolean isFromDialog) {
         List<Medication> allAdministerIvFluidsList = info.getMedicationsForFluid();
         if (allAdministerIvFluidsList.size() > 0) {
             Medication ivFluidData = allAdministerIvFluidsList.get(0);
@@ -528,6 +528,11 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             binding.ivFluidOptions.viewInfusionStatus.tvData.setText(ivFluidData.getInfusionStatus());
             info.setMedication(ivFluidDataForDb);
             info.setCapturedValue(ivFluidDataForDb.toJson());
+            if (isFromDialog) {
+                info.setCreatedDate(ivFluidData.createdDate());
+            } else {
+                info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+            }
         }
     }
 
@@ -883,7 +888,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         if (item instanceof Medication) oxytocins.add((Medication) item);
                     }
                     info.setMedicationsForOxytocin(oxytocins);
-                    setOxytocinDataNew(binding, info);
+                    setOxytocinDataNew(binding, info, true);
                 }
 
                 @NonNull
@@ -923,7 +928,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 binding.clOxytocinCountView.setVisibility(View.VISIBLE);
                 oxytocinDetails.setVisibility(View.VISIBLE);
                 //setOxytocinDetails(info, binding);
-                setOxytocinDataNew(binding, info);
+                setOxytocinDataNew(binding, info, false);
                 showOxytocinOptionsDetails(title, info, tempView, binding);
             }
 
@@ -1055,7 +1060,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         }
     }
 
-    private void setOxytocinDataNew(PartoLblRadioViewOxytocinBinding binding, ParamInfo info) {
+    private void setOxytocinDataNew(PartoLblRadioViewOxytocinBinding binding, ParamInfo info, boolean isFromDialog) {
         List<Medication> allAdministerOxytocinsList = info.getMedicationsForOxytocin();
         Log.d(TAG, "setOxytocinDataNew: allAdministerOxytocinsList : " + allAdministerOxytocinsList.size());
         if (allAdministerOxytocinsList.size() > 0) {
@@ -1074,9 +1079,11 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             oxytocinDataForDb.setInfusionRate(oxytocinData.getInfusionRate());
             info.setMedication(oxytocinDataForDb);
             info.setCapturedValue(oxytocinDataForDb.toJson());
-            Log.d(TAG, "setOxytocinDataNew: date :" + DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
-            info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
-            Log.d(TAG, "setOxytocinDataNew: infodate : " + info.getCreatedDate());
+            if (isFromDialog) {
+                info.setCreatedDate(oxytocinData.createdDate());
+            } else {
+                info.setCreatedDate(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
+            }
         }
     }
 
