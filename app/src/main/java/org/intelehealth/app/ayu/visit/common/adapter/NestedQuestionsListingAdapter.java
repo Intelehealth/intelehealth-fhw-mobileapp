@@ -155,6 +155,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Log.v(TAG, "new NestedQuestionsListingAdapter created!");
     }
 
+    public void setLoadedIds(Set<String> loadedIds) {
+        mLoadedIds = loadedIds;
+    }
+
     public void setRootNodeIndex(int rootIndex) {
         Log.v(TAG, "setRootNodeIndex()");
         mRootIndex = rootIndex;
@@ -241,6 +245,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
             routeByType(genericViewHolder, mParentNode, genericViewHolder.node, position, true, false);
             setTextViewDrawableColor(genericViewHolder.tvQuestion, mColors[0]);
+            Log.v(TAG, "mLoadedIds Nested - " + mLoadedIds.contains(genericViewHolder.node.getId()) + " \t Node findDisplay -  " + genericViewHolder.node.findDisplay());
             mLoadedIds.add(genericViewHolder.node.getId());
 
         }
@@ -841,16 +846,16 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             }
                         } else {
 
-                            for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
+                            /*for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
                                 if (!mItemList.get(i).isSelected()) { // here, all those that are not selected nested - options those will be removed thus, keeping only the current selection options - nested options visible.
                                     mItemList.remove(i);
                                     notifyItemRemoved(i);
                                 }
-                            }
+                            }*/
                         }
                         if (!node.isSelected()) {
                             node.unselectAllNestedNode();
-
+                            if (index >= mItemList.size()) return;
                             // remove child nodes views on deselect of same option - start
                             changeInputVisibility(mItemList.get(index).isMultiChoice(), holder.singleComponentContainer);
 //                            holder.singleComponentContainer.removeAllViews();

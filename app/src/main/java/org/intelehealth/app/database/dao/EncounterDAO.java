@@ -470,7 +470,7 @@ public class EncounterDAO {
                             "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30')",  // ENCOUNTER_PATIENT_EXIT_SURVEY
                     new String[]{visitUUID});
             EncounterDTO encounterDTO = new EncounterDTO();
-            Log.v(TAG, "isCompletedExitedSurvey- visitUUID - "+visitUUID+"\t Count - "+idCursor.getCount());
+            //Log.v(TAG, "isCompletedExitedSurvey- visitUUID - "+visitUUID+"\t Count - "+idCursor.getCount());
             if (idCursor.getCount() > 0) {
                 return true;
             }

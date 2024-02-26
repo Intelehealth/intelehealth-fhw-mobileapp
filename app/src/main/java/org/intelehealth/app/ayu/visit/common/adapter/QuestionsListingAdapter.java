@@ -152,7 +152,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private boolean mIsEditMode;
 
     private HashMap<Integer, String> mMindMapVersionMappingHashMap = new HashMap<>();
-    private Set<String> mLoadedIds = new HashSet<String>();
+    public Set<String> mLoadedIds = new HashSet<String>();
 
     public QuestionsListingAdapter(
             RecyclerView recyclerView,
@@ -250,10 +250,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.tvQuestionCounter.setText("");
             String id = mItemList.get(genericViewHolder.index).getId();
             Log.v(TAG, "ID - " + id);
-            Log.v(TAG, "mLoadedIds - " + new Gson().toJson(mLoadedIds));
+            Log.v(TAG, "mLoadedIds - " + mLoadedIds.contains(id)+ " \t Node findDisplay -  " + genericViewHolder.node.findDisplay());
             Handler handler = new Handler();
             if (!mLoadedIds.contains(id)) {
-                mLoadedIds.add(id);
+
                 genericViewHolder.spinKitView.setVisibility(View.VISIBLE);
                 genericViewHolder.bodyLayout.setVisibility(View.GONE);
 
@@ -271,6 +271,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     setData(genericViewHolder.index, genericViewHolder);
                 }, 100);
             }
+            mLoadedIds.add(id);
 
 
         }
@@ -1097,6 +1098,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 }
             });
+            holder.nestedQuestionsListingAdapter.setLoadedIds(mLoadedIds);
             holder.nestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
             // }
             holder.nestedQuestionsListingAdapter.setSuperNodeList(mItemList);
@@ -1795,6 +1797,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 }
             });
+            holder.nestedQuestionsListingAdapter.setLoadedIds(mLoadedIds);
             holder.nestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
             // }
             holder.nestedQuestionsListingAdapter.setSuperNodeList(mItemList);
