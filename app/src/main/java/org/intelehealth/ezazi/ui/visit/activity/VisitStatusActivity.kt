@@ -33,7 +33,7 @@ class VisitStatusActivity : BaseActivity() {
     private fun setupActionBar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.let {
-            it.title = resources.getString(R.string.decision_pending_title)
+            it.title = resources.getString(R.string.title_visit_status)
             it.setHomeButtonEnabled(true)
             it.setDisplayHomeAsUpEnabled(true)
         }

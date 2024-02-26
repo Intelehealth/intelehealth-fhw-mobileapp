@@ -149,8 +149,8 @@ public class PatientQueryBuilder extends QueryBuilder {
         String query = select("uuid, openmrs_id, dateCreated," +
                 "CASE WHEN middle_name IS NULL THEN first_name || ' ' || last_name " +
                 "ELSE first_name || ' ' || middle_name || ' ' || last_name END fullName")
-                .from("tbl_patient")
-                .where("uuid NOT IN (Select patientuuid from tbl_visit where creator = '" + creatorId + "')" +
+                .from(" tbl_patient ")
+                .where(" uuid NOT IN (Select patientuuid from tbl_visit where creator = '" + creatorId + "')" +
                         " AND creatoruuid = '" + creatorId + "'")
                 .groupBy("uuid")
                 .orderBy("dateCreated")

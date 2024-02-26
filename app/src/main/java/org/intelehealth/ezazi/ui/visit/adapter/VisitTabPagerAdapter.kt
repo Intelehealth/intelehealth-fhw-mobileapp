@@ -24,7 +24,7 @@ class VisitTabPagerAdapter(
     private val fragments = arrayListOf(
         OutcomePendingVisitFragment.newInstance(),
         UpcomingVisitFragment.newInstance(),
-        CompletedVisitFragment.newInstance()
+//        CompletedVisitFragment.newInstance()
     )
 
     override fun createFragment(position: Int): Fragment {

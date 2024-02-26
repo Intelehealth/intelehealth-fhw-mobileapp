@@ -1104,4 +1104,6 @@
     <string name="lbl_oxytocin">Oxytocin</string>
     <string name="lbl_iv_fluid">IV Fluid</string>
     <string name="action_hide">Hide</string>
+    <string name="title_visit_status">Visits</string>
+    <string name="empty_administer_list_message">Please add %1$s\nhere to administer</string>
 </resources>

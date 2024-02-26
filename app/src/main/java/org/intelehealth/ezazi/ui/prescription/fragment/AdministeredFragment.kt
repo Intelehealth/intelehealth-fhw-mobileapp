@@ -85,6 +85,7 @@ class AdministeredFragment : Fragment(R.layout.fragment_administered), MenuProvi
     private fun observerItem() {
         viewMode.liveItems.observe(viewLifecycleOwner) {
             it?.let {
+                binding.tvEmptyListMessage.isVisible = it.isEmpty()
                 adapter.updateItems(it)
                 changeSaveButtonEnableState(it.size > 0)
             } ?: changeSaveButtonEnableState(false)
@@ -150,11 +151,31 @@ class AdministeredFragment : Fragment(R.layout.fragment_administered), MenuProvi
     private fun getScreenTitle(): Int {
         return viewMode.prescriptionArg?.let {
             return when (it.prescriptionType) {
-                PLAN -> R.string.planned_by_you
-                ASSESSMENT -> R.string.assess_by_you
-                MEDICINE -> R.string.lbl_medicine_administration
-                OXYTOCIN -> R.string.lbl_oxytocin_administration
-                IV_FLUID -> R.string.lbl_iv_fluid_administration
+                PLAN -> {
+                    binding.administerType = getString(R.string.lbl_plan)
+                    R.string.planned_by_you
+                }
+
+                ASSESSMENT -> {
+                    binding.administerType = getString(R.string.lbl_assessment)
+                    R.string.assess_by_you
+                }
+
+                MEDICINE -> {
+                    binding.administerType = getString(R.string.lbl_medicine)
+                    R.string.lbl_medicine_administration
+                }
+
+                OXYTOCIN -> {
+                    binding.administerType = getString(R.string.lbl_oxytocin)
+                    R.string.lbl_oxytocin_administration
+                }
+
+                IV_FLUID -> {
+                    binding.administerType = getString(R.string.lbl_iv_fluid)
+                    R.string.lbl_iv_fluid_administration
+                }
+
                 FULL -> R.string.administer
             }
         } ?: R.string.administer
