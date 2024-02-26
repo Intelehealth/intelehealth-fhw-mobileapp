@@ -1492,5 +1492,6 @@
     <string name="enter_abha_number">आभा नंबर दर्ज करें</string>
     <string name="enter_abha_address">आभा पता दर्ज करें</string>
     <string name="enter_valid_aadhar_number">वैध आधार नंबर दर्ज करें</string>
+    <string name="abha_card_is_downloaded_successfully">आभा कार्ड सफलतापूर्वक डाउनलोड हो गया है!</string>
 
 </resources>

@@ -135,7 +135,7 @@ public class AbhaCardActivity extends AppCompatActivity {
         mCurrentPhotoPath = cameraUtils.compressImageAndSaveAbhaCard(decodedByte);
         Log.d("TAG", "displayAbhaCardPhotoAndStoreInFile: " + mCurrentPhotoPath);
 
-        storeAndShowImageInGallery("Image is downloaded successfully! ");
+        storeAndShowImageInGallery(getString(R.string.abha_card_is_downloaded_successfully));
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
