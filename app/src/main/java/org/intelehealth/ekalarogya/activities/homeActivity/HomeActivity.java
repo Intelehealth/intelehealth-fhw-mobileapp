@@ -155,7 +155,7 @@ public class HomeActivity extends BaseActivity {
     private void saveToken() {
         Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
         VideoLibraryManager.setBaseUrl(sessionManager.getServerUrl());
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage(), sessionManager.getJwtAuthToken());
     }
 
     @Override
