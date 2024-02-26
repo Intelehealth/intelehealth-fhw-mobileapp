@@ -79,6 +79,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity;
+import org.intelehealth.app.abdm.activity.AbhaCardActivity;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
 import org.intelehealth.app.activities.help.activities.HelpFragment_New;
@@ -909,6 +910,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             startActivity(i);
         }  else if (itemId == R.id.menu_abha_card) {
             Intent i = new Intent(HomeScreenActivity_New.this, AadharMobileVerificationActivity.class);
+          //  Intent i = new Intent(context, AbhaCardActivity.class); // todo: comment later.
             i.putExtra("hasABHA", true);
             i.putExtra("abhaCard", true);
             startActivity(i);

@@ -1,7 +1,11 @@
 package org.intelehealth.app.utilities;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -48,7 +52,7 @@ public class SnackbarUtils {
         snackbar.show();
     }
 
-    public void showSnackRelativeLayoutParentSuccess(Context context, RelativeLayout layoutParent, String message, boolean success) {
+    public Snackbar showSnackRelativeLayoutParentSuccess(Context context, RelativeLayout layoutParent, String message, boolean success) {
         Snackbar snackbar = Snackbar
                 .make(layoutParent, message, Snackbar.LENGTH_SHORT);
         View view = snackbar.getView();
@@ -61,6 +65,20 @@ public class SnackbarUtils {
             view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorFailure));
 
         snackbar.show();
+        return snackbar;
+    }
+
+    public void setImageActionForSnackBar(Context context, Snackbar snackbar, Uri uri) {
+        snackbar.setActionTextColor(context.getColor(R.color.colorPrimary));
+        snackbar.setAction("View", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setDataAndType(uri, "image/*");
+                context.startActivity(intent);
+            }
+        });
     }
 
     public void showSnacksWithRelativeLayoutSuccess(Context context, String message,
