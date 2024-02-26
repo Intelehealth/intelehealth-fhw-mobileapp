@@ -211,6 +211,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
     private void initUI() {
         Activity activity = getActivity();
+        if(!isAdded() || activity ==null) return;
         sessionManager = new SessionManager(requireActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
         layoutToolbar.setVisibility(View.VISIBLE);
