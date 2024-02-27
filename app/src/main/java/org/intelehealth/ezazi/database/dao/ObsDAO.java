@@ -1133,23 +1133,13 @@ public class ObsDAO {
     public boolean isIvFluidByHWExistInDb(String encounteruuid, String value) {
         boolean isExist = false;
         db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs WHERE encounteruuid = ? AND json_extract(value, '$.infusionRate') = ? AND json_extract(value, '$.infusionStatus') = ? AND json_extract(value, '$.type') = ?",
-                new String[]{encounteruuid, getJsonValue(value, "infusionRate"), getJsonValue(value, "infusionStatus"), getJsonValue(value, "type"), getJsonValue(value, "otherType")});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ?  AND value =? AND conceptuuid = ?",
+                new String[]{encounteruuid, value, UuidDictionary.IV_FLUIDS});
 
         if (idCursor.getCount() != 0) {
             isExist = true;
         }
         idCursor.close();
         return isExist;
-    }
-
-    private String getJsonValue(String jsonString, String key) {
-        try {
-            JSONObject jsonObject = new JSONObject(jsonString);
-            return jsonObject.getString(key);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }
