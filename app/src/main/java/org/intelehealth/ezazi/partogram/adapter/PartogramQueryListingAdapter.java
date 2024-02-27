@@ -511,19 +511,20 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             //Medication ivFluidData = getMedicationNew(medicationLatest1.toJson());
             Medication ivFluidDataForDb = new Medication();
 
-            ivFluidDataForDb.setInfusionStatus(ivFluidData.getInfusionStatus());
-            ivFluidDataForDb.setInfusionRate(ivFluidData.getInfusionRate());
 
             String ivFluidType = ivFluidData.getType();
             Log.d(TAG, "setivFluidDataNew: ivFluidType :" + ivFluidType);
             if (ivFluidType.equals("Ringer Lactate") || ivFluidType.equals("Normal Saline") || ivFluidType.equals("Dextrose 5% (D5)")) {
                 ivFluidDataForDb.setType(ivFluidType);
                 binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(ivFluidData.getType());
+                ivFluidDataForDb.setOtherType(null);
             } else {
                 ivFluidDataForDb.setType("Other");
                 ivFluidDataForDb.setOtherType(ivFluidData.getOtherType());
                 binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(ivFluidData.getOtherType());
             }
+            ivFluidDataForDb.setInfusionRate(ivFluidData.getInfusionRate());
+            ivFluidDataForDb.setInfusionStatus(ivFluidData.getInfusionStatus());
             binding.ivFluidOptions.viewInfusionRate.etvData.setText(ivFluidData.getInfusionRate());
             binding.ivFluidOptions.viewInfusionStatus.tvData.setText(ivFluidData.getInfusionStatus());
             info.setMedication(ivFluidDataForDb);

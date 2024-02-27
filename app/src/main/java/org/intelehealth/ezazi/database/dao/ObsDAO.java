@@ -41,6 +41,8 @@ import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ObsDAO {
 
@@ -104,7 +106,7 @@ public class ObsDAO {
     }
 
     public boolean insertObs(ObsDTO obsDTO) throws DAOException {
-        Log.d(TAG, "checkmedinsertObs: value:"+obsDTO.getValue());
+        Log.d(TAG, "checkmedinsertObs: value:" + obsDTO.getValue());
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -178,7 +180,7 @@ public class ObsDAO {
 
     public boolean updateObs(ObsDTO obsDTO) {
         Log.d(TAG, "1111updateObs: uuid for update : " + obsDTO.getUuid());
-        Log.d(TAG, "checkmedupdateObs: value:"+obsDTO.getValue());
+        Log.d(TAG, "checkmedupdateObs: value:" + obsDTO.getValue());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor cursor = null;
@@ -1117,11 +1119,11 @@ public class ObsDAO {
 
     public boolean isOxytocinByHWExistInDb(String encounteruuid, String value) {
         boolean isExist = false;
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ?  AND value =? AND conceptuuid = ?",
                 new String[]{encounteruuid, value, UuidDictionary.OXYTOCIN_UL_DROPS_MIN});
 
-        if (idCursor.getCount() != 0) {
+        if (idCursor.getCount() > 0) {
             isExist = true;
         }
         idCursor.close();
@@ -1130,13 +1132,24 @@ public class ObsDAO {
 
     public boolean isIvFluidByHWExistInDb(String encounteruuid, String value) {
         boolean isExist = false;
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND value =? AND conceptuuid = ?",
-                new String[]{encounteruuid, value, UuidDictionary.IV_FLUIDS});
+        db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs WHERE encounteruuid = ? AND json_extract(value, '$.infusionRate') = ? AND json_extract(value, '$.infusionStatus') = ? AND json_extract(value, '$.type') = ?",
+                new String[]{encounteruuid, getJsonValue(value, "infusionRate"), getJsonValue(value, "infusionStatus"), getJsonValue(value, "type"), getJsonValue(value, "otherType")});
+
         if (idCursor.getCount() != 0) {
             isExist = true;
         }
         idCursor.close();
         return isExist;
+    }
+
+    private String getJsonValue(String jsonString, String key) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            return jsonObject.getString(key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

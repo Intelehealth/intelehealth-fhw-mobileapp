@@ -125,8 +125,6 @@ class OutcomePendingVisitFragment : Fragment(R.layout.fragment_commen_listview),
             putExtra("visitUuid", patient.visitUuid)
             putExtra("providerID", SessionManager(requireContext()).providerID)
             putExtra("tag", "")
-            putExtra("isDecisionPending", true)
-            putExtra("fromScreen", "Outcome")
         }.also { startActivity(it) }
     }
 }

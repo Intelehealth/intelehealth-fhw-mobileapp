@@ -388,8 +388,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             visitUuid = intent.getStringExtra("visitUuid");
             providerID = intent.getStringExtra("providerID");
             whichScreenUserCameFromTag = intent.getStringExtra("tag");
-            isDecisionPending = intent.getBooleanExtra("isDecisionPending", false);
-            fromScreen = intent.getStringExtra("fromScreen");
 
             hwHasEditAccess = new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID());
 

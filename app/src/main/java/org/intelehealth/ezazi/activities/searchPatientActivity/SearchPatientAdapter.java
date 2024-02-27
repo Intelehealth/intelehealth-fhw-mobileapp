@@ -157,7 +157,6 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 intent.putExtra("name", patient.getFirstname() + " " + patient.getLastname());
                 intent.putExtra("patientNameTimeline", patientName);
                 intent.putExtra("tag", "exisiting");
-                intent.putExtra("fromScreen", "searchPatient");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 

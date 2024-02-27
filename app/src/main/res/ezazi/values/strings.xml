@@ -144,7 +144,4 @@
     <string name="lbl_assessment_administration">Assessment Administration</string>
     <string name="hint_add_new_plan">Enter your plan here</string>
     <string name="hint_add_new_assessment">Enter your assessment here</string>
-    <string name="kaveri">kaveri</string>
-
-
 </resources>
