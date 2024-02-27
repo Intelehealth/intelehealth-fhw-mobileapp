@@ -46,8 +46,9 @@
                 style="@style/Theme.EZazi.Text.Dialog.Content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/screen_container_padding"
                 android:text="@{medication.content}"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/clMedicationAction"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/lbl_oxytocin" />
@@ -58,36 +59,47 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_padding"
+                android:layout_marginEnd="@dimen/screen_container_padding"
                 android:text="@{medication.dateWithDrName()}"
+                app:layout_constraintEnd_toStartOf="@id/clMedicationAction"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtMedicationContent"
                 tools:text="Dr.Vishal 25 Jan, 2023 12:00 PM" />
 
-            <TextView
-                android:id="@+id/txtMedicationStatus"
-                style="@style/Theme.EZazi.Caption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@{medication.infusionStatus}"
-                android:visibility="@{allowAdminister ? View.GONE : View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Start" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnMedicationAdminister"
-                style="@style/Theme.EZazi.Button.Small"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clMedicationAction"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/screen_container_padding"
-                android:contentDescription="@string/content_expand_collapse_indicator"
-                android:enabled="@{accessMode != AccessMode.READ}"
-                android:text='@{medication.infusionStatus}'
-                android:visibility="@{allowAdminister ? View.VISIBLE : View.GONE}"
+                android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/txtMedicationStatus"
+                    style="@style/Theme.EZazi.Caption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{medication.infusionStatus}"
+                    android:visibility="@{allowAdminister ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Start" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMedicationAdminister"
+                    style="@style/Theme.EZazi.Button.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/screen_container_padding"
+                    android:contentDescription="@string/content_expand_collapse_indicator"
+                    android:enabled="@{accessMode != AccessMode.READ}"
+                    android:text='@{medication.infusionStatus}'
+                    android:visibility="@{allowAdminister ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

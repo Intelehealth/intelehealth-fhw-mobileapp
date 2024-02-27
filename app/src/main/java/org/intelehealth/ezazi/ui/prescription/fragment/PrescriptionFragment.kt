@@ -89,7 +89,7 @@ class PrescriptionFragment : Fragment(R.layout.fragment_commen_listview),
     }
 
     private fun loadPrescriptions() {
-        viewMode.getPrescriptions(args.visitId, args.prescriptionType, args.allowAdminister)
+        viewMode.getPrescriptions(args.visitId, args.prescriptionType)
             .observe(viewLifecycleOwner) {
                 viewMode.handleResponse(it) { items ->
                     Timber.d { "Prescriptions => ${Gson().toJson(items)}" }

@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import org.intelehealth.ezazi.R
 import org.intelehealth.ezazi.databinding.FragmentAdministeredBinding
+import org.intelehealth.ezazi.models.dto.ObsDTO
 import org.intelehealth.ezazi.partogram.model.Medicine
 import org.intelehealth.ezazi.ui.prescription.adapter.PrescriptionAdapter
 import org.intelehealth.ezazi.ui.prescription.data.MedicineSingleton
@@ -131,6 +132,10 @@ class AdministeredFragment : Fragment(R.layout.fragment_administered), MenuProvi
             adapter.setExpandedItemPosition(position)
         } else if (view.id == R.id.btnExpandCollapseIndicator) {
             adapter.setExpandedItemPosition(position)
+        } else if (view.id == R.id.btnPrescriptionPlanViewMore) {
+            val obs: ObsDTO = view.tag as ObsDTO
+            obs.updateVisibleContentLine()
+            adapter.notifyItemChanged(position)
         }
     }
 

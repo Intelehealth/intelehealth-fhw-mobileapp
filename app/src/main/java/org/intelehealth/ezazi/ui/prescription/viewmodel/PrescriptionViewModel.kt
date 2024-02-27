@@ -29,10 +29,9 @@ class PrescriptionViewModel(private val repository: PrescriptionRepository) : Ba
 
     fun getPrescriptions(
         visitId: String,
-        type: PrescriptionFragment.PrescriptionType,
-        allowAdminister: Boolean
+        type: PrescriptionFragment.PrescriptionType
     ) = executeLocalQuery {
-        repository.fetchPrescription(visitId, type, allowAdminister)
+        repository.fetchPrescription(visitId, type)
     }.asLiveData()
 
     fun updateItem(position: Int, item: ItemHeader) {

@@ -325,8 +325,7 @@
                     android:id="@+id/tilMedicineDuration"
                     style="@style/Theme.EZazi.Input.Add.Patient"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/list_container_padding"
+                    android:layout_height="match_parent"
                     android:hint="@string/duration">
 
                     <com.google.android.material.textfield.TextInputEditText

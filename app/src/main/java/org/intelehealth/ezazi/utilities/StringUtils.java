@@ -32,6 +32,15 @@ public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
 
+    public static final double MAX_LINE_CHARS = 50.0;
+
+    public static double getMaxLineChars() {
+        Context context = IntelehealthApplication.getAppContext();
+        boolean isTablet = context.getResources().getBoolean(R.bool.isTablet);
+        if (isTablet) return 65.0;
+        else return 50.0;
+    }
+
     public static boolean notNull(String string) {
         return null != string && !NULL_AS_STRING.equals(string.trim());
     }
@@ -3713,7 +3722,7 @@ public final class StringUtils {
         return val;
     }
 
-    public static void setClickableSpan(SpannableStringBuilder builder, String clickableString, View.OnClickListener clickListener){
+    public static void setClickableSpan(SpannableStringBuilder builder, String clickableString, View.OnClickListener clickListener) {
         String originalString = builder.toString();
         int startIdx = originalString.indexOf(clickableString);
         int endIdx = startIdx + clickableString.length();
@@ -3723,6 +3732,6 @@ public final class StringUtils {
                 clickListener.onClick(widget);
 //                Toast.makeText(PremiumActivity.this, link, Toast.LENGTH_SHORT).show();
             }
-        },startIdx,endIdx,0);
+        }, startIdx, endIdx, 0);
     }
 }

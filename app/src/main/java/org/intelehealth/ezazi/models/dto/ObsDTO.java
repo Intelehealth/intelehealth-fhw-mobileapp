@@ -1,8 +1,6 @@
 
 package org.intelehealth.ezazi.models.dto;
 
-import static org.intelehealth.ezazi.utilities.DateAndTimeUtils.formatDateTimeNew;
-
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,7 +10,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.intelehealth.ezazi.app.AppConstants;
-import org.intelehealth.ezazi.utilities.UuidDictionary;
+import org.intelehealth.ezazi.utilities.StringUtils;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.utils.DateTimeUtils;
 
@@ -53,20 +51,6 @@ public class ObsDTO implements ItemHeader, Serializable {
     @SerializedName("voided")
     @Expose
     private Integer voided;
-
-//    public String getObsDateTime() {
-//        return obsDateTime;
-//    }
-//
-//    public void setObsDateTime(String obsDateTime) {
-//        this.obsDateTime = obsDateTime;
-//    }
-
-    @SerializedName("obsDateTime")
-    //added this param temporary bcz push pull api parameters are not same
-    @Expose
-    private String obsDateTime;
-
 
     private String name;
 
@@ -229,6 +213,12 @@ public class ObsDTO implements ItemHeader, Serializable {
         //obs.setCreatedDate(DateTimeUtils.getISTDateInUTCDate(createdDate));
         Log.e("plans", "toObs: " + new Gson().toJson(obs));
         return obs;
+    }
+
+    public void calculateLine() {
+        if (value.length() > (StringUtils.getMaxLineChars() * 2))
+            noOfLine = (int) (Math.round(value.length() / StringUtils.getMaxLineChars()) + 1);
+        else noOfLine = 2;
     }
 
 }
