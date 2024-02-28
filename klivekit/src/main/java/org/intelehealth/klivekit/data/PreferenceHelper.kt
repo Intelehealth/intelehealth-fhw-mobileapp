@@ -13,6 +13,7 @@ class PreferenceHelper @Inject constructor(val context: Context) {
         const val RTC_DATA = "rtc_data"
         const val ACTIVE_ROOM_ID = "active_room_id"
         const val RTC_CONFIG = "rtc_config"
+        const val MESSAGE_BODY = "message_body"
     }
 
     fun save(key: String?, value: Any?) {

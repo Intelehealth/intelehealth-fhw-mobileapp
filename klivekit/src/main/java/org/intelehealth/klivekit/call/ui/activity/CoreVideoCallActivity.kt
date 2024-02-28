@@ -2,7 +2,6 @@ package org.intelehealth.klivekit.call.ui.activity
 
 import android.Manifest
 import android.content.Intent
-import android.media.MediaPlayer
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Build
@@ -14,11 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.livekit.android.events.DisconnectReason
-import io.livekit.android.renderer.SurfaceViewRenderer
 import io.livekit.android.renderer.TextureViewRenderer
 import io.livekit.android.room.participant.ConnectionQuality
 import io.livekit.android.room.track.CameraPosition
-import io.livekit.android.room.track.Track
 import io.livekit.android.room.track.VideoTrack
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -31,7 +28,6 @@ import org.intelehealth.klivekit.call.ui.viewmodel.CallViewModel
 import org.intelehealth.klivekit.call.ui.viewmodel.VideoCallViewModel
 import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
-import org.intelehealth.klivekit.call.utils.CallNotificationHandler
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.data.PreferenceHelper.Companion.RTC_DATA
@@ -55,19 +51,31 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     protected lateinit var args: RtcArgs
     private var isDeclined: Boolean = false
     protected val videoCallViewModel: VideoCallViewModel by viewModelByFactory {
-        args = if (intent.hasExtra(RTC_ARGS)) {
-            IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-                ?: throw NullPointerException("arg is null!")
-        } else RtcArgs.dummy()
+        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+                ?: getDataFromSharedPref()
 
         VideoCallViewModel(args.url ?: "", args.appToken ?: "", application)
     }
 
     private val socketViewModel: SocketViewModel by viewModelByFactory {
         args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-            ?: throw NullPointerException("args is null!")
+                ?: getDataFromSharedPref()
 //        val url: String = Constants.BASE_URL + "?userId=" + args.nurseId + "&name=" + args.nurseId
         SocketViewModel(args)
+    }
+
+    /**
+     * getting args from shared pref
+     * if in case rtc args is null
+     */
+    private fun getDataFromSharedPref(): RtcArgs {
+        val preferenceHelper = PreferenceHelper(RtcEngine.appContext)
+        val messageBody = preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, "")
+        if (messageBody.isEmpty()) {
+            throw NullPointerException("arg is null!")
+        } else {
+            return Gson().fromJson(messageBody, RtcArgs::class.java)
+        }
     }
 
     private val permissionRegistry: PermissionRegistry by lazy {
@@ -254,6 +262,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     private fun extractRtcParams() {
+        setupRtcArgsSharedPref()
         intent ?: return
         if (intent.hasExtra(RTC_ARGS)) {
             IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)?.let {
@@ -274,6 +283,19 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             }
 
             intent.data = null
+        }
+    }
+
+    /**
+     * setting up rtc args if its empty
+     */
+    private fun setupRtcArgsSharedPref() {
+        val intent = intent ?: Intent()
+        if (!intent.hasExtra(RTC_ARGS)) {
+            intent.putExtra(
+                RTC_ARGS,
+                Gson().fromJson(preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, ""), RtcArgs::class.java)
+            )
         }
     }
 
