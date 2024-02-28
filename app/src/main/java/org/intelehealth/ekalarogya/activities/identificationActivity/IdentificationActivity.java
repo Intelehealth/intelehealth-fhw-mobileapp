@@ -2404,7 +2404,8 @@ public class IdentificationActivity extends AppCompatActivity implements
             return Character.isLetter(c)
                     || Character.isSpaceChar(c)
                     || Character.getType(c) == Character.NON_SPACING_MARK
-                    || Character.getType(c) == Character.COMBINING_SPACING_MARK;     // This allows only alphabets, digits and spaces.
+                    || Character.getType(c) == Character.COMBINING_SPACING_MARK
+                    || Character.isDigit(c);     // This allows only alphabets, digits and spaces.
         }
     };
 
