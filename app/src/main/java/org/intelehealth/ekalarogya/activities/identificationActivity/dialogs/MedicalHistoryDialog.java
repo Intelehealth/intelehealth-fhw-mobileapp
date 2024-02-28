@@ -8,6 +8,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -96,10 +100,12 @@ public class MedicalHistoryDialog extends DialogFragment {
 
     private void setListeners() {
         binding.anySurgeriesRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == binding.surgeryYes.getId())
+            if (checkedId == binding.surgeryYes.getId()) {
                 binding.surgeryLinearLayout.setVisibility(View.VISIBLE);
-            else
+                binding.reasonForSurgeryEditText.setFilters(new InputFilter[]{inputFilter_Name, emojiFilter});
+            } else {
                 binding.surgeryLinearLayout.setVisibility(View.GONE);
+            }
         });
     }
 
@@ -204,9 +210,55 @@ public class MedicalHistoryDialog extends DialogFragment {
         setSelectedCheckboxes(binding.anySurgeriesRadioGroup, anySurgeries, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
 
         String reasonForSurgery = bundle.getString("reasonForSurgery");
-        if (anySurgeries.equalsIgnoreCase("Yes")) {
+        if (anySurgeries != null && anySurgeries.equalsIgnoreCase("Yes")) {
             binding.reasonForSurgeryEditText.setText(reasonForSurgery);
             binding.surgeryLinearLayout.setVisibility(View.VISIBLE);
         }
     }
+
+
+    public static InputFilter inputFilter_Name = new InputFilter() { //filter input for all other fields
+        @Override
+        public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int i2, int i3) {
+            boolean keepOriginal = true;
+            StringBuilder sb = new StringBuilder(end - start);
+            for (int i = start; i < end; i++) {
+                char c = charSequence.charAt(i);
+                if (isCharAllowed(c)) // put your condition here
+                    sb.append(c);
+                else if (c == '.')
+                    sb.append(c);
+                else
+                    keepOriginal = false;
+            }
+            if (keepOriginal)
+                return null;
+            else {
+                if (charSequence instanceof Spanned) {
+                    SpannableString sp = new SpannableString(sb);
+                    TextUtils.copySpansFrom((Spanned) charSequence, start, sb.length(), null, sp, 0);
+                    return sp;
+                } else {
+                    return sb;
+                }
+            }
+        }
+
+        private boolean isCharAllowed(char c) {
+            return Character.isLetter(c)
+                    || Character.isSpaceChar(c)
+                    || Character.getType(c) == Character.NON_SPACING_MARK
+                    || Character.getType(c) == Character.COMBINING_SPACING_MARK;     // This allows only alphabets, digits and spaces.
+        }
+    };
+
+    private final InputFilter emojiFilter = (source, start, end, dest, dstart, dend) -> {
+        for (int index = start; index < end - 1; index++) {
+            int type = Character.getType(source.charAt(index));
+            if (type == Character.SURROGATE || type == Character.OTHER_SYMBOL) {
+                return "";
+            }
+        }
+        return null;
+    };
 }
