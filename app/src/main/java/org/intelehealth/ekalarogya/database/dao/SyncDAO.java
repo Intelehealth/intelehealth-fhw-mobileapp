@@ -29,6 +29,7 @@ import java.util.Locale;
 
 import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.activities.homeActivity.SyncListener;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.appointment.model.AppointmentListingResponse;
@@ -219,7 +220,7 @@ public class SyncDAO {
     }
 
 
-    public boolean pullData(final Context context, String fromActivity) {
+    public boolean pullData(final Context context, String fromActivity, SyncListener listener) {
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
         db = mDbHelper.getWritableDatabase();
@@ -248,6 +249,7 @@ public class SyncDAO {
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
                         if (fromActivity.equalsIgnoreCase("home")) {
                             Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
+                            if (listener != null) listener.onSyncComplete();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
                             Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {

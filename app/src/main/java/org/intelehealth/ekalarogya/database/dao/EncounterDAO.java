@@ -12,6 +12,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -387,5 +388,30 @@ public class EncounterDAO {
         }
 
         return false;
+    }
+
+    public static HashMap<String, String> getEncountersForRedirection(String visitUuid) {
+        EncounterDAO dao = new EncounterDAO();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String encounterIDSelection = "visituuid = ?";
+        String[] encounterIDArgs = {visitUuid};
+        HashMap<String, String> map = new HashMap<>();
+
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (dao.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    String encounterVitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                    map.put(AppConstants.ENCOUNTER_VITALS_KEY, encounterVitalsLocal);
+                }
+                if (dao.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    String encounterLocalAdultInitial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                    map.put(AppConstants.ENCOUNTER_ADULT_INITIAL, encounterLocalAdultInitial);
+                }
+            } while (encounterCursor.moveToNext());
+            encounterCursor.close();
+        }
+
+        return map;
     }
 }

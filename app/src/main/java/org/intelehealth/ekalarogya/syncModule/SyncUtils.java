@@ -5,6 +5,7 @@ import android.os.Looper;
 
 import androidx.work.WorkManager;
 
+import org.intelehealth.ekalarogya.activities.homeActivity.SyncListener;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.database.dao.ImagesPushDAO;
@@ -16,10 +17,11 @@ public class SyncUtils {
 
 
     private static final String TAG = SyncUtils.class.getSimpleName();
-    public void initialSync(String fromActivity) {
+
+    public void initialSync(String fromActivity, SyncListener listener) {
         SyncDAO syncDAO = new SyncDAO();
         Logger.logD(TAG, "Pull Started");
-        syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+        syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity, listener);
         Logger.logD(TAG, "Pull ended");
 
     }
@@ -76,7 +78,7 @@ public class SyncUtils {
             @Override
             public void run() {
                 Logger.logD(TAG, "Pull Started");
-                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity, null);
                 Logger.logD(TAG, "Pull ended");
             }
         }, 3000);

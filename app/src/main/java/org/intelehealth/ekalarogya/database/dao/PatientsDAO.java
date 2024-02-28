@@ -637,4 +637,23 @@ public class PatientsDAO {
         }
         return familyMemberRes;
     }
+
+    public static Patient getPatientDetailsForRedirection(String patientUuid) {
+        Patient patient = new Patient();
+        String[] columns = {"first_name", "last_name", "date_of_birth"};
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        Cursor cursor = db.query("tbl_patient", columns, "uuid=?", new String[]{patientUuid}, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                patient.setDate_of_birth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                patient.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                patient.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return patient;
+    }
 }

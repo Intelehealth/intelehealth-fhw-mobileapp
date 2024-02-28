@@ -63,13 +63,17 @@ import org.intelehealth.ekalarogya.activities.privacyNoticeActivity.PrivacyNotic
 import org.intelehealth.ekalarogya.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ekalarogya.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.ekalarogya.activities.todayPatientActivity.TodayPatientActivity;
+import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.appointment.AppointmentListingActivity;
+import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
+import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 import org.intelehealth.ekalarogya.database.dao.SyncDAO;
 import org.intelehealth.ekalarogya.database.dao.VisitsDAO;
 import org.intelehealth.ekalarogya.models.CheckAppUpdateRes;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
+import org.intelehealth.ekalarogya.models.Patient;
 import org.intelehealth.ekalarogya.models.dto.VisitDTO;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiClient;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiInterface;
@@ -77,6 +81,7 @@ import org.intelehealth.ekalarogya.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.intelehealth.ekalarogya.syncModule.SyncUtils;
 import org.intelehealth.ekalarogya.utilities.ConfigUtils;
+import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
 import org.intelehealth.ekalarogya.utilities.DialogUtils;
 import org.intelehealth.ekalarogya.utilities.DownloadMindMaps;
 import org.intelehealth.ekalarogya.utilities.Logger;
@@ -123,7 +128,7 @@ import io.reactivex.schedulers.Schedulers;
  * Home Screen
  */
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements SyncListener {
     private static final String TAG = HomeActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private ProgressDialog mSyncProgressDialog;
@@ -134,7 +139,7 @@ public class HomeActivity extends BaseActivity {
     CardView c1, c2, c3, c4, c5, c6, unUploadedVisitNotificationCV;
     Context context;
     CustomProgressDialog customProgressDialog;
-    private String mindmapURL = "";
+    private String mindmapURL = "", clickAction = null, notificationPatientUuid = null, notificationVisitUuid = null;
     private DownloadMindMaps mTask;
     ProgressDialog mProgressDialog, mSyncDialog;
     private int versionCode = 0;
@@ -291,7 +296,7 @@ public class HomeActivity extends BaseActivity {
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setProgress(i);
             mSyncProgressDialog.show();
-            syncUtils.initialSync("home");
+            syncUtils.initialSync("home", this);
             mSyncProgressDialog.dismiss();
         } else {
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
@@ -314,13 +319,47 @@ public class HomeActivity extends BaseActivity {
 
     private void checkIfFCMNotificationClicked() {
         Intent intent = getIntent();
-        String clickAction = intent.getStringExtra(FcmConstants.INTENT_CLICK_ACTION);
+        clickAction = intent.getStringExtra(FcmConstants.INTENT_CLICK_ACTION);
         if (clickAction != null && clickAction.equalsIgnoreCase(FcmConstants.FCM_PLUGIN_HOME_ACTIVITY)) {
-            switchLocation();
+            notificationPatientUuid = intent.getStringExtra(AppConstants.INTENT_PATIENT_ID);
+            notificationVisitUuid = intent.getStringExtra(AppConstants.INTENT_VISIT_UUID);
+            switchLocation(notificationPatientUuid, notificationVisitUuid);
         }
     }
 
-    private void 
+    private void fetchVisitDataRecordForRedirection() {
+        Intent intent = getIntent();
+        if (intent == null) return;
+
+        boolean isDifferentLocationPrescriptionReceived = intent.getBooleanExtra(AppConstants.INTENT_IS_DIFFERENT_LOCATION_PRESCRIPTION, false);
+        if (!isDifferentLocationPrescriptionReceived) {
+            return;
+        }
+
+        String patientId = intent.getStringExtra(AppConstants.INTENT_PATIENT_ID);
+        String visitUuid = intent.getStringExtra(AppConstants.INTENT_VISIT_UUID);
+
+        Patient patientDetails = PatientsDAO.getPatientDetailsForRedirection(patientId);
+        String patientName = patientDetails.getFirst_name() + " " + patientDetails.getLast_name();
+        float age = DateAndTimeUtils.getFloat_Age_Year_Month(patientDetails.getDate_of_birth());
+
+        HashMap<String, String> map = EncounterDAO.getEncountersForRedirection(visitUuid);
+
+        String encounterVitals = map.get(AppConstants.ENCOUNTER_VITALS_KEY);
+        String encounterAdultInitials = map.get(AppConstants.ENCOUNTER_ADULT_INITIAL);
+
+        Intent visitSummary = new Intent(HomeActivity.this, VisitSummaryActivity.class);
+        visitSummary.putExtra("visitUuid", visitUuid);
+        visitSummary.putExtra("patientUuid", patientId);
+        visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+        visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultInitials);
+        visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultInitials);
+        visitSummary.putExtra("name", patientName);
+        visitSummary.putExtra("float_ageYear_Month", age);
+        visitSummary.putExtra("pastVisit", true);
+        visitSummary.putExtra("hasPrescription", "true");
+        startActivity(visitSummary);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -566,7 +605,7 @@ public class HomeActivity extends BaseActivity {
         alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                switchLocation();
+                switchLocation(notificationPatientUuid, notificationVisitUuid);
             }
         });
         alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
@@ -950,7 +989,7 @@ public class HomeActivity extends BaseActivity {
         return context;
     }
 
-    private void switchLocation() {
+    private void switchLocation(String patientUuid, String visitUuid) {
         HashMap<String, String> hashMap4 = new HashMap<>();
         Map.Entry<String, String> village_name = null;
         hashMap4.put(sessionManager.getSecondaryLocationUuid(), sessionManager.getSecondaryLocationName());
@@ -958,12 +997,12 @@ public class HomeActivity extends BaseActivity {
             village_name = entry;
         }
         if (village_name != null) {
-            switchLocationSetup(village_name);
+            switchLocationSetup(village_name, patientUuid, visitUuid);
             Log.d(TAG, "attempting setup");
         }
     }
 
-    private void switchLocationSetup(Map.Entry<String, String> villageName) {
+    private void switchLocationSetup(Map.Entry<String, String> villageName, String patientUuid, String visitUuid) {
         ProgressDialog progress;
         progress = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
         progress.setTitle(getString(R.string.please_wait_progress));
@@ -980,6 +1019,13 @@ public class HomeActivity extends BaseActivity {
         progress.dismiss();
         Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
         intent.putExtra("intentType", "switchLocation");
+
+        if (clickAction != null && clickAction.equalsIgnoreCase(FcmConstants.FCM_PLUGIN_HOME_ACTIVITY)) {
+            intent.putExtra(AppConstants.INTENT_VISIT_UUID, visitUuid);
+            intent.putExtra(AppConstants.INTENT_PATIENT_ID, patientUuid);
+            intent.putExtra(AppConstants.INTENT_IS_DIFFERENT_LOCATION_PRESCRIPTION, true);
+        }
+
         startActivity(intent);
         finish();
     }
@@ -1000,4 +1046,8 @@ public class HomeActivity extends BaseActivity {
         db.endTransaction();
     }
 
+    @Override
+    public void onSyncComplete() {
+        fetchVisitDataRecordForRedirection();
+    }
 }
