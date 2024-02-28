@@ -295,7 +295,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
             int total = pendingCountTotalVisits + countReceivedPrescription;
 
-            if (isAdded() && activity != null) {
+            if (isAdded()) {
                 activity.runOnUiThread(() -> {
                     String prescCountText = countReceivedPrescription + " " + activity.getString(R.string.out_of) + " " + total + " " + activity.getString(R.string.received).toLowerCase();
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -310,7 +310,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         new Thread(() -> {
             int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
-            if (isAdded() && activity != null) {
+            if (isAdded()) {
                 activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + activity.getString(R.string.unclosed_visits)));
             }
         }).start();
@@ -319,10 +319,12 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         Executors.newSingleThreadExecutor().execute(() -> {
             int count = countPendingFollowupVisits();
 
-            requireActivity().runOnUiThread(() -> {
+            if (isAdded()) {
+                activity.runOnUiThread(() -> {
 
-                mCountPendingFollowupVisitsTextView.setText(count + " " + getResources().getString(R.string.pending));
-            });
+                    mCountPendingFollowupVisitsTextView.setText(count + " " + getResources().getString(R.string.pending));
+                });
+            }
         });
         getUpcomingAppointments();
     }
@@ -450,7 +452,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                 int finalTotalUpcomingApps = totalUpcomingApps;
                 if (mUpcomingAppointmentCountTextView != null) {
                     if (isAdded() && getActivity() != null)
-                        getActivity().runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + getResources().getString(R.string.upcoming)));
+                        getActivity().runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + getActivity().getString(R.string.upcoming)));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
