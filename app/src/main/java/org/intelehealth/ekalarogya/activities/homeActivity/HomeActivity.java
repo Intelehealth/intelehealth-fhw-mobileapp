@@ -171,14 +171,12 @@ public class HomeActivity extends BaseActivity implements SyncListener {
         setLocale(HomeActivity.this);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
-        checkIfFCMNotificationClicked();
         Log.e(TAG, "onCreate: server url=>" + sessionManager.getServerUrl());
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         DeviceInfoUtils.saveDeviceInfo(this);
-        catchFCMMessageData();
         setTitle(R.string.title_activity_login);
         context = HomeActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
@@ -197,6 +195,7 @@ public class HomeActivity extends BaseActivity implements SyncListener {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        unUploadedVisitNotificationTV = findViewById(R.id.unUploadedVisitsNotificationTextView);
         unUploadedVisitNotificationCV = findViewById(R.id.unUploadedVisitsNotificationCardView);
         findViewById(R.id.cardview_appointment).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,17 +217,6 @@ public class HomeActivity extends BaseActivity implements SyncListener {
         videoLibrary_textview.setText(R.string.video_library);
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
-        unUploadedVisitNotificationTV = findViewById(R.id.unUploadedVisitsNotificationTextView);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
-            } else {
-                UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
-                Toast.makeText(HomeActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
-        }
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
@@ -289,41 +277,60 @@ public class HomeActivity extends BaseActivity implements SyncListener {
                 syncUtils.syncForeground("home");
             }
         });
-
-        if (sessionManager.isFirstTimeLaunched()) {
-            mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
-            mSyncProgressDialog.setTitle(R.string.syncInProgress);
-            mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setProgress(i);
-            mSyncProgressDialog.show();
-            syncUtils.initialSync("home", this);
-            mSyncProgressDialog.dismiss();
-        } else {
-            WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
-            saveToken();
-        }
-
-        Logger.logD("Yojana", sessionManager.getJalJeevanYojanaScheme());
-        showProgressbar();
-        HeartBitApi();
-        showAppInfo();
-        try {
-            voidUnSyncedOldVisits();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
         setLocale(HomeActivity.this);
 
+        checkIfFCMNotificationClicked();
         getOnBackPressedDispatcher().addCallback(backPressedCallback);
     }
 
     private void checkIfFCMNotificationClicked() {
         Intent intent = getIntent();
-        clickAction = intent.getStringExtra(FcmConstants.INTENT_CLICK_ACTION);
-        if (clickAction != null && clickAction.equalsIgnoreCase(FcmConstants.FCM_PLUGIN_HOME_ACTIVITY)) {
-            notificationPatientUuid = intent.getStringExtra(AppConstants.INTENT_PATIENT_ID);
-            notificationVisitUuid = intent.getStringExtra(AppConstants.INTENT_VISIT_UUID);
-            switchLocation(notificationPatientUuid, notificationVisitUuid);
+        if (intent.hasExtra(FcmConstants.INTENT_CLICK_ACTION)) {
+            sessionManager.setFirstTimeLaunched(true);
+            clickAction = intent.getStringExtra(FcmConstants.INTENT_CLICK_ACTION);
+            if (clickAction != null && clickAction.equalsIgnoreCase(FcmConstants.FCM_PLUGIN_HOME_ACTIVITY)) {
+                notificationPatientUuid = intent.getStringExtra(AppConstants.INTENT_PATIENT_ID);
+                notificationVisitUuid = intent.getStringExtra(AppConstants.INTENT_VISIT_UUID);
+                switchLocation(notificationPatientUuid, notificationVisitUuid);
+                intent.removeExtra(FcmConstants.INTENT_CLICK_ACTION);
+            }
+        } else {
+            sessionManager.setFirstTimeLaunch(false);
+            catchFCMMessageData();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
+                } else {
+                    UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
+                    Toast.makeText(HomeActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
+            }
+
+            if (sessionManager.isFirstTimeLaunched()) {
+                mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
+                mSyncProgressDialog.setTitle(R.string.syncInProgress);
+                mSyncProgressDialog.setCancelable(false);
+                mSyncProgressDialog.setProgress(i);
+                mSyncProgressDialog.show();
+                syncUtils.initialSync("home", this);
+                mSyncProgressDialog.dismiss();
+            } else {
+                WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                saveToken();
+            }
+
+            Logger.logD("Yojana", sessionManager.getJalJeevanYojanaScheme());
+            showProgressbar();
+            HeartBitApi();
+            showAppInfo();
+            try {
+                voidUnSyncedOldVisits();
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -1012,7 +1019,6 @@ public class HomeActivity extends BaseActivity implements SyncListener {
         sessionManager.setSecondaryLocationUuid(sessionManager.getCurrentLocationUuid());
         sessionManager.setCurrentLocationName(villageName.getValue());
         sessionManager.setCurrentLocationUuid(villageName.getKey());
-        sessionManager.setFirstTimeLaunched(true);
         sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
         clearDatabase();
 //        getApplicationContext().deleteDatabase(AppConstants.DATABASE_NAME);
