@@ -136,11 +136,22 @@ public class Medication implements Serializable, ItemHeader {
         return creatorName + " " + DateTimeUtils.utcToLocalDate(createdAt, AppConstants.UTC_FORMAT, AppConstants.VISIT_FORMAT);
     }
 
+    /* public String content() {
+         if (type != null && !type.isEmpty()) {
+             return type + ", Infusion Rate: " + infusionRate;
+         } else {
+             return "Strength: " + strength + ", Infusion Rate: " + infusionRate;
+         }
+     }*/
     public String content() {
         if (type != null && !type.isEmpty()) {
-            return type + ", Infusion Rate: " + infusionRate;
+            if (otherType != null && !otherType.isEmpty()) {
+                return "Other : " + otherType + "\nInfusion Rate: " + infusionRate;
+            } else {
+                return type + "\nInfusion Rate: " + infusionRate;
+            }
         } else {
-            return "Strength: " + strength + ", Infusion Rate: " + infusionRate;
+            return "Strength: " + strength + "\nInfusion Rate: " + infusionRate;
         }
     }
 }

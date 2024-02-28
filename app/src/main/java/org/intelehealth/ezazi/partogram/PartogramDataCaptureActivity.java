@@ -416,6 +416,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         String uuid = obsDAO.getObsuuid(mEncounterUUID, info.getConceptUUID());
                         ObsDTO obs = buildOxytocinIvFluidData(uuid, info);
 
+                        Log.d(TAG, "saveObs: oxytocin: " + info.getMedication().toJson());
                         if (isValidIVFluid) {
                             boolean isExist = obsDAO.isIvFluidByHWExistInDb(mEncounterUUID, info.getMedication().toJson());
                             if (!isExist) {
@@ -553,8 +554,14 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         ParamInfo info = mItemList.get(j).getParamInfoList().get(k);
                         if (obsDTO.getConceptuuid().equals(info.getConceptUUID())) {
                             if (obsDTO.getConceptuuid().equals(UuidDictionary.MEDICINE)) {
-                                info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
-                                info.convertToMedicine(obsDTO);
+                                if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
+                                    //info.setCapturedValue(obsDTO.getValue());
+                                    info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
+                                    info.convertToMedicine(obsDTO);
+                                } else {
+                                    info.setCapturedValue(ParamInfo.RadioOptions.NO.name());
+                                    info.setCheckedRadioOption(ParamInfo.RadioOptions.NO);
+                                }
                             } else if (obsDTO.getConceptuuid().equals(UuidDictionary.IV_FLUIDS)) {
                                 if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty()) {
                                     info.setCapturedValue(obsDTO.getValue());
