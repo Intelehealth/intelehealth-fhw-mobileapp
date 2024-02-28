@@ -138,9 +138,9 @@ public class Medication implements Serializable, ItemHeader {
 
     public String content() {
         if (type != null && !type.isEmpty()) {
-            return type + ", Infusion Rate: " + infusionRate;
+            return type + "\nInfusion Rate: " + infusionRate;
         } else {
-            return "Strength: " + strength + ", Infusion Rate: " + infusionRate;
+            return "Strength: " + strength + "\nInfusion Rate: " + infusionRate;
         }
     }
 }
