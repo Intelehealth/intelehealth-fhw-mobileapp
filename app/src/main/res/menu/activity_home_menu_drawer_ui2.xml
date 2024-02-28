@@ -31,7 +31,7 @@
         <item
             android:id="@+id/menu_abha_card"
             android:icon="@drawable/gender_female_svg"
-            android:title="ABHA Card" />
+            android:title="@string/abha_card" />
 
         <item
             android:id="@+id/menu_logout"
