@@ -356,7 +356,7 @@ public class HomeActivity extends BaseActivity implements SyncListener {
         visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultInitials);
         visitSummary.putExtra("name", patientName);
         visitSummary.putExtra("float_ageYear_Month", age);
-        visitSummary.putExtra("pastVisit", true);
+        visitSummary.putExtra("pastVisit", false);
         visitSummary.putExtra("hasPrescription", "true");
         startActivity(visitSummary);
     }
