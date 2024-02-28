@@ -2401,7 +2401,10 @@ public class IdentificationActivity extends AppCompatActivity implements
         }
 
         private boolean isCharAllowed(char c) {
-            return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);   // This allows only alphabets, digits and spaces.
+            return Character.isLetter(c)
+                    || Character.isSpaceChar(c)
+                    || Character.getType(c) == Character.NON_SPACING_MARK
+                    || Character.getType(c) == Character.COMBINING_SPACING_MARK;     // This allows only alphabets, digits and spaces.
         }
     };
 
