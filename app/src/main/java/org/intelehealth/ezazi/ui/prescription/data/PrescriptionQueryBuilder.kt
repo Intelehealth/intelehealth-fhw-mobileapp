@@ -10,7 +10,7 @@ import org.intelehealth.ezazi.partogram.PartogramConstants.Params
  **/
 class PrescriptionQueryBuilder : QueryBuilder() {
     fun buildPrescriptionQuery(visitId: String): String {
-        return select("O.uuid, O.conceptuuid, O.value, O.created_date, O.creator, P.given_name ")
+        return select("O.uuid, O.conceptuuid, O.value, O.created_date, O.creator, substr(given_name,1,1) || substr(family_name,1,1) as given_name")
             .from(" tbl_obs O ")
             .join(" LEFT JOIN tbl_encounter E ON E.uuid = O.encounteruuid ")
             .joinPlus(" LEFT JOIN tbl_visit V ON V.uuid = E.visituuid ")
@@ -28,7 +28,7 @@ class PrescriptionQueryBuilder : QueryBuilder() {
     }
 
     fun buildSingleItemPrescriptionQuery(visitId: String, conceptId: String): String {
-        return select("O.uuid, O.conceptuuid, O.value, O.created_date, O.creator, P.given_name ")
+        return select("O.uuid, O.conceptuuid, O.value, O.created_date, O.creator,substr(given_name,1,1) || substr(family_name,1,1) as given_name ")
             .from(" tbl_obs O ")
             .join(" LEFT JOIN tbl_encounter E ON E.uuid = O.encounteruuid ")
             .joinPlus(" LEFT JOIN tbl_visit V ON V.uuid = E.visituuid ")

@@ -305,17 +305,15 @@ public class ProviderDAO {
     }
 
     public String getCreatorGivenName(String providerUuid) throws DAOException {
-        String givenname = "", familyname = "",fullname = "";
+        String givenname = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            String query = "select * from tbl_provider where uuid = ?";
+            String query = "select substr(given_name,1,1) || substr(family_name,1,1) as given_name from tbl_provider where uuid = ?";
             Cursor cursor = db.rawQuery(query, new String[]{providerUuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     givenname = cursor.getString(cursor.getColumnIndexOrThrow("given_name"));
-                   // familyname = cursor.getString(cursor.getColumnIndexOrThrow("family_name"));
-                   // fullname = givenname + " " + familyname;
                 }
             }
             cursor.close();
@@ -331,12 +329,12 @@ public class ProviderDAO {
 
     }
 
-    public String getGivenNameByUserUuid(String userUuid)  {
+    public String getGivenNameByUserUuid(String userUuid) {
         String name = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
         try {
-            String query = "select given_name from tbl_provider where useruuid = ?";
+            String query = "select substr(given_name,1,1) || substr(family_name,1,1) as  given_name from tbl_provider where useruuid = ?";
             Cursor cursor = db.rawQuery(query, new String[]{userUuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {

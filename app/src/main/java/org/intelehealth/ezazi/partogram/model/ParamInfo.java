@@ -497,26 +497,26 @@ public class ParamInfo implements Serializable {
     }
 
     public void collectAllPlansInList(ObsDTO obs) {
-        Log.d("TAG", "collectAllPlansInList:createdDate: " + obs.createdDate());
-        Log.d("TAG", "collectAllPlansInList:value: " + obs.getValue());
-
         try {
             ObsDTO plan = new ObsDTO();
-            Log.d("TAG", "collectAllPlansInList: obsUuid: " + obs.getUuid());
             plan.setUuid(obs.getUuid());
             plan.setValue(obs.getValue());
-            //String createdAt = formatDateTimeNew(createdDate);
             plan.setCreatedDate(obs.createdDate());
             if (obs.getCreatorUuid() == null) {
                 obs.setCreatorUuid(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID());
             }
+            if (obs.getCreatorUuid().equals(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID())) {
+                String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
+                plan.setName(creatorName);
+                getPlans().add(plan);
+            }
+
             String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
             plan.setName(creatorName);
             plan.calculateLine();
             getPlans().add(plan);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("TAG", "collectAllPlansInList: " + e.getLocalizedMessage());
         }
 
     }
@@ -554,13 +554,10 @@ public class ParamInfo implements Serializable {
     }
 
     public void collectAllAssessmentsInList(ObsDTO obs) {
-        Log.d("TAG", "collectAllAssessmentsInList:createdDate: " + obs.createdDate());
         try {
             ObsDTO assessment = new ObsDTO();
-            Log.d("TAG", "collectAllAssessmentsInList: obsUuid: " + obs.getValue());
             assessment.setUuid(obs.getUuid());
             assessment.setValue(obs.getValue());
-            //String createdAt = formatDateTimeNew(createdDate);
             assessment.setCreatedDate(obs.createdDate());
             if (obs.getCreatorUuid() == null) {
                 obs.setCreatorUuid(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID());
@@ -569,9 +566,13 @@ public class ParamInfo implements Serializable {
             assessment.setName(creatorName);
             assessment.calculateLine();
             getAssessments().add(assessment);
+            if (obs.getCreatorUuid().equals(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID())) {
+                String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
+                assessment.setName(creatorName);
+                getAssessments().add(assessment);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("TAG", "collectAllAssessmentsInList: " + e.getLocalizedMessage());
         }
 
     }

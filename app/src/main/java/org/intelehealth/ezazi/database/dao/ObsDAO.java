@@ -380,6 +380,7 @@ public class ObsDAO {
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
                 obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
                 obsDTO.setCreatedDate(idCursor.getString(idCursor.getColumnIndexOrThrow("created_date")));
+                obsDTO.setCreatorUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creatoruuid")));
                 obsDTOList.add(obsDTO);
             }
         }
@@ -1105,19 +1106,6 @@ public class ObsDAO {
         return creatorName;
     }
 
-    public String getCreatorNameByObsUuidMedicine(String obsUuid) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String creatorName = "";
-        String query = "select p.given_name from tbl_obs as o LEFT JOIN tbl_provider as p  ON P.useruuid = O.creatoruuid where o.uuid = ?";
-        Cursor idCursor = db.rawQuery(query, new String[]{obsUuid});
-        if (idCursor.getCount() != 0) {
-            while (idCursor.moveToNext()) {
-                creatorName = idCursor.getString(idCursor.getColumnIndexOrThrow("given_name"));
-            }
-        }
-        idCursor.close();
-        return creatorName;
-    }
 
     public boolean isOxytocinByHWExistInDb(String encounteruuid, String value) {
         boolean isExist = false;
@@ -1144,4 +1132,6 @@ public class ObsDAO {
         idCursor.close();
         return isExist;
     }
+
+
 }

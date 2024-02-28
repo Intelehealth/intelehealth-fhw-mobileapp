@@ -514,7 +514,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             String ivFluidType = ivFluidData.getType();
             Log.d(TAG, "setivFluidDataNew: ivFluidType :" + ivFluidType);
-            if (ivFluidType.equals("Ringer Lactate") || ivFluidType.equals("Normal Saline") || ivFluidType.equals("Dextrose 5% (D5)")) {
+          /*  if (ivFluidType.equals("Ringer Lactate") || ivFluidType.equals("Normal Saline") || ivFluidType.equals("Dextrose 5% (D5)")) {
                 ivFluidDataForDb.setType(ivFluidType);
                 binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(ivFluidData.getType());
                 ivFluidDataForDb.setOtherType(null);
@@ -522,7 +522,21 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 ivFluidDataForDb.setType("Other");
                 ivFluidDataForDb.setOtherType(ivFluidData.getOtherType());
                 binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(ivFluidData.getOtherType());
+            }*/
+
+            if (ivFluidType.equalsIgnoreCase("Other")) {
+                Log.d(TAG, "setivFluidDataNew:11 in other");
+                ivFluidDataForDb.setType("Other");
+                ivFluidDataForDb.setOtherType(ivFluidData.getOtherType());
+                binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(ivFluidData.getOtherType());
+            } else {
+                Log.d(TAG, "setivFluidDataNew:11 in else");
+                ivFluidDataForDb.setType(ivFluidType);
+                ivFluidDataForDb.setOtherType(null);
+                binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(ivFluidData.getType());
             }
+            Log.d(TAG, "setivFluidDataNew: type  check : " + ivFluidData.getType());
+            Log.d(TAG, "setivFluidDataNew: type val check : " + ivFluidData.getOtherType());
             ivFluidDataForDb.setInfusionRate(ivFluidData.getInfusionRate());
             ivFluidDataForDb.setInfusionStatus(ivFluidData.getInfusionStatus());
             binding.ivFluidOptions.viewInfusionRate.etvData.setText(ivFluidData.getInfusionRate());
@@ -576,6 +590,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             //selected.setVisibility(View.VISIBLE);
             ivTypeValue.setText(((TextView) v).getText().toString());
             Log.d(TAG, "showIVFluidDialog: cchheck " + ((TextView) v).getText().toString());
+            info.getMedication().setOtherType(null);
             info.getMedication().setType(((TextView) v).getText().toString());
             info.saveJson();
 //            saveIvFluidDataInJson(info, ((TextView) v).getText().toString(), IvFluidTypes.type.name());
