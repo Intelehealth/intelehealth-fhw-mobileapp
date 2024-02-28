@@ -361,15 +361,11 @@ public class ObsDAO {
     public List<ObsDTO> getOBSByEncounterUUID(String encounteruuid) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        //UuidDictionary.IV_FLUIDS, UuidDictionary.OXYTOCIN_UL_DROPS_MIN
-
         //take All obs except image obs
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? " +
                         "AND voided='0' AND creatoruuid NOT IN (SELECT useruuid FROM tbl_provider WHERE role = 'Organizational: Doctor') " +
                         "ORDER BY created_date DESC",
                 new String[]{encounteruuid});
-      /*  String query = "SELECT * FROM tbl_obs WHERE encounteruuid = ? AND (voided='0' OR (voided='1' AND (conceptuuid= ?  OR conceptuuid= ?)))";
-        Cursor idCursor = db.rawQuery(query, new String[]{encounteruuid, UuidDictionary.IV_FLUIDS, UuidDictionary.OXYTOCIN_UL_DROPS_MIN});*/
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {

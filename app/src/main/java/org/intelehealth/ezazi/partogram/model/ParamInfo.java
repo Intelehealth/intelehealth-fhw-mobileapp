@@ -325,6 +325,7 @@ public class ParamInfo implements Serializable {
     }
 
     public List<String> getVoidedMedicineUuid() {
+        Log.d("TAG", "getVoidedMedicineUuid: deletedmed: " + new Gson().toJson(getDeletedMedicines()));
         ArrayList<String> voided = new ArrayList<>();
         for (Medicine med : getDeletedMedicines()) {
             if (med.getObsUuid() != null && med.getObsUuid().length() > 0) {
@@ -505,16 +506,11 @@ public class ParamInfo implements Serializable {
             if (obs.getCreatorUuid() == null) {
                 obs.setCreatorUuid(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID());
             }
-            if (obs.getCreatorUuid().equals(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID())) {
-                String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
-                plan.setName(creatorName);
-                getPlans().add(plan);
-            }
-
             String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
             plan.setName(creatorName);
             plan.calculateLine();
             getPlans().add(plan);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -564,13 +560,9 @@ public class ParamInfo implements Serializable {
             }
             String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
             assessment.setName(creatorName);
-            assessment.calculateLine();
             getAssessments().add(assessment);
-            if (obs.getCreatorUuid().equals(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID())) {
-                String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
-                assessment.setName(creatorName);
-                getAssessments().add(assessment);
-            }
+            assessment.calculateLine();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
