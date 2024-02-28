@@ -95,7 +95,7 @@
             android:parentActivityName=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
