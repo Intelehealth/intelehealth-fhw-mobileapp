@@ -158,5 +158,12 @@ public class AppConstants {
     }
 
     public static final String DOCTOR_ROLE = "Organizational: Doctor";
+
+    public static final String INTENT_IS_DIFFERENT_LOCATION_PRESCRIPTION = "isDifferentLocationPrescriptionReceived";
+    public static final String INTENT_PATIENT_ID = "patientId";
+    public static final String INTENT_VISIT_UUID = "visitUuid";
+    public static final String ENCOUNTER_VITALS_KEY = "ENCOUNTER_VITALS";
+    public static final String ENCOUNTER_ADULT_INITIAL = "ENCOUNTER_ADULTINITIAL";
+
 }
 

@@ -141,6 +141,7 @@ public class HomeActivity extends BaseActivity {
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView lastSyncTextView, lastSyncAgo, newPatient_textview, findPatients_textview, todaysVisits_textview, activeVisits_textview, videoLibrary_textview, help_textview, unUploadedVisitNotificationTV;
     Toolbar toolbar;
+    private Intent updatedIntent = null;
 
     ActivityResultLauncher<Intent> result = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<>() {
         @Override
@@ -318,6 +319,8 @@ public class HomeActivity extends BaseActivity {
             switchLocation();
         }
     }
+
+    private void 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

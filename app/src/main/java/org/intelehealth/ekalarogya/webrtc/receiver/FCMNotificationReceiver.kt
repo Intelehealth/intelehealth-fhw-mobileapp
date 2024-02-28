@@ -15,6 +15,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import org.intelehealth.ekalarogya.R
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity
+import org.intelehealth.ekalarogya.app.AppConstants
 import org.intelehealth.ekalarogya.database.dao.PatientsDAO
 import org.intelehealth.ekalarogya.utilities.NotificationUtils
 import org.intelehealth.ekalarogya.utilities.OfflineLogin
@@ -67,12 +68,16 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     }
                 }
             } else {
-                parseMessage(notification, context)
+                parseMessage(notification, context, data)
             }
         }
     }
 
-    private fun parseMessage(notification: RemoteMessage.Notification?, context: Context) {
+    private fun parseMessage(
+        notification: RemoteMessage.Notification?,
+        context: Context,
+        data: HashMap<String, String>
+    ) {
         notification?.let {
             when (notification.body) {
                 "INVALIDATE_OFFLINE_LOGIN" -> {
@@ -83,10 +88,10 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 "UPDATE_MIND_MAPS" -> {
                     run {}
                     //Calling method to generate notification
-                    sendNotification(notification, context)
+                    sendNotification(notification, context, data)
                 }
 
-                else -> sendNotification(notification, context)
+                else -> sendNotification(notification, context, data)
             }
         }
     }
@@ -94,15 +99,26 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 
     //This method is only generating push notification
     //It is same as we did in earlier posts
-    private fun sendNotification(notification: RemoteMessage.Notification?, context: Context) {
+    private fun sendNotification(
+        notification: RemoteMessage.Notification?,
+        context: Context,
+        data: HashMap<String, String>
+    ) {
         val messageTitle = notification!!.title
         val messageBody = notification.body
         val notificationIntent = Intent(context, HomeActivity::class.java).also {
             when (notification.clickAction) {
-                FcmConstants.FCM_PLUGIN_HOME_ACTIVITY -> it.putExtra(
-                    FcmConstants.INTENT_CLICK_ACTION,
-                    notification.clickAction
-                )
+                FcmConstants.FCM_PLUGIN_HOME_ACTIVITY -> {
+                    it.putExtra(FcmConstants.INTENT_CLICK_ACTION, notification.clickAction)
+                    it.putExtra(
+                        AppConstants.INTENT_VISIT_UUID,
+                        data[AppConstants.INTENT_VISIT_UUID]
+                    )
+                    it.putExtra(
+                        AppConstants.INTENT_PATIENT_ID,
+                        data[AppConstants.INTENT_PATIENT_ID]
+                    )
+                }
             }
         }
 
