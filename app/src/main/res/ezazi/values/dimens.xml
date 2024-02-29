@@ -300,4 +300,5 @@
     <dimen name="timeline_bottom_menu_chat_icon_size">@dimen/std_12dp</dimen>
     <dimen name="btn_administer_height">30dp</dimen>
     <dimen name="menu_icon_size">@dimen/std_24dp</dimen>
+    <dimen name="empty_data_icon_size">@dimen/std_92dp</dimen>
 </resources>

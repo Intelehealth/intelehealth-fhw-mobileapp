@@ -55,6 +55,11 @@ class PrescriptionFragment : Fragment(R.layout.fragment_commen_listview),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCommenListviewBinding.bind(view)
+        binding.emptyMessage = getString(
+            R.string.no_data_message,
+            getString(R.string.prescription)
+        )
+        binding.emptyDataIcon = R.drawable.ic_vector_prescription_large
         setupPrescriptionView()
     }
 

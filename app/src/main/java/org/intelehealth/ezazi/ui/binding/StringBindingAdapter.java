@@ -1,9 +1,12 @@
 package org.intelehealth.ezazi.ui.binding;
 
+import android.graphics.drawable.Drawable;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 
 /**
@@ -24,6 +27,14 @@ public class StringBindingAdapter {
         if (selected != null && textView != null) {
             textView.setText(selected, false);
             textView.setSelection(selected.length());
+        }
+    }
+
+    @BindingAdapter("topDrawable")
+    public static void bindTopDrawable(TextView textView, @DrawableRes int resId) {
+        if (resId != 0) {
+            Drawable drawable = ContextCompat.getDrawable(textView.getContext(), resId);
+            textView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, drawable, null, null);
         }
     }
 }

@@ -44,10 +44,11 @@ class OutcomePendingVisitFragment : Fragment(R.layout.fragment_commen_listview),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCommenListviewBinding.bind(view)
-        binding.tvCallLogEmptyMessage.text = getString(
+        binding.emptyMessage = getString(
             R.string.no_data_message,
             getString(R.string.decision_pending_title)
         )
+        binding.emptyDataIcon = R.drawable.ic_outcome_pending
         initListView()
         loadOutcomePendingVisits()
     }
