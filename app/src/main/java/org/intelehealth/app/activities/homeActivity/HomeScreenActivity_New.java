@@ -574,16 +574,20 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
-            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
-            mSyncProgressDialog.setTitle(R.string.syncInProgress);
-            mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setMax(100);
-            mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mSyncProgressDialog.setIndeterminate(false);
-            mSyncProgressDialog.show();
+            try {
+                mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
+                mSyncProgressDialog.setTitle(R.string.syncInProgress);
+                mSyncProgressDialog.setCancelable(false);
+                mSyncProgressDialog.setMax(100);
+                mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mSyncProgressDialog.setIndeterminate(false);
+                mSyncProgressDialog.show();
+            }catch (Exception ignored){}
 
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
-            showRefreshInProgressDialog();
+            try {
+                showRefreshInProgressDialog();
+            }catch (Exception ignored){}
             Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home",this));
         } else {
             // if initial setup done then we can directly set the periodic background sync job

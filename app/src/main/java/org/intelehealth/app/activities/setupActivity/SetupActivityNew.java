@@ -396,13 +396,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
      */
     private void getJWTToken(String urlString, String username, String password, String admin_password, Location location) {
         cpd.show(getString(R.string.please_wait));
-        ProgressDialog progress;
-        progress = new ProgressDialog(SetupActivityNew.this, R.style.AlertDialogStyle);
-        progress.setTitle(getString(R.string.please_wait_progress));
-        progress.setMessage(getString(R.string.logging_in));
 
-        progress.show();
-        String finalURL = "https://" + urlString.concat(":3030/auth/login");
+        String finalURL = urlString.concat(":3030/auth/login");
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
 
