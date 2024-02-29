@@ -211,7 +211,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
     private void initUI() {
         Activity activity = getActivity();
-        if(!isAdded() || activity ==null) return;
+        if (!isAdded() || activity == null) return;
         sessionManager = new SessionManager(requireActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
         layoutToolbar.setVisibility(View.VISIBLE);
@@ -241,7 +241,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         } else {
             Log.d(TAG, "clickListeners: iv_hamburger null");
         }*/
-        mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
+        mUpcomingAppointmentCountTextView = view.findViewById(R.id.textView5);
         mCountPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
         mUpcomingAppointmentCountTextView.setText("0 " + getString(R.string.upcoming));
         mCountPendingFollowupVisitsTextView.setText("0 " + getString(R.string.pending));
@@ -451,8 +451,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
                 int finalTotalUpcomingApps = totalUpcomingApps;
                 if (mUpcomingAppointmentCountTextView != null) {
-                    if (isAdded() && getActivity() != null)
-                        getActivity().runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + getActivity().getString(R.string.upcoming)));
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + requireActivity().getString(R.string.upcoming)));
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

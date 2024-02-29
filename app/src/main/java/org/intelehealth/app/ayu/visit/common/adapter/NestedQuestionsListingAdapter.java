@@ -760,6 +760,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     (node, isLoadingForNestedEditData) -> {
                         Log.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
                         Log.d(TAG, "onSelect selectedNode: " + new Gson().toJson(selectedNode));
+                        if (index == mItemList.size()) return;
                         if (!isLoadingForNestedEditData)
                             VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode, mItemList.size() <= index || mLoadedIds.contains(mItemList.get(index).getId()));
                         if (!isLoadingForNestedEditData) {
