@@ -4,7 +4,6 @@ package org.intelehealth.app.appointment.api;
 import android.util.Log;
 
 import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.networkApiCalls.interceptors.LogoutInterceptor;
 import org.intelehealth.app.networkApiCalls.interceptors.TokenSetupInterceptor;
 
 import java.util.concurrent.TimeUnit;
@@ -24,7 +23,6 @@ public class ApiClientAppointment {
         loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
         client.addInterceptor(loggingInterceptor);
         client.addInterceptor(new TokenSetupInterceptor());
-        client.addInterceptor(new LogoutInterceptor());
         client.connectTimeout(45, TimeUnit.SECONDS);
         client.readTimeout(45, TimeUnit.SECONDS);
         client.writeTimeout(45, TimeUnit.SECONDS);

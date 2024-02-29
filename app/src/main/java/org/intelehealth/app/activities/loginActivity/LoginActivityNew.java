@@ -52,6 +52,8 @@ import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
+import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.io.BufferedReader;
@@ -286,7 +288,9 @@ public class LoginActivityNew extends AppCompatActivity {
             if (NetworkConnection.isOnline(this)) {
                 // Show a progress spinner, and kick off a background task to
                 // perform the user login attempt.
-                UserLoginTask(email, password);
+                //UserLoginTask(email, password);
+                //getting jwt token here
+                getJWTToken(email,password);
             } else {
                 //offlineLogin.login(email, password);
                 offlineLogin.offline_login(email, password);
@@ -452,6 +456,7 @@ public class LoginActivityNew extends AppCompatActivity {
                                 public void onError(Throwable e) {
                                     Logger.logD(TAG, "handle provider error" + e.getMessage());
                                     cpd.dismiss();
+                                    showErrorDialog();
                                 }
 
                                 @Override
@@ -467,13 +472,7 @@ public class LoginActivityNew extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
                 cpd.dismiss();
-                DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showCommonDialog(LoginActivityNew.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
-                    @Override
-                    public void onDialogActionDone(int action) {
-
-                    }
-                });
+                showErrorDialog();
             }
 
             @Override
@@ -526,6 +525,61 @@ public class LoginActivityNew extends AppCompatActivity {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+
+    /**
+     * error dialog for incorrect credentials
+     */
+    private void showErrorDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(LoginActivityNew.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+
+            }
+        });
+    }
+
+
+    private void getJWTToken(String username, String password) {
+        String finalURL = sessionManager.getServerUrl().concat(":3030/auth/login");
+        AuthJWTBody authBody = new AuthJWTBody(username, password, true);
+        Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
+
+        authJWTResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AuthJWTResponse authJWTResponse) {
+                        // in case of error password
+                        if (!authJWTResponse.getStatus()) {
+                            cpd.dismiss();
+                            showErrorDialog();
+                            return;
+                        }
+
+                        sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        UserLoginTask(username, password);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        cpd.dismiss();
+                        showErrorDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
 

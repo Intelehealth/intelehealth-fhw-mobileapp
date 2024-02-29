@@ -1,9 +1,12 @@
 package org.intelehealth.app.networkApiCalls.interceptors
 
 import okhttp3.Interceptor
+import okhttp3.Request
 import okhttp3.Response
+import org.intelehealth.app.R
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.utilities.SessionManager
+import java.io.IOException
 
 /**
  * Created by Tanvir Hasan on 15-02-2024 : 15-49.
@@ -14,16 +17,42 @@ import org.intelehealth.app.utilities.SessionManager
 class TokenSetupInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val sessionManager = SessionManager(IntelehealthApplication.getAppContext())
-        val token = sessionManager.jwtAuthToken
-        var modifiedRequest = chain.request()
-        //Not going to add token on some api with 3004 port
+        val request = chain.request()
+        //Not going to add token on some api
         //that's why added the logic
-        if (chain.request().url.port == 3004) {
-            modifiedRequest = chain.request()
-                .newBuilder()
-                .addHeader("Authorization", "Bearer $token")
-                .build()
+        //all appointment api's here
+        when (chain.request().url.encodedPath) {
+            "/api/appointment/cancelAppointment",
+            "/api/appointment/getAppointmentSlots",
+            "/api/appointment/getSlots" -> {
+                val token = sessionManager.jwtAuthToken
+
+                //adding token here
+                val builder: Request.Builder = request.newBuilder()
+                builder.header("Authorization", "Bearer $token")
+                builder.method(request.method,request.body)
+                val response = chain.proceed(builder.build())
+
+                //if response code 401 the exception will throw
+                if (response.code == 401) {
+                    throw LogoutException()
+                }
+                return response
+            }
+
+            else -> {
+                return chain.proceed(request)
+            }
         }
-        return chain.proceed(modifiedRequest)
+
     }
+}
+
+/**
+ * New exception to detect logout
+ */
+
+class LogoutException : IOException() {
+    override val message: String
+        get() = IntelehealthApplication.getInstance().getString(R.string.token_expired)
 }

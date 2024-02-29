@@ -12,6 +12,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
+import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -79,6 +80,8 @@ public class AppointmentSync {
                     @Override
                     public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
                         Log.v(TAG, t.getMessage());
+                        //log out operation if response code is 401
+                        new NavigationUtils().logoutOperation(context,t);
                     }
                 });
 

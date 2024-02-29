@@ -584,7 +584,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
-            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home"));
+            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home",this));
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
@@ -776,7 +776,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         builder.setView(customLayout);
         dialogRefreshInProgress = builder.create();
         dialogRefreshInProgress.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-        dialogRefreshInProgress.show();
+        if(!dialogRefreshInProgress.isShowing()){
+            dialogRefreshInProgress.show();
+        }
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         new Handler().postDelayed(new Runnable() {

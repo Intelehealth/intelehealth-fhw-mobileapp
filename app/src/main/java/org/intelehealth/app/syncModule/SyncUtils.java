@@ -20,6 +20,7 @@ import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NotificationUtils;
+import org.intelehealth.app.utilities.SessionManager;
 
 public class SyncUtils {
 
@@ -31,19 +32,20 @@ public class SyncUtils {
      *
      * @param fromActivity
      */
-    public void initialSync(String fromActivity) {
+    public void initialSync(String fromActivity,Context context) {
 
         SyncDAO syncDAO = new SyncDAO();
         Logger.logD(TAG, "Pull Started");
         syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity,0);
         Logger.logD(TAG, "Pull ended");
         // sync data
-        AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
+        AppointmentSync.getAppointments(context);
     }
 
     public void syncBackground() {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         syncDAO.pushDataApi();
         syncDAO.pullData_Background(IntelehealthApplication.getAppContext(),0); //only this new function duplicate
         imagesPushDAO.loggedInUserProfileImagesPush();
@@ -57,7 +59,11 @@ public class SyncUtils {
         handler_background.postDelayed(new Runnable() {
             @Override
             public void run() {
-                AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
+                //sometimes syncing happening while logout
+                //added the checking to prevent appointment api call
+                if(!sessionManager.isLogout()){
+                    AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
+                }
                 Logger.logD(TAG, "Background Image Push Started");
                 imagesPushDAO.obsImagesPush();
                 Logger.logD(TAG, "Background Image Pull ended");
@@ -73,6 +79,7 @@ public class SyncUtils {
                 .enqueue();
 
     }
+
 
     public boolean syncForeground(String fromActivity) {
         boolean isSynced = false;

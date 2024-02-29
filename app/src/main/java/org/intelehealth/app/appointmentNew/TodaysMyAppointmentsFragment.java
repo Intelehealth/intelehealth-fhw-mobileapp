@@ -41,6 +41,7 @@ import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -638,6 +639,8 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             @Override
             public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
                 Log.v("onFailure", t.getMessage());
+                //log out operation if response code is 401
+                new NavigationUtils().logoutOperation(getActivity(),t);
             }
         });
     }

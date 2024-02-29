@@ -52,6 +52,7 @@ import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -413,6 +414,8 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
             @Override
             public void onFailure(Call<SlotInfoResponse> call, Throwable t) {
                 Log.v("onFailure", t.getMessage());
+                //log out operation if response code is 401
+                new NavigationUtils().logoutOperation(ScheduleAppointmentActivity_New.this,t);
             }
         });
 
