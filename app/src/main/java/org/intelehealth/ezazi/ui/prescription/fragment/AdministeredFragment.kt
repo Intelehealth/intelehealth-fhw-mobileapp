@@ -158,26 +158,31 @@ class AdministeredFragment : Fragment(R.layout.fragment_administered), MenuProvi
             return when (it.prescriptionType) {
                 PLAN -> {
                     binding.administerType = getString(R.string.lbl_plan)
+                    binding.emptyDataIcon = R.drawable.ic_plan_large
                     R.string.planned_by_you
                 }
 
                 ASSESSMENT -> {
                     binding.administerType = getString(R.string.lbl_assessment)
+                    binding.emptyDataIcon = R.drawable.ic_plan_large
                     R.string.assess_by_you
                 }
 
                 MEDICINE -> {
                     binding.administerType = getString(R.string.lbl_medicine)
+                    binding.emptyDataIcon = R.drawable.ic_medicine_administer_large
                     R.string.lbl_medicine_administration
                 }
 
                 OXYTOCIN -> {
                     binding.administerType = getString(R.string.lbl_oxytocin)
+                    binding.emptyDataIcon = R.drawable.ic_oxytocin
                     R.string.lbl_oxytocin_administration
                 }
 
                 IV_FLUID -> {
                     binding.administerType = getString(R.string.lbl_iv_fluid)
+                    binding.emptyDataIcon = R.drawable.ic_iv_fluid
                     R.string.lbl_iv_fluid_administration
                 }
 

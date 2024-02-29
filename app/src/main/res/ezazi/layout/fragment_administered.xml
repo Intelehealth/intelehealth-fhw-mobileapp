@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="administerType"
             type="String" />
+        <variable
+            name="emptyDataIcon"
+            type="Integer" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -32,25 +38,27 @@
                 android:layout_marginBottom="@dimen/screen_container_padding"
                 android:contentDescription="@string/content_added_medicine_list"
                 android:padding="@dimen/screen_container_padding"
+                app:layout_constraintBottom_toTopOf="@id/btnSaveMedicines"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/btnSaveMedicines"
                 tools:itemCount="1"
                 tools:listitem="@layout/row_item_medicine" />
 
             <TextView
+                android:id="@+id/tvEmptyListMessage"
                 style="@style/Theme.EZazi.Body"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:lineSpacingExtra="@dimen/list_container_padding"
-                android:id="@+id/tvEmptyListMessage"
+                topDrawable="@{emptyDataIcon}"
+                android:drawablePadding="@dimen/screen_padding"
                 android:text="@{@string/empty_administer_list_message(administerType)}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveMedicines"

@@ -18,10 +18,8 @@ class PrescriptionPlanHolder(val binding: RowItemPrescriptionPlanBinding) :
         binding.plan = plan
         binding.btnPrescriptionPlanViewMore.setOnClickListener(this)
         binding.btnPrescriptionPlanViewMore.tag = plan
-        Timber.d { "noOfLine:: ${plan.noOfLine}" }
         if (plan.noOfLine == 0) {
             binding.txtPlanContent.postDelayed({
-                Timber.d { "Line count:: ${binding.txtPlanContent.lineCount}" }
                 plan.noOfLine = binding.txtPlanContent.lineCount
                 binding.txtPlanContent.maxLines = plan.contentLine
                 binding.plan = plan
