@@ -299,7 +299,7 @@ public class VisitAttributeListDAO {
     public boolean isSameOutcomePendingValueExist(String visitUuid, String value) {
         Log.d(TAG, "isSameOutcomePendingValueExist: ");
         boolean isExist = false;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor idCursor = db.rawQuery("SELECT 1 as count FROM tbl_visit_attribute where visit_uuid = ? AND voided='0' AND value =? AND visit_attribute_type_uuid = ?",
                 new String[]{visitUuid, value, UuidDictionary.DECISION_PENDING});
         if (idCursor.getCount() != 0) {
