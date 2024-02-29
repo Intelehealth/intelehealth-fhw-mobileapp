@@ -2,9 +2,12 @@ package org.intelehealth.ezazi.ui;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
@@ -25,14 +28,17 @@ public class TempActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temp);
-        ThemeTimePickerDialog dialog = new ThemeTimePickerDialog.Builder(this)
-                .title(R.string.current_time)
-                .positiveButtonLabel(R.string.ok)
-                .build();
-        dialog.setListener((hours, minutes, amPm, value) -> {
-            Log.d("ThemeTimePickerDialog", "value : " + value);
-        });
-        dialog.show(getSupportFragmentManager(), "ThemeTimePickerDialog");
+        TextView textView = findViewById(R.id.txtContent);
+        textView.post(() -> Timber.tag(TempActivity.class.getName()).d("Line count::%s", textView.getLineCount()));
+
+//        ThemeTimePickerDialog dialog = new ThemeTimePickerDialog.Builder(this)
+//                .title(R.string.current_time)
+//                .positiveButtonLabel(R.string.ok)
+//                .build();
+//        dialog.setListener((hours, minutes, amPm, value) -> {
+//            Log.d("ThemeTimePickerDialog", "value : " + value);
+//        });
+//        dialog.show(getSupportFragmentManager(), "ThemeTimePickerDialog");
 
 
 //        MultiChoiceDialogFragment<String> dialog = new MultiChoiceDialogFragment.Builder<String>(this)

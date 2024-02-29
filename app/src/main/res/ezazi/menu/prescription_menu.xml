@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_view_prescription"
-        android:icon="@drawable/selector_prescription"
+        android:icon="@drawable/ic_vector_prescription_menu"
         android:title="@string/view_prescription"
+        app:iconTint="?attr/colorPrimary"
         app:showAsAction="always" />
 
 </menu>

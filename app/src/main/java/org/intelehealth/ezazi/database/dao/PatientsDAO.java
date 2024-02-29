@@ -74,6 +74,7 @@ public class PatientsDAO {
             values.put("city_village", patient.getCityvillage());
             values.put("creatoruuid", patient.getCreatorUuid());
             values.put("dateCreated", patient.getCreatedAt());
+            values.put("patient_photo", patient.getPatientPhoto());
             values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
@@ -543,6 +544,7 @@ public class PatientsDAO {
                     patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
                     patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                     patientDTO.setCreatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("dateCreated")));
+                    patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
                     patientDTOList.add(patientDTO);
                 }
             }

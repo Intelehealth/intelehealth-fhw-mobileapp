@@ -265,4 +265,5 @@
     <dimen name="elcg_alert_text_size">@dimen/std_18sp</dimen>
     <dimen name="timeline_bottom_menu_icon_size">@dimen/std_32dp</dimen>
     <dimen name="timeline_bottom_menu_chat_icon_size">@dimen/std_24dp</dimen>
+    <dimen name="menu_icon_size">@dimen/std_48dp</dimen>
 </resources>

@@ -99,7 +99,6 @@ class NewPlanFragment : Fragment(R.layout.fragment_new_plan) {
                 plan.uuid = binding.plan?.uuid
             }
 
-            plan.calculateLine()
             if (updated > -1) viewMode.updateItem(updated, plan)
             else viewMode.addItem(plan)
 

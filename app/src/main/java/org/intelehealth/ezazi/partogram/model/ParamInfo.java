@@ -508,7 +508,6 @@ public class ParamInfo implements Serializable {
             }
             String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
             plan.setName(creatorName);
-            plan.calculateLine();
             getPlans().add(plan);
 
         } catch (Exception e) {
@@ -561,7 +560,6 @@ public class ParamInfo implements Serializable {
             String creatorName = new ProviderDAO().getGivenNameByUserUuid(obs.getCreatorUuid());
             assessment.setName(creatorName);
             getAssessments().add(assessment);
-            assessment.calculateLine();
 
         } catch (Exception e) {
             e.printStackTrace();
