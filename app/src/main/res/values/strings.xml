@@ -1227,5 +1227,6 @@
 
     <string name="prescription_dr_email">Email: %1$s</string>
     <string name="prescription_dr_registration">Registration No: %1$s</string>
+    <string name="please_install_whatsapp">Please install WhatsApp for sharing this prescription.</string>
 
 </resources>

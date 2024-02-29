@@ -5,6 +5,12 @@ apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply from: "resdir.gradle"
 
+static def getDateTime() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmmss')
+    return formattedDate
+}
+
 android {
     compileSdk 34
 
@@ -17,7 +23,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
-        archivesBaseName = "Ekal-Arogya-" + versionName
+        archivesBaseName = "Ekal-Arogya-" + versionName + getDateTime()
         //vectorDrawables.useSupportLibrary = true
     }
     compileOptions {

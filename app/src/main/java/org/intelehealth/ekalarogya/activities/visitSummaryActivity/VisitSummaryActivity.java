@@ -29,6 +29,7 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.fetchObsValue_RE
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -607,7 +608,12 @@ public class VisitSummaryActivity extends BaseActivity {
                     intent.putExtra(Intent.EXTRA_STREAM, uri);
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.setPackage("com.whatsapp");
-                    startActivity(intent);
+
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException exception) {
+                        Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
+                    }
 
 //                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
 //                    EditText editText = new EditText(VisitSummaryActivity.this);
@@ -1939,20 +1945,28 @@ public class VisitSummaryActivity extends BaseActivity {
 
     private VitalsObject getVitals() {
         VitalsObject vitalsObject = new VitalsObject();
-        vitalsObject.setHeight(height.getValue());
-        vitalsObject.setWeight(weight.getValue());
+        vitalsObject.setHeight(checkAndReturnVitalsValue(height));
+        vitalsObject.setWeight(checkAndReturnVitalsValue(weight));
         vitalsObject.setBmi(mBMI);
-        vitalsObject.setBpsys(bpSys.getValue());
-        vitalsObject.setBpdia(bpDias.getValue());
-        vitalsObject.setPulse(pulse.getValue());
-        vitalsObject.setTemperature(temperature.getValue());
-        vitalsObject.setResp(resp.getValue());
-        vitalsObject.setHsb(hemoglobin.getValue());
-        vitalsObject.setBlood(blood.getValue());
-        vitalsObject.setSugarfasting(sugarfasting.getValue());
-        vitalsObject.setSugarrandom(sugarrandom.getValue());
-        vitalsObject.setSpo2(spO2.getValue());
+        vitalsObject.setBpsys(checkAndReturnVitalsValue(bpSys));
+        vitalsObject.setBpdia(checkAndReturnVitalsValue(bpDias));
+        vitalsObject.setPulse(checkAndReturnVitalsValue(pulse));
+        vitalsObject.setTemperature(checkAndReturnVitalsValue(temperature));
+        vitalsObject.setResp(checkAndReturnVitalsValue(resp));
+        vitalsObject.setHsb(checkAndReturnVitalsValue(hemoglobin));
+        vitalsObject.setBlood(checkAndReturnVitalsValue(blood));
+        vitalsObject.setSugarfasting(checkAndReturnVitalsValue(sugarfasting));
+        vitalsObject.setSugarrandom(checkAndReturnVitalsValue(sugarrandom));
+        vitalsObject.setSpo2(checkAndReturnVitalsValue(spO2));
         return vitalsObject;
+    }
+
+    public String checkAndReturnVitalsValue(ObsDTO dto) {
+        if (dto == null) {
+            return "NA";
+        } else {
+            return dto.getValue();
+        }
     }
 
     private void getVisitStartDate() {

@@ -40,7 +40,12 @@ public class PrescriptionBuilder {
         String name = patient.getFirst_name().concat(" ").concat(patient.getLast_name());
         String age = context.getString(R.string.prescription_age, String.valueOf(DateAndTimeUtils.getAge(patient.getDate_of_birth(), context)));
         String gender = context.getString(R.string.prescription_gender, patient.getGender());
-        String address = context.getString(R.string.prescription_address, patient.getAddress1().concat(",").concat(patient.getAddress2()).concat(", ").concat(patient.getPostal_code()));
+
+        String addressLine1 = checkValueAndReturnNA(patient.getAddress1());
+        String addressLine2 = checkValueAndReturnNA(patient.getAddress2());
+        String postalCode = checkValueAndReturnNA(patient.getPostal_code());
+
+        String address = context.getString(R.string.prescription_address, addressLine1.concat(",").concat(addressLine2).concat(", ").concat(postalCode));
         String openMrsId = context.getString(R.string.prescription_patient_id, patient.getOpenmrs_id());
         String dateOfVisit = context.getString(R.string.prescription_date_of_visit, visitDate);
 
