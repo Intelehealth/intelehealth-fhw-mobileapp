@@ -594,18 +594,17 @@ public class VisitSummaryActivity extends BaseActivity {
                     String fileNamePatientName = patientName.replace(" ", "-");
                     String fileNameOpenMrsId = patient.getOpenmrs_id();
                     String fileNameVisitID = visitUuid.substring(visitUuid.length() - 5);
+                    String prescriptionString = "Prescription";
 
-                    String fileName = fileNamePatientName.concat("-").concat(fileNameOpenMrsId).concat("-").concat(visitStartDate).concat("-").concat(fileNameVisitID).concat(".pdf");
+                    String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
                     buildAndSavePrescription(fileName);
-
-                    String message = "Here is the PDF file you requested.";
 
                     File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
                     Uri uri = FileProvider.getUriForFile(VisitSummaryActivity.this, getApplicationContext().getPackageName() + ".provider", pdfFile);
 
                     Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_STREAM, uri);
                     intent.setType("application/pdf");
+                    intent.putExtra(Intent.EXTRA_STREAM, uri);
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.setPackage("com.whatsapp");
                     startActivity(intent);
