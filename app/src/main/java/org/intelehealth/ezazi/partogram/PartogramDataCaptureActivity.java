@@ -554,6 +554,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         ParamInfo info = mItemList.get(j).getParamInfoList().get(k);
                         if (obsDTO.getConceptuuid().equals(info.getConceptUUID())) {
                             if (obsDTO.getConceptuuid().equals(UuidDictionary.MEDICINE)) {
+                                Log.d(TAG, "setEditData: obsDTO.getValue() :: "+obsDTO.getValue());
                                 if (obsDTO.getValue() != null && !obsDTO.getValue().isEmpty() && !obsDTO.getValue().equalsIgnoreCase("no")) {
                                     //info.setCapturedValue(obsDTO.getValue());
                                     info.setCapturedValue(ParamInfo.RadioOptions.YES.name());

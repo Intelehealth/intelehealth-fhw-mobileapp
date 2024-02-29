@@ -103,7 +103,7 @@ public class CardGenerationEngine {
 
                     if (latestEncounterName.toLowerCase().contains("stage1")) {
                         if (minutes >= 30) {
-                           /* //out of time -decision pending*/
+                            /* //out of time -decision pending*/
                             if (checkVisitEncounterReachToLimitForStage1(latestEncounterName)) {
                                 closeReachToLimitVisit(visitUid);
                             } else {
@@ -255,6 +255,8 @@ public class CardGenerationEngine {
     private static void closeReachToLimitVisit(String visitId) {
         Log.d(TAG, "kz11closeReachToLimitVisit: visitid :: " + visitId);
         Log.d(TAG, "kz11closeReachToLimitVisit: check insert value :");
+        if (new VisitAttributeListDAO().isSameOutcomePendingValueExist(visitId, "true"))
+            return;
         long updated = new VisitAttributeListDAO().updateVisitAttribute(visitId, UuidDictionary.DECISION_PENDING, "true");
         if (updated > 0) {
             try {

@@ -1019,6 +1019,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private void updateVisitDecisionPendingFlag() {
         Log.d(TAG, "updateVisitDecisionPendingFlag: visituuid : " + visitUuid);
         if (visitUuid != null && !visitUuid.isEmpty()) {
+            if (new VisitAttributeListDAO().isSameOutcomePendingValueExist(visitUuid, "false"))
+                return;
             long updated = new VisitAttributeListDAO().updateVisitAttribute(visitUuid, UuidDictionary.DECISION_PENDING, "false");
             if (updated > 0) {
                 try {

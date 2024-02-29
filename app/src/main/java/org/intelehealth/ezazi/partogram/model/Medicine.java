@@ -51,7 +51,7 @@ public class Medicine implements Serializable, ItemHeader {
 
     private String remark;
 
-     private String medicineFullName;
+    private String medicineFullName;
 
     public boolean isRecordFromLocalDb() {
         return isRecordFromLocalDb;
@@ -216,15 +216,13 @@ public class Medicine implements Serializable, ItemHeader {
     }
 
     public ObsDTO toObs(String encounterId, String creator, String createdDate) {
-        Log.d(TAG, "toObs: createdDate medicine : " + createdDate);
-        Log.d(TAG, "obsuuidtoObs: after obsuuid : " + obsUuid);
         ObsDTO obs = new ObsDTO();
         obs.setConceptuuid(UuidDictionary.MEDICINE);
         obs.setValue(toDBFormat().trim());
         obs.setCreatorUuid(creator);
         obs.setEncounteruuid(encounterId);
         obs.setCreatedDate(createdDate);
-        Log.e("Medicine", "toObs:medicine " + new Gson().toJson(obs));
+        obs.setComment("");
         return obs;
     }
 

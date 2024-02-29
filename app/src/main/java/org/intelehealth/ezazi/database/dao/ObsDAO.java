@@ -285,6 +285,7 @@ public class ObsDAO {
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("voided", "1");
                 values.put("sync", "false");    //Earlier was set to FALSE which caused the issue.
+                values.put("comment", "Void this");
                 updatedCount = db.update("tbl_obs", values, selection, new String[]{uuid});
                 isUpdated = updatedCount > 0;
             }

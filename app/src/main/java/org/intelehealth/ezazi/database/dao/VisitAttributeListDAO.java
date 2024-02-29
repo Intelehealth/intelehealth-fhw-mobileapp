@@ -296,4 +296,16 @@ public class VisitAttributeListDAO {
         return false;
     }
 
+    public boolean isSameOutcomePendingValueExist(String visitUuid, String value) {
+        Log.d(TAG, "isSameOutcomePendingValueExist: ");
+        boolean isExist = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT 1 as count FROM tbl_visit_attribute where visit_uuid = ? AND voided='0' AND value =? AND visit_attribute_type_uuid = ?",
+                new String[]{visitUuid, value, UuidDictionary.DECISION_PENDING});
+        if (idCursor.getCount() != 0) {
+            isExist = true;
+        }
+        idCursor.close();
+        return isExist;
+    }
 }

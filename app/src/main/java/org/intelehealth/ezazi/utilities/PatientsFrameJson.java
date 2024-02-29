@@ -235,22 +235,18 @@ public class PatientsFrameJson {
             if (!encounterDTO.getEncounterTypeUuid().equalsIgnoreCase(UuidDictionary.EMERGENCY)) {
                 List<Ob> obsList = new ArrayList<>();
                 List<ObsDTO> obsDTOList = obsDAO.obsDTOList(encounterDTO.getUuid());
-                Log.d(TAG, "fetchEncounterObs: obsDTOList : " + new Gson().toJson(obsDTOList));
                 Ob ob = new Ob();
                 for (ObsDTO obs : obsDTOList) {
                     if (obs != null && obs.getValue() != null) {
                         // if (!obs.getValue().isEmpty()) {  // commented for the case - if user update any value with empty field then it should proceed
                         ob = new Ob();
                         //Do not set obs uuid in case of emergency encounter type .Some error occuring in open MRS if passed
-                        Log.d(TAG, "fetchEncounterObs:obs.getCreatorUuid() ::  " + obs.getCreatorUuid());
                         ob.setUuid(obs.getUuid());
                         ob.setConcept(obs.getConceptuuid());
                         ob.setValue(obs.getValue());
                         ob.setComment(obs.getComment());
                         ob.setVoided(obs.getVoided());
-                        Log.d(TAG, "fetchEncounterObs: obs.getCreatedDate : "+obs.createdDate());
                         ob.setCreatedDate(obs.createdDate());
-                        Log.d(TAG, "fetchEncounterObs: date in push : " + ob.getCreatedDate());
                         //ob.setCreatedDate(AppConstants.dateAndTimeUtils.currentDateTime());
                         //ob.setCreatedDate(DateTimeUtils.convertISTDateToISO8601(obs.getCreatedDate()));//send obs date time here
                         // Log.d(TAG, "fetchEncounterObs: finaldate push: " + DateTimeUtils.convertISTDateToISO8601(obs.getCreatedDate()));
