@@ -14,19 +14,24 @@ import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
 class PrescriptionPlanHolder(val binding: RowItemPrescriptionPlanBinding) :
     BaseViewHolder(binding.root) {
     fun bind(plan: ObsDTO) {
+        allowInstantClick = true
         binding.plan = plan
         binding.btnPrescriptionPlanViewMore.setOnClickListener(this)
         binding.btnPrescriptionPlanViewMore.tag = plan
-        binding.plan?.let {
-            if (it.noOfLine == 0) {
-                binding.txtPlanContent.post {
-                    Timber.d { "Line count:: ${binding.txtPlanContent.lineCount}" }
-                    it.noOfLine = binding.txtPlanContent.lineCount
-                    binding.txtPlanContent.maxLines = it.contentLine
-                }
-                binding.plan = it
-            }
+        Timber.d { "noOfLine:: ${plan.noOfLine}" }
+        if (plan.noOfLine == 0) {
+            binding.txtPlanContent.postDelayed({
+                Timber.d { "Line count:: ${binding.txtPlanContent.lineCount}" }
+                plan.noOfLine = binding.txtPlanContent.lineCount
+                binding.txtPlanContent.maxLines = plan.contentLine
+                binding.plan = plan
+            }, 25)
+        } else binding.txtPlanContent.maxLines = plan.contentLine
+    }
 
-        }
+    private fun updateData(plan: ObsDTO) {
+        binding.plan = plan
+        binding.btnPrescriptionPlanViewMore.setOnClickListener(this)
+        binding.btnPrescriptionPlanViewMore.tag = plan
     }
 }
