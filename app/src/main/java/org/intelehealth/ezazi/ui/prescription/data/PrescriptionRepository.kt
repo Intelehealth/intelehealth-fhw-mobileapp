@@ -185,10 +185,9 @@ class PrescriptionRepository(val database: SQLiteDatabase) {
         if (plans.isNotEmpty()) {
             header.invoke()
             prescriptions.addAll(plans.map {
+                Timber.d { "lines => ${it.value.lines().size}" }
+                Timber.d { "split lines => ${it.value.split("\r\n|\r|\n").size}" }
                 it.calculateLine()
-//                it.noOfLine = if (it.value.length > (StringUtils.getMaxLineChars() * 2))
-//                    (it.value.length / StringUtils.getMaxLineChars()).roundToInt() + 1
-//                else 2
                 if (it.name.contains("Dr").not()) it.name = "Dr.${it.name}"
                 return@map it
             })

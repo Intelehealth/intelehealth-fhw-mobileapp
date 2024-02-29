@@ -163,7 +163,7 @@ public class PatientQueryBuilder extends QueryBuilder {
     }
 
     public String outcomePendingPatientQuery(int offset, int limit, String providerId) {
-        String query = select("P.date_of_birth, P.uuid, V.enddate, V. startdate,V.uuid as visitId, P.openmrs_id, P.dateCreated, " +
+        String query = select("P.date_of_birth, P.uuid, V.enddate, V. startdate,V.uuid as visitId, P.openmrs_id, P.dateCreated, P.patient_photo, " +
                 "CASE WHEN middle_name IS NULL THEN first_name || ' ' || last_name " +
                 "ELSE first_name || ' ' || middle_name || ' ' || last_name END fullName, " + getCurrentStageCase() + "," +
                 "(SELECT value FROM tbl_visit_attribute where visit_attribute_type_uuid = '" + DECISION_PENDING + "' AND visit_uuid = V.uuid) as outcomePending")

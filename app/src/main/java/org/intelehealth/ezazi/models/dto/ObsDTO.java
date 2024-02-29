@@ -216,9 +216,9 @@ public class ObsDTO implements ItemHeader, Serializable {
     }
 
     public void calculateLine() {
-        if (value.length() > (StringUtils.getMaxLineChars() * 2))
-            noOfLine = (int) (Math.round(value.length() / StringUtils.getMaxLineChars()) + 1);
-        else noOfLine = 2;
+//        if (value.length() > (StringUtils.getMaxLineChars() * 2))
+//            noOfLine = (int) (Math.round(value.length() / StringUtils.getMaxLineChars()) + 1);
+//        else noOfLine = 2;
     }
 
 }

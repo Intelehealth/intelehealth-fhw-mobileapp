@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.ui.prescription.holder
 
 import android.view.View
+import com.github.ajalt.timberkt.Timber
 import org.intelehealth.ezazi.databinding.RowItemPrescriptionPlanBinding
 import org.intelehealth.ezazi.models.dto.ObsDTO
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
@@ -16,5 +17,16 @@ class PrescriptionPlanHolder(val binding: RowItemPrescriptionPlanBinding) :
         binding.plan = plan
         binding.btnPrescriptionPlanViewMore.setOnClickListener(this)
         binding.btnPrescriptionPlanViewMore.tag = plan
+        binding.plan?.let {
+            if (it.noOfLine == 0) {
+                binding.txtPlanContent.post {
+                    Timber.d { "Line count:: ${binding.txtPlanContent.lineCount}" }
+                    it.noOfLine = binding.txtPlanContent.lineCount
+                    binding.txtPlanContent.maxLines = it.contentLine
+                }
+                binding.plan = it
+            }
+
+        }
     }
 }

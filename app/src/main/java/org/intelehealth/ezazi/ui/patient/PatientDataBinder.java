@@ -122,7 +122,7 @@ public class PatientDataBinder {
                 model.setStage(searchCursor.getString(searchCursor.getColumnIndexOrThrow("stage")));
                 model.setStartDate(searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")));
                 model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
-
+                model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
                 patients.add(model);
             } while (searchCursor.moveToNext());
         }
