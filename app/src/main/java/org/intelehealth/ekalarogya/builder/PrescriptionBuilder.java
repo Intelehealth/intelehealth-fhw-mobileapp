@@ -174,34 +174,27 @@ public class PrescriptionBuilder {
             windowManager.getDefaultDisplay().getMetrics(metrics);
         }
 
-        binding.getRoot().measure(View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        // Measure the view at the exact width and unspecified height to determine the total height needed
+        binding.getRoot().measure(View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
         binding.getRoot().layout(0, 0, metrics.widthPixels, binding.getRoot().getMeasuredHeight());
 
         int viewHeight = binding.getRoot().getMeasuredHeight();
         int viewWidth = metrics.widthPixels;
-        int pageHeight = metrics.heightPixels;
 
-        int numberOfPages = (int) Math.ceil((double) viewHeight / pageHeight);
-
+        // Create a PDF document with a single page that matches the content height
         PdfDocument pdfDocument = new PdfDocument();
 
-        for (int i = 0; i < numberOfPages; ++i) {
-            // Calculate the content height for each page
-            int contentHeightForThisPage = Math.min(viewHeight - pageHeight * i, pageHeight);
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(viewWidth, viewHeight, 1).create();
+        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
 
-            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(viewWidth, contentHeightForThisPage, i + 1).create();
-            PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+        Canvas canvas = page.getCanvas();
+        binding.getRoot().draw(canvas);
 
-            Canvas canvas = page.getCanvas();
-            int savedState = canvas.save();
-            canvas.translate(0, -pageHeight * i);
-            binding.getRoot().draw(canvas);
-            canvas.restoreToCount(savedState);
+        pdfDocument.finishPage(page);
 
-            pdfDocument.finishPage(page);
-        }
-
+        // Save the PDF file
         File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File filePath = new File(downloadsDir, fileName);
 
