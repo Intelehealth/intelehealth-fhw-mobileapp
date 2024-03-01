@@ -1951,7 +1951,7 @@ public class VisitSummaryActivity extends BaseActivity {
         vitalsObject.setBpsys(checkAndReturnVitalsValue(bpSys));
         vitalsObject.setBpdia(checkAndReturnVitalsValue(bpDias));
         vitalsObject.setPulse(checkAndReturnVitalsValue(pulse));
-        vitalsObject.setTemperature(checkAndReturnVitalsValue(temperature));
+        vitalsObject.setTemperature((convertCtoF(temperature.getValue())));
         vitalsObject.setResp(checkAndReturnVitalsValue(resp));
         vitalsObject.setHsb(checkAndReturnVitalsValue(hemoglobin));
         vitalsObject.setBlood(checkAndReturnVitalsValue(blood));
@@ -1963,6 +1963,8 @@ public class VisitSummaryActivity extends BaseActivity {
 
     public String checkAndReturnVitalsValue(ObsDTO dto) {
         if (dto == null) {
+            return "NA";
+        } else if (dto.getValue() == null || dto.getValue().equalsIgnoreCase("0")) {
             return "NA";
         } else {
             return dto.getValue();
