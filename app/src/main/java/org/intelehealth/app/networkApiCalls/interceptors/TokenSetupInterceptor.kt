@@ -1,5 +1,6 @@
 package org.intelehealth.app.networkApiCalls.interceptors
 
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -21,29 +22,28 @@ class TokenSetupInterceptor : Interceptor {
         //Not going to add token on some api
         //that's why added the logic
         //all appointment api's here
-        when (chain.request().url.encodedPath) {
-            "/api/appointment/cancelAppointment",
-            "/api/appointment/getAppointmentSlots",
-            "/api/appointment/getSlots" -> {
-                val token = sessionManager.jwtAuthToken
+        //add key keyword from url to add token to specific url
+        if (chain.request().url.encodedPath.contains("cancelAppointment") ||
+            chain.request().url.encodedPath.contains("getAppointmentSlots") ||
+            chain.request().url.encodedPath.contains("getSlots")
+        ) {
+            val token = sessionManager.jwtAuthToken
 
-                //adding token here
-                val builder: Request.Builder = request.newBuilder()
-                builder.header("Authorization", "Bearer $token")
-                builder.method(request.method,request.body)
-                val response = chain.proceed(builder.build())
+            //adding token here
+            val builder: Request.Builder = request.newBuilder()
+            builder.header("Authorization", "Bearer $token")
+            builder.method(request.method, request.body)
+            val response = chain.proceed(builder.build())
 
-                //if response code 401 the exception will throw
-                if (response.code == 401) {
-                    throw LogoutException()
-                }
-                return response
+            //if response code 401 the exception will throw
+            if (response.code == 401) {
+                throw LogoutException()
             }
-
-            else -> {
-                return chain.proceed(request)
-            }
+            return response
+        } else {
+            return chain.proceed(request)
         }
+
 
     }
 }
