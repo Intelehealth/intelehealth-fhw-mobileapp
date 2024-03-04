@@ -333,7 +333,6 @@ public class LoginActivityNew extends AppCompatActivity {
      * This class also uses SharedPreferences to store session ID
      */
     public void UserLoginTask(String mEmail, String mPassword) {
-        cpd.show(getString(R.string.please_wait));
         String urlString = urlModifiers.loginUrl(BuildConfig.SERVER_URL);
 
         Log.d(TAG, "UserLoginTask: urlString : " + urlString);
@@ -553,6 +552,7 @@ public class LoginActivityNew extends AppCompatActivity {
 
 
     private void getJWTToken(String username, String password) {
+        cpd.show(getString(R.string.please_wait));
         String finalURL = sessionManager.getServerUrl().concat(":3030/auth/login");
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);

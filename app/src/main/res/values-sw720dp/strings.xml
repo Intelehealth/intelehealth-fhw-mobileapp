@@ -88,5 +88,6 @@
     <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
     <string name="token_expired">Token Expired</string>
     <string name="otp_sending">OTP Sending...</string>
+    <string name="your_session_has_expired_please_log_in_again">Your session has expired. Please log in again.</string>
 
 </resources>

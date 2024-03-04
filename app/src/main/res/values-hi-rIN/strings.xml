@@ -1462,5 +1462,5 @@
     <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
     <string name="otp_sending">ओटीपी भेजा जा रहा है...</string>
     <string name="token_expired">Token Expired</string>
-
+    <string name='your_session_has_expired_please_log_in_again'>आपका सत्र समाप्त हो गया है। कृपया दोबारा लॉग इन करें।</string>
 </resources>
