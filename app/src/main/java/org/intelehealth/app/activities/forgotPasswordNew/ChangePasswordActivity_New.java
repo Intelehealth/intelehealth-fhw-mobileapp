@@ -175,7 +175,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 
                     @Override
                     public void onNext(ResponseBody test) {
-                        showSnackBarAndRemoveLater(getString(R.string.the_password_has_been_successfully_changed));
+                        showSnackBarAndRemoveLater(getString(R.string.the_password_has_been_successfully_changed), R.drawable.survey_snackbar_icon);
                         final Handler handler = new Handler();
                         handler.postDelayed(() -> performLogout(), 2000);
                         cpd.dismiss();
@@ -189,6 +189,8 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
                             tvErrorCurrentPassword.setVisibility(View.VISIBLE);
                             tvErrorCurrentPassword.setText(getResources().getString(R.string.error_password_not_exist));
                             etCurrentPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                        } else {
+                            showSnackBarAndRemoveLater(getString(R.string.error_password_not_exist), R.drawable.fingerprint_dialog_error);
                         }
                         cpd.dismiss();
                     }
@@ -403,7 +405,9 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         sessionManager.setLogout(true);
     }
 
-    private void showSnackBarAndRemoveLater(String text) {
+    private void showSnackBarAndRemoveLater(String text, int iconResId) {
+        ImageView ivAlertIcon = findViewById(R.id.snackbar_icon);
+        ivAlertIcon.setImageDrawable(ContextCompat.getDrawable(context, iconResId));
         btnSave.setVisibility(View.GONE);           // While displaying this snackbar over the button, the snackbar elevation is not visible if the button is visible
         customSnackBar.setVisibility(View.VISIBLE); // due to this, while displaying this snackbar, we're hiding the button so that the elevation is properly visible - added by Arpan Sircar
         customSnackBarText.setText(text);
@@ -413,6 +417,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             btnSave.setVisibility(View.VISIBLE);
         }, 4000);
     }
+
 
     void randomString(int len) {
         String AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";

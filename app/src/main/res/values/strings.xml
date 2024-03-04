@@ -57,7 +57,7 @@
     <string name="error_field_required_non_adult">This field is required for below 18 years old.</string>
     <string name="error_network" translatable="false">Network Error</string>
     <string name="could_not_connect_with_server">Couldn\'t connect with server. \nPlease check your internet \nconnection.</string>
-    <string name="error_location_not_selected">Please select a value form the location dropdown</string>
+    <string name="error_location_not_selected">Please select a value from the location dropdown</string>
     <string name="error_location_not_fetched">Unable to fetch locations</string>
     <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
     </string>
@@ -1690,7 +1690,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="add_image_by">Add image by</string>
     <string name="please_take">Please take</string>
     <string name="s_follow_up_visit">\'s follow-up visit.</string>
-    <string name="nurse_whatsapp_message">Hello this is nurse1 from Telemedicine project. I am connecting with you regarding your recent visit.</string>
+    <string name="nurse_whatsapp_message">Hello this is %1$s from Telemedicine project. I am connecting with you regarding your recent visit.</string>
     <string name="wait_for_the_doctor_message">Please wait for the doctor message!</string>
     <string name="doctor_yet_to_send_prescription">Doctor is yet to send the prescriptions for</string>
     <string name="patients">patients</string>

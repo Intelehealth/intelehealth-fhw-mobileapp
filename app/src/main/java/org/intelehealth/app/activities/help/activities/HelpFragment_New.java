@@ -29,10 +29,13 @@ import org.intelehealth.app.activities.help.adapter.FAQExpandableAdapter;
 import org.intelehealth.app.activities.help.adapter.MostSearchedVideosAdapter_New;
 import org.intelehealth.app.activities.help.models.QuestionModel;
 import org.intelehealth.app.activities.help.models.YoutubeVideoList;
+import org.intelehealth.app.database.dao.ProviderDAO;
+import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,11 +132,18 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
             //startActivity(intent);
 
             String phoneNumber = getString(R.string.support_mobile_no_1);
-            String message = String.format(getString(R.string.help_whatsapp_string), new SessionManager(getActivity()).getChwname());
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(
-                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                    phoneNumber, message))));
+            String providerId = new SessionManager(requireContext()).getProviderID();
+            try {
+                String nurseName = new ProviderDAO().getProviderName(providerId, ProviderDTO.Columns.PROVIDER_UUID.value);
+                String message = String.format(getString(R.string.help_whatsapp_string), nurseName);
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(
+                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                        phoneNumber, message))));
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+
         });
 
         tvMoreVideos.setOnClickListener(new View.OnClickListener() {
@@ -158,8 +168,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
             tvOfflineHintVideosHelpFragment.setVisibility(View.GONE);
             MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), getVideoList());
             rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
-        }
-        else {
+        } else {
             tvOfflineHintVideosHelpFragment.setVisibility(View.VISIBLE);
             List<YoutubeVideoList> list = new ArrayList<>();
             MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), list);
@@ -175,13 +184,12 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
 
     }
 
-    public List<YoutubeVideoList> getVideoList()
-    {
+    public List<YoutubeVideoList> getVideoList() {
         String[] namesArr = {"<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/TqNiRWOBNTs\" frameborder=\"0\" allowfullscreen></iframe>",
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/LCG6eJ0j-Cg\" frameborder=\"0\" allowfullscreen></iframe>",
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/qbDHSwMOYg4\" frameborder=\"0\" allowfullscreen></iframe>",
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/E0UAHVoqcm0\" frameborder=\"0\" allowfullscreen></iframe>"};
-        String[] descArr = { getResources().getString(R.string.treat_mild_fever), getResources().getString(R.string.what_is_anemia),getResources().getString(R.string.treat_cough_at_home),getResources().getString(R.string.benefits_of_walking)};
+        String[] descArr = {getResources().getString(R.string.treat_mild_fever), getResources().getString(R.string.what_is_anemia), getResources().getString(R.string.treat_cough_at_home), getResources().getString(R.string.benefits_of_walking)};
 
 
         List<YoutubeVideoList> videoList = new ArrayList<>();
@@ -194,7 +202,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
     }
 
     public List<QuestionModel> getQuestionsList() {
-        String[] namesArr = {getResources().getString(R.string.how_intelehealth_work),getResources().getString(R.string.why_intelehealth_exist), getResources().getString(R.string.how_intelehealth_help), getResources().getString(R.string.how_to_register),
+        String[] namesArr = {getResources().getString(R.string.how_intelehealth_work), getResources().getString(R.string.why_intelehealth_exist), getResources().getString(R.string.how_intelehealth_help), getResources().getString(R.string.how_to_register),
                 getResources().getString(R.string.how_to_add_new_visit), getResources().getString(R.string.how_to_book_an_appointment)};
         String[] descArr = {getResources().getString(R.string.how_intelehealth_work_ans), getResources().getString(R.string.why_intelehealth_exist_ans), getResources().getString(R.string.how_intelehealth_help_ans),
                 getResources().getString(R.string.how_to_register_ans), getResources().getString(R.string.how_to_add_new_visit_ans), getResources().getString(R.string.how_to_book_an_appointment_ans)};
@@ -225,6 +233,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
             e.printStackTrace();
         }
     }
+
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d(TAG, "updateUIForInternetAvailability: ");

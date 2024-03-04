@@ -2,11 +2,14 @@ package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
+import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -446,11 +449,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         incomplete_act.setOnClickListener(v -> {
             // filter options
-            Intent intent = new Intent(PrescriptionActivity.this, EndVisitActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(PrescriptionActivity.this, EndVisitActivity.class);
+//            startActivity(intent);
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
+            triggerEndVisit();
         });
 
         archieved_notifi.setOnClickListener(v -> {
@@ -459,6 +463,16 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
+    }
+
+    private void triggerEndVisit() {
+
+//        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
+//        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
+
+        endVisit(this, visitID, patient.getUuid(),
+                followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name()
+                + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
     }
 
     // permission code - start
@@ -1390,7 +1404,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                     followup_subtext.setVisibility(View.GONE);
                     break;
-                }else{
+                } else {
                     no_followup_txt.setVisibility(View.GONE);
                     followup_date_block.setVisibility(View.VISIBLE);
 
@@ -1419,8 +1433,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 } else {
                     followup_subtext.setText(getResources().getString(R.string.follow_up_date_arrived));
                 }
-
-
 
 
                 //checkForDoctor();

@@ -1847,6 +1847,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void triggerEndVisit() {
+
         String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
         String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
 

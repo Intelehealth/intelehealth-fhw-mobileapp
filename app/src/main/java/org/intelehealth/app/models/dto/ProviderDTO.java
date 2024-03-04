@@ -198,7 +198,7 @@ public class ProviderDTO {
     }
 
     public enum Columns {
-        USER_UUID("useruuid"), UUID("uuid");
+        USER_UUID("useruuid"), PROVIDER_UUID("uuid");
         public final String value;
 
         Columns(String value) {

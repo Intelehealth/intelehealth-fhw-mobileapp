@@ -576,7 +576,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (!updatedDOB.equalsIgnoreCase(prevDOB)) {
             updateDOB(updatedAge, formattedDOB, gender);
         }
-        if (prevPhoneNum == null && phoneAttributeUuid == null && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
+        if (prevPhoneNum == null && phoneAttributeUuid == null && !updatedPhoneNum.trim().equalsIgnoreCase("")
+                && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
             createProfileAttribute("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37", updatedPhoneNum);
         } else if (phoneAttributeUuid != null && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
             updateProfileAttribute(phoneAttributeUuid, updatedPhoneNum);
@@ -630,6 +631,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
     private void updateProfileAttribute(String attributeTypeUuid, String newValue) {
+        Timber.tag(TAG).d("Mobile:%s", newValue);
+        Timber.tag(TAG).d("Attributes:%s", attributeTypeUuid);
         String serverUrl = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -1188,6 +1191,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             @Override
             public void onNext(Profile profile) {
                 if (profile != null) {
+                    Timber.tag(TAG).d("Profile =>%s", new Gson().toJson(profile));
                     Log.d(TAG, "fetchUserDetails: " + profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
 
                     personUuid = profile.getResults().get(0).getPerson().getUuid();
