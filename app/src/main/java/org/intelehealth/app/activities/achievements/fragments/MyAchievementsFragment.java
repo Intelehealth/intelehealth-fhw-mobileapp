@@ -1,31 +1,22 @@
 package org.intelehealth.app.activities.achievements.fragments;
 
-import static org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity.PERMISSION_USAGE_ACCESS_STATS;
-
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -63,6 +54,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setLocale(getContext());
         view = inflater.inflate(R.layout.fragment_my_achievements_ui2, container, false);
+        ((TextView) view.findViewById(R.id.tv_user_level)).setText(String.format(getString(R.string.level), 1));
         networkUtils = new NetworkUtils(getActivity(), this);
         setLocale(getContext());
         return view;

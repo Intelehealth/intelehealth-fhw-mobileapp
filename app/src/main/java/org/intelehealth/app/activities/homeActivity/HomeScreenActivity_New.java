@@ -16,6 +16,7 @@ import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -53,6 +54,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
+import androidx.activity.OnBackPressedDispatcherOwner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -69,6 +73,7 @@ import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -302,6 +307,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager = new SessionManager(this);
         initUI();
         clickListeners();
+//        getOnBackPressedDispatcher().addCallback(backPressedCallback);
     }
 
     private void clickListeners() {
@@ -574,21 +580,17 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
-            try {
-                mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
-                mSyncProgressDialog.setTitle(R.string.syncInProgress);
-                mSyncProgressDialog.setCancelable(false);
-                mSyncProgressDialog.setMax(100);
-                mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mSyncProgressDialog.setIndeterminate(false);
-                mSyncProgressDialog.show();
-            }catch (Exception ignored){}
+            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog.setTitle(R.string.syncInProgress);
+            mSyncProgressDialog.setCancelable(false);
+            mSyncProgressDialog.setMax(100);
+            mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mSyncProgressDialog.setIndeterminate(false);
+            mSyncProgressDialog.show();
 
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
-            try {
-                showRefreshInProgressDialog();
-            }catch (Exception ignored){}
-            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home",this));
+            showRefreshInProgressDialog();
+            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home"));
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
@@ -627,21 +629,24 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         Log.d(TAG, "checkForInternet: result : " + result);
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        //HomeFragment_New
-        //MyAchievementsFragmentNew
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        else handleBackPress();
+    }
 
-        super.onBackPressed();
+    private void handleBackPress() {
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
+        Timber.tag(TAG).d("backStackEntryCount %s", backStackEntryCount);
         Log.v(TAG, "backStackEntryCount - " + backStackEntryCount);
         String topFragmentTag = getTopFragmentTag();
-        if (topFragmentTag.equalsIgnoreCase(TAG_HOME)) {
+        if (topFragmentTag.equals(TAG_HOME)) {
             // finish();
             wantToExitApp(this, getResources().getString(R.string.exit_app), getResources().getString(R.string.sure_to_exit), getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
         } else {
-            //super.onBackPressed();
             getSupportFragmentManager().popBackStackImmediate(topFragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             loadLastSelectedFragment();
         }
@@ -780,9 +785,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         builder.setView(customLayout);
         dialogRefreshInProgress = builder.create();
         dialogRefreshInProgress.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-        if(!dialogRefreshInProgress.isShowing()){
-            dialogRefreshInProgress.show();
-        }
+        dialogRefreshInProgress.show();
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         new Handler().postDelayed(new Runnable() {
@@ -1285,15 +1288,17 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         IntelehealthApplication.getInstance().disconnectSocket();
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
+        syncUtils.syncBackground();
+        sessionManager.setReturningUser(false);
+        sessionManager.setLogout(true);
+        unregisterReceiver(syncBroadcastReceiver);
+
         Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
 
-        syncUtils.syncBackground();
-        sessionManager.setReturningUser(false);
-        sessionManager.setLogout(true);
-        unregisterReceiver(syncBroadcastReceiver);
+
     }
 
 
@@ -1461,7 +1466,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                         public void run() {
                             mSyncProgressDialog.dismiss();
                         }
-                    },2000);
+                    }, 2000);
                 }
             }
         }

@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +34,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -48,20 +48,24 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.BuildConfig;
@@ -95,6 +99,7 @@ import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.ValidatorUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.ihutils.ui.CameraActivity;
 
@@ -449,7 +454,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         fetchUserDetails();
     }
 
-    private void showSnackBarAndRemoveLater(String appLanguage) {
+    private void showSnackBarAndRemoveLater(String appLanguage, int iconResId) {
+        ImageView ivAlertIcon = findViewById(R.id.snackbar_icon);
+        ivAlertIcon.setImageDrawable(ContextCompat.getDrawable(context, iconResId));
         snackbar_cv.setVisibility(View.VISIBLE);
         snackbar_text.setText(appLanguage);
         Handler handler = new Handler(Looper.getMainLooper());
@@ -461,44 +468,43 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         }, 4000);
     }
 
-
     private void userFeedbackMsg() {
         etUsername.setOnClickListener(v -> {
-            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), R.drawable.survey_snackbar_icon);
         });
         etFirstName.setOnClickListener(v -> {
-            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), R.drawable.survey_snackbar_icon);
         });
         etMiddleName.setOnClickListener(v -> {
-            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), R.drawable.survey_snackbar_icon);
         });
         etLastName.setOnClickListener(v -> {
-            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), R.drawable.survey_snackbar_icon);
         });
         rgGroupGender.setOnClickListener(v -> {
-            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), R.drawable.survey_snackbar_icon);
         });
         rbMale.setOnClickListener(v -> {
-            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), R.drawable.survey_snackbar_icon);
         });
         rbFemale.setOnClickListener(v -> {
-            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), R.drawable.survey_snackbar_icon);
         });
         rbOther.setOnClickListener(v -> {
-            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), R.drawable.survey_snackbar_icon);
         });
         tvDob.setOnClickListener(v -> {
-            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), R.drawable.survey_snackbar_icon);
         });
         tvAge.setOnClickListener(v -> {
-            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), R.drawable.survey_snackbar_icon);
         });
 
     }
 
     private void checkInternetAndUpdateProfile() {
         if (NetworkConnection.isOnline(MyProfileActivity.this)) {
-            updateDetails();
+            if (isValidData()) updateDetails();
         } else {
             MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.profile_update_requires_internet), getString(R.string.try_again));
             AlertDialog networkFailureDialog = builder.show();
@@ -514,6 +520,25 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 checkInternetAndUpdateProfile();
             });
         }
+    }
+
+    private boolean isValidData() {
+        if (etEmail.getText() != null && etEmail.getText().length() > 0) {
+            String email = etEmail.getText().toString();
+            if (!ValidatorUtils.isValidEmail(email)) {
+                showSnackBarAndRemoveLater(getString(R.string.error_invalid_email), R.drawable.fingerprint_dialog_error);
+                return false;
+            }
+        }
+
+        if (etMobileNo.getText() != null && etMobileNo.getText().length() > 0) {
+            String mobile = etMobileNo.getText().toString();
+            if (mobile.length() != 10) {
+                showSnackBarAndRemoveLater(getString(R.string.invalid_mobile_no), R.drawable.fingerprint_dialog_error);
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -755,12 +780,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             }
 
             if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
-                Glide.with(this)
-                        .load(providerDTO.getImagePath())
-                        .thumbnail(0.3f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true).into(ivProfileImage);
+                bindProfilePictureToUI(providerDTO.getImagePath());
             } else {
                 ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
             }
@@ -778,6 +798,83 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
     private AlertDialog mImagePickerAlertDialog;
 
+    private final ActivityResultLauncher<Intent> cameraIntentLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
+                if (result.getResultCode() == RESULT_OK) {
+                    if (result.getData() != null) captureImage(result.getData());
+                }
+            }
+    );
+
+    private final ActivityResultLauncher<Intent> galleryIntentLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
+                if (result.getResultCode() == RESULT_OK) {
+                    if (result.getData() != null) pickImage(result.getData());
+                }
+            }
+    );
+
+    private void bindProfilePictureToUI(String url) {
+        RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                .asDrawable().sizeMultiplier(0.25f);
+        Glide.with(MyProfileActivity.this)
+                .load(new File(url))
+                .thumbnail(requestBuilder)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(ivProfileImage);
+    }
+
+    private void captureImage(Intent data) {
+        String mCurrentPhotoPath = data.getStringExtra("RESULT");
+        bindProfilePictureToUI(mCurrentPhotoPath);
+        saveImage(mCurrentPhotoPath);
+    }
+
+    private void pickImage(Intent data) {
+        if (data != null) {
+            try {
+                Uri selectedImage = data.getData();
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                Log.v("path", picturePath + "");
+
+                // copy & rename the file
+                String finalImageName = UUID.randomUUID().toString();
+                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+
+                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                ivProfileImage.invalidate();
+
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        //run on ui thread
+                        runOnUiThread(() -> bindProfilePictureToUI(finalFilePath));
+                    }
+                };
+                thread.start();
+
+                BitmapUtils.copyFile(picturePath, finalFilePath);
+                compressImageAndSave(finalFilePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
     private void selectImage() {
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.select_image_hdr), new DialogUtils.ImagePickerDialogListener() {
             @Override
@@ -788,11 +885,13 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     String imageName = UUID.randomUUID().toString();
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+                    cameraIntentLauncher.launch(cameraIntent);
+//                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
 
                 } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+                    galleryIntentLauncher.launch(intent);
+//                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
                 }
             }
         });
@@ -869,21 +968,15 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
     void compressImageAndSave(final String filePath) {
-        getBackgroundHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                boolean flag = BitmapUtils.fileCompressed(filePath);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (flag) {
-                            saveImage(filePath);
-                        } else
-                            Toast.makeText(MyProfileActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        getBackgroundHandler().post(() -> {
+            boolean flag = BitmapUtils.fileCompressed(filePath);
+            runOnUiThread(() -> {
+                if (flag) {
+                    saveImage(filePath);
+                } else
+                    Toast.makeText(MyProfileActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            });
 
-            }
         });
 
     }

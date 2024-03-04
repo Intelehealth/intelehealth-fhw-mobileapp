@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -37,7 +36,6 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.loginModel.LoginModel;
@@ -362,21 +360,23 @@ public class LoginActivityNew extends AppCompatActivity {
                 Boolean authencated = loginModel.getAuthenticated();
                 Gson gson = new Gson();
                 Logger.logD(TAG, "success" + gson.toJson(loginModel));
-                sessionManager.setChwname(loginModel.getUser().getDisplay());
-                sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                Log.d("SESSOO", "SESSOO_creator: " + loginModel.getUser().getUuid());
-                sessionManager.setSessionID(loginModel.getSessionId());
-                Log.d("SESSOO", "SESSOO: " + sessionManager.getSessionID());
-                sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO", "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO", "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
 
-
-                UrlModifiers urlModifiers = new UrlModifiers();
-                // String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
-                String url = urlModifiers.loginUrlProvider(BuildConfig.SERVER_URL, loginModel.getUser().getUuid());
-                Log.d(TAG, "onNext: url : " + url);
                 if (authencated) {
+
+                    sessionManager.setChwname(loginModel.getUser().getDisplay());
+                    sessionManager.setCreatorID(loginModel.getUser().getUuid());
+                    Log.d(TAG, "SESSOO_creator: " + loginModel.getUser().getUuid());
+                    sessionManager.setSessionID(loginModel.getSessionId());
+                    Log.d(TAG, "SESSOO: " + sessionManager.getSessionID());
+                    sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                    Log.d(TAG, "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
+                    Log.d(TAG, "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
+
+
+                    UrlModifiers urlModifiers = new UrlModifiers();
+                    // String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
+                    String url = urlModifiers.loginUrlProvider(BuildConfig.SERVER_URL, loginModel.getUser().getUuid());
+                    Log.d(TAG, "onNext: url : " + url);
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
                     loginProviderModelObservable
                             .subscribeOn(Schedulers.io())
@@ -464,6 +464,16 @@ public class LoginActivityNew extends AppCompatActivity {
 
                                 }
                             });
+                }else{
+                    Logger.logD(TAG, "Login Failure");
+                    cpd.dismiss();
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showCommonDialog(LoginActivityNew.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+                        @Override
+                        public void onDialogActionDone(int action) {
+
+                        }
+                    });
                 }
             }
 

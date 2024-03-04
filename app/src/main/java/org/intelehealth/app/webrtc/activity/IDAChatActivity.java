@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
+import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.fcm.utils.NotificationHandler;
@@ -41,7 +42,7 @@ public class IDAChatActivity extends ChatActivity {
 
     private static Intent buildExtra(Intent chatIntent, RtcArgs args, Context context) {
         try {
-            String nurseName = new ProviderDAO().getProviderName(args.getDoctorUuid());
+            String nurseName = new ProviderDAO().getProviderName(args.getNurseId(), ProviderDTO.Columns.UUID.value);
             chatIntent.putExtra("patientName", args.getPatientName());
             chatIntent.putExtra("visitUuid", args.getVisitId());
             chatIntent.putExtra("patientUuid", args.getPatientId());

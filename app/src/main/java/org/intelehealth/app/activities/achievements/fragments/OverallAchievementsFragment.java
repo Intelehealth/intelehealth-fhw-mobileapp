@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.shared.builder.VisitQueryBuilder;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -115,13 +116,14 @@ public class OverallAchievementsFragment extends Fragment {
 
     // get the overall patient satisfaction score for the health worker
     private void setOverallVisitsEnded() {
-        String visitsEndedTodayQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter WHERE provider_uuid = ? AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\"";
+        String query = new VisitQueryBuilder().visitCompletedByCreatorCount(sessionManager.getProviderID());
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-        final Cursor overallVisitsEndedCursor = db.rawQuery(visitsEndedTodayQuery, new String[]{sessionManager.getProviderID()});
+        final Cursor overallVisitsEndedCursor = db.rawQuery(query, null);
 
-        overallVisitsEndedCursor.moveToFirst();
-        String overallVisitsEndedCount = overallVisitsEndedCursor.getString(overallVisitsEndedCursor.getColumnIndex(overallVisitsEndedCursor.getColumnName(0)));
-        requireActivity().runOnUiThread(() -> tvOverallVisitsEnded.setText(overallVisitsEndedCount));
+        if (overallVisitsEndedCursor.moveToFirst()) {
+            String overallVisitsEndedCount = overallVisitsEndedCursor.getString(overallVisitsEndedCursor.getColumnIndexOrThrow("completed"));
+            requireActivity().runOnUiThread(() -> tvOverallVisitsEnded.setText(overallVisitsEndedCount));
+        }
         overallVisitsEndedCursor.close();
     }
 

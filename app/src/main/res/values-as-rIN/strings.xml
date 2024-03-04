@@ -31,7 +31,8 @@
     <string name="action_sign_in_short" translatable="false">চাইন ইন কৰক</string>
     <string name="url_invalid" translatable="false">আপোনাৰ URL পৰীক্ষা কৰক।</string>
     <string name="prefix_invalid" translatable="false">এটা বেলেগ উপসৰ্গ নিৰ্বাচন কৰক!</string>
-    <string name="error_invalid_email" translatable="false">এই ব্যৱহাৰকাৰীনাম অবৈধ</string>
+    <string name="error_invalid_username" translatable="false">এই ব্যৱহাৰকাৰীনাম অবৈধ</string>
+    <string name="error_invalid_email">এই ইমেইল ঠিকনা অবৈধ</string>
     <string name="error_invalid_password" translatable="false">এই গুপ্তশব্দ অতি চুটি</string>
     <string name="error_incorrect_password" translatable="false">অনুগ্ৰহ কৰি ব্যৱহাৰকাৰীৰ নাম আৰু পাছৱৰ্ড দিয়া পৰীক্ষা কৰক</string>
     <string name="error_field_required" translatable="false">এই ক্ষেত্ৰখনৰ প্ৰয়োজন</string>
@@ -933,6 +934,7 @@
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">You are offline! Please connect to the internet for videos.</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">You missed the compulsory questions, Please answer them.</string>
     <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
+    <string name="otp_sending">OTP Sending...</string>
     <string name="token_expired">Token Expired</string>
 
 </resources>

@@ -47,7 +47,8 @@
     <string name="action_sign_in_short">ಸೈನ್ ಇನ್ ಮಾಡಿ</string>
     <string name="url_invalid">ನಿಮ್ಮ  ಯು.ಆರ್.ಎಲ್. ಪರಿಶೀಲಿಸಿ.</string>
     <string name="prefix_invalid">ಬೇರೆ ಪೂರ್ವಪ್ರತ್ಯಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ!</string>
-    <string name="error_invalid_email">ಈ ಬಳಕೆದಾರರ ಹೆಸರು ಅಮಾನ್ಯವಾಗಿದೆ</string>
+    <string name="error_invalid_username">ಈ ಬಳಕೆದಾರರ ಹೆಸರು ಅಮಾನ್ಯವಾಗಿದೆ</string>
+    <string name="error_invalid_email">ಈ ಇಮೇಲ್ ವಿಳಾಸ ಅಮಾನ್ಯವಾಗಿದೆ</string>
     <string name="error_invalid_password">ಈ ಪಾಸ್‌ವರ್ಡ್ ತುಂಬಾ ಚಿಕ್ಕದಾಗಿದೆ</string>
     <string name="error_incorrect_password">ದಯವಿಟ್ಟುಬಳಕೆದಾರರ ಹೆಸರು ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</string>
     <string name="error_field_required">ಈ ಸ್ಥಳವನ್ನು ತುಂಬಿರಿ</string>
@@ -872,6 +873,7 @@
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">You are offline! Please connect to the internet for videos.</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">You missed the compulsory questions, Please answer them.</string>
     <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
+    <string name="otp_sending">OTP Sending...</string>
     <string name="token_expired">Token Expired</string>
 
 </resources>

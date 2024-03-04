@@ -14,14 +14,11 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -30,15 +27,8 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.help.activities.ChatSupportHelpActivity_New;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.appointment.api.ApiClientAppointment;
-import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
-import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
 import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
@@ -57,9 +47,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 public class ResetPasswordActivity_New extends AppCompatActivity {
     private static final String TAG = "ResetPasswordActivity_N";
@@ -184,45 +171,45 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ResetPasswordResModel_New>() {
-            @Override
-            public void onSubscribe(Disposable d) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-            }
+                    }
 
-            @Override
-            public void onNext(ResetPasswordResModel_New resetPasswordResModel_new) {
-                cpd.dismiss();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(resetPasswordResModel_new.getMessage(), sessionManager.getAppLanguage()), true);
-                if (resetPasswordResModel_new.getSuccess()) {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(context, SetupActivityNew.class);
-                            startActivity(intent);
-                            finish();
+                    @Override
+                    public void onNext(ResetPasswordResModel_New resetPasswordResModel_new) {
+                        cpd.dismiss();
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(resetPasswordResModel_new.getMessage(), sessionManager.getAppLanguage()), true);
+                        if (resetPasswordResModel_new.getSuccess()) {
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(context, SetupActivityNew.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }, 2000);
+
+
                         }
-                    }, 2000);
 
+                    }
 
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, "Login Failure" + e.getMessage());
+                        e.printStackTrace();
+                        cpd.dismiss();
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_change_password), false);
 
-            }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Logger.logD(TAG, "Login Failure" + e.getMessage());
-                e.printStackTrace();
-                cpd.dismiss();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_change_password), false);
-
-            }
-
-            @Override
-            public void onComplete() {
-                Logger.logD(TAG, "completed");
-            }
-        });
+                    @Override
+                    public void onComplete() {
+                        Logger.logD(TAG, "completed");
+                    }
+                });
 
     }
 
@@ -283,27 +270,22 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
 
     private boolean areInputFieldsValid() {
         boolean result = false;
-        String newPassword = etNewPassword.getText().toString();
-        String confirmPassword = etConfirmPassword.getText().toString();
+        String newPassword = etNewPassword.getText().toString().trim();
+        String confirmPassword = etConfirmPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(newPassword)) {
-            result = false;
             tvErrorNewPassword.setVisibility(View.VISIBLE);
             etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
 
+        } else if (!StringUtils.isValidPassword(newPassword)) {
+            tvErrorNewPassword.setText(getString(R.string.password_validation));
+            tvErrorNewPassword.setVisibility(View.VISIBLE);
+            etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
         } else if (TextUtils.isEmpty(confirmPassword)) {
-            result = false;
             tvErrorConfirmPassword.setVisibility(View.VISIBLE);
             etConfirmPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
 
-        } else if (newPassword.length() < 8) {
-            if (!isValid(etNewPassword.getText().toString())) {
-                tvErrorNewPassword.setText(getString(R.string.password_validation));
-                tvErrorNewPassword.setVisibility(View.VISIBLE);
-                etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-            }
         } else if (!newPassword.equals(confirmPassword)) {
-            result = false;
             etConfirmPassword.setText("");
             tvErrorConfirmPassword.setText(getString(R.string.password_match));
             tvErrorConfirmPassword.setVisibility(View.VISIBLE);
@@ -319,7 +301,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         return result;
     }
 
-    public static boolean isValid(String passwordhere) {
+    /*public static boolean isValid(String passwordhere) {
 
         if (passwordhere.length() < 8) {
             return false;
@@ -340,7 +322,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
             }
             return true;
         }
-    }
+    }*/
 
     void randomString(int len) {
         String AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";

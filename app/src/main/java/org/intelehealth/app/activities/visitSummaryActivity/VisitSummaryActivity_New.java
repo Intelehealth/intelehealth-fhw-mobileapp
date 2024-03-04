@@ -1985,10 +1985,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         if (id == 1) {
+//            int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+//            }
+
             int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+                if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+                }
+            } else {
+                if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                    listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                }
             }
 
             if (!listPermissionsNeeded.isEmpty()) {
@@ -3030,6 +3042,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                     visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_COMPLETE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    hasPrescription = "true";
+                }
             } while (encounterCursor.moveToNext());
 
         }
@@ -3042,7 +3057,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                hasPrescription = "true"; //if any kind of prescription data is present...
+                //hasPrescription = "true"; //if any kind of prescription data is present...
                 parseData(dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
@@ -5522,11 +5537,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     /**
      * formatting complain here
      * if any unexpected complain has came then format it here
+     *
      * @param complain
      * @return
      */
     private String getFormattedComplain(String complain) {
-        if(!complain.trim().equals(getString(R.string.general_exam_title).trim())){
+        if (!complain.trim().equals(getString(R.string.general_exam_title).trim())) {
             return complain;
         }
         return "";
