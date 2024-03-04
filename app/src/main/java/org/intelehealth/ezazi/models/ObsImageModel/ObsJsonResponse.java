@@ -4,6 +4,9 @@ package org.intelehealth.ezazi.models.ObsImageModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.ezazi.models.loginModel.Link;
+import org.intelehealth.ezazi.models.loginModel.Person;
+
 import java.util.List;
 
 public class ObsJsonResponse {
@@ -16,7 +19,7 @@ public class ObsJsonResponse {
     private String display;
     @SerializedName("concept")
     @Expose
-    private Concept concept;
+    private Person concept;
     @SerializedName("person")
     @Expose
     private Person person;
@@ -46,13 +49,13 @@ public class ObsJsonResponse {
     private Object order;
     @SerializedName("encounter")
     @Expose
-    private Encounter encounter;
+    private Person encounter;
     @SerializedName("voided")
     @Expose
     private Boolean voided;
     @SerializedName("value")
     @Expose
-    private Value value;
+    private Person value;
     @SerializedName("valueModifier")
     @Expose
     private Object valueModifier;
@@ -64,7 +67,7 @@ public class ObsJsonResponse {
     private Object formFieldNamespace;
     @SerializedName("links")
     @Expose
-    private List<Link___> links = null;
+    private List<Link> links = null;
     @SerializedName("resourceVersion")
     @Expose
     private String resourceVersion;
@@ -85,11 +88,11 @@ public class ObsJsonResponse {
         this.display = display;
     }
 
-    public Concept getConcept() {
+    public Person getConcept() {
         return concept;
     }
 
-    public void setConcept(Concept concept) {
+    public void setConcept(Person concept) {
         this.concept = concept;
     }
 
@@ -165,11 +168,11 @@ public class ObsJsonResponse {
         this.order = order;
     }
 
-    public Encounter getEncounter() {
+    public Person getEncounter() {
         return encounter;
     }
 
-    public void setEncounter(Encounter encounter) {
+    public void setEncounter(Person encounter) {
         this.encounter = encounter;
     }
 
@@ -181,11 +184,11 @@ public class ObsJsonResponse {
         this.voided = voided;
     }
 
-    public Value getValue() {
+    public Person getValue() {
         return value;
     }
 
-    public void setValue(Value value) {
+    public void setValue(Person value) {
         this.value = value;
     }
 
@@ -213,11 +216,11 @@ public class ObsJsonResponse {
         this.formFieldNamespace = formFieldNamespace;
     }
 
-    public List<Link___> getLinks() {
+    public List<Link> getLinks() {
         return links;
     }
 
-    public void setLinks(List<Link___> links) {
+    public void setLinks(List<Link> links) {
         this.links = links;
     }
 

@@ -17,19 +17,16 @@ import static org.intelehealth.ezazi.utilities.StringUtils.getFullMonthName;
 import static org.intelehealth.ezazi.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
-import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -42,17 +39,13 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.util.Patterns;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.URLUtil;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,16 +62,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.activePatientsActivity.ActivePatientAdapter;
-import org.intelehealth.ezazi.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
 import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActivity;
-import org.intelehealth.ezazi.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.ShiftChangeData;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
@@ -89,45 +79,36 @@ import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.ActivePatientModel;
-import org.intelehealth.ezazi.models.CheckAppUpdateRes;
-import org.intelehealth.ezazi.models.DownloadMindMapRes;
 import org.intelehealth.ezazi.models.FamilyMemberRes;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
-import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
-import org.intelehealth.ezazi.networkApiCalls.ApiClient;
-import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.ezazi.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
-import org.intelehealth.ezazi.ui.dialog.adapter.PatientMultiChoiceAdapter;
-import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
-import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.adapter.PatientMultiChoiceAdapter;
 import org.intelehealth.ezazi.ui.dialog.model.MultiChoiceItem;
 import org.intelehealth.ezazi.ui.dialog.model.SelectAllMultiChoice;
+import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
+import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.shared.BaseActivity;
 import org.intelehealth.ezazi.ui.visit.VisitQueryResultBinder;
 import org.intelehealth.ezazi.ui.visit.activity.VisitStatusActivity;
-import org.intelehealth.ezazi.ui.visit.adapter.OutcomeCount;
 import org.intelehealth.ezazi.ui.visit.data.VisitRepository;
-import org.intelehealth.ezazi.utilities.DownloadMindMaps;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
-import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.OfflineLogin;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.StringUtils;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
-import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
@@ -151,13 +132,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Home Screen
@@ -191,7 +166,6 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     Context context;
     CustomProgressDialog customProgressDialog;
     private String mindmapURL = "";
-    private DownloadMindMaps mTask;
     ProgressDialog mProgressDialog;
     private ImageView ivSync;
 
@@ -1388,200 +1362,8 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         switch (item.getItemId()) {
             case android.R.id.home:
                 return false;
-            case R.id.settingsOption:
-                //settings();
-                Intent intent = new Intent(this, ChooseLanguageActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.updateProtocolsOption: {
-
-
-                if (NetworkConnection.isOnline(this)) {
-
-                    if (!sessionManager.getLicenseKey().isEmpty()) {
-
-                        String licenseUrl = sessionManager.getMindMapServerUrl();
-                        String licenseKey = sessionManager.getLicenseKey();
-                        getMindmapDownloadURL(licenseUrl + ":3004/", licenseKey);
-
-                    } else {
-//                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-//                        // AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-//                        LayoutInflater li = LayoutInflater.from(this);
-//                        View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-//                        dialog.setTitle(getString(R.string.enter_license_key))
-//                                .setView(promptsView)
-//                                .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//
-//                                        Dialog d = (Dialog) dialog;
-//
-//                                        EditText etURL = d.findViewById(R.id.licenseurl);
-//                                        EditText etKey = d.findViewById(R.id.licensekey);
-//                                        String url = etURL.getText().toString().trim();
-//                                        String key = etKey.getText().toString().trim();
-//
-//                                        if (url.isEmpty()) {
-//                                            etURL.setError(getResources().getString(R.string.enter_server_url));
-//                                            etURL.requestFocus();
-//                                            return;
-//                                        }
-//                                        if (url.contains(":")) {
-//                                            etURL.setError(getResources().getString(R.string.invalid_url));
-//                                            etURL.requestFocus();
-//                                            return;
-//                                        }
-//                                        if (key.isEmpty()) {
-//                                            etKey.setError(getResources().getString(R.string.enter_license_key));
-//                                            etKey.requestFocus();
-//                                            return;
-//                                        }
-//
-//                                        sessionManager.setMindMapServerUrl(url);
-//                                        getMindmapDownloadURL("https://" + url + ":3004/", key);
-//
-//                                    }
-//                                })
-//                                .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//                        Dialog builderDialog = dialog.show();
-//                        IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
-
-                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                        LayoutInflater li = LayoutInflater.from(this);
-                        View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-
-                        dialog.setTitle(getString(R.string.enter_license_key))
-                                .setView(promptsView)
-                                .setPositiveButton(getString(R.string.button_ok), null)
-                                .setNegativeButton(getString(R.string.button_cancel), null);
-
-                        AlertDialog alertDialog = dialog.create();
-                        alertDialog.setView(promptsView, 20, 0, 20, 0);
-                        alertDialog.show();
-                        alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
-
-                        // Get the alert dialog buttons reference
-                        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-
-                        // Change the alert dialog buttons text and background color
-                        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-
-                        positiveButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
-
-                                url.setError(null);
-                                text.setError(null);
-
-                                //If both are not entered...
-                                if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.enter_server_url));
-                                    text.setError(getResources().getString(R.string.enter_license_key));
-                                    return;
-                                }
-
-                                //If Url is empty...key is not empty...
-                                if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.enter_server_url));
-                                    return;
-                                }
-
-                                //If Url is not empty...key is empty...
-                                if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-                                    text.requestFocus();
-                                    text.setError(getResources().getString(R.string.enter_license_key));
-                                    return;
-                                }
-
-                                //If Url has : in it...
-                                if (url.getText().toString().trim().contains(":")) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.invalid_url));
-                                    return;
-                                }
-
-                                //If url entered is Invalid...
-                                if (!url.getText().toString().trim().isEmpty()) {
-                                    if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
-                                        String url_field = "https://" + url.getText().toString() + ":3004/";
-                                        if (URLUtil.isValidUrl(url_field)) {
-                                            key = text.getText().toString().trim();
-                                            licenseUrl = url.getText().toString().trim();
-
-                                            sessionManager.setMindMapServerUrl(licenseUrl);
-
-                                            if (keyVerified(key)) {
-                                                getMindmapDownloadURL(licenseUrl + ":3004/", key);
-                                                alertDialog.dismiss();
-                                            }
-                                        } else {
-                                            Toast.makeText(HomeActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    } else {
-                                        //invalid url || invalid url and key.
-                                        Toast.makeText(HomeActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Toast.makeText(HomeActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-
-                        negativeButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                alertDialog.dismiss();
-                            }
-                        });
-
-                        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-
-
-                    }
-
-                } else {
-                    Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
-                }
-
-                return true;
-            }
-
-         /*   case R.id.sync:
-//                pullDataDAO.pullData(this);
-//                pullDataDAO.pushDataApi();
-//                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, this);
-                boolean isSynced = syncUtils.syncForeground();
-//                boolean i = imagesPushDAO.patientProfileImagesPush();
-//                boolean o = imagesPushDAO.obsImagesPush();
-//                if (isSynced)
-//                    AppConstants.notificationUtils.showNotifications_noProgress(getString(R.string.sync_not_available), getString(R.string.please_connect_to_internet), getApplicationContext());
-//                else
-//                    AppConstants.notificationUtils.showNotifications(getString(R.string.image_upload), getString(R.string.image_upload_failed), 4, this);
-                return true;
-                */
-//            case R.id.backupOption:
-//                manageBackup(true, false);  // to backup app data at any time of the day
-//                return true;
-//
-//            case R.id.restoreOption:
-//                manageBackup(false, false); // to restore app data if db is empty
-//                return true;
 
             case R.id.logoutOption:
-//                manageBackup(true, false);
                 showLogoutAlert();
 
                 return true;
@@ -1618,11 +1400,6 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
                 return false;
         }
     }
-
-//    private void showConfirmationDialog(@StringRes int contentId,
-//                                        ConfirmationDialogFragment.OnConfirmationActionListener listener) {
-//        showConfirmationDialog(0, contentId, listener);
-//    }
 
     private void showConfirmationDialog(@StringRes int title, @StringRes int contentId, @StringRes int positiveBtnLbl,
                                         ConfirmationDialogFragment.OnConfirmationActionListener listener) {
@@ -1673,15 +1450,6 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 //        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
-    /**
-     * This method starts intent to another activity to change settings
-     *
-     * @return void
-     */
-    public void settings() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
 
     /**
      * Logs out the user. It removes user account using AccountManager.
@@ -1802,204 +1570,164 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         return true;
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        /*new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to EXIT ?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        moveTaskToBack(true);
-                        finish();
-
-                    }
-
-                })
-                .setNegativeButton("No", null)
-                .show();
-*/
         showConfirmationDialog(0, R.string.sure_to_exit, R.string.generic_yes, () -> moveTaskToBack(true));
-
-//        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-//
-//        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-//        alertdialogBuilder.setMessage(R.string.sure_to_exit);
-//        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                moveTaskToBack(true);
-//                // finish();
-//            }
-//        });
-//        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
-//
-//        AlertDialog alertDialog = alertdialogBuilder.create();
-//        alertDialog.show();
-//
-//        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-//        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-//
-//        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-//
-//        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-//        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-
     }
 
 
-    private void getMindmapDownloadURL(String url, String key) {
-        Log.d(TAG, "getMindmapDownloadURL: " + url);
-        customProgressDialog.show();
-        ApiClient.changeApiBaseUrl(url);
-        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
-            resultsObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
-                        @Override
-                        public void onNext(DownloadMindMapRes res) {
-                            customProgressDialog.dismiss();
-                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+//    private void getMindmapDownloadURL(String url, String key) {
+//        Log.d(TAG, "getMindmapDownloadURL: " + url);
+//        customProgressDialog.show();
+//        ApiClient.changeApiBaseUrl(url);
+//        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+//        try {
+//            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
+//            resultsObservable
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
+//                        @Override
+//                        public void onNext(DownloadMindMapRes res) {
+//                            customProgressDialog.dismiss();
+//                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+//
+//                                Log.e("MindMapURL", "Successfully get MindMap URL");
+//                                mTask = new DownloadMindMaps(context, mProgressDialog, "home");
+//                                mindmapURL = res.getMindmap().trim();
+//                                sessionManager.setLicenseKey(key);
+//                                checkExistingMindMaps();
+//
+//                            } else {
+//                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//                            customProgressDialog.dismiss();
+//                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        @Override
+//                        public void onComplete() {
+//
+//                        }
+//                    });
+//        } catch (IllegalArgumentException e) {
+//            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
+//            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
+//        }
+//    }
 
-                                Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog, "home");
-                                mindmapURL = res.getMindmap().trim();
-                                sessionManager.setLicenseKey(key);
-                                checkExistingMindMaps();
+//    private void checkExistingMindMaps() {
+//
+//        //Check is there any existing mindmaps are present, if yes then delete.
+//
+//        File engines = new File(context.getFilesDir().getAbsolutePath(), "/Engines");
+//        Log.e(TAG, "Engines folder=" + engines.exists());
+//        if (engines.exists()) {
+//            engines.delete();
+//        }
+//        File logo = new File(context.getFilesDir().getAbsolutePath(), "/logo");
+//        Log.e(TAG, "Logo folder=" + logo.exists());
+//        if (logo.exists()) {
+//            logo.delete();
+//        }
+//        File physicalExam = new File(context.getFilesDir().getAbsolutePath() + "/physExam.json");
+//        Log.e(TAG, "physExam.json=" + physicalExam.exists());
+//        if (physicalExam.exists()) {
+//            physicalExam.delete();
+//        }
+//        File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
+//        Log.e(TAG, "famHist.json=" + familyHistory.exists());
+//        if (familyHistory.exists()) {
+//            familyHistory.delete();
+//        }
+//        File pastMedicalHistory = new File(context.getFilesDir().getAbsolutePath() + "/patHist.json");
+//        Log.e(TAG, "patHist.json=" + pastMedicalHistory.exists());
+//        if (pastMedicalHistory.exists()) {
+//            pastMedicalHistory.delete();
+//        }
+//        File config = new File(context.getFilesDir().getAbsolutePath() + "/config.json");
+//        Log.e(TAG, "config.json=" + config.exists());
+//        if (config.exists()) {
+//            config.delete();
+//        }
+//
+//        //Start downloading mindmaps
+//        mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
+//        Log.e("DOWNLOAD", "isSTARTED");
+//
+//    }
 
-                            } else {
-                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            customProgressDialog.dismiss();
-                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
-            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
-        }
-    }
-
-    private void checkExistingMindMaps() {
-
-        //Check is there any existing mindmaps are present, if yes then delete.
-
-        File engines = new File(context.getFilesDir().getAbsolutePath(), "/Engines");
-        Log.e(TAG, "Engines folder=" + engines.exists());
-        if (engines.exists()) {
-            engines.delete();
-        }
-        File logo = new File(context.getFilesDir().getAbsolutePath(), "/logo");
-        Log.e(TAG, "Logo folder=" + logo.exists());
-        if (logo.exists()) {
-            logo.delete();
-        }
-        File physicalExam = new File(context.getFilesDir().getAbsolutePath() + "/physExam.json");
-        Log.e(TAG, "physExam.json=" + physicalExam.exists());
-        if (physicalExam.exists()) {
-            physicalExam.delete();
-        }
-        File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
-        Log.e(TAG, "famHist.json=" + familyHistory.exists());
-        if (familyHistory.exists()) {
-            familyHistory.delete();
-        }
-        File pastMedicalHistory = new File(context.getFilesDir().getAbsolutePath() + "/patHist.json");
-        Log.e(TAG, "patHist.json=" + pastMedicalHistory.exists());
-        if (pastMedicalHistory.exists()) {
-            pastMedicalHistory.delete();
-        }
-        File config = new File(context.getFilesDir().getAbsolutePath() + "/config.json");
-        Log.e(TAG, "config.json=" + config.exists());
-        if (config.exists()) {
-            config.delete();
-        }
-
-        //Start downloading mindmaps
-        mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
-        Log.e("DOWNLOAD", "isSTARTED");
-
-    }
-
-    private void checkAppVer() {
-
-        try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(getPackageName(), 0);
-            String version = pInfo.versionName;
-            versionCode = pInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
-                    @Override
-                    public void onSuccess(CheckAppUpdateRes res) {
-                        int latestVersionCode = 0;
-                        if (!res.getLatestVersionCode().isEmpty()) {
-                            latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
-                        }
-
-                        if (latestVersionCode > versionCode) {
-                            android.app.AlertDialog.Builder builder;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                builder = new android.app.AlertDialog.Builder(HomeActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-                            } else {
-                                builder = new android.app.AlertDialog.Builder(HomeActivity.this);
-                            }
-
-
-                            builder.setTitle(getResources().getString(R.string.new_update_available))
-                                    .setCancelable(false)
-                                    .setMessage(getResources().getString(R.string.update_app_note))
-                                    .setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                                            try {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                            } catch (ActivityNotFoundException anfe) {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                                            }
-
-                                        }
-                                    })
-
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .setCancelable(false);
-
-                            Dialog dialog = builder.show();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
-                                TextView tv = (TextView) dialog.findViewById(textViewId);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("Error", "" + e);
-                    }
-                })
-        );
-
-    }
+//    private void checkAppVer() {
+//
+//        try {
+//            PackageInfo pInfo = context.getPackageManager().getPackageInfo(getPackageName(), 0);
+//            String version = pInfo.versionName;
+//            versionCode = pInfo.versionCode;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
+//                    @Override
+//                    public void onSuccess(CheckAppUpdateRes res) {
+//                        int latestVersionCode = 0;
+//                        if (!res.getLatestVersionCode().isEmpty()) {
+//                            latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
+//                        }
+//
+//                        if (latestVersionCode > versionCode) {
+//                            android.app.AlertDialog.Builder builder;
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                                builder = new android.app.AlertDialog.Builder(HomeActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+//                            } else {
+//                                builder = new android.app.AlertDialog.Builder(HomeActivity.this);
+//                            }
+//
+//
+//                            builder.setTitle(getResources().getString(R.string.new_update_available))
+//                                    .setCancelable(false)
+//                                    .setMessage(getResources().getString(R.string.update_app_note))
+//                                    .setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
+//                                        public void onClick(DialogInterface dialog, int which) {
+//
+//                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+//                                            try {
+//                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+//                                            } catch (ActivityNotFoundException anfe) {
+//                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+//                                            }
+//
+//                                        }
+//                                    })
+//
+//                                    .setIcon(android.R.drawable.ic_dialog_alert)
+//                                    .setCancelable(false);
+//
+//                            Dialog dialog = builder.show();
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                                int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
+//                                TextView tv = (TextView) dialog.findViewById(textViewId);
+//                                tv.setTextColor(getResources().getColor(R.color.white));
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Log.e("Error", "" + e);
+//                    }
+//                })
+//        );
+//
+//    }
 
     private List<Integer> mTempSyncHelperList = new ArrayList<Integer>();
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {

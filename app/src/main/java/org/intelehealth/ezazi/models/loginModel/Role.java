@@ -16,7 +16,7 @@ public class Role {
     private String display;
     @SerializedName("links")
     @Expose
-    private List<Link__> links = null;
+    private List<Link> links = null;
 
     public String getUuid() {
         return uuid;
@@ -34,11 +34,11 @@ public class Role {
         this.display = display;
     }
 
-    public List<Link__> getLinks() {
+    public List<Link> getLinks() {
         return links;
     }
 
-    public void setLinks(List<Link__> links) {
+    public void setLinks(List<Link> links) {
         this.links = links;
     }
 

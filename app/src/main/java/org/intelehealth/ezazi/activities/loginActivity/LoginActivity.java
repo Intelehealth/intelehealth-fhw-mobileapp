@@ -124,34 +124,11 @@ public class LoginActivity extends AppCompatActivity {
         mEmailInputView = findViewById(R.id.etUsernameLayout);
         mPasswordInputView = findViewById(R.id.etPasswordLayout);
         addValidationListener();
-        txt_cant_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-                startActivity(intent);
-                // cantLogin();
-            }
-        });
-      /*  manager = AccountManager.get(LoginActivity.this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }*/
-
-      /*  Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
-        if (accountList.length > 0) {
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            intent.putExtra("login", true);
-//            startJobDispatcherService(LoginActivity.this);
+        txt_cant_login.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
-            finish();
-        }*/
+            // cantLogin();
+        });
 
         //Enforces Offline Login Check only if network not present
         if (!NetworkConnection.isOnline(this)) {
@@ -381,7 +358,7 @@ public class LoginActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
-        loginModelObservable.subscribe(new Observer<LoginModel>() {
+        loginModelObservable.subscribe(new Observer<>() {
             @Override
             public void onSubscribe(Disposable d) {
 

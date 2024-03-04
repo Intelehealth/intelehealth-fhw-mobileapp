@@ -37,7 +37,7 @@ public class User {
     private Boolean retired;
     @SerializedName("links")
     @Expose
-    private List<Link___> links = null;
+    private List<Link> links = null;
     @SerializedName("resourceVersion")
     @Expose
     private String resourceVersion;
@@ -114,11 +114,11 @@ public class User {
         this.retired = retired;
     }
 
-    public List<Link___> getLinks() {
+    public List<Link> getLinks() {
         return links;
     }
 
-    public void setLinks(List<Link___> links) {
+    public void setLinks(List<Link> links) {
         this.links = links;
     }
 

@@ -57,21 +57,6 @@ public class AddNewPatientActivity extends BaseActionBarActivity {
 //        });
 
 //        pager.setCurrentItem(0);
-       /* Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-
-              String  patient_detail = intent.getStringExtra("ScreenEdit");
-
-                Bundle args = intent.getBundleExtra("BUNDLE");
-                if (patient_detail.equalsIgnoreCase("personal_edit")) {
-                    setScreen(new PatientPersonalInfoFragment());
-                } else if (patient_detail.equalsIgnoreCase("address_edit")) {
-                    setScreen(new PatientAddressInfoFragment());
-                } else if (patient_detail.equalsIgnoreCase("others_edit")) {
-                    setScreen(new PatientOtherInfoFragment());
-                }
-
-            }*/
     }
 
     private void changeCurrentButtonState(int position) {

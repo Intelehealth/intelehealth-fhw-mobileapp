@@ -12,6 +12,8 @@ package org.intelehealth.ezazi.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.ezazi.models.loginModel.Link;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

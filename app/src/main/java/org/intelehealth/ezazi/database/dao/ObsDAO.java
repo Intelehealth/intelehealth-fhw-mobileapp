@@ -28,7 +28,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
-import org.intelehealth.ezazi.activities.prescription.PrescDataModel;
 import org.intelehealth.ezazi.builder.QueryBuilder;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
@@ -468,32 +467,6 @@ public class ObsDAO {
 
 
         return obsuuid;
-    }
-
-    public List<PrescDataModel> fetchAllObsPrescData(String encounterVisitNote, String CONCEPTUUID, String sync) {
-        List<PrescDataModel> prescDataModelList = new ArrayList<>();
-
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor obsCursoursor = db.rawQuery("Select * from tbl_obs where conceptuuid=? and encounteruuid=? and sync=? and voided =?",
-                new String[]{CONCEPTUUID, encounterVisitNote, sync, "0"});
-        try {
-            if (obsCursoursor.getCount() != 0) {
-                while (obsCursoursor.moveToNext()) {
-                    prescDataModelList.add(new PrescDataModel(
-                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")),
-                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")),
-                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("encounteruuid")),
-                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("conceptuuid"))
-                    ));
-                }
-            }
-        } catch (SQLException sql) {
-            FirebaseCrashlytics.getInstance().recordException(sql);
-        } finally {
-            obsCursoursor.close();
-        }
-
-        return prescDataModelList;
     }
 
     /**

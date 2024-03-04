@@ -332,85 +332,6 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:orientation="horizontal">
-        <!--Household registration commented out-->
-        <!--            <androidx.cardview.widget.CardView-->
-        <!--                android:id="@+id/cardView_familymember"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_gravity="center"-->
-        <!--                android:layout_marginTop="@dimen/padding_card"-->
-        <!--                org:cardCornerRadius="5dp"-->
-        <!--                org:cardElevation="2dp"-->
-        <!--                org:cardUseCompatPadding="true">-->
-
-        <!--                <LinearLayout-->
-        <!--                    android:layout_width="match_parent"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:orientation="vertical">-->
-
-        <!--                    <RelativeLayout-->
-        <!--                        android:layout_width="match_parent"-->
-        <!--                        android:layout_height="wrap_content"-->
-        <!--                        android:background="@color/titleBar_cardview">-->
-
-        <!--                        <TextView-->
-        <!--                            android:layout_width="match_parent"-->
-        <!--                            android:layout_height="wrap_content"-->
-        <!--                            android:fontFamily="@font/lato_bold"-->
-        <!--                            android:includeFontPadding="false"-->
-        <!--                            android:padding="10dp"-->
-        <!--                            android:paddingStart="20dp"-->
-        <!--                            android:paddingTop="@dimen/padding_card_title_text"-->
-        <!--                            android:text="@string/family_member"-->
-        <!--                            android:textColor="@color/white"-->
-        <!--                            android:textSize="@dimen/card_content_text_size" />-->
-
-
-        <!--                        <LinearLayout-->
-        <!--                            android:layout_width="wrap_content"-->
-        <!--                            android:layout_height="wrap_content"-->
-        <!--                            android:layout_alignParentEnd="true"-->
-        <!--                            android:orientation="horizontal"-->
-        <!--                            android:visibility="visible">-->
-
-        <!--                            <ImageButton-->
-        <!--                                android:id="@+id/ic_addFamilyMember"-->
-        <!--                                style="@style/SelectableItemBackground"-->
-        <!--                                android:layout_width="wrap_content"-->
-        <!--                                android:layout_height="wrap_content"-->
-        <!--                                android:layout_alignParentEnd="true"-->
-        <!--                                android:background="@null"-->
-        <!--                                android:foreground="?android:attr/selectableItemBackground"-->
-        <!--                                android:padding="10dp"-->
-        <!--                                org:srcCompat="@drawable/ic_add_24dp" />-->
-
-        <!--                        </LinearLayout>-->
-
-        <!--                    </RelativeLayout>-->
-
-        <!--                    <TextView-->
-        <!--                        android:id="@+id/tv_nofamilymember"-->
-        <!--                        android:layout_width="match_parent"-->
-        <!--                        android:layout_height="wrap_content"-->
-        <!--                        android:fontFamily="@font/lato_bold"-->
-        <!--                        android:includeFontPadding="false"-->
-        <!--                        android:padding="10dp"-->
-        <!--                        android:paddingStart="20dp"-->
-        <!--                        android:paddingTop="@dimen/padding_card_title_text"-->
-        <!--                        android:text="@string/no_family_member_registered"-->
-        <!--                        android:textColor="@color/font_black_0"-->
-        <!--                        android:textSize="@dimen/card_content_sub_text_size" />-->
-
-        <!--                    <androidx.recyclerview.widget.RecyclerView-->
-        <!--                        android:id="@+id/rv_familymember"-->
-        <!--                        android:layout_width="match_parent"-->
-        <!--                        android:layout_marginTop="5dp"-->
-        <!--                        android:layout_marginBottom="5dp"-->
-        <!--                        android:layout_height="wrap_content"-->
-        <!--                        android:visibility="gone" />-->
-
-        <!--                </LinearLayout>-->
-        <!--            </androidx.cardview.widget.CardView>-->
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView_history"
@@ -640,16 +561,6 @@
 
         </androidx.cardview.widget.CardView>
 
-
-        <!--<include layout="@layout/content_patient_detail" />-->
-
-        <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--org:srcCompat="@android:drawable/ic_dialog_email" />-->
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

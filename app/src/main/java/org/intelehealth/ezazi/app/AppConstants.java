@@ -6,21 +6,18 @@ import android.os.Environment;
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
 
 import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.syncModule.LastSyncWork;
-import org.intelehealth.ezazi.syncModule.SyncWorkManager;
 import org.intelehealth.ezazi.syncModule.VisitSummaryWork;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.UuidGenerator;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 public class AppConstants {
     //Constants
@@ -94,10 +91,10 @@ public class AppConstants {
             .setRequiresStorageNotLow(false)
             .build();
 
-    public static PeriodicWorkRequest PERIODIC_WORK_REQUEST =
-            new PeriodicWorkRequest.Builder(SyncWorkManager.class, REPEAT_INTERVAL, TimeUnit.MINUTES)
-                    .setConstraints(MY_CONSTRAINTS)
-                    .build();
+//    public static PeriodicWorkRequest PERIODIC_WORK_REQUEST =
+//            new PeriodicWorkRequest.Builder(SyncWorkManager.class, REPEAT_INTERVAL, TimeUnit.MINUTES)
+//                    .setConstraints(MY_CONSTRAINTS)
+//                    .build();
 
 
     // Added by Venu to make the Sync Issue Solutions as intele_safe.

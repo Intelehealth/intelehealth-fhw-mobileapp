@@ -15,10 +15,8 @@ import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +33,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
-import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNoticeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
@@ -46,8 +43,8 @@ import org.intelehealth.ezazi.executor.TaskCompleteListener;
 import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
-import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.patient.PatientDataBinder;
+import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.utilities.ConfigUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
@@ -228,20 +225,12 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
 
         }
 
-        new_patient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Loads the config file values and check for the boolean value of privacy key.
-                ConfigUtils configUtils = new ConfigUtils(SearchPatientActivity.this);
-                if (configUtils.privacy_notice()) {
-                    Intent intent = new Intent(SearchPatientActivity.this, PrivacyNoticeActivity.class);
-                    startActivity(intent);
-                } else {
-                    //Clear HouseHold UUID from Session for new registration
-                    //  sessionManager.setHouseholdUuid("");
-                    Intent intent = new Intent(SearchPatientActivity.this, IdentificationActivity.class);
-                    startActivity(intent);
-                }
+        new_patient.setOnClickListener(v -> {
+            //Loads the config file values and check for the boolean value of privacy key.
+            ConfigUtils configUtils = new ConfigUtils(SearchPatientActivity.this);
+            if (configUtils.privacy_notice()) {
+                Intent intent1 = new Intent(SearchPatientActivity.this, PrivacyNoticeActivity.class);
+                startActivity(intent1);
             }
         });
     }
@@ -337,74 +326,6 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
         });
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the options menu from XMLz
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_search, menu);
-//        inflater.inflate(R.menu.today_filter, menu);
-////        inflater.inflate(R.menu.today_filter, menu);
-//        // Get the SearchView and set the searchable configuration
-//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-//        searchView.setInputType(InputType.TYPE_CLASS_TEXT |
-//                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); //to show numbers easily...
-//        // Assumes current activity is the searchable activity
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                Log.d("Hack", "in query text change");
-//                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
-//                        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
-//                suggestions.clearHistory();
-//                query = newText;
-//                doQuery(newText);
-//                return true;
-//            }
-//        });
-//
-//
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.summary_endAllVisit:
-//                endAllVisit();
-//
-//            case R.id.action_filter:
-//                //alert box.
-//                displaySingleSelectionDialog();    //function call
-//            case R.id.action_search:
-//
-//
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
-    /**
-     * This method is called when no search result is found for patient.
-     *
-     * @param lvItems variable of type ListView
-     * @param query   variable of type String
-     */
-    public void noneFound(ListView lvItems, String query) {
-        ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(this,
-                R.layout.list_item_search,
-                R.id.list_item_head, new ArrayList<String>());
-        String errorMessage = getString(R.string.alert_none_found).replace("_", query);
-        searchAdapter.add(errorMessage);
-        lvItems.setAdapter(searchAdapter);
-    }
 
     public void getAllPatientsFromDB(int offset, OnSearchCompleteListener listener) {
         new TaskExecutor<List<PatientDTO>>().executeTask(new TaskCompleteListener<List<PatientDTO>>() {

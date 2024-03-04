@@ -8,22 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import org.intelehealth.ezazi.utilities.Logger;
-import org.intelehealth.ezazi.utilities.NotificationID;
-import org.intelehealth.ezazi.utilities.PatientsFrameJson;
-import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
@@ -33,12 +20,19 @@ import org.intelehealth.ezazi.models.dto.ResponseDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.ezazi.models.pushResponseApiCall.PushResponseApiCall;
+import org.intelehealth.ezazi.utilities.Logger;
+import org.intelehealth.ezazi.utilities.NotificationID;
+import org.intelehealth.ezazi.utilities.PatientsFrameJson;
+import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

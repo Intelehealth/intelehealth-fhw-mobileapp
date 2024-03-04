@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.intelehealth.ezazi.app.AppConstants;
-import org.intelehealth.ezazi.models.Uuid_Value;
 import org.intelehealth.ezazi.models.dto.ProviderAttributeListDTO;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 
@@ -110,33 +109,4 @@ public class ProviderAttributeLIstDAO {
         db.close();
         return listDTOArrayList;
     }
-
-
-    public List<Uuid_Value> getSpeciality_Uuid_Value() {
-        List<Uuid_Value> listDTOArrayList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
-        String selectionArgs[] = {"ed1715f5-93e2-404e-b3c9-2a2d9600f062", "0"};
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_dr_speciality WHERE " +
-                "attributetypeuuid = ? AND voided = ?", selectionArgs);
-
-        ProviderAttributeListDTO dto = new ProviderAttributeListDTO();
-        if (idCursor.getCount() != 0) {
-            while (idCursor.moveToNext()) {
-                dto = new ProviderAttributeListDTO();
-                dto.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
-                dto.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                listDTOArrayList.add(new Uuid_Value(dto.getUuid(), dto.getValue()));
-            }
-        }
-        idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-        return listDTOArrayList;
-    }
-
-
-
-
 }

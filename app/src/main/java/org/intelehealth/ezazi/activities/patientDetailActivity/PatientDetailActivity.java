@@ -13,6 +13,7 @@ import static org.intelehealth.ezazi.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__te_dob;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,18 +22,10 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.UnderlineSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -44,25 +37,21 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.addNewPatient.AddNewPatientActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
-import org.intelehealth.ezazi.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ImagesDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
-import org.intelehealth.ezazi.knowledgeEngine.Node;
 import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
@@ -80,10 +69,7 @@ import org.intelehealth.klivekit.utils.DateTimeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -189,11 +175,8 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.btnStartObservation);
-//        rvFamilyMember = findViewById(R.id.rv_familymember);
-//        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
 
-        ivPrescription = findViewById(R.id.iv_prescription);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -661,25 +644,10 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         idView = findViewById(R.id.textView_ID);
         TextView patinetName = findViewById(R.id.textView_name);
         TextView dobView = findViewById(R.id.textView_DOB);
-        // TextView genderView = findViewById(R.id.textView_Gender);
         TextView ageView = findViewById(R.id.textView_age);
-        TextView addr1View = findViewById(R.id.textView_address_1);
-       /* TableRow addr2Row = findViewById(R.id.tableRow_addr2);
-        TextView addr2View = findViewById(R.id.textView_address2);*/
         TextView addrFinalView = findViewById(R.id.textView_address_final);
         tvBedNumber = findViewById(R.id.textView_bed_no);
-
-     /*   TextView casteView = findViewById(R.id.textView_caste);
-        TextView economic_statusView = findViewById(R.id.textView_economic_status);
-        TextView education_statusView = findViewById(R.id.textView_education_status);*/
         phoneView = findViewById(R.id.textView_phone);
-      /*  TextView sdwView = findViewById(R.id.textView_SDW);
-        TableRow sdwRow = findViewById(R.id.tableRow_SDW);
-        TextView occuView = findViewById(R.id.textView_occupation);
-        TableRow occuRow = findViewById(R.id.tableRow_Occupation);
-        TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
-        TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
-        TableRow casteRow = findViewById(R.id.tableRow_Caste);*/
         ImageView whatsapp_no = findViewById(R.id.whatsapp_no);
         ImageView calling = findViewById(R.id.calling);
 
@@ -690,16 +658,6 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         TextView textView_UER_No = findViewById(R.id.textView_UER_No);
 
         textView_UER_No.setText(patient.geteZaziRegNumber());
-
-//        Log.d("country_vijay", patient_new.getCountry().substring(0,2)+"/"+patient_new.getState_province().substring(0,2)+"/"+patient_new.getCity_village().substring(0,2)+"/"+patient_new.getHospitalMaternity().substring(0,2));
-//        String RegNo= patient_new.getCountry().substring(0,2)+"/"+patient_new.getState_province().substring(0,2)+"/"+patient_new.getCity_village().substring(0,2)+"/"+patient_new.getHospitalMaternity().substring(0,2);
-//        Log.d("RegNo_vijay", RegNo);
-//        textView_UER_No.setText(RegNo);
-//        if (patient_new.getCity_village() !=null && patient_new.getState_province() !=null){
-//            Log.d("country_vijay", patient_new.getCity_village().substring(0,2));
-//            Log.d("state_vijay", patient_new.getState_province().substring(0,2));
-//
-//        }
 
 
         if (!sessionManager.getLicenseKey().isEmpty()) {
@@ -716,22 +674,6 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }
 
-            //Display the fields on the Add Patient screen as per the config file
-           /* if (obj.getBoolean("casteLayout")) {
-                casteRow.setVisibility(View.VISIBLE);
-            } else {
-                casteRow.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("educationLayout")) {
-                educationRow.setVisibility(View.VISIBLE);
-            } else {
-                educationRow.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("economicLayout")) {
-                economicRow.setVisibility(View.VISIBLE);
-            } else {
-                economicRow.setVisibility(View.GONE);
-            }*/
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -792,14 +734,6 @@ public class PatientDetailActivity extends BaseActionBarActivity {
             newVisit.setEnabled(false);
         }
 
-//        if (!NetworkConnection.isOnline(getApplication())) {
-//            if (!sessionManager.getOfllineOpenMRSID().equals("")) {
-//                idView.setText(sessionManager.getOfllineOpenMRSID());
-//            } else {
-//                idView.setText(getString(R.string.patient_not_registered));
-//            }
-//        }
-
         setTitle(patient.getOpenmrs_id());
         //String id = idView.toString();
         //Log.d("IDEA","IDEA"+id);
@@ -854,143 +788,6 @@ public class PatientDetailActivity extends BaseActionBarActivity {
             }
         }
 
-        //dobView.setText(dob);
-       /* mGender = patient_new.getGender();
-        if (patient_new.getGender() == null || patient_new.getGender().equals("")) {
-            genderView.setVisibility(View.GONE);
-        } else {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else {
-                genderView.setText(patient_new.getGender());
-            }
-
-
-        }
-        if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
-            addr1View.setVisibility(View.GONE);
-        } else {
-            addr1View.setText(patient_new.getAddress1());
-        }
-        if (patient_new.getAddress2() == null || patient_new.getAddress2().equals("")) {
-            addr2Row.setVisibility(View.GONE);
-        } else {
-            addr2View.setText(patient_new.getAddress2());
-        }
-     String city_village;
-        if (patient_new.getCity_village() != null) {
-            city_village = patient_new.getCity_village().trim();
-        } else {
-            city_village = "";
-        }
-
-        if (patient_new.getPostal_code() != null) {
-            String addrFinalLine;
-            if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
-                addrFinalLine = String.format("%s, %s, %s, %s",
-                        city_village, patient_new.getState_province(),
-                        patient_new.getPostal_code(), patient_new.getCountry());
-            } else {
-                addrFinalLine = String.format("%s, %s, %s",
-                        city_village, patient_new.getState_province(),
-                        patient_new.getCountry());
-            }
-            addrFinalView.setText(addrFinalLine);
-        } else {
-            String addrFinalLine = String.format("%s, %s, %s",
-                    city_village, patient_new.getState_province(),
-                    patient_new.getCountry());
-            addrFinalView.setText(addrFinalLine);
-        }
-
-*/
-
         String addrFinalLine = String.format("%s, %s", patient.getState_province(),
                 patient.getCountry());
         addrFinalView.setText(addrFinalLine);
@@ -1001,242 +798,6 @@ public class PatientDetailActivity extends BaseActionBarActivity {
             whatsapp_no.setVisibility(View.GONE);
             phoneView.setText(getString(R.string.not_provided));
         }
-//        education_statusView.setText(patient_new.getEducation_level());
-//        economic_statusView.setText(patient_new.getEconomic_status());
-//        casteView.setText(patient_new.getCaste());
-//
-//        if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//            education_statusView.setText("नहीं दिया गया");
-//        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-//            education_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
-//        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-//            education_statusView.setText("પૂરી પાડવામાં આવેલ નથી");
-//        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-//            education_statusView.setText("సమకూర్చబడలేదు");
-//        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//            education_statusView.setText("झाले नाही");
-//        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-//            education_statusView.setText("প্ৰদান কৰা হোৱা নাই");
-//        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-//            education_statusView.setText("നൽകിയിട്ടില്ല");
-//        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-//            education_statusView.setText("ಒದಗಿಸಲಾಗಿಲ್ಲ");
-//        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-//            education_statusView.setText("Не предоставлен");
-//        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-//            education_statusView.setText("সরবরাহ করা হয়নি");
-//        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-//            education_statusView.setText("வழங்கப்படவில்லை");
-//        } else {
-//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//                String education = switch_hi_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-//                String education = switch_or_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-//                String education = switch_ta_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-//                String education = switch_te_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//                String education = switch_mr_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-//                String education = switch_as_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-//                String education = switch_ml_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-//                String education = switch_kn_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-//                String education = switch_ru_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-//                String education = switch_gu_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-//                String education = switch_bn_education_edit(patient_new.getEducation_level());
-//                education_statusView.setText(education);
-//            } else {
-//                education_statusView.setText(patient_new.getEducation_level());
-//            }
-//        }
-//        // education_statusView.setText(patient_new.getEducation_level());
-//        if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//            economic_statusView.setText("नहीं दिया गया");
-//        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-//            economic_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
-//        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-//            economic_statusView.setText("வழங்கப்படவில்லை");
-//        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-//            economic_statusView.setText("પૂરી પાડવામાં આવેલ નથી");
-//        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-//            economic_statusView.setText("సమకూర్చబడలేదు");
-//        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//            economic_statusView.setText("झाले नाही");
-//        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-//            economic_statusView.setText("প্ৰদান কৰা হোৱা নাই");
-//        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-//            economic_statusView.setText("നൽകിയിട്ടില്ല");
-//        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-//            economic_statusView.setText("ಒದಗಿಸಲಾಗಿಲ್ಲ");
-//        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-//            economic_statusView.setText("Не предоставлен");
-//        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-//            economic_statusView.setText("সরবরাহ করা হয়নি");
-//        } else {
-//            economic_statusView.setText(patient_new.getEconomic_status());
-//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//                String economic = switch_hi_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-//                String economic = switch_or_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-//                String economic = switch_ta_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-//                String economic = switch_bn_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-//                String economic = switch_gu_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-//                String economic = switch_te_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//                String economic = switch_mr_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-//                String economic = switch_as_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-//                String economic = switch_ml_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-//                String economic = switch_kn_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-//                String economic = switch_ru_economic_edit(patient_new.getEconomic_status());
-//                economic_statusView.setText(economic);
-//            } else {
-//                economic_statusView.setText(patient_new.getEconomic_status());
-//            }
-//            // economic_statusView.setText(patient_new.getEconomic_status());
-//        }
-//
-//        if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//            casteView.setText("नहीं दिया गया");
-//        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-//            casteView.setText("ଦିଅ ଯାଇ ନାହିଁ");
-//        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-//            casteView.setText("సమకూర్చబడలేదు");
-//        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//            casteView.setText("झाले नाही");
-//        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-//            casteView.setText("প্ৰদান কৰা হোৱা নাই");
-//        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-//            casteView.setText("നൽകിയിട്ടില്ല");
-//        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-//            casteView.setText("ಒದಗಿಸಲಾಗಿಲ್ಲ");
-//        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-//            casteView.setText("Не предоставлен");
-//        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-//            casteView.setText("પૂરી પાડવામાં આવેલ નથી");
-//        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-//            casteView.setText("সরবরাহ করা হয়নি");
-//        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-//                sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-//            casteView.setText("வழங்கப்படவில்லை");
-//        } else {
-//            casteView.setText(patient_new.getCaste());
-//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//                String caste = switch_hi_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-//                String caste = switch_or_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-//                String caste = switch_gu_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-//                String caste = switch_te_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//                String caste = switch_mr_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-//                String caste = switch_as_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-//                String caste = switch_ml_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-//                String caste = switch_kn_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-//                String caste = switch_ru_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-//                String caste = switch_bn_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-//                String caste = switch_ta_caste_edit(patient_new.getCaste());
-//                casteView.setText(caste);
-//            } else {
-//                casteView.setText(patient_new.getCaste());
-//            }
-//            // casteView.setText(patient_new.getCaste());
-//        }
-//
-//        if (patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
-//            sdwView.setText(patient_new.getSdw());
-//        } else {
-//            sdwRow.setVisibility(View.GONE);
-//        }
-////
-//        if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
-//            occuView.setText(patient_new.getOccupation());
-//        } else {
-////            occuRow.setVisibility(View.GONE);
-//            occuView.setText("");
-//        }
 
         if (visitUuid != null && !visitUuid.isEmpty()) {
             CardView histCardView = findViewById(R.id.cardView_history);
@@ -1276,7 +837,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
             }
             familyHistory(famHistView, patientUuid, encounterAdultIntials);
             pastMedicalHistory(medHistView, patientUuid, encounterAdultIntials);
-            pastVisits(patientUuid);
+//            pastVisits(patientUuid);
         }
 
         whatsapp_no.setOnClickListener(new View.OnClickListener() {
@@ -1367,153 +928,150 @@ public class PatientDetailActivity extends BaseActionBarActivity {
      * @param datetime variable of type String.
      * @return void
      */
-    private void createOldVisit(final String datetime, String visit_id, String end_datetime, String visitValue, String encounterVitalslocal, String encounterAdultIntialslocal) throws ParseException {
-
-        final Boolean past_visit;
-        final TextView textView = new TextView(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
-        if (end_datetime == null || end_datetime.isEmpty()) {
-            // visit has not yet ended
-
-            for (int i = 1; i <= 2; i++) {
-                if (i == 1) {
-                    SpannableString spannableString = new SpannableString(visitString + getString(R.string.active_tag_patientDetail));
-                    Object greenSpan = new BackgroundColorSpan(Color.GREEN);
-                    Object underlineSpan = new UnderlineSpan();
-                    spannableString.setSpan(greenSpan, spannableString.length() - 6, spannableString.length(), 0);
-                    spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
-                    textView.setText(spannableString);
-                    layoutParams.setMargins(5, 10, 5, 0);
-                    //  textView.setLayoutParams(layoutParams);
-                    textView.setTextSize(16);
-                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
-                    textView.setTypeface(typeface);
-                    previousVisitsList.addView(textView);
-                }
-                //If patient come up with any complaints
-                if (i == 2) {
-                    TextView complaintxt1 = new TextView(this);
-                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
-                    complaintxt1.setTypeface(typeface);
-                    complaintxt1.setLayoutParams(layoutParams);
-                    if (visitValue != null && !visitValue.equals("")) {
-                        String visitComplaint = Html.fromHtml(visitValue).toString();
-                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
-                    } else {
-                        Log.e("Check", "No complaint");
-                    }
-                    layoutParams.setMargins(5, 10, 5, 0);
-                    //complaintxt1.setLayoutParams(layoutParams);
-                    complaintxt1.setTextSize(16);
-                    previousVisitsList.addView(complaintxt1);
-                }
-            }
-            past_visit = false;
-
-
-            if (newVisit.isEnabled()) {
-                newVisit.setEnabled(false);
-            }
-            if (newVisit.isClickable()) {
-                newVisit.setClickable(false);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    newVisit.setBackgroundColor
-                            (getColor(R.color.divider));
-                    newVisit.setTextColor(getColor(R.color.white));
-                } else {
-                    newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
-                    newVisit.setTextColor(getResources().getColor(R.color.white));
-                }
-            }
-
-        } else {
-            // when visit has ended
-            past_visit = true;
-            for (int i = 1; i <= 2; i++) {
-                if (i == 1) {
-                    textView.setText(visitString);
-                    textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
-                    textView.setTypeface(typeface);
-                    textView.setTextSize(16);
-                    layoutParams.setMargins(5, 10, 5, 0);
-                    // textView.setLayoutParams(layoutParams);
-                    previousVisitsList.addView(textView);
-                }
-                //If patient has any past complaints
-                if (i == 2) {
-                    TextView complaintxt1 = new TextView(this);
-                    if (visitValue != null && !visitValue.equals("")) {
-                        String visitComplaint = Html.fromHtml(visitValue).toString();
-                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
-                    } else {
-                        Log.e("Check", "No complaint");
-                    }
-                    layoutParams.setMargins(5, 10, 5, 0);
-                    // complaintxt1.setLayoutParams(layoutParams);
-                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
-                    complaintxt1.setTypeface(typeface);
-                    complaintxt1.setTextSize(16);
-                    previousVisitsList.addView(complaintxt1);
-                }
-            }
-        }
-
-        textView.setTextSize(16);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
-                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp.setMargins(0, 10, 0, 0);
-        // textView.setLayoutParams(llp);
-        textView.setTag(visit_id);
-        Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
-        textView.setTypeface(typeface);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                 int position = (Integer) v.getTag();
-                Intent visitSummary = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
-
-                visitSummary.putExtra("visitUuid", visit_id);
-                visitSummary.putExtra("patientUuid", patientUuid);
-                visitSummary.putExtra("encounterUuidVitals", encounterVitalslocal);
-                visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntialslocal);
-                visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
-                visitSummary.putExtra("name", patientName);
-                visitSummary.putExtra("gender", mGender);
-                visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-                visitSummary.putExtra("tag", intentTag);
-                visitSummary.putExtra("pastVisit", past_visit);
-                if (hasPrescription.equalsIgnoreCase("true")) {
-                    visitSummary.putExtra("hasPrescription", "true");
-                } else {
-                    visitSummary.putExtra("hasPrescription", "false");
-                }
-                startActivity(visitSummary);
-            }
-        });
-        //previousVisitsList.addView(textView);
-        //TODO: add on click listener to open the previous visit
-    }
+//    private void createOldVisit(final String datetime, String visit_id, String end_datetime, String visitValue, String encounterVitalslocal, String encounterAdultIntialslocal) throws ParseException {
+//
+//        final Boolean past_visit;
+//        final TextView textView = new TextView(this);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//
+//        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+//        if (end_datetime == null || end_datetime.isEmpty()) {
+//            // visit has not yet ended
+//
+//            for (int i = 1; i <= 2; i++) {
+//                if (i == 1) {
+//                    SpannableString spannableString = new SpannableString(visitString + getString(R.string.active_tag_patientDetail));
+//                    Object greenSpan = new BackgroundColorSpan(Color.GREEN);
+//                    Object underlineSpan = new UnderlineSpan();
+//                    spannableString.setSpan(greenSpan, spannableString.length() - 6, spannableString.length(), 0);
+//                    spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
+//                    textView.setText(spannableString);
+//                    layoutParams.setMargins(5, 10, 5, 0);
+//                    //  textView.setLayoutParams(layoutParams);
+//                    textView.setTextSize(16);
+//                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+//                    textView.setTypeface(typeface);
+//                    previousVisitsList.addView(textView);
+//                }
+//                //If patient come up with any complaints
+//                if (i == 2) {
+//                    TextView complaintxt1 = new TextView(this);
+//                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+//                    complaintxt1.setTypeface(typeface);
+//                    complaintxt1.setLayoutParams(layoutParams);
+//                    if (visitValue != null && !visitValue.equals("")) {
+//                        String visitComplaint = Html.fromHtml(visitValue).toString();
+//                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
+//                    } else {
+//                        Log.e("Check", "No complaint");
+//                    }
+//                    layoutParams.setMargins(5, 10, 5, 0);
+//                    //complaintxt1.setLayoutParams(layoutParams);
+//                    complaintxt1.setTextSize(16);
+//                    previousVisitsList.addView(complaintxt1);
+//                }
+//            }
+//            past_visit = false;
+//
+//
+//            if (newVisit.isEnabled()) {
+//                newVisit.setEnabled(false);
+//            }
+//            if (newVisit.isClickable()) {
+//                newVisit.setClickable(false);
+//
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    newVisit.setBackgroundColor
+//                            (getColor(R.color.divider));
+//                    newVisit.setTextColor(getColor(R.color.white));
+//                } else {
+//                    newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+//                    newVisit.setTextColor(getResources().getColor(R.color.white));
+//                }
+//            }
+//
+//        } else {
+//            // when visit has ended
+//            past_visit = true;
+//            for (int i = 1; i <= 2; i++) {
+//                if (i == 1) {
+//                    textView.setText(visitString);
+//                    textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+//                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+//                    textView.setTypeface(typeface);
+//                    textView.setTextSize(16);
+//                    layoutParams.setMargins(5, 10, 5, 0);
+//                    // textView.setLayoutParams(layoutParams);
+//                    previousVisitsList.addView(textView);
+//                }
+//                //If patient has any past complaints
+//                if (i == 2) {
+//                    TextView complaintxt1 = new TextView(this);
+//                    if (visitValue != null && !visitValue.equals("")) {
+//                        String visitComplaint = Html.fromHtml(visitValue).toString();
+//                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
+//                    } else {
+//                        Log.e("Check", "No complaint");
+//                    }
+//                    layoutParams.setMargins(5, 10, 5, 0);
+//                    // complaintxt1.setLayoutParams(layoutParams);
+//                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+//                    complaintxt1.setTypeface(typeface);
+//                    complaintxt1.setTextSize(16);
+//                    previousVisitsList.addView(complaintxt1);
+//                }
+//            }
+//        }
+//
+//        textView.setTextSize(16);
+//        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
+//                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        llp.setMargins(0, 10, 0, 0);
+//        // textView.setLayoutParams(llp);
+//        textView.setTag(visit_id);
+//        Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+//        textView.setTypeface(typeface);
+//        textView.setOnClickListener(v -> {
+////                 int position = (Integer) v.getTag();
+//            Intent visitSummary = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
+//
+//            visitSummary.putExtra("visitUuid", visit_id);
+//            visitSummary.putExtra("patientUuid", patientUuid);
+//            visitSummary.putExtra("encounterUuidVitals", encounterVitalslocal);
+//            visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntialslocal);
+//            visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+//            visitSummary.putExtra("name", patientName);
+//            visitSummary.putExtra("gender", mGender);
+//            visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+//            visitSummary.putExtra("tag", intentTag);
+//            visitSummary.putExtra("pastVisit", past_visit);
+//            if (hasPrescription.equalsIgnoreCase("true")) {
+//                visitSummary.putExtra("hasPrescription", "true");
+//            } else {
+//                visitSummary.putExtra("hasPrescription", "false");
+//            }
+//            startActivity(visitSummary);
+//        });
+//        //previousVisitsList.addView(textView);
+//        //TODO: add on click listener to open the previous visit
+//    }
 
     /**
      * This method is called when patient has no prior visits.
      *
      * @return void
      */
-    private void neverSeen() {
-        final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
-        TextView textView = convertView.findViewById(R.id.textView_visit_info);
-        String visitString = getString(R.string.no_prior_visits);
-        textView.setText(visitString);
-        Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
-        textView.setTypeface(typeface);
-        textView.setTextSize(16);
-        previousVisitsList.addView(convertView);
-    }
+//    private void neverSeen() {
+//        final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
+//        View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
+//        TextView textView = convertView.findViewById(R.id.textView_visit_info);
+//        String visitString = getString(R.string.no_prior_visits);
+//        textView.setText(visitString);
+//        Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+//        textView.setTypeface(typeface);
+//        textView.setTextSize(16);
+//        previousVisitsList.addView(convertView);
+//    }
 
 //    @Override
 //    public void onBackPressed() {
@@ -1680,113 +1238,113 @@ public class PatientDetailActivity extends BaseActionBarActivity {
     }
 
 
-    public void pastVisits(String patientuuid) {
-        String visitSelection = "patientuuid = ?";
-        String[] visitArgs = {patientuuid};
-        String[] visitColumns = {"uuid, startdate", "enddate"};
-        String visitOrderBy = "startdate";
-        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
-
-        previousVisitsList = findViewById(R.id.linearLayout_previous_visits);
-        if (visitCursor.getCount() < 1) {
-            neverSeen();
-        } else {
-
-            if (visitCursor.moveToLast() && visitCursor != null) {
-                do {
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
-                    String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
-                    String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
-
-                    String encounterlocalAdultintial = "";
-                    String encountervitalsLocal = null;
-                    String encounterIDSelection = "visituuid = ?";
-
-                    String[] encounterIDArgs = {visit_id};
-
-                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                        do {
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-
-                        } while (encounterCursor.moveToNext());
-                    }
-                    encounterCursor.close();
-
-                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
-                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
-                    String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
-                    Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
-                    if (previsitCursor.moveToLast() && previsitCursor != null) {
-
-                        String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
-                        if (visitValue != null && !visitValue.isEmpty()) {
-
-                            visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
-
-                            String[] complaints = StringUtils.split(visitValue, Node.bullet_arrow);
-
-                            visitValue = "";
-                            String colon = ":";
-                            if (complaints != null) {
-                                for (String comp : complaints) {
-                                    if (!comp.trim().isEmpty()) {
-                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-
-                                    }
-                                }
-                                if (!visitValue.isEmpty()) {
-                                    visitValue = visitValue.substring(0, visitValue.length() - 2);
-                                    visitValue = visitValue.replaceAll("<b>", "");
-                                    visitValue = visitValue.replaceAll("</b>", "");
-                                }
-                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                                try {
-
-                                    Date formatted = currentDate.parse(date);
-                                    String visitDate = currentDate.format(formatted);
-                                    createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                                } catch (ParseException e) {
-                                    FirebaseCrashlytics.getInstance().recordException(e);
-                                }
-                            }
-                        }
-                        // Called when we select complaints but not select any sub knowledgeEngine inside that complaint
-                        else {
-                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                            try {
-
-                                Date formatted = currentDate.parse(date);
-                                String visitDate = currentDate.format(formatted);
-                                createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                            } catch (ParseException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                            }
-                        }
-                    }
-                    // Called when we close org on vitals screen and Didn't select any complaints
-                    else {
-                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        try {
-
-                            Date formatted = currentDate.parse(date);
-                            String visitDate = currentDate.format(formatted);
-                            createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                        } catch (ParseException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    }
-                } while (visitCursor.moveToPrevious());
-            }
-        }
-        visitCursor.close();
-    }
+//    public void pastVisits(String patientuuid) {
+//        String visitSelection = "patientuuid = ?";
+//        String[] visitArgs = {patientuuid};
+//        String[] visitColumns = {"uuid, startdate", "enddate"};
+//        String visitOrderBy = "startdate";
+//        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+//
+//        previousVisitsList = findViewById(R.id.linearLayout_previous_visits);
+//        if (visitCursor.getCount() < 1) {
+//            neverSeen();
+//        } else {
+//
+//            if (visitCursor.moveToLast() && visitCursor != null) {
+//                do {
+//                    EncounterDAO encounterDAO = new EncounterDAO();
+//                    String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
+//                    String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+//                    String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+//
+//                    String encounterlocalAdultintial = "";
+//                    String encountervitalsLocal = null;
+//                    String encounterIDSelection = "visituuid = ?";
+//
+//                    String[] encounterIDArgs = {visit_id};
+//
+//                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+//                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+//                        do {
+//                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+//                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+//                            }
+//                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+//                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+//                            }
+//
+//                        } while (encounterCursor.moveToNext());
+//                    }
+//                    encounterCursor.close();
+//
+//                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+//                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
+//                    String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
+//                    Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+//                    if (previsitCursor.moveToLast() && previsitCursor != null) {
+//
+//                        String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+//                        if (visitValue != null && !visitValue.isEmpty()) {
+//
+//                            visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
+//
+//                            String[] complaints = StringUtils.split(visitValue, Node.bullet_arrow);
+//
+//                            visitValue = "";
+//                            String colon = ":";
+//                            if (complaints != null) {
+//                                for (String comp : complaints) {
+//                                    if (!comp.trim().isEmpty()) {
+//                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+//
+//                                    }
+//                                }
+//                                if (!visitValue.isEmpty()) {
+//                                    visitValue = visitValue.substring(0, visitValue.length() - 2);
+//                                    visitValue = visitValue.replaceAll("<b>", "");
+//                                    visitValue = visitValue.replaceAll("</b>", "");
+//                                }
+//                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+//                                try {
+//
+//                                    Date formatted = currentDate.parse(date);
+//                                    String visitDate = currentDate.format(formatted);
+//                                    createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+//                                } catch (ParseException e) {
+//                                    FirebaseCrashlytics.getInstance().recordException(e);
+//                                }
+//                            }
+//                        }
+//                        // Called when we select complaints but not select any sub knowledgeEngine inside that complaint
+//                        else {
+//                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+//                            try {
+//
+//                                Date formatted = currentDate.parse(date);
+//                                String visitDate = currentDate.format(formatted);
+//                                createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+//                            } catch (ParseException e) {
+//                                FirebaseCrashlytics.getInstance().recordException(e);
+//                            }
+//                        }
+//                    }
+//                    // Called when we close org on vitals screen and Didn't select any complaints
+//                    else {
+//                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+//                        try {
+//
+//                            Date formatted = currentDate.parse(date);
+//                            String visitDate = currentDate.format(formatted);
+//                            createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+//                        } catch (ParseException e) {
+//                            FirebaseCrashlytics.getInstance().recordException(e);
+//                        }
+//                    }
+//                } while (visitCursor.moveToPrevious());
+//            }
+//        }
+//        visitCursor.close();
+//    }
 
     @Override
     protected void onStop() {
@@ -1838,6 +1396,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         return bedNumber;
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(PatientDetailActivity.this, SearchPatientActivity.class);

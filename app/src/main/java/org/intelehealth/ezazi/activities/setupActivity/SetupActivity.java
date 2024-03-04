@@ -1,17 +1,13 @@
 package org.intelehealth.ezazi.activities.setupActivity;
 
-import android.accounts.Account;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +25,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -37,7 +32,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -50,7 +44,6 @@ import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
-import org.intelehealth.ezazi.models.DownloadMindMapRes;
 import org.intelehealth.ezazi.models.Location;
 import org.intelehealth.ezazi.models.OxytocinResponseModel;
 import org.intelehealth.ezazi.models.Results;
@@ -59,14 +52,11 @@ import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;
-import org.intelehealth.ezazi.ui.shared.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.password.activity.ForgotPasswordActivity;
+import org.intelehealth.ezazi.ui.shared.InputChangeValidationListener;
 import org.intelehealth.ezazi.utilities.Base64Utils;
-import org.intelehealth.ezazi.utilities.DialogUtils;
-import org.intelehealth.ezazi.utilities.DownloadMindMaps;
 import org.intelehealth.ezazi.utilities.Logger;
-import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.StringEncryption;
 import org.intelehealth.ezazi.utilities.TextThemeUtils;
@@ -138,7 +128,7 @@ public class SetupActivity extends AppCompatActivity {
 
     Context context;
     private String mindmapURL = "";
-    private DownloadMindMaps mTask;
+//    private DownloadMindMaps mTask;
 
     private String setupUrl = "";
 
@@ -327,51 +317,8 @@ public class SetupActivity extends AppCompatActivity {
             cancel = true;
         }
 
-        //spinner...
-//        if (spinner_state.getSelectedItemPosition() <= 0) {
-//            cancel = true;
-//            focusView = spinner_state;
-//            TextView t = (TextView) spinner_state.getSelectedView();
-//            t.setError("Select State");
-//            t.setTextColor(Color.RED);
-//            Toast.makeText(SetupActivity.this, "Select State from dropdown", Toast.LENGTH_LONG).show();
-//        } else if (spinner_district.getSelectedItemPosition() <= 0) {
-//            cancel = true;
-//            focusView = spinner_district;
-//            TextView t = (TextView) spinner_district.getSelectedView();
-//            t.setError("Select District");
-//            focusView.setEnabled(true);
-//            t.setTextColor(Color.RED);
-//            Toast.makeText(SetupActivity.this, "Select District from dropdown", Toast.LENGTH_LONG).show();
-//        } else if (spinner_sanch.getSelectedItemPosition() <= 0) {
-//            cancel = true;
-//            focusView = spinner_sanch;
-//            TextView t = (TextView) spinner_sanch.getSelectedView();
-//            t.setError("Select Sanch");
-//            t.setTextColor(Color.RED);
-//            Toast.makeText(SetupActivity.this, "Select Sanch from dropdown", Toast.LENGTH_LONG).show();
-//        } else if (spinner_village.getSelectedItemPosition() <= 0) {
-//            cancel = true;
-//            focusView = spinner_village;
-//            TextView t = (TextView) spinner_village.getSelectedView();
-//            t.setError("Select Village");
-//            t.setTextColor(Color.RED);
-//            Toast.makeText(SetupActivity.this, "Select Village from dropdown", Toast.LENGTH_LONG).show();
-//        }
-
-
-        //spinner-end...
 
         Location location = new Location();
-
-        //add state wise here...
-
-      /*  if (mDropdownLocation.getSelectedItemPosition() <= 0) {
-            cancel = true;
-            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
-        } else {
-            location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
-        }*/
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -395,46 +342,19 @@ public class SetupActivity extends AppCompatActivity {
             location.setUuid("eb374eaf-430e-465e-81df-fe94c2c515be");
             TestSetup(urlString, email, password, location);
             Log.d(TAG, "attempting setup");
-            //    }
-
-//            if (village_name != null) {
-//                String urlString = setupUrl;
-//                TestSetup(urlString, email, password, admin_password, village_name);
-//                Log.d(TAG, "attempting setup");
-//            }
         }
     }
 
-    public boolean isOnline() {
-        ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
-        if (netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()) {
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showOkDialog(this, getString(R.string.generic_info), getString(R.string.setup_internet_not_available), getString(R.string.generic_ok));
-            return false;
-        } else {
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet_available), getString(R.string.generic_ok));
-            return true;
-        }
-//        return true;
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        broadcastIntent();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        unregisterReceiver(MyReceiver);
     }
-
-//    public void broadcastIntent() {
-//        registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-//    }
 
     private void showProgressbar() {
 // instantiate it within the onCreate method
@@ -526,6 +446,7 @@ public class SetupActivity extends AppCompatActivity {
         //TODO: Verify License Key
         return true;
     }
+
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, Location location) {
         Log.i(TAG, "location:: " + location.getDisplay());
         ProgressDialog progress;
@@ -745,88 +666,88 @@ public class SetupActivity extends AppCompatActivity {
 
     }
 
-    private void getMindmapDownloadURL(String url) {
-        customProgressDialog.show();
-        ApiClient.changeApiBaseUrl(url);
-        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
-            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<DownloadMindMapRes>() {
-                @Override
-                public void onNext(DownloadMindMapRes res) {
-                    customProgressDialog.dismiss();
-                    if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+//    private void getMindmapDownloadURL(String url) {
+//        customProgressDialog.show();
+//        ApiClient.changeApiBaseUrl(url);
+//        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+//        try {
+//            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
+//            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<DownloadMindMapRes>() {
+//                @Override
+//                public void onNext(DownloadMindMapRes res) {
+//                    customProgressDialog.dismiss();
+//                    if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+//
+//                        Log.e("MindMapURL", "Successfully get MindMap URL");
+//                        mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
+//                        mindmapURL = res.getMindmap().trim();
+//                        sessionManager.setLicenseKey(key);
+//                        checkExistingMindMaps();
+//
+//                    } else {
+////                                Toast.makeText(SetupActivity.this, res.getMessage(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(SetupActivity.this, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//
+//                @Override
+//                public void onError(Throwable e) {
+//                    customProgressDialog.dismiss();
+//                    Log.e("MindMapURL", " " + e);
+//                    Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
+//                }
+//
+//                @Override
+//                public void onComplete() {
+//
+//                }
+//            });
+//        } catch (IllegalArgumentException e) {
+//            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
+//            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
+//        }
+//    }
 
-                        Log.e("MindMapURL", "Successfully get MindMap URL");
-                        mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
-                        mindmapURL = res.getMindmap().trim();
-                        sessionManager.setLicenseKey(key);
-                        checkExistingMindMaps();
-
-                    } else {
-//                                Toast.makeText(SetupActivity.this, res.getMessage(), Toast.LENGTH_LONG).show();
-                        Toast.makeText(SetupActivity.this, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
-                    }
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    customProgressDialog.dismiss();
-                    Log.e("MindMapURL", " " + e);
-                    Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            });
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
-            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
-        }
-    }
-
-    private void checkExistingMindMaps() {
-
-        //Check is there any existing mindmaps are present, if yes then delete.
-
-        File engines = new File(context.getFilesDir().getAbsolutePath(), "/Engines");
-        Log.e(TAG, "Engines folder=" + engines.exists());
-        if (engines.exists()) {
-            engines.delete();
-        }
-        File logo = new File(context.getFilesDir().getAbsolutePath(), "/logo");
-        Log.e(TAG, "Logo folder=" + logo.exists());
-        if (logo.exists()) {
-            logo.delete();
-        }
-        File physicalExam = new File(context.getFilesDir().getAbsolutePath() + "/physExam.json");
-        Log.e(TAG, "physExam.json=" + physicalExam.exists());
-        if (physicalExam.exists()) {
-            physicalExam.delete();
-        }
-        File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
-        Log.e(TAG, "famHist.json=" + familyHistory.exists());
-        if (familyHistory.exists()) {
-            familyHistory.delete();
-        }
-        File pastMedicalHistory = new File(context.getFilesDir().getAbsolutePath() + "/patHist.json");
-        Log.e(TAG, "patHist.json=" + pastMedicalHistory.exists());
-        if (pastMedicalHistory.exists()) {
-            pastMedicalHistory.delete();
-        }
-        File config = new File(context.getFilesDir().getAbsolutePath() + "/config.json");
-        Log.e(TAG, "config.json=" + config.exists());
-        if (config.exists()) {
-            config.delete();
-        }
-
-        //Start downloading mindmaps
-        mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
-        Log.e("DOWNLOAD", "isSTARTED");
-
-    }
+//    private void checkExistingMindMaps() {
+//
+//        //Check is there any existing mindmaps are present, if yes then delete.
+//
+//        File engines = new File(context.getFilesDir().getAbsolutePath(), "/Engines");
+//        Log.e(TAG, "Engines folder=" + engines.exists());
+//        if (engines.exists()) {
+//            engines.delete();
+//        }
+//        File logo = new File(context.getFilesDir().getAbsolutePath(), "/logo");
+//        Log.e(TAG, "Logo folder=" + logo.exists());
+//        if (logo.exists()) {
+//            logo.delete();
+//        }
+//        File physicalExam = new File(context.getFilesDir().getAbsolutePath() + "/physExam.json");
+//        Log.e(TAG, "physExam.json=" + physicalExam.exists());
+//        if (physicalExam.exists()) {
+//            physicalExam.delete();
+//        }
+//        File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
+//        Log.e(TAG, "famHist.json=" + familyHistory.exists());
+//        if (familyHistory.exists()) {
+//            familyHistory.delete();
+//        }
+//        File pastMedicalHistory = new File(context.getFilesDir().getAbsolutePath() + "/patHist.json");
+//        Log.e(TAG, "patHist.json=" + pastMedicalHistory.exists());
+//        if (pastMedicalHistory.exists()) {
+//            pastMedicalHistory.delete();
+//        }
+//        File config = new File(context.getFilesDir().getAbsolutePath() + "/config.json");
+//        Log.e(TAG, "config.json=" + config.exists());
+//        if (config.exists()) {
+//            config.delete();
+//        }
+//
+//        //Start downloading mindmaps
+//        mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
+//        Log.e("DOWNLOAD", "isSTARTED");
+//
+//    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -854,38 +775,38 @@ public class SetupActivity extends AppCompatActivity {
         return context;
     }
 
-    public void showMindmapFailedAlert() {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-//      MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setMessage(getResources().getString(R.string.protocol_download_failed_alertdialog));
-        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-//                r1.setChecked(true);
-//                r2.setChecked(false);
-                sessionManager.setLicenseKey("");
-            }
-        });
-        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                if (NetworkConnection.isOnline(SetupActivity.this)) {
-                    getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
-                } else {
-                    dialog.dismiss();
-//                    r1.setChecked(true);
-//                    r2.setChecked(false);
-                    sessionManager.setLicenseKey("");
-                    Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.show();
-        //alertDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-    }
+//    public void showMindmapFailedAlert() {
+//        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+////      MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+//        alertDialogBuilder.setMessage(getResources().getString(R.string.protocol_download_failed_alertdialog));
+//        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+////                r1.setChecked(true);
+////                r2.setChecked(false);
+//                sessionManager.setLicenseKey("");
+//            }
+//        });
+//        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//                if (NetworkConnection.isOnline(SetupActivity.this)) {
+//                    getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
+//                } else {
+//                    dialog.dismiss();
+////                    r1.setChecked(true);
+////                    r2.setChecked(false);
+//                    sessionManager.setLicenseKey("");
+//                    Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//        AlertDialog alertDialog = alertDialogBuilder.show();
+//        //alertDialog.show();
+//        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+//    }
 
     private void saveToken() {
         ProviderDAO providerDAO = new ProviderDAO();

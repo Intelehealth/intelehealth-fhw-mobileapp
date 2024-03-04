@@ -403,36 +403,6 @@ public class PatientAddressInfoFragment extends Fragment {
                         if (fromThirdScreen || fromFirstScreen)
                             etDistrict.setText(String.valueOf(district));
                     }
-
-
-                    /*if (state.matches("Maharashtra")) {
-                        ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                R.array.district, android.R.layout.simple_spinner_dropdown_item);
-                        mDistrictNameSpinner.setAdapter(districtAdapter);
-                        mDistrictNameSpinner.setVisibility(View.VISIBLE);
-                        mCityNameSpinner.setVisibility(View.VISIBLE);
-                        mDistrictET.setVisibility(View.GONE);
-                        mCityVillageET.setVisibility(View.GONE);
-
-                        // setting state according database when user clicks edit details
-                        if (fromThirdScreen || fromFirstScreen)
-                            mDistrictNameSpinner.setSelection(districtAdapter.getPosition(String.valueOf(district)));
-                        else
-                            mDistrictNameSpinner.setSelection(districtAdapter.getPosition("Select"));
-
-                    } else {
-                        ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                R.array.select, android.R.layout.simple_spinner_dropdown_item);
-                        mDistrictNameSpinner.setAdapter(districtAdapter);
-                        mDistrictNameSpinner.setVisibility(View.GONE);
-                        mDistrictET.setVisibility(View.VISIBLE);
-
-                        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                R.array.select, android.R.layout.simple_spinner_dropdown_item);
-                        mCityNameSpinner.setAdapter(cityAdapter);
-                        mCityNameSpinner.setVisibility(View.GONE);
-                        mCityVillageET.setVisibility(View.VISIBLE);
-                    }*/
                 }
 
             }

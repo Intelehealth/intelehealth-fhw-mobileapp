@@ -1,7 +1,6 @@
 package org.intelehealth.ezazi.activities.splash_activity;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -9,30 +8,23 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.activities.IntroActivity.IntroActivity;
-import org.intelehealth.ezazi.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
 import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
-import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.dataMigration.SmoothUpgrade;
 import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
@@ -119,22 +111,15 @@ public class SplashActivity extends AppCompatActivity {
         if (checkAndRequestPermissions()) {
             if (sessionManager.isMigration()) {
                 final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() { //Do something after 100ms
-                        nextActivity();
-                    }
-                }, 2000);
+                //Do something after 100ms
+                handler.postDelayed(this::nextActivity, 2000);
             } else {
                 final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() { //Do something after 100ms
-                        SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
-                        boolean smoothupgrade = smoothUpgrade.checkingDatabase();
-                        if (smoothupgrade) {
-                            nextActivity();
-                        }
+                handler.postDelayed(() -> { //Do something after 100ms
+                    SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
+                    boolean smoothupgrade = smoothUpgrade.checkingDatabase();
+                    if (smoothupgrade) {
+                        nextActivity();
                     }
                 }, 2000);
             }
@@ -280,32 +265,25 @@ public class SplashActivity extends AppCompatActivity {
 
         String LOG_TAG = "SplashActivity";
         Logger.logD(LOG_TAG, String.valueOf(setup));
-        if (sessionManager.isFirstTimeLaunch()) {
-            Logger.logD(LOG_TAG, "Starting setup");
-            Intent intent = new Intent(this, ChooseLanguageActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            if (setup) {
+        if (setup) {
 
-                if (sessionManager.isLogout()) {
-                    Logger.logD(LOG_TAG, "Starting login");
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Logger.logD(LOG_TAG, "Starting home");
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-
+            if (sessionManager.isLogout()) {
+                Logger.logD(LOG_TAG, "Starting login");
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
             } else {
-                Logger.logD(LOG_TAG, "Starting setup");
-                Intent intent = new Intent(this, SetupActivity.class);
+                Logger.logD(LOG_TAG, "Starting home");
+                Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
                 finish();
             }
+
+        } else {
+            Logger.logD(LOG_TAG, "Starting setup");
+            Intent intent = new Intent(this, SetupActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 

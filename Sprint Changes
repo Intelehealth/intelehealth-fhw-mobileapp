@@ -1,3 +1,15 @@
+SplashActivity
+HomeActivity
+LoginActivity
+SearchPatientActivity
+PrivacyNoticeActivity
+AddNewPatientActivity
+PatientDetailActivity
+TimelineVisitSummaryActivity
+BaseActionBarActivity
+PartogramDataCaptureActivity
+EpartogramViewActivity
+
 17 Nov, 2023
 =============
 1 - Added created date in patient object for sorting order (Pull data api)
