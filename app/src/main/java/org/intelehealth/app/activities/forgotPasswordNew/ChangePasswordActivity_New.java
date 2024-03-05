@@ -185,13 +185,13 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
                     public void onError(Throwable e) {
                         Logger.logD(TAG, "Login Failure" + e.getMessage());
                         e.printStackTrace();
-                        if (e.getMessage().contains("HTTP 400")) {
+//                        if (e.getMessage().contains("HTTP 400")) {
                             tvErrorCurrentPassword.setVisibility(View.VISIBLE);
                             tvErrorCurrentPassword.setText(getResources().getString(R.string.error_password_not_exist));
                             etCurrentPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                        } else {
-                            showSnackBarAndRemoveLater(getString(R.string.error_password_not_exist), R.drawable.fingerprint_dialog_error);
-                        }
+//                        } else {
+//                            showSnackBarAndRemoveLater(getString(R.string.error_password_not_exist), R.drawable.fingerprint_dialog_error);
+//                        }
                         cpd.dismiss();
                     }
 
