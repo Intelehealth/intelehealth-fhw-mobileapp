@@ -200,7 +200,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
-    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
+    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview,
+             vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
+    private RelativeLayout add_additional_doc;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
