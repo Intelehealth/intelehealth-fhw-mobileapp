@@ -305,7 +305,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                 String colon = ":";
                 if (complaints != null) {
                     for (String comp : complaints) {
-                        if (!comp.trim().isEmpty()) {
+                        if (!comp.trim().isEmpty() && comp.contains(colon)) {
                             chief_complaint_value = chief_complaint_value + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
 
                         }
