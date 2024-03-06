@@ -4,7 +4,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -332,16 +330,18 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
             @Override
             public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                 SlotInfoResponse slotInfoResponse = response.body();
-                if (isRescheduled && slotInfoResponse != null) {
-                    removePreviousAppointmentDateTime(slotInfoResponse);
-                }
 
                 List<SlotInfo> slotInfoList = new ArrayList<>();
                 slotInfoMorningList = new ArrayList<>();
                 slotInfoAfternoonList = new ArrayList<>();
                 slotInfoEveningList = new ArrayList<>();
 
-                slotInfoList.addAll(slotInfoResponse.getDates());
+                if (isRescheduled && slotInfoResponse != null) {
+                    removePreviousAppointmentDateTime(slotInfoResponse);
+                }
+
+
+                if (slotInfoResponse != null) slotInfoList.addAll(slotInfoResponse.getDates());
 
                 for (int i = 0; i < slotInfoList.size(); i++) {
                     SlotInfo slotInfo = slotInfoList.get(i);

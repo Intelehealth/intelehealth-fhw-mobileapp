@@ -10,12 +10,10 @@ import org.intelehealth.app.R;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -427,6 +425,7 @@ public class DateAndTimeUtils {
      * @return
      */
     public static String timeAgoFormat(String datetime) {
+        if (datetime == null || datetime.trim().isEmpty()) return "";
         String time = "";
 
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -580,8 +579,8 @@ public class DateAndTimeUtils {
             String timeDisplay = hourFormated + ":" + splitedTime[1] + " " + textTime;
             String displayDate = getDateWithDayAndMonth(splitedString[0]);
             finalDate = displayDate + ", at " + timeDisplay;
-            if(language.equalsIgnoreCase("hi"))
-            finalDate = displayDate + ", " + timeDisplay + " " + context.getString(R.string.at);
+            if (language.equalsIgnoreCase("hi"))
+                finalDate = displayDate + ", " + timeDisplay + " " + context.getString(R.string.at);
         }
         return finalDate;
 
