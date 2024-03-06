@@ -116,7 +116,6 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
-import org.intelehealth.app.appointmentNew.AppointmentDetailsActivity;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -3575,15 +3574,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     @Override
     protected void onStop() {
         super.onStop();
-        if (downloadPrescriptionService != null) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
-        }
-        if (receiver != null) {
-            unregisterReceiver(receiver);
-        }
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-
         try {
+            if (downloadPrescriptionService != null) {
+                LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+            }
+            if (receiver != null) {
+                unregisterReceiver(receiver);
+            }
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
+
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
@@ -5135,7 +5135,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
 
                 for (int i = 0; i < cc_tempvalues.size(); i++) {
-                    if (!cc_tempvalues.get(i).equalsIgnoreCase(""))
+                    if (!cc_tempvalues.get(i).equalsIgnoreCase("") && cc_tempvalues.get(i).contains(":"))
                         mChiefComplainList.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
                 }
 
