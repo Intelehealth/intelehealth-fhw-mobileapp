@@ -657,6 +657,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         btn_bottom_printshare.setVisibility(View.GONE);
         btn_bottom_vs.setVisibility(View.VISIBLE);
         Timber.tag(TAG).d("has prescription::%s", hasPrescription);
+        updateUIState();
+
+        //here we changing the appointment button behavior
+        //based on appointment status
+        if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.CANCELLED)) {
+            btnAppointment.setText(getString(R.string.appointment));
+        } else if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.BOOKED)) {
+            btnAppointment.setText(getString(R.string.reschedule));
+            doesAppointmentExist = true;
+        }
+    }
+
+    private void updateUIState() {
         if (hasPrescription) {
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
@@ -667,17 +680,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             add_additional_doc.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
         } else {
-            add_additional_doc.setVisibility(View.VISIBLE);
-            editAddDocs.setVisibility(View.VISIBLE);
-        }
-
-        //here we changing the appointment button behavior
-        //based on appointment status
-        if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.CANCELLED)) {
-            btnAppointment.setText(getString(R.string.appointment));
-        } else if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.BOOKED)) {
-            btnAppointment.setText(getString(R.string.reschedule));
-            doesAppointmentExist = true;
+            int visibility = isVisitSpecialityExists ? View.GONE : View.VISIBLE;
+            add_additional_doc.setVisibility(visibility);
+            editAddDocs.setVisibility(visibility);
+            if (recyclerViewAdapter != null) {
+                recyclerViewAdapter.hideCancelBtnAddDoc(visibility == View.GONE);
+            }
         }
     }
 
@@ -1854,7 +1862,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }
 
-//    private void endVisit(){
+    //    private void endVisit(){
 //        if (!hasPrescription) {
 //            checkIfAppointmentExistsForVisit(visitUUID);
 //        } else {
@@ -2857,8 +2865,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (NetworkConnection.isOnline(getApplication())) {
                 Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
 
-                SyncDAO syncDAO = new SyncDAO();
-
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -2875,7 +2881,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
                             sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
-                            visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon), getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+                            Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+                            visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
 
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
@@ -2896,12 +2903,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             fetchingIntent();
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
-
                         }
                         uploaded = true;
                     }
                 }, 4000);
             } else {
+                add_additional_doc.setVisibility(View.GONE);
                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
             }
         } else {
@@ -3055,10 +3062,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
-                if (encounterDAO.getEncounterTypeUuid(ENCOUNTER_VISIT_NOTE).equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                     visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
-                if (encounterDAO.getEncounterTypeUuid(ENCOUNTER_VISIT_COMPLETE).equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_COMPLETE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                     hasPrescription = true;
                 }
             } while (encounterCursor.moveToNext());
