@@ -68,6 +68,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -143,7 +144,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     String medicalAdvice_string = "", medicalAdvice_HyperLink = "";
     private SQLiteDatabase db;
     private Patient patient = new Patient();
-    private String hasPrescription = "";
+    private boolean hasPrescription = false;
     boolean downloaded = false;
     String encounterUuid;
     DownloadPrescriptionService downloadPrescriptionService;
@@ -193,6 +194,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
         }
+
 
         initUI();
         networkUtils = new NetworkUtils(this, this);
@@ -326,7 +328,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             visit_startDate = intent.getStringExtra("visit_startDate");
             patient_photo_path = intent.getStringExtra("patient_photo");
             intentTag = intent.getStringExtra("tag");
-
+            try {
+                hasPrescription = new EncounterDAO().isPrescriptionReceived(visitID);
+                Timber.tag(PrescriptionActivity.class.getSimpleName()).d("has prescription main::%s", hasPrescription);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
             queryData(String.valueOf(patientUuid));
         }
 
@@ -469,7 +476,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     }
 
     private void showEndVisitConfirmationDialog() {
-        if (hasPrescription.equalsIgnoreCase("true")) {
+        if (hasPrescription) {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showCommonDialog(
                     this, R.drawable.dialog_close_visit_icon,
@@ -1531,7 +1538,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                hasPrescription = "true"; //if any kind of prescription data is present...
+                hasPrescription = true; //if any kind of prescription data is present...
                 parseData(dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
@@ -1869,7 +1876,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        hasPrescription = "true"; //if any kind of prescription data is present...
+                        hasPrescription = true; //if any kind of prescription data is present...
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
                 }
@@ -1898,7 +1905,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     // presc share - start
     private void sharePresc() {
-        if (hasPrescription.equalsIgnoreCase("true")) {
+        if (hasPrescription) {
             MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(PrescriptionActivity.this);
             final LayoutInflater inflater = LayoutInflater.from(PrescriptionActivity.this);
             View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
