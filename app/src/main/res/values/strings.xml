@@ -1107,4 +1107,5 @@
     <string name="title_visit_status">Visits</string>
     <string name="empty_administer_list_message">Please add %1$s\nhere to administer</string>
     <string name="no_data_message">No record for\n%1$s</string>
+    <string name="title_upcoming_visit">Upcoming Visit</string>
 </resources>

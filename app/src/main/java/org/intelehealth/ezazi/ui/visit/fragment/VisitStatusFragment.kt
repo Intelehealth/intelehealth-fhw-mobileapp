@@ -1,25 +1,19 @@
 package org.intelehealth.ezazi.ui.visit.fragment
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.ezazi.R
-import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity
-import org.intelehealth.ezazi.app.AppConstants
+import org.intelehealth.ezazi.core.Result
 import org.intelehealth.ezazi.databinding.FragmentCommenListviewBinding
-import org.intelehealth.ezazi.models.dto.PatientDTO
 import org.intelehealth.ezazi.ui.visit.adapter.VisitStatusAdapter
 import org.intelehealth.ezazi.ui.visit.viewmodel.VisitViewModel
 import org.intelehealth.ezazi.utilities.SessionManager
+import org.intelehealth.klivekit.chat.model.ItemHeader
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
 import org.intelehealth.klivekit.utils.extensions.setupLinearView
 import java.util.LinkedList
@@ -43,13 +37,9 @@ abstract class VisitStatusFragment : Fragment(R.layout.fragment_commen_listview)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCommenListviewBinding.bind(view)
-        binding.emptyMessage = getString(
-            R.string.no_data_message,
-            getString(R.string.decision_pending_title)
-        )
-        binding.emptyDataIcon = R.drawable.ic_outcome_pending
+        binding.emptyMessage = getEmptyDataMessage()
+        binding.emptyDataIcon = getEmptyDataIcon()
         initListView()
-        loadOutcomePendingVisits()
     }
 
     private fun initListView() {
@@ -58,17 +48,17 @@ abstract class VisitStatusFragment : Fragment(R.layout.fragment_commen_listview)
         binding.rvPrescription.setupLinearView(adapter)
     }
 
-    private fun loadOutcomePendingVisits() {
-        val providerId = SessionManager(requireContext()).providerID
-        viewMode.outcomePendingVisits(0, 20, providerId).observe(viewLifecycleOwner) {
-            viewMode.handleResponse(it) { visits ->
-                Timber.d { "Outcome Pending Visit old ${Gson().toJson(visits)}" }
-                binding.prescriptionProgressBar.isVisible = false
-                if (visits.isNotEmpty()) {
-                    binding.tvCallLogEmptyMessage.isVisible = false
-                    adapter.updateItems(visits.toMutableList())
-                }
+    open fun bindData(result: Result<List<ItemHeader>>) {
+        viewMode.handleResponse(result) { visits ->
+            Timber.d { "Outcome Pending Visit old ${Gson().toJson(visits)}" }
+            binding.prescriptionProgressBar.isVisible = false
+            if (visits.isNotEmpty()) {
+                binding.tvCallLogEmptyMessage.isVisible = false
+                adapter.updateItems(visits.toMutableList())
             }
         }
     }
+
+    abstract fun getEmptyDataMessage(): String
+    abstract fun getEmptyDataIcon(): Int
 }

@@ -1,9 +1,6 @@
 package org.intelehealth.ezazi.ui.visit.data
 
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
-import com.github.ajalt.timberkt.Timber
-import com.google.gson.Gson
 import org.intelehealth.ezazi.R
 import org.intelehealth.ezazi.builder.PatientQueryBuilder
 import org.intelehealth.ezazi.models.dto.PatientDTO
@@ -33,10 +30,14 @@ class VisitRepository(val database: SQLiteDatabase) {
         }
     }
 
-    fun getUpcomingVisits(): List<PatientDTO> {
+    fun getUpcomingVisits(): List<ItemHeader> {
         PatientQueryBuilder().upcomingPatientQuery(0, 10).apply {
             val cursor = database.rawQuery(this, null)
-            return PatientDataBinder().upcomingPatients(cursor)
+            PatientDataBinder().upcomingPatients(cursor).apply {
+                val upcomingVisits = arrayListOf<ItemHeader>()
+                upcomingVisits.addAll(this)
+                return upcomingVisits;
+            }
         }
     }
 

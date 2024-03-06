@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="patient"
             type="org.intelehealth.ezazi.models.dto.PatientDTO" />
@@ -34,8 +36,8 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivVisitStatusPatientDp"
-                android:layout_width="@dimen/std_48dp"
-                android:layout_height="@dimen/std_48dp"
+                android:layout_width="@dimen/rtc_self_profile_size"
+                android:layout_height="@dimen/rtc_self_profile_size"
                 android:background="@drawable/rounded_profile_bg_shape"
                 android:contentDescription="@string/content_patient_profile_picture"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -53,9 +55,11 @@
                 android:layout_marginStart="@dimen/screen_container_padding"
                 android:maxLines="1"
                 android:text="@{patient.fullName}"
+                app:layout_constraintBottom_toTopOf="@id/tvVisitStatusPatientId"
                 app:layout_constraintEnd_toStartOf="@id/tvVisitStatusStageName"
                 app:layout_constraintStart_toEndOf="@id/ivVisitStatusPatientDp"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
                 tools:text="Patient Name" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -67,6 +71,7 @@
                 android:layout_marginTop="@dimen/std_4dp"
                 android:maxLines="1"
                 android:text="@{patient.openmrsId}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tvVisitStatusStageName"
                 app:layout_constraintStart_toEndOf="@id/ivVisitStatusPatientDp"
                 app:layout_constraintTop_toBottomOf="@id/tvVisitStatusPatientName"
@@ -78,10 +83,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{patient.stage}"
+                android:visibility="@{patient.stage == null ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Stage-1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewUpcomingPrescription"
+                style="@style/Theme.EZazi.Button.Icon.Edit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:visibility="@{patient.stage == null ? View.VISIBLE : View.GONE}"
+                app:icon="@drawable/ic_vector_prescription"
+                app:iconTint="?attr/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

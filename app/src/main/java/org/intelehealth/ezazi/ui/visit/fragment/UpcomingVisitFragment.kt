@@ -2,59 +2,30 @@ package org.intelehealth.ezazi.ui.visit.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.github.ajalt.timberkt.Timber
-import com.google.gson.Gson
 import org.intelehealth.ezazi.R
-import org.intelehealth.ezazi.core.Result
-import org.intelehealth.ezazi.databinding.FragmentCommenListviewBinding
-import org.intelehealth.ezazi.databinding.FragmentVisitStatusListBinding
-import org.intelehealth.ezazi.models.dto.PatientDTO
-import org.intelehealth.ezazi.ui.visit.adapter.VisitStatusAdapter
-import org.intelehealth.ezazi.ui.visit.viewmodel.VisitViewModel
-import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
-import org.intelehealth.klivekit.utils.extensions.setupLinearView
-import java.util.LinkedList
+import org.intelehealth.ezazi.ui.prescription.activity.PrescriptionActivity
 
 /**
  * Created by Vaghela Mithun R. on 16-01-2024 - 00:42.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class UpcomingVisitFragment : Fragment(R.layout.fragment_commen_listview), BaseViewHolder.ViewHolderClickListener {
-    private lateinit var binding: FragmentCommenListviewBinding
-    private lateinit var adapter: VisitStatusAdapter
-    private val viewMode: VisitViewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.Factory.from(VisitViewModel.initializer)
-        )[VisitViewModel::class.java]
-    }
+class UpcomingVisitFragment : VisitStatusFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentCommenListviewBinding.bind(view)
         loadUpcomingVisit()
     }
 
-    private fun initListView() {
-        adapter = VisitStatusAdapter(requireContext(), LinkedList())
-        adapter.viewHolderClickListener = this
-        binding.rvPrescription.setupLinearView(adapter)
-    }
+    override fun getEmptyDataMessage(): String = getString(
+        R.string.no_data_message,
+        getString(R.string.title_upcoming_visit)
+    )
+
+    override fun getEmptyDataIcon(): Int = R.drawable.ic_outcome_pending
 
     private fun loadUpcomingVisit() {
-        viewMode.upcomingVisits().observe(viewLifecycleOwner) {
-            viewMode.handleResponse(it) { visits ->
-                Timber.d { "Upcoming Visit ${Gson().toJson(visits)}" }
-                bindDataToUI(it)
-            }
-        }
-    }
-
-    private fun bindDataToUI(result: Result<List<PatientDTO>>) {
-
+        viewMode.upcomingVisits().observe(viewLifecycleOwner) { bindData(it) }
     }
 
     companion object {
@@ -64,6 +35,9 @@ class UpcomingVisitFragment : Fragment(R.layout.fragment_commen_listview), BaseV
     }
 
     override fun onViewHolderViewClicked(view: View?, position: Int) {
-
+        view ?: return
+        if (view.id == R.id.btnViewUpcomingPrescription) {
+//            PrescriptionActivity.startPrescriptionActivity()
+        }
     }
 }

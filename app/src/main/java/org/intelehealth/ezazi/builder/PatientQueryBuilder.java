@@ -146,7 +146,7 @@ public class PatientQueryBuilder extends QueryBuilder {
 //        0c812a8b-a65e-4891-9a5c-ebb9d401344b
         String creatorId = new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID();
 
-        String query = select("uuid, openmrs_id, dateCreated," +
+        String query = select("uuid, openmrs_id, dateCreated, patient_photo, " +
                 "CASE WHEN middle_name IS NULL THEN first_name || ' ' || last_name " +
                 "ELSE first_name || ' ' || middle_name || ' ' || last_name END fullName")
                 .from(" tbl_patient ")

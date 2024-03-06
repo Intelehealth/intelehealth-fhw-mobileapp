@@ -65,6 +65,7 @@ public class PatientDataBinder {
                 model.setFullName(cursor.getString(cursor.getColumnIndexOrThrow("fullName")));
                 model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setCreatedAt(cursor.getString(cursor.getColumnIndexOrThrow("dateCreated")));
+                model.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 patients.add(model);
             } while (cursor.moveToNext());
         }
