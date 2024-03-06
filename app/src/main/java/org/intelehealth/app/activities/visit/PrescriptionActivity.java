@@ -2,8 +2,6 @@ package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
-import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
-import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
@@ -472,7 +470,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         endVisit(this, visitID, patient.getUuid(),
                 followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name()
-                + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
+                        + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
     }
 
     // permission code - start
@@ -1607,15 +1605,16 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     @Override
     protected void onStop() {
         super.onStop();
-        if (downloadPrescriptionService != null) {
-            LocalBroadcastManager.getInstance(PrescriptionActivity.this).unregisterReceiver(downloadPrescriptionService);
-        }
-        if (receiver != null) {
-            unregisterReceiver(receiver);
-        }
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-
         try {
+            if (downloadPrescriptionService != null) {
+                LocalBroadcastManager.getInstance(PrescriptionActivity.this).unregisterReceiver(downloadPrescriptionService);
+            }
+            if (receiver != null) {
+                unregisterReceiver(receiver);
+            }
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
+
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
