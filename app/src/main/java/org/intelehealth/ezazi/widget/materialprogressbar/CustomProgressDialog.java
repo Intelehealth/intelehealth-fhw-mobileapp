@@ -62,13 +62,7 @@ public class CustomProgressDialog extends Dialog {
     public void show() {
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mIvAnimation.setVisibility(View.VISIBLE);
-
-            }
-        }, 10);
+        handler.postDelayed(() -> mIvAnimation.setVisibility(View.VISIBLE), 10);
         super.show();
     }
 
