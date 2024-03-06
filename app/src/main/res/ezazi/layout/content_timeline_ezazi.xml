@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/std_16dp"
             android:gravity="start"
-            android:padding="@dimen/screen_padding"
+            android:padding="@dimen/outcome_pending_msg_padding"
             android:text="@string/outcome_decision_stage_2"
             android:textColor="@color/white"
             android:textStyle="bold"

@@ -267,4 +267,5 @@
     <dimen name="timeline_bottom_menu_chat_icon_size">@dimen/std_24dp</dimen>
     <dimen name="menu_icon_size">@dimen/std_48dp</dimen>
     <dimen name="empty_data_icon_size">@dimen/std_120dp</dimen>
+    <dimen name="outcome_pending_msg_padding">@dimen/std_20dp</dimen>
 </resources>

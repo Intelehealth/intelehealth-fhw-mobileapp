@@ -14,7 +14,7 @@
             type="org.intelehealth.ezazi.models.dto.ObsDTO" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/clContainerNewPlan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:id="@+id/clAddNewMedicineInputBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -42,8 +42,10 @@
                 style="@style/Theme.EZazi.Input.Login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/layoutButtonsAdd"
                 app:boxStrokeColor="@color/colorLoginInputStroke"
                 app:boxStrokeWidth="@dimen/input_stroke_size"
+                android:layout_marginBottom="@dimen/screen_padding"
                 app:counterEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -67,30 +69,41 @@
             </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAddPlanCancel"
-                style="@style/Theme.EZazi.Button.White"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/layoutButtonsAdd"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/screen_padding"
-                android:layout_marginEnd="@dimen/screen_container_padding"
-                android:contentDescription="@string/cancel"
-                android:text="@string/cancel"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnAddPlanAdd"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:weightSum="2"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAddPlanAdd"
-                style="@style/Theme.EZazi.Button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/screen_container_padding"
-                android:contentDescription="@string/lbl_add_new_medicine"
-                android:text="@string/lbl_add"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btnAddPlanCancel" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddPlanCancel"
+                    style="@style/Theme.EZazi.Button.White"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/screen_container_padding"
+                    android:contentDescription="@string/cancel"
+                    android:text="@string/cancel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btnAddPlanAdd"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddPlanAdd"
+                    style="@style/Theme.EZazi.Button"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/screen_container_padding"
+                    android:contentDescription="@string/lbl_add_new_medicine"
+                    android:text="@string/lbl_add"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btnAddPlanCancel" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
 </layout>

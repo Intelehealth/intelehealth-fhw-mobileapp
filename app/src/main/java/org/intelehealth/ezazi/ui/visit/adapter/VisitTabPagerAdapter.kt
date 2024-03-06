@@ -28,7 +28,7 @@ class VisitTabPagerAdapter(
     )
 
     override fun createFragment(position: Int): Fragment {
-        return fragments[position]
+        return fragments[position] as Fragment
     }
 
     override fun getItemCount(): Int {
