@@ -12,6 +12,8 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
@@ -201,7 +203,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview,
-             vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
+            vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
     private RelativeLayout add_additional_doc;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private TextInputEditText etAdditionalNotesVS;
@@ -222,7 +224,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String mEngReason = "";
 
     boolean hasLicense = false;
-    private String hasPrescription = "";
+    private boolean hasPrescription = false;
     private boolean isRespiratory = false, uploaded = false, downloaded = false;
     Button uploadButton, btn_vs_print, btn_vs_share;
     ImageView ivPrescription;   // todo: not needed here
@@ -250,21 +252,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     String followUpDate = "";
     String referredSpeciality = "";
 
-    CardView diagnosisCard;
-    CardView prescriptionCard;
-    CardView medicalAdviceCard;
-    CardView requestedTestsCard;
-    CardView additionalCommentsCard;
-    CardView followUpDateCard;
-    CardView card_print, card_share;
-
-
-    TextView diagnosisTextView;
-    TextView prescriptionTextView;
-    TextView medicalAdviceTextView;
-    TextView requestedTestsTextView;
-    TextView additionalCommentsTextView;
-    TextView followUpDateTextView;
+//    CardView diagnosisCard;
+//    CardView prescriptionCard;
+//    CardView medicalAdviceCard;
+//    CardView requestedTestsCard;
+//    CardView additionalCommentsCard;
+//    CardView followUpDateCard;
+//    CardView card_print, card_share;
+//
+//
+//    TextView diagnosisTextView;
+//    TextView prescriptionTextView;
+//    TextView medicalAdviceTextView;
+//    TextView requestedTestsTextView;
+//    TextView additionalCommentsTextView;
+//    TextView followUpDateTextView;
 
     // new
     TextView nameView;
@@ -457,7 +459,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
-//            hasPrescription = intent.getStringExtra("hasPrescription");
+            try {
+                hasPrescription = new EncounterDAO().isPrescriptionReceived(visitUuid);
+                Timber.tag(TAG).d("has prescription main::%s", hasPrescription);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
 
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             if (physicalExams == null) physicalExams = new ArrayList<>();
@@ -650,8 +657,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         btn_bottom_printshare.setVisibility(View.GONE);
         btn_bottom_vs.setVisibility(View.VISIBLE);
-
-        if (hasPrescription.equalsIgnoreCase("true")) {
+        Timber.tag(TAG).d("has prescription::%s", hasPrescription);
+        if (hasPrescription) {
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
 
@@ -1792,7 +1799,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void showEndVisitConfirmationDialog() {
-        if (!hasPrescription.equalsIgnoreCase("true")) {
+        if (!hasPrescription) {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showCommonDialog(
                     this, R.drawable.dialog_close_visit_icon,
@@ -1848,6 +1855,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }
 
+//    private void endVisit(){
+//        if (!hasPrescription) {
+//            checkIfAppointmentExistsForVisit(visitUUID);
+//        } else {
+//            triggerEndVisit();
+//        }
+//    }
     private void triggerEndVisit() {
 
         String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
@@ -1860,7 +1874,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void checkPerm() {
         if (checkAndRequestPermissions()) {
             try {
-                if (hasPrescription.equalsIgnoreCase("true")) {
+                if (hasPrescription) {
                     doWebViewPrint_downloadBtn();
                 } else {
                     DialogUtils dialogUtils = new DialogUtils();
@@ -2499,7 +2513,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     });
 
     private void sharePresc() {
-        if (hasPrescription.equalsIgnoreCase("true")) {
+        if (hasPrescription) {
             MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
             final LayoutInflater inflater = LayoutInflater.from(context);
             View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
@@ -3042,11 +3056,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                if (encounterDAO.getEncounterTypeUuid(ENCOUNTER_VISIT_NOTE).equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                     visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_COMPLETE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    hasPrescription = "true";
+                if (encounterDAO.getEncounterTypeUuid(ENCOUNTER_VISIT_COMPLETE).equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    hasPrescription = true;
                 }
             } while (encounterCursor.moveToNext());
 
@@ -3068,7 +3082,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         downloaded = true;
 
         //checks if prescription is downloaded and if so then sets the icon color.
-        if (hasPrescription.equalsIgnoreCase("true")) {
+        if (hasPrescription) {
             //   ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
         }
     }

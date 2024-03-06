@@ -81,6 +81,8 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -96,7 +98,9 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -454,7 +458,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
-            triggerEndVisit();
+            showEndVisitConfirmationDialog();
         });
 
         archieved_notifi.setOnClickListener(v -> {
@@ -463,6 +467,63 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
+    }
+
+    private void showEndVisitConfirmationDialog() {
+        if (hasPrescription.equalsIgnoreCase("true")) {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showCommonDialog(
+                    this, R.drawable.dialog_close_visit_icon,
+                    getResources().getString(R.string.confirm_end_visit_reason),
+                    getResources().getString(R.string.confirm_end_visit_reason_message),
+                    false,
+                    getResources().getString(R.string.confirm),
+                    getResources().getString(R.string.cancel),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            checkIfAppointmentExistsForVisit(visitID);
+                        }
+                    });
+        } else {
+            triggerEndVisit();
+        }
+    }
+
+    private void checkIfAppointmentExistsForVisit(String visitUUID) {
+        // First check if there is an appointment or not
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        if (!appointmentDAO.doesAppointmentExistForVisit(visitUUID)) {
+            triggerEndVisit();
+            return;
+        }
+
+        String appointmentDateTime = appointmentDAO.getTimeAndDateForAppointment(visitUUID);
+        boolean isCurrentTimeAfterAppointmentTime = DateAndTimeUtils.isCurrentDateTimeAfterAppointmentTime(appointmentDateTime);
+
+        // Next, check if the time for appointment is passed. In case the time has passed, we don't need to cancel the appointment as it is automatically completed.
+        if (isCurrentTimeAfterAppointmentTime) {
+            triggerEndVisit();
+            return;
+        }
+
+        // In case the appointment time is not passed, only in that case, we will display the dialog for ending the appointment.
+        new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
+            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                cancelAppointment(visitUUID);
+                triggerEndVisit();
+            }
+        });
+    }
+
+    private void cancelAppointment(String visitUUID) {
+        AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(visitUUID);
+
+        int appointmentID = appointmentInfo.getId();
+        String reason = "Visit was ended";
+        String providerID = sessionManager.getProviderID();
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
+
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }
 
     private void triggerEndVisit() {
