@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/fcm" />
             <option value="$PROJECT_DIR$/klivekit" />
+            <option value="$PROJECT_DIR$/videolibrary" />
           </set>
         </option>
       </GradleProjectSettings>
