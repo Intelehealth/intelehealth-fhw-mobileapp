@@ -15,6 +15,7 @@ import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.ezazi.R;
 
@@ -28,11 +29,15 @@ import java.io.File;
 public class ImageBindingAdapter {
     @BindingAdapter({"imgUrl", "imgContent"})
     public static void bindImage(ImageView imageView, String imgUrl, String imgContent) {
-        if (imageView != null && imgUrl != null && !imgUrl.isEmpty() && imgContent != null && !imgContent.isEmpty()) {
+        Timber.tag("ImageBindingAdapter").d("bindImage::content =>%s", imgContent);
+        Timber.tag("ImageBindingAdapter").d("bindImage::url =>%s", imgUrl);
+        Timber.tag("ImageBindingAdapter").d("bindImage::image not null =>%s", imageView != null);
+        if (imageView != null && imgContent != null && !imgContent.isEmpty()) {
             //added this check temporarily
             String latter = imgContent.substring(0, 1);
             Resources resources = imageView.getContext().getResources();
             int textSize = resources.getDimensionPixelOffset(R.dimen.std_30sp);
+            Timber.tag("ImageBindingAdapter").d("bindImage::image height =>%s", imageView.getHeight());
             Bitmap textBitmap = textAsBitmap(latter, textSize, Color.BLACK, imageView.getHeight());
             if (imgUrl != null && !imgUrl.isEmpty()) {
                 RequestBuilder<Drawable> requestBuilder = Glide.with(imageView.getContext()).asDrawable().sizeMultiplier(0.25f);
