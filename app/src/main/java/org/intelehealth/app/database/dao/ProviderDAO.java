@@ -369,6 +369,7 @@ public class ProviderDAO {
     }
 
     public String getProviderName(String userUuid, String columnName) throws DAOException {
+        if (userUuid == null) return "";
         String fullname = "";
         String givenname = "", familyname = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
