@@ -186,8 +186,11 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
                         if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing()) {
                             mSyncAlertDialog.dismiss();
                         }
+
+                        //saving result status to shared pref to handle the result in worse case
+                        sessionManager.setAppointmentResult(true);
                         ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
-                        finish();
+                        ScheduleAppointmentActivity_New.this.finish();
                     }
                 } else {
                     Log.v(TAG, "Sync Done!");
@@ -415,7 +418,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
             public void onFailure(Call<SlotInfoResponse> call, Throwable t) {
                 Log.v("onFailure", t.getMessage());
                 //log out operation if response code is 401
-                new NavigationUtils().logoutOperation(ScheduleAppointmentActivity_New.this,t);
+                new NavigationUtils().logoutOperation(ScheduleAppointmentActivity_New.this, t);
             }
         });
 

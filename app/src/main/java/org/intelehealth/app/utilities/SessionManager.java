@@ -63,6 +63,9 @@ public class SessionManager {
 
     private static final String JWT_AUTH_TOKEN = "JWT_AUTH_TOKEN";
 
+    private static final String ACTIVITY_RESULT_APPOINTMENT = "ACTIVITY_RESULT_APPOINTMENT";
+
+
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -536,5 +539,19 @@ public class SessionManager {
 
     public String getJwtAuthToken() {
         return pref.getString(JWT_AUTH_TOKEN, "");
+    }
+
+    /**
+     * Handling appointment result here
+     * @return
+     */
+
+    public Boolean getAppointmentResult() {
+        return pref.getBoolean(ACTIVITY_RESULT_APPOINTMENT, false);
+    }
+
+    public void setAppointmentResult(Boolean appointmentResult) {
+        editor.putBoolean(ACTIVITY_RESULT_APPOINTMENT, appointmentResult);
+        editor.commit();
     }
 }

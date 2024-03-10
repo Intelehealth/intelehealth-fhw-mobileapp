@@ -2487,13 +2487,26 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private final ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         int resultCode = result.getResultCode();
+        boolean appointmentResult = sessionManager.getAppointmentResult();
         if (resultCode == AppConstants.EVENT_APPOINTMENT_BOOKING) {
-            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
-            Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivity.class);
-            startActivity(in);
-            finish();
+            navigateToMyAppointment();
         }
+        //sometimes RESULT_CANCELED calls even we need to handle event
+        //that's why added the logic when result is RESULT_CANCELED
+        else if(resultCode == RESULT_CANCELED){
+            if(appointmentResult){
+                navigateToMyAppointment();
+            }
+        }
+        sessionManager.setAppointmentResult(false);
     });
+
+    void navigateToMyAppointment(){
+        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
+        Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivity.class);
+        startActivity(in);
+        finish();
+    }
 
     private void sharePresc() {
         if (hasPrescription.equalsIgnoreCase("true")) {
