@@ -567,6 +567,7 @@ public class PrescriptionBuilder {
                 additionalInstructionsData.append(listClosingTag);
             }
         }
+        if(additionalInstructionsData.length() == 0) return "";
 
         finalAdditionalDataString = divClassLabelTag
                 + unorderedListOpeningTag
