@@ -7,6 +7,7 @@ import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
+import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -67,6 +68,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -78,6 +80,8 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -93,7 +97,9 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -138,7 +144,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     String medicalAdvice_string = "", medicalAdvice_HyperLink = "";
     private SQLiteDatabase db;
     private Patient patient = new Patient();
-    private String hasPrescription = "";
+    private boolean hasPrescription = false;
     boolean downloaded = false;
     String encounterUuid;
     DownloadPrescriptionService downloadPrescriptionService;
@@ -188,6 +194,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
         }
+
 
         initUI();
         networkUtils = new NetworkUtils(this, this);
@@ -321,7 +328,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             visit_startDate = intent.getStringExtra("visit_startDate");
             patient_photo_path = intent.getStringExtra("patient_photo");
             intentTag = intent.getStringExtra("tag");
-
+            try {
+                hasPrescription = new EncounterDAO().isPrescriptionReceived(visitID);
+                Timber.tag(PrescriptionActivity.class.getSimpleName()).d("has prescription main::%s", hasPrescription);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
             queryData(String.valueOf(patientUuid));
         }
 
@@ -419,7 +431,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         // follow up - yes - start
         yes_btn.setOnClickListener(v -> {
-            followupScheduledSuccess(PrescriptionActivity.this, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon), getResources().getString(R.string.follow_up_scheduled), getResources().getString(R.string.follow_up_scheduled_successfully), getResources().getString(R.string.okay));
+            Drawable drawable = ContextCompat.getDrawable(PrescriptionActivity.this, R.drawable.dialog_visit_sent_success_icon);
+            followupScheduledSuccess(PrescriptionActivity.this, drawable, getResources().getString(R.string.follow_up_scheduled), getResources().getString(R.string.follow_up_scheduled_successfully), getResources().getString(R.string.okay));
         });
         // follow up - yes - end
 
@@ -446,11 +459,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         incomplete_act.setOnClickListener(v -> {
             // filter options
-            Intent intent = new Intent(PrescriptionActivity.this, EndVisitActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(PrescriptionActivity.this, EndVisitActivity.class);
+//            startActivity(intent);
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
+            showEndVisitConfirmationDialog();
         });
 
         archieved_notifi.setOnClickListener(v -> {
@@ -459,6 +473,73 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
+    }
+
+    private void showEndVisitConfirmationDialog() {
+        if (hasPrescription) {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showCommonDialog(
+                    this, R.drawable.dialog_close_visit_icon,
+                    getResources().getString(R.string.confirm_end_visit_reason),
+                    getResources().getString(R.string.confirm_end_visit_reason_message),
+                    false,
+                    getResources().getString(R.string.confirm),
+                    getResources().getString(R.string.cancel),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            checkIfAppointmentExistsForVisit(visitID);
+                        }
+                    });
+        } else {
+            triggerEndVisit();
+        }
+    }
+
+    private void checkIfAppointmentExistsForVisit(String visitUUID) {
+        // First check if there is an appointment or not
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        if (!appointmentDAO.doesAppointmentExistForVisit(visitUUID)) {
+            triggerEndVisit();
+            return;
+        }
+
+        String appointmentDateTime = appointmentDAO.getTimeAndDateForAppointment(visitUUID);
+        boolean isCurrentTimeAfterAppointmentTime = DateAndTimeUtils.isCurrentDateTimeAfterAppointmentTime(appointmentDateTime);
+
+        // Next, check if the time for appointment is passed. In case the time has passed, we don't need to cancel the appointment as it is automatically completed.
+        if (isCurrentTimeAfterAppointmentTime) {
+            triggerEndVisit();
+            return;
+        }
+
+        // In case the appointment time is not passed, only in that case, we will display the dialog for ending the appointment.
+        new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
+            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                cancelAppointment(visitUUID);
+                triggerEndVisit();
+            }
+        });
+    }
+
+    private void cancelAppointment(String visitUUID) {
+        AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(visitUUID);
+
+        int appointmentID = appointmentInfo.getId();
+        String reason = "Visit was ended";
+        String providerID = sessionManager.getProviderID();
+        String baseurl = BuildConfig.SERVER_URL + ":3004";
+
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
+    }
+
+    private void triggerEndVisit() {
+
+//        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
+//        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
+
+        endVisit(this, visitID, patient.getUuid(),
+                followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name()
+                        + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
     }
 
     // permission code - start
@@ -1390,7 +1471,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                     followup_subtext.setVisibility(View.GONE);
                     break;
-                }else{
+                } else {
                     no_followup_txt.setVisibility(View.GONE);
                     followup_date_block.setVisibility(View.VISIBLE);
 
@@ -1419,8 +1500,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 } else {
                     followup_subtext.setText(getResources().getString(R.string.follow_up_date_arrived));
                 }
-
-
 
 
                 //checkForDoctor();
@@ -1459,7 +1538,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                hasPrescription = "true"; //if any kind of prescription data is present...
+                hasPrescription = true; //if any kind of prescription data is present...
                 parseData(dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
@@ -1595,15 +1674,16 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     @Override
     protected void onStop() {
         super.onStop();
-        if (downloadPrescriptionService != null) {
-            LocalBroadcastManager.getInstance(PrescriptionActivity.this).unregisterReceiver(downloadPrescriptionService);
-        }
-        if (receiver != null) {
-            unregisterReceiver(receiver);
-        }
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-
         try {
+            if (downloadPrescriptionService != null) {
+                LocalBroadcastManager.getInstance(PrescriptionActivity.this).unregisterReceiver(downloadPrescriptionService);
+            }
+            if (receiver != null) {
+                unregisterReceiver(receiver);
+            }
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
+
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
@@ -1796,7 +1876,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        hasPrescription = "true"; //if any kind of prescription data is present...
+                        hasPrescription = true; //if any kind of prescription data is present...
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
                 }
@@ -1825,7 +1905,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     // presc share - start
     private void sharePresc() {
-        if (hasPrescription.equalsIgnoreCase("true")) {
+        if (hasPrescription) {
             MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(PrescriptionActivity.this);
             final LayoutInflater inflater = LayoutInflater.from(PrescriptionActivity.this);
             View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);

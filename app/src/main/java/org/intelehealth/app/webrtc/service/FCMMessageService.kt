@@ -1,4 +1,4 @@
-package org.intelehealth.app.services
+package org.intelehealth.app.webrtc.service
 
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage

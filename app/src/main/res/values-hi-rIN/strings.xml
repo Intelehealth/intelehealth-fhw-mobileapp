@@ -1297,7 +1297,7 @@
     <string name="add_image_by">के अनुसार इमेज शामिल करें</string>
     <string name="please_take">"कृपया इसे ले "</string>
     <string name="s_follow_up_visit">का फॉलो-अप विज़िट लें।</string>
-    <string name="nurse_whatsapp_message">नमस्ते, टेलिमेडिसिन प्रोजेक्ट से मैं नर्स 1 हूं। आपके हाल के विज़िट के संबंध में आपसे संपर्क कर रही हूं।</string>
+    <string name="nurse_whatsapp_message">नमस्ते, टेलिमेडिसिन प्रोजेक्ट से मैं %1$s हूं। आपके हाल के विज़िट के संबंध में आपसे संपर्क कर रही हूं।</string>
     <string name="wait_for_the_doctor_message">कृपया डॉक्टर के मैसेज की प्रतीक्षा करें!</string>
     <string name="doctor_yet_to_send_prescription">डॉक्टर द्वारा मरीजों को प्रिस्क्रिप्शन भेजा जाना बाकी है</string>
     <string name="patients">रोगी</string>

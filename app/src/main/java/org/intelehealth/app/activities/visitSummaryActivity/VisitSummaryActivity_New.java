@@ -12,6 +12,8 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
@@ -114,7 +116,6 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
-import org.intelehealth.app.appointmentNew.AppointmentDetailsActivity;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -200,7 +201,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
-    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
+    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview,
+            vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
+    private RelativeLayout add_additional_doc;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
@@ -220,7 +223,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String mEngReason = "";
 
     boolean hasLicense = false;
-    private String hasPrescription = "";
+    private boolean hasPrescription = false;
     private boolean isRespiratory = false, uploaded = false, downloaded = false;
     Button uploadButton, btn_vs_print, btn_vs_share;
     ImageView ivPrescription;   // todo: not needed here
@@ -248,21 +251,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     String followUpDate = "";
     String referredSpeciality = "";
 
-    CardView diagnosisCard;
-    CardView prescriptionCard;
-    CardView medicalAdviceCard;
-    CardView requestedTestsCard;
-    CardView additionalCommentsCard;
-    CardView followUpDateCard;
-    CardView card_print, card_share;
-
-
-    TextView diagnosisTextView;
-    TextView prescriptionTextView;
-    TextView medicalAdviceTextView;
-    TextView requestedTestsTextView;
-    TextView additionalCommentsTextView;
-    TextView followUpDateTextView;
+//    CardView diagnosisCard;
+//    CardView prescriptionCard;
+//    CardView medicalAdviceCard;
+//    CardView requestedTestsCard;
+//    CardView additionalCommentsCard;
+//    CardView followUpDateCard;
+//    CardView card_print, card_share;
+//
+//
+//    TextView diagnosisTextView;
+//    TextView prescriptionTextView;
+//    TextView medicalAdviceTextView;
+//    TextView requestedTestsTextView;
+//    TextView additionalCommentsTextView;
+//    TextView followUpDateTextView;
 
     // new
     TextView nameView;
@@ -455,7 +458,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
-//            hasPrescription = intent.getStringExtra("hasPrescription");
+            try {
+                hasPrescription = new EncounterDAO().isPrescriptionReceived(visitUuid);
+                Timber.tag(TAG).d("has prescription main::%s", hasPrescription);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
 
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             if (physicalExams == null) physicalExams = new ArrayList<>();
@@ -648,8 +656,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         btn_bottom_printshare.setVisibility(View.GONE);
         btn_bottom_vs.setVisibility(View.VISIBLE);
+        Timber.tag(TAG).d("has prescription::%s", hasPrescription);
+        updateUIState();
 
-        if (hasPrescription.equalsIgnoreCase("true")) {
+        //here we changing the appointment button behavior
+        //based on appointment status
+        if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.CANCELLED)) {
+            btnAppointment.setText(getString(R.string.appointment));
+        } else if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.BOOKED)) {
+            btnAppointment.setText(getString(R.string.reschedule));
+            doesAppointmentExist = true;
+        }
+    }
+
+    private void updateUIState() {
+        if (hasPrescription) {
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
 
@@ -659,17 +680,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             add_additional_doc.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
         } else {
-            add_additional_doc.setVisibility(View.VISIBLE);
-            editAddDocs.setVisibility(View.VISIBLE);
-        }
-
-        //here we changing the appointment button behavior
-        //based on appointment status
-        if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.CANCELLED)) {
-            btnAppointment.setText(getString(R.string.appointment));
-        } else if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.BOOKED)) {
-            btnAppointment.setText(getString(R.string.reschedule));
-            doesAppointmentExist = true;
+            int visibility = isVisitSpecialityExists ? View.GONE : View.VISIBLE;
+            add_additional_doc.setVisibility(visibility);
+            editAddDocs.setVisibility(visibility);
+            if (recyclerViewAdapter != null) {
+                recyclerViewAdapter.hideCancelBtnAddDoc(visibility == View.GONE);
+            }
         }
     }
 
@@ -1790,7 +1806,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void showEndVisitConfirmationDialog() {
-        if (!hasPrescription.equalsIgnoreCase("true")) {
+        if (!hasPrescription) {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showCommonDialog(
                     this, R.drawable.dialog_close_visit_icon,
@@ -1846,7 +1862,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }
 
+    //    private void endVisit(){
+//        if (!hasPrescription) {
+//            checkIfAppointmentExistsForVisit(visitUUID);
+//        } else {
+//            triggerEndVisit();
+//        }
+//    }
     private void triggerEndVisit() {
+
         String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
         String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
 
@@ -1857,7 +1881,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void checkPerm() {
         if (checkAndRequestPermissions()) {
             try {
-                if (hasPrescription.equalsIgnoreCase("true")) {
+                if (hasPrescription) {
                     doWebViewPrint_downloadBtn();
                 } else {
                     DialogUtils dialogUtils = new DialogUtils();
@@ -2509,7 +2533,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void sharePresc() {
-        if (hasPrescription.equalsIgnoreCase("true")) {
+        if (hasPrescription) {
             MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
             final LayoutInflater inflater = LayoutInflater.from(context);
             View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
@@ -2854,8 +2878,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (NetworkConnection.isOnline(getApplication())) {
                 Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
 
-                SyncDAO syncDAO = new SyncDAO();
-
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -2872,7 +2894,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
                             sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
-                            visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon), getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+                            Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+                            visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
 
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
@@ -2893,12 +2916,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             fetchingIntent();
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
-
                         }
                         uploaded = true;
                     }
                 }, 4000);
             } else {
+                add_additional_doc.setVisibility(View.GONE);
                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
             }
         } else {
@@ -3056,7 +3079,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
                 if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_COMPLETE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    hasPrescription = "true";
+                    hasPrescription = true;
                 }
             } while (encounterCursor.moveToNext());
 
@@ -3078,7 +3101,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         downloaded = true;
 
         //checks if prescription is downloaded and if so then sets the icon color.
-        if (hasPrescription.equalsIgnoreCase("true")) {
+        if (hasPrescription) {
             //   ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
         }
     }
@@ -3571,15 +3594,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     @Override
     protected void onStop() {
         super.onStop();
-        if (downloadPrescriptionService != null) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
-        }
-        if (receiver != null) {
-            unregisterReceiver(receiver);
-        }
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-
         try {
+            if (downloadPrescriptionService != null) {
+                LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+            }
+            if (receiver != null) {
+                unregisterReceiver(receiver);
+            }
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
+
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
@@ -5131,7 +5155,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
 
                 for (int i = 0; i < cc_tempvalues.size(); i++) {
-                    if (!cc_tempvalues.get(i).equalsIgnoreCase(""))
+                    if (!cc_tempvalues.get(i).equalsIgnoreCase("") && cc_tempvalues.get(i).contains(":"))
                         mChiefComplainList.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
                 }
 

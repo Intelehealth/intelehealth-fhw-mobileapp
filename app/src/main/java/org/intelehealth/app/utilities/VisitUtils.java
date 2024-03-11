@@ -13,7 +13,7 @@ public class VisitUtils {
         //end visit
         if (visitUUID != null && !visitUUID.isEmpty()) {
 
-            if (followUpDate != null && !followUpDate.equalsIgnoreCase("")) {
+            if (followUpDate != null && !followUpDate.equalsIgnoreCase("") && !followUpDate.equalsIgnoreCase("No")) {
 
                 new DialogUtils().showCommonDialog(activityContext, R.drawable.ui2_ic_exit_app, activityContext.getResources().getString(R.string.alert_txt), activityContext.getString(R.string.visit_summary_follow_up_reminder) + " " + followUpDate, true, activityContext.getResources().getString(R.string.ok), activityContext.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
                     @Override
