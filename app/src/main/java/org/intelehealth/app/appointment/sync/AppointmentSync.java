@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.BuildConfig;
@@ -31,7 +32,10 @@ public class AppointmentSync {
         String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
 
-        String baseurl = BuildConfig.SERVER_URL + ":3004";
+        SessionManager sessionManager = new SessionManager(context);
+        String baseurl = sessionManager.getServerUrl() + ":3004";
+        Timber.tag(TAG).d("URL =>%s", BuildConfig.SERVER_URL);
+        Timber.tag(TAG).d("Session URL =>%s", sessionManager.getServerUrl());
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
 
@@ -45,7 +49,7 @@ public class AppointmentSync {
                         for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
 
                             try {
-                                Log.v(TAG, "insert = "+new Gson().toJson(slotInfoResponse.getData().get(i)));
+                                Log.v(TAG, "insert = " + new Gson().toJson(slotInfoResponse.getData().get(i)));
                                 appointmentDAO.insert(slotInfoResponse.getData().get(i));
                             } catch (DAOException e) {
                                 e.printStackTrace();

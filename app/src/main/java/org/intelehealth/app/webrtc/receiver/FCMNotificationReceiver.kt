@@ -99,8 +99,8 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         )
 
         FcmNotification.Builder(context)
-            .channelName("EKAL")
-            .title(messageTitle ?: "Ekal")
+            .channelName("IDA4")
+            .title(messageTitle ?: "Intelehealth")
             .content(messageBody ?: "")
             .smallIcon(R.mipmap.ic_launcher)
             .contentIntent(pendingIntent)

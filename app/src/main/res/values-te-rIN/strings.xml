@@ -10,7 +10,8 @@
     <string name="action_sign_in_short" translatable="false">సైన్ ఇన్ చేయండి</string>
     <string name="url_invalid" translatable="false">"మీ యుఆర్ ఎల్ ను తనిఖీ చేయండి."</string>
     <string name="prefix_invalid" translatable="false">వేరే ఉపసర్గను ఎంచుకోండి!</string>
-    <string name="error_invalid_email" translatable="false">ఈ వినియోగదారు పేరు చెల్లదు</string>
+    <string name="error_invalid_username" translatable="false">ఈ వినియోగదారు పేరు చెల్లదు</string>
+    <string name="error_invalid_email">ఈ ఇమెయిల్ చిరునామా చెల్లదు</string>
     <string name="error_invalid_password" translatable="false">ఈ పాస్‌వర్డ్ చాలా చిన్నది</string>
     <string name="error_incorrect_password" translatable="false">దయచేసి వినియోగదారు పేరు మరియు పాస్‌వర్డ్ నమోదుచేసినది తనిఖీ చేయండి</string>
     <string name="error_field_required" translatable="false">ఈ ఖాళీని తప్పనిసరిగా పూరించవలెను</string>
@@ -776,5 +777,6 @@
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">You are offline! Please connect to the internet for videos.</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">You missed the compulsory questions, Please answer them.</string>
     <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
+    <string name="otp_sending">OTP Sending...</string>
 
 </resources>

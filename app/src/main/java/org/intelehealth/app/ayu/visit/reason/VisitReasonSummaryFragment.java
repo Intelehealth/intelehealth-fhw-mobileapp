@@ -50,7 +50,7 @@ public class VisitReasonSummaryFragment extends Fragment {
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
     private boolean mIsEditMode = false;
-    private TextView mAssociateSymptomsLabelTextView;
+    private TextView mAssociateSymptomsLabelTextView,mAssociateSymptChangeTextView;
 
     public VisitReasonSummaryFragment() {
         // Required empty public constructor
@@ -89,9 +89,12 @@ public class VisitReasonSummaryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_visit_reason_summary, container, false);
 
+
         mComplainSummaryLinearLayout = view.findViewById(R.id.ll_complain_summary);
         mAssociateSymptomsLinearLayout = view.findViewById(R.id.ll_associated_sympt);
         mAssociateSymptomsLabelTextView = view.findViewById(R.id.tv_ass_complain_label);
+        mAssociateSymptChangeTextView = view.findViewById(R.id.tv_change_associate_sympt);
+
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +105,7 @@ public class VisitReasonSummaryFragment extends Fragment {
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION, mIsEditMode, null);
             }
         });
-        view.findViewById(R.id.tv_change_associate_sympt).setOnClickListener(new View.OnClickListener() {
+        mAssociateSymptChangeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS);
@@ -251,33 +254,41 @@ public class VisitReasonSummaryFragment extends Fragment {
 
                 associatedSymptomsString = tempAS[1];
             }
-            String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(lCode));
 
-
-            Log.v(TAG, associatedSymptomsString);
-            String[] spt1 = associatedSymptomsString.trim().split("•");
-            Log.e("node", associatedSymptomsString);
-            Log.e("node", String.valueOf(spt1.length));
             mAssociateSymptomsLinearLayout.removeAllViews();
 
-            for (int i = 0; i < sections.length; i++) {
-                String patientReports = sections[i]; // Patient reports & // Patient denies
-                if (patientReports != null && patientReports.length() >= 2) {
-                    patientReports = patientReports.substring(1);
-                    patientReports = patientReports.replace("•", ", ");
-                    patientReports = patientReports.replace("●", ", ");
-                    View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
-                    TextView keyTextView = view.findViewById(R.id.tv_question_label);
-                    keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
-                    TextView valueTextView = view.findViewById(R.id.tv_answer_value);
-                    valueTextView.setText(patientReports.trim());
+            if(!associatedSymptomsString.trim().isEmpty()) {
+                String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(lCode));
+
+                Log.v(TAG, associatedSymptomsString);
+                String[] spt1 = associatedSymptomsString.trim().split("•");
+                Log.e("node", associatedSymptomsString);
+                Log.e("node", String.valueOf(spt1.length));
+                Log.e("node", "sections.length - "+String.valueOf(sections.length));
+                for (int i = 0; i < sections.length; i++) {
+                    String patientReports = sections[i]; // Patient reports & // Patient denies
+                    if (patientReports != null && patientReports.length() >= 2) {
+                        patientReports = patientReports.substring(1);
+                        patientReports = patientReports.replace("•", ", ");
+                        patientReports = patientReports.replace("●", ", ");
+                        View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
+                        TextView keyTextView = view.findViewById(R.id.tv_question_label);
+                        keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
+                        TextView valueTextView = view.findViewById(R.id.tv_answer_value);
+                        valueTextView.setText(patientReports.trim());
                /* if (patientReportsDenies.isEmpty()) {
                     view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
                 } else {
                     view.findViewById(R.id.iv_blt).setVisibility(View.VISIBLE);
                 }*/
-                    mAssociateSymptomsLinearLayout.addView(view);
+                        mAssociateSymptomsLinearLayout.addView(view);
+                    }
                 }
+                mAssociateSymptomsLabelTextView.setVisibility(View.VISIBLE);
+                mAssociateSymptChangeTextView.setVisibility(View.VISIBLE);
+            }else{
+                mAssociateSymptomsLabelTextView.setVisibility(View.INVISIBLE);
+                mAssociateSymptChangeTextView.setVisibility(View.INVISIBLE);
             }
 
 

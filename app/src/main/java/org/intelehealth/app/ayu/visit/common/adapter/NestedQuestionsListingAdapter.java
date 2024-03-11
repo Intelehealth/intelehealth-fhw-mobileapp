@@ -155,6 +155,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Log.v(TAG, "new NestedQuestionsListingAdapter created!");
     }
 
+    public void setLoadedIds(Set<String> loadedIds) {
+        mLoadedIds = loadedIds;
+    }
+
     public void setRootNodeIndex(int rootIndex) {
         Log.v(TAG, "setRootNodeIndex()");
         mRootIndex = rootIndex;
@@ -241,6 +245,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
             routeByType(genericViewHolder, mParentNode, genericViewHolder.node, position, true, false);
             setTextViewDrawableColor(genericViewHolder.tvQuestion, mColors[0]);
+            Log.v(TAG, "mLoadedIds Nested - " + mLoadedIds.contains(genericViewHolder.node.getId()) + " \t Node findDisplay -  " + genericViewHolder.node.findDisplay());
             mLoadedIds.add(genericViewHolder.node.getId());
 
         }
@@ -755,8 +760,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     (node, isLoadingForNestedEditData) -> {
                         Log.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
                         Log.d(TAG, "onSelect selectedNode: " + new Gson().toJson(selectedNode));
+                        if (index == mItemList.size()) return;
                         if (!isLoadingForNestedEditData)
-                            VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode, mItemList.size() < index || mLoadedIds.contains(mItemList.get(index).getId()));
+                            VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode, mItemList.size() <= index || mLoadedIds.contains(mItemList.get(index).getId()));
                         if (!isLoadingForNestedEditData) {
                             mItemList.get(index).setSelected(false);
                             mItemList.get(index).setDataCaptured(false);
@@ -839,10 +845,18 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             } else {
                                 holder.submitButton.setVisibility(View.GONE);
                             }
+                        } else {
+
+                            /*for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
+                                if (!mItemList.get(i).isSelected()) { // here, all those that are not selected nested - options those will be removed thus, keeping only the current selection options - nested options visible.
+                                    mItemList.remove(i);
+                                    notifyItemRemoved(i);
+                                }
+                            }*/
                         }
                         if (!node.isSelected()) {
                             node.unselectAllNestedNode();
-
+                            if (index >= mItemList.size()) return;
                             // remove child nodes views on deselect of same option - start
                             changeInputVisibility(mItemList.get(index).isMultiChoice(), holder.singleComponentContainer);
 //                            holder.singleComponentContainer.removeAllViews();
@@ -936,6 +950,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             //holder.singleComponentContainer.setVisibility(View.VISIBLE);
 
                         } else {
+                            // start
+
+                            // end
                             changeInputVisibility(mItemList.get(index).isMultiChoice(), holder.singleComponentContainer);
 //                            holder.singleComponentContainer.removeAllViews();
                             //holder.superNestedContainerLinearLayout.removeAllViews();
@@ -1989,7 +2006,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             String dateString = simpleDateFormat.format(date);
             displayDateButton.setText(simpleDateFormatLocal.format(date));
             displayDateButton.setTag(dateString);
-            VisitUtils.scrollNow(mRootRecyclerView, 400, 0, 400, mIsEditMode, mLoadedIds.contains(mItemList.get(index).getId()));
+            VisitUtils.scrollNow(mRootRecyclerView, 400, 0, 400, mIsEditMode, mItemList.size() <= index || mLoadedIds.contains(mItemList.get(index).getId()));
             AdapterUtils.setToDefault(submitButton);
             AdapterUtils.setToDefault(skipButton);
         });

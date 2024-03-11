@@ -42,7 +42,8 @@
     <string name="error_field_required_non_adult" translatable="false">ରୁମ କେବଳ 18 ବର୍ଷରୁ କମ୍ ଲୋକଙ୍କ ପାଇଁ ଆବଶ୍ୟକ |</string>
     <string name="error_incorrect_password">ଏହି ପାସଓ୍ୱାର୍ଡ଼ଟି ଭୁଲ ଅଟେ</string>
     <string name="error_invalid_password">"ଏହି ପାସଓ୍ୱାର୍ଡ଼ଟି ବହୁତ ଛୋଟ ଅଟେ "</string>
-    <string name="error_invalid_email">"ଏହି ବ୍ଯବହାରକାରୀର ନାମ ଅମାନ୍ଯ ଅଟେ "</string>
+    <string name="error_invalid_username">"ଏହି ବ୍ଯବହାରକାରୀର ନାମ ଅମାନ୍ଯ ଅଟେ "</string>
+    <string name="error_invalid_email">ଏହି ଇମେଲ୍ ଠିକଣା ଅବ alid ଧ ଅଟେ |</string>
     <string name="error_location_not_fetched">ସ୍ଥାନ ପ୍ରାପ୍ତ କରିବାପାଇଁ</string>
     <string name="error_location_not_selected">"ଦୟାକରି ଡ଼୍ରପଡ଼ାଉନ ସ୍ଥାନରୁ ଏକ ମୂଲ୍ଯ ବାଛିବା "</string>
     <string name="error_network">"ତ୍ରୃଟିଯୁକ୍ତ ନେଟ୍ଓ୍ୱାର୍କ "</string>
@@ -742,6 +743,7 @@
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">You are offline! Please connect to the internet for videos.</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">You missed the compulsory questions, Please answer them.</string>
     <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
+    <string name="otp_sending">OTP Sending...</string>
 
 
 </resources>

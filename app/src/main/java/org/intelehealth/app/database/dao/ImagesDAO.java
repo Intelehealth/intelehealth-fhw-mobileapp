@@ -27,7 +27,7 @@ public class ImagesDAO {
     public String TAG = ImagesDAO.class.getSimpleName();
 
     public boolean insertObsImageDatabase(String uuid, String encounteruuid, String conceptUuid, String comments) throws DAOException {
-        Log.v(TAG, "ImagesDAO - insertObsImageDatabase uuid - " + uuid + "\t" + encounteruuid + "\t" + conceptUuid+ "\t" + comments);
+        Log.v(TAG, "ImagesDAO - insertObsImageDatabase uuid - " + uuid + "\t" + encounteruuid + "\t" + conceptUuid + "\t" + comments);
         boolean isInserted = false;
         SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         localdb.beginTransaction();
@@ -446,7 +446,7 @@ public class ImagesDAO {
         ProviderProfile providerProfile = new ProviderProfile();
         //localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_provider where uuid = ? AND (sync = ? OR sync= ?) COLLATE NOCASE", new String[]{uuid, "0", "false"});
+            Cursor idCursor = localdb.rawQuery("SELECT uuid, imagePath FROM tbl_provider where uuid = ? AND (sync = ? OR sync= ?) COLLATE NOCASE", new String[]{uuid, "0", "false"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
 

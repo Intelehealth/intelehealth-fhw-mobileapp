@@ -1,6 +1,7 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.widget.Toast;
 
 
@@ -118,6 +119,19 @@ public class ConfigUtils {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         return view;
+    }
+
+    // check with the package name
+    // if app is available or not
+    private boolean checkAppAvailable(Context context, String name) {
+        boolean available = true;
+        try {
+            // check if available
+            context.getPackageManager().getPackageInfo(name, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            available = false;
+        }
+        return available;
     }
 
 }

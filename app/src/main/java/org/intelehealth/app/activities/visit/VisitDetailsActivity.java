@@ -63,12 +63,14 @@ import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -829,14 +831,20 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
      */
     // TODO: check with Sagar for this message to be passed...
     private void whatsapp_feature(String phoneno) {
-        if (phoneno != null && !phoneno.equalsIgnoreCase("")) {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(
-                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                    phoneno, getResources().getString(R.string.nurse_whatsapp_message)))));
-        } else {
-            Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
+        try {
+            String nurseName = new ProviderDAO().getProviderName(sessionManager.getProviderID(), ProviderDTO.Columns.PROVIDER_UUID.value);
+            if (phoneno != null && !phoneno.equalsIgnoreCase("")) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(
+                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                        phoneno, getResources().getString(R.string.nurse_whatsapp_message, nurseName)))));
+            } else {
+                Toast.makeText(VisitDetailsActivity.this, getResources().getString(R.string.mobile_no_not_provided), Toast.LENGTH_SHORT).show();
+            }
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     /**

@@ -197,6 +197,15 @@ public class ProviderDTO {
         this.identifier = identifier;
     }
 
+    public enum Columns {
+        USER_UUID("useruuid"), PROVIDER_UUID("uuid");
+        public final String value;
+
+        Columns(String value) {
+            this.value = value;
+        }
+    }
+
 }
   /*  @SerializedName("uuid")
     @Expose

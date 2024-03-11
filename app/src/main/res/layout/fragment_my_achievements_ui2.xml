@@ -17,7 +17,6 @@
             android:id="@+id/tv_achievements_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/iv_back_arrow_common"
             android:text="@string/title"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/common_header_text_size"
@@ -29,7 +28,6 @@
             android:layout_width="@dimen/image_home_toolbar_icon_width"
             android:layout_height="@dimen/image_home_toolbar_icon_height"
             android:layout_alignParentEnd="true"
-            android:layout_toStartOf="@+id/imageview_notifications_common"
             android:foregroundGravity="center_horizontal"
             android:tooltipText="Tooltip"
             android:visibility="visible" />
@@ -93,7 +91,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayout_achievements"
-        android:layout_alignBottom="@id/app_bar"
         android:layout_marginBottom="45dp"
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

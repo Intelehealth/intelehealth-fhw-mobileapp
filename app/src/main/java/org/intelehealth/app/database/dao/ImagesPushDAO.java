@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -208,6 +209,7 @@ public class ImagesPushDAO {
                         @Override
                         public void onSuccess(ResponseBody responseBody) {
                             try {
+                                Timber.tag(TAG).d("Image upload success =>%s", new Gson().toJson(responseBody));
                                 imagesDAO.updateUnsyncedUserProfile(providerProfile.getProviderid());
 
                             } catch (Exception e) {
@@ -217,6 +219,7 @@ public class ImagesPushDAO {
 
                         @Override
                         public void onError(Throwable e) {
+                            Timber.tag(TAG).e("Image upload fail =>%s", e.getMessage());
                             Logger.logD(TAG, "Onerror " + e.getMessage());
                         }
                     });

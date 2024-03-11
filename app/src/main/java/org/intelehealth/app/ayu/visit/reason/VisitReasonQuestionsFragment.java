@@ -267,12 +267,15 @@ public class VisitReasonQuestionsFragment extends Fragment {
             Log.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
             Log.v("onSelect QuestionsListingAdapter", "node - " + node.getText());
             // avoid the scroll for old data change
-            String parentRootQuestionId = mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex).getId();
+            String parentRootQuestionId = mQuestionsListingAdapter.geItems().get(index).getId();
+            String parentRootQuestionDisplay = mQuestionsListingAdapter.geItems().get(index).findDisplay();
             Log.v("onSelect", "parentRootQuestionId - " + parentRootQuestionId);
+            Log.v("onSelect", "parentRootQuestionDisplay - " + parentRootQuestionDisplay);
+
             if (mCurrentComplainNodeOptionsIndex - index >= 1) {
-                mLoadedIds.add(parentRootQuestionId);
-                Log.v("onSelect", "Scrolling index - " + index);
-                VisitUtils.scrollNow(recyclerView, 100, 0, 1000, mIsEditMode, mLoadedIds.contains(parentRootQuestionId));
+//                mLoadedIds.add(parentRootQuestionId);
+//                Log.v("onSelect", "Scrolling index - " + index);
+//                VisitUtils.scrollNow(recyclerView, 100, 0, 1000, mIsEditMode, mLoadedIds.contains(parentRootQuestionId));
                 return;
             }
 

@@ -73,7 +73,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screen_height = displayMetrics.heightPixels;
         screen_width = displayMetrics.widthPixels;
-        mEncounterUUID=edult;
+        mEncounterUUID = edult;
         this.filePath = filePath;
         this.anInterface = anInterface;
         this.fromVisitDetails = fromVisitDetails;
@@ -88,7 +88,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     }
 
     @Override
-    public void onBindViewHolder(final AdditionalDocumentViewHolder holder,  int position) {
+    public void onBindViewHolder(final AdditionalDocumentViewHolder holder, int position) {
         holder.getDocumentNameTextView().setText
                 (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
 
@@ -125,20 +125,20 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 String imageName = holder.getDocumentNameTextView().getText().toString();
 
 
-                    try {
-                        List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
-                        for (String images : imageList) {
-                           Log.d(TAG,"image= "+images);
+                try {
+                    List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
+                    for (String images : imageList) {
+                        Log.d(TAG, "image= " + images);
 
-                        }
-                        imagesDAO.deleteImageFromDatabase(imageList.get(position));
-
-
-                    } catch (DAOException e) {
-
-                        e.printStackTrace();
-                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
+                    imagesDAO.deleteImageFromDatabase(imageList.get(position));
+
+
+                } catch (DAOException e) {
+
+                    e.printStackTrace();
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
 //                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
 
             }
@@ -207,10 +207,12 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     }
 
     public void hideCancelBtnAddDoc(boolean flag) {
-        if (flag)
-            rcv.getDeleteDocumentImageView().setVisibility(View.GONE);
-        else
-            rcv.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
+        if (rcv != null && rcv.getDeleteDocumentImageView() != null) {
+            if (flag)
+                rcv.getDeleteDocumentImageView().setVisibility(View.GONE);
+            else
+                rcv.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
+        }
 
     }
 

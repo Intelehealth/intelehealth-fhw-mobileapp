@@ -5,6 +5,7 @@ import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -13,6 +14,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -68,7 +70,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     TextView textlayout_find_patient;
     NetworkUtils networkUtils;
     ImageView ivInternet;
-    private TextView mUpcomingAppointmentCountTextView,mCountPendingFollowupVisitsTextView;
+    private TextView mUpcomingAppointmentCountTextView, mCountPendingFollowupVisitsTextView;
     private Executor initUIExecutor = Executors.newSingleThreadExecutor();
 
     @Override
@@ -111,7 +113,17 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             @Override
             public void onFinished(int eventFlag) {
                 Log.v(TAG, "onFinished");
-                initUI();
+                Activity activity = getActivity();
+                if (isAdded() && activity != null) {
+                    initUI();
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            initUI();
+                        }
+                    }, 2000);
+                }
             }
         });
 
@@ -126,11 +138,21 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         Cursor cursor = null;
         if (isForReceivedPrescription)
-            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" + "  e.encounter_type_uuid = ? and" + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" + " o.conceptuuid = ? and" + " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " + " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" + " group by e.visituuid", new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
+                    + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where"
+                    + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and"
+                    + "  e.encounter_type_uuid = ? and"
+                    + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" + " o.conceptuuid = ? and"
+                    + " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
+                    + " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
+                    + " group by e.visituuid", new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
         else
-            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
+                    + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                     //" e.encounter_type_uuid = ?  and " +
-                    " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" + " " + " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " + " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" + "  group by e.visituuid", new String[]{});
+                    " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" + " "
+                    + " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
+                    + " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" + "  group by e.visituuid", new String[]{});
         db.setTransactionSuccessful();
         db.endTransaction();
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -188,6 +210,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     }
 
     private void initUI() {
+        Activity activity = getActivity();
+        if (!isAdded() || activity == null) return;
         sessionManager = new SessionManager(requireActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
         layoutToolbar.setVisibility(View.VISIBLE);
@@ -217,9 +241,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         } else {
             Log.d(TAG, "clickListeners: iv_hamburger null");
         }*/
-        mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
+        mUpcomingAppointmentCountTextView = view.findViewById(R.id.textView5);
         mCountPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
-        mUpcomingAppointmentCountTextView.setText("0 "+ getString(R.string.upcoming));
+        mUpcomingAppointmentCountTextView.setText("0 " + getString(R.string.upcoming));
         mCountPendingFollowupVisitsTextView.setText("0 " + getString(R.string.pending));
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(StringUtils.translateLocation(sessionManager.getLocationName(), sessionManager.getAppLanguage()));
@@ -270,27 +294,39 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             int countReceivedPrescription = getCurrentMonthsVisits(true);
 
             int total = pendingCountTotalVisits + countReceivedPrescription;
-            //try {
-                requireActivity().runOnUiThread(() -> {
-                    String prescCountText = countReceivedPrescription + " " + getResources().getString(R.string.out_of) + " " + total + " " + getResources().getString(R.string.received).toLowerCase();
+
+            if (isAdded()) {
+                activity.runOnUiThread(() -> {
+                    String prescCountText = countReceivedPrescription + " " + activity.getString(R.string.out_of) + " " + total + " " + activity.getString(R.string.received).toLowerCase();
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
                     }
                     prescriptionCountTextView.setText(prescCountText);
                 });
-            //}catch (Exception ignored){}
+            }
         });
 
         //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         new Thread(() -> {
             int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
-            if (getActivity() != null) {
-                requireActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits)));
+            if (isAdded()) {
+                activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + activity.getString(R.string.unclosed_visits)));
             }
         }).start();
 
-        getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener);
+        // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
+        Executors.newSingleThreadExecutor().execute(() -> {
+            int count = countPendingFollowupVisits();
+
+            if (isAdded()) {
+                activity.runOnUiThread(() -> {
+
+                    mCountPendingFollowupVisitsTextView.setText(count + " " + getResources().getString(R.string.pending));
+                });
+            }
+        });
+        getUpcomingAppointments();
     }
 
     private void startExecutor() {
@@ -415,7 +451,10 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
                 int finalTotalUpcomingApps = totalUpcomingApps;
                 if (mUpcomingAppointmentCountTextView != null) {
-                    requireActivity().runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + getResources().getString(R.string.upcoming)));
+                    Activity activity = getActivity();
+                    if (isAdded() && activity!=null) {
+                        activity.runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + activity.getString(R.string.upcoming)));
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

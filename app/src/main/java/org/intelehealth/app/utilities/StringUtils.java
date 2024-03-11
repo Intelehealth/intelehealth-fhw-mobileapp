@@ -19,18 +19,16 @@ import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.intelehealth.app.R;
+import org.intelehealth.app.app.IntelehealthApplication;
 
 import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
-
-import org.intelehealth.app.R;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.models.Patient;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
@@ -1743,7 +1741,7 @@ public final class StringUtils {
         if (locale.equalsIgnoreCase("hi")) {
             message = message
                     .replace("Otp sent successfully!", "ओटीपी सफलतापूर्वक भेजा गया!")
-                    .replace("No user exists with this phone number/email.",
+                    .replace("No user exists with this phone number/email/username.",
                             "इस फ़ोन नंबर/ईमेल के साथ कोई उपयोगकर्ता मौजूद नहीं है।")
                     .replace("No phoneNumber/email updated for this username.",
                             "इस उपयोगकर्ता नाम के लिए कोई फ़ोन नंबर/ईमेल अपडेट नहीं किया गया है।")
@@ -4255,4 +4253,10 @@ public final class StringUtils {
         }
     }
 
+    public static boolean isValidPassword(String passwd){
+        if(passwd==null || passwd.isEmpty()) return false;
+        //String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}"; // with special character
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}"; // without special character
+       return passwd.matches(pattern);
+    }
 }

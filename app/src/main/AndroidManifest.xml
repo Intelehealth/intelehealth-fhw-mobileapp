@@ -409,7 +409,7 @@
         <service android:name=".services.LastSyncIntentService" />
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
         <service
-            android:name=".services.FCMMessageService"
+            android:name=".webrtc.service.FCMMessageService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -423,55 +423,13 @@
                 <action android:name="org.intelehealth.ekalarogya.FCM_BACKGROUND_BROADCAST_ACTION" />
             </intent-filter>
         </receiver>
-        <!--        <service-->
-        <!--            android:name=".services.firebase_services.MyFirebaseMessagingService"-->
-        <!--            android:exported="false">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-        <!--            </intent-filter>-->
-        <!--        </service> -->
-        <!-- <receiver -->
-        <!-- android:name="org.intelehealth.app.utilities.NetworkChangeListener" -->
-        <!-- android:label="NetworkChangeReceiver"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
-        <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" /> <!-- Firebase Realdb -->
-        <!--        <receiver-->
-        <!--            android:name=".services.firebase_services.CallRTCNotifyReceiver"-->
-        <!--            android:exported="false">-->
-        <!--            <intent-filter android:priority="100">-->
-        <!--                <action-->
-        <!--                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"-->
-        <!--                    android:enabled="true" />-->
-        <!--            </intent-filter>-->
-        <!--        </receiver>-->
-        <!--        <receiver-->
-        <!--            android:name=".services.firebase_services.RestartServiceReceiver"-->
-        <!--            android:exported="false">-->
-        <!--                        <intent-filter android:priority="99">-->
-        <!--                            <action-->
-        <!--                                android:name="org.intelehealth.app.RTC_SERVICE_START"-->
-        <!--                                android:enabled="true" />-->
-        <!--                        </intent-filter>-->
-        <!--            <intent-filter android:priority="99">-->
-        <!--                <action-->
-        <!--                    android:name="android.intent.action.BOOT_COMPLETED"-->
-        <!--                    android:enabled="true" />-->
-        <!--            </intent-filter>-->
-        <!--        </receiver>-->
-
-        <!--        <service-->
-        <!--            android:name=".services.firebase_services.CallListenerBackgroundService"-->
-        <!--            android:enabled="true"-->
-        <!--            android:exported="true" />-->
 
         <meta-data
             android:name="com.google.android.gms.version"

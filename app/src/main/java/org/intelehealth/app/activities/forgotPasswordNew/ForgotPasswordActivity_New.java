@@ -13,10 +13,8 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
-import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.ArrayMap;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -37,8 +35,6 @@ import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
 import org.intelehealth.app.models.RequestOTPParamsModel_New;
 import org.intelehealth.app.networkApiCalls.ApiClient;
@@ -48,15 +44,11 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Locale;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -229,6 +221,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New("password", username, mobileNo, 91, "");
+        Log.d(TAG, "apiCallForRequestOTP: inputModel : " + new Gson().toJson(inputModel));
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ForgotPasswordApiResponseModel_New> loginModelObservable = apiService.REQUEST_OTP_OBSERVABLE(inputModel);
@@ -267,7 +260,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                         tvMobileError.setText(getResources().getString(R.string.mobile_not_registered));
                         tvMobileError.setVisibility(View.VISIBLE);
                     }else {
-                        Toast.makeText(ForgotPasswordActivity_New.this, forgotPasswordApiResponseModel_new.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForgotPasswordActivity_New.this, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), Toast.LENGTH_SHORT).show();
                     }
                 }
                 buttonContinue.setEnabled(true);

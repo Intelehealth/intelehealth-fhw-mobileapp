@@ -49,7 +49,8 @@
     <string name="action_sign_in_short">સાઇન ઇન કરો</string>
     <string name="url_invalid">તમારો URL તપાસો</string>
     <string name="prefix_invalid">ભિન્ન ઉપસર્ગ પસંદ કરો!</string>
-    <string name="error_invalid_email">આ વપરાશકર્તા નામ અમાન્ય છે</string>
+    <string name="error_invalid_username">આ વપરાશકર્તા નામ અમાન્ય છે</string>
+    <string name="error_invalid_email">આ ઇમેઇલ સરનામું અમાન્ય છે</string>
     <string name="error_invalid_password">આ પાસવર્ડ ખૂબ નાનો છે</string>
     <string name="error_incorrect_password">યુસરનેમ અને પાસવર્ડ ઉમેરો</string>
     <string name="error_field_required">આ ક્ષેત્ર જરૂરી છે</string>
@@ -880,5 +881,6 @@
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">You are offline! Please connect to the internet for videos.</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">You missed the compulsory questions, Please answer them.</string>
     <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
+    <string name="otp_sending">OTP Sending...</string>
 
 </resources>
