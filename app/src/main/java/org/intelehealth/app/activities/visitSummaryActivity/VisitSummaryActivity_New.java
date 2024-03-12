@@ -12,8 +12,6 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
-import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
-import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
@@ -128,7 +126,6 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
-import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
@@ -2517,15 +2514,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         //sometimes RESULT_CANCELED calls even we need to handle event
         //that's why added the logic when result is RESULT_CANCELED
-        else if(resultCode == RESULT_CANCELED){
-            if(appointmentResult){
+        else if (resultCode == RESULT_CANCELED) {
+            if (appointmentResult) {
                 navigateToMyAppointment();
             }
         }
         sessionManager.setAppointmentResult(false);
     });
 
-    void navigateToMyAppointment(){
+    void navigateToMyAppointment() {
         Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
         Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivity.class);
         startActivity(in);
@@ -4280,7 +4277,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality,followUpDate, objClsDoctorDetails);
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails);
 
 
         if (isRespiratory) {
@@ -5338,12 +5335,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         for (String s : spt) {
             if (s.isEmpty()) continue;
             //String s1 =  new String(s.getBytes(), "UTF-8");
-            System.out.println("Chunk - " + s);
+            Log.v(TAG, "Chunk - " + s);
             //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
             //if (s.trim().contains("Patient denies -•")) {
             if (s.trim().contains(getTranslatedPatientDenies(lCode)) || s.trim().contains(getTranslatedAssociatedSymptomQString(lCode))) {
                 associatedSymptomsString = s;
-                System.out.println("associatedSymptomsString - " + associatedSymptomsString);
+                Log.v(TAG, "associatedSymptomsString - " + associatedSymptomsString);
             } else {
                 list.add(s);
             }
@@ -5437,8 +5434,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         Log.v(TAG, associatedSymptomsString);
         String[] spt1 = associatedSymptomsString.trim().split("•");
-        Log.e("node", associatedSymptomsString);
-        Log.e("node", String.valueOf(spt1.length));
+        Log.e(TAG, associatedSymptomsString);
+        Log.e(TAG, String.valueOf(spt1.length));
         mAssociateSymptomsLinearLayout.removeAllViews();
 
         for (int i = 0; i < sections.length; i++) {
@@ -5458,6 +5455,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }*/
                 mAssociateSymptomsLinearLayout.addView(view);
             }
+        }
+
+        if (mAssociateSymptomsLinearLayout.getChildCount() == 0) {
+            findViewById(R.id.associ_sym_label_tv).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.associ_sym_label_tv).setVisibility(View.GONE);
         }
 
 
