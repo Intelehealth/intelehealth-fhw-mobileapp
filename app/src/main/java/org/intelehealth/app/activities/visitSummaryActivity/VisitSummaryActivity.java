@@ -299,6 +299,8 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
 
     RelativeLayout uploadButton, rl_med_aid;
     private TextView tvDispense_1, tvDispense_2, tvAdminister_1, tvAdminister_2, tvCollectedBy, tvReceivedBy;
+    public static final String MEDICATION = "medication", AID = "aid", COLLECTED = "collected", RECEIVED = "received",
+            DISPENSE = "dispense", ADMINISTER = "administer";
 
     RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
@@ -1041,13 +1043,13 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         tvCollectedBy.setTag(encounterStartVisitNoteDAO);
         tvCollectedBy.setOnClickListener(v -> {
             EncounterDAO tag = (EncounterDAO) v.getTag();
-            collected_received_Intent(tag, "collected");
+            collected_received_Intent(tag, COLLECTED);
         });
 
         tvReceivedBy.setTag(encounterStartVisitNoteDAO);
         tvReceivedBy.setOnClickListener(v -> {
             EncounterDAO tag = (EncounterDAO) v.getTag();
-            collected_received_Intent(tag, "received");
+            collected_received_Intent(tag, RECEIVED);
         });
 
 /*

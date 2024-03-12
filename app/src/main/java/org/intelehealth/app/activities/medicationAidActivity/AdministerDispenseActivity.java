@@ -1,7 +1,9 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
-import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.COLLECTED;
-import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.RECEIVED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.ADMINISTER;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.COLLECTED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.DISPENSE;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.RECEIVED;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_ADMINISTER_AID;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_ADMINISTER_MEDICATION;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_DISPENSE_AID;
@@ -235,10 +237,10 @@ public class AdministerDispenseActivity extends BaseActivity {
 
 /*
         if (!encounterDisenseAdminister.isEmpty() && encounterDisenseAdminister != null) {
-            if (tag.equalsIgnoreCase("dispense")) {
+            if (tag.equalsIgnoreCase(DISPENSE)) {
                 setMedicationValues();
                 setAidValues();
-            } else if (tag.equalsIgnoreCase("administer")) {
+            } else if (tag.equalsIgnoreCase(ADMINISTER)) {
                 setMedicationValues();
             }
         }
@@ -318,7 +320,7 @@ public class AdministerDispenseActivity extends BaseActivity {
         } else
             fl_med.setVisibility(View.GONE);
 
-        if (tag.equalsIgnoreCase("administer")) {
+        if (tag.equalsIgnoreCase(ADMINISTER)) {
             getSupportActionBar().setTitle(getString(R.string.administer_medication));
             fl_aid.setVisibility(View.GONE);
         }
@@ -429,10 +431,10 @@ public class AdministerDispenseActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (tag.equalsIgnoreCase("dispense")) {
+                if (tag.equalsIgnoreCase(DISPENSE)) {
                     createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_DISPENSE);
                 }
-                else if (tag.equalsIgnoreCase("administer")) {
+                else if (tag.equalsIgnoreCase(ADMINISTER)) {
                     createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_ADMINISTER);
                 }
                 else if (tag.equalsIgnoreCase(COLLECTED)) {
@@ -489,7 +491,7 @@ public class AdministerDispenseActivity extends BaseActivity {
     private void setAidValues() throws DAOException {
         String encounterId = encounterDisenseAdminister;
         String conceptId = OBS_DISPENSE_AID;
-        if (tag.equalsIgnoreCase("administer"))
+        if (tag.equalsIgnoreCase(ADMINISTER))
             conceptId = OBS_ADMINISTER_AID;
 
         // Notes
@@ -538,7 +540,7 @@ public class AdministerDispenseActivity extends BaseActivity {
     private void setMedicationValues() throws DAOException {
         String encounterId = encounterDisenseAdminister;
         String conceptId = OBS_DISPENSE_MEDICATION;
-        if (tag.equalsIgnoreCase("administer"))
+        if (tag.equalsIgnoreCase(ADMINISTER))
             conceptId = OBS_ADMINISTER_MEDICATION;
 
         List<String> medNotes = new ArrayList<>();
@@ -641,7 +643,7 @@ public class AdministerDispenseActivity extends BaseActivity {
         String outOfPocketValue = tie_outOfPocket.getText().toString().trim();
         String otherAids = tie_others.getText().toString().trim();
 
-        if (tag.equalsIgnoreCase("dispense")) {
+        if (tag.equalsIgnoreCase(DISPENSE)) {
             createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_DISPENSE);
             if (isEncounterCreated) {
                 // Dispense - medication push
@@ -657,7 +659,7 @@ public class AdministerDispenseActivity extends BaseActivity {
             }
             Toast.makeText(this, getString(R.string.dispense_data_saved), Toast.LENGTH_SHORT).show();
         }
-        else if (tag.equalsIgnoreCase("administer")) {
+        else if (tag.equalsIgnoreCase(ADMINISTER)) {
 
             createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_ADMINISTER);
 
@@ -903,9 +905,9 @@ public class AdministerDispenseActivity extends BaseActivity {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
 
-           /* if (tag.equalsIgnoreCase("dispense"))
+           /* if (tag.equalsIgnoreCase(DISPENSE))
                 fileuuidList = (ArrayList<String>) imagesDAO.isImageListObsExists(encounterDispense, UuidDictionary.COMPLEX_IMAGE_AD);
-            else if (tag.equalsIgnoreCase("administer"))
+            else if (tag.equalsIgnoreCase(ADMINISTER))
                 fileuuidList = (ArrayList<String>) imagesDAO.isImageListObsExists(encounterAdminister, UuidDictionary.COMPLEX_IMAGE_AD);*/
 
             List<String> imageList = imagesDAO.isImageListObsExists(encounterDisenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);

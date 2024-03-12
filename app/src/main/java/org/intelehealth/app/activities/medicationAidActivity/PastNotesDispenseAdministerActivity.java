@@ -1,7 +1,9 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
-import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.COLLECTED;
-import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.RECEIVED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.AID;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.COLLECTED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.MEDICATION;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.RECEIVED;
 import static org.intelehealth.app.database.dao.ObsDAO.getObsPastNotes;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -146,9 +148,9 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         String title = "";
-        if (viewtag.equalsIgnoreCase(Medication_Aid_Activity.MEDICATION))
+        if (viewtag.equalsIgnoreCase(MEDICATION))
             title = getString(R.string.medicine_past_notes);
-        else if (viewtag.equalsIgnoreCase(Medication_Aid_Activity.AID))
+        else if (viewtag.equalsIgnoreCase(AID))
             title = getString(R.string.aid_past_notes);
         else if (viewtag.equalsIgnoreCase(COLLECTED))
             title = getString(R.string.view_past_test_notes);

@@ -1,5 +1,11 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.ADMINISTER;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.AID;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.COLLECTED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.DISPENSE;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.MEDICATION;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.RECEIVED;
 import static org.intelehealth.app.database.dao.EncounterDAO.getEncounterListByVisitUUID;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,7 +47,6 @@ import java.util.List;
 public class Medication_Aid_Activity extends BaseActivity {
     private RecyclerView rv_medication, rv_aid;
     public final String TAG = Medication_Aid_Activity.this.getClass().getName();
-    public static final String MEDICATION = "medication", AID = "aid", COLLECTED = "collected", RECEIVED = "received";
     private MedicationAidAdapter med_adapter, aid_adapter, test_adapter;
     private Context context = Medication_Aid_Activity.this;
     private List<MedicationAidModel> med_list, aid_list, test_list;
@@ -69,14 +74,14 @@ public class Medication_Aid_Activity extends BaseActivity {
         initUI();
 
         tvDispenseAdminister.setOnClickListener(v -> {
-            if (tag.equalsIgnoreCase("dispense")) {
+            if (tag.equalsIgnoreCase(DISPENSE)) {
                 if (med_adapter != null && med_adapter.getFinalList().size() < 1 &&
                         aid_adapter != null && aid_adapter.getFinalList().size() < 1) {   // ie. 0 or < 0
                     Toast.makeText(context, getString(R.string.select_at_least_one_item_to_proceed), Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
-            if (tag.equalsIgnoreCase("administer")) {
+            if (tag.equalsIgnoreCase(ADMINISTER)) {
                 if (med_adapter != null && med_adapter.getFinalList().size() < 1) {   // ie. 0 or < 0
                     Toast.makeText(context, getString(R.string.select_at_least_one_item_to_proceed), Toast.LENGTH_SHORT).show();
                     return;
@@ -101,9 +106,9 @@ public class Medication_Aid_Activity extends BaseActivity {
                 testCheckedList.addAll(test_adapter.getFinalList());
 
             String encounterDisenseAdminister = "";
-            if (tag.equalsIgnoreCase("dispense"))
+            if (tag.equalsIgnoreCase(DISPENSE))
                 encounterDisenseAdminister = encounterDispense;
-            else if (tag.equalsIgnoreCase("administer"))
+            else if (tag.equalsIgnoreCase(ADMINISTER))
                 encounterDisenseAdminister = encounterAdminister;
             else if (tag.equalsIgnoreCase(COLLECTED))
                 encounterDisenseAdminister = encounterTestCollect;
@@ -185,7 +190,7 @@ public class Medication_Aid_Activity extends BaseActivity {
         intentTag = intent.getStringExtra("tag");
         isPastVisit = intent.getBooleanExtra("pastVisit", false);
 
-        if (tag.equalsIgnoreCase("administer")) {   // Administer
+        if (tag.equalsIgnoreCase(ADMINISTER)) {   // Administer
             getSupportActionBar().setTitle(getString(R.string.administer_medication));
             fl_aid.setVisibility(View.GONE);
             tvDispenseAdminister.setText(getString(R.string.administer));
@@ -222,7 +227,7 @@ public class Medication_Aid_Activity extends BaseActivity {
         aid_list = new ArrayList<>();
         test_list = new ArrayList<>();
 
-        if (tag.equalsIgnoreCase("administer") || tag.equalsIgnoreCase("dispense")) {
+        if (tag.equalsIgnoreCase(ADMINISTER) || tag.equalsIgnoreCase(DISPENSE)) {
             // medication
             try {
                 med_list = ObsDAO.getObsDispenseAdministerData(encounterVisitNote, UuidDictionary.JSV_MEDICATIONS);
@@ -250,7 +255,7 @@ public class Medication_Aid_Activity extends BaseActivity {
         }
 
 
-        if (tag.equalsIgnoreCase("dispense")) {
+        if (tag.equalsIgnoreCase(DISPENSE)) {
             // Since, aid is called only for dispense so add block to run this code only for dispense tag.
             // aid
             try {
@@ -332,7 +337,7 @@ public class Medication_Aid_Activity extends BaseActivity {
         }
 
         // Administer
-        if (tag.equalsIgnoreCase("administer")) {
+        if (tag.equalsIgnoreCase(ADMINISTER)) {
             // fetch encounter administer uuid
             List<String> encounterListByVisitUUID = getEncounterListByVisitUUID(visitUuid, UuidDictionary.ENCOUNTER_ADMINISTER);
             if (encounterListByVisitUUID.size() > 0) {
@@ -411,24 +416,24 @@ public class Medication_Aid_Activity extends BaseActivity {
             }
         }
 
-        if (tag.equalsIgnoreCase("dispense")) {
+        if (tag.equalsIgnoreCase(DISPENSE)) {
             RecyclerView.LayoutManager med_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             rv_medication.setLayoutManager(med_LayoutManager);
             rv_medication.setNestedScrollingEnabled(false);
-            med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList, "dispense");
+            med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList, DISPENSE);
             rv_medication.setAdapter(med_adapter);
 
             RecyclerView.LayoutManager aid_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             rv_aid.setLayoutManager(aid_LayoutManager);
             rv_aid.setNestedScrollingEnabled(false);
-            aid_adapter = new MedicationAidAdapter(context, aid_list, LocaleHelper.isArabic(context), update_aidUuidList, "dispense");
+            aid_adapter = new MedicationAidAdapter(context, aid_list, LocaleHelper.isArabic(context), update_aidUuidList, DISPENSE);
             rv_aid.setAdapter(aid_adapter);
         }
-        else if (tag.equalsIgnoreCase("administer")) {
+        else if (tag.equalsIgnoreCase(ADMINISTER)) {
             RecyclerView.LayoutManager med_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             rv_medication.setLayoutManager(med_LayoutManager);
             rv_medication.setNestedScrollingEnabled(false);
-            med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList, "administer");
+            med_adapter = new MedicationAidAdapter(context, med_list, LocaleHelper.isArabic(context), update_medUuidList, ADMINISTER);
             rv_medication.setAdapter(med_adapter);
         }
         else if (tag.equalsIgnoreCase(COLLECTED) || tag.equalsIgnoreCase(RECEIVED)) {
