@@ -39,6 +39,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -1370,7 +1371,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     rxReturned = value;
                 }
                 Log.i("TAG", "parseData: rxfin" + rxReturned);
-                medication_txt.setText(rxReturned);
+                medication_txt.setText(Html.fromHtml(getMedicationData()));
                 //checkForDoctor();
                 break;
             }
@@ -1511,6 +1512,42 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 break;
         }
     }
+
+    /**
+     * handling additional data here
+     */
+
+    private String getMedicationData() {
+        if (rxReturned.isEmpty()) {
+            return "";
+        }
+
+        String finalMedicationDataString = "";
+        String titleStart = "<font color="+Color.GRAY+">";
+        String titleEnd = "</font>";
+
+        StringBuilder medicationData = new StringBuilder();
+        String[] medicationDataArray = rxReturned.split("\n");
+        for (String s : medicationDataArray) {
+            if (!s.contains(":")) {
+                medicationData.append(titleStart);
+                medicationData.append(getString(R.string.additional_instruction));
+                medicationData.append(titleEnd);
+                medicationData.append("<br>");
+                medicationData.append(s);
+            }else {
+                medicationData.append(s);
+                medicationData.append("<br>");
+                medicationData.append("<br>");
+            }
+        }
+        if(medicationData.length() == 0) return "";
+
+        finalMedicationDataString = medicationData.toString();
+
+        return finalMedicationDataString;
+    }
+
     // parse presc value - end
 
     // downlaod - start
