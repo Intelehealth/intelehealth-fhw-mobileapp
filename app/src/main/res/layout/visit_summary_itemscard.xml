@@ -640,6 +640,7 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
+                            android:id="@+id/associ_sym_label_tv"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
