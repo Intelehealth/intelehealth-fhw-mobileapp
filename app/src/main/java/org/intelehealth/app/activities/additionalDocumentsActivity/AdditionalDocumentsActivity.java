@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.additionalDocumentsActivity;
 
+import static org.intelehealth.app.activities.cameraActivity.CameraActivity.IS_DISPENSE_ADMINISTER;
 import static org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity.IMAGE_LIMIT;
 import static org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity.IMAGE_LIST_INTENT;
 import static org.intelehealth.klivekit.utils.DateTimeUtils.ADD_DOC_IMAGE_FORMAT;
@@ -12,14 +13,15 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -32,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -45,6 +48,7 @@ import java.util.UUID;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.DocumentObject;
@@ -63,10 +67,8 @@ public class AdditionalDocumentsActivity extends BaseActivity {
 
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private Context context;
-    private String patientUuid;
-    private String visitUuid;
-    private String encounterVitals;
-    private String encounterAdultIntials, encounterDispenseAdminister;
+    private String encounterVitals, visitUuid;
+    private String patientUuid, encounterAdultIntials, encounterDispenseAdminister;
     private List<DocumentObject> rowListItem;
     private AdditionalDocumentAdapter recyclerViewAdapter;
     SessionManager sessionManager = null;
@@ -107,6 +109,7 @@ public class AdditionalDocumentsActivity extends BaseActivity {
                 if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty()) {
                     Intent intent = new Intent();
                     intent.putExtra("rowListItem", (Serializable) rowListItem);
+                    intent.putExtra("encounterDispenseAdminister", encounterDispenseAdminister);
                     setResult(IMAGE_LIST_INTENT, intent);
                     finish();
                 } else {
@@ -131,13 +134,13 @@ public class AdditionalDocumentsActivity extends BaseActivity {
             isDispenseAdminister = intent.getBooleanExtra("isDispenseAdminister", false);
 
             try {
-               /* if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty())
+                if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty())
                     fileuuidList = imagesDAO.getImageUuid(encounterDispenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);    // Encounter Dispense OR Administer.
                 else
                     fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);  // Encounter Adultinitial.
-*/
-                if (encounterDispenseAdminister == null || encounterDispenseAdminister.isEmpty())
-                    fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);  // Encounter Adultinitial.
+
+//                if (encounterDispenseAdminister == null || encounterDispenseAdminister.isEmpty())
+//                    fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);  // Encounter Adultinitial.
 
                 for (String fileuuid : fileuuidList) {
                     String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
@@ -291,6 +294,7 @@ public class AdditionalDocumentsActivity extends BaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdditionalDocumentsActivity.this);
         builder.setTitle(R.string.additional_doc_image_picker_title);
         builder.setItems(options, (dialog, item) -> {
+
             if (item == 0) {
                 Intent cameraIntent = new Intent(AdditionalDocumentsActivity.this, CameraActivity.class);
 
@@ -302,14 +306,15 @@ public class AdditionalDocumentsActivity extends BaseActivity {
 
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
+                cameraIntent.putExtra(IS_DISPENSE_ADMINISTER, true);
                 resultCameraContract.launch(cameraIntent);
-//                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
-
-            } else if (item == 1) {
+            }
+            else if (item == 1) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.putExtra(IS_DISPENSE_ADMINISTER, true);
                 resultGalleryContract.launch(intent);
-//                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
-            } else if (options[item].equals("Cancel")) {
+            }
+            else if (options[item].equals("Cancel")) {
                 dialog.dismiss();
             }
         });
@@ -340,15 +345,47 @@ public class AdditionalDocumentsActivity extends BaseActivity {
                     // copy & rename the file
                     String finalImageName = "";
                     if (isDispenseAdminister)
-                        finalImageName = filename_openmrsid_datetime_format();
-                    else
+                        dialogTextInput(picturePath);
+                    else {
                         finalImageName = UUID.randomUUID().toString();
-
-                    final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                    BitmapUtils.copyFile(picturePath, finalFilePath);
-                    compressImageAndSave(finalFilePath);
+                        final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                        BitmapUtils.copyFile(picturePath, finalFilePath);
+                        compressImageAndSave(finalFilePath);
+                    }
                 }
             });
+
+    public void dialogTextInput(String picturePath) {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
+        View convertView = getLayoutInflater().inflate(R.layout.dialog_input_entry, null);
+        materialAlertDialogBuilder.setView(convertView);
+        final TextInputEditText textInputEditText = convertView.findViewById(R.id.dialog_editText);
+
+        materialAlertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (textInputEditText.getText().toString().isEmpty())
+                    textInputEditText.setError(getString(R.string.error_field_required));
+                else {
+                    String mImageName = textInputEditText.getText().toString();
+                    final String finalFilePath = AppConstants.IMAGE_PATH + mImageName + ".jpg";
+                    BitmapUtils.copyFile(picturePath, finalFilePath);
+                    compressImageAndSave(finalFilePath);
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = materialAlertDialogBuilder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        if (!alertDialog.isShowing())
+            alertDialog.show();
+
+        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
+    }
 
 
     /**
@@ -398,9 +435,11 @@ public class AdditionalDocumentsActivity extends BaseActivity {
             if (encounterDispenseAdminister != null && !encounterDispenseAdminister.isEmpty()) {
                 Intent intent = new Intent();
                 intent.putExtra("rowListItem", (Serializable) rowListItem);
+                intent.putExtra("encounterDispenseAdminister", encounterDispenseAdminister);
                 setResult(IMAGE_LIST_INTENT, intent);
                 finish();
-            } else finish();
+            } else
+                finish();
         }
     };
 
@@ -418,6 +457,5 @@ public class AdditionalDocumentsActivity extends BaseActivity {
         Log.d("TAG", "filename_openmrsid_datetime_format: " + value);
         return value;
     }
-
 
 }

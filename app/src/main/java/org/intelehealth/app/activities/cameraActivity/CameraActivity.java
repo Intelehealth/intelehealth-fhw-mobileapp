@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.cameraActivity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.cameraview.CameraView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
@@ -63,6 +66,7 @@ public class CameraActivity extends BaseActivity {
      * storing the file generated
      */
     public static final String SET_IMAGE_PATH = "IMG_PATH";
+    public static final String IS_DISPENSE_ADMINISTER = "isDispenseAdminister";
     /**
      * Bundle key used for the {@link String} showing custom dialog
      * message before starting the camera.
@@ -92,10 +96,13 @@ public class CameraActivity extends BaseActivity {
 
     //Pass Custom File Name Using intent.putExtra(CameraActivity.SET_IMAGE_NAME, "Image Name");
     private String mImageName = null;
+    private boolean isDispenseAdminister = false;
+
     //Pass Dialog Message Using intent.putExtra(CameraActivity.SET_IMAGE_NAME, "Dialog Message");
     private String mDialogMessage = null;
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
+    private Context context = CameraActivity.this;
     private CameraView.Callback mCallback
             = new CameraView.Callback() {
 
@@ -118,7 +125,10 @@ public class CameraActivity extends BaseActivity {
             // check and correct the image rotation
             try {
                 Bitmap bitmap = BitmapUtils.rotateImageIfRequired(data);
-                compressImageAndSave(bitmap);
+                if (isDispenseAdminister)
+                    dialogTextInput(bitmap);
+                else
+                    compressImageAndSave(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -126,6 +136,50 @@ public class CameraActivity extends BaseActivity {
         }
 
     };
+
+    private void dialogTextInput(Bitmap bitmap) {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
+        View convertView = getLayoutInflater().inflate(R.layout.dialog_input_entry, null);
+        materialAlertDialogBuilder.setView(convertView);
+        final TextInputEditText textInputEditText = convertView.findViewById(R.id.dialog_editText);
+
+        materialAlertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (textInputEditText.getText().toString().isEmpty())
+                    textInputEditText.setError(getString(R.string.error_field_required));
+                else {
+                    mImageName = textInputEditText.getText().toString();
+                    compressImageAndSave(bitmap);
+                    dialog.dismiss();
+                }
+            }
+        });
+
+/*
+        materialAlertDialogBuilder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO: here, delete the image file itself.
+                dialog.dismiss();
+            }
+        });
+*/
+
+
+        AlertDialog alertDialog = materialAlertDialogBuilder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        if (!alertDialog.isShowing())
+            alertDialog.show();
+
+        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+//        Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//        nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
+    }
+
 
 
     void compressImageAndSave(Bitmap bitmap) {
@@ -305,6 +359,8 @@ public class CameraActivity extends BaseActivity {
                 mDialogMessage = extras.getString(SHOW_DIALOG_MESSAGE);
             if (extras.containsKey(SET_IMAGE_PATH))
                 mFilePath = extras.getString(SET_IMAGE_PATH);
+            if (extras.containsKey(IS_DISPENSE_ADMINISTER))
+                isDispenseAdminister = extras.getBoolean(IS_DISPENSE_ADMINISTER);
         }
 
         setContentView(R.layout.activity_camera);

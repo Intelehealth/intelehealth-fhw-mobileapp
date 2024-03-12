@@ -455,8 +455,6 @@ public class AdministerDispenseActivity extends BaseActivity {
                 Log.d(TAG, "img btn onClick: " + encounterDisenseAdminister);
                 docIntent.putExtra("encounterDispenseAdminister", encounterDisenseAdminister);
                 documentResult.launch(docIntent);
-                // startActivity(docIntent);
-//                startActivityForResult(docIntent, IMAGE_LIST_INTENT);
             }
         });
 
@@ -472,6 +470,7 @@ public class AdministerDispenseActivity extends BaseActivity {
                     Log.e(TAG, ": documentResult =>RESULT_OK::" + new Gson().toJson(o.getData()));
                     List<DocumentObject> rowListItem = new ArrayList<>();
                     rowListItem = (List<DocumentObject>) o.getData().getSerializableExtra("rowListItem");
+                    encounterDisenseAdminister = o.getData().getStringExtra("encounterDispenseAdminister");
 
                     fileuuidList = new ArrayList<>();
                     if (rowListItem.size() > 0) {
@@ -967,8 +966,10 @@ public class AdministerDispenseActivity extends BaseActivity {
 
         if (requestCode == IMAGE_LIST_INTENT) {
             List<DocumentObject> rowListItem = new ArrayList<>();
-            if (data != null)
+            if (data != null) {
                 rowListItem = (List<DocumentObject>) data.getSerializableExtra("rowListItem");
+                encounterDisenseAdminister = data.getStringExtra("encounterDispenseAdminister");
+            }
 
             fileuuidList = new ArrayList<>();
             if (rowListItem.size() > 0) {
