@@ -42,6 +42,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;
@@ -63,6 +64,7 @@ import org.intelehealth.klivekit.chat.model.DayHeader;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.model.MessageStatus;
 import org.intelehealth.klivekit.chat.ui.adapter.ChatListingAdapter;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.ChatResponse;
 import org.intelehealth.klivekit.model.RtcArgs;
@@ -86,7 +88,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import io.socket.emitter.Emitter;
@@ -115,6 +119,8 @@ public class ChatActivity extends AppCompatActivity {
     protected LinearLayout mEmptyLinearLayout, mLoadingLinearLayout;
     protected EditText mMessageEditText;
     protected TextView mEmptyTextView;
+
+    private String authToken;
 
 
     protected void setupActionBar() {
@@ -273,6 +279,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentResourceId());
+        getAuthenticationToken();
         mImagePathRoot = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
         if (getIntent().hasExtra("patientUuid")) {
             mPatientUUid = getIntent().getStringExtra("patientUuid");
@@ -367,6 +374,11 @@ public class ChatActivity extends AppCompatActivity {
         registerReceiver(mBroadcastReceiver, filterSend);
     }
 
+    private void getAuthenticationToken() {
+        PreferenceHelper helper = new PreferenceHelper(getApplicationContext());
+        authToken = helper.get(PreferenceHelper.AUTH_TOKEN);
+    }
+
     private void showCharLimitToast() {
         mMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -407,21 +419,22 @@ public class ChatActivity extends AppCompatActivity {
         mEmptyTextView.setText(getString(R.string.loading));
         String url = Constants.GET_ALL_MESSAGE_URL + mFromUUId + "/" + mToUUId + "/" + mPatientUUid;
         Log.v(TAG, "getAllMessages - " + url);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
+            Log.v(TAG, "getAllMessages -response - " + response.toString());
+            mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
+            ChatResponse chatResponse = new Gson().fromJson(response.toString(), ChatResponse.class);
+            showChat(chatResponse, isAlreadySetReadStatus);
+        }, error -> {
+            Log.v(TAG, "getAllMessages - onErrorResponse - " + error.getMessage());
+            mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
+        }) {
             @Override
-            public void onResponse(JSONObject response) {
-                Log.v(TAG, "getAllMessages -response - " + response.toString());
-                mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
-                ChatResponse chatResponse = new Gson().fromJson(response.toString(), ChatResponse.class);
-                showChat(chatResponse, isAlreadySetReadStatus);
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "Bearer " + authToken);
+                return params;
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v(TAG, "getAllMessages - onErrorResponse - " + error.getMessage());
-                mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
-            }
-        });
+        };
         mRequestQueue.add(jsonObjectRequest);
     }
 
@@ -530,29 +543,33 @@ public class ChatActivity extends AppCompatActivity {
             JsonObjectRequest objectRequest = new JsonObjectRequest(
                     Request.Method.POST,
                     Constants.SEND_MESSAGE_URL,
-                    new JSONObject(chatMessage.toJson()), new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Log.v(TAG, "postMessages - response - " + response.toString());
-                    try {
-                        ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
-                        mMessageEditText.setText("");
-//                        getAllMessages(false);
-                        msg.setMessageStatus(MessageStatus.SENT.getValue());
-                        mChatListingAdapter.updatedMessage(msg);
-                        mLoadingLinearLayout.setVisibility(View.GONE);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
+                    new JSONObject(chatMessage.toJson()), response -> {
+                Log.v(TAG, "postMessages - response - " + response.toString());
+                try {
+                    ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
+                    mMessageEditText.setText("");
+                    //                        getAllMessages(false);
+                    msg.setMessageStatus(MessageStatus.SENT.getValue());
+                    mChatListingAdapter.updatedMessage(msg);
+                    mLoadingLinearLayout.setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
+
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.v(TAG, "postMessages - onErrorResponse - " + error.getMessage());
                     mLoadingLinearLayout.setVisibility(View.GONE);
                 }
-            });
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Authorization", "Bearer " + authToken);
+                    return params;
+                }
+            };
             mRequestQueue.add(objectRequest);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -568,7 +585,14 @@ public class ChatActivity extends AppCompatActivity {
 //            getAllMessages(true);
 //            SocketManager.getInstance().emit(SocketManager.EVENT_IS_READ, null);
 //                if (mSocket != null) mSocket.emit("isread");
-        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage()));
+        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage())) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "Bearer " + authToken);
+                return params;
+            }
+        };
         mRequestQueue.add(jsonObjectRequest);
     }
 

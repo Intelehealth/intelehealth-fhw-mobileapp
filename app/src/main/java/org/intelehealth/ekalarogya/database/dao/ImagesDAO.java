@@ -7,12 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.ekalarogya.builder.QueryBuilder;
 import org.intelehealth.ekalarogya.utilities.Base64Utils;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.UuidDictionary;
@@ -378,7 +380,13 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE order by modified_date", new String[]{encounterUuid, conceptUuid, "0"});
+            String query = new QueryBuilder()
+                    .select(" uuid ")
+                    .from(" tbl_obs ")
+                    .where(" encounteruuid= '" + encounterUuid + "' AND conceptuuid= '" + conceptUuid + "' AND voided IN ('0', 'false') ")
+                    .orderBy(" modified_date ").build();
+            Timber.tag(TAG).d("isImageListObsExists Query => %s", query);
+            Cursor idCursor = localdb.rawQuery(query, null);
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
@@ -404,7 +412,6 @@ public class ImagesDAO {
         }
         return isLocalImageExists;
     }
-
 
 
 }

@@ -55,6 +55,7 @@ import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDial
 
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -476,6 +477,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        PreferenceHelper helper = new PreferenceHelper(getApplicationContext());
+                        helper.save(PreferenceHelper.AUTH_TOKEN, authJWTResponse.getToken());
                         UserLoginTask(username, password);
                     }
 

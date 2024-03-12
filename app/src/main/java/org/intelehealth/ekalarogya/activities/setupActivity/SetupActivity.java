@@ -85,6 +85,7 @@ import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 
@@ -1151,6 +1152,8 @@ public class SetupActivity extends AppCompatActivity {
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        PreferenceHelper helper = new PreferenceHelper(getApplicationContext());
+                        helper.save(PreferenceHelper.AUTH_TOKEN, authJWTResponse.getToken());
                         TestSetup(urlString, username, password, admin_password, village_name);
                     }
 
