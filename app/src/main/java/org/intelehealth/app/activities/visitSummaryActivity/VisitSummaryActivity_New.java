@@ -677,6 +677,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             add_additional_doc.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
         } else {
+            isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
             int visibility = isVisitSpecialityExists ? View.GONE : View.VISIBLE;
             add_additional_doc.setVisibility(visibility);
             editAddDocs.setVisibility(visibility);
@@ -1048,11 +1049,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mAdditionalDocsRecyclerView.setHasFixedSize(true);
             mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
 
-            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, true);
-            } else {
-                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, false);
-            }
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial,
+                    rowListItem, AppConstants.IMAGE_PATH, this, isVisitSpecialityExists);
+//            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+//
+//            } else {
+//                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, false);
+//            }
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
             add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
@@ -3668,22 +3671,24 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mAdditionalDocsRecyclerView.setHasFixedSize(true);
             mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
 
-            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, true);
-            } else {
-                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, false);
-            }
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial,
+                    rowListItem, AppConstants.IMAGE_PATH, this, isVisitSpecialityExists);
+//            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+//                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, true);
+//            } else {
+//                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, false);
+//            }
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
             add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
 
-            if (recyclerViewAdapter != null) {
-                if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-                    recyclerViewAdapter.hideCancelBtnAddDoc(true);
-                } else {
-                    recyclerViewAdapter.hideCancelBtnAddDoc(false);
-                }
-            }
+//            if (recyclerViewAdapter != null) {
+//                if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+//                    recyclerViewAdapter.hideCancelBtnAddDoc(true);
+//                } else {
+//                    recyclerViewAdapter.hideCancelBtnAddDoc(false);
+//                }
+//            }
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
