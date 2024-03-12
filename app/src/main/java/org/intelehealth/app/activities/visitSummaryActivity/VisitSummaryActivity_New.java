@@ -3833,6 +3833,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 c.close();
                 //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 Log.v("path", picturePath + "");
+                BitmapUtils.fileCompressed(picturePath);
 
                 // copy & rename the file
                 String finalImageName = UUID.randomUUID().toString();
@@ -3847,6 +3848,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void saveImage(String picturePath) {
         Log.v("AdditionalDocuments", "picturePath = " + picturePath);
         File photo = new File(picturePath);
+        BitmapUtils.fileCompressed(picturePath);
         if (photo.exists()) {
             try {
                 long length = photo.length();

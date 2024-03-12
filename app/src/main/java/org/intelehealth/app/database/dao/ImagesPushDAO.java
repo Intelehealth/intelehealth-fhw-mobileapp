@@ -3,27 +3,24 @@ package org.intelehealth.app.database.dao;
 import android.content.Intent;
 import android.util.Log;
 
-
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.intelehealth.app.models.providerImageRequestModel.ProviderProfile;
-import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
+import org.intelehealth.app.models.providerImageRequestModel.ProviderProfile;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.json.JSONObject;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -109,6 +106,7 @@ public class ImagesPushDAO {
             //pass it like this
             File file = null;
             file = new File(AppConstants.IMAGE_PATH + p.getUuid() + ".jpg");
+            Log.e(TAG, "File size:" + file.length());
             RequestBody requestFile = RequestBody.create(MediaType.parse("application/json"), file);
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
