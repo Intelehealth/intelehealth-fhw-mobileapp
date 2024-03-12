@@ -5,10 +5,15 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.github.ajalt.timberkt.Timber;
+
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.shared.builder.QueryBuilder;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import java.lang.annotation.Target;
 
 public class RTCConnectionDAO {
 
@@ -43,8 +48,15 @@ public class RTCConnectionDAO {
     public RTCConnectionDTO getByVisitUUID(String visitUUID) {
 
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        String query = new QueryBuilder()
+                .select(" * ")
+                .from(" tbl_rtc_connection_log ")
+                .where(" visit_uuid = '" + visitUUID + "' ")
+                .limit(1)
+                .build();
+        Timber.tag(RTCConnectionDAO.class.getSimpleName()).d("RTCConnectionDTO getByVisitUUID =>%s", query);
         //db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_rtc_connection_log where visit_uuid = ?", new String[]{visitUUID});
+        Cursor idCursor = db.rawQuery(query, null);
         RTCConnectionDTO connectionDTO = null;
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
