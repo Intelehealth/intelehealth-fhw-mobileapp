@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -62,6 +63,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     private AdapterInterface anInterface;
     private AdditionalDocumentViewHolder rcv;
     private boolean fromVisitDetails;
+
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
     public AdditionalDocumentAdapter(Context context, String edult,
@@ -93,12 +95,14 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
 
         final File image = new File(documentList.get(position).getDocumentPhoto());
+        RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                .asDrawable().sizeMultiplier(0.1f);
 
         Glide.with(context)
                 .load(image)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .thumbnail(0.1f)
+                .thumbnail(requestBuilder)
                 .into(holder.getDocumentPhotoImageView());
 
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
@@ -108,10 +112,11 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             }
         });
 
-        if (fromVisitDetails)
-            holder.getDeleteDocumentImageView().setVisibility(View.GONE);
-        else
-            holder.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
+        holder.hideCancel(fromVisitDetails);
+//        if (fromVisitDetails)
+//            holder.getDeleteDocumentImageView().setVisibility(View.GONE);
+//        else
+//            holder.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
 
         holder.getDeleteDocumentImageView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,12 +212,14 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     }
 
     public void hideCancelBtnAddDoc(boolean flag) {
-        if (rcv != null && rcv.getDeleteDocumentImageView() != null) {
-            if (flag)
-                rcv.getDeleteDocumentImageView().setVisibility(View.GONE);
-            else
-                rcv.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
-        }
+        fromVisitDetails = flag;
+        notifyItemRangeChanged(0, getItemCount());
+//        if (rcv != null && rcv.getDeleteDocumentImageView() != null) {
+//            if (flag)
+//                rcv.getDeleteDocumentImageView().setVisibility(View.GONE);
+//            else
+//                rcv.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
+//        }
 
     }
 

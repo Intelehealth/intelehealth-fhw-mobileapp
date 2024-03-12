@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.additionalDocumentsActivity;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,7 +14,7 @@ import org.intelehealth.app.R;
  * Github : @dbarretto
  */
 
-public class AdditionalDocumentViewHolder extends RecyclerView.ViewHolder{
+public class AdditionalDocumentViewHolder extends RecyclerView.ViewHolder {
 
     private TextView documentNameTextView;
     private ImageView documentPhotoImageView;
@@ -44,6 +45,9 @@ public class AdditionalDocumentViewHolder extends RecyclerView.ViewHolder{
         return rootView;
     }
 
-
+    public void hideCancel(boolean flag) {
+        int visibility = flag ? View.GONE : View.VISIBLE;
+        deleteDocumentImageView.setVisibility(visibility);
+    }
 
 }

@@ -2922,6 +2922,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }, 4000);
             } else {
                 add_additional_doc.setVisibility(View.GONE);
+                fetchingIntent();
                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
             }
         } else {
