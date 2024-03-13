@@ -1677,6 +1677,7 @@
     <string name="view_resulted_by_past_notes">تحميل النتائج</string>
     <string name="test_collection_data_saved"> تم حفظ بيانات جمع العينات</string>
     <string name="test_result_data_saved">تم حفظ بيانات تحميل النتائج</string>
+    <string name="enter_file_name">Enter file name</string>
 
 
 </resources>

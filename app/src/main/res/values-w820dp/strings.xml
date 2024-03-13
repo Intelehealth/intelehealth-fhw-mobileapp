@@ -34,4 +34,5 @@
     <string name="hide_details">Hide Details</string>
     <string name="dispensed_by">Dispensed by</string>
     <string name="administered_by">Administered by</string>
+    <string name="enter_file_name">Enter file name</string>
 </resources>

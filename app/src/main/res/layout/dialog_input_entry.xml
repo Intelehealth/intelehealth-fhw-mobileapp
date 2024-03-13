@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:padding="@dimen/common_padding"
-                android:text="Enter file name"
+                android:text="@string/enter_file_name"
                 android:textColor="@color/white"
                 android:textSize="@dimen/header_text_size"
                 android:textStyle="bold" />
