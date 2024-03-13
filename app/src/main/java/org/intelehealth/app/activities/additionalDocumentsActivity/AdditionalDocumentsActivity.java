@@ -5,11 +5,14 @@ import static org.intelehealth.app.activities.medicationAidActivity.AdministerDi
 import static org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity.IMAGE_LIST_INTENT;
 import static org.intelehealth.klivekit.utils.DateTimeUtils.ADD_DOC_IMAGE_FORMAT;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -34,6 +37,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -345,7 +350,7 @@ public class AdditionalDocumentsActivity extends BaseActivity {
                     // copy & rename the file
                     String finalImageName = "";
                     if (isDispenseAdminister)
-                        dialogTextInput(picturePath);
+                        showEnterInputDialog(picturePath);
                     else {
                         finalImageName = UUID.randomUUID().toString();
                         final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
@@ -355,6 +360,42 @@ public class AdditionalDocumentsActivity extends BaseActivity {
                 }
             });
 
+    public void showEnterInputDialog(String picturePath){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.dialog_input_entry);
+
+        TextInputEditText textInputEditText = dialog.findViewById(R.id.dialog_editText);
+        Button save_button = dialog.findViewById(R.id.save_button);
+        save_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (textInputEditText.getText().toString().isEmpty())
+                    textInputEditText.setError(getString(R.string.error_field_required));
+                else {
+                    String txtInputValue = textInputEditText.getText().toString();
+                    String currentDateTime = DateTimeUtils.formatToLocalDate(new Date(), ADD_DOC_IMAGE_FORMAT);
+                    String mImageName = txtInputValue + "_" + currentDateTime;
+
+                    final String finalFilePath = AppConstants.IMAGE_PATH + mImageName + ".jpg";
+                    BitmapUtils.copyFile(picturePath, finalFilePath);
+                    compressImageAndSave(finalFilePath);
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+        dialog.getWindow().clearFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        dialog.show();
+        textInputEditText.requestFocus();
+    }
+
+/*
     public void dialogTextInput(String picturePath) {
         MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
         View convertView = getLayoutInflater().inflate(R.layout.dialog_input_entry, null);
@@ -367,7 +408,10 @@ public class AdditionalDocumentsActivity extends BaseActivity {
                 if (textInputEditText.getText().toString().isEmpty())
                     textInputEditText.setError(getString(R.string.error_field_required));
                 else {
-                    String mImageName = textInputEditText.getText().toString();
+                    String txtInputValue = textInputEditText.getText().toString();
+                    String currentDateTime = DateTimeUtils.formatToLocalDate(new Date(), ADD_DOC_IMAGE_FORMAT);
+                    String mImageName = txtInputValue + "_" + currentDateTime;
+
                     final String finalFilePath = AppConstants.IMAGE_PATH + mImageName + ".jpg";
                     BitmapUtils.copyFile(picturePath, finalFilePath);
                     compressImageAndSave(finalFilePath);
@@ -386,6 +430,7 @@ public class AdditionalDocumentsActivity extends BaseActivity {
         pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
         IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
     }
+*/
 
 
     /**

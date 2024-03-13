@@ -1,13 +1,19 @@
 package org.intelehealth.app.utilities;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -68,5 +74,4 @@ public class DialogUtils {
         positiveButton.setTextColor(activity.getColor(R.color.colorPrimaryDark));
         IntelehealthApplication.setAlertDialogCustomTheme(activity, alert);
     }
-
 }
