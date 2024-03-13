@@ -2355,6 +2355,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         btnAppointment = findViewById(R.id.btn_vs_appointment);
         btnAppointment.setOnClickListener(v -> {
             if (!NetworkConnection.isOnline(context)) {
+                setAppointmentButtonStatus();
                 Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -2386,6 +2387,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mStartForScheduleAppointment.launch(in);
         });
     }
+
 
     private void rescheduleAppointment(VisitSummaryActivity_New context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
@@ -2895,8 +2897,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
                             Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+                            setAppointmentButtonStatus();
                             visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
-
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
                                     getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
@@ -2928,6 +2930,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         } else {
             showSelectSpeciliatyErrorDialog();
         }
+    }
+
+    /**
+     * function to set appointment button status
+     */
+    private void setAppointmentButtonStatus() {
+        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+        //added the logic because we will enable appointment button when visit is exist only
+        if (isVisitSpecialityExists && NetworkConnection.isOnline(context)) {
+            btnAppointment.setBackground(getDrawable(R.drawable.ui2_common_primary_bg));
+            btnAppointment.setEnabled(true);
+        } else {
+            btnAppointment.setBackground(getDrawable(R.drawable.ui2_bg_disabled_time_slot));
+            btnAppointment.setEnabled(false);
+        }
+
     }
 
     private void visitSentSuccessDialog(Context context, Drawable drawable, String title, String subTitle, String neutral) {
@@ -3695,6 +3713,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
+
+        setAppointmentButtonStatus();
+
     }
 
     // Netowork reciever
@@ -4418,11 +4439,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-            btnAppointment.setBackground(getDrawable(R.drawable.ui2_common_primary_bg));
         } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
-            btnAppointment.setBackground(getDrawable(R.drawable.ui2_bg_disabled_time_slot));
         }
+        setAppointmentButtonStatus();
     }
 
     private void doWebViewPrint_downloadBtn() throws ParseException {
