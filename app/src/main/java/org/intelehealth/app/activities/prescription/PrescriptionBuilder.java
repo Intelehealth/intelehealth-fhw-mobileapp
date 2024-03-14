@@ -72,17 +72,16 @@ public class PrescriptionBuilder {
             return "";
         }
 
-        String finalDisclaimerString = "";
+        String finalDisclaimerString;
         String closingDivTag = "</div>";
-        String openingSignatureDivTag = "<div>";
-        String floatRightDivOpeningTag = "<div>";
+        String openingDivTag= "<div>";
 
         String divClassDisclaimerTag = "<br><br><br><br><br>" +
                 "<br><br><br><br>" +
                 "<div style=\"text-align:center;\">" + disclaimerStr + closingDivTag;
 
-        finalDisclaimerString = openingSignatureDivTag
-                + floatRightDivOpeningTag
+        finalDisclaimerString = openingDivTag
+                + openingDivTag
                 + divClassDisclaimerTag
                 + closingDivTag
                 + closingDivTag;
