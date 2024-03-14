@@ -13,7 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultRegistry;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
@@ -30,6 +37,14 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
     private int mIntentFrom;
     String appLanguage, intentType;
     SessionManager sessionManager = null;
+
+    ActivityResultLauncher<Intent> activityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if(result.getResultCode() == AppConstants.PERSONAL_CONSENT_ACCEPT){
+            Intent intent = new Intent(this, IdentificationActivity_New.class);
+            startActivity(intent);
+            finish();
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +83,13 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
                 finish();
             }else {
-                Intent intent = new Intent(this, IdentificationActivity_New.class);
-                startActivity(intent);
-                finish();
+                Intent intent = new Intent(this, PersonalConsentActivity.class);
+                activityResult.launch(intent);
             }
         });
 
     }
+
 
     @Override
     public void onBackPressed() {
