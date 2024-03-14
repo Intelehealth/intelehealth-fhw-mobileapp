@@ -89,6 +89,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -387,6 +388,8 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     private String hasPrescription = "", hasPartialPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
+    private TextInputEditText tie_add_remarks;
+
    /* TextView tv_device_selected;
     Button btn_connect;
     private Object configObj;
@@ -710,6 +713,8 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
+        tie_add_remarks = findViewById(R.id.tie_add_remarks);
+        tie_add_remarks.setHint(getString(R.string.enter_details_here));
 
         // thermal printer
        /* tv_device_selected = findViewById(R.id.tv_device_selected);
@@ -5356,6 +5361,14 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
             dispenseIntent(tag);
         else if (view.getId() == R.id.tvAdminister)
             admininisterIntent(tag);
+    }
+
+    /**
+     * This is redirect and show all the past added Additional Remarks list...
+     * @param view
+     */
+    public void viewPastnotes(View view) {
+
     }
 
 /*    @Override
