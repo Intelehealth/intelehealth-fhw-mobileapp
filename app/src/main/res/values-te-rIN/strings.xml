@@ -780,4 +780,6 @@
     <string name="otp_sending">OTP Sending...</string>
     <string name="token_expired">Token Expired</string>
     <string name="your_session_has_expired_please_log_in_again">మీ సెషన్ గడువు ముగిసింది. దయచేసి మళ్లీ లాగిన్ చేయండి.</string>
+    <string name="forgot_username_link"><u>Forgot username?</u></string>
+    <string name="forgot_username_txt">Forgot username?</string>
 </resources>
