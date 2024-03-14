@@ -104,6 +104,7 @@ import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivi
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
 import org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity;
+import org.intelehealth.app.activities.medicationAidActivity.PastNotesDispenseAdministerActivity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
@@ -301,7 +302,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     RelativeLayout uploadButton, rl_med_aid;
     private TextView tvDispense_1, tvDispense_2, tvAdminister_1, tvAdminister_2, tvCollectedBy, tvReceivedBy;
     public static final String MEDICATION = "medication", AID = "aid", COLLECTED = "collected", RECEIVED = "received",
-            DISPENSE = "dispense", ADMINISTER = "administer";
+            DISPENSE = "dispense", ADMINISTER = "administer", ADDITIONAL_REMARKS = "additional_remarks";
 
     RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
@@ -625,8 +626,10 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
             }
 //            collectChatConnectionInfoFromFirebase();
         }
+
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
+
         if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
 
         //Check for license key and load the correct config file
@@ -5368,7 +5371,11 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
      * @param view
      */
     public void viewPastnotes(View view) {
-
+        Intent intent = new Intent(this, PastNotesDispenseAdministerActivity.class);
+        intent.putExtra("viewtag", ADDITIONAL_REMARKS);
+        intent.putExtra("mtag", "");
+        intent.putExtra("visitUUID", visitUUID);
+        startActivity(intent);
     }
 
 /*    @Override

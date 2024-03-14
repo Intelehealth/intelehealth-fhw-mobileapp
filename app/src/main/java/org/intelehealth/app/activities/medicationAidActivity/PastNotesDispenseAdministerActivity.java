@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.ADDITIONAL_REMARKS;
 import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.AID;
 import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.COLLECTED;
 import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.MEDICATION;
@@ -156,6 +157,8 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
             title = getString(R.string.view_past_test_notes);
         else if (viewtag.equalsIgnoreCase(RECEIVED))
             title = getString(R.string.view_resulted_by_past_notes);
+        else if (viewtag.equalsIgnoreCase(ADDITIONAL_REMARKS))
+            title = getString(R.string.additional_remarks);
 
         getSupportActionBar().setTitle(title);
     }
