@@ -32,7 +32,7 @@ public class DateTimeUtils {
     public static final String YYYY_MM_DD_WITH_SPLASH = "dd/MM/yyyy";
 
     public static final String CALL_LOG_TIME_FORMAT = "EEE, dd MMM yyyy HH:mm:ss";
-    public static final String ADD_DOC_IMAGE_FORMAT = "dd-MMM-yyyy_HH:mm:ss.SSS";
+    public static final String ADD_DOC_IMAGE_FORMAT = "dd-MM-yy_HH:mm:ss";
 
 
     @SuppressLint("SimpleDateFormat")
