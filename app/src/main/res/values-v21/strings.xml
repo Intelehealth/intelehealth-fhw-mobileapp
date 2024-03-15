@@ -82,5 +82,6 @@
     <string name="your_session_has_expired_please_log_in_again">Your session has expired. Please log in again.</string>
     <string name="forgot_username_link"><u>Forgot username?</u></string>
     <string name="forgot_username_txt">Forgot username?</string>
+    <string name="enter_mobile_no_given_text">Please make sure your mobile number is updated in the profile section before proceeding</string>
 
 </resources>

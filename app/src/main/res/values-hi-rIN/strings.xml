@@ -1465,4 +1465,5 @@
     <string name='your_session_has_expired_please_log_in_again'>आपका सत्र समाप्त हो गया है। कृपया दोबारा लॉग इन करें।</string>
     <string name="forgot_username_link"><u>यूजरनेम भूल गए?</u></string>
     <string name="forgot_username_txt">यूजरनेम भूल गए?</string>
+    <string name="enter_mobile_no_given_text">कृपया जांचें कि आपका मोबाइल नंबर प्रोफ़ाइल में अपडेट किया गया है, फिर आगे बढ़ें।</string>
 </resources>

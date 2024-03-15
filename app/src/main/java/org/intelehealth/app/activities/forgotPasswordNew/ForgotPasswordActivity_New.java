@@ -287,6 +287,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                                     intent.putExtra("userUuid", forgotPasswordApiResponseModel_new.getData().getUuid());
                                     intent.putExtra("userName", username);
                                     intent.putExtra("userPhoneNum", mobileNo);
+                                    intent.putExtra("action", mActionType);
                                     startActivity(intent);
                                     finish();
                                 }
