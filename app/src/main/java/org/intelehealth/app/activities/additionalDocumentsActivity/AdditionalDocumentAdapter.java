@@ -85,10 +85,11 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     public void onBindViewHolder(final AdditionalDocumentViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
         String filename = documentList.get(position).getDocumentName();
-        holder.getDocumentNameTextView().setText(filename.substring(0, filename.indexOf("_"))); // so that only user input txt is shown as filename and datetime is skipped.
-
-//        holder.getDocumentNameTextView().setText
-//                (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
+        if (filename.contains("_"))
+            holder.getDocumentNameTextView().setText(filename.substring(0, filename.indexOf("_"))); // so that only user input txt is shown as filename and datetime is skipped.
+        else
+            holder.getDocumentNameTextView().setText
+                (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
 
 
         final File image = new File(documentList.get(position).getDocumentPhoto());

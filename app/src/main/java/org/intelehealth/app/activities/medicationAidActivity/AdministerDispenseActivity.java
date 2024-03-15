@@ -430,6 +430,7 @@ public class AdministerDispenseActivity extends BaseActivity {
         imgbtn_uploadDocs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent docIntent = new Intent(context, AdditionalDocumentsActivity.class);
 
                 if (tag.equalsIgnoreCase(DISPENSE)) {
                     createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_DISPENSE);
@@ -444,13 +445,13 @@ public class AdministerDispenseActivity extends BaseActivity {
                     createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_TEST_RECEIVE);
                 }
 
-                Intent docIntent = new Intent(context, AdditionalDocumentsActivity.class);
                 docIntent.putExtra("patientUuid", patientUuid);
                 docIntent.putExtra("visitUuid", visitUuid);
                 docIntent.putExtra("encounterUuidVitals", encounterVitals);
                 docIntent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                 docIntent.putExtra("fileuuidList", fileuuidList);
-                docIntent.putExtra("isDispenseAdminister", true);
+                docIntent.putExtra("isDispenseAdminister", (tag.equalsIgnoreCase(DISPENSE) || tag.equalsIgnoreCase(ADMINISTER)
+                        || tag.equalsIgnoreCase(COLLECTED) || tag.equalsIgnoreCase(RECEIVED)));
 
                 Log.d(TAG, "img btn onClick: " + encounterDisenseAdminister);
                 docIntent.putExtra("encounterDispenseAdminister", encounterDisenseAdminister);

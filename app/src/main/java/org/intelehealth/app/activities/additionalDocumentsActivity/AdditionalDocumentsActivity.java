@@ -311,12 +311,12 @@ public class AdditionalDocumentsActivity extends BaseActivity {
 
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                cameraIntent.putExtra(IS_DISPENSE_ADMINISTER, true);
+                cameraIntent.putExtra(IS_DISPENSE_ADMINISTER, isDispenseAdminister);
                 resultCameraContract.launch(cameraIntent);
             }
             else if (item == 1) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                intent.putExtra(IS_DISPENSE_ADMINISTER, true);
+                intent.putExtra(IS_DISPENSE_ADMINISTER, isDispenseAdminister);
                 resultGalleryContract.launch(intent);
             }
             else if (options[item].equals("Cancel")) {
