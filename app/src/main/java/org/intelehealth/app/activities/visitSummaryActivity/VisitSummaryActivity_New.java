@@ -1757,7 +1757,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), getResources().getString(R.string.send_visit), getResources().getString(R.string.are_you_sure_you_want_to_send_visit), getResources().getString(R.string.yes), getResources().getString(R.string.no));
+                if(NetworkConnection.isOnline(context)){
+                    visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), getResources().getString(R.string.send_visit), getResources().getString(R.string.are_you_sure_you_want_to_send_visit), getResources().getString(R.string.yes), getResources().getString(R.string.no));
+                }else {
+                    Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
+                }
             }
         });
         // upload btn click - end

@@ -76,9 +76,8 @@ public class PrescriptionBuilder {
         String closingDivTag = "</div>";
         String openingDivTag= "<div>";
 
-        String divClassDisclaimerTag = "<br><br><br><br><br>" +
-                "<br><br><br><br>" +
-                "<div style=\"text-align:center;\">" + disclaimerStr + closingDivTag;
+        String divClassDisclaimerTag =
+                "<div style=\" position: fixed; bottom: 0; left: 0; width: 100%; text-align: center;\">" + disclaimerStr + closingDivTag;
 
         finalDisclaimerString = openingDivTag
                 + openingDivTag
