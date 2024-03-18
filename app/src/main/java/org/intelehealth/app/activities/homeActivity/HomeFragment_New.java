@@ -31,6 +31,7 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentOnAttachListener;
+import androidx.lifecycle.DefaultLifecycleObserver;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -62,7 +63,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class HomeFragment_New extends Fragment implements NetworkUtils.InternetCheckUpdateInterface {
+public class HomeFragment_New extends Fragment implements NetworkUtils.InternetCheckUpdateInterface, DefaultLifecycleObserver {
     private static final String TAG = "HomeFragment_New";
     View view;
     SessionManager sessionManager;
@@ -407,10 +408,10 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_internet_available));
 
         } else {
-            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_no_internet));
 
         }
     }

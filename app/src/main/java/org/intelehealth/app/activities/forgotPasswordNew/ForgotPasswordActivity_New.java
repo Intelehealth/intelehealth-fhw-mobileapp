@@ -125,8 +125,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             layoutUsername.setVisibility(View.VISIBLE);
             tvMobileError.setVisibility(View.GONE);
             tvUsernameError.setVisibility(View.GONE);
-            buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
-            buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            buttonUsername.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_ui2));
+            buttonMobileNumber.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_disabled_ui2));
             etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
 
@@ -138,8 +138,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             tvUsernameError.setVisibility(View.GONE);
             layoutUsername.setVisibility(View.GONE);
             layoutMobileNo.setVisibility(View.VISIBLE);
-            buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
-            buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            buttonMobileNumber.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_ui2));
+            buttonUsername.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_disabled_ui2));
             etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         });
@@ -151,11 +151,6 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     private void initUI() {

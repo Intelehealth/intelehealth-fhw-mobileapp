@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -27,6 +28,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.ResetPasswordResModel_New;
@@ -65,6 +67,9 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password_ui2);
+
+        handleBackPress();
+
         context = ResetPasswordActivity_New.this;
         cpd = new CustomProgressDialog(context);
         snackbarUtils = new SnackbarUtils();
@@ -146,10 +151,17 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         return context;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+    /**
+     * removed onBackPressed function due to deprecation
+     * and added this one to handle onBackPressed
+     */
+    private void handleBackPress() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+            }
+        });
     }
 
     public void apiCallForResetPassword(Context context, String newPassword, String otp) {
