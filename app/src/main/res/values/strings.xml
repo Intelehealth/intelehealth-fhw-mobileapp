@@ -122,6 +122,7 @@
     //Patient History Screen
     <string name="title_activity_get_patient_history" translatable="false">Patient History</string>
     <string name="title_activity_search_patient" translatable="false">Patient Lookup</string>
+    <string name="toolbar_search_patient">Search Patient</string>
 
     //Complaint Node Screen
     <string name="title_activity_complaint_select" translatable="false">Select Complaints</string>
@@ -1228,5 +1229,14 @@
     <string name="prescription_dr_email">Email: %1$s</string>
     <string name="prescription_dr_registration">Registration No: %1$s</string>
     <string name="please_install_whatsapp">Please install WhatsApp for sharing this prescription.</string>
+
+    // Search Patient Screen Tabs
+    <string name="tab_anemia_screening">Anemia Screening</string>
+    <string name="tab_anemia_follow_up">Anemia Follow-Up</string>
+    <string name="tab_diabetes_screening">Diabetes Screening</string>
+    <string name="tab_diabetes_follow_up">Diabetes Follow-Up</string>
+    <string name="tab_hypertension_screening">Hypertension Screening</string>
+    <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
+    <string name="tab_general">General</string>
 
 </resources>

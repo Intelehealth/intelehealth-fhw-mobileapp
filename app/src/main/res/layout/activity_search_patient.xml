@@ -1,87 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     tools:context=".activities.searchPatientActivity.SearchPatientActivity">
 
-        <com.google.android.material.appbar.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="@string/toolbar_search_patient" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+        app:tabMode="scrollable">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_anemia_screening"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:text="@string/tab_anemia_screening" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_anemia_follow_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_anemia_follow_up" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_margin="10dp">
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_diabetes_screening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_diabetes_screening" />
 
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/type_to_search"
-                        android:layout_weight="1"
-                        android:singleLine="true"
-                        android:background="@null"
-                        android:id="@+id/toolbar_ET" />
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_diabetes_follow_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_diabetes_follow_up" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@drawable/ic_baseline_clear_24"
-                        android:layout_marginHorizontal="5dp"
-                        android:id="@+id/toolbar_clear"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_hypertension_screening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_hypertension_screening" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@drawable/ic_baseline_search_24"
-                        android:layout_marginHorizontal="5dp"
-                        android:id="@+id/toolbar_search"
-                        android:paddingHorizontal="5dp"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_hypertension_follow_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_hypertension_follow_up" />
 
-                </LinearLayout>
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_general"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_general" />
 
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.tabs.TabLayout>
 
-        <!--<include layout="@layout/content_search_patient" />-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginTop="10dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".activities.search_patient_activity.SearchPatientActivity"
-            tools:showIn="@layout/activity_search_patient">
-
-            <TextView
-                android:id="@+id/textviewmessage"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/please_wait_till_sync_is_completed"
-                android:fontFamily="@font/lato_regular"
-                android:visibility="visible" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-        </RelativeLayout>
-
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
