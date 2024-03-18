@@ -1511,7 +1511,7 @@
     <string name="label_setting">إعداد التسمية</string>
     <string name="bluetooth_notsupported_device">لا يتم دعم Bluetooth على هذا الجهاز</string>
     <string name="turn_on_bluetooth">يرجى تشغيل البلوتوث</string>
-    <string name="no_presc_available">لم يتم إنهاء الزيارة بعد. يمكنك تنزيل الملخص و مشاركته فور إنهاء الزيارة من قبل الطبيب</string>
+    <string name="no_presc_available">لم يتم إنهاء الزيارة بعد. يمكنك مشاركتك الملخص فور إنهاء الطبيب للزيارة</string>
     <string name="_main_connected">\"توصيل النجاح\"</string>
     <string name="_main_connected_fail">فشل الاتصال</string>
     <string name="_main_disconnect">\" انقطع الاتصال\"</string>
