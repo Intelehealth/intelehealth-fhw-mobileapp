@@ -43,6 +43,8 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
             Intent intent = new Intent(this, IdentificationActivity_New.class);
             startActivity(intent);
             finish();
+        }else {
+            finish();
         }
     });
 
