@@ -42,9 +42,11 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 import android.telephony.SmsManager;
+import android.text.Editable;
 import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -76,7 +78,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
@@ -133,6 +134,7 @@ import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dispenseAdministerModel.AidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationModel;
+import org.intelehealth.app.models.dispenseAdministerModel.PastNotesModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
@@ -718,6 +720,26 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
         tie_add_remarks = findViewById(R.id.tie_add_remarks);
         tie_add_remarks.setHint(getString(R.string.enter_details_here));
+        tie_add_remarks.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tie_add_remarks.setHint("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().equalsIgnoreCase(""))
+                    tie_add_remarks.setHint(getString(R.string.enter_details_here));
+                else
+                    tie_add_remarks.setHint("");
+            }
+        });
+
 
         // thermal printer
        /* tv_device_selected = findViewById(R.id.tv_device_selected);
@@ -1070,7 +1092,6 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Log.d("visitUUID", "upload_click: " + visitUUID);
 
                 // The below condition has been added keeping in mind that no HW will be able to upload empty complaints: (Ticket SYR-171): Nishita Goyal
@@ -1117,6 +1138,13 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
 
                     if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
                 }
+
+                // Additional remarks - start
+                String addRemarks = tie_add_remarks.getText().toString().trim();
+                if (!addRemarks.isEmpty()) {    // ie. not empty.
+                    createAdditionalRemarksOBSandPush(addRemarks);
+                }
+                // Additional remarks - end
 
                 if (flag.isChecked()) {
                     try {
@@ -1873,6 +1901,42 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         //   queryData(String.valueOf(patientUuid));
         //  downloadPrescriptionDefault();
         getAppointmentDetails(visitUuid);
+    }
+
+    private void createAdditionalRemarksOBSandPush(String addRemarks) {
+        EncounterDAO encounterDAO = new EncounterDAO(); // 1. update sync of encounter.
+        try {
+            encounterDAO.updateEncounterSync("false", encounterUuidAdultIntial);
+            encounterDAO.updateEncounterModifiedDate(encounterUuidAdultIntial);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // Create OBS and push - START
+        PastNotesModel model = new PastNotesModel();
+        model.setAdditional_remark(addRemarks);
+        model.setHwUuid(sessionManager.getProviderID()); // 3. hw uuid
+        model.setHwName(sessionManager.getChwname());    // 3b. hw name
+        model.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.
+
+        Gson gson = new Gson();
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(UuidDictionary.ADDITIONAL_REMARKS);  // OBS aid data.
+        obsDTO.setEncounteruuid(encounterUuidAdultIntial);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(gson.toJson(model));
+
+        Log.d(TAG, "insertAidObs: " + gson.toJson(model));
+
+        try {
+            boolean isInserted = obsDAO.insertObs(obsDTO);  // 2. create new obs.
+            if (isInserted)
+                tie_add_remarks.setText("");
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        // END
     }
 
     private void startChat() {
@@ -5373,7 +5437,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     public void viewPastnotes(View view) {
         Intent intent = new Intent(this, PastNotesDispenseAdministerActivity.class);
         intent.putExtra("viewtag", ADDITIONAL_REMARKS);
-        intent.putExtra("mtag", "");
+        intent.putExtra("mtag", ADDITIONAL_REMARKS);
         intent.putExtra("visitUUID", visitUUID);
         startActivity(intent);
     }

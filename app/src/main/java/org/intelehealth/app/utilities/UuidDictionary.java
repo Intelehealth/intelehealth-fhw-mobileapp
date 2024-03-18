@@ -62,6 +62,7 @@ public class UuidDictionary {
     public static final String OBS_DOCTORDETAILS = "7a9cb7bc-9ab9-4ff0-ae82-7a1bd2cca93e";
 
     public static final String EMERGENCY_OBS = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
+    public static final String ADDITIONAL_REMARKS = "294525e9-8960-4541-ba12-b82c5a2736e5";
 
     //Patient Identifier Type
     public static final String IDENTIFIER_OPENMRS_ID = "05a29f94-c0ed-11e2-94be-8c13b969e334";

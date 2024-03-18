@@ -111,6 +111,11 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
             encounterTypeUUID = UuidDictionary.ENCOUNTER_TEST_RECEIVE;
             obsConceptUUID = UuidDictionary.OBS_TEST_RECEIVE;
         }
+        else if (tag.equalsIgnoreCase(ADDITIONAL_REMARKS)) {
+            encounterTypeUUID = UuidDictionary.ENCOUNTER_ADULTINITIAL;
+            obsConceptUUID = UuidDictionary.ADDITIONAL_REMARKS;
+        }
+
 
         if (encounterTypeUUID != null && obsConceptUUID != null) {
             List<PastNotesModel> list = getObsPastNotes(visitUUID, encounterTypeUUID, obsConceptUUID);
@@ -126,6 +131,9 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
                         pastNotesModelList.add(new PastNotesModel(model.getMedicationNotesList().get(0), dateTime));
                     else if (viewtag.equalsIgnoreCase("aid")) {
                         pastNotesModelList.add(new PastNotesModel(model.getAidNotesList().get(0), dateTime));
+                    }
+                    else if (viewtag.equalsIgnoreCase(ADDITIONAL_REMARKS)) {
+                        pastNotesModelList.add(new PastNotesModel(model.getAdditional_remark(), dateTime));
                     }
                 }
             }
