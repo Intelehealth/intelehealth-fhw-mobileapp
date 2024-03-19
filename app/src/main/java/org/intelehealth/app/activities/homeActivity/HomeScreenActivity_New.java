@@ -77,6 +77,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -310,6 +311,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         }
         sessionManager = new SessionManager(this);
+
+        backPress();
         initUI();
         clickListeners();
 //        getOnBackPressedDispatcher().addCallback(backPressedCallback);
@@ -585,36 +588,19 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
-            /*mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
-            mSyncProgressDialog.setTitle(R.string.syncInProgress);
-            mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setMax(100);
-            mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mSyncProgressDialog.setIndeterminate(false);
-            mSyncProgressDialog.show();*/
-
-            mSyncAlertDialog = new AlertDialog.Builder(this).create();
-            View syncView = LayoutInflater.from(this).inflate(R.layout.dialog_sync_progress,null);
-            mSyncAlertDialog.setView(syncView);
-            syncProgressbar = syncView.findViewById(R.id.progressBar);
-            progressTvStart = syncView.findViewById(R.id.progressTvStart);
-            progressTvEnd = syncView.findViewById(R.id.progressTvEnd);
-            syncProgressbar.setMax(100);
-            syncProgressbar.setIndeterminate(false);
-            mSyncAlertDialog.show();
-
+            showRefreshDialog();
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
-           // showRefreshInProgressDialog();
+            showRefreshInProgressDialog();
             Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home",this));
         } else {
             // if initial setup done then we can directly set the periodic background sync job
-            WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
 //            requestPermission();
         }
         //bottom nav
         bottomNav = findViewById(R.id.bottom_nav_home);
-        bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
@@ -623,13 +609,29 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     }
 
+    /**
+     * alert dialog to show refresh percentage
+     */
+    private void showRefreshDialog() {
+        mSyncAlertDialog = new AlertDialog.Builder(this).create();
+        View syncView = LayoutInflater.from(this).inflate(R.layout.dialog_sync_progress,null);
+        mSyncAlertDialog.setView(syncView);
+        mSyncAlertDialog.setCancelable(false);
+        syncProgressbar = syncView.findViewById(R.id.progressBar);
+        progressTvStart = syncView.findViewById(R.id.progressTvStart);
+        progressTvEnd = syncView.findViewById(R.id.progressTvEnd);
+        syncProgressbar.setMax(100);
+        syncProgressbar.setIndeterminate(false);
+        mSyncAlertDialog.show();
+    }
+
     private void showSnackBarAndRemoveLater(String text) {
         survey_snackbar_cv.setVisibility(View.VISIBLE);
         TextView textView = findViewById(R.id.snackbar_text);
         ImageView snackbar_icon = findViewById(R.id.snackbar_icon);
 
         textView.setText(text);
-        snackbar_icon.setImageDrawable(getDrawable(R.drawable.ui2_ic_exit_app));
+        snackbar_icon.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_exit_app));
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
@@ -644,12 +646,19 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         Log.d(TAG, "checkForInternet: result : " + result);
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        else handleBackPress();
+    /**
+     * removed onBackPressed function due to deprecation
+     * and added this one to handle onBackPressed
+     */
+    private void backPress() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                else handleBackPress();
+            }
+        });
     }
 
     private void handleBackPress() {
@@ -968,7 +977,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             firstLogin = "";
             getIntent().putExtra("firstLogin", "");
 
-            //showLoggingInDialog();
+            showLoggingInDialog();
 
         }
         checkAppVer();  //auto-update feature.
@@ -1201,7 +1210,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    NavigationBarView.OnItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment;
@@ -1373,10 +1382,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            imageViewIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
 
         } else {
-            imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            imageViewIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
 
         }
     }
@@ -1471,8 +1480,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             Logger.logD(SyncDAO.PULL_ISSUE, "onchanged of livedata again called up");
             if (mSyncAlertDialog != null) {
                 syncProgressbar.setProgress(progress);
-                progressTvStart.setText((progress)+"%");
-                progressTvEnd.setText(progress+"/100");
+                if(progress <= 100){
+                    progressTvStart.setText((progress)+"%");
+                    progressTvEnd.setText(progress+"/100");
+                }
                 Logger.logD(SyncDAO.PULL_ISSUE, "% -> " + String.valueOf(progress));
 
                 if (progress == 100) {

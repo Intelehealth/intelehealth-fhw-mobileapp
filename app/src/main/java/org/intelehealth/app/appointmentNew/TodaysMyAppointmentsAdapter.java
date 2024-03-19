@@ -71,7 +71,6 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
         return myViewHolder;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(TodaysMyAppointmentsAdapter.MyViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: appointmentInfoList : " + appointmentInfoList.size());
@@ -94,7 +93,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
             if (appointmentInfoModel.getPatientProfilePhoto() != null && !appointmentInfoModel.getPatientProfilePhoto().isEmpty()) {
                 Glide.with(context)
                         .load(appointmentInfoModel.getPatientProfilePhoto())
-                        .thumbnail(0.3f)
+                        .sizeMultiplier(0.3f)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
@@ -129,9 +128,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                                     timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate())) + "," + " " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                                 holder.tvDate.setText(timeText);
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
-                                }
+                                holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                             } else {
                                 if (hours > 1) {
                                     if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
@@ -158,9 +155,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                                 holder.tvDate.setText(timeText);
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
-                                }
+                                holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                             }
                         } else {
                             if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
@@ -171,9 +166,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
                             holder.tvDate.setText(timeText);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
-                            }
+                            holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                         }
                     }
 
@@ -318,7 +311,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                         if (updated) {
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
-                                    .thumbnail(0.3f)
+                                    .sizeMultiplier(0.3f)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)

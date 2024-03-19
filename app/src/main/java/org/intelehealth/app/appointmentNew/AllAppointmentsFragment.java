@@ -39,6 +39,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -215,8 +216,8 @@ public class AllAppointmentsFragment extends Fragment {
                     getResources().getDisplayMetrics()
             );
             chip.setText(tagName1);
-            chip.setCloseIconEnabled(true);
-            chip.setBackground(getResources().getDrawable(R.drawable.ui2_ic_selcted_chip_bg));
+            chip.setCloseIconVisible(true);
+            chip.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_selcted_chip_bg));
             chipGroup.addView(chip);
             chip.setOnCloseIconClickListener(v -> {
                 filtersList.remove(filterOptionsModel);
@@ -587,22 +588,22 @@ public class AllAppointmentsFragment extends Fragment {
     private void updateCardBackgrounds(String cardName) {
         // update all 3 cards background as per selection
         if (cardName.equals("upcoming")) {
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
         } else if (cardName.equals("cancelled")) {
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
 
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
         } else if (cardName.equals("completed")) {
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
 
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
         }
 
     }
@@ -643,7 +644,6 @@ public class AllAppointmentsFragment extends Fragment {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void onRadioButtonClicked(View view, String selectedAppointmentOption) {
         boolean checked = ((RadioButton) view).isChecked();
         RadioButton checkedRadioButton = ((RadioButton) view);
@@ -655,9 +655,9 @@ public class AllAppointmentsFragment extends Fragment {
                 if (checked) {
                     whichAppointment = "upcoming";
 
-                    rbUpcoming.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_selected_green));
-                    rbCancelled.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_circle));
-                    rbCompleted.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_circle));
+                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_selected_green));
+                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
+                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
                     updateCardBackgrounds("upcoming");
                     updateMAinLayoutAsPerOptionSelected("upcoming");
                 }
@@ -667,9 +667,9 @@ public class AllAppointmentsFragment extends Fragment {
                 if (checked) {
                     whichAppointment = "cancelled";
 
-                    rbUpcoming.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_circle));
-                    rbCancelled.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_selected_green));
-                    rbCompleted.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_circle));
+                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
+                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_selected_green));
+                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
                     updateCardBackgrounds("cancelled");
                     updateMAinLayoutAsPerOptionSelected("cancelled");
 
@@ -680,9 +680,9 @@ public class AllAppointmentsFragment extends Fragment {
                 if (checked) {
                     whichAppointment = "completed";
 
-                    rbUpcoming.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_circle));
-                    rbCancelled.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_circle));
-                    rbCompleted.setButtonDrawable(getActivity().getDrawable(R.drawable.ui2_ic_selected_green));
+                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
+                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
+                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_selected_green));
                     updateCardBackgrounds("completed");
 
                     updateMAinLayoutAsPerOptionSelected("completed");

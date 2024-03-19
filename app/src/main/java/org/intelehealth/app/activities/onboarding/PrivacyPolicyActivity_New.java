@@ -56,9 +56,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
         mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
         intentType = getIntent().getStringExtra("intentType");
         ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
@@ -90,13 +88,6 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
             }
         });
 
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
     }
 
     public void declinePP(View view) {

@@ -31,6 +31,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -362,9 +363,9 @@ public class VisitPendingFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equalsIgnoreCase(""))
-                    searchview_pending.setBackground(getResources().getDrawable(R.drawable.blue_border_bg));
+                    searchview_pending.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.blue_border_bg));
                 else
-                    searchview_pending.setBackground(getResources().getDrawable(R.drawable.ui2_common_input_bg));
+                    searchview_pending.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_common_input_bg));
                 return false;
             }
         });

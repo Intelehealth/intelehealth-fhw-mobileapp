@@ -112,7 +112,7 @@ public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFr
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        getOnBackPressedDispatcher().onBackPressed();
         return super.onSupportNavigateUp();
 
     }

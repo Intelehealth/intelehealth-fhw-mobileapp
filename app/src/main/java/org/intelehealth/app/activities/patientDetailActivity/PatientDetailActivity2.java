@@ -212,9 +212,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -276,7 +274,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         startVisitBtn.setOnClickListener(v -> {
             patientRegistrationDialog(context,
-                    getResources().getDrawable(R.drawable.dialog_icon_complete),
+                    ContextCompat.getDrawable(this,R.drawable.dialog_icon_complete),
                     getResources().getString(R.string.patient_registered),
                     getResources().getString(R.string.does_patient_start_visit_now),
                     getResources().getString(R.string.button_continue),

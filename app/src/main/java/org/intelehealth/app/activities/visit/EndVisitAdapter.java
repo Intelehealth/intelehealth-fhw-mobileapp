@@ -27,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -148,7 +149,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                         .skipMemoryCache(true)
                         .into(holder.profile_image);
             } else {
-                holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+                holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
             }
             // photo - end
 

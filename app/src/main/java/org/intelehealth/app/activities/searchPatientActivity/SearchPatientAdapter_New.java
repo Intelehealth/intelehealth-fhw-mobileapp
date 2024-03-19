@@ -158,7 +158,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             if (model.getPatientPhoto() != null) {
                 Glide.with(context)
                         .load(model.getPatientPhoto())
-                        .thumbnail(0.3f)
+                        .sizeMultiplier(0.3f)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)

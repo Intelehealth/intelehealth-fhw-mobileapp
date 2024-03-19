@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -241,7 +242,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 genericViewHolder.singleComponentContainer.removeAllViews();
                 genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
 
-                genericViewHolder.yesTextView.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+                genericViewHolder.yesTextView.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
                 genericViewHolder.yesTextView.setBackgroundResource(R.drawable.normal_white_reounded_bg);
                 genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_green, 0, 0, 0);
                 genericViewHolder.recyclerView.setVisibility(View.GONE);

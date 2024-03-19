@@ -34,6 +34,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -80,6 +83,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 public class Fragment_FirstScreen extends Fragment implements SendSelectedDateInterface {
@@ -254,7 +258,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 //  patient_imgview.setImageBitmap(BitmapFactory.decodeFile(patientdto.getPatientPhoto()));
                 Glide.with(getActivity())
                         .load(new File(patientdto.getPatientPhoto()))
-                        .thumbnail(0.25f)
+                        .sizeMultiplier(0.25f)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
@@ -266,157 +270,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         setMobileNumberLimit();
 
 
-    }
-
-    private int mSelectedMobileNumberValidationLength = 0;
-    private String mSelectedCountryCode = "";
-
-    private void setMobileNumberLimit() {
-        mSelectedCountryCode = mCountryCodePicker.getSelectedCountryCode();
-        if (mSelectedCountryCode.equals("91")) {
-            mSelectedMobileNumberValidationLength = 10;
-        }
-        mPhoneNumberEditText.setInputType(InputType.TYPE_CLASS_PHONE);
-        InputFilter inputFilter = new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                return null;
-            }
-        };
-
-        mPhoneNumberEditText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(mSelectedMobileNumberValidationLength)});
-        // hide the validation fields ...
-        mPhoneNumberErrorTextView.setVisibility(View.GONE);
-        mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-    }
-
-    @Override
-    public void getSelectedDate(String selectedDate, String whichDate) {
-        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
-        if (selectedDate != null) {
-            try {
-                Date sourceDate = new SimpleDateFormat("dd/MM/yyyy").parse(selectedDate);
-                Date nowDate = new Date();
-                if (sourceDate.after(nowDate)) {
-                    mAgeEditText.setText("");
-                    mDOBEditText.setText("");
-                    Toast.makeText(getActivity(), getString(R.string.valid_dob_msg), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
-        if (!selectedDate.isEmpty()) {
-            dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
-//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
-            //for age
-            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
-            mAgeYears = Integer.parseInt(ymdData[0]);
-            mAgeMonths = Integer.parseInt(ymdData[1]);
-            mAgeDays = Integer.parseInt(ymdData[2]);
-
-            String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
-            String[] splitedDate = selectedDate.split("/");
-            if (age != null && !age.isEmpty()) {
-                mAgeEditText.setText(age);
-                mDOBEditText.setText(dateToshow1 + ", " + splitedDate[2]);
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                    mDOBEditText.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
-                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
-            } else {
-                mAgeEditText.setText("");
-                mDOBEditText.setText("");
-            }
-        } else {
-            Log.d(TAG, "onClick: date empty");
-        }
-    }
-
-    class MyTextWatcher implements TextWatcher {
-        EditText editText;
-
-        MyTextWatcher(EditText editText) {
-            this.editText = editText;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            String val = editable.toString().trim();
-            if (this.editText.getId() == R.id.firstname_edittext) {
-                if (val.isEmpty()) {
-                    mFirstNameErrorTextView.setVisibility(View.VISIBLE);
-                    mFirstNameErrorTextView.setText(getString(R.string.error_field_required));
-                    mFirstNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mFirstNameErrorTextView.setVisibility(View.GONE);
-                    mFirstNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.middlename_edittext) {
-               /* if (val.isEmpty()) {
-                    mMiddleNameErrorTextView.setVisibility(View.VISIBLE);
-                    mMiddleNameErrorTextView.setText(getString(R.string.error_field_required));
-                    mMiddleNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mMiddleNameErrorTextView.setVisibility(View.GONE);
-                    mMiddleNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }*/
-            } else if (this.editText.getId() == R.id.lastname_edittext) {
-                if (val.isEmpty()) {
-                    mLastNameErrorTextView.setVisibility(View.VISIBLE);
-                    mLastNameErrorTextView.setText(getString(R.string.error_field_required));
-                    mLastNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mLastNameErrorTextView.setVisibility(View.GONE);
-                    mLastNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.dob_edittext) {
-                if (val.isEmpty()) {
-                    mDOBErrorTextView.setVisibility(View.VISIBLE);
-                    mDOBErrorTextView.setText(getString(R.string.error_field_required));
-                    mDOBEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mDOBErrorTextView.setVisibility(View.GONE);
-                    mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.age_edittext) {
-                if (val.isEmpty()) {
-                    mAgeErrorTextView.setVisibility(View.VISIBLE);
-                    mAgeErrorTextView.setText(getString(R.string.error_field_required));
-                    mAgeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mAgeErrorTextView.setVisibility(View.GONE);
-                    mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.phoneno_edittext) {
-                if (val.isEmpty()) {
-                    mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
-                    mPhoneNumberErrorTextView.setText(getString(R.string.error_field_required));
-                    mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mPhoneNumberErrorTextView.setVisibility(View.GONE);
-                    mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        personal_icon.setImageDrawable(getResources().getDrawable(R.drawable.addpatient_icon));
-        address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon_unselected));
-        other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon_unselected));
+        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addpatient_icon));
+        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addresslocation_icon_unselected));
+        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.other_icon_unselected));
 
 
         // next btn click
@@ -590,8 +446,148 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 //                IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
             }
         });
+    }
 
-        // Age - end
+    private int mSelectedMobileNumberValidationLength = 0;
+    private String mSelectedCountryCode = "";
+
+    private void setMobileNumberLimit() {
+        mSelectedCountryCode = mCountryCodePicker.getSelectedCountryCode();
+        if (mSelectedCountryCode.equals("91")) {
+            mSelectedMobileNumberValidationLength = 10;
+        }
+        mPhoneNumberEditText.setInputType(InputType.TYPE_CLASS_PHONE);
+        InputFilter inputFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                return null;
+            }
+        };
+
+        mPhoneNumberEditText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(mSelectedMobileNumberValidationLength)});
+        // hide the validation fields ...
+        mPhoneNumberErrorTextView.setVisibility(View.GONE);
+        mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+    }
+
+    @Override
+    public void getSelectedDate(String selectedDate, String whichDate) {
+        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
+        if (selectedDate != null) {
+            try {
+                Date sourceDate = new SimpleDateFormat("dd/MM/yyyy").parse(selectedDate);
+                Date nowDate = new Date();
+                if (sourceDate.after(nowDate)) {
+                    mAgeEditText.setText("");
+                    mDOBEditText.setText("");
+                    Toast.makeText(getActivity(), getString(R.string.valid_dob_msg), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
+        if (!selectedDate.isEmpty()) {
+            dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
+            //for age
+            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
+            mAgeYears = Integer.parseInt(ymdData[0]);
+            mAgeMonths = Integer.parseInt(ymdData[1]);
+            mAgeDays = Integer.parseInt(ymdData[2]);
+
+            String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+            String[] splitedDate = selectedDate.split("/");
+            if (age != null && !age.isEmpty()) {
+                mAgeEditText.setText(age);
+                mDOBEditText.setText(dateToshow1 + ", " + splitedDate[2]);
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    mDOBEditText.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
+                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+            } else {
+                mAgeEditText.setText("");
+                mDOBEditText.setText("");
+            }
+        } else {
+            Log.d(TAG, "onClick: date empty");
+        }
+    }
+
+    class MyTextWatcher implements TextWatcher {
+        EditText editText;
+
+        MyTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String val = editable.toString().trim();
+            if (this.editText.getId() == R.id.firstname_edittext) {
+                if (val.isEmpty()) {
+                    mFirstNameErrorTextView.setVisibility(View.VISIBLE);
+                    mFirstNameErrorTextView.setText(getString(R.string.error_field_required));
+                    mFirstNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mFirstNameErrorTextView.setVisibility(View.GONE);
+                    mFirstNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.middlename_edittext) {
+               /* if (val.isEmpty()) {
+                    mMiddleNameErrorTextView.setVisibility(View.VISIBLE);
+                    mMiddleNameErrorTextView.setText(getString(R.string.error_field_required));
+                    mMiddleNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mMiddleNameErrorTextView.setVisibility(View.GONE);
+                    mMiddleNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }*/
+            } else if (this.editText.getId() == R.id.lastname_edittext) {
+                if (val.isEmpty()) {
+                    mLastNameErrorTextView.setVisibility(View.VISIBLE);
+                    mLastNameErrorTextView.setText(getString(R.string.error_field_required));
+                    mLastNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mLastNameErrorTextView.setVisibility(View.GONE);
+                    mLastNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.dob_edittext) {
+                if (val.isEmpty()) {
+                    mDOBErrorTextView.setVisibility(View.VISIBLE);
+                    mDOBErrorTextView.setText(getString(R.string.error_field_required));
+                    mDOBEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mDOBErrorTextView.setVisibility(View.GONE);
+                    mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.age_edittext) {
+                if (val.isEmpty()) {
+                    mAgeErrorTextView.setVisibility(View.VISIBLE);
+                    mAgeErrorTextView.setText(getString(R.string.error_field_required));
+                    mAgeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mAgeErrorTextView.setVisibility(View.GONE);
+                    mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.phoneno_edittext) {
+                if (val.isEmpty()) {
+                    mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
+                    mPhoneNumberErrorTextView.setText(getString(R.string.error_field_required));
+                    mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mPhoneNumberErrorTextView.setVisibility(View.GONE);
+                    mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }
+        }
     }
 
     private void checkPerm() {
@@ -600,25 +596,26 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == GROUP_PERMISSION_REQUEST) {
-            boolean allGranted = grantResults.length != 0;
-            for (int grantResult : grantResults) {
-                if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                    allGranted = false;
-                    break;
-                }
-            }
-            if (allGranted) {
-                checkPerm();
-            } else {
-                showPermissionDeniedAlert(permissions);
-            }
-
-        }
-    }
+    /**
+     * removed deprecated onRequestPermissionsResult
+     * and added this code
+     */
+    ActivityResultLauncher<String[]> permissionsLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
+                    (ActivityResultCallback<Map<String, Boolean>>) result -> {
+                        boolean allGranted = result.size() != 0;
+                        for (boolean grantResult : result.values()) {
+                            if (!grantResult) {
+                                allGranted = false;
+                                break;
+                            }
+                        }
+                        if (allGranted) {
+                            checkPerm();
+                        } else {
+                            showPermissionDeniedAlert(result.keySet().toArray(new String[result.size()]));
+                        }
+                    });
 
     private void showPermissionDeniedAlert(String[] permissions) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(getActivity());
@@ -662,7 +659,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
 
         if (!listPermissionsNeeded.isEmpty()) {
-            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            permissionsLauncher.launch(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]));
             return false;
         }
         return true;
@@ -684,7 +681,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         Intent cameraIntent = new Intent(getActivity(), CameraActivity.class);
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientTemp);
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath.toString());
-        startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+        cameraActivityResult.launch(cameraIntent);
     }
 
     // gender
@@ -892,25 +889,20 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.v(TAG, "Result Received");
-        if (requestCode == CameraActivity.TAKE_IMAGE) {
-            Log.v(TAG, "Request Code " + CameraActivity.TAKE_IMAGE);
-            if (resultCode == RESULT_OK) {
-                Log.i(TAG, "Result OK");
-                mCurrentPhotoPath = data.getStringExtra("RESULT");
-                Log.v("IdentificationActivity", mCurrentPhotoPath);
 
-                Glide.with(getActivity())
-                        .load(new File(mCurrentPhotoPath))
-                        .thumbnail(0.25f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(patient_imgview);
-            }
+    ActivityResultLauncher<Intent> cameraActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            Log.i(TAG, "Result OK");
+            mCurrentPhotoPath = result.getData().getStringExtra("RESULT");
+            Log.v("IdentificationActivity", mCurrentPhotoPath);
+
+            Glide.with(getActivity())
+                    .load(new File(mCurrentPhotoPath))
+                    .sizeMultiplier(0.25f)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(patient_imgview);
         }
-    }
+    });
 }

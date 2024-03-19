@@ -85,12 +85,12 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (((CompoundButton) view).isChecked()) {
-                    chkBoxPrivacyPolicy.setButtonDrawable(getResources().getDrawable(R.drawable.ui2_ic_checkbox_checked));
-                    btnSetup.setBackground(getResources().getDrawable(R.drawable.ui2_common_primary_bg));
+                    chkBoxPrivacyPolicy.setButtonDrawable(ContextCompat.getDrawable(SetupPrivacyNoteActivity_New.this,R.drawable.ui2_ic_checkbox_checked));
+                    btnSetup.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ui2_common_primary_bg));
                     btnSetup.setEnabled(true);
                 } else {
                     btnSetup.getBackground().setAlpha(60);
-                    chkBoxPrivacyPolicy.setButtonDrawable(getResources().getDrawable(R.drawable.ui2_ic_default_checkbox));
+                    chkBoxPrivacyPolicy.setButtonDrawable(ContextCompat.getDrawable(SetupPrivacyNoteActivity_New.this,R.drawable.ui2_ic_default_checkbox));
                     btnSetup.setEnabled(false);
                 }
             }

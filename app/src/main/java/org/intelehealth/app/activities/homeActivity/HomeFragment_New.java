@@ -32,6 +32,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentOnAttachListener;
 import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -63,7 +66,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class HomeFragment_New extends Fragment implements NetworkUtils.InternetCheckUpdateInterface, DefaultLifecycleObserver {
+public class HomeFragment_New extends Fragment implements NetworkUtils.InternetCheckUpdateInterface, LifecycleObserver {
     private static final String TAG = "HomeFragment_New";
     View view;
     SessionManager sessionManager;
@@ -361,24 +364,17 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         addpatient_cardview = view.findViewById(R.id.addpatient_cardview);
         textlayout_find_patient = view.findViewById(R.id.textlayout_find_patient);
 
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
         textlayout_find_patient.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), SearchPatientActivity_New.class);
             startActivity(intent);
         });
 
-        followup_cardview.setOnClickListener(view -> {
+        followup_cardview.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), FollowUpPatientActivity_New.class);
             startActivity(intent);
         });
 
-        addpatient_cardview.setOnClickListener(view -> {
+        addpatient_cardview.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), PrivacyPolicyActivity_New.class);
             intent.putExtra("intentType", "navigateFurther");
             intent.putExtra("add_patient", "add_patient");
