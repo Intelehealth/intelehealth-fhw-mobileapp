@@ -51,6 +51,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -150,6 +151,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     NavigationView mNavigationView;
     private int versionCode = 0;
     private ProgressDialog mSyncProgressDialog, mRefreshProgressDialog, mResetSyncDialog;
+    private AlertDialog mSyncAlertDialog;
+    private ProgressBar syncProgressbar;
+
+    TextView progressTvStart, progressTvEnd;
     private CompositeDisposable disposable = new CompositeDisposable();
     private ObjectAnimator syncAnimator;
     SyncUtils syncUtils = new SyncUtils();
@@ -379,7 +384,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void showResetConfirmationDialog() {
-        patientRegistrationDialog(context, getResources().getDrawable(R.drawable.ui2_ic_warning_internet), getString(R.string.reset_app_new_title), getString(R.string.sure_to_reset_app), getString(R.string.generic_yes), getString(R.string.no), action -> {
+        patientRegistrationDialog(context, ContextCompat.getDrawable(context,R.drawable.ui2_ic_warning_internet), getString(R.string.reset_app_new_title), getString(R.string.sure_to_reset_app), getString(R.string.generic_yes), getString(R.string.no), action -> {
             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
                 checkNetworkConnectionAndPerformSync();
             }
@@ -580,16 +585,26 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
-            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
+            /*mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setMax(100);
             mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mSyncProgressDialog.setIndeterminate(false);
-            mSyncProgressDialog.show();
+            mSyncProgressDialog.show();*/
+
+            mSyncAlertDialog = new AlertDialog.Builder(this).create();
+            View syncView = LayoutInflater.from(this).inflate(R.layout.dialog_sync_progress,null);
+            mSyncAlertDialog.setView(syncView);
+            syncProgressbar = syncView.findViewById(R.id.progressBar);
+            progressTvStart = syncView.findViewById(R.id.progressTvStart);
+            progressTvEnd = syncView.findViewById(R.id.progressTvEnd);
+            syncProgressbar.setMax(100);
+            syncProgressbar.setIndeterminate(false);
+            mSyncAlertDialog.show();
 
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
-            showRefreshInProgressDialog();
+           // showRefreshInProgressDialog();
             Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home",this));
         } else {
             // if initial setup done then we can directly set the periodic background sync job
@@ -953,7 +968,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             firstLogin = "";
             getIntent().putExtra("firstLogin", "");
 
-            showLoggingInDialog();
+            //showLoggingInDialog();
 
         }
         checkAppVer();  //auto-update feature.
@@ -1454,8 +1469,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         @Override
         public void onChanged(Integer progress) {
             Logger.logD(SyncDAO.PULL_ISSUE, "onchanged of livedata again called up");
-            if (mSyncProgressDialog != null) {
-                mSyncProgressDialog.setProgress(progress);
+            if (mSyncAlertDialog != null) {
+                syncProgressbar.setProgress(progress);
+                progressTvStart.setText((progress)+"%");
+                progressTvEnd.setText(progress+"/100");
                 Logger.logD(SyncDAO.PULL_ISSUE, "% -> " + String.valueOf(progress));
 
                 if (progress == 100) {
@@ -1464,7 +1481,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mSyncProgressDialog.dismiss();
+                            mSyncAlertDialog.dismiss();
                         }
                     }, 2000);
                 }
