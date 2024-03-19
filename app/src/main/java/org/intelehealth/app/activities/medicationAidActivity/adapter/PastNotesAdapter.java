@@ -39,7 +39,7 @@ public class PastNotesAdapter extends RecyclerView.Adapter<PastNotesAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull PastNotesAdapter.MyViewHolder holder, int position) {
         PastNotesModel model = pastNotesModelList.get(position);
-        holder.binding.tvPastnotes.setText(model.getNotes());
+        holder.binding.tvPastnotes.setText(!model.getNotes().isEmpty() ? model.getNotes() : "NA");
         holder.binding.tvPastnotesDatetime.setText(model.getDateTime());
     }
 

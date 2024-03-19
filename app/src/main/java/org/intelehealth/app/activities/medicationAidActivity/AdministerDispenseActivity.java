@@ -587,6 +587,7 @@ public class AdministerDispenseActivity extends BaseActivity {
     }
 
     private void checkValidation() {
+/*
         if ((medList != null && medList.size() > 0) || (testList != null && testList.size() > 0)) {
             if (tie_medNotes.getText().toString().isEmpty()) {
                 tie_medNotes.requestFocus();
@@ -594,6 +595,7 @@ public class AdministerDispenseActivity extends BaseActivity {
                 return;
             }
         }
+*/  // SYR-577
 
         if (aidList != null && aidList.size() > 0) {
             if (tie_totalCost.getText().toString().isEmpty()) {
@@ -616,11 +618,13 @@ public class AdministerDispenseActivity extends BaseActivity {
                 tie_outOfPocket.setError(getString(R.string.error_field_required));
                 return;
             }
+/*
             if (tie_aidNotes.getText().toString().isEmpty()) {
                 tie_aidNotes.requestFocus();
                 tie_aidNotes.setError(getString(R.string.error_field_required));
                 return;
             }
+*/  // SYR-577
         }
 
         if (horizontalAdapter != null && horizontalAdapter.getItemCount() == 0) {
