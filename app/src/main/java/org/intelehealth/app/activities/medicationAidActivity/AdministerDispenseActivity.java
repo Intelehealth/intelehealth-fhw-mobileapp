@@ -774,9 +774,12 @@ public class AdministerDispenseActivity extends BaseActivity {
             }*/
         }
 
-        List<String> notesList = new ArrayList<>();
-        notesList.add(aidNotesValue);
-        aidModel.setAidNotesList(notesList);    // 2. notes
+        if (!aidNotesValue.isEmpty()) {
+            List<String> notesList = new ArrayList<>();
+            notesList.add(aidNotesValue);
+            aidModel.setAidNotesList(notesList);    // 2. notes
+        }
+
         aidModel.setHwUuid(sessionManager.getProviderID()); // 3. hw uuid
         aidModel.setHwName(sessionManager.getChwname());    // 3b. hw name
         aidModel.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.
@@ -820,9 +823,11 @@ public class AdministerDispenseActivity extends BaseActivity {
             medModel.setMedicationUuidList(medUuidList);   // 1. medicines uuid
         }
 
-        List<String> notesList = new ArrayList<>();
-        notesList.add(medNotesValue);
-        medModel.setMedicationNotesList(notesList);    // 2. notes
+        if (!medNotesValue.isEmpty()) {
+            List<String> notesList = new ArrayList<>();
+            notesList.add(medNotesValue);
+            medModel.setMedicationNotesList(notesList);    // 2. notes
+        }
         medModel.setHwUuid(sessionManager.getProviderID());    // 3. hw id
         medModel.setHwName(sessionManager.getChwname());    // 3b. hw name
         medModel.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.

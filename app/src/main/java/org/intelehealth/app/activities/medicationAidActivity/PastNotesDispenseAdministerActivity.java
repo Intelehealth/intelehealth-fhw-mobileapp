@@ -127,13 +127,17 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
                             "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                             "dd MMM, yyyy HH:mm a");
 
-                    if (viewtag.equalsIgnoreCase("medication") || viewtag.equalsIgnoreCase(COLLECTED) || viewtag.equalsIgnoreCase(RECEIVED))
-                        pastNotesModelList.add(new PastNotesModel(model.getMedicationNotesList().get(0), dateTime));
+                    if (viewtag.equalsIgnoreCase("medication") || viewtag.equalsIgnoreCase(COLLECTED) || viewtag.equalsIgnoreCase(RECEIVED)) {
+                        if (model.getMedicationNotesList() != null)
+                            pastNotesModelList.add(new PastNotesModel(model.getMedicationNotesList().get(0), dateTime));
+                    }
                     else if (viewtag.equalsIgnoreCase("aid")) {
-                        pastNotesModelList.add(new PastNotesModel(model.getAidNotesList().get(0), dateTime));
+                        if (model.getAidNotesList() != null)
+                            pastNotesModelList.add(new PastNotesModel(model.getAidNotesList().get(0), dateTime));
                     }
                     else if (viewtag.equalsIgnoreCase(ADDITIONAL_REMARKS)) {
-                        pastNotesModelList.add(new PastNotesModel(model.getAdditional_remark(), dateTime));
+                        if (model.getAdditional_remark() != null)
+                            pastNotesModelList.add(new PastNotesModel(model.getAdditional_remark(), dateTime));
                     }
                 }
             }
