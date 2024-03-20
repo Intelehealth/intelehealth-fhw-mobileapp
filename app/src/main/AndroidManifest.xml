@@ -385,9 +385,10 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="true" />
+            android:value="false" />
 
         <service
             android:name=".webrtc.service.FCMMessageService"
