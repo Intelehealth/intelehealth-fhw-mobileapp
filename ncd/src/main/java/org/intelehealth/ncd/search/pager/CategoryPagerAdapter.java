@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.pager;
+package org.intelehealth.ncd.search.pager;
 
 import android.app.Activity;
 
