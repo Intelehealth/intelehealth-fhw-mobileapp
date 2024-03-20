@@ -122,11 +122,6 @@ public class VisitPendingFragment extends Fragment {
         return context;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);

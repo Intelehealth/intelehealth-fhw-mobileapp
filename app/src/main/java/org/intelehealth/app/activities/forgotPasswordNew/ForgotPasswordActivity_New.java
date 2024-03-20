@@ -115,7 +115,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             /*Intent intent = new Intent(ForgotPasswordActivity_New.this, SetupActivityNew.class);
             startActivity(intent);
             finish();*/
-            onBackPressed();
+            getOnBackPressedDispatcher().onBackPressed();
         });
 
         buttonUsername.setOnClickListener(v -> {

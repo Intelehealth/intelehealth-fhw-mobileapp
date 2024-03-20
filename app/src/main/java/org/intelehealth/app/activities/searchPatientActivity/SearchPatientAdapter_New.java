@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -164,7 +165,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                         .skipMemoryCache(true)
                         .into(holder.profile_imgview);
             } else {
-                holder.profile_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+                holder.profile_imgview.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
             }
 
         }
@@ -254,7 +255,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                         if (updated) {
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
-                                    .thumbnail(0.3f)
+                                    .sizeMultiplier(0.3f)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)

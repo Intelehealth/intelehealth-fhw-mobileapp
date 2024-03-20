@@ -183,11 +183,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private TableRow trAddress2;
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_detail2);
@@ -1508,7 +1503,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         if (updated) {
                             Glide.with(PatientDetailActivity2.this)
                                     .load(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg")
-                                    .thumbnail(0.3f)
+                                    .sizeMultiplier(0.3f)
                                     .centerCrop()
                                     .error(R.drawable.avatar1)
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -1736,9 +1731,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this,R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this,R.drawable.ui2_ic_no_internet));
         }
     }
 

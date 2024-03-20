@@ -122,7 +122,7 @@ public class SyncUtils {
         imagesPushDAO.deleteObsImage();
 
 
-        WorkManager.getInstance()
+        WorkManager.getInstance(IntelehealthApplication.getAppContext())
                 .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
                 .then(AppConstants.LAST_SYNC_WORK_REQUEST)
                 .enqueue();

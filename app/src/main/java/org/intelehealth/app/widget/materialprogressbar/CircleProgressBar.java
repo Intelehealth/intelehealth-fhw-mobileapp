@@ -181,7 +181,7 @@ public class CircleProgressBar extends ImageView {
                 setPadding(padding, padding, padding, padding);
             }
             mBgCircle.getPaint().setColor(mBackGroundColor);
-            setBackgroundDrawable(mBgCircle);
+            setBackground(mBgCircle);
         }
         mProgressDrawable.setBackgroundColor(mBackGroundColor);
         mProgressDrawable.setColorSchemeColors(mColors);

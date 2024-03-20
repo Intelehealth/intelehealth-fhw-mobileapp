@@ -351,7 +351,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         tvEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isNetworkConnected()) {
+                if (NetworkConnection.isOnline(HomeScreenActivity_New.this)) {
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
                     startActivity(intent);
@@ -395,7 +395,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void checkNetworkConnectionAndPerformSync() {
-        if ((isNetworkConnected())) {
+        if ((NetworkConnection.isOnline(this))) {
 
             // first we're showing the sync in progress dialog - Added by Arpan Sircar
             showSimpleDialog(resetAlertDialogBuilder, getString(R.string.app_sync_dialog_title), getString(R.string.please_wait_sync_progress), getResources().getDrawable(R.drawable.ui2_icon_logging_in));
@@ -576,7 +576,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isNetworkConnected()) {
+                if (NetworkConnection.isOnline(HomeScreenActivity_New.this)) {
                     imageViewIsInternet.clearAnimation();
                     syncAnimator.start();
                     syncUtils.syncForeground("home");
@@ -1015,11 +1015,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
                 if (latestVersionCode > versionCode) {
                     android.app.AlertDialog.Builder builder;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this, android.R.style.Theme_Material_Dialog_Alert);
-                    } else {
-                        builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this);
-                    }
+                    builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this, android.R.style.Theme_Material_Dialog_Alert);
 
 
                     builder.setTitle(getResources().getString(R.string.new_update_available)).setCancelable(false).setMessage(getResources().getString(R.string.update_app_note)).setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
@@ -1038,11 +1034,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                             .setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false);
 
                     Dialog dialog = builder.show();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
-                        TextView tv = (TextView) dialog.findViewById(textViewId);
-                        tv.setTextColor(getResources().getColor(R.color.white));
-                    }
+                    int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
+                    TextView tv = (TextView) dialog.findViewById(textViewId);
+                    tv.setTextColor(ContextCompat.getColor(HomeScreenActivity_New.this,R.color.white));
                 }
             }
 
@@ -1204,11 +1198,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 //            }
 //        }
 //    }
-
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
 
     NavigationBarView.OnItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnItemSelectedListener() {
         @Override

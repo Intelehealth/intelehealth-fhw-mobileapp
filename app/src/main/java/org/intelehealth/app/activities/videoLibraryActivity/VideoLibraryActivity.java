@@ -41,7 +41,7 @@ public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFr
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
 
