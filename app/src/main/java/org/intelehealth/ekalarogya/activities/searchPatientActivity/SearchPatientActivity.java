@@ -213,14 +213,14 @@ public class SearchPatientActivity extends BaseActivity {
         executorService.execute(() -> {
             List<PatientDTO> patientDTOList = getQueryPatients(query);
             runOnUiThread(() -> {
-        try {
-            recycler = new SearchPatientAdapter(patientDTOList, SearchPatientActivity.this);
-            fullyLoaded = true;
-            recyclerView.setAdapter(recycler);
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE("doquery", "doquery", e);
-        }
+                try {
+                    recycler = new SearchPatientAdapter(patientDTOList, SearchPatientActivity.this);
+                    fullyLoaded = true;
+                    recyclerView.setAdapter(recycler);
+                } catch (Exception e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    Logger.logE("doquery", "doquery", e);
+                }
             });
         });
     }
@@ -619,7 +619,3 @@ public class SearchPatientActivity extends BaseActivity {
         super.onStop();
     }
 }
-
-
-
-

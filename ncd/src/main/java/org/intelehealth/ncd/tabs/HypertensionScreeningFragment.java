@@ -1,4 +1,4 @@
-package org.intelehealth.ekalarogya.activities.searchPatientActivity.tabs;
+package org.intelehealth.ncd.tabs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import org.intelehealth.ekalarogya.databinding.LayoutSearchPatientCategoryBinding;
 
-public class AnemiaScreeningFragment extends Fragment {
+public class HypertensionScreeningFragment extends Fragment {
 
     private LayoutSearchPatientCategoryBinding binding;
 

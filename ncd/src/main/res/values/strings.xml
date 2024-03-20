@@ -1,4 +1,15 @@
 <resources>
     <string name="video_library">Video Library</string>
     <string name="no_videos_found_on_server">No videos found on the server</string>
+
+    <string name="type_to_search">Type to Search..</string>
+
+    // Search Patient Screen Tabs
+    <string name="tab_anemia_screening">Anemia Screening</string>
+    <string name="tab_anemia_follow_up">Anemia Follow-Up</string>
+    <string name="tab_diabetes_screening">Diabetes Screening</string>
+    <string name="tab_diabetes_follow_up">Diabetes Follow-Up</string>
+    <string name="tab_hypertension_screening">Hypertension Screening</string>
+    <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
+    <string name="tab_general">General</string>
 </resources>
