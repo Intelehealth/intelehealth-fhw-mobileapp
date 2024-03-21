@@ -3,8 +3,10 @@ package org.intelehealth.ncd.search.viewmodel.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.intelehealth.ncd.data.SearchRepository
+import org.intelehealth.ncd.search.tabs.HypertensionFollowUpFragment
 import org.intelehealth.ncd.search.viewmodel.AnemiaScreeningViewModel
 import org.intelehealth.ncd.search.viewmodel.DiabetesScreeningViewModel
+import org.intelehealth.ncd.search.viewmodel.HypertensionFollowUpViewModel
 import org.intelehealth.ncd.search.viewmodel.HypertensionScreeningViewModel
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
@@ -17,9 +19,15 @@ class CategoryViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
             AnemiaScreeningViewModel::class.java -> AnemiaScreeningViewModel(repository, utils)
+
             DiabetesScreeningViewModel::class.java -> DiabetesScreeningViewModel(repository, utils)
 
             HypertensionScreeningViewModel::class.java -> HypertensionScreeningViewModel(
+                repository,
+                utils
+            )
+
+            HypertensionFollowUpViewModel::class.java -> HypertensionFollowUpViewModel(
                 repository,
                 utils
             )
