@@ -30,6 +30,12 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
             }
 
+            Constants.DIABETES_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
+                if (!isHistoryOfDiabetes(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
+                }
+            }
+
             Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
                 if (!isHistoryOfHypertensionPresent(attribute.value)) {
                     removePatientsFromList(patientList, attribute)

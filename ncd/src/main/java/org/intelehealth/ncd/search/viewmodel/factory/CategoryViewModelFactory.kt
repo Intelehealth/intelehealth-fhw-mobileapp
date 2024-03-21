@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import org.intelehealth.ncd.data.SearchRepository
 import org.intelehealth.ncd.search.tabs.HypertensionFollowUpFragment
 import org.intelehealth.ncd.search.viewmodel.AnemiaScreeningViewModel
+import org.intelehealth.ncd.search.viewmodel.DiabetesFollowUpViewModel
 import org.intelehealth.ncd.search.viewmodel.DiabetesScreeningViewModel
 import org.intelehealth.ncd.search.viewmodel.HypertensionFollowUpViewModel
 import org.intelehealth.ncd.search.viewmodel.HypertensionScreeningViewModel
@@ -21,6 +22,8 @@ class CategoryViewModelFactory(
             AnemiaScreeningViewModel::class.java -> AnemiaScreeningViewModel(repository, utils)
 
             DiabetesScreeningViewModel::class.java -> DiabetesScreeningViewModel(repository, utils)
+
+            DiabetesFollowUpViewModel::class.java -> DiabetesFollowUpViewModel(repository, utils)
 
             HypertensionScreeningViewModel::class.java -> HypertensionScreeningViewModel(
                 repository,
