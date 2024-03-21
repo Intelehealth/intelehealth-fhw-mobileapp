@@ -248,7 +248,11 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            mButtonContinue.setEnabled(val.length() >= 5);
+            if(editText.getId() == R.id.edittext_mobile_number) {
+                mButtonContinue.setEnabled(val.length() == 10);
+            }else{
+                mButtonContinue.setEnabled(val.length() >= 5);
+            }
 
         }
     }
