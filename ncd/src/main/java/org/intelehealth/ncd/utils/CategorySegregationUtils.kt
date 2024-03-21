@@ -18,22 +18,23 @@ class CategorySegregationUtils(private val resources: Resources) {
     ): MutableList<Patient> {
         when (category) {
 
-            Constants.ANEMIA_SCREENING -> {
-                patientAttributeList.forEach { attribute ->
-                    if (!isHistoryOfAnemiaPresent(attribute.value)) {
-                        removePatientsFromList(patientList, attribute)
-                    }
+            Constants.ANEMIA_SCREENING -> patientAttributeList.forEach { attribute ->
+                if (!isHistoryOfAnemiaPresent(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
                 }
             }
 
-            Constants.DIABETES_SCREENING -> {
-                patientAttributeList.forEach { attribute ->
-                    if (!isHistoryOfDiabetes(attribute.value)) {
-                        removePatientsFromList(patientList, attribute)
-                    }
+            Constants.DIABETES_SCREENING -> patientAttributeList.forEach { attribute ->
+                if (!isHistoryOfDiabetes(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
                 }
             }
 
+            Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
+                if (!isHistoryOfHypertensionPresent(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
+                }
+            }
         }
 
         return patientList

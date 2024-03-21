@@ -2,8 +2,9 @@ package org.intelehealth.ncd.constants
 
 object Constants {
     const val OTHER_MEDICAL_HISTORY: String = "0bc1ce08-4013-4959-80c6-a6ccf7a208c2"
-    const val ANEMIA_EXCLUSION_AGE: Int = 11 // Greater than 11 are considered
-    const val DIABETES_EXCLUSION_AGE: Int = 19 // Less than 20 are eliminated automatically
+    const val ANEMIA_EXCLUSION_AGE: Int = 12 // Greater or equal to 12 are considered
+    const val DIABETES_EXCLUSION_AGE: Int = 20 // Greater or equal to 20 are eliminated automatically
+    const val HYPERTENSION_EXCLUSION_AGE: Int = 18 // Greater than or equal to 18 are considered
 
     const val INTENT_PATIENT_UUID = "patientUuid"
     const val INTENT_PATIENT_NAME = "patientName"
