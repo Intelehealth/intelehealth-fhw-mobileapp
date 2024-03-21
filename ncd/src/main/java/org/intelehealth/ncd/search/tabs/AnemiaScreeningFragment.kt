@@ -19,8 +19,8 @@ import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.search.adapter.CategoryRecyclerViewAdapter
 import org.intelehealth.ncd.search.viewmodel.AnemiaScreeningViewModel
-import org.intelehealth.ncd.search.viewmodel.CategoryViewModelFactory
-import java.lang.RuntimeException
+import org.intelehealth.ncd.search.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.utils.CategorySegregationUtils
 
 class AnemiaScreeningFragment : Fragment(), PatientClickedListener {
 
@@ -48,10 +48,11 @@ class AnemiaScreeningFragment : Fragment(), PatientClickedListener {
 
         val dataSource = SearchDataSource(patientDao, patientAttributeDao)
         val repository = SearchRepository(dataSource)
+        val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
             owner = this@AnemiaScreeningFragment,
-            factory = CategoryViewModelFactory(repository, resources)
+            factory = CategoryViewModelFactory(repository, utils)
         )[AnemiaScreeningViewModel::class.java]
     }
 

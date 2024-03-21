@@ -9,4 +9,14 @@ object Constants {
     const val INTENT_PATIENT_STATUS = "status"
     const val INTENT_PATIENT_TAG = "tag"
     const val INTENT_HAS_PRESCRIPTION = "hasPrescription"
+
+    // category
+    const val ANEMIA_SCREENING = "anemia_screening"
+    const val ANEMIA_FOLLOW_UP = "anemia_follow_up"
+    const val DIABETES_SCREENING = "diabetes_screening"
+    const val DIABETES_FOLLOW_UP = "diabetes_follow_up"
+    const val HYPERTENSION_SCREENING = "hypertension_screening"
+    const val HYPERTENSION_FOLLOW_UP = "hypertension_follow_up"
+    const val GENERAL = "general"
+
 }
