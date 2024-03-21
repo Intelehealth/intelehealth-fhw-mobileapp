@@ -11,12 +11,13 @@ import org.intelehealth.ncd.model.PatientAttributes
 
 class CategorySegregationUtils(private val resources: Resources) {
 
-    suspend fun segregateAndFetchData(
+    fun segregateAndFetchData(
         patientList: MutableList<Patient>,
         patientAttributeList: MutableList<PatientAttributes>,
         category: String
     ): MutableList<Patient> {
         when (category) {
+
             Constants.ANEMIA_SCREENING -> {
                 patientAttributeList.forEach { attribute ->
                     if (!isHistoryOfAnemiaPresent(attribute.value)) {
@@ -25,6 +26,13 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
             }
 
+            Constants.DIABETES_SCREENING -> {
+                patientAttributeList.forEach { attribute ->
+                    if (!isHistoryOfDiabetes(attribute.value)) {
+                        removePatientsFromList(patientList, attribute)
+                    }
+                }
+            }
 
         }
 
