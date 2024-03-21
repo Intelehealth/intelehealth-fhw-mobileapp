@@ -319,7 +319,7 @@ public class AdditionalDocumentsActivity extends BaseActivity {
                 intent.putExtra(IS_DISPENSE_ADMINISTER, isDispenseAdminister);
                 resultGalleryContract.launch(intent);
             }
-            else if (options[item].equals("Cancel")) {
+            else if (options[item].equals(getString(R.string.cancel))) {
                 dialog.dismiss();
             }
         });
