@@ -4,6 +4,7 @@ import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -157,9 +159,11 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             }
 
             if (model.getPatientPhoto() != null) {
+                RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                        .asDrawable().sizeMultiplier(0.3f);
                 Glide.with(context)
                         .load(model.getPatientPhoto())
-                        .sizeMultiplier(0.3f)
+                        .thumbnail(requestBuilder)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
@@ -253,9 +257,11 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
+                            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                                    .asDrawable().sizeMultiplier(0.3f);
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
-                                    .sizeMultiplier(0.3f)
+                                    .thumbnail(requestBuilder)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)

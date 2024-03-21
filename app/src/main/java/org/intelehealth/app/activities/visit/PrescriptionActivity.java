@@ -68,6 +68,7 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -355,7 +356,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
         if (patient_photo_path != null) {
-            Glide.with(this).load(patient_photo_path).sizeMultiplier(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                    .asDrawable().sizeMultiplier(0.3f);
+            Glide.with(this).load(patient_photo_path).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
         } else {
             profile_image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.avatar1));
         }

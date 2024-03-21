@@ -99,11 +99,11 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
 
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() == currentMonthNew) {
             if (calendarModel.isPrevMonth || calendarModel.isNextMonth || calendarModel.isCurrentMonthCompletedDate()) {
-                holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
+                holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.edittextBorder));
             }
         } else {
             if (calendarModel.isPrevMonth || calendarModel.isNextMonth) {
-                holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
+                holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.edittextBorder));
             }
         }
 

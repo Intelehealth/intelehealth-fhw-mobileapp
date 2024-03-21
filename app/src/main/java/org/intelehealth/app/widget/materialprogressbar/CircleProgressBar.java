@@ -28,12 +28,15 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
+
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.IntelehealthApplication;
 
 
 /**
@@ -269,7 +272,7 @@ public class CircleProgressBar extends ImageView {
         final Resources res = getResources();
         int[] colorRes = new int[colorResIds.length];
         for (int i = 0; i < colorResIds.length; i++) {
-            colorRes[i] = res.getColor(colorResIds[i]);
+            colorRes[i] = ContextCompat.getColor(IntelehealthApplication.getAppContext(),(colorResIds[i]));
         }
         setColorSchemeColors(colorRes);
     }

@@ -73,6 +73,7 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -306,7 +307,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         loadFragment(new HomeFragment_New(), TAG_HOME);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.white));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         }
@@ -398,7 +399,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         if ((NetworkConnection.isOnline(this))) {
 
             // first we're showing the sync in progress dialog - Added by Arpan Sircar
-            showSimpleDialog(resetAlertDialogBuilder, getString(R.string.app_sync_dialog_title), getString(R.string.please_wait_sync_progress), getResources().getDrawable(R.drawable.ui2_icon_logging_in));
+            showSimpleDialog(resetAlertDialogBuilder, getString(R.string.app_sync_dialog_title), getString(R.string.please_wait_sync_progress), ContextCompat.getDrawable(this,R.drawable.ui2_icon_logging_in));
 
             boolean isSynced = syncUtils.syncForeground("home");
             if (isSynced) {
@@ -406,7 +407,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 new Handler().postDelayed(() -> {
 
                     // next we're displaying the sync successful message - Added by Arpan Sircar
-                    updateSimpleDialog(resetDialog, getString(R.string.sync_successful), getString(R.string.please_wait_app_reset), getResources().getDrawable(R.drawable.ui2_icon_login_success));
+                    updateSimpleDialog(resetDialog, getString(R.string.sync_successful), getString(R.string.please_wait_app_reset), ContextCompat.getDrawable(this,R.drawable.ui2_icon_login_success));
 
                     new Handler().postDelayed(() -> {
 
@@ -428,7 +429,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
             }
         } else {
-            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.reset_app_requires_internet_message), getString(R.string.try_again));
+            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, ContextCompat.getDrawable(this,R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.reset_app_requires_internet_message), getString(R.string.try_again));
             AlertDialog networkFailureDialog = builder.show();
 
             networkFailureDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
@@ -447,7 +448,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private void showResetProgressbar() {
         resetDialog.dismiss();
         MaterialAlertDialogBuilder resetDialogBuilder = new MaterialAlertDialogBuilder(context);
-        showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset), getResources().getDrawable(R.drawable.ui2_icon_logging_in));
+        showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset), ContextCompat.getDrawable(this,R.drawable.ui2_icon_logging_in));
     }
 
     public void deleteCache(Context context) {
@@ -729,7 +730,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
 
-        icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_exit_app));
+        icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_exit_app));
 
         dialog_title.setText(title);
         tvInfo.setText(Html.fromHtml(subTitle));
@@ -768,7 +769,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
 
-        icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_exit_app));
+        icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_exit_app));
 
         dialog_title.setText(title);
         tvInfo.setText(Html.fromHtml(subTitle));
@@ -1267,8 +1268,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 tvUserId.setText(getString(R.string.chw_id).concat(" ").concat(sessionManager.getChwname()));
 
                 if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
-
-                    Glide.with(HomeScreenActivity_New.this).load(providerDTO.getImagePath()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                            .asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(HomeScreenActivity_New.this).load(providerDTO.getImagePath()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
 
 
                 }
@@ -1352,7 +1354,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    Glide.with(HomeScreenActivity_New.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
+
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(HomeScreenActivity_New.this)
+                            .asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(HomeScreenActivity_New.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
                 boolean isImageDownloaded = false;

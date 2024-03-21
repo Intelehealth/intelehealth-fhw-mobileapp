@@ -9,6 +9,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -140,10 +142,12 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             }
 
             if (model.getPatient_photo() != null) {
+                RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                        .asDrawable().sizeMultiplier(0.3f);
                 Glide.with(context)
                         .load(model.getPatient_photo())
                         .override(100, 100)
-                        .sizeMultiplier(0.3f)
+                        .thumbnail(requestBuilder)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
@@ -382,10 +386,12 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
+                            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                                    .asDrawable().sizeMultiplier(0.3f);
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getPatientUuid() + ".jpg")
                                     .override(100, 100)
-                                    .sizeMultiplier(0.3f)
+                                    .thumbnail(requestBuilder)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)

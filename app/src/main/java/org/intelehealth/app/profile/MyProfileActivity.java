@@ -367,12 +367,12 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 myProfilePOJO.setNewLastName(s.toString());
                 if (TextUtils.isEmpty(etLastName.getText().toString())) {
                     tvErrorLastName.setVisibility(View.VISIBLE);
-                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                    etLastName.setBackground(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
 
                     return;
                 } else {
                     tvErrorLastName.setVisibility(View.GONE);
-                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                    etLastName.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
 
                 }
             }
@@ -882,12 +882,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
                     cameraIntentLauncher.launch(cameraIntent);
-//                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
 
                 } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     galleryIntentLauncher.launch(intent);
-//                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
                 }
             }
         });
@@ -1037,9 +1035,11 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this)
+                        .asDrawable().sizeMultiplier(0.3f);
                 Glide.with(MyProfileActivity.this)
                         .load(new File(mCurrentPhotoPath))
-                        .sizeMultiplier(0.25f)
+                        .thumbnail(requestBuilder)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
@@ -1075,7 +1075,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                             runOnUiThread(new Runnable() //run on ui thread
                             {
                                 public void run() {
-                                    Glide.with(MyProfileActivity.this).load(finalFilePath).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this)
+                                            .asDrawable().sizeMultiplier(0.3f);
+                                    Glide.with(MyProfileActivity.this).load(finalFilePath).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
                                 }
                             });
                         }
@@ -1274,9 +1276,11 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
 
         if (providerDTO != null && providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                    .asDrawable().sizeMultiplier(0.3f);
             Glide.with(this)
                     .load(providerDTO.getImagePath())
-                    .sizeMultiplier(0.3f)
+                    .thumbnail(requestBuilder)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true).into(ivProfileImage);
@@ -1350,7 +1354,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    Glide.with(MyProfileActivity.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this)
+                            .asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(MyProfileActivity.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
                 boolean isImageDownloaded = false;

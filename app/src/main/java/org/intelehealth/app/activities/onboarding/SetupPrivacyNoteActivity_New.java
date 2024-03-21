@@ -106,7 +106,7 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (chkBoxPrivacyPolicy.isChecked()) {
-                    btnSetup.setBackgroundDrawable(ContextCompat.getDrawable(SetupPrivacyNoteActivity_New.this, R.drawable.ui2_common_primary_bg));
+                    btnSetup.setBackground(ContextCompat.getDrawable(SetupPrivacyNoteActivity_New.this, R.drawable.ui2_common_primary_bg));
                     customDialog = new CustomDialog(SetupPrivacyNoteActivity_New.this);
                     customDialog.showDialog1();
                 } else {

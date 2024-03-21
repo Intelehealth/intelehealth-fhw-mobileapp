@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -227,9 +229,11 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
         if (patient_photo_path != null) {
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                    .asDrawable().sizeMultiplier(0.3f);
             Glide.with(this)
                     .load(patient_photo_path)
-                    .sizeMultiplier(0.3f)
+                    .thumbnail(requestBuilder)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
@@ -353,7 +357,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 timeText = modifiedDate.replace("पहले", "") + "से पेंडिंग है";
             presc_time.setText(timeText);
-            presc_time.setTextColor(getResources().getColor(R.color.red));
+            presc_time.setTextColor(ContextCompat.getColor(this,R.color.red));
             icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.prescription_red_icon));
         }
         // presc block - end

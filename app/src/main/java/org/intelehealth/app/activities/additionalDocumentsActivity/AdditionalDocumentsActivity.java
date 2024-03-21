@@ -9,6 +9,8 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -135,37 +137,6 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CameraActivity.TAKE_IMAGE) {
-            if (resultCode == RESULT_OK) {
-                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                saveImage(mCurrentPhotoPath);
-            }
-        }
-        else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
-            if(data!=null) {
-                Uri selectedImage = data.getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.v("path", picturePath + "");
-
-                // copy & rename the file
-                String finalImageName = UUID.randomUUID().toString();
-                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                BitmapUtils.copyFile(picturePath, finalFilePath);
-                compressImageAndSave(finalFilePath);
-            }
-        }
-    }
-
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
@@ -216,11 +187,11 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
                     String imageName = UUID.randomUUID().toString();
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+                    cameraActivityResult.launch(cameraIntent);
 
                 } else if (item == 1) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+                    galleryActivityResult.launch(intent);
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -228,6 +199,35 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
         });
         builder.show();
     }
+
+    ActivityResultLauncher<Intent> cameraActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            String mCurrentPhotoPath = result.getData().getStringExtra("RESULT");
+            saveImage(mCurrentPhotoPath);
+        }
+    });
+
+    ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if(result.getData()!=null) {
+                Uri selectedImage = result.getData().getData();
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                Log.v("path", picturePath + "");
+
+                // copy & rename the file
+                String finalImageName = UUID.randomUUID().toString();
+                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                BitmapUtils.copyFile(picturePath, finalFilePath);
+                compressImageAndSave(finalFilePath);
+            }
+        }
+    });
 
 /**
  * @param filePath Final Image path to compress.

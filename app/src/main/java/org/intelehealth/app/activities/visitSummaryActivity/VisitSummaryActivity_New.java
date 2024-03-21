@@ -94,6 +94,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -897,7 +898,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         if (patient.getPatient_photo() != null) {
-            Glide.with(context).load(patient.getPatient_photo()).sizeMultiplier(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(context)
+                    .asDrawable().sizeMultiplier(0.3f);
+            Glide.with(context).load(patient.getPatient_photo()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
         } else {
             profile_image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
         }
@@ -2088,6 +2091,37 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
+    ActivityResultLauncher<Intent> cameraActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            String mCurrentPhotoPath = result.getData().getStringExtra("RESULT");
+            saveImage(mCurrentPhotoPath);
+        }
+    });
+
+    ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if (result.getData() != null) {
+                Uri selectedImage = result.getData().getData();
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                Log.v("path", picturePath + "");
+                BitmapUtils.fileCompressed(picturePath);
+
+                // copy & rename the file
+                String finalImageName = UUID.randomUUID().toString();
+                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                BitmapUtils.copyFile(picturePath, finalFilePath);
+                compressImageAndSave(finalFilePath);
+            }
+        }
+    });
+
+
     // Permission - start
     private void checkPerm(int item) {
         if (item == 0) {
@@ -2096,12 +2130,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 String imageName = UUID.randomUUID().toString();
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+                cameraActivityResult.launch(cameraIntent);
             }
         } else if (item == 1) {
             if (checkAndRequestPermissions(item)) {
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+                galleryActivityResult.launch(intent);
             }
         }
     }
@@ -3991,7 +4025,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    Glide.with(context).load(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(context)
+                            .asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(context).load(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
                 boolean isImageDownloaded = false;

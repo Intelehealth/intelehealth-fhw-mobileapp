@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
@@ -67,12 +68,12 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if(genericViewHolder.summaryData.getDisplayValue().isEmpty() || genericViewHolder.summaryData.getDisplayValue()==null){
                 genericViewHolder.answerTextView.setVisibility(View.GONE);
                 genericViewHolder.bulletImageView.setVisibility(View.GONE);
-                genericViewHolder.questionTextView.setTextColor(mContext.getResources().getColor(R.color.black));
+                genericViewHolder.questionTextView.setTextColor(ContextCompat.getColor(mContext,R.color.black));
                 genericViewHolder.questionTextView.setTypeface(genericViewHolder.questionTextView.getTypeface(), Typeface.BOLD);
             }else {
                 genericViewHolder.answerTextView.setVisibility(View.VISIBLE);
                 genericViewHolder.bulletImageView.setVisibility(View.VISIBLE);
-                genericViewHolder.questionTextView.setTextColor(mContext.getResources().getColor(R.color.gray_4));
+                genericViewHolder.questionTextView.setTextColor(ContextCompat.getColor(mContext,R.color.gray_4));
                 genericViewHolder.questionTextView.setTypeface(genericViewHolder.questionTextView.getTypeface(), Typeface.NORMAL);
 
             }

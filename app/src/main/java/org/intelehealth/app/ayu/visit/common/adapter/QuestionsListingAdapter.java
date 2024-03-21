@@ -2249,7 +2249,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         numberRangeSpinner.setAdapter(adaptador);
-        numberRangeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
+        numberRangeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(mContext,R.drawable.popup_menu_background));
 
 
         numberRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -2284,7 +2284,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         durationTypeSpinner.setAdapter(adaptador1);
-        durationTypeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
+        durationTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(mContext,R.drawable.popup_menu_background));
 
         durationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

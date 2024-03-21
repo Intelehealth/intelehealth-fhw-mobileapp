@@ -81,6 +81,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -917,9 +918,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 profilePicDownloaded();
             }
         }
+        RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                .asDrawable().sizeMultiplier(0.3f);
+
         Glide.with(this)
                 .load(patientDTO.getPatientPhoto())
-                .thumbnail(0.3f)
+                .thumbnail(requestBuilder)
                 .centerCrop()
                 .error(R.drawable.avatar1)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -1501,9 +1505,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
+                            RequestBuilder<Drawable> requestBuilder = Glide.with(PatientDetailActivity2.this)
+                                    .asDrawable().sizeMultiplier(0.3f);
                             Glide.with(PatientDetailActivity2.this)
                                     .load(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg")
-                                    .sizeMultiplier(0.3f)
+                                    .thumbnail(requestBuilder)
                                     .centerCrop()
                                     .error(R.drawable.avatar1)
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)

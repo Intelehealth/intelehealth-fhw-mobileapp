@@ -19,6 +19,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -258,7 +260,9 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         }
         // Patient Photo
         if (patient_photo_path != null) {
-            Glide.with(this).load(patient_photo_path).sizeMultiplier(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                    .asDrawable().sizeMultiplier(0.3f);
+            Glide.with(this).load(patient_photo_path).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
         } else {
             ivProfileImage.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.avatar1));
         }
