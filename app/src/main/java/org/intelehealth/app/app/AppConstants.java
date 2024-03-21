@@ -187,6 +187,9 @@ public class AppConstants {
     public static final int PRIVACY_POLICY_ACCEPT = 3;
     public static final int PRIVACY_POLICY_DECLINE = 4;
 
+    public static final int TELECONSULTATION_CONSENT_ACCEPT = 5;
+    public static final int TELECONSULTATION_CONSENT_DECLINE = 6;
+
 
     public static final int EVENT_FLAG_START = 0;
     public static final int EVENT_FLAG_SUCCESS = 1;

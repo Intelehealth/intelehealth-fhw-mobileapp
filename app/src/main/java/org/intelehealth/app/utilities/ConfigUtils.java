@@ -4,17 +4,14 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.widget.Toast;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
-
-import org.intelehealth.app.app.IntelehealthApplication;
-
-import org.intelehealth.app.app.AppConstants;
 
 public class ConfigUtils {
     public static String TAG = ConfigUtils.class.getSimpleName();
@@ -132,6 +129,19 @@ public class ConfigUtils {
             available = false;
         }
         return available;
+    }
+
+    public String getTeleconsultationConsentText(String locale) {
+        String val = "";
+
+        JSONObject object = jsonreader();
+        try {
+            val = object.getString("teleconsultation_consent_" + locale);
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return val;
     }
 
 }

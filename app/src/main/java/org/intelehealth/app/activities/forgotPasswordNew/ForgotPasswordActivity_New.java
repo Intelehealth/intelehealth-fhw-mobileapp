@@ -260,7 +260,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New("password", username, mobileNo, 91, "");
+        RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New(mActionType == AppConstants.FORGOT_USER_NAME_ACTION ? "username" : "password", username, mobileNo, 91, "");
         Log.d(TAG, "apiCallForRequestOTP: inputModel : " + new Gson().toJson(inputModel));
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
@@ -284,7 +284,9 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                                 public void run() {
                                     //Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(ForgotPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
-                                    intent.putExtra("userUuid", forgotPasswordApiResponseModel_new.getData().getUuid());
+                                    if (mActionType != AppConstants.FORGOT_USER_NAME_ACTION) {
+                                        intent.putExtra("userUuid", forgotPasswordApiResponseModel_new.getData().getUuid());
+                                    }
                                     intent.putExtra("userName", username);
                                     intent.putExtra("userPhoneNum", mobileNo);
                                     intent.putExtra("action", mActionType);

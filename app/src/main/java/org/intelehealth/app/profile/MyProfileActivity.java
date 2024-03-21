@@ -175,7 +175,6 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initUI() throws DAOException {
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(this);

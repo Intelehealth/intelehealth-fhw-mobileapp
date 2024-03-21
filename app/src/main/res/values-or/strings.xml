@@ -749,4 +749,7 @@
     <string name="forgot_username_link"><u>Forgot username?</u></string>
     <string name="forgot_username_txt">Forgot username?</string>
     <string name="enter_mobile_no_given_text">Please make sure your mobile number is updated in the profile section before proceeding</string>
+    <string name="username_sent_title">Username Sent</string>
+    <string name="username_sent_desc">Your username has been sent via SMS to your registered mobile number.</string>
+    <string name="teleconsultation_consent_title">Teleconsultation Consent</string>
 </resources>
