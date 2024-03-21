@@ -13,4 +13,11 @@
     <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
     <string name="tab_general">General</string>
     <string name="search_patient">Search Patient</string>
+
+    <string name="medical_history_yes">Yes</string>
+    <string name="age">Age</string>
+    <string name="years">years</string>
+    <string name="months">months</string>
+    <string name="days">days</string>
+
 </resources>

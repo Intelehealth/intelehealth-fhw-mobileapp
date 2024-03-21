@@ -166,7 +166,7 @@ dependencies {
     //Parse SDK
     implementation 'com.parse:parse-android:1.15.7'
     //date and time
-    implementation 'joda-time:joda-time:2.9.9'
+    implementation 'joda-time:joda-time:2.10.9'
 
     implementation 'org.apache.commons:commons-lang3:3.6'
 

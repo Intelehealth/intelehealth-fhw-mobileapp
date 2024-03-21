@@ -12,7 +12,7 @@ import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.utils.getApplicationName
 import java.util.Locale
 
-@Database(entities = [Patient::class, PatientAttributes::class], version = 4)
+@Database(entities = [Patient::class, PatientAttributes::class], version = 5)
 abstract class CategoryDatabase : RoomDatabase() {
 
     abstract fun patientDao(): PatientDao
@@ -39,7 +39,7 @@ abstract class CategoryDatabase : RoomDatabase() {
          * The SQLite database is only created when it's accessed for the first time.
          */
         private fun buildDatabase(appContext: Context): CategoryDatabase {
-            val databaseName = "${getAppName(appContext)}.$DATABASE_NAME"
+            val databaseName = DATABASE_NAME
             return Room.databaseBuilder(appContext, CategoryDatabase::class.java, databaseName)
                 .fallbackToDestructiveMigration()
                 .build()

@@ -88,7 +88,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
 
 
     public static final String CREATE_PATIENT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient(" +
-            "uuid TEXT PRIMARY KEY," +
+            "uuid TEXT PRIMARY KEY NOT NULL," +
             "openmrs_id TEXT," +
             "first_name TEXT," +
             "middle_name TEXT," +
@@ -115,7 +115,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             ")";
 
     public static final String CREATE_ATTRIB_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute (" +
-            "uuid TEXT PRIMARY KEY," +
+            "uuid TEXT PRIMARY KEY NOT NULL," +
             "value TEXT," +
             "person_attribute_type_uuid TEXT ," +
             "patientuuid TEXT," +
@@ -296,6 +296,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                 //upgrade logic from version 3 to 4
             case 4:
                 //upgrade logic from version 4
+                break;
+            case 5:
+            //upgrade logic from version 4
+            break;
+
             default:
                 throw new IllegalStateException(
                         "onUpgrade() with unknown oldVersion " + oldVersion);
