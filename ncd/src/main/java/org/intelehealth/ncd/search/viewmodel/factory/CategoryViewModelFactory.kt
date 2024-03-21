@@ -7,6 +7,7 @@ import org.intelehealth.ncd.search.tabs.HypertensionFollowUpFragment
 import org.intelehealth.ncd.search.viewmodel.AnemiaScreeningViewModel
 import org.intelehealth.ncd.search.viewmodel.DiabetesFollowUpViewModel
 import org.intelehealth.ncd.search.viewmodel.DiabetesScreeningViewModel
+import org.intelehealth.ncd.search.viewmodel.GeneralViewModel
 import org.intelehealth.ncd.search.viewmodel.HypertensionFollowUpViewModel
 import org.intelehealth.ncd.search.viewmodel.HypertensionScreeningViewModel
 import org.intelehealth.ncd.utils.CategorySegregationUtils
@@ -34,6 +35,8 @@ class CategoryViewModelFactory(
                 repository,
                 utils
             )
+
+            GeneralViewModel::class.java -> GeneralViewModel(repository, utils)
 
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         } as T

@@ -10,4 +10,7 @@ interface PatientDao {
     @Query("SELECT * FROM tbl_patient WHERE DATE('now') >= DATE(date_of_birth, :age || ' years')")
     suspend fun getPatientsBasedOnAge(age: Int): List<Patient>
 
+    @Query("SELECT * FROM tbl_patient")
+    suspend fun getAllPatients(): List<Patient>
+
 }

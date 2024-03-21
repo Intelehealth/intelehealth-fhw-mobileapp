@@ -25,13 +25,13 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
 
             Constants.DIABETES_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfDiabetes(attribute.value)) {
+                if (!isHistoryOfDiabetesPresent(attribute.value)) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.DIABETES_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfDiabetes(attribute.value)) {
+                if (!isHistoryOfDiabetesPresent(attribute.value)) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
@@ -44,6 +44,20 @@ class CategorySegregationUtils(private val resources: Resources) {
 
             Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
                 if (!isHistoryOfHypertensionPresent(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
+                }
+            }
+
+            Constants.GENERAL -> patientAttributeList.forEach { attribute ->
+                if (isHistoryOfHypertensionPresent(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
+                }
+
+                if (isHistoryOfDiabetesPresent(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
+                }
+
+                if (isHistoryOfAnemiaPresent(attribute.value)) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
@@ -70,7 +84,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
     }
 
-    private fun isHistoryOfDiabetes(medicalHistoryJson: String?): Boolean {
+    private fun isHistoryOfDiabetesPresent(medicalHistoryJson: String?): Boolean {
         val medicalHistoryList: List<MedicalHistory> = convertJsonToList(medicalHistoryJson)
         return if (medicalHistoryList.isEmpty()) {
             false

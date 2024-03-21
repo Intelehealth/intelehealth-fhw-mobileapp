@@ -13,6 +13,8 @@ class SearchDataSource(
     suspend fun getPatientsBasedOnAge(age: Int): List<Patient> =
         patientDao.getPatientsBasedOnAge(age)
 
+    suspend fun getAllPatients(): List<Patient> = patientDao.getAllPatients()
+
     suspend fun getPatientsBasedOnAttributesUuids(
         patientUuid: String,
         attributeUuid: String
