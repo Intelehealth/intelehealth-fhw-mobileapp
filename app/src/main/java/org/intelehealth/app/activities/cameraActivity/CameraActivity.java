@@ -134,8 +134,10 @@ public class CameraActivity extends BaseActivity {
             // check and correct the image rotation
             try {
                 Bitmap bitmap = BitmapUtils.rotateImageIfRequired(data);
-                if (isDispenseAdminister)
+                if (isDispenseAdminister) {
+                    cameraView.stop();
                     showEnterInputDialog(bitmap);
+                }
                 else
                     compressImageAndSave(bitmap);
             } catch (IOException e) {
