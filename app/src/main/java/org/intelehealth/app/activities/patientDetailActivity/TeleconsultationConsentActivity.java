@@ -7,14 +7,10 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.text.SpannableString;
-import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.core.text.HtmlCompat;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -35,15 +31,12 @@ public class TeleconsultationConsentActivity extends BaseActivity {
         setContentView(R.layout.activity_teleconsultation_consent);
         sessionManager = new SessionManager(TeleconsultationConsentActivity.this);
         String consentText = new ConfigUtils(this).getTeleconsultationConsentText(sessionManager.getAppLanguage());
-
-        final SpannableString span_string = new SpannableString(consentText);
-        Linkify.addLinks(span_string, Linkify.ALL);
-
-
-        TextView consentTextView = findViewById(R.id.content_tv);
-        //consentTextView.setAutoLinkMask(Linkify.ALL);
-        consentTextView.setText(HtmlCompat.fromHtml(String.valueOf(span_string), HtmlCompat.FROM_HTML_MODE_COMPACT));
-
+        WebView consentWebView = findViewById(R.id.content_tv);
+        String text;
+        text = "<html><body style='color:black;font-size: 0.8em;' >"; //style='text-align:justify;text-justify: inter-word;'
+        text += consentText ;
+        text += "</body></html>";
+        consentWebView.loadData(text, "text/html", "utf-8");
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
