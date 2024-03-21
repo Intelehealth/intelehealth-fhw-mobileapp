@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.ncd.R
+import org.intelehealth.ncd.callbacks.PatientClickedListener
 import org.intelehealth.ncd.databinding.ListItemSearchBinding
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.utils.DateAndTimeUtils
@@ -13,7 +14,8 @@ import org.intelehealth.ncd.utils.DateAndTimeUtils
 class CategoryRecyclerViewAdapter(
     private val patientList: List<Patient>,
     private val resources: Resources,
-    private val context: Context
+    private val context: Context,
+    private val listener: PatientClickedListener
 ) : RecyclerView.Adapter<CategoryRecyclerViewAdapter.CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -23,7 +25,7 @@ class CategoryRecyclerViewAdapter(
             false
         )
 
-        return CategoryViewHolder(binding)
+        return CategoryViewHolder(binding, listener)
     }
 
     override fun getItemCount(): Int = patientList.size
@@ -33,7 +35,8 @@ class CategoryRecyclerViewAdapter(
     }
 
     class CategoryViewHolder(
-        private val binding: ListItemSearchBinding
+        private val binding: ListItemSearchBinding,
+        private val listener: PatientClickedListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun setData(patient: Patient, resources: Resources, context: Context) {
@@ -47,6 +50,10 @@ class CategoryRecyclerViewAdapter(
                 )
             }"
             binding.listItemBody.text = bodyText
+
+            binding.root.setOnClickListener {
+                listener.onPatientClicked(patient)
+            }
         }
     }
 }
