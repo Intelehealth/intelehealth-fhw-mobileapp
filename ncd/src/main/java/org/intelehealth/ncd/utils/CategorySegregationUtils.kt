@@ -19,13 +19,19 @@ class CategorySegregationUtils(private val resources: Resources) {
         when (category) {
 
             Constants.ANEMIA_SCREENING -> patientAttributeList.forEach { attribute ->
+                if (isHistoryOfAnemiaPresent(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
+                }
+            }
+
+            Constants.ANEMIA_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
                 if (!isHistoryOfAnemiaPresent(attribute.value)) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.DIABETES_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfDiabetesPresent(attribute.value)) {
+                if (isHistoryOfDiabetesPresent(attribute.value)) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
@@ -37,27 +43,13 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
 
             Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfHypertensionPresent(attribute.value)) {
+                if (isHistoryOfHypertensionPresent(attribute.value)) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
                 if (!isHistoryOfHypertensionPresent(attribute.value)) {
-                    removePatientsFromList(patientList, attribute)
-                }
-            }
-
-            Constants.GENERAL -> patientAttributeList.forEach { attribute ->
-                if (isHistoryOfHypertensionPresent(attribute.value)) {
-                    removePatientsFromList(patientList, attribute)
-                }
-
-                if (isHistoryOfDiabetesPresent(attribute.value)) {
-                    removePatientsFromList(patientList, attribute)
-                }
-
-                if (isHistoryOfAnemiaPresent(attribute.value)) {
                     removePatientsFromList(patientList, attribute)
                 }
             }

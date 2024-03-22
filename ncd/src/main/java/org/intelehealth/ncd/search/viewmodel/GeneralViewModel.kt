@@ -12,31 +12,18 @@ import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
-class GeneralViewModel(
-    private val repository: SearchRepository,
-    private val utils: CategorySegregationUtils
-) : ViewModel() {
+class GeneralViewModel(private val repository: SearchRepository) : ViewModel() {
 
     private val _generalMutableLiveData = MutableLiveData<List<Patient>>()
     val generalLiveData: LiveData<List<Patient>> = _generalMutableLiveData
 
     fun getPatientsForGeneral() {
-        var generalPatients: MutableList<Patient>
-
         viewModelScope.launch(Dispatchers.IO) {
-            val patientsList: List<Patient> = repository.getAllPatients()
-            val patientAttributes: List<PatientAttributes> = repository.getPatientsBasedOnUuids(
-                patientsList,
-                Constants.OTHER_MEDICAL_HISTORY
+            val patientsList: List<Patient> = repository.getPatientsBelowAge(
+                Constants.GENERAL_EXCLUSION_AGE
             )
 
-            generalPatients = utils.segregateAndFetchData(
-                patientsList.toMutableList(),
-                patientAttributes.toMutableList(),
-                Constants.GENERAL
-            )
-
-            _generalMutableLiveData.postValue(generalPatients)
+            _generalMutableLiveData.postValue(patientsList)
         }
     }
 }

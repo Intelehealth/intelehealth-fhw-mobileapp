@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.intelehealth.ncd.data.SearchRepository
 import org.intelehealth.ncd.search.tabs.HypertensionFollowUpFragment
+import org.intelehealth.ncd.search.viewmodel.AnemiaFollowUpViewModel
 import org.intelehealth.ncd.search.viewmodel.AnemiaScreeningViewModel
 import org.intelehealth.ncd.search.viewmodel.DiabetesFollowUpViewModel
 import org.intelehealth.ncd.search.viewmodel.DiabetesScreeningViewModel
@@ -22,6 +23,8 @@ class CategoryViewModelFactory(
         return when (modelClass) {
             AnemiaScreeningViewModel::class.java -> AnemiaScreeningViewModel(repository, utils)
 
+            AnemiaFollowUpViewModel::class.java -> AnemiaFollowUpViewModel(repository, utils)
+
             DiabetesScreeningViewModel::class.java -> DiabetesScreeningViewModel(repository, utils)
 
             DiabetesFollowUpViewModel::class.java -> DiabetesFollowUpViewModel(repository, utils)
@@ -36,7 +39,7 @@ class CategoryViewModelFactory(
                 utils
             )
 
-            GeneralViewModel::class.java -> GeneralViewModel(repository, utils)
+            GeneralViewModel::class.java -> GeneralViewModel(repository)
 
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         } as T

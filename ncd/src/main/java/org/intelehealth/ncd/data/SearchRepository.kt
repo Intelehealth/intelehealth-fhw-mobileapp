@@ -8,7 +8,7 @@ class SearchRepository(private val dataSource: SearchDataSource) {
     suspend fun getPatientsBasedOnAge(age: Int): List<Patient> =
         dataSource.getPatientsBasedOnAge(age)
 
-    suspend fun getAllPatients(): List<Patient> = dataSource.getAllPatients()
+    suspend fun getPatientsBelowAge(age: Int): List<Patient> = dataSource.getPatientsBelowAge(age)
 
     suspend fun getPatientsBasedOnUuids(
         patientsList: List<Patient>,
