@@ -5,8 +5,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import org.intelehealth.config.room.dao.DRSpecializationDao
-import org.intelehealth.config.room.entity.DoctorSpecialization
+import org.intelehealth.config.room.dao.ConfigDao
+import org.intelehealth.config.room.entity.ConfigDictionary
 import java.util.Locale
 
 /**
@@ -14,10 +14,10 @@ import java.util.Locale
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@Database(entities = [DoctorSpecialization::class], version = 1, exportSchema = false)
+@Database(entities = [ConfigDictionary::class], version = 1, exportSchema = false)
 abstract class ConfigDatabase : RoomDatabase() {
 
-    abstract fun doctorSpecializationDao(): DRSpecializationDao
+    abstract fun configDao(): ConfigDao
 
     companion object {
 

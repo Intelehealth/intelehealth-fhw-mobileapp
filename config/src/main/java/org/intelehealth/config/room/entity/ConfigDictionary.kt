@@ -9,15 +9,20 @@ import com.google.gson.annotations.SerializedName
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@Entity(tableName = "dr_specialization")
-data class DoctorSpecialization(
+@Entity(tableName = "config_dictionary")
+data class ConfigDictionary(
     @PrimaryKey
-    val id: Int,
-    val name: String,
-    @SerializedName("is_enabled")
-    val enable: Boolean,
+    @SerializedName("id")
+    val configId: Int,
+    @SerializedName("key")
+    val dicKey: String,
+    @SerializedName("value")
+    val configValue: String = "",
+    val type: String,
     @SerializedName("created_at")
     val createdAt: String,
     @SerializedName("updated_at")
-    val updatedAt: String
+    val updatedAt: String,
+    @SerializedName("default_value")
+    val defaultValue: String,
 )

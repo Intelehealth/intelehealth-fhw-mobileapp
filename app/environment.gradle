@@ -1,64 +1,121 @@
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
 android {
-    def dimen = "beta"
-    flavorDimensions = [dimen]
+    def client = "client"
+    def server = "server"
+    flavorDimensions = [client, server]
 
+    DateFormat df = new SimpleDateFormat("yyyyMMddHHmm")
+    def date = df.format(new Date())
+
+    // kf
+    // Unicef telemedkg
+    // namma
+    // ida
     productFlavors {
-        def serverUrl = "SERVER_URL"
-        def realTimeFbUrl = "REAL_TIME_FB_URL"
-        def liveKitUrl = "LIVE_KIT_URL"
-        def socketUrl = "SOCKET_URL"
-        def fbRtDb = "FB_RT_INSTANCE"
 
-        def endPointPropertyFile = file('../endpoint.properties')
-        def property = new Properties()
-
-        if (endPointPropertyFile.canRead()) {
-            property.load(new FileInputStream(endPointPropertyFile))
-        }
-
-        dev {
-            dimension dimen
-            String devServer = property['DEV_SERVER_URL'].toString()
-            String devRealTimeFb = property['DEV_REAL_TIME_FB_URL'].toString()
-            String devLiveKit = property['DEV_LIVE_KIT_URL'].toString()
-            String devSocket = property['DEV_SOCKET_URL'].toString()
-            String devFbRtDb = property['DEV_FB_RT_INSTANCE'].toString()
-
-            println("DEV_SERVER_URL ----> $devServer")
-            println("DEV_REAL_TIME_FB_URL ------> $devRealTimeFb")
-            println("DEV_LIVE_KIT_URL ------> $devLiveKit")
-            println("DEV_SOCKET_URL ------> $devLiveKit")
-            println("DEV_FB_RT_INSTANCE ------> $devFbRtDb")
-
-            buildConfigField "String", serverUrl, devServer
-            buildConfigField "String", realTimeFbUrl, devRealTimeFb
-            buildConfigField 'String', liveKitUrl, devLiveKit
-            buildConfigField 'String', socketUrl, devSocket
-            buildConfigField 'String', fbRtDb, devFbRtDb
+        ida {
+            dimension client
             isDefault = true
         }
 
+        namma {
+            dimension client
+            applicationId "org.intelehealth.nak"
+            versionCode 65
+            versionName '4.0'
+            archivesBaseName = "intelehealth_nak-" + versionName + " - " + date
+        }
+
+        kf {
+            dimension client
+            applicationId "org.intelehealth.unicef"
+            versionCode 65
+            versionName '4.0'
+            archivesBaseName = "intelehealth_unicef-" + versionName + " - " + date
+        }
+
+        biocon {
+            dimension client
+            applicationId "org.intelehealth.biocon"
+            versionCode 1
+            versionName '1.0'
+            archivesBaseName = "intelehealth_biocon-" + versionName + " - " + date
+        }
+
+        dev {
+            dimension server
+        }
+
+        staging {
+            dimension server
+        }
 
         production {
-            dimension dimen
-            String prodServer = property['PROD_SERVER_URL'].toString()
-            String prodRealTimeFb = property['PROD_REAL_TIME_FB_URL'].toString()
-            String prodLiveKit = property['PROD_LIVE_KIT_URL'].toString()
-            String prodSocket = property['PROD_SOCKET_URL'].toString()
-            String prodFbRtDb = property['PROD_FB_RT_INSTANCE'].toString()
-
-            println("PROD_SERVER_URL ----> $prodServer")
-            println("PROD_REAL_TIME_FB_URL ------> $prodRealTimeFb")
-            println("PROD_LIVE_KIT_URL ------> $prodLiveKit")
-            println("PROD_SOCKET_URL ------> $prodLiveKit")
-            println("PROD_FB_RT_INSTANCE ------> $prodFbRtDb")
-
-            buildConfigField "String", serverUrl, prodServer
-            buildConfigField "String", realTimeFbUrl, prodRealTimeFb
-            buildConfigField 'String', liveKitUrl, prodLiveKit
-            buildConfigField 'String', socketUrl, prodSocket
-            buildConfigField 'String', fbRtDb, prodFbRtDb
-//            isDefault = true
+            dimension server
         }
     }
+
+    applicationVariants.configureEach {
+        def name = it.name
+        def domain
+
+        if (name.contains("ida")) {
+            domain = "IDA"
+        } else if (name.contains("namma")) {
+            domain = "NAMMA"
+        } else if (name.contains("kf")) {
+            domain = "KF"
+        } else if (name.contains("biocon")) {
+            domain = "BIOCON"
+        } else {
+            domain = "IDA"
+        }
+
+        // Specific values
+        if (name.contains("Dev")) {
+            domain = domain.concat("_").concat("DEV")
+        } else if (name.contains("Staging")) {
+            domain = domain.concat("_").concat("STAGE")
+        } else if (name.contains("Production")) {
+            domain = domain.concat("_").concat("PROD")
+        }
+
+        buildVariantConfigField(domain, it)
+    }
+}
+
+def buildVariantConfigField(clientServer, variant) {
+    clientServer = clientServer.concat("_")
+    def serverUrl = "SERVER_URL"
+    def realTimeFbUrl = "REAL_TIME_FB_URL"
+    def liveKitUrl = "LIVE_KIT_URL"
+    def socketUrl = "SOCKET_URL"
+    def fbRtDb = "FB_RT_INSTANCE"
+
+    def endPointPropertyFile = file('../endpoint.properties')
+    def property = new Properties()
+
+    if (endPointPropertyFile.canRead()) {
+        property.load(new FileInputStream(endPointPropertyFile))
+    }
+
+    def buildServerUrl = property[clientServer + serverUrl].toString()
+    def buildRealTimeFbUrl = property[clientServer + realTimeFbUrl].toString()
+    def buildLiveKitUrl = property[clientServer + liveKitUrl].toString()
+    def buildSocketUrl = property[clientServer + socketUrl].toString()
+    def buildFbRtDb = property[clientServer + fbRtDb].toString()
+
+//    println(clientServer + "SERVER_URL ----> $buildServerUrl")
+//    println(clientServer + "REAL_TIME_FB_URL ------> $buildRealTimeFbUrl")
+//    println(clientServer + "LIVE_KIT_URL ------> $buildLiveKitUrl")
+//    println(clientServer + "SOCKET_URL ------> $buildSocketUrl")
+//    println(clientServer + "FB_RT_INSTANCE ------> $buildFbRtDb")
+
+    variant.buildConfigField "String", serverUrl, buildServerUrl
+    variant.buildConfigField "String", realTimeFbUrl, buildRealTimeFbUrl
+    variant.buildConfigField 'String', liveKitUrl, buildLiveKitUrl
+    variant.buildConfigField 'String', socketUrl, buildSocketUrl
+    variant.buildConfigField 'String', fbRtDb, buildFbRtDb
 }
