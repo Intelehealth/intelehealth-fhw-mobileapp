@@ -3,6 +3,7 @@ package org.intelehealth.ncd.search.activity
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.intelehealth.ncd.R
@@ -19,6 +20,11 @@ import org.intelehealth.ncd.search.tabs.HypertensionScreeningFragment
 class SearchPatientCategoryActivity : AppCompatActivity() {
 
     private var binding: ActivitySearchPatientCategoryBinding? = null
+    private var backPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +32,7 @@ class SearchPatientCategoryActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         setToolbar()
+        setListeners()
         setViewPager()
     }
 
@@ -34,6 +41,14 @@ class SearchPatientCategoryActivity : AppCompatActivity() {
             setSupportActionBar(this)
             setTitleTextAppearance(this@SearchPatientCategoryActivity, R.style.ToolbarTheme)
             setTitleTextColor(Color.WHITE)
+        }
+    }
+
+    private fun setListeners() {
+        onBackPressedDispatcher.addCallback(backPressedCallback)
+
+        binding?.ivBack?.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 
