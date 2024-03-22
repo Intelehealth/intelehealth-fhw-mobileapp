@@ -219,7 +219,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         if (mSelectedCountryCode.equals("91")) {
             mSelectedMobileNumberValidationLength = 10;
         }
-        mMobileNoEditText.setInputType(InputType.TYPE_CLASS_PHONE);
+        mMobileNoEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         InputFilter inputFilter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
