@@ -16,13 +16,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.achievements.adapters.MyAchievementsPagerAdapter;
@@ -103,18 +106,27 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     public void configureTabLayout() {
         TabLayout tabLayout = view.findViewById(R.id.tablayout_achievements);
         tabLayout.removeAllTabs();
-        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.overall)));
-        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.daily)));
-        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.date_range)));
 
-        ViewPager viewPager = view.findViewById(R.id.pager_achievements);
-        PagerAdapter adapter = new MyAchievementsPagerAdapter(getChildFragmentManager(), tabLayout.getTabCount(), getActivity());
+        ViewPager2 viewPager = view.findViewById(R.id.pager_achievements);
+        MyAchievementsPagerAdapter adapter = new MyAchievementsPagerAdapter(getChildFragmentManager(), 3, getActivity());
         viewPager.setAdapter(adapter);
-        int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
+        int limit = (adapter.getItemCount() > 1 ? adapter.getItemCount() - 1 : 1);
 
         viewPager.setOffscreenPageLimit(limit);
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                switch (position) {
+                    case 0 -> tab.setText(getResources().getString(R.string.overall));
+                    case 1 -> tab.setText(getResources().getString(R.string.daily));
+                    default -> tab.setText(getResources().getString(R.string.date_range));
+                }
+            }
+        }).attach();
+
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

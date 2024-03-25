@@ -16,9 +16,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.BuildConfig;
@@ -46,7 +48,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
     private static final String TAG = "MyAppointmentActivity";
     BottomNavigationView bottomNav;
     TabLayout tabLayout;
-    ViewPager viewPager;
+    ViewPager2 viewPager;
     String fromFragment = "";
     int totalCount;
     NetworkUtils networkUtils;
@@ -176,22 +178,32 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
     public void configureTabLayout() {
         tabLayout = findViewById(R.id.tablayout_appointments);
 
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.todays)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.all_appointments)));
+       /* tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.todays)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.all_appointments)));*/
 
         viewPager = findViewById(R.id.pager_appointments);
-        PagerAdapter adapter = new MyAppointmentsPagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount(), MyAppointmentActivity.this);
+        MyAppointmentsPagerAdapter adapter = new MyAppointmentsPagerAdapter
+                (getSupportFragmentManager(), 2, MyAppointmentActivity.this);
         viewPager.setAdapter(adapter);
 
-        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
+        viewPager.setOffscreenPageLimit(adapter.getItemCount() - 1);
 
         // int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
 
         //viewPager.setOffscreenPageLimit(limit);
 
-        viewPager.addOnPageChangeListener(new
-                TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        /*viewPager.addOnPageChangeListener(new
+                TabLayout.TabLayoutOnPageChangeListener(tabLayout));*/
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                if (position == 0) {
+                    tab.setText(getString(R.string.todays));
+                } else {
+                    tab.setText(getString(R.string.all_appointments));
+                }
+            }
+        }).attach();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
