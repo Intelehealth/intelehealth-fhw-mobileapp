@@ -68,7 +68,7 @@ public class IntroScreensActivity_New extends AppCompatActivity {
             handler.postDelayed(this, delay);
         }
     };
-    private boolean dotCalledFirstTime = false;
+    private boolean dotFromCallback = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,12 +116,15 @@ public class IntroScreensActivity_New extends AppCompatActivity {
         onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                if(dotCalledFirstTime){
-                    dotCalledFirstTime = false;
-                }else {
+                //dot not showing when its calling first time from here
+                //that's why skipping first time call
+                if(position == 0 && !dotFromCallback){
+                    dotFromCallback = true;
+                }else if(dotFromCallback){
                     addBottomDots1(position);
                     page = position;
                 }
+
                 super.onPageSelected(position);
             }
         };
@@ -252,9 +255,6 @@ public class IntroScreensActivity_New extends AppCompatActivity {
 
         if (dots1.length > 0) {
             dots1[currentPage].setBackgroundResource(R.drawable.ui2_ic_slider_bar);
-        }
-        if(!dotCalledFirstTime){
-            dotCalledFirstTime = true;
         }
     }
 
