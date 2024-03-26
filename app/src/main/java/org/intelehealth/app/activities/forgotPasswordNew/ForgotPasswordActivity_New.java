@@ -198,7 +198,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         mLayoutUsername = findViewById(R.id.layout_parent_username);
         mUsernameEditText = findViewById(R.id.edittext_username);
         mMobileNoEditText = findViewById(R.id.edittext_mobile_number);
-        layoutParent = findViewById(R.id.login_parent);
+        layoutParent = findViewById(R.id.bottom_layout);
         imageviewBack = findViewById(R.id.imageview_back_forgot_password);
         tvUsernameError = findViewById(R.id.tv_username_error);
         tvMobileError = findViewById(R.id.tv_mobile_error);
