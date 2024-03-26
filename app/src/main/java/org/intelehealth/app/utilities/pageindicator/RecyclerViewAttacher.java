@@ -162,8 +162,8 @@ public class RecyclerViewAttacher implements ScrollingPagerIndicator.PagerAttach
 
             if (position >= currentStart && position + size <= currentEnd) {
                 RecyclerView.ViewHolder holder = recyclerView.findContainingViewHolder(child);
-                if (holder != null && holder.getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    return holder.getAdapterPosition();
+                if (holder != null && holder.getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
+                    return holder.getBindingAdapterPosition();
                 }
             }
         }

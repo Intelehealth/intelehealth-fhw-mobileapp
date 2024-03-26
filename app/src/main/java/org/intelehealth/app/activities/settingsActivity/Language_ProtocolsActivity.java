@@ -1,9 +1,12 @@
 package org.intelehealth.app.activities.settingsActivity;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,10 +94,9 @@ public class Language_ProtocolsActivity extends BaseActivity {
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
+        handleBackPress();
         initUI();
         clickListeners();
     }
@@ -171,7 +173,7 @@ public class Language_ProtocolsActivity extends BaseActivity {
                 selected_language = data.getTitle();
                 Log.v("Langauge", "selection: " + selected_language);
                 String message = getResources().getString(R.string.sure_change_language, selected_language);
-                dialog(context, getResources().getDrawable(R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
+                dialog(context, ContextCompat.getDrawable(context,R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
                         message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
             }
         });
@@ -210,7 +212,7 @@ public class Language_ProtocolsActivity extends BaseActivity {
                     selected_language = adapterView.getItemAtPosition(index).toString();
                     Log.v("Langauge", "selection: " + selected_language);
                     String message = getResources().getString(R.string.sure_change_language) + " " + selected_language + "?";
-                    dialog(context, getResources().getDrawable(R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
+                    dialog(context, ContextCompat.getDrawable(context,R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
                             message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
 
                 }
@@ -450,7 +452,7 @@ public class Language_ProtocolsActivity extends BaseActivity {
 
     private void getMindmapDownloadURL(String url, String key) {
         // customProgressDialog.show();
-        dialog(context, getResources().getDrawable(R.drawable.ui2_icon_logging_in),
+        dialog(context, ContextCompat.getDrawable(context,R.drawable.ui2_icon_logging_in),
                 getResources().getString(R.string.changing_protocols), getResources().getString(R.string.wait_while_protocols_changing),
                 getResources().getString(R.string.yes), getResources().getString(R.string.no), true);
 
@@ -539,12 +541,15 @@ public class Language_ProtocolsActivity extends BaseActivity {
         Log.e("DOWNLOAD", "isSTARTED");
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this, HomeScreenActivity_New.class);
-        startActivity(intent);
-        finish();
+    void handleBackPress(){
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(Language_ProtocolsActivity.this, HomeScreenActivity_New.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void backPress(View view) {

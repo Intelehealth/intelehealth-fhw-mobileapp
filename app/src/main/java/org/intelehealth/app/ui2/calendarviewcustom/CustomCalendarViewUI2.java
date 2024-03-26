@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -420,7 +421,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
         MonthsSpinnerAdapter adapter = new MonthsSpinnerAdapter(context, R.layout.custom_spinner_text_calview_ui2, monthsList);
         adapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-        spinnerMonths.setPopupBackgroundDrawable(context.getDrawable(R.drawable.popup_menu_background));
+        spinnerMonths.setPopupBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.popup_menu_background));
         spinnerMonths.setAdapter(adapter);
 
         spinnerMonths.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -430,7 +431,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedMonthModel = adapter.getItem(position);
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
-                spinnerMonths.setBackground(context.getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
+                spinnerMonths.setBackground(ContextCompat.getDrawable(context,R.drawable.spinner_cal_view_bg_selected));
                 ((TextView) adapterView.getChildAt(0)).setTypeface(((TextView) adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
 
                 fillDatesMonthsWise("fromSpinnerMonth");
@@ -511,7 +512,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
         YearSpinnerAdapter adapter = new YearSpinnerAdapter(context, R.layout.custom_spinner_text_calview_ui2, yearsList);
         adapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-        spinnerYear.setPopupBackgroundDrawable(context.getDrawable(R.drawable.popup_menu_background));
+        spinnerYear.setPopupBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.popup_menu_background));
 
         spinnerYear.setAdapter(adapter);
 

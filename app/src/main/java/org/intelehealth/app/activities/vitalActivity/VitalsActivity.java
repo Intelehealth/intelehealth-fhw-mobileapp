@@ -1066,8 +1066,4 @@ public class VitalsActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-    }
-
 }

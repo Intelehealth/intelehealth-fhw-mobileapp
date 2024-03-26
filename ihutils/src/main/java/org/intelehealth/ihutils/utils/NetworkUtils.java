@@ -56,30 +56,20 @@ public class NetworkUtils {
     }
 
     public boolean isNetworkAvailable(Context context) {
-        int flag = 0;
-
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null) {
-
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        if (!isConnected) {
-                            flag = 1;
-                            isInternetAvailable = true;
-
-                        }
-                    }
+        NetworkInfo activeNetwork = connectivity.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            switch (activeNetwork.getType()) {
+                case ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_MOBILE -> {
+                    return true;
+                }
+                default -> {
+                    return false;
                 }
             }
+        } else {
+            return false;
         }
-
-        if (flag == 0) {
-            isInternetAvailable = false;
-
-        }
-        return isInternetAvailable;
 
     }
 

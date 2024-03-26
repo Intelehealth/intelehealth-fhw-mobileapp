@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
@@ -28,9 +29,9 @@ public class AboutUsAdapter extends RecyclerView.Adapter<AboutUsAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        int draw[] = {R.drawable.about_us_11};
+        int[] draw = {R.drawable.about_us_11};
 
-        Drawable d = context.getResources().getDrawable(draw[position]);
+        Drawable d = ContextCompat.getDrawable(context,draw[position]);
         holder.imageView.setImageDrawable(d);
     }
 

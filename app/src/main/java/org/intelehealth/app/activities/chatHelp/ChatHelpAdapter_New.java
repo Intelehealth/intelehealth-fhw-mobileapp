@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.chatHelp;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -20,9 +21,11 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -112,16 +115,19 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
 */
 
             if (chatHelpModel.getOutgoingMediaPath() != null && !chatHelpModel.getOutgoingMediaPath().isEmpty()) {
+                RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                        .asDrawable().sizeMultiplier(0.3f);
+
                 Log.d(TAG, "onBindViewHolder:  glide");
                 Glide.with(context)
                         .load(chatHelpModel.getOutgoingMediaPath())
-                        .thumbnail(0.3f)
+                        .thumbnail(requestBuilder)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(holder.ivSelectedImage);
             } else {
-                holder.ivSelectedImage.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+                holder.ivSelectedImage.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
             }
 
         } else if (chatHelpModel.isOutgoingMsgVideo()) {
@@ -183,15 +189,18 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
 
             if (chatHelpModel.getIncomingMediaPath() != null && !chatHelpModel.getIncomingMediaPath().isEmpty()) {
                 Log.d(TAG, "onBindViewHolder:  glide");
+
+                RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                        .asDrawable().sizeMultiplier(0.3f);
                 Glide.with(context)
                         .load(chatHelpModel.getIncomingMediaPath())
-                        .thumbnail(0.3f)
+                        .thumbnail(requestBuilder)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(holder.ivIncomingMedia);
             } else {
-                holder.ivIncomingMedia.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+                holder.ivIncomingMedia.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
             }
 
         } else if (chatHelpModel.isIncomingMsgDocument()) {
@@ -286,9 +295,12 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
+                            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                                    .asDrawable().sizeMultiplier(0.3f);
+
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
-                                    .thumbnail(0.3f)
+                                    .thumbnail(requestBuilder)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)

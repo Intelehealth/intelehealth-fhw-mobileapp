@@ -508,10 +508,6 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
     }
 
     @Override
-    public void onBackPressed() {
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
     }

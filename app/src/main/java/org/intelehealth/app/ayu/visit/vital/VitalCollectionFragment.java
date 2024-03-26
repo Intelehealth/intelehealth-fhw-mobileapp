@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -745,7 +746,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         BMIStatus bmiStatus = getBmiStatus(bmi_value);
         mBmiStatusTextView.setText(String.format("(%s)", bmiStatus.getStatus()));
-        mBmiStatusTextView.setTextColor(getResources().getColor(bmiStatus.getColor()));
+        mBmiStatusTextView.setTextColor(ContextCompat.getColor(getActivity(),bmiStatus.getColor()));
     }
 
     public void calculateBMI_onEdit(String height, String weight) {

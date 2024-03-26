@@ -6,7 +6,9 @@ import static org.intelehealth.app.database.dao.VisitsDAO.olderNotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +37,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
+import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
@@ -78,11 +81,11 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_visit);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         networkUtils = new NetworkUtils(this, this);
+
+        handleBackPress();
         initViews();
         endVisits_data();
         refresh.setOnClickListener(v -> {
@@ -190,9 +193,9 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equalsIgnoreCase("")) {
-                    searchview_received.setBackground(getResources().getDrawable(R.drawable.blue_border_bg));
+                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.blue_border_bg));
                 } else {
-                    searchview_received.setBackground(getResources().getDrawable(R.drawable.ui2_common_input_bg));
+                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_common_input_bg));
                 }
                 return false;
             }
@@ -334,9 +337,9 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -494,9 +497,13 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(context, HomeScreenActivity_New.class);
-        startActivity(intent);
+    void handleBackPress(){
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(context, HomeScreenActivity_New.class);
+                startActivity(intent);
+            }
+        });
     }
 }

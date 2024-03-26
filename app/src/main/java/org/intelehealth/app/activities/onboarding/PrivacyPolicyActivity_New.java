@@ -13,7 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultRegistry;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
@@ -31,6 +38,16 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
     String appLanguage, intentType;
     SessionManager sessionManager = null;
 
+    ActivityResultLauncher<Intent> activityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if(result.getResultCode() == AppConstants.PERSONAL_CONSENT_ACCEPT){
+            Intent intent = new Intent(this, IdentificationActivity_New.class);
+            startActivity(intent);
+            finish();
+        }else if(result.getResultCode() == AppConstants.PERSONAL_CONSENT_DECLINE){
+            finish();
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +56,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
         mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
         intentType = getIntent().getStringExtra("intentType");
         ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
@@ -68,18 +83,11 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
                 finish();
             }else {
-                Intent intent = new Intent(this, IdentificationActivity_New.class);
-                startActivity(intent);
-                finish();
+                Intent intent = new Intent(this, PersonalConsentActivity.class);
+                activityResult.launch(intent);
             }
         });
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
     }
 
     public void declinePP(View view) {

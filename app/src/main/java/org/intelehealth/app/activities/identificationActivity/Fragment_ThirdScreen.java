@@ -63,6 +63,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -235,57 +236,10 @@ public class Fragment_ThirdScreen extends Fragment {
 
             }
         });
-    }
 
-    class MyTextWatcher implements TextWatcher {
-        EditText editText;
-
-        MyTextWatcher(EditText editText) {
-            this.editText = editText;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            String val = editable.toString().trim();
-            /*if (this.editText.getId() == R.id.relation_edittext) {
-                if (val.isEmpty()) {
-                    mRelationNameErrorTextView.setVisibility(View.VISIBLE);
-                    mRelationNameErrorTextView.setText(getString(R.string.error_field_required));
-                    mRelationNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mRelationNameErrorTextView.setVisibility(View.GONE);
-                    mRelationNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.occupation_editText) {
-                if (val.isEmpty()) {
-                    mOccupationErrorTextView.setVisibility(View.VISIBLE);
-                    mOccupationErrorTextView.setText(getString(R.string.error_field_required));
-                    mOccupationEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mOccupationErrorTextView.setVisibility(View.GONE);
-                    mOccupationEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            }*/
-        }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        personal_icon.setImageDrawable(getResources().getDrawable(R.drawable.addpatient_icon_done));
-        address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon_done));
-        other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon));
+        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addpatient_icon_done));
+        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addresslocation_icon_done));
+        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.other_icon));
 
         frag3_btn_back.setOnClickListener(v -> {
             onBackInsertIntoPatientDTO();
@@ -308,7 +262,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 casteAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mCasteSpinner.setAdapter(casteAdapter);
-            mCasteSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+            mCasteSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
 
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
@@ -325,7 +279,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 educationAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mEducationSpinner.setAdapter(educationAdapter);
-            mEducationSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+            mEducationSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -341,7 +295,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 economicStatusAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mEconomicstatusSpinner.setAdapter(economicStatusAdapter);
-            mEconomicstatusSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+            mEconomicstatusSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -503,7 +457,48 @@ public class Fragment_ThirdScreen extends Fragment {
 
 
         }
+    }
 
+    class MyTextWatcher implements TextWatcher {
+        EditText editText;
+
+        MyTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String val = editable.toString().trim();
+            /*if (this.editText.getId() == R.id.relation_edittext) {
+                if (val.isEmpty()) {
+                    mRelationNameErrorTextView.setVisibility(View.VISIBLE);
+                    mRelationNameErrorTextView.setText(getString(R.string.error_field_required));
+                    mRelationNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mRelationNameErrorTextView.setVisibility(View.GONE);
+                    mRelationNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.occupation_editText) {
+                if (val.isEmpty()) {
+                    mOccupationErrorTextView.setVisibility(View.VISIBLE);
+                    mOccupationErrorTextView.setText(getString(R.string.error_field_required));
+                    mOccupationEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mOccupationErrorTextView.setVisibility(View.GONE);
+                    mOccupationEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }*/
+        }
     }
 
     private void onBackInsertIntoPatientDTO() {

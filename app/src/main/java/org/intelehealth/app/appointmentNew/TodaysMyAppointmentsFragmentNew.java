@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -121,10 +122,10 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             getAppointments();
         });
 
-        cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+        cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+        cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+        layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+        cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
         Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
         cardUpcomingAppointments.startAnimation(fadeOut);
 
@@ -188,10 +189,10 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
 
     private void clickListeners() {
         cardUpcomingAppointments.setOnClickListener(v -> {
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
             Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
             cardUpcomingAppointments.startAnimation(fadeOut);
 
@@ -207,11 +208,11 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
         });
         cardCancelledAppointments.setOnClickListener(v -> {
 
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
 
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
             Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
             cardCancelledAppointments.startAnimation(fadeOut);
 
@@ -227,11 +228,11 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
 
         });
         cardCompletedAppointments.setOnClickListener(v -> {
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
 
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
             Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
             cardCompletedAppointments.startAnimation(fadeOut);
 
