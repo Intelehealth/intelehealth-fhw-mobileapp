@@ -22,12 +22,12 @@ android {
         minSdk 23
         targetSdk 34
         versionCode 65
-        versionName '4.0'
+        versionName '5.0.21.03.2024'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Intelehealth UIUX_" + versionName + " - " + getDateTime()
+        archivesBaseName = "Intelehealth IDA " + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

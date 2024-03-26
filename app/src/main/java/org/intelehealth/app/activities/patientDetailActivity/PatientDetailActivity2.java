@@ -75,6 +75,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -278,7 +282,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         @Override
                         public void onDialogActionDone(int action) {
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                startVisit();
+                               // startVisit();
+                                mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
                             }
                         }
                     });
@@ -401,6 +406,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private RelativeLayout mPersonalHeaderRelativeLayout, mAddressHeaderRelativeLayout, mOthersHeaderRelativeLayout;
+
+    ActivityResultLauncher<Intent> mStartForConsentApproveResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == AppConstants.TELECONSULTATION_CONSENT_ACCEPT) {
+                        //Intent intent = result.getData();
+                        // Handle the Intent
+                        startVisit();
+                    }
+                }
+            });
 
     private void startVisit() {
         // before starting, we determine if it is new visit for a returning patient

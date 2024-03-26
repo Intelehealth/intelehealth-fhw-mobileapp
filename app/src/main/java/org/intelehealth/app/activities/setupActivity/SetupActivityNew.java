@@ -86,7 +86,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -178,6 +177,17 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_PASSWORD_ACTION);
+                startActivity(intent);
+            }
+        });
+        TextView forgotUserNameLabelTextView = findViewById(R.id.tv_forgot_username);
+
+        forgotUserNameLabelTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_NAME_ACTION);
                 startActivity(intent);
             }
         });

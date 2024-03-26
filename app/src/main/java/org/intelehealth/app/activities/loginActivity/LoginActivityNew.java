@@ -101,6 +101,7 @@ public class LoginActivityNew extends AppCompatActivity {
 
 
         TextView textviewPassword = findViewById(R.id.tv_forgot_password1);
+        TextView forgotUserNameLabelTextView = findViewById(R.id.tv_forgot_username);
         TextView buttonLogin = findViewById(R.id.button_login);
         tvUsernameError = findViewById(R.id.tv_username_error);
         tvPasswordError = findViewById(R.id.tv_password_error);
@@ -115,6 +116,15 @@ public class LoginActivityNew extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_PASSWORD_ACTION);
+                startActivity(intent);
+            }
+        });
+        forgotUserNameLabelTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_NAME_ACTION);
                 startActivity(intent);
             }
         });

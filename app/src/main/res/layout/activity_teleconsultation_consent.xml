@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.patientDetailActivity.TeleconsultationConsentActivity">
+
+
+    <!--toolbar-->
+    <LinearLayout
+        android:id="@+id/ll_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginStart="@dimen/back_arrow_margin_start"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_back_arrow_terms"
+            android:layout_width="@dimen/back_arrow_width"
+            android:layout_height="@dimen/back_arrow_height"
+            android:src="@drawable/ui2_ic_arrow_back_new" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/title_margin_start"
+            android:text="@string/teleconsultation_consent_title"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/setup_privacy_screen_info"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <!--toolbar end-->
+
+    <!--<androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layout_button_privacy"
+        android:layout_below="@+id/ll_action_bar"
+        android:layout_marginHorizontal="@dimen/content_margin_start">
+
+        <TextView
+            android:id="@+id/content_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/iv_back_arrow_terms"
+            android:fontFamily="@font/lato_regular"
+            android:gravity="fill_horizontal"
+            android:justificationMode="inter_word"
+            android:text="@string/privacy_policy_content_old"
+            android:textSize="@dimen/info_options_text_size" />
+
+    </androidx.core.widget.NestedScrollView>-->
+    <WebView
+        android:id="@+id/content_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_button_privacy"
+        android:layout_below="@+id/ll_action_bar"
+        android:layout_marginHorizontal="@dimen/content_margin_start" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_button_privacy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/common_title_margin_top"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:weightSum="2">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/common_edittext_margin_top"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_weight="1"
+            android:background="@drawable/ui2_common_primary_bg_disabled"
+            android:lineHeight="@dimen/button_line_height"
+            android:onClick="declineConsent"
+            android:padding="@dimen/hamburger_margin_top"
+            android:text="@string/decline"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/common_button_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_accept_privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/common_edittext_margin_top"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_weight="1"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:lineHeight="@dimen/button_line_height"
+            android:onClick="acceptConsent"
+            android:padding="@dimen/hamburger_margin_top"
+            android:text="@string/accept_new"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_button_text_size" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

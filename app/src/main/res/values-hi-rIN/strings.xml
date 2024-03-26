@@ -1463,4 +1463,10 @@
     <string name="otp_sending">ओटीपी भेजा जा रहा है...</string>
     <string name="token_expired">Token Expired</string>
     <string name='your_session_has_expired_please_log_in_again'>आपका सत्र समाप्त हो गया है। कृपया दोबारा लॉग इन करें।</string>
+    <string name="forgot_username_link"><u>यूजरनेम भूल गए?</u></string>
+    <string name="forgot_username_txt">यूजरनेम भूल गए?</string>
+    <string name="enter_mobile_no_given_text">कृपया जांचें कि आपका मोबाइल नंबर प्रोफ़ाइल में अपडेट किया गया है, फिर आगे बढ़ें।</string>
+    <string name="username_sent_title">यूजरनेम भेजा गया</string>
+    <string name="username_sent_desc">आपका यूजरनेम आपके पंजीकृत मोबाइल नंबर पर एसएमएस के माध्यम से भेज दिया गया है।</string>
+    <string name="teleconsultation_consent_title">टेलीपरामर्श सहमति</string>
 </resources>
