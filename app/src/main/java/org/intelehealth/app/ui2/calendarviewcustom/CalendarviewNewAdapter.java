@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
@@ -85,10 +86,10 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
             public void onClick(View v) {
                 if (listener != null) {
                     tag = "clicked";
-                    if (holder.getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    if (holder.getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
                         listener.onItemClick(calendarModel);
                         notifyItemChanged(selectedPos);
-                        selectedPos = holder.getAdapterPosition();
+                        selectedPos = holder.getBindingAdapterPosition();
                         notifyItemChanged(selectedPos);
                     }
                 }
@@ -98,17 +99,17 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
 
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() == currentMonthNew) {
             if (calendarModel.isPrevMonth || calendarModel.isNextMonth || calendarModel.isCurrentMonthCompletedDate()) {
-                holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
+                holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.edittextBorder));
             }
         } else {
             if (calendarModel.isPrevMonth || calendarModel.isNextMonth) {
-                holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
+                holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.edittextBorder));
             }
         }
 
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() > currentMonthNew) {
             if(!whichDate.equalsIgnoreCase("fromdate") && !whichDate.equalsIgnoreCase("todate")) {
-                holder.tvDate.setTextColor(context.getResources().getColor(R.color.edittextBorder));
+                holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.edittextBorder));
                 holder.tvDate.setClickable(false);
                 holder.layoutParent.setClickable(false);
             }
@@ -116,7 +117,7 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
 
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() == currentMonthNew && position > todayDatePosition) {
            if(!whichDate.equalsIgnoreCase("fromdate") && !whichDate.equalsIgnoreCase("todate")) {
-               holder.tvDate.setTextColor(context.getResources().getColor(R.color.edittextBorder));
+               holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.edittextBorder));
                holder.tvDate.setClickable(false);
                holder.layoutParent.setClickable(false);
            }
@@ -156,15 +157,15 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
         Log.d(TAG, "changeToSelect: position : " + position);
         if (selectedPos == position) {
             Log.d(TAG, "changeToSelect: in true");
-            holder.layoutParent.setBackground(context.getResources().getDrawable(R.drawable.bg_selected_date_custom_calview_ui2));
-            holder.tvDate.setTextColor(context.getResources().getColor(R.color.textColorBlack));
+            holder.layoutParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_selected_date_custom_calview_ui2));
+            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.textColorBlack));
             if (calendarModel.isPrevMonth || calendarModel.isNextMonth) {
                 holder.layoutParent.setBackground(null);
             }
         } else {
             Log.d(TAG, "changeToSelect: in false");
             holder.layoutParent.setBackground(null);
-            holder.tvDate.setTextColor(context.getResources().getColor(R.color.textColorBlack));
+            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.textColorBlack));
         }
     }
 

@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,11 +42,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -136,9 +140,9 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
+
+        handleBackPress();
 
         networkUtils = new NetworkUtils(this, this);
         context = VisitDetailsActivity.this;
@@ -225,15 +229,17 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
         if (patient_photo_path != null) {
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                    .asDrawable().sizeMultiplier(0.3f);
             Glide.with(this)
                     .load(patient_photo_path)
-                    .thumbnail(0.3f)
+                    .thumbnail(requestBuilder)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(profile_image);
         } else {
-            profile_image.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
+            profile_image.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.avatar1));
         }
 
         // visit summary - start
@@ -287,7 +293,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 String modifiedDate = obsservermodifieddate;
                 modifiedDate = timeAgoFormat(modifiedDate);
                 presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
-                icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_icon));
+                icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.prescription_icon));
             }
 
 /*
@@ -351,8 +357,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 timeText = modifiedDate.replace("पहले", "") + "से पेंडिंग है";
             presc_time.setText(timeText);
-            presc_time.setTextColor(getResources().getColor(R.color.red));
-            icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_red_icon));
+            presc_time.setTextColor(ContextCompat.getColor(this,R.color.red));
+            icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.prescription_red_icon));
         }
         // presc block - end
 
@@ -862,19 +868,22 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+    private void handleBackPress() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+            }
+        });
     }
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
         }
     }
 

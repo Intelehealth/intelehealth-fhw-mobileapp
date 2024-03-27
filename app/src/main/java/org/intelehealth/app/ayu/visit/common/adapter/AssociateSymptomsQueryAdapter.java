@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -105,18 +106,18 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             //genericViewHolder.recyclerView.setAdapter(reasonChipsGridAdapter);
 
             if (mItemList.get(position).isNoSelected()) {
-                genericViewHolder.noTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+                genericViewHolder.noTextView.setTextColor(ContextCompat.getColor(mContext,R.color.white));
                 genericViewHolder.noTextView.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 genericViewHolder.noTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_close_18_white, 0, 0, 0);
             } else {
-                genericViewHolder.noTextView.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+                genericViewHolder.noTextView.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
                 genericViewHolder.noTextView.setBackgroundResource(R.drawable.normal_white_reounded_bg);
                 genericViewHolder.noTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_close_18_green, 0, 0, 0);
             }
             genericViewHolder.currentRootOptionList = mItemList.get(position).getOptionsList();
 
             if (mItemList.get(position).isSelected()) {
-                genericViewHolder.yesTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+                genericViewHolder.yesTextView.setTextColor(ContextCompat.getColor(mContext,R.color.white));
                 genericViewHolder.yesTextView.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_white, 0, 0, 0);
 
@@ -241,7 +242,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 genericViewHolder.singleComponentContainer.removeAllViews();
                 genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
 
-                genericViewHolder.yesTextView.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+                genericViewHolder.yesTextView.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
                 genericViewHolder.yesTextView.setBackgroundResource(R.drawable.normal_white_reounded_bg);
                 genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_green, 0, 0, 0);
                 genericViewHolder.recyclerView.setVisibility(View.GONE);

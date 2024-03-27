@@ -133,8 +133,6 @@ public class BitmapUtils {
         options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
         options.inJustDecodeBounds = false;
         options.inDither = false;
-        options.inPurgeable = true;
-        options.inInputShareable = true;
         options.inTempStorage = new byte[16 * 1024];
 
         try {

@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -219,7 +220,7 @@ public class SearchPatientActivity_New extends BaseActivity {
             else
                 allPatientsTV.setText(getResources().getString(R.string.results_for) + " \"" + text + "\"");
 
-            mSearchEditText.setTextColor(getResources().getColor(R.color.white));
+            mSearchEditText.setTextColor(ContextCompat.getColor(this,R.color.white));
             managePreviousSearchStorage(text);
             query = text;
             doQuery(text);

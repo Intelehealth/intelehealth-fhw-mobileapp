@@ -1,6 +1,7 @@
 package org.intelehealth.klivekit.call.ui.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.media.Ringtone
@@ -103,9 +104,19 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 //    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.addFlags(
-            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        } else {
+            this.window.addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            )
+        }
+        this.window.addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
         )
+
         super.onCreate(savedInstanceState)
         videoCallViewModel.room.initVideoRenderer(getLocalVideoRender())
         videoCallViewModel.room.initVideoRenderer(getRemoteVideoRender())

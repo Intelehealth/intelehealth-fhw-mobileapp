@@ -202,6 +202,16 @@
                     android:visibility="visible" />
 
                 <TextView
+                    android:id="@+id/tv_forgot_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:gravity="end"
+                    android:text="@string/forgot_username_link"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
+
+                <TextView
                     style="@style/TextviewInputTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

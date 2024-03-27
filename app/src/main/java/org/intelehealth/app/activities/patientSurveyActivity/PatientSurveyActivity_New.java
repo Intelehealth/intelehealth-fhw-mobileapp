@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.patientSurveyActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -77,9 +78,7 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
         getIntentValues();
         initUI();
@@ -163,12 +162,6 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
         mSubmit = findViewById(R.id.btn_submit);
         ratingBar = (RatingBar) findViewById(R.id.ratingbar);
         refresh = findViewById(R.id.refresh);
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        //do nothing
     }
 
     /**
@@ -262,10 +255,10 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
         }
         else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
         }
     }
 

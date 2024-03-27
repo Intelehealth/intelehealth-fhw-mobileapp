@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,6 +43,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amazonaws.HttpMethod;
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;
@@ -54,6 +56,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
@@ -413,7 +416,9 @@ public class ChatActivity extends AppCompatActivity {
         mEmptyTextView.setText(getString(R.string.loading));
         String url = Constants.GET_ALL_MESSAGE_URL + mFromUUId + "/" + mToUUId + "/" + mPatientUUid;
         Log.v(TAG, "getAllMessages - " + url);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.v(TAG, "getAllMessages -response - " + response.toString());
@@ -918,11 +923,13 @@ public class ChatActivity extends AppCompatActivity {
         if (url.endsWith(".pdf")) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
         } else {
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                    .asDrawable().sizeMultiplier(0.1f);
             Glide.with(this)
                     .load(url)
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .thumbnail(0.1f)
+                    .thumbnail(requestBuilder)
                     .into((ImageView) findViewById(R.id.preview_img));
             findViewById(R.id.image_preview_ll).setVisibility(View.VISIBLE);
         }

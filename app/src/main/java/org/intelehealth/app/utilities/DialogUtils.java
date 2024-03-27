@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,7 +62,7 @@ public class DialogUtils {
                 });
         AlertDialog dialog = alertDialog.show();
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
         //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
@@ -80,7 +81,7 @@ public class DialogUtils {
                 });
         AlertDialog dialog = alertDialog.show();
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
         //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }

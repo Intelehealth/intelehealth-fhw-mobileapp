@@ -423,7 +423,7 @@ public class CalendarViewDemoActivity extends BaseActivity implements SendSelect
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedMonthModel = adapter.getItem(position);
                 ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
-                spinnerMonths.setBackground(getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
+                spinnerMonths.setBackground(ContextCompat.getDrawable(CalendarViewDemoActivity.this,R.drawable.spinner_cal_view_bg_selected));
                 ((TextView)adapterView.getChildAt(0)).setTypeface( ((TextView)adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
 
                 fillDatesMonthsWise("fromSpinnerMonth");

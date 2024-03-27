@@ -474,9 +474,6 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         }
     }
 
-    @Override
-    public void onBackPressed() {
-    }
 
     @Override
     public void fabClickedAtEnd() {

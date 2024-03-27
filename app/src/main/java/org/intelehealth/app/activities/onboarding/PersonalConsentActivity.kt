@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
+import androidx.core.view.WindowCompat
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.utilities.DialogUtils
@@ -21,6 +22,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.util.Locale
 import java.util.Objects
+
 
 class PersonalConsentActivity : AppCompatActivity() {
     var obj: JSONObject? = null
@@ -36,10 +38,9 @@ class PersonalConsentActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_personal_consent)
         //  mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = Color.WHITE
-        }
+        WindowCompat.getInsetsController(window,window.decorView).isAppearanceLightStatusBars = true
+
+        window.statusBarColor = Color.WHITE
 
         ivBack = findViewById(R.id.iv_back_arrow_terms)
         tvText = findViewById(R.id.tv_term_condition)
@@ -123,9 +124,10 @@ class PersonalConsentActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             conf.setLocales(LocaleList(locale))
         } else {
-            conf.locale = locale
+            conf.setLocale(locale)
         }
-        res.updateConfiguration(conf, dm)
+        res.displayMetrics.setTo(dm)
+        res.configuration.setTo(conf)
         return context
     }
 }

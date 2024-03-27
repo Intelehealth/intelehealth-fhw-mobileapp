@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -201,10 +202,10 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             resetData();
         });
 
-        cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+        cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+        cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+        layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+        cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
 
         layoutUpcoming.setVisibility(View.VISIBLE);
         layoutCompleted.setVisibility(View.VISIBLE);
@@ -385,10 +386,10 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     private void clickListeners() {
         cardUpcomingAppointments.setOnClickListener(v -> {
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
 
             layoutUpcoming.setVisibility(View.VISIBLE);
             layoutCompleted.setVisibility(View.VISIBLE);
@@ -402,11 +403,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         });
         cardCancelledAppointments.setOnClickListener(v -> {
 
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
 
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
 
             layoutUpcoming.setVisibility(View.GONE);
             layoutCompleted.setVisibility(View.VISIBLE);
@@ -420,11 +421,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
         });
         cardCompletedAppointments.setOnClickListener(v -> {
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
 
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
 
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.GONE);
