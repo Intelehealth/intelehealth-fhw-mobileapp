@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,9 +37,9 @@ public class ChatSupportHelpActivity_New extends BaseActivity {
          ivBackArrow = findViewById(R.id.iv_back_arrow_chat);
 
         if (CheckInternetAvailability.isNetworkAvailable(this)) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
         } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
 
         }
 
@@ -78,10 +79,5 @@ public class ChatSupportHelpActivity_New extends BaseActivity {
         }
         res.updateConfiguration(conf, dm);
         return context;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }

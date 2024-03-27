@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -176,72 +177,10 @@ public class Fragment_SecondScreen extends Fragment {
                 // do nothing...
             }
         }
-    }
 
-    class MyTextWatcher implements TextWatcher {
-        EditText editText;
-
-        MyTextWatcher(EditText editText) {
-            this.editText = editText;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            String val = editable.toString().trim();
-            if (this.editText.getId() == R.id.postalcode_edittext) {
-                if (val.isEmpty()) {
-                    mPostalCodeErrorTextView.setVisibility(View.GONE);
-                    mPostalCodeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            }
-            if (this.editText.getId() == R.id.state_edittext) {
-                if (val.isEmpty()) {
-                    mStateNameErrorTextView.setVisibility(View.VISIBLE);
-                    mStateNameErrorTextView.setText(getString(R.string.error_field_required));
-                    editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mStateNameErrorTextView.setVisibility(View.GONE);
-                    editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.district_edittext) {
-                if (val.isEmpty()) {
-                    mDistrictNameErrorTextView.setVisibility(View.VISIBLE);
-                    mDistrictNameErrorTextView.setText(getString(R.string.error_field_required));
-                    editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mDistrictNameErrorTextView.setVisibility(View.GONE);
-                    editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            } else if (this.editText.getId() == R.id.city_village_edittext) {
-                if (val.isEmpty()) {
-                    mCityNameErrorTextView.setVisibility(View.VISIBLE);
-                    mCityNameErrorTextView.setText(getString(R.string.error_field_required));
-                    editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                } else {
-                    mCityNameErrorTextView.setVisibility(View.GONE);
-                    editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        personal_icon.setImageDrawable(getResources().getDrawable(R.drawable.addpatient_icon_done));
-        address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon));
-        other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon_unselected));
+        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addpatient_icon_done));
+        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addresslocation_icon));
+        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.other_icon_unselected));
 
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
@@ -286,7 +225,7 @@ public class Fragment_SecondScreen extends Fragment {
                 countryAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
-            mCountryNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+            mCountryNameSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
             mCountryNameSpinner.setSelection(countryAdapter.getPosition(sessionManager.getAppLanguage().equals("en") ? "India" : "भारत"));
         } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
@@ -563,9 +502,63 @@ public class Fragment_SecondScreen extends Fragment {
 
             }
         });
+    }
 
-        // country - end
+    class MyTextWatcher implements TextWatcher {
+        EditText editText;
 
+        MyTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String val = editable.toString().trim();
+            if (this.editText.getId() == R.id.postalcode_edittext) {
+                if (val.isEmpty()) {
+                    mPostalCodeErrorTextView.setVisibility(View.GONE);
+                    mPostalCodeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }
+            if (this.editText.getId() == R.id.state_edittext) {
+                if (val.isEmpty()) {
+                    mStateNameErrorTextView.setVisibility(View.VISIBLE);
+                    mStateNameErrorTextView.setText(getString(R.string.error_field_required));
+                    editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mStateNameErrorTextView.setVisibility(View.GONE);
+                    editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.district_edittext) {
+                if (val.isEmpty()) {
+                    mDistrictNameErrorTextView.setVisibility(View.VISIBLE);
+                    mDistrictNameErrorTextView.setText(getString(R.string.error_field_required));
+                    editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mDistrictNameErrorTextView.setVisibility(View.GONE);
+                    editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (this.editText.getId() == R.id.city_village_edittext) {
+                if (val.isEmpty()) {
+                    mCityNameErrorTextView.setVisibility(View.VISIBLE);
+                    mCityNameErrorTextView.setText(getString(R.string.error_field_required));
+                    editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mCityNameErrorTextView.setVisibility(View.GONE);
+                    editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }
+        }
     }
 
     private boolean mIsIndiaSelected = true;
@@ -589,7 +582,7 @@ public class Fragment_SecondScreen extends Fragment {
         stateAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mStateNameSpinner.setAdapter(stateAdapter);
-        mStateNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+        mStateNameSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
         mStateNameSpinner.setSelection(1);
     }
 
@@ -620,7 +613,7 @@ public class Fragment_SecondScreen extends Fragment {
         districtAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mDistrictNameSpinner.setAdapter(districtAdapter);
-        mDistrictNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+        mDistrictNameSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
     }
 
     private void onBackInsertIntoPatientDTO() {

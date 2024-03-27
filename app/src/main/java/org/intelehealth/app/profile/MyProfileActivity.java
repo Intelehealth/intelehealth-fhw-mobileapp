@@ -155,13 +155,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         context = MyProfileActivity.this;
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
         networkUtils = new NetworkUtils(MyProfileActivity.this, this);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onResume() {
         super.onResume();
@@ -175,7 +172,6 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initUI() throws DAOException {
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(this);
@@ -187,10 +183,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         snackbar_cv = findViewById(R.id.snackbar_cv);
         snackbar_text = findViewById(R.id.snackbar_text);
 
-        if (sessionManager.isEnableAppLock())
-            fingerprintSwitch.setChecked(true);
-        else
-            fingerprintSwitch.setChecked(false);
+        fingerprintSwitch.setChecked(sessionManager.isEnableAppLock());
 
         ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
         tvTitle.setText(getResources().getString(R.string.my_profile));
@@ -340,12 +333,12 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 if (s.length() > 0) {
                     if (TextUtils.isEmpty(etFirstName.getText().toString())) {
                         tvErrorFirstName.setVisibility(View.VISIBLE);
-                        etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                        etFirstName.setBackground(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
 
                         return;
                     } else {
                         tvErrorFirstName.setVisibility(View.GONE);
-                        etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                        etFirstName.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
 
                     }
                 }
@@ -374,12 +367,12 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 myProfilePOJO.setNewLastName(s.toString());
                 if (TextUtils.isEmpty(etLastName.getText().toString())) {
                     tvErrorLastName.setVisibility(View.VISIBLE);
-                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                    etLastName.setBackground(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
 
                     return;
                 } else {
                     tvErrorLastName.setVisibility(View.GONE);
-                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                    etLastName.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
 
                 }
             }
@@ -506,7 +499,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (NetworkConnection.isOnline(MyProfileActivity.this)) {
             if (isValidData()) updateDetails();
         } else {
-            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.profile_update_requires_internet), getString(R.string.try_again));
+            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, ContextCompat.getDrawable(context,R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.profile_update_requires_internet), getString(R.string.try_again));
             AlertDialog networkFailureDialog = builder.show();
 
             networkFailureDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
@@ -716,7 +709,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (mSelectedCountryCode.equals("91")) {
             mSelectedMobileNumberValidationLength = 10;
         }
-        etMobileNo.setInputType(InputType.TYPE_CLASS_PHONE);
+        etMobileNo.setInputType(InputType.TYPE_CLASS_NUMBER);
         InputFilter inputFilter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -767,25 +760,25 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             if (gender != null && !gender.isEmpty()) {
 
                 if (gender.equalsIgnoreCase("m")) {
-                    rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                    rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
+                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
 
                 } else if (gender.equalsIgnoreCase("f")) {
-                    rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                    rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
+                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
                 } else if (gender.equalsIgnoreCase("o")) {
-                    rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
                 }
             }
 
             if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
                 bindProfilePictureToUI(providerDTO.getImagePath());
             } else {
-                ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
+                ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
             }
 
             Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
@@ -889,12 +882,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
                     cameraIntentLauncher.launch(cameraIntent);
-//                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
 
                 } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     galleryIntentLauncher.launch(intent);
-//                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
                 }
             }
         });
@@ -1044,9 +1035,11 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this)
+                        .asDrawable().sizeMultiplier(0.3f);
                 Glide.with(MyProfileActivity.this)
                         .load(new File(mCurrentPhotoPath))
-                        .thumbnail(0.25f)
+                        .thumbnail(requestBuilder)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
@@ -1082,7 +1075,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                             runOnUiThread(new Runnable() //run on ui thread
                             {
                                 public void run() {
-                                    Glide.with(MyProfileActivity.this).load(finalFilePath).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this)
+                                            .asDrawable().sizeMultiplier(0.3f);
+                                    Glide.with(MyProfileActivity.this).load(finalFilePath).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
                                 }
                             });
                         }
@@ -1225,18 +1220,18 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     gender = profile.getResults().get(0).getPerson().getGender();
                     if (gender != null && !gender.isEmpty()) {
                         if (gender.equalsIgnoreCase("m")) {
-                            rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                            rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                            rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
+                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
 
                         } else if (gender.equalsIgnoreCase("f")) {
-                            rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                            rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                            rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
+                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
                         } else if (gender.equalsIgnoreCase("o")) {
-                            rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                            rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                            rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
                         }
                     }
                     List<PersonAttributes> personAttributes = new ArrayList<>();
@@ -1281,14 +1276,16 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
 
         if (providerDTO != null && providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                    .asDrawable().sizeMultiplier(0.3f);
             Glide.with(this)
                     .load(providerDTO.getImagePath())
-                    .thumbnail(0.3f)
+                    .thumbnail(requestBuilder)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true).into(ivProfileImage);
         } else {
-            ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
+            ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
         }
 
         Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
@@ -1357,7 +1354,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    Glide.with(MyProfileActivity.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this)
+                            .asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(MyProfileActivity.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
                 boolean isImageDownloaded = false;
@@ -1425,12 +1424,12 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (TextUtils.isEmpty(firstName)) {
             result = false;
             tvErrorFirstName.setVisibility(View.VISIBLE);
-            etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
+            etFirstName.setBackground(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
 
         } else if (TextUtils.isEmpty(lastName)) {
             result = false;
             tvErrorLastName.setVisibility(View.VISIBLE);
-            etLastName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
+            etLastName.setBackground(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
 
         } else if (TextUtils.isEmpty(mobileNo)) {
             result = false;
@@ -1438,8 +1437,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
 
         } else {
-            etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
-            etLastName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
+            etFirstName.setBackground(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
+            etLastName.setBackground(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
             etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
 
             result = true;
@@ -1469,10 +1468,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_internet_available));
 
         } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_no_internet));
 
         }
     }

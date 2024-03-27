@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
@@ -34,9 +35,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -80,7 +86,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -172,6 +177,17 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_PASSWORD_ACTION);
+                startActivity(intent);
+            }
+        });
+        TextView forgotUserNameLabelTextView = findViewById(R.id.tv_forgot_username);
+
+        forgotUserNameLabelTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_NAME_ACTION);
                 startActivity(intent);
             }
         });
@@ -201,6 +217,16 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                 return false;
             }
         });
+
+        //onebackpressed is deprecated
+        //that's why added the implementation
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+            }
+        });
+
     }
 
     @Override
@@ -242,12 +268,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         }
         res.updateConfiguration(conf, dm);
         return context;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
     }
 
     @Override
@@ -381,9 +401,25 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         }
     }
 
+    /**
+     * some deprecated code updated
+     * @return
+     */
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            switch (activeNetwork.getType()) {
+                case ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_MOBILE -> {
+                    return true;
+                }
+                default -> {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -929,14 +965,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
             Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
         }
-    }
-
-    private void showProgressbar() {
-        mProgressDialog = new ProgressDialog(SetupActivityNew.this);
-        mProgressDialog.setMessage(getString(R.string.download_protocols));
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mProgressDialog.setCancelable(false);
     }
 
     private void checkExistingMindMaps() {

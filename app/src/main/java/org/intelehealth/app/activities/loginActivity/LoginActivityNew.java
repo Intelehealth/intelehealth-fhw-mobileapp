@@ -22,9 +22,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -90,6 +92,8 @@ public class LoginActivityNew extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_new_ui2);
 
+        handleBackPress();
+
         context = LoginActivityNew.this;
         sessionManager = new SessionManager(context);
         cpd = new CustomProgressDialog(context);
@@ -97,6 +101,7 @@ public class LoginActivityNew extends AppCompatActivity {
 
 
         TextView textviewPassword = findViewById(R.id.tv_forgot_password1);
+        TextView forgotUserNameLabelTextView = findViewById(R.id.tv_forgot_username);
         TextView buttonLogin = findViewById(R.id.button_login);
         tvUsernameError = findViewById(R.id.tv_username_error);
         tvPasswordError = findViewById(R.id.tv_password_error);
@@ -111,6 +116,15 @@ public class LoginActivityNew extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_PASSWORD_ACTION);
+                startActivity(intent);
+            }
+        });
+        forgotUserNameLabelTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_NAME_ACTION);
                 startActivity(intent);
             }
         });
@@ -492,10 +506,17 @@ public class LoginActivityNew extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        moveTaskToBack(true);
+    /**
+     * removed onBackPressed function due to deprecation
+     * and added this one to handle onBackPressed
+     */
+    private void handleBackPress() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                moveTaskToBack(true);
+            }
+        });
     }
 
     public String getSalt_DATA() {

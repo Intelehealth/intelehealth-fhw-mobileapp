@@ -24,8 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
@@ -110,9 +112,9 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
+
+        handleBackPress();
 
         initUI();
         networkUtils = new NetworkUtils(this, this);
@@ -197,15 +199,23 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
 
     }
 
-    @Override
-    public void onBackPressed() {
-        cancelRegistration(null);
+    /**
+     * removed onBackPressed function due to deprecation
+     * and added this one to handle onBackPressed
+     */
+    private void handleBackPress() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                cancelRegistration(null);
+            }
+        });
     }
 
 
     public void cancelRegistration(View view) {
         if(!intentRx.hasExtra("patientUuid")) {
-            patientRegistrationDialog(context, getResources().getDrawable(R.drawable.close_patient_svg), getResources().getString(R.string.close_patient_registration), getResources().getString(R.string.sure_you_want_close_registration), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+            patientRegistrationDialog(context, ContextCompat.getDrawable(this,R.drawable.close_patient_svg), getResources().getString(R.string.close_patient_registration), getResources().getString(R.string.sure_you_want_close_registration), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
                 @Override
                 public void onDialogActionDone(int action) {
                     if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) finish();
@@ -236,9 +246,9 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
         }
     }
 

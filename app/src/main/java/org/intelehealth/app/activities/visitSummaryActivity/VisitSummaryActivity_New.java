@@ -94,6 +94,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -418,9 +419,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
         //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
@@ -899,9 +898,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         if (patient.getPatient_photo() != null) {
-            Glide.with(context).load(patient.getPatient_photo()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(context)
+                    .asDrawable().sizeMultiplier(0.3f);
+            Glide.with(context).load(patient.getPatient_photo()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
         } else {
-            profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+            profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
         }
         // photo - end
 
@@ -1322,15 +1323,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 alertDialog.show();
 
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, R.color.colorPrimary));
                 pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
 
                 IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
@@ -1463,15 +1464,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 alertDialog.show();
 
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
 
                 IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
@@ -1595,15 +1596,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 alertDialog.show();
 
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
 
                 IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
@@ -1731,15 +1732,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 alertDialog.show();
 
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 // pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 //nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
                 neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
                 IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
             }
@@ -1757,7 +1758,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), getResources().getString(R.string.send_visit), getResources().getString(R.string.are_you_sure_you_want_to_send_visit), getResources().getString(R.string.yes), getResources().getString(R.string.no));
+//                if(NetworkConnection.isOnline(context)){
+                visitSendDialog(context, ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_close_visit_icon), getResources().getString(R.string.send_visit), getResources().getString(R.string.are_you_sure_you_want_to_send_visit), getResources().getString(R.string.yes), getResources().getString(R.string.no));
+//                }else {
+//                    Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
+//                }
             }
         });
         // upload btn click - end
@@ -1966,9 +1971,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
@@ -1982,9 +1987,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         if (!listPermissionsNeeded.isEmpty()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
-            }
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
         return true;
@@ -2000,9 +2003,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
 
             if (!listPermissionsNeeded.isEmpty()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_CAMERA_PERMISSION_REQUEST);
-                }
+                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_CAMERA_PERMISSION_REQUEST);
                 return false;
             }
 
@@ -2028,9 +2029,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
 
             if (!listPermissionsNeeded.isEmpty()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
-                }
+                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), DIALOG_GALLERY_PERMISSION_REQUEST);
                 return false;
             }
 
@@ -2092,6 +2091,37 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
+    ActivityResultLauncher<Intent> cameraActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            String mCurrentPhotoPath = result.getData().getStringExtra("RESULT");
+            saveImage(mCurrentPhotoPath);
+        }
+    });
+
+    ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if (result.getData() != null) {
+                Uri selectedImage = result.getData().getData();
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                Log.v("path", picturePath + "");
+                BitmapUtils.fileCompressed(picturePath);
+
+                // copy & rename the file
+                String finalImageName = UUID.randomUUID().toString();
+                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                BitmapUtils.copyFile(picturePath, finalFilePath);
+                compressImageAndSave(finalFilePath);
+            }
+        }
+    });
+
+
     // Permission - start
     private void checkPerm(int item) {
         if (item == 0) {
@@ -2100,12 +2130,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 String imageName = UUID.randomUUID().toString();
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+                cameraActivityResult.launch(cameraIntent);
             }
         } else if (item == 1) {
             if (checkAndRequestPermissions(item)) {
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+                galleryActivityResult.launch(intent);
             }
         }
     }
@@ -2355,6 +2385,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         btnAppointment = findViewById(R.id.btn_vs_appointment);
         btnAppointment.setOnClickListener(v -> {
             if (!NetworkConnection.isOnline(context)) {
+                setAppointmentButtonStatus();
                 Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -2387,6 +2418,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
+
     private void rescheduleAppointment(VisitSummaryActivity_New context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
@@ -2398,7 +2430,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
 
-        icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_book_app_red));
+        icon.setImageDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_book_app_red));
 
         dialog_title.setText(title);
         tvInfo.setText(Html.fromHtml(subTitle));
@@ -2444,27 +2476,26 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         final RadioGroup optionsRadioGroup = convertView.findViewById(R.id.rg_ask_reason);
         optionsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rb_no_doctor) {
-                    rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                    rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.doctor_is_not_available));
                     mEngReason = "Doctor is not available";
                 } else if (checkedId == R.id.rb_no_patient) {
-                    rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                    rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_selected_green));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.patient_is_not_available));
                     mEngReason = "Patient is not available";
                 } else if (checkedId == R.id.rb_other_ask) {
-                    rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                    rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
                     reasonEtv.setText("");
                     reasonEtv.setVisibility(View.VISIBLE);
                 }
@@ -2571,7 +2602,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
                     String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
-
+                    Log.d("PPPPP", prescription_link);
                     // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
 
@@ -2895,8 +2926,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
                             Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+                            setAppointmentButtonStatus();
                             visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
-
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
                                     getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
@@ -2928,6 +2959,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         } else {
             showSelectSpeciliatyErrorDialog();
         }
+    }
+
+    /**
+     * function to set appointment button status
+     */
+    private void setAppointmentButtonStatus() {
+        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+        //added the logic because we will enable appointment button when visit is exist only
+        if (isVisitSpecialityExists && NetworkConnection.isOnline(context)) {
+            btnAppointment.setBackground(getDrawable(R.drawable.ui2_common_primary_bg));
+            btnAppointment.setEnabled(true);
+        } else {
+            btnAppointment.setBackground(getDrawable(R.drawable.ui2_bg_disabled_time_slot));
+            btnAppointment.setEnabled(false);
+        }
+
     }
 
     private void visitSentSuccessDialog(Context context, Drawable drawable, String title, String subTitle, String neutral) {
@@ -3005,10 +3052,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Configuration conf = res.getConfiguration();
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            conf.setLocale(locale);
-            getApplicationContext().createConfigurationContext(conf);
-        }
+        conf.setLocale(locale);
+        getApplicationContext().createConfigurationContext(conf);
         DisplayMetrics dm = res.getDisplayMetrics();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             conf.setLocales(new LocaleList(locale));
@@ -3695,6 +3740,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
+
+        setAppointmentButtonStatus();
+
     }
 
     // Netowork reciever
@@ -3977,7 +4025,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    Glide.with(context).load(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(context)
+                            .asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(context).load(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
                 boolean isImageDownloaded = false;
@@ -4417,12 +4467,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-            btnAppointment.setBackground(getDrawable(R.drawable.ui2_common_primary_bg));
+            refresh.setImageDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
-            btnAppointment.setBackground(getDrawable(R.drawable.ui2_bg_disabled_time_slot));
+            refresh.setImageDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_no_internet));
         }
+        setAppointmentButtonStatus();
     }
 
     private void doWebViewPrint_downloadBtn() throws ParseException {
@@ -4777,21 +4826,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 });
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                        }
+                //to write to a pdf file...
+                pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
+                    @Override
+                    public void success(String path) {
+                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
 
-                    });
-                }
+                });
             }
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
@@ -4821,37 +4868,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                    pBuilder.build());
 
             //TODO: write different functions for <= Lollipop versions..
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
-                    @Override
-                    public void success(String path) {
-                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-
-                });
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
-
-                    });
+            //to write to a pdf file...
+            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                @Override
+                public void success(String path) {
+                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                 }
-            }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+
+            });
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
@@ -4880,37 +4909,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                    pBuilder.build());
 
             //TODO: write different functions for <= Lollipop versions..
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
-                    @Override
-                    public void success(String path) {
-                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-
-                });
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
-
-                    });
+            //to write to a pdf file...
+            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                @Override
+                public void success(String path) {
+                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                 }
-            }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+
+            });
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
@@ -4942,38 +4953,20 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //end...
 
             //TODO: write different functions for <= Lollipop versions..
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
-                    @Override
-                    public void success(String path) {
-                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-
-                });
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
-
-                    });
+            //to write to a pdf file...
+            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                @Override
+                public void success(String path) {
+                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                 }
-            }
-//            PrintJob printJob = printManager.print(jobName, printAdapter,
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(context, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+
+            });
+            //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    new PrintAttributes.Builder().build());
 
         }

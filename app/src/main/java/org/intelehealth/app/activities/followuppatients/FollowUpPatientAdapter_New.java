@@ -4,6 +4,7 @@ import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +16,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -113,9 +116,11 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 }
 
                 if (model.getPatient_photo() != null) {
-                    Glide.with(context).load(model.getPatient_photo()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.profile_image);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                            .asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(context).load(model.getPatient_photo()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.profile_image);
                 } else {
-                    holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+                    holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
                 }
                 // photo - end
 
@@ -259,7 +264,10 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    Glide.with(context).load(AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.profile_image);
+
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                            .asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(context).load(AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.profile_image);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
                 boolean isImageDownloaded = false;

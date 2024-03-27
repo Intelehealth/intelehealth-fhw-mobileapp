@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -72,12 +73,13 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         if (list.get(position).exists()) {
-
+            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                    .asDrawable().sizeMultiplier(0.1f);
             Glide.with(context)
                     .load(list.get(position))
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
-                    .thumbnail(0.1f)
+                    .thumbnail(requestBuilder)
                     .into(holder.imageView);
             //Works only if width & height is set in dp
 

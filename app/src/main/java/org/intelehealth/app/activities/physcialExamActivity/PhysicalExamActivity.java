@@ -611,11 +611,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         super.onStop();
     }
 
-    @Override
-    public void onBackPressed() {
-
-    }
-
     public void AnimateView(View v) {
 
         int fadeInDuration = 500; // Configure time values here

@@ -75,12 +75,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -183,11 +188,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private TableRow trAddress2;
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_detail2);
@@ -212,9 +212,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -276,7 +274,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         startVisitBtn.setOnClickListener(v -> {
             patientRegistrationDialog(context,
-                    getResources().getDrawable(R.drawable.dialog_icon_complete),
+                    ContextCompat.getDrawable(this,R.drawable.dialog_icon_complete),
                     getResources().getString(R.string.patient_registered),
                     getResources().getString(R.string.does_patient_start_visit_now),
                     getResources().getString(R.string.button_continue),
@@ -284,7 +282,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         @Override
                         public void onDialogActionDone(int action) {
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                startVisit();
+                               // startVisit();
+                                mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
                             }
                         }
                     });
@@ -407,6 +406,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private RelativeLayout mPersonalHeaderRelativeLayout, mAddressHeaderRelativeLayout, mOthersHeaderRelativeLayout;
+
+    ActivityResultLauncher<Intent> mStartForConsentApproveResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == AppConstants.TELECONSULTATION_CONSENT_ACCEPT) {
+                        //Intent intent = result.getData();
+                        // Handle the Intent
+                        startVisit();
+                    }
+                }
+            });
 
     private void startVisit() {
         // before starting, we determine if it is new visit for a returning patient
@@ -924,9 +935,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 profilePicDownloaded();
             }
         }
+        RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                .asDrawable().sizeMultiplier(0.3f);
+
         Glide.with(this)
                 .load(patientDTO.getPatientPhoto())
-                .thumbnail(0.3f)
+                .thumbnail(requestBuilder)
                 .centerCrop()
                 .error(R.drawable.avatar1)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -1508,9 +1522,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
+                            RequestBuilder<Drawable> requestBuilder = Glide.with(PatientDetailActivity2.this)
+                                    .asDrawable().sizeMultiplier(0.3f);
                             Glide.with(PatientDetailActivity2.this)
                                     .load(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg")
-                                    .thumbnail(0.3f)
+                                    .thumbnail(requestBuilder)
                                     .centerCrop()
                                     .error(R.drawable.avatar1)
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -1738,9 +1754,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this,R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this,R.drawable.ui2_ic_no_internet));
         }
     }
 

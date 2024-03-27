@@ -887,10 +887,6 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
         }
     }
 
-    @Override
-    public void onBackPressed() {
-    }
-
 
     public void AnimateView(View v) {
 

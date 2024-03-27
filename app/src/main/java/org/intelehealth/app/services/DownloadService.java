@@ -48,6 +48,8 @@ public class DownloadService extends IntentService {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
     }
 
+
+
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
