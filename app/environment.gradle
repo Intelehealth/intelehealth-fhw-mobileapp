@@ -18,6 +18,7 @@ android {
         ida {
             dimension client
             isDefault = true
+            archivesBaseName = "intelehealth-" + versionName + " - " + date
         }
 
         namma {
