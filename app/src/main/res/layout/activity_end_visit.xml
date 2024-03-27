@@ -59,7 +59,7 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="1sp"
-                    android:text="@string/close_visits"
+                    android:text="@string/open_visits"
                     android:textAppearance="@style/label"
                     android:textSize="@dimen/toolbar_text_size"
                     android:textStyle="bold"

@@ -1193,6 +1193,7 @@
     <string name="recent_visit">हाल के विज़िट्स</string>
     <string name="older_visits">पहले के विज़िट्स</string>
     <string name="open_visit">विज़िट खोलें</string>
+    <string name="open_visits">विज़िट खोलें</string>
     <string name="no_fingerprint_title">फिंगरप्रिंट उपलब्ध नहीं है!</string>
     <string name="no_prescription_available">कोई प्रिस्क्रिप्शन उपलब्ध नहीं है!</string>
     <string name="no_prescription_title">डॉक्टर ने इस विज़िट के लिए प्रिस्क्रिप्शन नहीं दिया है।</string>

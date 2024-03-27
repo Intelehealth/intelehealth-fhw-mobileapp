@@ -1,5 +1,8 @@
 package org.intelehealth.app.ui2.calendarviewcustom;
 
+import static org.intelehealth.app.utilities.constatnt.BundleConstants.SELECTED_DATE;
+import static org.intelehealth.app.utilities.constatnt.BundleConstants.WHICH_DATE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +36,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.intelehealth.app.R;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.constatnt.BundleConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -708,8 +712,8 @@ public class CustomCalendarViewUI2 extends DialogFragment {
             //for get the selected date - if calendar view called from fragment
             if (getTargetFragment() != null) {
                 Intent intent = new Intent()
-                        .putExtra("selectedDate", selectedDate)
-                        .putExtra("whichDate", whichDate);
+                        .putExtra(SELECTED_DATE, selectedDate)
+                        .putExtra(WHICH_DATE, whichDate);
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
             }
             alertDialog.dismiss();

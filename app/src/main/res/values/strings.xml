@@ -1565,6 +1565,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="recent_visit">Recent Visits</string>
     <string name="older_visits">Older Visits</string>
     <string name="open_visit">Open Visit</string>
+    <string name="open_visits">Open Visits</string>
     <string name="all_patients_txt">All Patients</string>
     <string name="no_fingerprint_support">You cannot access this feature as your device does not have a fingerprint support.</string>
     <string name="no_fingerprint_title">Fingerprint not available!</string>
