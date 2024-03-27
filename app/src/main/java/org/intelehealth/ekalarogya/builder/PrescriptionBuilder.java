@@ -1,11 +1,14 @@
 package org.intelehealth.ekalarogya.builder;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -25,6 +28,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class PrescriptionBuilder {
 
@@ -135,15 +139,30 @@ public class PrescriptionBuilder {
     }
 
     public void setDoctorData(ClsDoctorDetails clsDoctorDetails) {
+        if (clsDoctorDetails == null)
+            return;
+
         binding.tvDrSignature.setText(clsDoctorDetails.getTextOfSign());
         binding.tvDrSignature.setTypeface(getSignatureTypeface(clsDoctorDetails.getFontOfSign()));
-        binding.tvDrName.setText(clsDoctorDetails.getName());
+        binding.tvDrName.setText(checkValueAndReturnNA(clsDoctorDetails.getName()));
 
-        String degreeSpecialization = clsDoctorDetails.getQualification().concat(", ").concat(clsDoctorDetails.getSpecialization());
+        String degreeSpecialization = "";
+        if (clsDoctorDetails.getQualification() != null) {
+            degreeSpecialization = clsDoctorDetails.getQualification();
+        }
+
+        if (clsDoctorDetails.getSpecialization() != null) {
+            if (degreeSpecialization.isEmpty() || degreeSpecialization.isBlank()) {
+                degreeSpecialization = degreeSpecialization.concat(", ").concat(clsDoctorDetails.getSpecialization());
+            } else {
+                degreeSpecialization = clsDoctorDetails.getSpecialization();
+            }
+        }
+
         binding.tvDrDegreeSpecialization.setText(degreeSpecialization);
 
-        binding.tvDrEmail.setText(context.getString(R.string.prescription_dr_email, clsDoctorDetails.getEmailId()));
-        binding.tvDrRegistration.setText(context.getString(R.string.prescription_dr_registration, clsDoctorDetails.getRegistrationNumber()));
+        binding.tvDrEmail.setText(context.getString(R.string.prescription_dr_email, checkValueAndReturnNA(clsDoctorDetails.getEmailId())));
+        binding.tvDrRegistration.setText(context.getString(R.string.prescription_dr_registration, checkValueAndReturnNA(clsDoctorDetails.getRegistrationNumber())));
     }
 
     private Typeface getSignatureTypeface(String font) {
@@ -194,17 +213,32 @@ public class PrescriptionBuilder {
 
         pdfDocument.finishPage(page);
 
-        // Save the PDF file
-        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File filePath = new File(downloadsDir, fileName);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+            values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
 
-        try {
-            FileOutputStream fos = new FileOutputStream(filePath);
-            pdfDocument.writeTo(fos);
-            pdfDocument.close();
-            fos.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            Uri uri = context.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+            if (uri != null) {
+                try (OutputStream out = context.getContentResolver().openOutputStream(uri)) {
+                    pdfDocument.writeTo(out);
+                    pdfDocument.close();
+                } catch (IOException e) {
+                    throw new RuntimeException("Error saving PDF", e);
+                }
+            }
+        } else {
+            File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File filePath = new File(downloadsDir, fileName);
+
+            try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                pdfDocument.writeTo(fos);
+                pdfDocument.close();
+                fos.close();
+            } catch (IOException e) {
+                throw new RuntimeException("Error saving PDF", e);
+            }
         }
     }
 
