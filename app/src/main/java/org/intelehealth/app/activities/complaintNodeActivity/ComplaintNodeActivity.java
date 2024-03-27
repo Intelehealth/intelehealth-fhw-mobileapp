@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -346,7 +347,7 @@ public class ComplaintNodeActivity extends BaseActivity {
                 AlertDialog alertDialog = alertDialogBuilder.show();
                 // alertDialog.show();
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTextColor(ContextCompat.getColor(this,(R.color.colorPrimary)));
                 //pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
                 IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
             } else {
@@ -393,9 +394,9 @@ public class ComplaintNodeActivity extends BaseActivity {
                 //alertDialog.show();
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTextColor(ContextCompat.getColor(this,(R.color.colorPrimary)));
                 // pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTextColor(ContextCompat.getColor(this,(R.color.colorPrimary)));
                 //nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
                 IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
             }

@@ -20,8 +20,6 @@ import org.intelehealth.app.R;
 public class CustomProgressDialog extends Dialog {
 
     private TextView mTvProgressTitle;
-    private CircleProgressBar mIvAnimation;
-
     private ProgressBar progressBar;
     private AnimationDrawable mCloverAnimation;
 

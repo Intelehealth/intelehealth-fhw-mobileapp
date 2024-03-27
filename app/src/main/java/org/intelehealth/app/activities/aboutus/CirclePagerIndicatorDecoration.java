@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -98,7 +99,7 @@ public class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration 
     }
 
     private void drawInactiveIndicators(Canvas c, float indicatorStartX, float indicatorPosY, int itemCount) {
-        mPaint.setColor(context.getResources().getColor(R.color.grey_button_bg));
+        mPaint.setColor(ContextCompat.getColor(context,R.color.grey_button_bg));
 
         // width of item indicator including padding
         final float itemWidth = mIndicatorItemLength + mIndicatorItemPadding;
@@ -114,7 +115,7 @@ public class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration 
 
     private void drawHighlights(Canvas c, float indicatorStartX, float indicatorPosY,
                                 int highlightPosition, float progress, int itemCount) {
-        mPaint.setColor(context.getResources().getColor(R.color.colorPrimary));
+        mPaint.setColor(ContextCompat.getColor(context,R.color.colorPrimary));
 
         // width of item indicator including padding
         final float itemWidth = mIndicatorItemLength + mIndicatorItemPadding;

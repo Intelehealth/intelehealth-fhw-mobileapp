@@ -54,12 +54,6 @@ public class TeleconsultationConsentActivity extends BaseActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
-    }
-
     public void declineConsent(View view) {
         setResult(AppConstants.TELECONSULTATION_CONSENT_DECLINE);
         finish();

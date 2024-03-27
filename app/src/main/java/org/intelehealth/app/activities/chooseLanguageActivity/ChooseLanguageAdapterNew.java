@@ -121,7 +121,7 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
                                 mItemList.get(i).put("selected", false);
                             }
                         }
-                       int  selectedPosition = getAdapterPosition();
+                       int  selectedPosition = getBindingAdapterPosition();
                         String name = mItemList.get(selectedPosition).getString("name");
                     //    Toast.makeText(mContext, "Selected language : " + name, Toast.LENGTH_SHORT).show();
                        mItemSelectionListener.onSelect(jsonObject, index);

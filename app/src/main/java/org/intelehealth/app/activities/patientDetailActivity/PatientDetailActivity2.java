@@ -361,7 +361,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         cancelbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
     }

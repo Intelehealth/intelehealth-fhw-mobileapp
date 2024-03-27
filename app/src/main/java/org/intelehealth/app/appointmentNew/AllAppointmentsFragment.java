@@ -615,7 +615,7 @@ public class AllAppointmentsFragment extends Fragment {
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -625,7 +625,7 @@ public class AllAppointmentsFragment extends Fragment {
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -635,7 +635,7 @@ public class AllAppointmentsFragment extends Fragment {
             layoutCancelled.setVisibility(View.GONE);
             layoutUpcoming.setVisibility(View.GONE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -873,7 +873,6 @@ public class AllAppointmentsFragment extends Fragment {
         return imagePath;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void selectDateRangeNew() {
         tvFromDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -882,9 +881,9 @@ public class AllAppointmentsFragment extends Fragment {
                 args.putString("whichDate", "fromdate");
                 CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
                 dialog.setArguments(args);
-                dialog.setTargetFragment(AllAppointmentsFragment.this, MY_REQUEST_CODE);
-                if (getFragmentManager() != null) {
-                    dialog.show(getFragmentManager(), "AllAppointmentsFragment");
+                getParentFragmentManager().setFragmentResultListener("requestKey", AllAppointmentsFragment.this, (requestKey, bundle) -> {});
+                if (getActivity().getSupportFragmentManager() != null) {
+                    dialog.show(getActivity().getSupportFragmentManager(), "AllAppointmentsFragment");
                 }
             }
         });

@@ -14,29 +14,20 @@ public class CheckInternetAvailability {
     }
 
     public static boolean isNetworkAvailable(Context context) {
-        int flag = 0;
-        boolean result = false;
-
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null) {
-
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        if (!isConnected) {
-                            flag = 1;
-                            result = true;
-                        }
-                    }
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            switch (activeNetwork.getType()) {
+                case ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_MOBILE -> {
+                    return true;
+                }
+                default -> {
+                    return false;
                 }
             }
+        } else {
+            return false;
         }
-
-        if (flag == 0) {
-            result = false;
-        }
-        return result;
     }
 
 }

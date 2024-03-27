@@ -1145,10 +1145,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
