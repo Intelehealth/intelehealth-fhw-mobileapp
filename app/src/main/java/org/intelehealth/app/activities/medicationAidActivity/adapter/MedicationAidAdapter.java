@@ -1,7 +1,8 @@
 package org.intelehealth.app.activities.medicationAidActivity.adapter;
 
-import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.COLLECTED;
-import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.RECEIVED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.COLLECTED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.DISPENSE;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.RECEIVED;
 
 import android.content.Context;
 import android.util.Log;
@@ -89,7 +90,7 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
                 for (int i = 0; i < updateUUID_List.size(); i++) {
                     MedicationModel medicationModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), MedicationModel.class);
                     if (medicationModel.getMedicationUuidList() != null && medicationModel.getMedicationUuidList().contains(list.get(position).getUuid())) {
-                        if (tag.equalsIgnoreCase("dispense")) {
+                        if (tag.equalsIgnoreCase(DISPENSE)) {
                             holder.cb_value.setChecked(true);
                             holder.cb_value.setEnabled(false);
                         }
@@ -103,7 +104,7 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
                 for (int i = 0; i < updateUUID_List.size(); i++) {
                     AidModel aidModel = new Gson().fromJson(updateUUID_List.get(i).getValue(), AidModel.class);
                     if (aidModel.getAidUuidList() != null && aidModel.getAidUuidList().contains(list.get(position).getUuid())) {
-                        if (tag.equalsIgnoreCase("dispense")) {
+                        if (tag.equalsIgnoreCase(DISPENSE)) {
                             holder.cb_value.setChecked(true);
                             holder.cb_value.setEnabled(false);
                         }

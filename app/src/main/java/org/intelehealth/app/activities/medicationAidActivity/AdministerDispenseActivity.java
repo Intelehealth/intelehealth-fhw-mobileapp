@@ -1,7 +1,9 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
-import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.COLLECTED;
-import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.RECEIVED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.ADMINISTER;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.COLLECTED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.DISPENSE;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.RECEIVED;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_ADMINISTER_AID;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_ADMINISTER_MEDICATION;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_DISPENSE_AID;
@@ -235,10 +237,10 @@ public class AdministerDispenseActivity extends BaseActivity {
 
 /*
         if (!encounterDisenseAdminister.isEmpty() && encounterDisenseAdminister != null) {
-            if (tag.equalsIgnoreCase("dispense")) {
+            if (tag.equalsIgnoreCase(DISPENSE)) {
                 setMedicationValues();
                 setAidValues();
-            } else if (tag.equalsIgnoreCase("administer")) {
+            } else if (tag.equalsIgnoreCase(ADMINISTER)) {
                 setMedicationValues();
             }
         }
@@ -318,7 +320,7 @@ public class AdministerDispenseActivity extends BaseActivity {
         } else
             fl_med.setVisibility(View.GONE);
 
-        if (tag.equalsIgnoreCase("administer")) {
+        if (tag.equalsIgnoreCase(ADMINISTER)) {
             getSupportActionBar().setTitle(getString(R.string.administer_medication));
             fl_aid.setVisibility(View.GONE);
         }
@@ -428,11 +430,12 @@ public class AdministerDispenseActivity extends BaseActivity {
         imgbtn_uploadDocs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent docIntent = new Intent(context, AdditionalDocumentsActivity.class);
 
-                if (tag.equalsIgnoreCase("dispense")) {
+                if (tag.equalsIgnoreCase(DISPENSE)) {
                     createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_DISPENSE);
                 }
-                else if (tag.equalsIgnoreCase("administer")) {
+                else if (tag.equalsIgnoreCase(ADMINISTER)) {
                     createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_ADMINISTER);
                 }
                 else if (tag.equalsIgnoreCase(COLLECTED)) {
@@ -442,19 +445,17 @@ public class AdministerDispenseActivity extends BaseActivity {
                     createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_TEST_RECEIVE);
                 }
 
-                Intent docIntent = new Intent(context, AdditionalDocumentsActivity.class);
                 docIntent.putExtra("patientUuid", patientUuid);
                 docIntent.putExtra("visitUuid", visitUuid);
                 docIntent.putExtra("encounterUuidVitals", encounterVitals);
                 docIntent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                 docIntent.putExtra("fileuuidList", fileuuidList);
-                docIntent.putExtra("isDispenseAdminister", true);
+                docIntent.putExtra("isDispenseAdminister", (tag.equalsIgnoreCase(DISPENSE) || tag.equalsIgnoreCase(ADMINISTER)
+                        || tag.equalsIgnoreCase(COLLECTED) || tag.equalsIgnoreCase(RECEIVED)));
 
                 Log.d(TAG, "img btn onClick: " + encounterDisenseAdminister);
                 docIntent.putExtra("encounterDispenseAdminister", encounterDisenseAdminister);
                 documentResult.launch(docIntent);
-                // startActivity(docIntent);
-//                startActivityForResult(docIntent, IMAGE_LIST_INTENT);
             }
         });
 
@@ -470,6 +471,7 @@ public class AdministerDispenseActivity extends BaseActivity {
                     Log.e(TAG, ": documentResult =>RESULT_OK::" + new Gson().toJson(o.getData()));
                     List<DocumentObject> rowListItem = new ArrayList<>();
                     rowListItem = (List<DocumentObject>) o.getData().getSerializableExtra("rowListItem");
+                    encounterDisenseAdminister = o.getData().getStringExtra("encounterDispenseAdminister");
 
                     fileuuidList = new ArrayList<>();
                     if (rowListItem.size() > 0) {
@@ -489,7 +491,7 @@ public class AdministerDispenseActivity extends BaseActivity {
     private void setAidValues() throws DAOException {
         String encounterId = encounterDisenseAdminister;
         String conceptId = OBS_DISPENSE_AID;
-        if (tag.equalsIgnoreCase("administer"))
+        if (tag.equalsIgnoreCase(ADMINISTER))
             conceptId = OBS_ADMINISTER_AID;
 
         // Notes
@@ -538,7 +540,7 @@ public class AdministerDispenseActivity extends BaseActivity {
     private void setMedicationValues() throws DAOException {
         String encounterId = encounterDisenseAdminister;
         String conceptId = OBS_DISPENSE_MEDICATION;
-        if (tag.equalsIgnoreCase("administer"))
+        if (tag.equalsIgnoreCase(ADMINISTER))
             conceptId = OBS_ADMINISTER_MEDICATION;
 
         List<String> medNotes = new ArrayList<>();
@@ -585,6 +587,7 @@ public class AdministerDispenseActivity extends BaseActivity {
     }
 
     private void checkValidation() {
+/*
         if ((medList != null && medList.size() > 0) || (testList != null && testList.size() > 0)) {
             if (tie_medNotes.getText().toString().isEmpty()) {
                 tie_medNotes.requestFocus();
@@ -592,6 +595,7 @@ public class AdministerDispenseActivity extends BaseActivity {
                 return;
             }
         }
+*/  // SYR-577
 
         if (aidList != null && aidList.size() > 0) {
             if (tie_totalCost.getText().toString().isEmpty()) {
@@ -614,11 +618,13 @@ public class AdministerDispenseActivity extends BaseActivity {
                 tie_outOfPocket.setError(getString(R.string.error_field_required));
                 return;
             }
+/*
             if (tie_aidNotes.getText().toString().isEmpty()) {
                 tie_aidNotes.requestFocus();
                 tie_aidNotes.setError(getString(R.string.error_field_required));
                 return;
             }
+*/  // SYR-577
         }
 
         if (horizontalAdapter != null && horizontalAdapter.getItemCount() == 0) {
@@ -641,7 +647,7 @@ public class AdministerDispenseActivity extends BaseActivity {
         String outOfPocketValue = tie_outOfPocket.getText().toString().trim();
         String otherAids = tie_others.getText().toString().trim();
 
-        if (tag.equalsIgnoreCase("dispense")) {
+        if (tag.equalsIgnoreCase(DISPENSE)) {
             createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_DISPENSE);
             if (isEncounterCreated) {
                 // Dispense - medication push
@@ -657,7 +663,7 @@ public class AdministerDispenseActivity extends BaseActivity {
             }
             Toast.makeText(this, getString(R.string.dispense_data_saved), Toast.LENGTH_SHORT).show();
         }
-        else if (tag.equalsIgnoreCase("administer")) {
+        else if (tag.equalsIgnoreCase(ADMINISTER)) {
 
             createEncounterDispense_Administer(UuidDictionary.ENCOUNTER_ADMINISTER);
 
@@ -768,9 +774,12 @@ public class AdministerDispenseActivity extends BaseActivity {
             }*/
         }
 
-        List<String> notesList = new ArrayList<>();
-        notesList.add(aidNotesValue);
-        aidModel.setAidNotesList(notesList);    // 2. notes
+        if (!aidNotesValue.isEmpty()) {
+            List<String> notesList = new ArrayList<>();
+            notesList.add(aidNotesValue);
+            aidModel.setAidNotesList(notesList);    // 2. notes
+        }
+
         aidModel.setHwUuid(sessionManager.getProviderID()); // 3. hw uuid
         aidModel.setHwName(sessionManager.getChwname());    // 3b. hw name
         aidModel.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.
@@ -814,9 +823,11 @@ public class AdministerDispenseActivity extends BaseActivity {
             medModel.setMedicationUuidList(medUuidList);   // 1. medicines uuid
         }
 
-        List<String> notesList = new ArrayList<>();
-        notesList.add(medNotesValue);
-        medModel.setMedicationNotesList(notesList);    // 2. notes
+        if (!medNotesValue.isEmpty()) {
+            List<String> notesList = new ArrayList<>();
+            notesList.add(medNotesValue);
+            medModel.setMedicationNotesList(notesList);    // 2. notes
+        }
         medModel.setHwUuid(sessionManager.getProviderID());    // 3. hw id
         medModel.setHwName(sessionManager.getChwname());    // 3b. hw name
         medModel.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.
@@ -903,9 +914,9 @@ public class AdministerDispenseActivity extends BaseActivity {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
 
-           /* if (tag.equalsIgnoreCase("dispense"))
+           /* if (tag.equalsIgnoreCase(DISPENSE))
                 fileuuidList = (ArrayList<String>) imagesDAO.isImageListObsExists(encounterDispense, UuidDictionary.COMPLEX_IMAGE_AD);
-            else if (tag.equalsIgnoreCase("administer"))
+            else if (tag.equalsIgnoreCase(ADMINISTER))
                 fileuuidList = (ArrayList<String>) imagesDAO.isImageListObsExists(encounterAdminister, UuidDictionary.COMPLEX_IMAGE_AD);*/
 
             List<String> imageList = imagesDAO.isImageListObsExists(encounterDisenseAdminister, UuidDictionary.COMPLEX_IMAGE_AD);
@@ -965,8 +976,10 @@ public class AdministerDispenseActivity extends BaseActivity {
 
         if (requestCode == IMAGE_LIST_INTENT) {
             List<DocumentObject> rowListItem = new ArrayList<>();
-            if (data != null)
+            if (data != null) {
                 rowListItem = (List<DocumentObject>) data.getSerializableExtra("rowListItem");
+                encounterDisenseAdminister = data.getStringExtra("encounterDispenseAdminister");
+            }
 
             fileuuidList = new ArrayList<>();
             if (rowListItem.size() > 0) {

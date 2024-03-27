@@ -34,4 +34,7 @@
     <string name="hide_details">Hide Details</string>
     <string name="dispensed_by">Dispensed by</string>
     <string name="administered_by">Administered by</string>
+    <string name="enter_file_name">Enter file name</string>
+    <string name="additional_remarks">Additional Remarks</string>
+    <string name="click_on_upload_button_to_save_the_changes">Click on Upload button to save the changes*</string>
 </resources>

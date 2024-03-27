@@ -15,20 +15,6 @@ public class MedicationModel extends AidModel implements Serializable {
     @Expose
     private List<String> medicationNotesList;
 
-//    @SerializedName("documentsList")
-//    @Expose
-//    private List<String> documentsList;
-
-   /* @SerializedName("hwUuid")
-    @Expose
-    private String hwUuid;
-    @SerializedName("hwName")
-    @Expose
-    private String hwName;*/
-
-//    @SerializedName("dateTime")
-//    @Expose
-//    private String dateTime;
 
     public MedicationModel() {
     }

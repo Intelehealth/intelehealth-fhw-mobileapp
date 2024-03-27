@@ -42,9 +42,11 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 import android.telephony.SmsManager;
+import android.text.Editable;
 import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -76,7 +78,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
@@ -89,6 +90,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -103,6 +105,7 @@ import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivi
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
 import org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity;
+import org.intelehealth.app.activities.medicationAidActivity.PastNotesDispenseAdministerActivity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
@@ -131,6 +134,7 @@ import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dispenseAdministerModel.AidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationModel;
+import org.intelehealth.app.models.dispenseAdministerModel.PastNotesModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
@@ -299,6 +303,8 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
 
     RelativeLayout uploadButton, rl_med_aid;
     private TextView tvDispense_1, tvDispense_2, tvAdminister_1, tvAdminister_2, tvCollectedBy, tvReceivedBy;
+    public static final String MEDICATION = "medication", AID = "aid", COLLECTED = "collected", RECEIVED = "received",
+            DISPENSE = "dispense", ADMINISTER = "administer", ADDITIONAL_REMARKS = "additional_remarks";
 
     RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
@@ -385,6 +391,8 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     private String hasPrescription = "", hasPartialPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
+    private TextInputEditText tie_add_remarks;
+
    /* TextView tv_device_selected;
     Button btn_connect;
     private Object configObj;
@@ -620,8 +628,10 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
             }
 //            collectChatConnectionInfoFromFirebase();
         }
+
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
+
         if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
 
         //Check for license key and load the correct config file
@@ -708,6 +718,28 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
+        tie_add_remarks = findViewById(R.id.tie_add_remarks);
+        tie_add_remarks.setHint(getString(R.string.enter_details_here));
+        tie_add_remarks.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tie_add_remarks.setHint("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().equalsIgnoreCase(""))
+                    tie_add_remarks.setHint(getString(R.string.enter_details_here));
+                else
+                    tie_add_remarks.setHint("");
+            }
+        });
+
 
         // thermal printer
        /* tv_device_selected = findViewById(R.id.tv_device_selected);
@@ -1041,13 +1073,13 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         tvCollectedBy.setTag(encounterStartVisitNoteDAO);
         tvCollectedBy.setOnClickListener(v -> {
             EncounterDAO tag = (EncounterDAO) v.getTag();
-            collected_received_Intent(tag, "collected");
+            collected_received_Intent(tag, COLLECTED);
         });
 
         tvReceivedBy.setTag(encounterStartVisitNoteDAO);
         tvReceivedBy.setOnClickListener(v -> {
             EncounterDAO tag = (EncounterDAO) v.getTag();
-            collected_received_Intent(tag, "received");
+            collected_received_Intent(tag, RECEIVED);
         });
 
 /*
@@ -1060,7 +1092,6 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Log.d("visitUUID", "upload_click: " + visitUUID);
 
                 // The below condition has been added keeping in mind that no HW will be able to upload empty complaints: (Ticket SYR-171): Nishita Goyal
@@ -1107,6 +1138,13 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
 
                     if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
                 }
+
+                // Additional remarks - start
+                String addRemarks = tie_add_remarks.getText().toString().trim();
+                if (!addRemarks.isEmpty()) {    // ie. not empty.
+                    createAdditionalRemarksOBSandPush(addRemarks);
+                }
+                // Additional remarks - end
 
                 if (flag.isChecked()) {
                     try {
@@ -1863,6 +1901,42 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         //   queryData(String.valueOf(patientUuid));
         //  downloadPrescriptionDefault();
         getAppointmentDetails(visitUuid);
+    }
+
+    private void createAdditionalRemarksOBSandPush(String addRemarks) {
+        EncounterDAO encounterDAO = new EncounterDAO(); // 1. update sync of encounter.
+        try {
+            encounterDAO.updateEncounterSync("false", encounterUuidAdultIntial);
+            encounterDAO.updateEncounterModifiedDate(encounterUuidAdultIntial);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // Create OBS and push - START
+        PastNotesModel model = new PastNotesModel();
+        model.setAdditional_remark(addRemarks);
+        model.setHwUuid(sessionManager.getProviderID()); // 3. hw uuid
+        model.setHwName(sessionManager.getChwname());    // 3b. hw name
+        model.setDateTime(AppConstants.dateAndTimeUtils.currentDateTime()); // 4. datetime.
+
+        Gson gson = new Gson();
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(UuidDictionary.ADDITIONAL_REMARKS);  // OBS aid data.
+        obsDTO.setEncounteruuid(encounterUuidAdultIntial);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(gson.toJson(model));
+
+        Log.d(TAG, "insertAidObs: " + gson.toJson(model));
+
+        try {
+            boolean isInserted = obsDAO.insertObs(obsDTO);  // 2. create new obs.
+            if (isInserted)
+                tie_add_remarks.setText("");
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        // END
     }
 
     private void startChat() {
@@ -5354,6 +5428,18 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
             dispenseIntent(tag);
         else if (view.getId() == R.id.tvAdminister)
             admininisterIntent(tag);
+    }
+
+    /**
+     * This is redirect and show all the past added Additional Remarks list...
+     * @param view
+     */
+    public void viewPastnotes(View view) {
+        Intent intent = new Intent(this, PastNotesDispenseAdministerActivity.class);
+        intent.putExtra("viewtag", ADDITIONAL_REMARKS);
+        intent.putExtra("mtag", ADDITIONAL_REMARKS);
+        intent.putExtra("visitUUID", visitUUID);
+        startActivity(intent);
     }
 
 /*    @Override

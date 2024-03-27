@@ -189,11 +189,11 @@
     <string name="visit_summary_diagnosis">التشخيص</string>
     <string name="visit_summary_advice">النصائح الطبية</string>
     <string name="visit_summary_tests_prescribed">الاختبارات/الإحالات</string>
-    <string name="visit_summary_additional_comments">تعليقات اضافية</string>
+    <string name="visit_summary_additional_comments">التقييم و خطة التداخل</string>
     <string name="visit_summary_discharge_order">تخريج الحالة</string>
     <string name="visit_summary_heading_name">اسم</string>
     <string name="visit_summary_heading_id">بطاقة تعريف</string>
-    <string name="visit_summary_button_download">تنزيل التوصيات الجديدة</string>
+    <string name="visit_summary_button_download">تنزيل ملخص الزيارة</string>
     <string name="visit_summary_button_upload">ارفع البيانات أعلاه للتقييم</string>
     <string name="name_button_download">زر التحميل</string>
     <string name="visit_summary_follow_up_date">تاريخ المتابعة القادمة</string>
@@ -628,7 +628,7 @@
     <string name="has_a_new_prescription">لديه وصفة طبية جديدة</string>
     <string name="whatsapp_presc_toast">حدد وصفة طبية PDF من مستكشف الملفات - التخزين الداخلي/ekalarogya_pdf</string>
     <string name="enter_mobile_number_to_share_prescription">أدخل رقم الهاتف المحمول الذي تريد مشاركة الوصفة الطبية إليه.</string>
-    <string name="share">أرسل التوصيات للمريض</string>
+    <string name="share">مشاركة ملخص الزيارة</string>
     <string name="please_enter_mobile_number">الرجاء إدخال رقم الهاتف النقال</string>
     <string name="download_prescription_first_before_sharing">قم بتنزيل الوصفة الطبية أولاً قبل المشاركة</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*أنا, العامل الصحي المجتمعي, أؤكد أنني قدر قرأت تصريح خصوصية المعلومات و حصلت على موافقة صاحب/ة السجل</string>
@@ -1511,7 +1511,7 @@
     <string name="label_setting">إعداد التسمية</string>
     <string name="bluetooth_notsupported_device">لا يتم دعم Bluetooth على هذا الجهاز</string>
     <string name="turn_on_bluetooth">يرجى تشغيل البلوتوث</string>
-    <string name="no_presc_available">لا وصفة طبية متاحة</string>
+    <string name="no_presc_available">لم يتم إنهاء الزيارة بعد. يمكنك مشاركتك الملخص فور إنهاء الطبيب للزيارة</string>
     <string name="_main_connected">\"توصيل النجاح\"</string>
     <string name="_main_connected_fail">فشل الاتصال</string>
     <string name="_main_disconnect">\" انقطع الاتصال\"</string>
@@ -1677,6 +1677,9 @@
     <string name="view_resulted_by_past_notes">تحميل النتائج</string>
     <string name="test_collection_data_saved"> تم حفظ بيانات جمع العينات</string>
     <string name="test_result_data_saved">تم حفظ بيانات تحميل النتائج</string>
+    <string name="enter_file_name">Enter file name</string>
+    <string name="additional_remarks">Additional Remarks</string>
+    <string name="click_on_upload_button_to_save_the_changes">Click on Upload button to save the changes*</string>
 
 
 </resources>

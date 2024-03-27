@@ -44,12 +44,13 @@
         android:id="@+id/rv_pastnotes"
         tools:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:paddingHorizontal="@dimen/activity_horizontal_margin"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:itemCount="13"
         tools:listitem="@layout/item_pastnotes" />
 

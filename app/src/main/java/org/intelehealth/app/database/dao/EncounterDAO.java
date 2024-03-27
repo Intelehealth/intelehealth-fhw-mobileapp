@@ -217,10 +217,9 @@ public class EncounterDAO {
         String[] whereargs = {uuid};
         try {
             values.put("sync", synced);
-
             values.put("uuid", uuid);
-
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
+
             Logger.logD(tag, "updated" + i);
             db.setTransactionSuccessful();
         } catch (SQLException sql) {

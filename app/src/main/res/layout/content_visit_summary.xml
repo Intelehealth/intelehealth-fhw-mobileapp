@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary"
-    tools:layout_marginTop="-1500dp"
+    tools:layout_marginTop="-1800dp"
     >
     <!-- TODO: Replace hard-coded strings with @string resources-->
 
@@ -1122,6 +1122,102 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
+        <!--Additional Remarks-->
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardView_additional_remarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/padding_card"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_heading_additional_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:text="@string/additional_remarks"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size" />
+
+                <TextView
+                    android:id="@+id/tv_view_pastnotes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SelectableItemBackground"
+                    android:lineSpacingExtra="3sp"
+                    android:padding="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="@string/view_past_notes"
+                    android:textColor="@color/intro_next"
+                    android:textSize="@dimen/card_content_normal_text_size"
+                    android:textStyle="bold"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@id/tv_heading_additional_remarks"
+                    android:onClick="viewPastnotes"
+                    android:tag="additional_remarks"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_additional_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_view_pastnotes"
+                    android:fadeScrollbars="false"
+                    android:gravity="top"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="14dp"
+                    android:scrollbars="vertical"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="1000"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tie_add_remarks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_border"
+                        android:gravity="start"
+                        android:inputType="textMultiLine"
+                        android:maxLength="1000"
+                        android:minLines="3"
+                        android:paddingVertical="20dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="4dp"
+                        android:textAlignment="viewStart"
+                        android:textColorHint="@color/edittext_hint_color"
+                        android:textSize="@dimen/find_patient_hint_size"
+                        tools:hint="@string/enter_details_here" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/til_additional_remarks"
+                    android:textAlignment="viewStart"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="@string/click_on_upload_button_to_save_the_changes"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:paddingHorizontal="14dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="14sp"
+                    />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_discharge_order"
             android:layout_width="match_parent"
@@ -1966,8 +2062,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/iv_save"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="5dp"
                     android:fontFamily="@font/lato_bold"
                     android:gravity="center_horizontal"
                     android:text="@string/save_prescription"
@@ -2102,6 +2198,7 @@
                         android:id="@+id/tv_share"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/iv_share"
                         android:layout_centerVertical="true"
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_horizontal"

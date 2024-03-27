@@ -1,7 +1,10 @@
 package org.intelehealth.app.activities.medicationAidActivity;
 
-import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.COLLECTED;
-import static org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity.RECEIVED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.ADDITIONAL_REMARKS;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.AID;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.COLLECTED;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.MEDICATION;
+import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.RECEIVED;
 import static org.intelehealth.app.database.dao.ObsDAO.getObsPastNotes;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -108,6 +111,11 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
             encounterTypeUUID = UuidDictionary.ENCOUNTER_TEST_RECEIVE;
             obsConceptUUID = UuidDictionary.OBS_TEST_RECEIVE;
         }
+        else if (tag.equalsIgnoreCase(ADDITIONAL_REMARKS)) {
+            encounterTypeUUID = UuidDictionary.ENCOUNTER_ADULTINITIAL;
+            obsConceptUUID = UuidDictionary.ADDITIONAL_REMARKS;
+        }
+
 
         if (encounterTypeUUID != null && obsConceptUUID != null) {
             List<PastNotesModel> list = getObsPastNotes(visitUUID, encounterTypeUUID, obsConceptUUID);
@@ -119,10 +127,17 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
                             "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                             "dd MMM, yyyy HH:mm a");
 
-                    if (viewtag.equalsIgnoreCase("medication") || viewtag.equalsIgnoreCase(COLLECTED) || viewtag.equalsIgnoreCase(RECEIVED))
-                        pastNotesModelList.add(new PastNotesModel(model.getMedicationNotesList().get(0), dateTime));
+                    if (viewtag.equalsIgnoreCase("medication") || viewtag.equalsIgnoreCase(COLLECTED) || viewtag.equalsIgnoreCase(RECEIVED)) {
+                        if (model.getMedicationNotesList() != null)
+                            pastNotesModelList.add(new PastNotesModel(model.getMedicationNotesList().get(0), dateTime));
+                    }
                     else if (viewtag.equalsIgnoreCase("aid")) {
-                        pastNotesModelList.add(new PastNotesModel(model.getAidNotesList().get(0), dateTime));
+                        if (model.getAidNotesList() != null)
+                            pastNotesModelList.add(new PastNotesModel(model.getAidNotesList().get(0), dateTime));
+                    }
+                    else if (viewtag.equalsIgnoreCase(ADDITIONAL_REMARKS)) {
+                        if (model.getAdditional_remark() != null)
+                            pastNotesModelList.add(new PastNotesModel(model.getAdditional_remark(), dateTime));
                     }
                 }
             }
@@ -146,14 +161,16 @@ public class PastNotesDispenseAdministerActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         String title = "";
-        if (viewtag.equalsIgnoreCase(Medication_Aid_Activity.MEDICATION))
+        if (viewtag.equalsIgnoreCase(MEDICATION))
             title = getString(R.string.medicine_past_notes);
-        else if (viewtag.equalsIgnoreCase(Medication_Aid_Activity.AID))
+        else if (viewtag.equalsIgnoreCase(AID))
             title = getString(R.string.aid_past_notes);
         else if (viewtag.equalsIgnoreCase(COLLECTED))
             title = getString(R.string.view_past_test_notes);
         else if (viewtag.equalsIgnoreCase(RECEIVED))
             title = getString(R.string.view_resulted_by_past_notes);
+        else if (viewtag.equalsIgnoreCase(ADDITIONAL_REMARKS))
+            title = getString(R.string.additional_remarks);
 
         getSupportActionBar().setTitle(title);
     }

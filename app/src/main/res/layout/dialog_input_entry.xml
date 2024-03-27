@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="8dip"
+    app:cardElevation="8dip"
+    app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvInputTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:padding="@dimen/common_padding"
+                android:text="@string/enter_file_name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/header_text_size"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvInputTitle"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:padding="@dimen/common_padding">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/dialog_til"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="20"
+                    android:paddingVertical="5dp"
+                    android:paddingHorizontal="10dp"
+                    android:background="@drawable/round_corner_16_gray_light">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/dialog_editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        tools:text="hello"
+                        android:fontFamily="@font/poppins"
+                        android:inputType="text"
+                        android:maxLength="20"
+                        android:maxLines="1"
+                        android:minHeight="36dip"
+                        android:textSize="14sp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/save_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="60dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/rounded_rectangle_blue"
+                    android:backgroundTint="@color/colorAccent"
+                    android:fontFamily="@font/lato_regular"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/save_button"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>

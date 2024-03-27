@@ -52,7 +52,7 @@
     </style>
 
     <style name="SelectableItemTheme">
-        <item name="colorControlHighlight">#5677FC</item>
+        <item name="colorControlHighlight">#D1D8F8</item>
     </style>
 
     <style name="SelectableItemTheme_Orange">

@@ -191,11 +191,11 @@
     <string name="visit_summary_diagnosis">Diagnosis</string>
     <string name="visit_summary_advice">Medical Advice</string>
     <string name="visit_summary_tests_prescribed">Tests/Referrals</string>
-    <string name="visit_summary_additional_comments">Additional Comments</string>
+    <string name="visit_summary_additional_comments">Assessment and plan</string>
     <string name="visit_summary_discharge_order">Discharge Order</string>
     <string name="visit_summary_heading_name">Name</string>
     <string name="visit_summary_heading_id">ID</string>
-    <string name="visit_summary_button_download">Download new recommendations</string>
+    <string name="visit_summary_button_download">Download Summary</string>
     <string name="visit_summary_button_upload">Upload data above for evaluation</string>
     <string name="name_button_download">button_download</string>
     <string name="visit_summary_follow_up_date">Follow Up Date</string>
@@ -632,7 +632,7 @@
     <string name="has_a_new_prescription">has a new prescription</string>
     <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/EkalArogya_PDF</string>
     <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
-    <string name="share">Send recommendations</string>
+    <string name="share">Share Summary</string>
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I, the social-healthcare worker, attest that I read the above statement to the participant and acquired their approval for data collection.</string>
@@ -1684,6 +1684,9 @@
     <string name="view_resulted_by_past_notes">View \'Resulted by\' past notes</string>
     <string name="test_collection_data_saved">Test Collection Data Saved</string>
     <string name="test_result_data_saved">Test Result Data Saved.</string>
+    <string name="enter_file_name">Enter file name</string>
+    <string name="additional_remarks">Additional Remarks</string>
+    <string name="click_on_upload_button_to_save_the_changes">Click on Upload button to save the changes*</string>
 
 
 </resources>

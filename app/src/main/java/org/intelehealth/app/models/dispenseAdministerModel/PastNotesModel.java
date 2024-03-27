@@ -1,5 +1,8 @@
 package org.intelehealth.app.models.dispenseAdministerModel;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -9,6 +12,9 @@ import java.util.List;
  **/
 public class PastNotesModel extends MedicationAidModel{
     private String notes;
+    @SerializedName("additional_remark")
+    @Expose
+    private String additional_remark;
 
     public PastNotesModel() {
     }
@@ -36,6 +42,14 @@ public class PastNotesModel extends MedicationAidModel{
 
     public void setDateTime(String dateTime) {
         super.setDateTime(dateTime);
+    }
+
+    public String getAdditional_remark() {
+        return additional_remark;
+    }
+
+    public void setAdditional_remark(String additional_remark) {
+        this.additional_remark = additional_remark;
     }
 
     @Override

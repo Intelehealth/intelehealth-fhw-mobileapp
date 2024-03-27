@@ -1,6 +1,11 @@
 package org.intelehealth.app.activities.cameraActivity;
 
+import static org.intelehealth.klivekit.utils.DateTimeUtils.ADD_DOC_IMAGE_FORMAT;
+
 import android.Manifest;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +22,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +37,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.cameraview.CameraView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
@@ -35,12 +45,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.webrtc.activity.BaseActivity;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -63,6 +75,7 @@ public class CameraActivity extends BaseActivity {
      * storing the file generated
      */
     public static final String SET_IMAGE_PATH = "IMG_PATH";
+    public static final String IS_DISPENSE_ADMINISTER = "isDispenseAdminister";
     /**
      * Bundle key used for the {@link String} showing custom dialog
      * message before starting the camera.
@@ -92,10 +105,13 @@ public class CameraActivity extends BaseActivity {
 
     //Pass Custom File Name Using intent.putExtra(CameraActivity.SET_IMAGE_NAME, "Image Name");
     private String mImageName = null;
+    private boolean isDispenseAdminister = false;
+
     //Pass Dialog Message Using intent.putExtra(CameraActivity.SET_IMAGE_NAME, "Dialog Message");
     private String mDialogMessage = null;
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
+    private Context context = CameraActivity.this;
     private CameraView.Callback mCallback
             = new CameraView.Callback() {
 
@@ -118,15 +134,51 @@ public class CameraActivity extends BaseActivity {
             // check and correct the image rotation
             try {
                 Bitmap bitmap = BitmapUtils.rotateImageIfRequired(data);
-                compressImageAndSave(bitmap);
+                if (isDispenseAdminister) {
+                    cameraView.stop();
+                    showEnterInputDialog(bitmap);
+                }
+                else
+                    compressImageAndSave(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
         }
-
     };
 
+    public void showEnterInputDialog(Bitmap bitmap){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.dialog_input_entry);
+
+        TextInputEditText textInputEditText = dialog.findViewById(R.id.dialog_editText);
+        Button save_button = dialog.findViewById(R.id.save_button);
+        save_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (textInputEditText.getText().toString().isEmpty()) {
+                    textInputEditText.setError(getString(R.string.error_field_required));
+                }
+                else {
+                    String txtInputValue = textInputEditText.getText().toString();
+                    String currentDateTime = DateTimeUtils.formatToLocalDate(new Date(), ADD_DOC_IMAGE_FORMAT);
+                    mImageName = txtInputValue + "_" + currentDateTime;
+                    compressImageAndSave(bitmap);
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+        dialog.getWindow().clearFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        dialog.show();
+        textInputEditText.requestFocus();
+    }
 
     void compressImageAndSave(Bitmap bitmap) {
         getBackgroundHandler().post(new Runnable() {
@@ -305,6 +357,8 @@ public class CameraActivity extends BaseActivity {
                 mDialogMessage = extras.getString(SHOW_DIALOG_MESSAGE);
             if (extras.containsKey(SET_IMAGE_PATH))
                 mFilePath = extras.getString(SET_IMAGE_PATH);
+            if (extras.containsKey(IS_DISPENSE_ADMINISTER))
+                isDispenseAdminister = extras.getBoolean(IS_DISPENSE_ADMINISTER);
         }
 
         setContentView(R.layout.activity_camera);
