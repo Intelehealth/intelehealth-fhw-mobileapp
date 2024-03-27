@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -72,12 +73,12 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (genericViewHolder.node.isNeedToHide()) {
                     genericViewHolder.tvName.setEnabled(false);
                     genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
-                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+                    genericViewHolder.tvName.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
                     genericViewHolder.node.setSelected(false);
                     genericViewHolder.node.setDataCaptured(false);
                 } else {
                     genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
-                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
+                    genericViewHolder.tvName.setTextColor(ContextCompat.getColor(mContext,R.color.white));
                     genericViewHolder.tvName.setEnabled(true);
                 }
                 //if (mItemList.get(genericViewHolder.index).getOptionsList() != null && !mItemList.get(genericViewHolder.index).getOptionsList().isEmpty())
@@ -93,7 +94,7 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             } else {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
-                genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+                genericViewHolder.tvName.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
 
                 if (genericViewHolder.node.isNeedToHide()) {
                     genericViewHolder.tvName.setEnabled(false);

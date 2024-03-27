@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
@@ -62,15 +63,15 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             genericViewHolder.tvName.setText(mItemList.get(position).getReasonNameLocalized());
             if (mItemList.get(position).isSelected()) {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_primary_bg);
-                genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
+                genericViewHolder.tvName.setTextColor(ContextCompat.getColor(mContext,R.color.white));
             } else {
 
                 if (mItemList.get(position).isEnabled()) {
                     genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_1_bg);
-                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+                    genericViewHolder.tvName.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
                 } else {
                     genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
-                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.gray_2));
+                    genericViewHolder.tvName.setTextColor(ContextCompat.getColor(mContext,R.color.gray_2));
                 }
             }
 

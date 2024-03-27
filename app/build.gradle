@@ -12,6 +12,7 @@ static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     return df.format(new Date());
 }
+
 android {
     namespace 'org.intelehealth.app'
     compileSdk 34
@@ -21,17 +22,18 @@ android {
         minSdk 23
         targetSdk 34
         versionCode 65
-        versionName '4.0'
+        versionName '5.0.21.03.2024'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Intelehealth UIUX_" + versionName + " - " + getDateTime()
+        archivesBaseName = "Intelehealth IDA " + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     buildTypes {
         release {
             lintOptions {
@@ -43,6 +45,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     // use the bundle block to control which types of configuration APKs
     // you want your app bundle to support.
     bundle {
@@ -58,7 +61,7 @@ android {
             enableSplit = false
         }
         density {
-           enableSplit = false
+            enableSplit = false
         }
         abi {
             enableSplit = true

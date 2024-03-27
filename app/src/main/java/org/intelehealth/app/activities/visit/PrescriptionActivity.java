@@ -68,6 +68,7 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -192,9 +193,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
 
         initUI();
@@ -357,9 +356,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
         if (patient_photo_path != null) {
-            Glide.with(this).load(patient_photo_path).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                    .asDrawable().sizeMultiplier(0.3f);
+            Glide.with(this).load(patient_photo_path).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
         } else {
-            profile_image.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
+            profile_image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.avatar1));
         }
         // end
 
@@ -479,18 +480,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private void showEndVisitConfirmationDialog() {
         if (hasPrescription) {
             DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(
-                    this, R.drawable.dialog_close_visit_icon,
-                    getResources().getString(R.string.confirm_end_visit_reason),
-                    getResources().getString(R.string.confirm_end_visit_reason_message),
-                    false,
-                    getResources().getString(R.string.confirm),
-                    getResources().getString(R.string.cancel),
-                    action -> {
-                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                            checkIfAppointmentExistsForVisit(visitID);
-                        }
-                    });
+            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, getResources().getString(R.string.confirm_end_visit_reason), getResources().getString(R.string.confirm_end_visit_reason_message), false, getResources().getString(R.string.confirm), getResources().getString(R.string.cancel), action -> {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    checkIfAppointmentExistsForVisit(visitID);
+                }
+            });
         } else {
             triggerEndVisit();
         }
@@ -538,9 +532,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 //        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
 //        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
 
-        endVisit(this, visitID, patient.getUuid(),
-                followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name()
-                        + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
+        endVisit(this, visitID, patient.getUuid(), followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
     }
 
     // permission code - start
@@ -611,9 +603,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
 
         if (!listPermissionsNeeded.isEmpty()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
-            }
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
         return true;
@@ -669,21 +659,19 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                 });
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                        }
+                //to write to a pdf file...
+                pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
+                    @Override
+                    public void success(String path) {
+                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
 
-                    });
-                }
+                });
             }
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
@@ -713,37 +701,19 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 //                    pBuilder.build());
 
             //TODO: write different functions for <= Lollipop versions..
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
-                    @Override
-                    public void success(String path) {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-
-                });
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
-
-                    });
+            //to write to a pdf file...
+            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                @Override
+                public void success(String path) {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                 }
-            }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+
+            });
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
@@ -772,37 +742,19 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 //                    pBuilder.build());
 
             //TODO: write different functions for <= Lollipop versions..
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
-                    @Override
-                    public void success(String path) {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-
-                });
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
-
-                    });
+            //to write to a pdf file...
+            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                @Override
+                public void success(String path) {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                 }
-            }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+
+            });
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
@@ -834,38 +786,20 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             //end...
 
             //TODO: write different functions for <= Lollipop versions..
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
-                    @Override
-                    public void success(String path) {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-
-                });
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
-
-                    });
+            //to write to a pdf file...
+            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                @Override
+                public void success(String path) {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                 }
-            }
-//            PrintJob printJob = printManager.print(jobName, printAdapter,
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+
+            });
+            //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    new PrintAttributes.Builder().build());
 
         }
@@ -1523,7 +1457,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
 
         String finalMedicationDataString = "";
-        String titleStart = "<font color="+Color.GRAY+">";
+        String titleStart = "<font color=" + Color.GRAY + ">";
         String titleEnd = "</font>";
 
         StringBuilder medicationData = new StringBuilder();
@@ -1535,13 +1469,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 medicationData.append(titleEnd);
                 medicationData.append("<br>");
                 medicationData.append(s);
-            }else {
+            } else {
                 medicationData.append(s);
                 medicationData.append("<br>");
                 medicationData.append("<br>");
             }
         }
-        if(medicationData.length() == 0) return "";
+        if (medicationData.length() == 0) return "";
 
         finalMedicationDataString = medicationData.toString();
 
@@ -1670,24 +1604,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        ContextCompat.registerReceiver(
-                this,
-                downloadPrescriptionService,
-                filter,
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+        ContextCompat.registerReceiver(this, downloadPrescriptionService, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     public void callBroadcastReceiver() {
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            ContextCompat.registerReceiver(
-                    this,
-                    receiver,
-                    filter,
-                    ContextCompat.RECEIVER_NOT_EXPORTED
-            );
+            ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
             isReceiverRegistered = true;
         }
     }
@@ -1697,12 +1621,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         super.onStart();
         registerDownloadPrescription();
         callBroadcastReceiver();
-        ContextCompat.registerReceiver(
-                this,
-                mMessageReceiver,
-                new IntentFilter(FILTER),
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+        ContextCompat.registerReceiver(this, mMessageReceiver, new IntentFilter(FILTER), ContextCompat.RECEIVER_NOT_EXPORTED);
 
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();

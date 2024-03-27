@@ -48,9 +48,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
         setContentView(R.layout.activity_terms_and_conditions_ui2);
         //  mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
         ivBack = findViewById(R.id.iv_back_arrow_terms);
         tvText = findViewById(R.id.tv_term_condition);
@@ -83,11 +81,6 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
-    }
 
     public void declineTC(View view) {
         setResult(AppConstants.TERMS_CONDITIONS_DECLINE);

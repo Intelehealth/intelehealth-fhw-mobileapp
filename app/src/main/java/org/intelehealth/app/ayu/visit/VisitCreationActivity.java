@@ -153,11 +153,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_creation);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
-        }
+        getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.white));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         mSummaryFrameLayout = findViewById(R.id.fl_steps_summary);
@@ -727,11 +724,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     @Override
     public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
         deleteImageFromDatabase(nodeIndex, imageIndex, image);
-    }
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
     }
 
     boolean nodeComplete = false;

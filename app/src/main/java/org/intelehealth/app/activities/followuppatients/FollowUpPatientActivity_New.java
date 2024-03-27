@@ -24,8 +24,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -84,8 +87,11 @@ public class FollowUpPatientActivity_New extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.follow_up_visits);
+
+        handleBackPress();
 
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
@@ -193,9 +199,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equalsIgnoreCase("")) {
-                    searchview_received.setBackground(getResources().getDrawable(R.drawable.blue_border_bg));
+                    searchview_received.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.blue_border_bg));
                 } else {
-                    searchview_received.setBackground(getResources().getDrawable(R.drawable.ui2_common_input_bg));
+                    searchview_received.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_common_input_bg));
                 }
                 return false;
             }
@@ -208,6 +214,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             searchview_received.setQuery("", false);
         });
         // Search - end
+
+        //handleBackPress();
 
     }
 
@@ -736,9 +744,17 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         return modelList;
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(context, HomeScreenActivity_New.class);
-        startActivity(intent);
+    /**
+     * removed onBackPressed function due to deprecation
+     * and added this one to handle onBackPressed
+     */
+    private void handleBackPress() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(context, HomeScreenActivity_New.class);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -745,7 +746,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         BMIStatus bmiStatus = getBmiStatus(bmi_value);
         mBmiStatusTextView.setText(String.format("(%s)", bmiStatus.getStatus()));
-        mBmiStatusTextView.setTextColor(getResources().getColor(bmiStatus.getColor()));
+        mBmiStatusTextView.setTextColor(ContextCompat.getColor(getActivity(),bmiStatus.getColor()));
     }
 
     public void calculateBMI_onEdit(String height, String weight) {
@@ -861,7 +862,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         String height = heightvalue;
         String weight = weightvalue;
 
-        if(!isPatientAdult() && weight.isEmpty()){
+        if (!isPatientAdult() && weight.isEmpty()) {
             mWeightErrorTextView.setVisibility(View.VISIBLE);
             mWeightErrorTextView.setText(getString(R.string.error_field_required_non_adult));
             //mWeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1126,33 +1127,25 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             } else {
                 results.setHeight("0");
             }
-            if (!weight.isEmpty()) {
-                results.setWeight(weight);
-            }
-            if (mPulseEditText.getText() != null) {
-                results.setPulse((mPulseEditText.getText().toString()));
-            }
-            if (mBpDiaEditText.getText() != null) {
-                results.setBpdia((mBpDiaEditText.getText().toString()));
-            }
-            if (mBpSysEditText.getText() != null) {
-                results.setBpsys((mBpSysEditText.getText().toString()));
-            }
-            if (mTemperatureEditText.getText() != null && !mTemperatureEditText.getText().toString().isEmpty()) {
+            results.setWeight(weight);
+            results.setPulse((mPulseEditText.getText().toString()));
+            results.setBpdia((mBpDiaEditText.getText().toString()));
+            results.setBpsys((mBpSysEditText.getText().toString()));
+            if (!mTemperatureEditText.getText().toString().isEmpty()) {
                 if (configUtils.fahrenheit()) {
                     results.setTemperature(convertFtoC(TAG, mTemperatureEditText.getText().toString()));
                 } else {
                     results.setTemperature((mTemperatureEditText.getText().toString()));
                 }
+            } else {
+                results.setTemperature("");
             }
-            if (mRespEditText.getText() != null) {
-                results.setResp((mRespEditText.getText().toString()));
-            }
-            if (mSpo2EditText.getText() != null) {
-                results.setSpo2((mSpo2EditText.getText().toString()));
-            }
-            if (mSpo2EditText.getText() != null) {
-                results.setBmi(mBMITextView.getText().toString().split(" ")[0]);
+            results.setResp((mRespEditText.getText().toString()));
+            results.setSpo2((mSpo2EditText.getText().toString()));
+            if (mBMITextView.getText() != null && mBMITextView.getText().toString().trim().contains(" ")) {
+                results.setBmi(mBMITextView.getText().toString().trim().split(" ")[0]);
+            } else {
+                results.setBmi("");
             }
 
 
@@ -1378,6 +1371,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
     /**
      * check patient is adult or not
+     *
      * @return
      */
     private boolean isPatientAdult() {

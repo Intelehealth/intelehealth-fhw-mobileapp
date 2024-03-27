@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
@@ -55,12 +56,12 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
                 genericViewHolder.rbChooseLanguage.setText(genericViewHolder.jsonObject.getString("name"));
 
                 if (genericViewHolder.jsonObject.getBoolean("selected")) {
-                    genericViewHolder.layoutRb.setBackgroundColor(mContext.getResources().getColor(R.color.cardTintLightGreen));
-                    genericViewHolder.rbChooseLanguage.setButtonDrawable(mContext.getDrawable(R.drawable.ui2_ic_selected_green));
+                    genericViewHolder.layoutRb.setBackgroundColor(ContextCompat.getColor(mContext,R.color.cardTintLightGreen));
+                    genericViewHolder.rbChooseLanguage.setButtonDrawable(ContextCompat.getDrawable(mContext,R.drawable.ui2_ic_selected_green));
 
                 } else {
-                    genericViewHolder.layoutRb.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                    genericViewHolder.rbChooseLanguage.setButtonDrawable(mContext.getDrawable(R.drawable.ui2_ic_circle));
+                    genericViewHolder.layoutRb.setBackgroundColor(ContextCompat.getColor(mContext,R.color.white));
+                    genericViewHolder.rbChooseLanguage.setButtonDrawable(ContextCompat.getDrawable(mContext,R.drawable.ui2_ic_circle));
 
                 }
 

@@ -114,9 +114,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         networkUtils = new NetworkUtils(ScheduleAppointmentActivity_New.this, this);
         sessionManager = new SessionManager(this);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
         mSelectedStartDate = simpleDateFormat.format(new Date());
         mSelectedEndDate = simpleDateFormat.format(new Date());
 
@@ -757,10 +755,10 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
 
         } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
 
         }
     }

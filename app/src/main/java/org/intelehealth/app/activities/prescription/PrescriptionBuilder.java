@@ -5,14 +5,23 @@ import android.text.TextUtils;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Objects;
 
 public class PrescriptionBuilder {
     private final AppCompatActivity activityContext;
+    JSONObject obj;
+    String disclaimerStr = "";
 
     public PrescriptionBuilder(AppCompatActivity activityContext) {
         this.activityContext = activityContext;
@@ -38,9 +47,45 @@ public class PrescriptionBuilder {
                 + headingHTMLLangTag
                 + buildHeadData()
                 + buildBodyData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
+                + buildDisclaimerData()
                 + htmlClosingTag;
 
         return prescriptionHTML;
+    }
+
+    private String buildDisclaimerData() {
+        SessionManager sessionManager = new SessionManager(activityContext);
+
+        try {
+            obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, activityContext), String.valueOf(FileUtils.encodeJSON(activityContext, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+
+            disclaimerStr = obj.getString("prescriptionDisclaimer_English");
+
+            //uncomment the below line if any hindi disclaimer is available
+            //disclaimerStr = sessionManager.getAppLanguage().equalsIgnoreCase("hi") ? obj.getString("prescriptionDisclaimer_Hindi") : obj.getString("prescriptionDisclaimer_English");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        if (disclaimerStr.isEmpty()) {
+            return "";
+        }
+
+        String finalDisclaimerString;
+        String closingDivTag = "</div>";
+        String openingDivTag= "<div>";
+
+        String divClassDisclaimerTag =
+                "<div style=\" position: fixed; bottom: 0; left: 0; width: 100%; text-align: center;\">" + disclaimerStr + closingDivTag;
+
+        finalDisclaimerString = openingDivTag
+                + openingDivTag
+                + divClassDisclaimerTag
+                + closingDivTag
+                + closingDivTag;
+
+        return finalDisclaimerString;
     }
 
     private String buildHeadData() {
@@ -176,6 +221,7 @@ public class PrescriptionBuilder {
 
     /**
      * return full gender from gender char
+     *
      * @param gender
      * @return
      */
@@ -245,7 +291,7 @@ public class PrescriptionBuilder {
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_spo2), vitalsData.getSpo2());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.respiratory_rate), vitalsData.getResp());
 
-        if(vitalsDataString.isEmpty()) return "";
+        if (vitalsDataString.isEmpty()) return "";
 
         finalVitalsData = openingDivTag
                 + openingDataSectionTag
@@ -454,11 +500,11 @@ public class PrescriptionBuilder {
                 + closingDivTag
                 + closingDivTag;
 
-        if((tableDataFinalString+tableAdditionalDataFinalString).isEmpty()){
+        if ((tableDataFinalString + tableAdditionalDataFinalString).isEmpty()) {
             return "";
         }
 
-        return finalMedicationData+lineBreak;
+        return finalMedicationData + lineBreak;
     }
 
     private String bifurcateMedicationData(String medicationData) {
@@ -567,7 +613,7 @@ public class PrescriptionBuilder {
                 additionalInstructionsData.append(listClosingTag);
             }
         }
-        if(additionalInstructionsData.length() == 0) return "";
+        if (additionalInstructionsData.length() == 0) return "";
 
         finalAdditionalDataString = divClassLabelTag
                 + unorderedListOpeningTag
@@ -594,7 +640,7 @@ public class PrescriptionBuilder {
 
         String bifurcatedAdviceData = checkAndBifurcateAdviceData(adviceData);
 
-        if(bifurcatedAdviceData.isEmpty()) return "";
+        if (bifurcatedAdviceData.isEmpty()) return "";
 
         finalAdviceString = openingDivTag
                 + dataSectionTag
@@ -607,7 +653,7 @@ public class PrescriptionBuilder {
                 + closingDivTag
                 + closingDivTag;
 
-        return finalAdviceString+lineBreak;
+        return finalAdviceString + lineBreak;
     }
 
     private String checkAndBifurcateAdviceData(String adviceData) {
@@ -623,7 +669,7 @@ public class PrescriptionBuilder {
             //checking any advice exist or not
             //if not then return empty string
             //because we will disable advice ui if advice is empty
-            if(adviceData.isEmpty()) return "";
+            if (adviceData.isEmpty()) return "";
             finalAdviceStringBuilder.append(listOpeningTag);
             finalAdviceStringBuilder.append(divClassOpeningTagCenter);
             finalAdviceStringBuilder.append(spanOpeningTag);
@@ -636,7 +682,7 @@ public class PrescriptionBuilder {
             //checking any advice exist or not
             //if not then return empty string
             //because we will disable advice ui if advice is empty
-            if(adviceArray.length == 0) return "";
+            if (adviceArray.length == 0) return "";
             for (String advice : adviceArray) {
                 finalAdviceStringBuilder.append(listOpeningTag);
                 finalAdviceStringBuilder.append(divClassOpeningTagCenter);
@@ -668,7 +714,7 @@ public class PrescriptionBuilder {
 
         String bifurcatedTestsData = checkAndBifurcateTestData(testData);
 
-        if(bifurcatedTestsData.isEmpty()) return "";
+        if (bifurcatedTestsData.isEmpty()) return "";
         finalTestString = divOpeningTag
                 + divDataSectionOpening
                 + divDataSectionTitleTag
@@ -680,7 +726,7 @@ public class PrescriptionBuilder {
                 + divClosingTag
                 + divClosingTag;
 
-        return finalTestString+lineBreak;
+        return finalTestString + lineBreak;
     }
 
     private String checkAndBifurcateTestData(String testsData) {
@@ -697,7 +743,7 @@ public class PrescriptionBuilder {
             //checking any test exist or not
             //if not then return empty string
             //because we will disable test ui if test is empty
-            if(testsData.isEmpty()) return "";
+            if (testsData.isEmpty()) return "";
             finalTestsStringBuilder.append(listOpeningTag);
             finalTestsStringBuilder.append(divClassOpeningTagCenter);
             finalTestsStringBuilder.append(spanOpeningTag);
@@ -710,7 +756,7 @@ public class PrescriptionBuilder {
             //checking any test exist or not
             //if not then return empty string
             //because we will disable test ui if test is empty
-            if(adviceArray.length == 0) return "";
+            if (adviceArray.length == 0) return "";
 
             for (String advice : adviceArray) {
                 finalTestsStringBuilder.append(listOpeningTag);
@@ -751,7 +797,7 @@ public class PrescriptionBuilder {
 
         String bifurcatedReferralData = checkAndBifurcateReferredData(referredOutData);
 
-        if(bifurcatedReferralData.isEmpty()) return "";
+        if (bifurcatedReferralData.isEmpty()) return "";
 
         finalReferredOutString = divOpeningTag
                 + divDataSectionOpening
@@ -802,7 +848,7 @@ public class PrescriptionBuilder {
             //checking any referral out exist or not
             //if not then return empty string
             //because we will disable referral out ui if referral out is empty
-            if(referredOutArray.length == 0) return "";
+            if (referredOutArray.length == 0) return "";
 
             for (String referred : referredOutArray) {
                 if (referred.contains(":")) {

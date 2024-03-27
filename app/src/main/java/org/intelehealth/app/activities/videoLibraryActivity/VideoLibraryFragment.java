@@ -83,11 +83,7 @@ public class VideoLibraryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mRecyclerView = view.findViewById(R.id.video_library_RecyclerView);
-    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         Bundle bundle = getArguments();
         String filePath = bundle.getString("FILEPATH");
 
@@ -103,7 +99,6 @@ public class VideoLibraryFragment extends Fragment {
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(adapter);
         }
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
