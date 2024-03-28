@@ -8,8 +8,11 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.Html;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -19,24 +22,31 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.text.HtmlCompat;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
+import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.WebViewStatus;
 
 import java.util.Locale;
 
-public class PrivacyPolicyActivity_New extends BaseActivity {
+public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewStatus {
     private static final String TAG = "PrivacyPolicyActivityNe";
     private Button btn_accept_privacy;
     private int mIntentFrom;
     String appLanguage, intentType;
+    WebView webView;
     SessionManager sessionManager = null;
+    private AlertDialog loadingDialog;
 
     ActivityResultLauncher<Intent> activityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if(result.getResultCode() == AppConstants.PERSONAL_CONSENT_ACCEPT){
@@ -61,6 +71,18 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
         intentType = getIntent().getStringExtra("intentType");
         ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
         btn_accept_privacy = findViewById(R.id.btn_accept_privacy);
+        webView = findViewById(R.id.webview);
+
+        loadingDialog = new DialogUtils().showCommonLoadingDialog(
+                this,
+                getString(R.string.loading),
+                getString(R.string.please_wait)
+        );
+
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new GenericWebViewClient(this));
+
+        webView.loadDataWithBaseURL(null,new ConfigUtils(this).getPrivacyPolicyText(sessionManager.getAppLanguage()),"text/html", "utf-8",null);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,5 +139,20 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
         }
         res.updateConfiguration(conf, dm);
         return context;
+    }
+
+    @Override
+    public void onPageStarted() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void onPageFinish() {
+        loadingDialog.dismiss();
+    }
+
+    @Override
+    public void onPageError(@NonNull String error) {
+
     }
 }

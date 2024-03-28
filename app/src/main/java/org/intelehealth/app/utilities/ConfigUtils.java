@@ -144,4 +144,30 @@ public class ConfigUtils {
         return val;
     }
 
+    public String getPrivacyPolicyText(String locale) {
+        String val = "";
+
+        JSONObject object = jsonreader();
+        try {
+            val = object.getString("privacy_policy_" + locale);
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return val;
+    }
+
+    public String getTermsAndConditionsText(String locale) {
+        String val = "";
+
+        JSONObject object = jsonreader();
+        try {
+            val = object.getString("privacy_policy_" + locale);
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return val;
+    }
+
 }
