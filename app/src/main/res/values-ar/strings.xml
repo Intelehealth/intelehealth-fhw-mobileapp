@@ -1677,8 +1677,8 @@
     <string name="view_resulted_by_past_notes">تحميل النتائج</string>
     <string name="test_collection_data_saved"> تم حفظ بيانات جمع العينات</string>
     <string name="test_result_data_saved">تم حفظ بيانات تحميل النتائج</string>
-    <string name="enter_file_name">Enter file name</string>
-    <string name="additional_remarks">Additional Remarks</string>
+    <string name="enter_file_name"> ادخل اسم الملف</string>
+    <string name="additional_remarks">ملاحظات إضافية</string>
     <string name="click_on_upload_button_to_save_the_changes">Click on Upload button to save the changes*</string>
 
 
