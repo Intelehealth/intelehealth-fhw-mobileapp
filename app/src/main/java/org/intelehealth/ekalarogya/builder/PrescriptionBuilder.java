@@ -1,7 +1,9 @@
 package org.intelehealth.ekalarogya.builder;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
@@ -113,6 +115,7 @@ public class PrescriptionBuilder {
 
     public void setTests(String tests) {
         tests = tests.replaceAll("\n\n", "\n");
+        tests = tests.replaceAll(Node.bullet, Node.big_bullet);
         checkDataValidOrHideViews(binding.tvTests, binding.tvTestsData, tests);
     }
 
@@ -214,6 +217,21 @@ public class PrescriptionBuilder {
         pdfDocument.finishPage(page);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+            // This code looks if there are  existing prescription and deletes them.
+            Uri contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
+            String selection = MediaStore.MediaColumns.DISPLAY_NAME + "=?";
+            String[] selectionArgs = new String[]{fileName};
+
+            try (Cursor cursor = context.getContentResolver().query(contentUri, null, selection, selectionArgs, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    // Found the existing file, delete it
+                    int idColumn = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID);
+                    Uri fileUri = ContentUris.withAppendedId(contentUri, cursor.getLong(idColumn));
+                    context.getContentResolver().delete(fileUri, null, null);
+                }
+            }
+
             ContentValues values = new ContentValues();
             values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
             values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
@@ -231,6 +249,11 @@ public class PrescriptionBuilder {
         } else {
             File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File filePath = new File(downloadsDir, fileName);
+
+            if (filePath.exists()) {
+                // If the file exists, delete it
+                boolean isDeleted = filePath.delete();
+            }
 
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
                 pdfDocument.writeTo(fos);
