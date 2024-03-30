@@ -64,20 +64,20 @@ public class PrescriptionBuilder {
     }
 
     public void setVitals(VitalsObject vitalsObject) {
-        String height = context.getString(R.string.prescription_height, checkValueAndReturnNA(vitalsObject.getHeight()));
-        String weight = context.getString(R.string.prescription_weight, checkValueAndReturnNA(vitalsObject.getWeight()));
-        String bmi = context.getString(R.string.prescription_bmi, checkValueAndReturnNA(vitalsObject.getBmi()));
+        String height = getOrganizedDataWithBullets(context.getString(R.string.prescription_height, checkValueAndReturnNA(vitalsObject.getHeight())));
+        String weight = getOrganizedDataWithBullets(context.getString(R.string.prescription_weight, checkValueAndReturnNA(vitalsObject.getWeight())));
+        String bmi = getOrganizedDataWithBullets(context.getString(R.string.prescription_bmi, checkValueAndReturnNA(vitalsObject.getBmi())));
         String bpSys = checkValueAndReturnNA(vitalsObject.getBpsys());
         String bpDia = checkValueAndReturnNA(vitalsObject.getBpdia());
-        String bloodPressure = context.getString(R.string.prescription_bp, bpSys.concat(" / ").concat(bpDia));
-        String pulse = context.getString(R.string.prescription_pulse, checkValueAndReturnNA(vitalsObject.getPulse()));
-        String temperature = context.getString(R.string.prescription_temperature, checkValueAndReturnNA(vitalsObject.getTemperature()));
-        String respiratoryRate = context.getString(R.string.prescription_respiratory_rate, checkValueAndReturnNA(vitalsObject.getResp()));
-        String spO2 = context.getString(R.string.prescription_spo2, checkValueAndReturnNA(vitalsObject.getSpo2()));
-        String haemoglobin = context.getString(R.string.prescription_haemoglobin, checkValueAndReturnNA(vitalsObject.getHsb()));
-        String bloodGroup = context.getString(R.string.prescription_blood_group, checkValueAndReturnNA(vitalsObject.getBlood()));
-        String sugarFasting = context.getString(R.string.prescription_sugar_fasting, checkValueAndReturnNA(vitalsObject.getSugarfasting()));
-        String sugarRandom = context.getString(R.string.prescription_sugar_random, checkValueAndReturnNA(vitalsObject.getSugarrandom()));
+        String bloodPressure = getOrganizedDataWithBullets(context.getString(R.string.prescription_bp, bpSys.concat(" / ").concat(bpDia)));
+        String pulse = getOrganizedDataWithBullets(context.getString(R.string.prescription_pulse, checkValueAndReturnNA(vitalsObject.getPulse())));
+        String temperature = getOrganizedDataWithBullets(context.getString(R.string.prescription_temperature, checkValueAndReturnNA(vitalsObject.getTemperature())));
+        String respiratoryRate = getOrganizedDataWithBullets(context.getString(R.string.prescription_respiratory_rate, checkValueAndReturnNA(vitalsObject.getResp())));
+        String spO2 = getOrganizedDataWithBullets(context.getString(R.string.prescription_spo2, checkValueAndReturnNA(vitalsObject.getSpo2())));
+        String haemoglobin = getOrganizedDataWithBullets(context.getString(R.string.prescription_haemoglobin, checkValueAndReturnNA(vitalsObject.getHsb())));
+        String bloodGroup = getOrganizedDataWithBullets(context.getString(R.string.prescription_blood_group, checkValueAndReturnNA(vitalsObject.getBlood())));
+        String sugarFasting = getOrganizedDataWithBullets(context.getString(R.string.prescription_sugar_fasting, checkValueAndReturnNA(vitalsObject.getSugarfasting())));
+        String sugarRandom = getOrganizedDataWithBullets(context.getString(R.string.prescription_sugar_random, checkValueAndReturnNA(vitalsObject.getSugarrandom())));
 
         binding.tvVitalsHeight.setText(height);
         binding.tvVitalsWeight.setText(weight);
@@ -94,46 +94,32 @@ public class PrescriptionBuilder {
     }
 
     public void setComplaintData(String complaints) {
+        complaints = removeNodeBulletsAndLineBreaks(complaints);
+        complaints = getOrganizedDataWithBullets(complaints);
         checkDataValidOrHideViews(binding.tvPresentingComplaints, binding.tvPresentingComplaintsData, complaints);
     }
 
     public void setDiagnosis(String diagnosis) {
+        diagnosis = removeNodeBulletsAndLineBreaks(diagnosis);
+        diagnosis = getOrganizedDataWithBullets(diagnosis);
         checkDataValidOrHideViews(binding.tvDiagnosis, binding.tvDiagnosisData, diagnosis);
     }
 
     public void setMedication(String medication) {
-        if (medication.contains("\n")) {
-            String[] medicationData = medication.split("\n");
-            medication = "";
-
-            for (String data : medicationData) {
-                medication = medication.concat(Node.big_bullet).concat(" ").concat(data).concat("\n");
-            }
-        }
+        medication = removeNodeBulletsAndLineBreaks(medication);
+        medication = getOrganizedDataWithBullets(medication);
         checkDataValidOrHideViews(binding.tvMedication, binding.tvMedicationData, medication);
     }
 
     public void setTests(String tests) {
-        tests = tests.replaceAll("\n\n", "\n");
-        tests = tests.replaceAll(Node.bullet, Node.big_bullet);
+        tests = removeNodeBulletAndLineBreakFromTests(tests);
+        tests = getOrganizedDataWithBullets(tests);
         checkDataValidOrHideViews(binding.tvTests, binding.tvTestsData, tests);
     }
 
     public void setAdvice(String advice) {
-        if (advice.contains("\n")) {
-            String[] adviceData = advice.split("\n");
-            advice = "";
-
-            for (String data : adviceData) {
-                if (!data.isEmpty()) {
-                    advice = advice
-                            .concat(Node.big_bullet)
-                            .concat(" ")
-                            .concat(data)
-                            .concat("\n");
-                }
-            }
-        }
+        advice = removeNodeBulletsAndLineBreaks(advice);
+        advice = getOrganizedDataWithBullets(advice);
         checkDataValidOrHideViews(binding.tvGeneralAdvice, binding.tvGeneralAdviceData, advice);
     }
 
@@ -142,8 +128,7 @@ public class PrescriptionBuilder {
     }
 
     public void setDoctorData(ClsDoctorDetails clsDoctorDetails) {
-        if (clsDoctorDetails == null)
-            return;
+        if (clsDoctorDetails == null) return;
 
         binding.tvDrSignature.setText(clsDoctorDetails.getTextOfSign());
         binding.tvDrSignature.setTypeface(getSignatureTypeface(clsDoctorDetails.getFontOfSign()));
@@ -166,6 +151,55 @@ public class PrescriptionBuilder {
 
         binding.tvDrEmail.setText(context.getString(R.string.prescription_dr_email, checkValueAndReturnNA(clsDoctorDetails.getEmailId())));
         binding.tvDrRegistration.setText(context.getString(R.string.prescription_dr_registration, checkValueAndReturnNA(clsDoctorDetails.getRegistrationNumber())));
+    }
+
+    public String getOrganizedDataWithBullets(String data) {
+        if (data == null || data.isBlank() || data.isEmpty()) return data;
+
+        data = data.trim();
+        data = Node.big_bullet.concat(" ").concat(data);
+        String[] splitData = data.split("\n");
+        data = "";
+
+        for (String string : splitData) {
+            if (string.contains(Node.big_bullet)) {
+                data = string;
+                continue;
+            }
+
+            data = data.concat("\n");
+            data = data.concat(Node.big_bullet).concat(" ").concat(string);
+            data = data.concat("\n");
+        }
+        return data;
+    }
+
+    private String removeNodeBulletsAndLineBreaks(String data) {
+        if (data.contains(Node.big_bullet)) {
+            data = data.replaceAll(Node.big_bullet, "\n");
+        }
+
+        if (data.contains(Node.bullet)) {
+            data = data.replaceAll(Node.bullet, "\n");
+        }
+
+        if (data.contains("\n\n")) {
+            data = data.replaceAll("\n\n", "\n");
+        }
+
+        return data;
+    }
+
+    private String removeNodeBulletAndLineBreakFromTests(String data) {
+        if (data.contains("\n\n")) {
+            data = data.replaceAll("\n\n", "");
+        }
+
+        if (data.contains(Node.bullet)) {
+            data = data.replaceAll(Node.bullet, "\n");
+        }
+
+        return data;
     }
 
     private Typeface getSignatureTypeface(String font) {
@@ -197,8 +231,7 @@ public class PrescriptionBuilder {
         }
 
         // Measure the view at the exact width and unspecified height to determine the total height needed
-        binding.getRoot().measure(View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        binding.getRoot().measure(View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
         binding.getRoot().layout(0, 0, metrics.widthPixels, binding.getRoot().getMeasuredHeight());
 
