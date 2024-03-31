@@ -1,24 +1,20 @@
 package org.intelehealth.app.activities.onboarding
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
+import android.util.Log
 import android.view.View
-import android.webkit.WebResourceError
-import android.webkit.WebResourceRequest
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.ImageView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
+import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.FileUtils
 import org.intelehealth.app.utilities.SessionManager
@@ -30,7 +26,6 @@ import java.util.Objects
 
 
 class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
-    var obj: JSONObject? = null
     private var personal_consent_string = ""
     private var webView: WebView? = null
     var ivBack: ImageView? = null
@@ -64,36 +59,18 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 
         if (personal_consent_string.isEmpty()) {
             Thread {
-
                 // bg task
                 try {
-                    obj = JSONObject(
-                        Objects.requireNonNullElse(
-                            FileUtils.readFileRoot(
-                                AppConstants.CONFIG_FILE_NAME,
-                                context
-                            ),
-                            FileUtils.encodeJSON(
-                                context,
-                                AppConstants.CONFIG_FILE_NAME
-                            ).toString()
-                        )
-                    ) //Load the config file
-                    personal_consent_string = if (sessionManager!!.appLanguage
-                            .equals("hi", ignoreCase = true)
-                    )
-                    //currently english is defaut
-                        obj!!.getString("personalDataConsentText_Hindi")
-                    else obj!!.getString("personalDataConsentText_English")
+                    personal_consent_string = ConfigUtils(this).getPersonalDataConsentText(sessionManager?.appLanguage)
                 } catch (e: JSONException) {
                     throw RuntimeException(e)
                 }
                 runOnUiThread {
-                    webView?.loadData(personal_consent_string, "text/html", "utf-8")
+                    webView?.loadDataWithBaseURL(null,personal_consent_string, "text/html", "utf-8",null)
                 }
             }.start()
         } else {
-            webView?.loadData(personal_consent_string, "text/html", "utf-8")
+            webView?.loadDataWithBaseURL(null,personal_consent_string, "text/html", "utf-8",null)
         }
     }
 
@@ -140,6 +117,6 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
     }
 
     override fun onPageError(error: String) {
-        TODO("Not yet implemented")
+        loadingDialog?.dismiss()
     }
 }

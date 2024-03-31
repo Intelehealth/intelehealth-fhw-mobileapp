@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.onboarding;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -47,6 +48,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity implements
     private AlertDialog loadingDialog = null;
     WebView webView;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,25 +64,21 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity implements
         loadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), getString(R.string.please_wait));
         ivBack.setOnClickListener(v -> finish());
 
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new GenericWebViewClient(this));
 
         if (terms_and_condition_string.isEmpty()) {
 
             new Thread(() -> {
                 // bg task
-                try {
-                    obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-                    terms_and_condition_string = new ConfigUtils(this).getTermsAndConditionsText(sessionManager.getAppLanguage());
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
+                terms_and_condition_string = new ConfigUtils(this).getTermsAndConditionsText(sessionManager.getAppLanguage());
                 runOnUiThread(() -> {
                     // ui task
-                    webView.loadData(terms_and_condition_string, "text/html", "utf-8");
+                    webView.loadDataWithBaseURL(null,terms_and_condition_string, "text/html", "utf-8",null);
                 });
             }).start();
         } else {
-            webView.loadData(terms_and_condition_string, "text/html", "utf-8");
+            webView.loadDataWithBaseURL(null,terms_and_condition_string, "text/html", "utf-8",null);
         }
     }
 

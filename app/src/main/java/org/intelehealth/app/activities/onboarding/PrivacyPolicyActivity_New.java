@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.onboarding;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -58,6 +59,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
         }
     });
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,6 +155,6 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
 
     @Override
     public void onPageError(@NonNull String error) {
-
+        loadingDialog.dismiss();
     }
 }

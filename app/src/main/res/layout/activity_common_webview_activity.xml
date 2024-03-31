@@ -66,33 +66,17 @@
         android:weightSum="2">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/decline_button_margin_start"
-            android:layout_marginEnd="@dimen/decline_button_margin_end"
-            android:layout_weight="1"
-            android:background="@drawable/ui2_common_primary_bg_disabled"
-            android:lineHeight="@dimen/button_line_height"
-            android:onClick="declineCon"
-            android:padding="@dimen/padding_15"
-            android:text="@string/decline"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/common_button_text_size"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btn_accept_consent"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/accept_button_margin_start"
+            android:layout_marginStart="@dimen/margin_24"
             android:layout_marginEnd="@dimen/accept_button_margin_end"
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
-            android:onClick="acceptCon"
+            android:onClick="okBtClick"
             android:padding="@dimen/padding_15"
-            android:text="@string/accept_new"
+            android:text="@string/okay"
             android:textSize="@dimen/common_button_text_size" />
 
 

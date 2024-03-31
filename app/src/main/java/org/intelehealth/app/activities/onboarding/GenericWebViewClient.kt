@@ -3,11 +3,18 @@ package org.intelehealth.app.activities.onboarding
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
+import org.intelehealth.app.R
+import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.WebViewStatus
+
 
 /**
  * Created by Tanvir Hasan on 28-03-2024 : 12-48.
@@ -18,25 +25,52 @@ class GenericWebViewClient(private var context: Context) : WebViewClient() {
         val TITLE: String = "TITLE"
         val TYPE: String = "TYPE"
         val URL: String = "URL"
+        val KEY: String = "KEY"
+        val PRIVACY_POLICY: String = "Privacy Policy"
+        val TERMS_OF_USE: String = "Terms Of Use"
+        var PERSONAL_DATA_PROCESSING_POLICY = "Personal Data Processing  Policy"
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
         (request?.url?.toString() ?: "").also {
             val intent = Intent(context, CommonWebViewActivity::class.java)
-            if (it.contains("https://www.intelehealth.org/privacy-policy")) {
+            if (it.contains("intelehealth.org/privacy-policy")) {
                 intent.apply {
-                    putExtra(TITLE, "Privacy Policy")
-                    putExtra(TYPE, "online")
+                    putExtra(TITLE, PRIVACY_POLICY)
+                    putExtra(KEY, SessionManager.PRIVACY_POLICY)
                     putExtra(URL, it)
                 }
-            } else if (it.contains("https://intelehealth.org/terms-of-use")) {
+                context.startActivity(intent)
+            } else if (it.contains("intelehealth.org/terms-of-use")) {
                 intent.apply {
-                    putExtra(TITLE, "Terms Of Use")
-                    putExtra(TYPE, "online")
+                    putExtra(TITLE, TERMS_OF_USE)
+                    putExtra(KEY, SessionManager.TERMS_OF_USE)
                     putExtra(URL, it)
+                }
+                context.startActivity(intent)
+            } else if (it.contains("intelehealth.org/personal-data-processing-policy")) {
+                intent.apply {
+                    putExtra(TITLE, PERSONAL_DATA_PROCESSING_POLICY)
+                    putExtra(KEY, SessionManager.PERSONAL_DATA_PROCESSING_POLICY)
+                    putExtra(URL, it)
+                }
+                context.startActivity(intent)
+            } else if (it.lowercase().contains(".pdf")) {
+                context.startActivity(Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(it)
+                })
+            } else {
+                return if (!NetworkConnection.isOnline(context)) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.no_network),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    true
+                } else {
+                    false
                 }
             }
-            context.startActivity(intent)
             return true
         }
     }

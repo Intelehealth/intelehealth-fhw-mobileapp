@@ -162,7 +162,20 @@ public class ConfigUtils {
 
         JSONObject object = jsonreader();
         try {
-            val = object.getString("privacy_policy_" + locale);
+            val = object.getString("terms_and_conditions_" + locale);
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return val;
+    }
+
+    public String getPersonalDataConsentText(String locale) {
+        String val = "";
+
+        JSONObject object = jsonreader();
+        try {
+            val = object.getString("personalDataConsentText_" + locale);
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
