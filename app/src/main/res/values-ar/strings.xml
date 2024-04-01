@@ -1679,7 +1679,7 @@
     <string name="test_result_data_saved">تم حفظ بيانات تحميل النتائج</string>
     <string name="enter_file_name"> ادخل اسم الملف</string>
     <string name="additional_remarks">ملاحظات إضافية</string>
-    <string name="click_on_upload_button_to_save_the_changes">Click on Upload button to save the changes*</string>
+    <string name="click_on_upload_button_to_save_the_changes">اضغط على زر التحميل لحفظ التغييرات</string>
 
 
 </resources>
