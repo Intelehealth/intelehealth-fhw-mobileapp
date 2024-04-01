@@ -19,6 +19,8 @@ import org.intelehealth.app.utilities.WebViewStatus
 /**
  * Created by Tanvir Hasan on 28-03-2024 : 12-48.
  * Email: mhasan@intelehealth.org
+ *
+ * generic webview client to handle webview behaviour
  */
 class GenericWebViewClient(private var context: Context) : WebViewClient() {
     companion object {
@@ -31,6 +33,9 @@ class GenericWebViewClient(private var context: Context) : WebViewClient() {
         var PERSONAL_DATA_PROCESSING_POLICY = "Personal Data Processing  Policy"
     }
 
+    /**
+     * handling all url click here
+     */
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
         (request?.url?.toString() ?: "").also {
             val intent = Intent(context, CommonWebViewActivity::class.java)
@@ -55,11 +60,16 @@ class GenericWebViewClient(private var context: Context) : WebViewClient() {
                     putExtra(URL, it)
                 }
                 context.startActivity(intent)
-            } else if (it.lowercase().contains(".pdf")) {
+            }
+            //if clicking link is pdf then opening the link on browser
+            else if (it.lowercase().contains(".pdf") ||
+                it.lowercase().contains("mailto")
+            ) {
                 context.startActivity(Intent(Intent.ACTION_VIEW).apply {
                     data = Uri.parse(it)
                 })
             } else {
+                //if url type is other then loading the url on same webview if network is available
                 return if (!NetworkConnection.isOnline(context)) {
                     Toast.makeText(
                         context,

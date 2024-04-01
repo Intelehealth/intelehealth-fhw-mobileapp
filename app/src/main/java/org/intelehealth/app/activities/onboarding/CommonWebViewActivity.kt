@@ -2,8 +2,10 @@ package org.intelehealth.app.activities.onboarding
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
@@ -38,7 +40,14 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.util.Locale
 import java.util.Objects
-
+/**
+ * Created by Tanvir Hasan on 28-03-2024 : 12-48.
+ * Email: mhasan@intelehealth.org
+ *
+ * this is the common webview to load in app web link
+ * need to pass some intent value to it like
+ * title, url, sessionManagerKey
+ */
 class CommonWebViewActivity : AppCompatActivity(), WebViewStatus{
     private var webView: WebView? = null
     private var ivBack: ImageView? = null
@@ -163,7 +172,7 @@ class CommonWebViewActivity : AppCompatActivity(), WebViewStatus{
                         ).toString()
                     )
                 )
-                assetHtml =  obj.getString(sessionManagerKey.lowercase())
+                assetHtml =  obj.getString(sessionManagerKey.lowercase()).replace("#","")
             } catch (e: JSONException) {
                 throw RuntimeException(e)
             }
@@ -220,12 +229,22 @@ class CommonWebViewActivity : AppCompatActivity(), WebViewStatus{
 
 class CommonWebViewClient(private var webViewStatus: WebViewStatus) : WebViewClient() {
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        return if(!NetworkConnection.isOnline(webViewStatus as  Context)){
-            Toast.makeText(webViewStatus as Context,(webViewStatus as Context).getString(R.string.no_network),Toast.LENGTH_SHORT).show()
-            true
-        }else{
-            false
+
+        (request?.url?.toString() ?: "").also {
+            if (it.lowercase().contains("mailto")) {
+                (webViewStatus as Context).startActivity(Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(it)
+                })
+            }else{
+                return if(!NetworkConnection.isOnline(webViewStatus as  Context)){
+                    Toast.makeText(webViewStatus as Context,(webViewStatus as Context).getString(R.string.no_network),Toast.LENGTH_SHORT).show()
+                    true
+                }else{
+                    false
+                }
+            }
         }
+        return true
     }
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
