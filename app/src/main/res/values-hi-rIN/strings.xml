@@ -1470,4 +1470,10 @@
     <string name="username_sent_title">यूजरनेम भेजा गया</string>
     <string name="username_sent_desc">आपका यूजरनेम आपके पंजीकृत मोबाइल नंबर पर एसएमएस के माध्यम से भेज दिया गया है।</string>
     <string name="teleconsultation_consent_title">टेलीपरामर्श सहमति</string>
+    <string name="no_of_days">No. of days</string>
+    <string name="timings">Timings</string>
+    <string name="u2022_strength">• Strength</string>
+    <string name="u2022_no_of_days">• No. of days</string>
+    <string name="u2022_timings">• Timings</string>
+    <string name="u2022_remarks">• Remarks</string>
 </resources>
