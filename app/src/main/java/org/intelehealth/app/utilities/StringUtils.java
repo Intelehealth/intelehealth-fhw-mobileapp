@@ -28,7 +28,9 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
@@ -4258,5 +4260,16 @@ public final class StringUtils {
         //String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}"; // with special character
         String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}"; // without special character
        return passwd.matches(pattern);
+    }
+
+    public static String convertCtoF(String temperature) {
+        String resultVal;
+        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+        double a = Double.parseDouble(temperature);
+        double b = (a * 9 / 5) + 32;
+        nf.format(b);
+        double roundOff = Math.round(b * 100.0) / 100.0;
+        resultVal = nf.format(roundOff);
+        return resultVal;
     }
 }

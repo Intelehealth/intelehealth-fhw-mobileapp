@@ -1,8 +1,12 @@
 package org.intelehealth.app.activities.prescription;
 
+import static org.intelehealth.app.utilities.StringUtils.convertCtoF;
+
 import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -22,7 +26,7 @@ public class PrescriptionBuilder {
     private final AppCompatActivity activityContext;
     JSONObject obj;
     String disclaimerStr = "";
-
+    private static String mFileName = "config.json";
     public PrescriptionBuilder(AppCompatActivity activityContext) {
         this.activityContext = activityContext;
     }
@@ -287,7 +291,31 @@ public class PrescriptionBuilder {
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_systolic_blood_pressure), vitalsData.getBpsys());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_diastolic_blood_pressure), vitalsData.getBpdia());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_pulse), vitalsData.getPulse());
-        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_temp), vitalsData.getTemperature());
+
+        try {
+            JSONObject obj = null;
+            //TODO: Need to link whether its in license version or not
+            boolean hasLicense = false;
+            if (hasLicense) {
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, activityContext), String.valueOf(FileUtils.encodeJSON(activityContext, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(activityContext, mFileName)));
+            }//Load the config file
+
+            if (obj.getBoolean("mTemperature")) {
+                if (obj.getBoolean("mCelsius")) {
+
+                   vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getResources().getString(R.string.prescription_temp_c), !TextUtils.isEmpty(vitalsData.getTemperature()) ? vitalsData.getTemperature().toString() : "");
+                } else if (obj.getBoolean("mFahrenheit")) {
+
+                  vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getResources().getString(R.string.prescription_temp_f) , !TextUtils.isEmpty(vitalsData.getTemperature()) ? convertCtoF(vitalsData.getTemperature()) : "");
+                }
+            }
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_temp), vitalsData.getTemperature());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_spo2), vitalsData.getSpo2());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.respiratory_rate), vitalsData.getResp());
 
@@ -327,7 +355,7 @@ public class PrescriptionBuilder {
         return listOpeningTag
                 + divListItemOpeningTag
                 + labelOpeningTag
-                + label + ": "
+                + label + (label.endsWith(":") ? " ":": ")
                 + labelClosingTag
                 + divListItemContentOpeningTag
                 + newValue
