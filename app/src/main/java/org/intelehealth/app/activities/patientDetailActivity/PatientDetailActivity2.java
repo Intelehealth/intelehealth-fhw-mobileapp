@@ -1564,6 +1564,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     public class Myreceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             try {
                 openmrsID_txt.setText(patientsDAO.getOpenmrsId(patientDTO.getUuid()));
 

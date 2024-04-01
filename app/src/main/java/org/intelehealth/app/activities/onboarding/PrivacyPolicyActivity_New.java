@@ -50,11 +50,8 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
     private AlertDialog loadingDialog;
 
     ActivityResultLauncher<Intent> activityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if(result.getResultCode() == AppConstants.PERSONAL_CONSENT_ACCEPT){
-            Intent intent = new Intent(this, IdentificationActivity_New.class);
-            startActivity(intent);
-            finish();
-        }else if(result.getResultCode() == AppConstants.PERSONAL_CONSENT_DECLINE){
+        if (result.getResultCode() == AppConstants.PERSONAL_CONSENT_ACCEPT ||
+                result.getResultCode() == AppConstants.PERSONAL_CONSENT_DECLINE) {
             finish();
         }
     });
@@ -84,7 +81,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new GenericWebViewClient(this));
 
-        webView.loadDataWithBaseURL(null,new ConfigUtils(this).getPrivacyPolicyText(sessionManager.getAppLanguage()),"text/html", "utf-8",null);
+        webView.loadDataWithBaseURL(null, new ConfigUtils(this).getPrivacyPolicyText(sessionManager.getAppLanguage()), "text/html", "utf-8", null);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,17 +93,17 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
         });
 
         //show button if it's from add patient
-        if(!intentType.equalsIgnoreCase("doNotNavigateFurther")){
+        if (!intentType.equalsIgnoreCase("doNotNavigateFurther")) {
             findViewById(R.id.layout_button_privacy).setVisibility(View.VISIBLE);
-        }else {
+        } else {
             findViewById(R.id.layout_button_privacy).setVisibility(View.GONE);
         }
 
         btn_accept_privacy.setOnClickListener(v -> {
-            if(intentType.equalsIgnoreCase("doNotNavigateFurther")){
+            if (intentType.equalsIgnoreCase("doNotNavigateFurther")) {
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
                 finish();
-            }else {
+            } else {
                 Intent intent = new Intent(this, PersonalConsentActivity.class);
                 activityResult.launch(intent);
             }

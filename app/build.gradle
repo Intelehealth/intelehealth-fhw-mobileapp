@@ -131,6 +131,9 @@ dependencies {
     //date and time
     implementation 'joda-time:joda-time:2.9.9'
 
+    //jsoup to parse html
+    implementation 'org.jsoup:jsoup:1.15.2'
+
     implementation 'org.apache.commons:commons-lang3:3.6'
 
     // (Java only) Targeting S+ (version 31 and above)

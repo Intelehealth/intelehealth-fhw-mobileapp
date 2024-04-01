@@ -1,11 +1,11 @@
 package org.intelehealth.app.activities.onboarding
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
-import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import android.widget.ImageView
@@ -13,16 +13,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
-import org.intelehealth.app.utilities.FileUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.WebViewStatus
 import org.json.JSONException
-import org.json.JSONObject
 import java.util.Locale
-import java.util.Objects
 
 
 class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
@@ -80,6 +78,10 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
     }
 
     fun acceptCon(view: View?) {
+        startActivity(Intent(
+            this,
+            IdentificationActivity_New::class.java
+        ))
         setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
         finish()
     }
