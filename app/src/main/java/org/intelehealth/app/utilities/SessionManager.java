@@ -228,6 +228,8 @@ public class SessionManager {
     }
 
     public String getServerUrl() {
+        //added the default server url instead of ""
+        //because some times crash happens for the empty string
         return pref.getString(KEY_PREF_SERVER_URL, BuildConfig.SERVER_URL);
     }
 
