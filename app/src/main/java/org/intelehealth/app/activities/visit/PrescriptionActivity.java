@@ -1170,12 +1170,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         });
 
         medication_header_relative.setOnClickListener(v -> {
-            if (mBinding.rvPrescribedMedicine.getVisibility() == View.VISIBLE)
-                mBinding.rvPrescribedMedicine.setVisibility(View.GONE);
-            else mBinding.rvPrescribedMedicine.setVisibility(View.VISIBLE);
+            if (mBinding.llPrescribedMedicine.getVisibility() == View.VISIBLE)
+                mBinding.llPrescribedMedicine.setVisibility(View.GONE);
+            else mBinding.llPrescribedMedicine.setVisibility(View.VISIBLE);
         });
 
-        advice_header_relative.setOnClickListener(v -> { // todo: ddddd
+        advice_header_relative.setOnClickListener(v -> {
             if (vs_adviceheader_expandview.getVisibility() == View.VISIBLE)
                 vs_adviceheader_expandview.setVisibility(View.GONE);
             else vs_adviceheader_expandview.setVisibility(View.VISIBLE);
@@ -1494,7 +1494,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         List<PrescribedMedicineModel> medicineModelList = new ArrayList<>();
         if (rxReturned.isEmpty()) {
             return medicineModelList;
+        } else {
+            mBinding.tvNoPrescription.setVisibility(View.GONE);
+            mBinding.dividerNoPrescription.setVisibility(View.GONE);
         }
+        hideAdditionalInstruction();
 
         String[] medicationDataArray = rxReturned.split("\n");
 
@@ -1512,9 +1516,27 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     }
                 }
                 medicineModelList.add(medicineModel);
+            } else {
+                if (!medicine.isEmpty()) {
+                    setAdditionalInstruction(medicine);
+                }
+
             }
         }
         return medicineModelList;
+    }
+
+    private void hideAdditionalInstruction() {
+        mBinding.dividerAdditionalInstruction.setVisibility(View.GONE);
+        mBinding.tvAdditionalInstructionDesc.setVisibility(View.GONE);
+        mBinding.tvAdditionalInstructionTitle.setVisibility(View.GONE);
+    }
+
+    private void setAdditionalInstruction(String medicine) {
+        mBinding.dividerAdditionalInstruction.setVisibility(View.VISIBLE);
+        mBinding.tvAdditionalInstructionDesc.setVisibility(View.VISIBLE);
+        mBinding.tvAdditionalInstructionTitle.setVisibility(View.VISIBLE);
+        mBinding.tvAdditionalInstructionDesc.setText(medicine);
     }
 
     // parse presc value - end
@@ -1833,7 +1855,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 }
                 if (!rxReturned.isEmpty()) {
                     rxReturned = "";
-
                     //  prescriptionCard.setVisibility(View.GONE);
 
                 }

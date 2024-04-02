@@ -694,7 +694,7 @@
                     <RelativeLayout
                         android:id="@+id/vs_medication_header_expandview"
                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content">
+                        android:layout_height="wrap_content">
 
                         <RelativeLayout
                             android:id="@+id/medication_header_relative"
@@ -730,13 +730,76 @@
                                 android:src="@drawable/ui2_ic_chevron_down" />
                         </RelativeLayout>
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvPrescribedMedicine"
+                        <View
+                            android:id="@+id/dividerNoPrescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/medication_header_relative"
+                            android:layout_marginHorizontal="@dimen/padding_12"
+                            android:background="@color/notifi_divider_color" />
+
+                        <TextView
+                            android:id="@+id/tvNoPrescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/dividerNoPrescription"
+                            android:layout_marginBottom="@dimen/fu_margin_start"
+                            android:layout_marginTop="@dimen/margin_12"
+                            android:paddingHorizontal="@dimen/padding_12"
+                            android:text="@string/no_information_with_bullet"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+
+                        <LinearLayout
+                            android:id="@+id/llPrescribedMedicine"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/medication_header_relative"
-                            tools:itemCount="1"
-                            tools:listitem="@layout/item_prescribed_medications" />
+                            android:orientation="vertical"
+                            android:paddingHorizontal="@dimen/padding_12"
+                            android:paddingBottom="@dimen/padding_12">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvPrescribedMedicine"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                tools:itemCount="1"
+                                tools:listitem="@layout/item_prescribed_medications" />
+
+                            <View
+                                android:id="@+id/dividerAdditionalInstruction"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/notifi_divider_color"
+                                android:visibility="gone" />
+
+
+                            <TextView
+                                android:id="@+id/tvAdditionalInstructionTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/additional_instruction"
+                                android:textColor="@color/header_title_color"
+                                android:textSize="14sp"
+                                android:visibility="gone" />
+
+                            <TextView
+                                android:id="@+id/tvAdditionalInstructionDesc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:textColor="@color/textColorGray"
+                                android:textSize="14sp"
+                                android:visibility="gone"
+                                app:layout_constraintEnd_toStartOf="@id/guideline"
+                                app:layout_constraintStart_toStartOf="@+id/tvStrengthTitle"
+                                app:layout_constraintTop_toBottomOf="@+id/tvTimingTitle"
+                                tools:text="@string/u2022_remarks" />
+
+
+                        </LinearLayout>
+
 
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>

@@ -6,8 +6,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/padding_12"
-        android:paddingBottom="@dimen/padding_12">
+        android:paddingBottom="@dimen/padding_12"
+        >
 
         <View
             android:id="@+id/divider"
@@ -125,7 +125,6 @@
             app:layout_constraintStart_toStartOf="@+id/tvStrengthTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvTimingTitle" />
 
-        [
 
         <TextView
             android:id="@+id/tvRemarks"
