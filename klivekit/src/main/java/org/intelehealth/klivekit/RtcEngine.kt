@@ -73,6 +73,7 @@ class RtcEngine private constructor(
     fun saveConfig(context: Context) {
         val preferenceHelper = PreferenceHelper(context)
         preferenceHelper.save(RTC_CONFIG, Gson().toJson(this))
+        appContext = context
     }
 
     fun toJson(): String = Gson().toJson(this)
@@ -110,5 +111,7 @@ class RtcEngine private constructor(
         }
 
         fun leaveRoom() = room?.disconnect() ?: Timber.e { "Room not disconnect" }
+
+        lateinit var appContext: Context
     }
 }
