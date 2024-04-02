@@ -339,6 +339,42 @@ public class AllAppointmentsFragment extends Fragment {
             }
         });
 
+        fragmentResultListener();
+    }
+
+    /**
+     * listening result from calender dialog
+     */
+    private void fragmentResultListener() {
+        getParentFragmentManager().setFragmentResultListener("requestKey", AllAppointmentsFragment.this, (requestKey, bundle) -> {
+            String selectedDate = bundle.getString("selectedDate");
+            if(selectedDate != null){
+                String whichDate = bundle.getString("whichDate");
+                if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
+                    fromDate = selectedDate;
+                    String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate));
+                    if (!fromDate.isEmpty()) {
+                        String[] splitedDate = fromDate.split("/");
+                        tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
+                    }
+                    dismissDateFilterDialog();
+                }
+
+                if (!whichDate.isEmpty() && whichDate.equals("todate")) {
+                    toDate = selectedDate;
+                    String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate));
+                    if (!toDate.isEmpty()) {
+                        String[] splitedDate = toDate.split("/");
+                        tvToDate.setText(dateToshow1 + ", " + splitedDate[2]);
+                    }
+                    dismissDateFilterDialog();
+                }
+            }
+        });
     }
 
     private void setMoreDataIntoUpcomingRecyclerView() {
@@ -881,7 +917,8 @@ public class AllAppointmentsFragment extends Fragment {
                 args.putString("whichDate", "fromdate");
                 CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
                 dialog.setArguments(args);
-                getParentFragmentManager().setFragmentResultListener("requestKey", AllAppointmentsFragment.this, (requestKey, bundle) -> {});
+                getParentFragmentManager().setFragmentResult("requestKey", args);
+
                 if (getActivity().getSupportFragmentManager() != null) {
                     dialog.show(getActivity().getSupportFragmentManager(), "AllAppointmentsFragment");
                 }
@@ -894,9 +931,10 @@ public class AllAppointmentsFragment extends Fragment {
                 args.putString("whichDate", "todate");
                 CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
                 dialog.setArguments(args);
-                dialog.setTargetFragment(AllAppointmentsFragment.this, MY_REQUEST_CODE);
-                if (getFragmentManager() != null) {
-                    dialog.show(getFragmentManager(), "tag");
+                getParentFragmentManager().setFragmentResult("requestKey", args);
+
+                if (getActivity().getSupportFragmentManager() != null) {
+                    dialog.show(getActivity().getSupportFragmentManager(), "tag");
                 }
             }
         });
@@ -941,37 +979,6 @@ public class AllAppointmentsFragment extends Fragment {
                     frameLayoutDateFilter.setVisibility(View.GONE);
                 }
             }, 2000);
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null) {
-            Bundle bundle = data.getExtras();
-            String selectedDate = bundle.getString("selectedDate");
-            String whichDate = bundle.getString("whichDate");
-            if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
-                fromDate = selectedDate;
-                String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                    dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate));
-                if (!fromDate.isEmpty()) {
-                    String[] splitedDate = fromDate.split("/");
-                    tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
-                }
-                dismissDateFilterDialog();
-            }
-            if (!whichDate.isEmpty() && whichDate.equals("todate")) {
-                toDate = selectedDate;
-                String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                    dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate));
-                if (!toDate.isEmpty()) {
-                    String[] splitedDate = toDate.split("/");
-                    tvToDate.setText(dateToshow1 + ", " + splitedDate[2]);
-                }
-                dismissDateFilterDialog();
-            }
         }
     }
 

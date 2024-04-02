@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,6 @@ public class TooltipWindow {
         tipWindow.setOutsideTouchable(true);
         tipWindow.setTouchable(true);
         tipWindow.setFocusable(true);
-        tipWindow.setBackgroundDrawable(new BitmapDrawable());
         tipWindow.setContentView(contentView);
         int screen_pos[] = new int[2];
         anchor.getLocationOnScreen(screen_pos);
@@ -59,13 +59,11 @@ public class TooltipWindow {
         if (tipWindow != null && tipWindow.isShowing())
             tipWindow.dismiss();
     }
-    Handler handler = new Handler() {
+    Handler handler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case MSG_DISMISS_TOOLTIP:
-                    if (tipWindow != null && tipWindow.isShowing())
-                        tipWindow.dismiss();
-                    break;
+            if (msg.what == MSG_DISMISS_TOOLTIP) {
+                if (tipWindow != null && tipWindow.isShowing())
+                    tipWindow.dismiss();
             }
         };
     };

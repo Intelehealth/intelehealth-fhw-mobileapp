@@ -4391,9 +4391,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void createWebPrintJob_Button(WebView webView, int contentHeight) {
         // Get a PrintManager instance
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+        String docName = this.getString(R.string.app_name) + " Prescription";
 
         // Get a print adapter instance
-        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
+        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(docName);
         Log.d("webview content height", "webview content height: " + contentHeight);
 
         if (contentHeight > 2683 && contentHeight <= 3000) {
@@ -4781,9 +4782,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void createWebPrintJob_downloadBtn(WebView webView, int contentHeight) {
 
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+        String docName = this.getString(R.string.app_name) + " Prescription";
 
         // Get a print adapter instance
-        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
+        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(docName);
         Log.d("webview content height", "webview content height: " + contentHeight);
 
         if (contentHeight > 2683 && contentHeight <= 3000) {

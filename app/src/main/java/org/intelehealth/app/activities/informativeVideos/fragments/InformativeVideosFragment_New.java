@@ -33,7 +33,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class InformativeVideosFragment_New extends Fragment {
-    private static final String TAG = "InformativeVideosFragme";
+    public static final String TAG = "InformativeVideosFragme";
     View view;
 
     @Override
@@ -83,8 +83,8 @@ public class InformativeVideosFragment_New extends Fragment {
             public void onClick(View v) {
                /* Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
                 startActivity(intent);*/
-                FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
-                fm.popBackStack();
+                androidx.fragment.app.FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack(TAG,androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
