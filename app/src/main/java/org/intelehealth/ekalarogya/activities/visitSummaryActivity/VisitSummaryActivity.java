@@ -1049,7 +1049,7 @@ public class VisitSummaryActivity extends BaseActivity {
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
                             //Do something after 100ms
                             SyncUtils syncUtils = new SyncUtils();
-                            boolean isSynced = syncUtils.syncForeground("visitSummary");
+                            boolean isSynced = syncUtils.syncForeground("visitSummary", null);
                             if (isSynced) {
                                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_upload), getResources().getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
                                 showVisitID();
@@ -1809,7 +1809,7 @@ public class VisitSummaryActivity extends BaseActivity {
                     Toast.makeText(context, getString(R.string.fetching_details_please_wait), Toast.LENGTH_LONG).show();
 
                     SyncUtils syncUtils = new SyncUtils();
-                    syncUtils.syncForeground("downloadPrescription");
+                    syncUtils.syncForeground("downloadPrescription", null);
                     uploaded = true;
 
                     final Handler handler = new Handler();

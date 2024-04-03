@@ -233,7 +233,7 @@ public class VisitsDAO {
                 Date cDate = sdf.parse(currentDate);
                 long difference_In_Time = cDate.getTime() - sDate.getTime();
                 long difference_In_Days = (difference_In_Time / (1000 * 60 * 60 * 24)) % 365;
-                if(difference_In_Days>=3) {
+                if (difference_In_Days >= 3) {
                     visitDTO = new VisitDTO();
                     visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                     visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
@@ -405,4 +405,14 @@ public class VisitsDAO {
         return visitId;
     }
 
+    public static boolean isVisitPresent(String visitUuid) {
+        boolean isPresent = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit WHERE uuid = ?", new String[]{visitUuid});
+        if (cursor.getCount() != 0) {
+            isPresent = true;
+        }
+        cursor.close();
+        return isPresent;
+    }
 }

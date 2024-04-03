@@ -225,7 +225,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         //SyncDAO syncDAO = new SyncDAO();
         //syncDAO.pushDataApi();
-        syncUtils.syncForeground("survey"); //Sync function will work in foreground of app and
+        syncUtils.syncForeground("survey", null); //Sync function will work in foreground of app and
         // the Time will be changed for last sync.
 
 //        AppConstants.notificationUtils.DownloadDone(getString(R.string.end_visit_notif), getString(R.string.visit_ended_notif), 3, PatientSurveyActivity.this);
