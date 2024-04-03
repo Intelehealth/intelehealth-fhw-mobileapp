@@ -708,10 +708,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
             }
             //for get the selected date - if calendar view called from fragment
             if (getParentFragmentManager() != null) {
-                if(selectedDate.isEmpty()){
-                    Toast.makeText(context,R.string.select_date,Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                //converted intent to bundle to support new method
                 Bundle bundle = new Bundle();
                 bundle.putString("selectedDate", selectedDate);
                 bundle.putString("whichDate", whichDate);
