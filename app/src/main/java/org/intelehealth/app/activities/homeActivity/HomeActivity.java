@@ -44,6 +44,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.webkit.URLUtil;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -563,6 +564,7 @@ public class HomeActivity extends BaseActivity {
                     if (!sessionManager.getLicenseKey().isEmpty()) {
 
                         String licenseUrl = sessionManager.getMindMapServerUrl();
+                      //  String licenseUrl = BuildConfig.SERVER_URL;
                         String licenseKey = sessionManager.getLicenseKey();
                         getMindmapDownloadURL("https://" + licenseUrl + ":3004/", licenseKey);
 
@@ -616,6 +618,12 @@ public class HomeActivity extends BaseActivity {
                         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(HomeActivity.this);
                         LayoutInflater li = LayoutInflater.from(this);
                         View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+                        AutoCompleteTextView autoCompleteTextView = promptsView.findViewById(R.id.licenseurl);
+
+                        String url = BuildConfig.SERVER_URL.substring(8);
+                        autoCompleteTextView.setText(url);
+
+
                         dialog.setTitle(getString(R.string.enter_license_key))
                                 .setView(promptsView)
                                 .setPositiveButton(getString(R.string.button_ok), null)
