@@ -55,21 +55,25 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 
         ivBack?.setOnClickListener { v: View? -> finish() }
 
-        if (personal_consent_string.isEmpty()) {
-            Thread {
-                // bg task
-                try {
-                    personal_consent_string = ConfigUtils(this).getPersonalDataConsentText(sessionManager?.appLanguage)
-                } catch (e: JSONException) {
-                    throw RuntimeException(e)
-                }
-                runOnUiThread {
-                    webView?.loadDataWithBaseURL(null,personal_consent_string, "text/html", "utf-8",null)
-                }
-            }.start()
-        } else {
-            webView?.loadDataWithBaseURL(null,personal_consent_string, "text/html", "utf-8",null)
-        }
+        Thread {
+            var text: String?
+            text =
+                "<html><body style='color:black;font-size: 0.8em;' >" //style='text-align:justify;text-justify: inter-word;'
+
+            text += ConfigUtils(this).getPersonalDataConsentText(sessionManager?.appLanguage)
+            text += "</body></html>"
+
+            runOnUiThread {
+                webView?.loadDataWithBaseURL(
+                    null,
+                    text,
+                    "text/html",
+                    "utf-8",
+                    null
+                )
+            }
+        }.start()
+
     }
 
     fun declineCon(view: View?) {
@@ -78,10 +82,12 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
     }
 
     fun acceptCon(view: View?) {
-        startActivity(Intent(
-            this,
-            IdentificationActivity_New::class.java
-        ))
+        startActivity(
+            Intent(
+                this,
+                IdentificationActivity_New::class.java
+            )
+        )
         setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
         finish()
     }

@@ -67,19 +67,19 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity implements
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new GenericWebViewClient(this));
 
-        if (terms_and_condition_string.isEmpty()) {
 
             new Thread(() -> {
                 // bg task
-                terms_and_condition_string = new ConfigUtils(this).getTermsAndConditionsText(sessionManager.getAppLanguage());
                 runOnUiThread(() -> {
                     // ui task
-                    webView.loadDataWithBaseURL(null,terms_and_condition_string, "text/html", "utf-8",null);
+                    String text;
+                    text = "<html><body style='color:black;font-size: 0.8em;' >"; //style='text-align:justify;text-justify: inter-word;'
+                    text += new ConfigUtils(this).getTermsAndConditionsText(sessionManager.getAppLanguage());
+                    text += "</body></html>";
+                    webView.loadDataWithBaseURL(null,text, "text/html", "utf-8",null);
                 });
             }).start();
-        } else {
-            webView.loadDataWithBaseURL(null,terms_and_condition_string, "text/html", "utf-8",null);
-        }
+
     }
 
 
