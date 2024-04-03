@@ -98,15 +98,19 @@ class CommonWebViewActivity : AppCompatActivity(), WebViewStatus{
             webView?.loadUrl(url)
             saveHtmlToSessionManager()
         } else{ //if network not available then getting data from session manager
-            val localHtml = sessionManager.getHtml(sessionManagerKey)
-            if(localHtml.isNotEmpty()){
-                webView?.loadData(localHtml, "text/html", "utf-8")
-            }else{//if data not available on session manager get data from asset
-                loadAssetHtml(sessionManagerKey)
-            }
+            loadFromLocal()
         }
 
         ivBack?.setOnClickListener { v: View? -> handleBackPress() }
+    }
+
+    private fun loadFromLocal() {
+        val localHtml = sessionManager.getHtml(sessionManagerKey)
+        if(localHtml.isNotEmpty()){
+            webView?.loadData(localHtml, "text/html", "utf-8")
+        }else{//if data not available on session manager get data from asset
+            loadAssetHtml(sessionManagerKey)
+        }
     }
 
     private fun backPress() {
