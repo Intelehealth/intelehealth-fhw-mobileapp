@@ -1565,6 +1565,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="recent_visit">Recent Visits</string>
     <string name="older_visits">Older Visits</string>
     <string name="open_visit">Open Visit</string>
+    <string name="open_visits">Open Visits</string>
     <string name="all_patients_txt">All Patients</string>
     <string name="no_fingerprint_support">You cannot access this feature as your device does not have a fingerprint support.</string>
     <string name="no_fingerprint_title">Fingerprint not available!</string>
@@ -1885,4 +1886,11 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="username_sent_desc">Your username has been sent via SMS to your registered mobile number.</string>
     <string name="teleconsultation_consent_title">Teleconsultation Consent</string>
     <string name="processing_personal_data">Processing Personal Data</string>
+    <string name="no_of_days">No. of days</string>
+    <string name="timings">Timings</string>
+    <string name="bullet">\u2022</string>
+    <string name="u2022_strength">• Strength</string>
+    <string name="u2022_no_of_days">• No. of days</string>
+    <string name="u2022_timings">• Timings</string>
+    <string name="u2022_remarks">• Remarks</string>
 </resources>
