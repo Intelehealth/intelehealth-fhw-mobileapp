@@ -70,7 +70,7 @@ class GenericWebViewClient(private var context: Context) : WebViewClient() {
                 })
             } else {
                 //if url type is other then loading the url on same webview if network is available
-                return if (!NetworkConnection.isOnline(context)) {
+                return if (!NetworkConnection.isCapableNetwork(context)) {
                     Toast.makeText(
                         context,
                         context.getString(R.string.no_network),

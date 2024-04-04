@@ -94,7 +94,7 @@ class CommonWebViewActivity : AppCompatActivity(), WebViewStatus{
         )
 
         //if network available then loading data directly
-        if(NetworkConnection.isOnline(this)){
+        if(NetworkConnection.isCapableNetwork(this)){
             webView?.loadUrl(url)
             saveHtmlToSessionManager()
         } else{ //if network not available then getting data from session manager
@@ -240,7 +240,7 @@ class CommonWebViewClient(private var webViewStatus: WebViewStatus) : WebViewCli
                     data = Uri.parse(it)
                 })
             }else{
-                return if(!NetworkConnection.isOnline(webViewStatus as  Context)){
+                return if(!NetworkConnection.isCapableNetwork(webViewStatus as  Context)){
                     Toast.makeText(webViewStatus as Context,(webViewStatus as Context).getString(R.string.no_network),Toast.LENGTH_SHORT).show()
                     true
                 }else{

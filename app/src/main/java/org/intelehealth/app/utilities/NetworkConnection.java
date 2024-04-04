@@ -2,6 +2,7 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 
 public class NetworkConnection {
@@ -17,6 +18,26 @@ public class NetworkConnection {
             switch (activeNetwork.getType()) {
                 case ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_MOBILE -> {
                     return true;
+                }
+                default -> {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isCapableNetwork(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        if (activeNetwork != null) {
+            switch (activeNetwork.getType()) {
+                case ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_MOBILE -> {
+                    return capabilities != null
+                            && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                            && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
                 }
                 default -> {
                     return false;

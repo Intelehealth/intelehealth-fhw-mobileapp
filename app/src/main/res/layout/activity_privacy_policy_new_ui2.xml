@@ -42,6 +42,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/layout_button_privacy"
         android:layout_below="@+id/ll_action_bar"
+        android:scrollbars="none"
         android:layout_marginStart="@dimen/content_margin_start"
         android:layout_marginEnd="@dimen/margin_20dp" />
 
