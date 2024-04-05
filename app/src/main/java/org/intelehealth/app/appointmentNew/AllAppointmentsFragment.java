@@ -954,11 +954,11 @@ public class AllAppointmentsFragment extends Fragment {
             String selectedDate = bundle.getString(SELECTED_DATE);
             String whichDate = bundle.getString(WHICH_DATE);
             if (!whichDate.isEmpty() && whichDate.equals(FROM_DATE)) {
-                fromDate = selectedDate;
-                if (!toDate.isEmpty() && DateAndTimeUtils.isAfter(fromDate, toDate, D_FORMAT_dd_M_yyyy)) {
+                if (!toDate.isEmpty() && DateAndTimeUtils.isAfter(selectedDate, toDate, D_FORMAT_dd_M_yyyy)) {
                     Toast.makeText(requireContext(),"The 'from' date cannot be greater than the 'to' date",Toast.LENGTH_SHORT).show();
                     return;
                 }
+                fromDate = selectedDate;
                 String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate));
@@ -969,11 +969,11 @@ public class AllAppointmentsFragment extends Fragment {
                 dismissDateFilterDialog();
              }
             if (!whichDate.isEmpty() && whichDate.equals(TO_DATE)) {
-                toDate = selectedDate;
-                if (!fromDate.isEmpty() && DateAndTimeUtils.isBefore(toDate, fromDate, D_FORMAT_dd_M_yyyy)) {
+                if (!fromDate.isEmpty() && DateAndTimeUtils.isBefore(selectedDate, fromDate, D_FORMAT_dd_M_yyyy)) {
                     Toast.makeText(requireContext(),"The 'to' date cannot be less than the 'from' date",Toast.LENGTH_SHORT).show();
                     return;
                 }
+                toDate = selectedDate;
                 String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate));
