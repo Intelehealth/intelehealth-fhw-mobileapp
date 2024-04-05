@@ -87,6 +87,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         whichDate = mArgs.getString("whichDate");
         Log.d(TAG, "onCreateDialog:whichDate :  " + whichDate);
         AlertDialog alertDialog = showDatePicker(context, "");
+        alertDialog.setCanceledOnTouchOutside(false);
         return alertDialog;
     }
 
