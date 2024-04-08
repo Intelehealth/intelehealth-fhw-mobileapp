@@ -1566,6 +1566,11 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="older_visits">Older Visits</string>
     <string name="open_visit">Open Visit</string>
     <string name="open_visits">Open Visits</string>
+    <plurals name="open_no_of_visit">
+        <item quantity="one">%d Open Visit</item>
+        <item quantity="other">%d Open Visits</item>
+    </plurals>
+
     <string name="all_patients_txt">All Patients</string>
     <string name="no_fingerprint_support">You cannot access this feature as your device does not have a fingerprint support.</string>
     <string name="no_fingerprint_title">Fingerprint not available!</string>

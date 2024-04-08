@@ -315,7 +315,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         new Thread(() -> {
             int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
             if (isAdded()) {
-                activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + activity.getString(R.string.unclosed_visits)));
+                 activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(activity.getResources().getQuantityString(R.plurals.open_no_of_visit,countPendingCloseVisits,countPendingCloseVisits)));
+
             }
         }).start();
 
