@@ -86,5 +86,11 @@
     <string name="username_sent_title">Username Sent</string>
     <string name="username_sent_desc">Your username has been sent via SMS to your registered mobile number.</string>
     <string name="teleconsultation_consent_title">Teleconsultation Consent</string>
+    <string name="no_of_days">No. of days</string>
+    <string name="timings">Timings</string>
+    <string name="u2022_strength">• Strength</string>
+    <string name="u2022_no_of_days">• No. of days</string>
+    <string name="u2022_timings">• Timings</string>
+    <string name="u2022_remarks">• Remarks</string>
 
 </resources>
