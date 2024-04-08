@@ -25,7 +25,9 @@ import android.os.VibratorManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.IntentCompat
 import com.github.ajalt.timberkt.Timber
+import com.google.gson.Gson
 import io.socket.emitter.Emitter
+import org.intelehealth.klivekit.RtcEngine
 import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallConstants
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
@@ -33,6 +35,7 @@ import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.call.utils.CallNotificationHandler
 import org.intelehealth.klivekit.call.utils.IntentUtils
+import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
@@ -274,6 +277,9 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
                 CallNotificationHandler.getNotificationChannel(this, 1)
             )
         }
+
+        val preferenceHelper = PreferenceHelper(RtcEngine.appContext)
+        preferenceHelper.save(PreferenceHelper.MESSAGE_BODY,Gson().toJson(messageBody))
 
         val notificationCompatBuilder =
             CallNotificationHandler.getIncomingNotificationBuilder(this, messageBody)

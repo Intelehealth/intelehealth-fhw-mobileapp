@@ -94,19 +94,23 @@ class CommonWebViewActivity : AppCompatActivity(), WebViewStatus{
         )
 
         //if network available then loading data directly
-        if(NetworkConnection.isOnline(this)){
+        if(NetworkConnection.isCapableNetwork(this)){
             webView?.loadUrl(url)
             saveHtmlToSessionManager()
         } else{ //if network not available then getting data from session manager
-            val localHtml = sessionManager.getHtml(sessionManagerKey)
-            if(localHtml.isNotEmpty()){
-                webView?.loadData(localHtml, "text/html", "utf-8")
-            }else{//if data not available on session manager get data from asset
-                loadAssetHtml(sessionManagerKey)
-            }
+            loadFromLocal()
         }
 
         ivBack?.setOnClickListener { v: View? -> handleBackPress() }
+    }
+
+    private fun loadFromLocal() {
+        val localHtml = sessionManager.getHtml(sessionManagerKey)
+        if(localHtml.isNotEmpty()){
+            webView?.loadData(localHtml, "text/html", "utf-8")
+        }else{//if data not available on session manager get data from asset
+            loadAssetHtml(sessionManagerKey)
+        }
     }
 
     private fun backPress() {
@@ -236,7 +240,7 @@ class CommonWebViewClient(private var webViewStatus: WebViewStatus) : WebViewCli
                     data = Uri.parse(it)
                 })
             }else{
-                return if(!NetworkConnection.isOnline(webViewStatus as  Context)){
+                return if(!NetworkConnection.isCapableNetwork(webViewStatus as  Context)){
                     Toast.makeText(webViewStatus as Context,(webViewStatus as Context).getString(R.string.no_network),Toast.LENGTH_SHORT).show()
                     true
                 }else{

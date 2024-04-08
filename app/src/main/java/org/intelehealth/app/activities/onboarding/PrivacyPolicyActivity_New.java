@@ -80,8 +80,11 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new GenericWebViewClient(this));
-
-        webView.loadDataWithBaseURL(null, new ConfigUtils(this).getPrivacyPolicyText(sessionManager.getAppLanguage()), "text/html", "utf-8", null);
+        String text;
+        text = "<html><body style='color:black;font-size: 0.8em;' >"; //style='text-align:justify;text-justify: inter-word;'
+        text += new ConfigUtils(this).getPrivacyPolicyText(sessionManager.getAppLanguage()) ;
+        text += "</body></html>";
+        webView.loadDataWithBaseURL(null, text, "text/html", "utf-8", null);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override

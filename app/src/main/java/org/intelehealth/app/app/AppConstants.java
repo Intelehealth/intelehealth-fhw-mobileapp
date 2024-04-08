@@ -144,6 +144,8 @@ public class AppConstants {
     public static final int SYNC_PULL_DATA_DONE = 1;
     public static final int SYNC_PUSH_DATA_DONE = 2;
 
+    public static final int ALL_SYNC_DONE = 0;
+
     public static final int SYNC_PUSH_DATA_TO_LOCAL_DB_DONE = 5;
     public static final int SYNC_APPOINTMENT_PULL_DATA_DONE = 22;
     public static final int SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE = 25;

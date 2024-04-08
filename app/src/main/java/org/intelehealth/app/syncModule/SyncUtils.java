@@ -2,6 +2,7 @@ package org.intelehealth.app.syncModule;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.widget.Toast;
 import androidx.work.WorkManager;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.sync.AppointmentSync;
@@ -71,6 +71,10 @@ public class SyncUtils {
         }, 4000);
 
         imagesPushDAO.deleteObsImage();
+
+        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.ALL_SYNC_DONE));
+
         NotificationUtils notificationUtils = new NotificationUtils();
         notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
         WorkManager.getInstance(IntelehealthApplication.getAppContext())
