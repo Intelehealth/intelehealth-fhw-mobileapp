@@ -67,6 +67,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -219,7 +220,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             int position = genericViewHolder.getAbsoluteAdapterPosition();
-            genericViewHolder.node = mItemList.get(position);
+            if (genericViewHolder.node == null)
+                genericViewHolder.node = mItemList.get(position);
             genericViewHolder.index = position;
 
             genericViewHolder.singleComponentContainer.removeAllViews();
@@ -575,47 +577,47 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         ImageView i10 = view.findViewById(R.id.n10_imv);
 
         // set default values
-        tv0.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv0.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv0.setTextSize(14);
         tv0.setTypeface(tv0.getTypeface(), Typeface.NORMAL);
 
-        tv1.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv1.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv1.setTextSize(14);
         tv1.setTypeface(tv1.getTypeface(), Typeface.NORMAL);
 
-        tv2.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv2.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv2.setTextSize(14);
         tv2.setTypeface(tv2.getTypeface(), Typeface.NORMAL);
 
-        tv3.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv3.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv3.setTextSize(14);
         tv3.setTypeface(tv3.getTypeface(), Typeface.NORMAL);
 
-        tv4.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv4.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv4.setTextSize(14);
         tv4.setTypeface(tv4.getTypeface(), Typeface.NORMAL);
 
-        tv5.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv5.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv5.setTextSize(14);
         tv5.setTypeface(tv5.getTypeface(), Typeface.NORMAL);
 
-        tv6.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv6.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv6.setTextSize(14);
         tv6.setTypeface(tv6.getTypeface(), Typeface.NORMAL);
 
-        tv7.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv7.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv7.setTextSize(14);
         tv7.setTypeface(tv7.getTypeface(), Typeface.NORMAL);
 
-        tv8.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv8.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv8.setTextSize(14);
         tv8.setTypeface(tv8.getTypeface(), Typeface.NORMAL);
 
-        tv9.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv9.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv9.setTextSize(14);
         tv9.setTypeface(tv9.getTypeface(), Typeface.NORMAL);
 
-        tv10.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv10.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv10.setTextSize(14);
         tv10.setTypeface(tv10.getTypeface(), Typeface.NORMAL);
 
@@ -632,68 +634,68 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         i10.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
 
         if (range == 0) {
-            tv0.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv0.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv0.setTextSize(16);
             tv0.setTypeface(tv0.getTypeface(), Typeface.BOLD);
 
             i0.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
 
         } else if (range == 1) {
-            tv1.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv1.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv1.setTextSize(16);
             tv1.setTypeface(tv1.getTypeface(), Typeface.BOLD);
 
             i1.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
         } else if (range == 2) {
-            tv2.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv2.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv2.setTextSize(16);
             tv2.setTypeface(tv2.getTypeface(), Typeface.BOLD);
 
             i2.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
         } else if (range == 3) {
-            tv3.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv3.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv3.setTextSize(16);
             tv3.setTypeface(tv3.getTypeface(), Typeface.BOLD);
 
             i3.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
         } else if (range == 4) {
-            tv4.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv4.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv4.setTextSize(16);
             tv4.setTypeface(tv4.getTypeface(), Typeface.BOLD);
 
             i4.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
         } else if (range == 5) {
-            tv5.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv5.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv5.setTextSize(16);
             tv5.setTypeface(tv5.getTypeface(), Typeface.BOLD);
 
             i5.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
         } else if (range == 6) {
-            tv6.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv6.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv6.setTextSize(16);
             tv6.setTypeface(tv6.getTypeface(), Typeface.BOLD);
 
             i6.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
         } else if (range == 7) {
-            tv7.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv7.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv7.setTextSize(16);
             tv7.setTypeface(tv7.getTypeface(), Typeface.BOLD);
 
             i7.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
         } else if (range == 8) {
-            tv8.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv8.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv8.setTextSize(16);
             tv8.setTypeface(tv8.getTypeface(), Typeface.BOLD);
 
             i8.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
         } else if (range == 9) {
-            tv9.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv9.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv9.setTextSize(16);
             tv9.setTypeface(tv9.getTypeface(), Typeface.BOLD);
 
             i9.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
         } else if (range == 10) {
-            tv10.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv10.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary1));
             tv10.setTextSize(16);
             tv10.setTypeface(tv10.getTypeface(), Typeface.BOLD);
 
@@ -1477,7 +1479,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         numberRangeSpinner.setAdapter(adaptador);
-        numberRangeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(mContext,R.drawable.popup_menu_background));
+        numberRangeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.popup_menu_background));
 
         numberRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1506,7 +1508,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         durationTypeSpinner.setAdapter(adaptador1);
-        durationTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(mContext,R.drawable.popup_menu_background));
+        durationTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.popup_menu_background));
 
         durationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1937,7 +1939,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
-        Log.v(TAG, "addDateView - " + node.getLanguage());
+//        Timber.tag(TAG).v("addDateView - %s", node.getLanguage());
         String langVal = node.getLanguage();
         Button skipButton = view.findViewById(R.id.btn_skip);
         if (node.isSkipped()) {
@@ -1949,6 +1951,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             String dateString = node.getLanguage();
             displayDateButton.setText(dateString);
             displayDateButton.setTag(dateString);
+        } else {
+            displayDateButton.setText("");
+            displayDateButton.setTag("");
         }
         boolean isToDate = genericViewHolder.node.getText().equalsIgnoreCase("To");
         String fromDate = "";
@@ -1957,7 +1962,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 fromDate = mParentNode.getOption(1).getOption(0).getLanguage();
             }
         }
-        Log.v("DataSubmit", "fromDate - " + fromDate);
+//        Timber.tag("DataSubmit").v("fromDate - %s", fromDate);
+//        Timber.tag("DataSubmit").v("isToDate - %s", isToDate);
+//        Timber.tag("DataSubmit").v("index - %s", index);
+//        Timber.tag("DataSubmit").v("item size - %s", mItemList.size());
+//        Timber.tag("DataSubmit").v("node.isDataCaptured() - %s", node.isDataCaptured());
 
         Date fromDateFormat = null;
         if (!fromDate.isEmpty() && !fromDate.equalsIgnoreCase("%")) {
@@ -2052,7 +2061,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         fromDate = mParentNode.getOption(1).getOption(0).getLanguage();
                     }
                 }
-                Log.v("DataSubmit", "fromDate - " + fromDate);
+                Timber.tag("DataSubmit").v("fromDate - %s", fromDate);
 
 
                 String d = (String) displayDateButton.getTag();
@@ -2065,7 +2074,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                     try {
-                        Log.v("DataSubmit", "d - " + d);
+                        Timber.tag("DataSubmit").v("d - %s", d);
                         if (!fromDate.isEmpty() && !fromDate.equalsIgnoreCase("%"))
                             fromDateFormat = simpleDateFormat.parse(fromDate);
                         toDateFormat = simpleDateFormat.parse(d);
@@ -2073,8 +2082,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
-                    Log.v("DataSubmit", "finalFromDateFormat - " + finalFromDateFormat);
-                    Log.v("DataSubmit", "toDateFormat - " + toDateFormat);
+                    Timber.tag("DataSubmit").v("finalFromDateFormat - %s", finalFromDateFormat);
+                    Timber.tag("DataSubmit").v("toDateFormat - %s", toDateFormat);
                     if (fromDateFormat != null && fromDateFormat.after(toDateFormat)) {
                         Toast.makeText(mContext, mContext.getString(R.string.to_date_validation), Toast.LENGTH_SHORT).show();
                         return;
@@ -2104,6 +2113,38 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.setToDisable(skipButton);
                     node.setSkipped(false);
                     parentNode.setSkipped(false);
+
+                    if (!isToDate && mItemList.size() - 2 == index) {
+                        GenericViewHolder tempGenericViewHolder = ((GenericViewHolder) mRecyclerView.findViewHolderForAdapterPosition(index + 1));
+                        boolean isFoundToDate = Objects.requireNonNull(tempGenericViewHolder).node.getText().equalsIgnoreCase("To");
+                        if (isFoundToDate) {
+
+                            tempGenericViewHolder.node.addLanguage("");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            //}
+                            tempGenericViewHolder.node.setSelected(false);
+                            //holder.node.setSelected(true);
+
+                            tempGenericViewHolder.node.setDataCaptured(false);
+                            //holder.node.setDataCaptured(true);
+                            tempGenericViewHolder.node.setSelected(false);
+                            tempGenericViewHolder.node.setDataCaptured(false);
+                            if(tempGenericViewHolder.node.getOptionsList()!=null && tempGenericViewHolder.node.getOptionsList().size()>0) {
+                                tempGenericViewHolder.node.getOptionsList().get(0).addLanguage("");
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                                //}
+                                tempGenericViewHolder.node.getOptionsList().get(0).setSelected(false);
+                                //holder.node.setSelected(true);
+
+                                tempGenericViewHolder.node.getOptionsList().get(0).setDataCaptured(false);
+                                //holder.node.setDataCaptured(true);
+                                tempGenericViewHolder.node.getOptionsList().get(0).setSelected(false);
+                                tempGenericViewHolder.node.getOptionsList().get(0).setDataCaptured(false);
+                            }
+
+                            notifyItemChanged(index + 1);
+                        }
+                    }
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {

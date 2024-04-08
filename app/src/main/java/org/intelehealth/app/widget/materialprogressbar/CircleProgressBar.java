@@ -32,6 +32,7 @@ import android.net.Uri;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
@@ -172,11 +173,11 @@ public class CircleProgressBar extends ImageView {
 
             if (elevationSupported()) {
                 mBgCircle = new ShapeDrawable(new OvalShape());
-                ViewCompat.setRotation(this, SHADOW_ELEVATION * density);
+                this.setRotation(SHADOW_ELEVATION * density);
             } else {
                 OvalShape oval = new OvalShadow(mShadowRadius, mDiameter - mShadowRadius * 2);
                 mBgCircle = new ShapeDrawable(oval);
-                ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_SOFTWARE, mBgCircle.getPaint());
+                this.setLayerType(LAYER_TYPE_SOFTWARE, mBgCircle.getPaint());
                 mBgCircle.getPaint().setShadowLayer(mShadowRadius, shadowXOffset, shadowYOffset,
                         KEY_SHADOW_COLOR);
                 final int padding = (int) mShadowRadius;

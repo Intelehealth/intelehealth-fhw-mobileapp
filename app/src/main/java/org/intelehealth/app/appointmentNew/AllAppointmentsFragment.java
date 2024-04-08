@@ -2,6 +2,11 @@ package org.intelehealth.app.appointmentNew;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
+import static org.intelehealth.app.utilities.DateAndTimeUtils.D_FORMAT_dd_M_yyyy;
+import static org.intelehealth.app.utilities.constatnt.BundleConstants.FROM_DATE;
+import static org.intelehealth.app.utilities.constatnt.BundleConstants.SELECTED_DATE;
+import static org.intelehealth.app.utilities.constatnt.BundleConstants.TO_DATE;
+import static org.intelehealth.app.utilities.constatnt.BundleConstants.WHICH_DATE;
 
 import android.content.Context;
 import android.content.Intent;
@@ -32,11 +37,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -52,7 +55,6 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -217,7 +219,7 @@ public class AllAppointmentsFragment extends Fragment {
             );
             chip.setText(tagName1);
             chip.setCloseIconVisible(true);
-            chip.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_selcted_chip_bg));
+            chip.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_selcted_chip_bg));
             chipGroup.addView(chip);
             chip.setOnCloseIconClickListener(v -> {
                 filtersList.remove(filterOptionsModel);
@@ -339,6 +341,42 @@ public class AllAppointmentsFragment extends Fragment {
             }
         });
 
+        fragmentResultListener();
+    }
+
+    /**
+     * listening result from calender dialog
+     */
+    private void fragmentResultListener() {
+        getParentFragmentManager().setFragmentResultListener("requestKey", AllAppointmentsFragment.this, (requestKey, bundle) -> {
+            String selectedDate = bundle.getString("selectedDate");
+            if(selectedDate != null){
+                String whichDate = bundle.getString("whichDate");
+                if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
+                    fromDate = selectedDate;
+                    String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate));
+                    if (!fromDate.isEmpty()) {
+                        String[] splitedDate = fromDate.split("/");
+                        tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
+                    }
+                    dismissDateFilterDialog();
+                }
+
+                if (!whichDate.isEmpty() && whichDate.equals("todate")) {
+                    toDate = selectedDate;
+                    String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate));
+                    if (!toDate.isEmpty()) {
+                        String[] splitedDate = toDate.split("/");
+                        tvToDate.setText(dateToshow1 + ", " + splitedDate[2]);
+                    }
+                    dismissDateFilterDialog();
+                }
+            }
+        });
     }
 
     private void setMoreDataIntoUpcomingRecyclerView() {
@@ -588,22 +626,22 @@ public class AllAppointmentsFragment extends Fragment {
     private void updateCardBackgrounds(String cardName) {
         // update all 3 cards background as per selection
         if (cardName.equals("upcoming")) {
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
         } else if (cardName.equals("cancelled")) {
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
 
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
         } else if (cardName.equals("completed")) {
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
 
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
         }
 
     }
@@ -615,7 +653,7 @@ public class AllAppointmentsFragment extends Fragment {
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -625,7 +663,7 @@ public class AllAppointmentsFragment extends Fragment {
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -635,7 +673,7 @@ public class AllAppointmentsFragment extends Fragment {
             layoutCancelled.setVisibility(View.GONE);
             layoutUpcoming.setVisibility(View.GONE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -655,9 +693,9 @@ public class AllAppointmentsFragment extends Fragment {
                 if (checked) {
                     whichAppointment = "upcoming";
 
-                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_selected_green));
-                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
-                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
+                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_selected_green));
+                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
+                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
                     updateCardBackgrounds("upcoming");
                     updateMAinLayoutAsPerOptionSelected("upcoming");
                 }
@@ -667,9 +705,9 @@ public class AllAppointmentsFragment extends Fragment {
                 if (checked) {
                     whichAppointment = "cancelled";
 
-                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
-                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_selected_green));
-                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
+                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
+                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_selected_green));
+                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
                     updateCardBackgrounds("cancelled");
                     updateMAinLayoutAsPerOptionSelected("cancelled");
 
@@ -680,9 +718,9 @@ public class AllAppointmentsFragment extends Fragment {
                 if (checked) {
                     whichAppointment = "completed";
 
-                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
-                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_circle));
-                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_selected_green));
+                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
+                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
+                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_selected_green));
                     updateCardBackgrounds("completed");
 
                     updateMAinLayoutAsPerOptionSelected("completed");
@@ -873,7 +911,6 @@ public class AllAppointmentsFragment extends Fragment {
         return imagePath;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void selectDateRangeNew() {
         tvFromDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -882,9 +919,10 @@ public class AllAppointmentsFragment extends Fragment {
                 args.putString("whichDate", "fromdate");
                 CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
                 dialog.setArguments(args);
-                dialog.setTargetFragment(AllAppointmentsFragment.this, MY_REQUEST_CODE);
-                if (getFragmentManager() != null) {
-                    dialog.show(getFragmentManager(), "AllAppointmentsFragment");
+                getParentFragmentManager().setFragmentResult("requestKey", args);
+
+                if (getActivity().getSupportFragmentManager() != null) {
+                    dialog.show(getActivity().getSupportFragmentManager(), "AllAppointmentsFragment");
                 }
             }
         });
@@ -895,9 +933,10 @@ public class AllAppointmentsFragment extends Fragment {
                 args.putString("whichDate", "todate");
                 CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
                 dialog.setArguments(args);
-                dialog.setTargetFragment(AllAppointmentsFragment.this, MY_REQUEST_CODE);
-                if (getFragmentManager() != null) {
-                    dialog.show(getFragmentManager(), "tag");
+                getParentFragmentManager().setFragmentResult("requestKey", args);
+
+                if (getActivity().getSupportFragmentManager() != null) {
+                    dialog.show(getActivity().getSupportFragmentManager(), "tag");
                 }
             }
         });
@@ -944,14 +983,18 @@ public class AllAppointmentsFragment extends Fragment {
             }, 2000);
         }
     }
-
+  
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
             Bundle bundle = data.getExtras();
-            String selectedDate = bundle.getString("selectedDate");
-            String whichDate = bundle.getString("whichDate");
-            if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
+            String selectedDate = bundle.getString(SELECTED_DATE);
+            String whichDate = bundle.getString(WHICH_DATE);
+            if (!whichDate.isEmpty() && whichDate.equals(FROM_DATE)) {
+                if (!toDate.isEmpty() && DateAndTimeUtils.isAfter(selectedDate, toDate, D_FORMAT_dd_M_yyyy)) {
+                    Toast.makeText(requireContext(),"The 'from' date cannot be greater than the 'to' date",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 fromDate = selectedDate;
                 String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -961,8 +1004,12 @@ public class AllAppointmentsFragment extends Fragment {
                     tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
                 }
                 dismissDateFilterDialog();
-            }
-            if (!whichDate.isEmpty() && whichDate.equals("todate")) {
+             }
+            if (!whichDate.isEmpty() && whichDate.equals(TO_DATE)) {
+                if (!fromDate.isEmpty() && DateAndTimeUtils.isBefore(selectedDate, fromDate, D_FORMAT_dd_M_yyyy)) {
+                    Toast.makeText(requireContext(),"The 'to' date cannot be less than the 'from' date",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 toDate = selectedDate;
                 String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))

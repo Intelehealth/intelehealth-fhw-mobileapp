@@ -14,13 +14,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.informativeVideos.adapters.InformativeVideosPagerAdapter;
@@ -30,7 +33,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class InformativeVideosFragment_New extends Fragment {
-    private static final String TAG = "InformativeVideosFragme";
+    public static final String TAG = "InformativeVideosFragme";
     View view;
 
     @Override
@@ -80,8 +83,8 @@ public class InformativeVideosFragment_New extends Fragment {
             public void onClick(View v) {
                /* Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
                 startActivity(intent);*/
-                FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
-                fm.popBackStack();
+                androidx.fragment.app.FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack(TAG,androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
@@ -102,16 +105,26 @@ public class InformativeVideosFragment_New extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.training)));
         tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.about_app)));
 
-        ViewPager viewPager = view.findViewById(R.id.pager_videos);
-        PagerAdapter adapter = new InformativeVideosPagerAdapter
-                (getChildFragmentManager(), tabLayout.getTabCount(), getActivity());
+        ViewPager2 viewPager = view.findViewById(R.id.pager_videos);
+        InformativeVideosPagerAdapter adapter = new InformativeVideosPagerAdapter
+                (getChildFragmentManager(), 3, getActivity());
         viewPager.setAdapter(adapter);
-        int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
+        int limit = (adapter.getItemCount() > 1 ? adapter.getItemCount() - 1 : 1);
 
         viewPager.setOffscreenPageLimit(limit);
 
-        viewPager.addOnPageChangeListener(new
-                TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                switch (position) {
+                    case 0 -> tab.setText(getResources().getString(R.string.health));
+                    case 1 -> tab.setText(getResources().getString(R.string.training));
+                    default -> tab.setText(getResources().getText(R.string.about_app));
+                }
+            }
+        }).attach();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

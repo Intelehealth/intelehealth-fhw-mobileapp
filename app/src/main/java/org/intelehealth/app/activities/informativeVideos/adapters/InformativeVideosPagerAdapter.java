@@ -2,9 +2,12 @@ package org.intelehealth.app.activities.informativeVideos.adapters;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.intelehealth.app.activities.achievements.fragments.DailyAchievementsFragment;
 import org.intelehealth.app.activities.achievements.fragments.DateRangeAchievementsFragment;
@@ -14,19 +17,19 @@ import org.intelehealth.app.activities.informativeVideos.fragments.HealthInfoVid
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.app.activities.informativeVideos.fragments.TrainingInfoVideosFragment;
 
-public class InformativeVideosPagerAdapter extends FragmentPagerAdapter {
+public class InformativeVideosPagerAdapter extends FragmentStateAdapter {
 
     int tabCount;
     Context context;
 
     public InformativeVideosPagerAdapter(FragmentManager fm, int numberOfTabs, Context context) {
-        super(fm);
+        super(fm,((FragmentActivity) context).getLifecycle());
         this.tabCount = numberOfTabs;
         this.context = context;
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public Fragment createFragment(int position) {
         switch (position) {
             case 1:
                 return new TrainingInfoVideosFragment();
@@ -42,7 +45,7 @@ public class InformativeVideosPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return tabCount;
     }
 }

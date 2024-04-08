@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 public class DateAndTimeUtils {
     private static final String TAG = "DateAndTimeUtils";
+     public static final String D_FORMAT_dd_M_yyyy = "dd/M/yyyy";
 
     public static float getFloat_Age_Year_Month(String date_of_birth) {
         float year_month = 0;
@@ -385,7 +386,7 @@ public class DateAndTimeUtils {
     }
 
     public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
-
+        if(date.isEmpty()) return "";
         String result = "";
         SimpleDateFormat sdf;
         SimpleDateFormat sdf1;
@@ -1080,4 +1081,31 @@ public class DateAndTimeUtils {
 
         return isGivenDateTimeGreater;
     }
+
+    public static boolean isBefore(String currentDateStr, String targetDateStr, String dateFormatStr) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatStr);
+        try {
+            Date currentDate = dateFormat.parse(currentDateStr);
+            Date targetDate = dateFormat.parse(targetDateStr);
+            assert currentDate != null;
+            return currentDate.before(targetDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Handle parsing exception
+            return false;
+        }
+    }
+
+    public static boolean isAfter(String currentDateStr, String targetDateStr, String dateFormatStr) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatStr);
+        try {
+            Date currentDate = dateFormat.parse(currentDateStr);
+            Date targetDate = dateFormat.parse(targetDateStr);
+            return currentDate.after(targetDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

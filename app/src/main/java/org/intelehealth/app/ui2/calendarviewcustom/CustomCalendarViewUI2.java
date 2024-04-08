@@ -1,5 +1,8 @@
 package org.intelehealth.app.ui2.calendarviewcustom;
 
+import static org.intelehealth.app.utilities.constatnt.BundleConstants.SELECTED_DATE;
+import static org.intelehealth.app.utilities.constatnt.BundleConstants.WHICH_DATE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +37,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.intelehealth.app.R;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.constatnt.BundleConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,6 +88,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         whichDate = mArgs.getString("whichDate");
         Log.d(TAG, "onCreateDialog:whichDate :  " + whichDate);
         AlertDialog alertDialog = showDatePicker(context, "");
+        alertDialog.setCanceledOnTouchOutside(false);
         return alertDialog;
     }
 
@@ -706,10 +712,18 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                 listener.getSelectedDate(selectedDate, "");
             }
             //for get the selected date - if calendar view called from fragment
+
+           /** if (getParentFragmentManager() != null) {
+                //converted intent to bundle to support new method
+                Bundle bundle = new Bundle();
+                bundle.putString("selectedDate", selectedDate);
+                bundle.putString("whichDate", whichDate);
+                getParentFragmentManager().setFragmentResult("requestKey",bundle);**/
+          
             if (getTargetFragment() != null) {
                 Intent intent = new Intent()
-                        .putExtra("selectedDate", selectedDate)
-                        .putExtra("whichDate", whichDate);
+                        .putExtra(SELECTED_DATE, selectedDate)
+                        .putExtra(WHICH_DATE, whichDate);
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
             }
             alertDialog.dismiss();

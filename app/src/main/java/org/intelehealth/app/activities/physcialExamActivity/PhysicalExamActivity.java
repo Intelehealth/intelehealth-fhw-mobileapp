@@ -12,6 +12,7 @@ import android.os.Environment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -149,7 +150,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         //alertDialog.show();
 
         Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        pb.setTextColor(ContextCompat.getColor(this,(R.color.colorPrimary)));
         //pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         selectedExamsList = new ArrayList<>();
@@ -396,38 +397,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
     }
 
 
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        private PhysicalExam exams;
-
-        public SectionsPagerAdapter(FragmentManager fm, PhysicalExam inputNode) {
-            super(fm);
-            this.exams = inputNode;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1, exams, patientUuid, visitUuid);
-        }
-
-        @Override
-        public int getCount() {
-            return exams.getTotalNumberOfExams();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            //return exams.getTitle(position);
-            return String.valueOf(position + 1);
-        }
-    }
 
     private void updateDatabase(String string) {
         ObsDTO obsDTO = new ObsDTO();

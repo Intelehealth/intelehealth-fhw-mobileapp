@@ -1,26 +1,29 @@
 package org.intelehealth.app.appointmentNew;
 
 import android.content.Context;
-import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class MyAppointmentsPagerAdapter extends FragmentPagerAdapter {
+import java.util.Objects;
+
+public class MyAppointmentsPagerAdapter extends FragmentStateAdapter {
 
     int tabCount;
     Context context;
 
     public MyAppointmentsPagerAdapter(FragmentManager fm, int numberOfTabs, Context context) {
-        super(fm);
+        super((FragmentActivity) context);
         this.tabCount = numberOfTabs;
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public Fragment getItem(int position) {
+    public Fragment createFragment(int position) {
         switch (position) {
             case 1:
                 return new AllAppointmentsFragment();
@@ -30,16 +33,11 @@ public class MyAppointmentsPagerAdapter extends FragmentPagerAdapter {
             default:
                 return new TodaysMyAppointmentsFragment();
         }
-
     }
 
+
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return tabCount;
-    }
-
-    @Override
-    public Parcelable saveState() {
-        return null;
     }
 }

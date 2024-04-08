@@ -46,7 +46,7 @@ public class ChatSupportHelpActivity_New extends BaseActivity {
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
 

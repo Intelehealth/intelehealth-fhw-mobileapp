@@ -82,10 +82,10 @@ public class ChooseLanguageAdapterNewUI2 extends RecyclerView.Adapter<RecyclerVi
                                 boolean b) {
                             if (b) {
                                 selectedPosition
-                                        = holder.getAdapterPosition();
+                                        = holder.getBindingAdapterPosition();
                                 itemClickListener.onClick(
                                         ((ChooseLanguageAdapterNewUI2.GenericViewHolder) holder).rbChooseLanguage.getText()
-                                                .toString(), holder.getAdapterPosition());
+                                                .toString(), holder.getBindingAdapterPosition());
                             }
                         }
                     });
@@ -134,7 +134,7 @@ public class ChooseLanguageAdapterNewUI2 extends RecyclerView.Adapter<RecyclerVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectedPosition = getAdapterPosition();
+                    selectedPosition = getBindingAdapterPosition();
                     notifyDataSetChanged();
                 }
             });

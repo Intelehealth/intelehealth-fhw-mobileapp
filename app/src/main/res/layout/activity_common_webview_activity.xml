@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.onboarding.CommonWebViewActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginStart="@dimen/back_arrow_margin_start"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_back_arrow"
+            android:layout_width="@dimen/back_arrow_width"
+            android:layout_height="@dimen/back_arrow_height"
+
+            android:src="@drawable/ui2_ic_arrow_back_new" />
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/title_margin_start"
+            android:text="@string/processing_personal_data"
+            android:textSize="@dimen/setup_privacy_screen_info"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_button_consent"
+        android:layout_below="@+id/ll_action_bar"
+        android:layout_marginStart="@dimen/content_margin_start"
+        android:layout_marginEnd="@dimen/margin_20dp" />
+
+    <TextView
+        android:id="@+id/error_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="@string/unable_to_load_data_please_try_again"
+        android:layout_above="@+id/layout_button_consent"
+        android:layout_below="@+id/ll_action_bar"
+        android:layout_marginStart="@dimen/content_margin_start"
+        android:layout_marginEnd="@dimen/margin_20dp" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_button_consent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:weightSum="2">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/accept_button_margin_end"
+            android:layout_weight="1"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:lineHeight="@dimen/button_line_height"
+            android:onClick="okBtClick"
+            android:padding="@dimen/padding_15"
+            android:text="@string/okay"
+            android:textSize="@dimen/common_button_text_size" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

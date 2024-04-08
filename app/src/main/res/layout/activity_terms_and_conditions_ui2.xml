@@ -31,32 +31,14 @@
     </LinearLayout>
 
 
-    <androidx.core.widget.NestedScrollView
+    <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/layout_button_privacy"
         android:layout_below="@+id/ll_action_bar"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        android:paddingEnd="2dp"
-        android:scrollbarThumbVertical="@color/colorPrimary1"
-        >
-
-
-        <TextView
-            android:id="@+id/tv_term_condition"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/content_margin_start"
-            android:layout_marginEnd="@dimen/margin_20dp"
-            android:layout_toEndOf="@+id/iv_back_arrow_terms"
-            android:fontFamily="@font/lato_regular"
-            tools:text="@string/privacy_policy_content_old"
-            android:textSize="14sp" />
-
-
-    </androidx.core.widget.NestedScrollView>
-
+        android:layout_marginStart="@dimen/content_margin_start"
+        android:layout_marginEnd="@dimen/margin_20dp" />
 
     <LinearLayout
         android:id="@+id/layout_button_privacy"
