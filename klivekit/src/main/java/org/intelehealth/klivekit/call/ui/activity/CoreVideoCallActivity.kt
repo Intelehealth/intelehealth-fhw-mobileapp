@@ -56,19 +56,31 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     protected lateinit var args: RtcArgs
     private var isDeclined: Boolean = false
     protected val videoCallViewModel: VideoCallViewModel by viewModelByFactory {
-        args = if (intent.hasExtra(RTC_ARGS)) {
-            IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-                ?: throw NullPointerException("arg is null!")
-        } else RtcArgs.dummy()
+        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+                ?: getDataFromSharedPref()
 
         VideoCallViewModel(args.url ?: "", args.appToken ?: "", application)
     }
 
     private val socketViewModel: SocketViewModel by viewModelByFactory {
         args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-            ?: throw NullPointerException("args is null!")
+                ?: getDataFromSharedPref()
 //        val url: String = Constants.BASE_URL + "?userId=" + args.nurseId + "&name=" + args.nurseId
         SocketViewModel(args)
+    }
+
+    /**
+     * getting args from shared pref
+     * if in case rtc args is null
+     */
+    private fun getDataFromSharedPref(): RtcArgs {
+        val preferenceHelper = PreferenceHelper(RtcEngine.appContext)
+        val messageBody = preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, "")
+        if (messageBody.isEmpty()) {
+            throw NullPointerException("arg is null!")
+        } else {
+            return Gson().fromJson(messageBody, RtcArgs::class.java)
+        }
     }
 
     private val permissionRegistry: PermissionRegistry by lazy {
@@ -268,6 +280,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     private fun extractRtcParams() {
+        setupRtcArgsSharedPref()
         intent ?: return
         if (intent.hasExtra(RTC_ARGS)) {
             IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)?.let {
@@ -288,6 +301,19 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             }
 
             intent.data = null
+        }
+    }
+
+    /**
+     * setting up rtc args if its empty
+     */
+    private fun setupRtcArgsSharedPref() {
+        val intent = intent ?: Intent()
+        if (!intent.hasExtra(RTC_ARGS)) {
+            intent.putExtra(
+                RTC_ARGS,
+                Gson().fromJson(preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, ""), RtcArgs::class.java)
+            )
         }
     }
 

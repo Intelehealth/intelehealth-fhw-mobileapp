@@ -12,18 +12,26 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.onboarding.CommonWebViewClient;
+import org.intelehealth.app.activities.onboarding.GenericWebViewClient;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.WebViewStatus;
 
 import java.util.Locale;
 
-public class TeleconsultationConsentActivity extends BaseActivity {
+public class TeleconsultationConsentActivity extends BaseActivity implements WebViewStatus {
     private static final String TAG = "TeleconsultationConsentActivity";
 
     SessionManager sessionManager = null;
+    private AlertDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +40,19 @@ public class TeleconsultationConsentActivity extends BaseActivity {
         sessionManager = new SessionManager(TeleconsultationConsentActivity.this);
         String consentText = new ConfigUtils(this).getTeleconsultationConsentText(sessionManager.getAppLanguage());
         WebView consentWebView = findViewById(R.id.content_tv);
+
+        loadingDialog = new DialogUtils().showCommonLoadingDialog(
+                this,
+                getString(R.string.loading),
+                getString(R.string.please_wait)
+        );
+
         String text;
         text = "<html><body style='color:black;font-size: 0.8em;' >"; //style='text-align:justify;text-justify: inter-word;'
         text += consentText ;
         text += "</body></html>";
-        consentWebView.loadData(text, "text/html", "utf-8");
+        consentWebView.setWebViewClient(new GenericWebViewClient(this));
+        consentWebView.loadDataWithBaseURL(null,text, "text/html", "utf-8",null);
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -52,12 +68,6 @@ public class TeleconsultationConsentActivity extends BaseActivity {
         });
 
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
     }
 
     public void declineConsent(View view) {
@@ -92,5 +102,20 @@ public class TeleconsultationConsentActivity extends BaseActivity {
         }
         res.updateConfiguration(conf, dm);
         return context;
+    }
+
+    @Override
+    public void onPageStarted() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void onPageFinish() {
+        loadingDialog.dismiss();
+    }
+
+    @Override
+    public void onPageError(@NonNull String error) {
+        loadingDialog.dismiss();
     }
 }

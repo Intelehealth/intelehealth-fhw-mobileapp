@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.Logger;
 
 public class MyIntentService extends IntentService {
@@ -24,6 +25,7 @@ public class MyIntentService extends IntentService {
         }
 
         Intent in = new Intent();
+        in.setPackage(IntelehealthApplication.getInstance().getPackageName());
         in.setAction("OpenmrsID");
         sendBroadcast(in);
 

@@ -89,7 +89,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
         tvErrorNewPassword = findViewById(R.id.tv_error_new_password);

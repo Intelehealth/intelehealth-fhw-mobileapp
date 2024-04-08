@@ -202,7 +202,11 @@ public class ObsDAO {
                 obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                obsDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comments")));
+                if(idCursor.getColumnIndex("comments") < 0){
+                    obsDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comments")));
+                }else {
+                    obsDTO.setComments("");
+                }
                 obsDTOList.add(obsDTO);
             }
         }

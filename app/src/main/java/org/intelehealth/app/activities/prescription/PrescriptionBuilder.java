@@ -905,36 +905,61 @@ public class PrescriptionBuilder {
                 + "</li>";
 
         if (!followUpData.equalsIgnoreCase("")) {
-
+            //added these logic to handle array indexOutOfBound exception
+            String date = "";
+            if(followUpArrayData.length > 0){
+                date = followUpArrayData[0];
+            }
             divSectionContentOpeningTag = divSectionContentOpeningTag
                     + "<li>"
                     + "<div class=\"list-item\">"
                     + "<label>Follow-up Date</label>"
                     + "<div class=\"list-item-content\">"
-                    + DateAndTimeUtils.formatDateFromOnetoAnother(followUpArrayData[0], "yyyy-MM-dd", "dd-MM-yyyy")
+                    + DateAndTimeUtils.formatDateFromOnetoAnother(date, "yyyy-MM-dd", "dd-MM-yyyy")
                     + "</div>"
                     + "</div>"
                     + "</li>";
 
             if (followUpData.contains("Time:")) {
+
+                //added these logic to handle array indexOutOfBound exception
+                String time = "";
+                if(followUpArrayData.length > 1){
+                    if(followUpArrayData[1].contains("Time:")){
+                        if(followUpArrayData[1].split("Time:").length > 1){
+                            time = followUpArrayData[1].split("Time:")[1];
+                        }
+                    }
+
+                }
                 divSectionContentOpeningTag = divSectionContentOpeningTag
                         + "<li>"
                         + "<div class=\"list-item\">"
                         + "<label>Follow-up Time</label>"
                         + "<div class=\"list-item-content\">"
-                        + followUpArrayData[1].split("Time:")[1]
+                        + time
                         + "</div>"
                         + "</div>"
                         + "</li>";
             }
 
             if (followUpData.contains("Remark:")) {
+                //added these logic to handle array indexOutOfBound exception
+                String remarks = "";
+                if(followUpArrayData.length > 2){
+                    if(followUpArrayData[2].contains("Remark:")){
+                        if(followUpArrayData[2].split("Remark:").length > 1){
+                            remarks = followUpArrayData[2].split("Remark:")[1];
+                        }
+                    }
+
+                }
                 divSectionContentOpeningTag = divSectionContentOpeningTag
                         + "<li>"
                         + "<div class=\"list-item\">"
                         + "<label>Reason for follow-up</label>"
                         + "<div class=\"list-item-content\">"
-                        + followUpArrayData[2].split("Remark:")[1]
+                        + remarks
                         + "</div>"
                         + "</div>"
                         + "</li>";

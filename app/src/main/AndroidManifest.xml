@@ -48,9 +48,12 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
-            android:name=".activities.onboarding.PersonalConsentActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".activities.onboarding.CommonWebviewActivity"
             android:exported="false" />
+        <activity
+            android:name=".activities.onboarding.PersonalConsentActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".profile.MyProfileActivity"
             android:exported="true"
@@ -238,6 +241,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".activities.onboarding.CommonWebViewActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".activities.homeActivity.HomeScreenActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
@@ -262,7 +270,7 @@
             android:name=".activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.forgotPasswordNew.ForgotPasswordActivity_New"
             android:exported="true"

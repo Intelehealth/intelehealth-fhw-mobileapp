@@ -6,7 +6,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -173,7 +172,7 @@ public class Language_ProtocolsActivity extends BaseActivity {
                 selected_language = data.getTitle();
                 Log.v("Langauge", "selection: " + selected_language);
                 String message = getResources().getString(R.string.sure_change_language, selected_language);
-                dialog(context, ContextCompat.getDrawable(context,R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
+                dialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
                         message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
             }
         });
@@ -212,7 +211,7 @@ public class Language_ProtocolsActivity extends BaseActivity {
                     selected_language = adapterView.getItemAtPosition(index).toString();
                     Log.v("Langauge", "selection: " + selected_language);
                     String message = getResources().getString(R.string.sure_change_language) + " " + selected_language + "?";
-                    dialog(context, ContextCompat.getDrawable(context,R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
+                    dialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
                             message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
 
                 }
@@ -452,7 +451,7 @@ public class Language_ProtocolsActivity extends BaseActivity {
 
     private void getMindmapDownloadURL(String url, String key) {
         // customProgressDialog.show();
-        dialog(context, ContextCompat.getDrawable(context,R.drawable.ui2_icon_logging_in),
+        dialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_icon_logging_in),
                 getResources().getString(R.string.changing_protocols), getResources().getString(R.string.wait_while_protocols_changing),
                 getResources().getString(R.string.yes), getResources().getString(R.string.no), true);
 
@@ -541,7 +540,7 @@ public class Language_ProtocolsActivity extends BaseActivity {
         Log.e("DOWNLOAD", "isSTARTED");
     }
 
-    void handleBackPress(){
+    void handleBackPress() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

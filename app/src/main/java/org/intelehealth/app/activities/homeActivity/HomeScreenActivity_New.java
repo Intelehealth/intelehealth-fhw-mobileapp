@@ -929,6 +929,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         } else if (itemId == R.id.menu_video_lib) {
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
             fragment = new InformativeVideosFragment_New();
+            tag = InformativeVideosFragment_New.TAG;
         } else if (itemId == R.id.menu_change_language) {
             Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
             startActivity(intent);
@@ -1188,8 +1189,19 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(syncBroadcastReceiver);
+            //unregister receiver for internet check
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
 
-//    private void requestPermission() {
+    //    private void requestPermission() {
 //        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
 //        if (!CallListenerBackgroundService.isInstanceCreated()) {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

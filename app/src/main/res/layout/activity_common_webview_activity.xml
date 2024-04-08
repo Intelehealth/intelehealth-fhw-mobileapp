@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".activities.onboarding.PersonalConsentActivity">
+    tools:context=".activities.onboarding.CommonWebViewActivity">
 
     <LinearLayout
         android:id="@+id/ll_action_bar"
@@ -15,13 +15,14 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_back_arrow_terms"
+            android:id="@+id/iv_back_arrow"
             android:layout_width="@dimen/back_arrow_width"
             android:layout_height="@dimen/back_arrow_height"
 
             android:src="@drawable/ui2_ic_arrow_back_new" />
 
         <TextView
+            android:id="@+id/title_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
@@ -32,9 +33,21 @@
 
 
     <WebView
-        android:id="@+id/consent_webview"
+        android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/layout_button_consent"
+        android:layout_below="@+id/ll_action_bar"
+        android:layout_marginStart="@dimen/content_margin_start"
+        android:layout_marginEnd="@dimen/margin_20dp" />
+
+    <TextView
+        android:id="@+id/error_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="@string/unable_to_load_data_please_try_again"
         android:layout_above="@+id/layout_button_consent"
         android:layout_below="@+id/ll_action_bar"
         android:layout_marginStart="@dimen/content_margin_start"
@@ -53,33 +66,17 @@
         android:weightSum="2">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/decline_button_margin_start"
-            android:layout_marginEnd="@dimen/decline_button_margin_end"
-            android:layout_weight="1"
-            android:background="@drawable/ui2_common_primary_bg_disabled"
-            android:lineHeight="@dimen/button_line_height"
-            android:onClick="declineCon"
-            android:padding="@dimen/padding_15"
-            android:text="@string/decline"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/common_button_text_size"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btn_accept_consent"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/accept_button_margin_start"
+            android:layout_marginStart="@dimen/margin_24"
             android:layout_marginEnd="@dimen/accept_button_margin_end"
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
-            android:onClick="acceptCon"
+            android:onClick="okBtClick"
             android:padding="@dimen/padding_15"
-            android:text="@string/accept_new"
+            android:text="@string/okay"
             android:textSize="@dimen/common_button_text_size" />
 
 

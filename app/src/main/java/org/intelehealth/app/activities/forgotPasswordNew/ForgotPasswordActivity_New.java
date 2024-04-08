@@ -153,8 +153,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             mLayoutUsername.setVisibility(View.VISIBLE);
             tvMobileError.setVisibility(View.GONE);
             tvUsernameError.setVisibility(View.GONE);
-            mButtonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
-            mButtonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            mButtonUsername.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_ui2));
+            mButtonMobileNumber.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_disabled_ui2));
             mMobileNoEditText.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             mUsernameEditText.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
 
@@ -179,8 +179,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         tvUsernameError.setVisibility(View.GONE);
         mLayoutUsername.setVisibility(View.GONE);
         mLayoutMobileNo.setVisibility(View.VISIBLE);
-        mButtonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
-        mButtonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+        mButtonMobileNumber.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_ui2));
+        mButtonUsername.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_disabled_ui2));
         mMobileNoEditText.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         mUsernameEditText.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
     }

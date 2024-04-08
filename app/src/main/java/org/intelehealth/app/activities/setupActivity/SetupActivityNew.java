@@ -791,7 +791,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             }
         }
         return salt;
-
     }
 
     public void onRadioClick(View v) {
@@ -827,8 +826,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 
                         // Change the alert dialog buttons text and background color
-                        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+                        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -938,7 +937,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
+                                //mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();

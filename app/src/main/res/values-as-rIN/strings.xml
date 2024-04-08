@@ -944,6 +944,7 @@
     <string name="username_sent_desc">Your username has been sent via SMS to your registered mobile number.</string>
     <string name="teleconsultation_consent_title">Teleconsultation Consent</string>
     <string name="processing_personal_data">Processing Personal Data</string>
+    <string name="unable_to_load_data_please_try_again">Unable to load data. Please try again later!</string>
     <string name="no_of_days">No. of days</string>
     <string name="timings">Timings</string>
     <string name="u2022_strength">• Strength</string>

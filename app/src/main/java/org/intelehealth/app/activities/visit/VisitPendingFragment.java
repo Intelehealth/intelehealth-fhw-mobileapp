@@ -318,7 +318,7 @@ public class VisitPendingFragment extends Fragment {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " " + "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
+                            String htmlvalue = IntelehealthApplication.getInstance().getResources().getString(R.string.doctor_yet_to_send_prescription) + " " + "<b>" + total + " " + IntelehealthApplication.getInstance().getResources().getString(R.string.patients) + "</b>, " + IntelehealthApplication.getInstance().getResources().getString(R.string.you_can_remind_doctor);
                             pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
                         }
                     });

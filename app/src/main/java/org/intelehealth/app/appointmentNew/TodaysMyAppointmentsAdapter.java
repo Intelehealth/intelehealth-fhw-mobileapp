@@ -103,7 +103,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                         .skipMemoryCache(true)
                         .into(holder.ivProfileImage);
             } else {
-                holder.ivProfileImage.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+                holder.ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
             }
             holder.doctNameTextView.setText("Dr. " + appointmentInfoModel.getDrName());
             if (whichAppointments.equalsIgnoreCase("upcoming")) {

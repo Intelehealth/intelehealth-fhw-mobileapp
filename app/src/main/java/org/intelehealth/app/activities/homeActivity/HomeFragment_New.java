@@ -228,7 +228,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             requireActivity().getResources().updateConfiguration(config, requireActivity().getResources().getDisplayMetrics());
         }
 
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        sessionManager.setCurrentLang(this.getResources().getConfiguration().locale.toString());
 
         ImageView viewHamburger = requireActivity().findViewById(R.id.iv_hamburger);
         viewHamburger.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_hamburger));
@@ -327,7 +327,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             if (isAdded()) {
                 activity.runOnUiThread(() -> {
 
-                    mCountPendingFollowupVisitsTextView.setText(count + " " + getResources().getString(R.string.pending));
+                    mCountPendingFollowupVisitsTextView.setText(count + " " + this.getResources().getString(R.string.pending));
                 });
             }
         });
@@ -340,7 +340,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
             requireActivity().runOnUiThread(() -> {
 
-                mCountPendingFollowupVisitsTextView.setText(count + " " + getResources().getString(R.string.pending));
+                mCountPendingFollowupVisitsTextView.setText(count + " " + this.getResources().getString(R.string.pending));
             });
         });
     }

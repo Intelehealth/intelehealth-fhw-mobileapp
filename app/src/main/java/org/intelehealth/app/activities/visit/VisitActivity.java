@@ -74,11 +74,18 @@ public class VisitActivity extends BaseActivity implements
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "Sync Done!");
-                refresh.clearAnimation();
-                syncAnimator.cancel();
-                recreate();
+
+                if (intent.hasExtra("JOB")) {
+                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE) {
+                            Log.v(TAG, "Sync Done!");
+                            if (!isFinishing()) {
+                                refresh.clearAnimation();
+                                syncAnimator.cancel();
+                            }
+                            recreate();
+                    }
+                    }
             }
         };
         IntentFilter filterSend = new IntentFilter();
@@ -212,9 +219,11 @@ public class VisitActivity extends BaseActivity implements
 
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
+            if (!this.isFinishing()) {
+                refresh.clearAnimation();
+                syncAnimator.start();
+            }
             new SyncUtils().syncBackground();
-            refresh.clearAnimation();
-            syncAnimator.start();
         }
     }
 }

@@ -14,7 +14,7 @@
         android:src="@drawable/ui2_ic_arrow_back_new"
         android:visibility="gone" />
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager_intro_screens"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
