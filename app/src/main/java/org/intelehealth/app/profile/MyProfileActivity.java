@@ -687,7 +687,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     private boolean checkFingerprintSensor() {
         boolean isFingerPrintAvailable = true;
         BiometricManager biometricManager = BiometricManager.from(this);
-        switch (biometricManager.canAuthenticate()) {
+        switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)) {
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 errorMsg = getResources().getString(R.string.no_fingerprint_sensor_dialog);
                 isFingerPrintAvailable = false;

@@ -929,6 +929,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         } else if (itemId == R.id.menu_video_lib) {
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
             fragment = new InformativeVideosFragment_New();
+            tag = InformativeVideosFragment_New.TAG;
         } else if (itemId == R.id.menu_change_language) {
             Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
             startActivity(intent);

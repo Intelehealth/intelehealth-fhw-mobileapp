@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -706,11 +707,12 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                 listener.getSelectedDate(selectedDate, "");
             }
             //for get the selected date - if calendar view called from fragment
-            if (getTargetFragment() != null) {
-                Intent intent = new Intent()
-                        .putExtra("selectedDate", selectedDate)
-                        .putExtra("whichDate", whichDate);
-                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+            if (getParentFragmentManager() != null) {
+                //converted intent to bundle to support new method
+                Bundle bundle = new Bundle();
+                bundle.putString("selectedDate", selectedDate);
+                bundle.putString("whichDate", whichDate);
+                getParentFragmentManager().setFragmentResult("requestKey",bundle);
             }
             alertDialog.dismiss();
         });

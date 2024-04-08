@@ -526,7 +526,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void fingerPrintAuthenticate() {
         BiometricManager biometricManager = BiometricManager.from(this);
-        switch (biometricManager.canAuthenticate()) {
+        switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)) {
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_fingerprint_sensor), Toast.LENGTH_SHORT).show();
                 break;
@@ -560,7 +560,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         });
 
-        promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle(getResources().getString(R.string.intelehealth_login)).setSubtitle(getResources().getString(R.string.touch_fingerprint)).setDeviceCredentialAllowed(true).build();
+        promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle(getResources().getString(R.string.intelehealth_login)).setSubtitle(getResources().getString(R.string.touch_fingerprint)).setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK).build();
 
         biometricPrompt.authenticate(promptInfo);
 

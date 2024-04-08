@@ -85,8 +85,7 @@ public class VisitActivity extends BaseActivity implements
                             }
                             recreate();
                     }
-                }
-                recreate();
+                    }
             }
         };
         IntentFilter filterSend = new IntentFilter();
