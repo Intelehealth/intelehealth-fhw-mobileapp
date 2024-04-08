@@ -12,16 +12,13 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.se.omapi.Session;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -30,6 +27,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -38,6 +36,8 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
 
 import java.util.Locale;
+import java.util.Objects;
+import java.util.concurrent.Executors;
 
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
@@ -173,17 +173,33 @@ public class VisitActivity extends BaseActivity implements
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getResources().updateConfiguration(config,getResources().getDisplayMetrics());
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         }
+
+
+    }
+
+    private void updateCounts(boolean isForReceivedPrescription) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
+            runOnUiThread(() -> {
+                if (isForReceivedPrescription)
+                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getResources().getString(R.string.received) + "\t(" + count + ")");
+                else
+                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getResources().getString(R.string.pending) + "\t(" + count + ")");
+
+            });
+
+        });
     }
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -208,13 +224,15 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void receivedCount(int count) {
         Log.v(TAG, "receivedCount: " + count);
-        tabLayout.getTabAt(0).setText(getResources().getString(R.string.received));
+        //tabLayout.getTabAt(0).setText(getResources().getString(R.string.received));
+        updateCounts(true);
     }
 
     @Override
     public void pendingCount(int count) {
         Log.v(TAG, "pendingCount: " + count);
-        tabLayout.getTabAt(1).setText(getResources().getString(R.string.pending));
+        //tabLayout.getTabAt(1).setText(getResources().getString(R.string.pending));
+        updateCounts(false);
     }
 
     public void syncNow(View view) {
