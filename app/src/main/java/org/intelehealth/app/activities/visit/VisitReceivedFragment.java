@@ -251,7 +251,7 @@ public class VisitReceivedFragment extends Fragment {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription);
+                            String htmlvalue = "<b>" + total + " " + IntelehealthApplication.getInstance().getResources().getString(R.string.patients) + " " + "</b>" + IntelehealthApplication.getInstance().getResources().getString(R.string.awaiting_their_prescription);
                             received_endvisit_no.setText(Html.fromHtml(htmlvalue));
                         }
                     });
