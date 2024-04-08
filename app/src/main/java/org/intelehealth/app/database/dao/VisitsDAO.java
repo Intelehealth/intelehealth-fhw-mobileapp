@@ -1,6 +1,7 @@
 package org.intelehealth.app.database.dao;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -9,21 +10,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.models.dto.VisitAttributeDTO;
+import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
+import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.models.PrescriptionModel;
-import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.models.dto.VisitAttributeDTO;
-import org.intelehealth.app.models.dto.VisitDTO;
-import org.intelehealth.app.utilities.exception.DAOException;
+import timber.log.Timber;
 
 public class VisitsDAO {
 
@@ -947,5 +949,69 @@ public class VisitsDAO {
         cursor.close();
 
         return visitId;
+    }
+
+    public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
+        int count = 0;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransactionNonExclusive();
+
+        Cursor cursor = null;
+        if (isForReceivedPrescription)
+            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
+                    + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where"
+                    + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and"
+                    + "  e.encounter_type_uuid = ? and"
+                    + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " //+ " o.conceptuuid = ? "
+                    //+ " and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
+                    //+ " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
+//                    +" and v.startdate <= DATETIME('now', '-4 day') "
+                    + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+        else
+            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
+                    + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                    //" e.encounter_type_uuid = ?  and " +
+                    " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 "
+                    //+ "and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
+                    //+ " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
+//                    +" and v.startdate <= DATETIME('now', '-4 day') "
+                    + "  group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{});
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                boolean isCompletedExitedSurvey = false;
+                boolean isPrescriptionReceived = false;
+                try {
+                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
+                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                //TODO: need more improvement in main query, this condition can be done by join query
+                if (isForReceivedPrescription) {
+                    if (!isCompletedExitedSurvey && isPrescriptionReceived) {
+                        count += 1;
+                        Timber.tag("getVisitCountsByStatus").v("Received - "+cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
+                                +" "+cursor.getString(cursor.getColumnIndexOrThrow("last_name")) +" Gender - "+cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    }
+                } else {
+                    if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
+                        count += 1;
+                        Timber.tag("getVisitCountsByStatus").v("Pending - "+cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
+                                +" "+cursor.getString(cursor.getColumnIndexOrThrow("last_name")) +" Gender - "+cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+
+                    }
+                }
+            } while (cursor.moveToNext());
+        }
+
+
+        cursor.close();
+
+
+        return count;
     }
 }

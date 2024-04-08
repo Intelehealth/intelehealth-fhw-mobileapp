@@ -51,7 +51,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.biometric.BiometricManager;
 import androidx.cardview.widget.CardView;
@@ -119,8 +118,7 @@ import okhttp3.ResponseBody;
 public class MyProfileActivity extends BaseActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etEmail, etMobileNo;
-    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob,
-            etUsername, etFirstName, etMiddleName, etLastName;
+    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob, etUsername, etFirstName, etMiddleName, etLastName;
     LinearLayout layoutParent, ll_middlename;
     String selectedGender, profileImagePAth = "", errorMsg = "", mSelectedCountryCode = "", dobToDb;
     ImageView ivProfileImage, ivIsInternet, refresh;
@@ -223,8 +221,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         refresh.setOnClickListener(v -> {
             isSynced = syncNow(MyProfileActivity.this, refresh, syncAnimator);
-            if (isSynced)
-                fetchUserDetails();
+            if (isSynced) fetchUserDetails();
         });
 
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -497,9 +494,16 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
     private void checkInternetAndUpdateProfile() {
         if (NetworkConnection.isOnline(MyProfileActivity.this)) {
-            if (isValidData()) updateDetails();
+            if (isValidData()) {
+                if (personUuid == null || personUuid.isEmpty()) {
+                    Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    updateDetails();
+                }
+            }
         } else {
-            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, ContextCompat.getDrawable(context,R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.profile_update_requires_internet), getString(R.string.try_again));
+            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, ContextCompat.getDrawable(context, R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.profile_update_requires_internet), getString(R.string.try_again));
             AlertDialog networkFailureDialog = builder.show();
 
             networkFailureDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
@@ -559,6 +563,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
     private void updateDetails() {
+
         Integer updatedAge = Integer.parseInt(tvAge.getText().toString());
         String updatedDOB = tvDob.getText().toString();
         String formattedDOB = dobToDb + "T00:00:00.000+0530";
@@ -569,8 +574,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (!updatedDOB.equalsIgnoreCase(prevDOB)) {
             updateDOB(updatedAge, formattedDOB, gender);
         }
-        if (prevPhoneNum == null && phoneAttributeUuid == null && !updatedPhoneNum.trim().equalsIgnoreCase("")
-                && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
+        if (prevPhoneNum == null && phoneAttributeUuid == null && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
             createProfileAttribute("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37", updatedPhoneNum);
         } else if (phoneAttributeUuid != null && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
             updateProfileAttribute(phoneAttributeUuid, updatedPhoneNum);
@@ -602,8 +606,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        Observable<ResponseBody> profileAttributeCreateRequest = apiService.PROFILE_ATTRIBUTE_CREATE(sessionManager.getProviderID(),
-                inputModel, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profileAttributeCreateRequest = apiService.PROFILE_ATTRIBUTE_CREATE(sessionManager.getProviderID(), inputModel, "Basic " + sessionManager.getEncoded());
         profileAttributeCreateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
@@ -634,8 +637,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        Observable<ResponseBody> profileAttributeUpdateRequest = apiService.PROFILE_ATTRIBUTE_UPDATE(attributeTypeUuid,
-                inputModel, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profileAttributeUpdateRequest = apiService.PROFILE_ATTRIBUTE_UPDATE(attributeTypeUuid, inputModel, "Basic " + sessionManager.getEncoded());
         profileAttributeUpdateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
@@ -663,8 +665,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        Observable<ResponseBody> profileAgeUpdateRequest = apiService.PROFILE_AGE_UPDATE(personUuid,
-                inputModel, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profileAgeUpdateRequest = apiService.PROFILE_AGE_UPDATE(personUuid, inputModel, "Basic " + sessionManager.getEncoded());
         profileAgeUpdateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
@@ -760,25 +761,25 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             if (gender != null && !gender.isEmpty()) {
 
                 if (gender.equalsIgnoreCase("m")) {
-                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
-                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
 
                 } else if (gender.equalsIgnoreCase("f")) {
-                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
-                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
                 } else if (gender.equalsIgnoreCase("o")) {
-                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
+                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
                 }
             }
 
             if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
                 bindProfilePictureToUI(providerDTO.getImagePath());
             } else {
-                ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
+                ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
             }
 
             Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
@@ -794,34 +795,23 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
     private AlertDialog mImagePickerAlertDialog;
 
-    private final ActivityResultLauncher<Intent> cameraIntentLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
-                if (result.getResultCode() == RESULT_OK) {
-                    if (result.getData() != null) captureImage(result.getData());
-                }
-            }
-    );
+    private final ActivityResultLauncher<Intent> cameraIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
+        if (result.getResultCode() == RESULT_OK) {
+            if (result.getData() != null) captureImage(result.getData());
+        }
+    });
 
-    private final ActivityResultLauncher<Intent> galleryIntentLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
-                if (result.getResultCode() == RESULT_OK) {
-                    if (result.getData() != null) pickImage(result.getData());
-                }
-            }
-    );
+    private final ActivityResultLauncher<Intent> galleryIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
+        if (result.getResultCode() == RESULT_OK) {
+            if (result.getData() != null) pickImage(result.getData());
+        }
+    });
 
     private void bindProfilePictureToUI(String url) {
-        RequestBuilder<Drawable> requestBuilder = Glide.with(this)
-                .asDrawable().sizeMultiplier(0.25f);
-        Glide.with(MyProfileActivity.this)
-                .load(new File(url))
-                .thumbnail(requestBuilder)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(ivProfileImage);
+        RequestBuilder<Drawable> requestBuilder = Glide.with(this).asDrawable().sizeMultiplier(0.25f);
+        Glide.with(MyProfileActivity.this).load(new File(url)).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
     }
 
     private void captureImage(Intent data) {
@@ -920,12 +910,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             ProviderDAO providerDAO = new ProviderDAO();
             ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
             if (providerDTO != null) {
-                ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(),
-                        providerDTO.getUseruuid(), etEmail.getText().toString().trim(),
-                        etMobileNo.getText().toString().trim(), providerDTO.getProviderId(),
-                        etFirstName.getText().toString().trim(), etLastName.getText().toString().trim(),
-                        providerDTO.getVoided(), selectedGender, dobToDb, providerDTO.getUuid(),
-                        providerDTO.getIdentifier(), selectedCode, etMiddleName.getText().toString().trim());
+                ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(), providerDTO.getUseruuid(), etEmail.getText().toString().trim(), etMobileNo.getText().toString().trim(), providerDTO.getProviderId(), etFirstName.getText().toString().trim(), etLastName.getText().toString().trim(), providerDTO.getVoided(), selectedGender, dobToDb, providerDTO.getUuid(), providerDTO.getIdentifier(), selectedCode, etMiddleName.getText().toString().trim());
 
                 String imagePath = "";
                 if (profileImagePAth != null && !profileImagePAth.isEmpty()) {
@@ -1035,15 +1020,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this)
-                        .asDrawable().sizeMultiplier(0.3f);
-                Glide.with(MyProfileActivity.this)
-                        .load(new File(mCurrentPhotoPath))
-                        .thumbnail(requestBuilder)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(ivProfileImage);
+                RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this).asDrawable().sizeMultiplier(0.3f);
+                Glide.with(MyProfileActivity.this).load(new File(mCurrentPhotoPath)).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
 
                 saveImage(mCurrentPhotoPath);
             }
@@ -1075,8 +1053,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                             runOnUiThread(new Runnable() //run on ui thread
                             {
                                 public void run() {
-                                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this)
-                                            .asDrawable().sizeMultiplier(0.3f);
+                                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this).asDrawable().sizeMultiplier(0.3f);
                                     Glide.with(MyProfileActivity.this).load(finalFilePath).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
                                 }
                             });
@@ -1220,18 +1197,18 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     gender = profile.getResults().get(0).getPerson().getGender();
                     if (gender != null && !gender.isEmpty()) {
                         if (gender.equalsIgnoreCase("m")) {
-                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
-                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
 
                         } else if (gender.equalsIgnoreCase("f")) {
-                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
-                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
                         } else if (gender.equalsIgnoreCase("o")) {
-                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
+                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
                         }
                     }
                     List<PersonAttributes> personAttributes = new ArrayList<>();
@@ -1265,6 +1242,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             public void onError(Throwable e) {
                 e.printStackTrace();
                 Logger.logD(TAG, e.getMessage());
+                // need to close this activity if not able to fetch the data
+                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override
@@ -1276,16 +1256,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
 
         if (providerDTO != null && providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
-            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
-                    .asDrawable().sizeMultiplier(0.3f);
-            Glide.with(this)
-                    .load(providerDTO.getImagePath())
-                    .thumbnail(requestBuilder)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true).into(ivProfileImage);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this).asDrawable().sizeMultiplier(0.3f);
+            Glide.with(this).load(providerDTO.getImagePath()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
         } else {
-            ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
+            ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
         }
 
         Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
@@ -1354,8 +1328,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this)
-                            .asDrawable().sizeMultiplier(0.3f);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this).asDrawable().sizeMultiplier(0.3f);
                     Glide.with(MyProfileActivity.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
@@ -1393,8 +1366,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     tvDob.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
                 }
                 myProfilePOJO.setNewDateOfBirth(dateToshow1 + ", " + splitedDate[2]);
-                if (tvErrorDob.getVisibility() == View.VISIBLE)
-                    tvErrorDob.setVisibility(View.GONE);
+                if (tvErrorDob.getVisibility() == View.VISIBLE) tvErrorDob.setVisibility(View.GONE);
                 shouldActivateSaveButton();
                 Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
             } else if (age != null && !age.isEmpty() && Integer.parseInt(age) < 18) {
@@ -1468,10 +1440,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_internet_available));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_internet_available));
 
         } else {
-            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_no_internet));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_no_internet));
 
         }
     }

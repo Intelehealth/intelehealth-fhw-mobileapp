@@ -1,6 +1,5 @@
 package org.intelehealth.app.activities.visit;
 
-import static org.intelehealth.app.database.dao.VisitsDAO.getPendingPrescCount;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
@@ -43,6 +42,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
@@ -73,7 +73,7 @@ public class VisitReceivedFragment extends Fragment {
     private ImageView closeButton;
     private ProgressBar progress;
     private VisitCountInterface mlistener;
-    private int recentLimit = 100, olderLimit = 100;
+    private int recentLimit = 40, olderLimit = 40;
     private int recentStart = 0, recentEnd = recentStart + recentLimit;
     private boolean isRecentFullyLoaded = false;
     private int olderStart = 0, olderEnd = olderStart + olderLimit;
@@ -246,7 +246,7 @@ public class VisitReceivedFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int total = getPendingPrescCount();
+                int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();
                 Activity activity = getActivity();
                 if (activity != null && isAdded()) {
                     activity.runOnUiThread(new Runnable() {

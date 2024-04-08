@@ -48,6 +48,7 @@ import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -294,8 +295,10 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
         Executors.newSingleThreadExecutor().execute(() -> {
-            int pendingCountTotalVisits = getCurrentMonthsVisits(false);
-            int countReceivedPrescription = getCurrentMonthsVisits(true);
+            int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
+            int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
+//            int pendingCountTotalVisits = getCurrentMonthsVisits(false);
+//            int countReceivedPrescription = getCurrentMonthsVisits(true);
 
             int total = pendingCountTotalVisits + countReceivedPrescription;
 
