@@ -57,10 +57,6 @@ public class SyncDAO {
 
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
-        if(Looper.getMainLooper().getThread() == Thread.currentThread())
-        {
-            Log.d("cccccccc","main");
-        }
         boolean isSynced = true;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         appLanguage = sessionManager.getAppLanguage();
