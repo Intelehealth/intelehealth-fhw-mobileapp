@@ -1,8 +1,12 @@
 package org.intelehealth.app.activities.prescription;
 
+import static org.intelehealth.app.utilities.StringUtils.convertCtoF;
+
 import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -22,7 +26,7 @@ public class PrescriptionBuilder {
     private final AppCompatActivity activityContext;
     JSONObject obj;
     String disclaimerStr = "";
-
+    private static String mFileName = "config.json";
     public PrescriptionBuilder(AppCompatActivity activityContext) {
         this.activityContext = activityContext;
     }
@@ -287,7 +291,31 @@ public class PrescriptionBuilder {
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_systolic_blood_pressure), vitalsData.getBpsys());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_diastolic_blood_pressure), vitalsData.getBpdia());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_pulse), vitalsData.getPulse());
-        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_temp), vitalsData.getTemperature());
+
+        try {
+            JSONObject obj = null;
+            //TODO: Need to link whether its in license version or not
+            boolean hasLicense = false;
+            if (hasLicense) {
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, activityContext), String.valueOf(FileUtils.encodeJSON(activityContext, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(activityContext, mFileName)));
+            }//Load the config file
+
+            if (obj.getBoolean("mTemperature")) {
+                if (obj.getBoolean("mCelsius")) {
+
+                   vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getResources().getString(R.string.prescription_temp_c), !TextUtils.isEmpty(vitalsData.getTemperature()) ? vitalsData.getTemperature().toString() : "");
+                } else if (obj.getBoolean("mFahrenheit")) {
+
+                  vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getResources().getString(R.string.prescription_temp_f) , !TextUtils.isEmpty(vitalsData.getTemperature()) ? convertCtoF(vitalsData.getTemperature()) : "");
+                }
+            }
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_temp), vitalsData.getTemperature());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_spo2), vitalsData.getSpo2());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.respiratory_rate), vitalsData.getResp());
 
@@ -327,7 +355,7 @@ public class PrescriptionBuilder {
         return listOpeningTag
                 + divListItemOpeningTag
                 + labelOpeningTag
-                + label + ": "
+                + label + (label.endsWith(":") ? " ":": ")
                 + labelClosingTag
                 + divListItemContentOpeningTag
                 + newValue
@@ -905,36 +933,61 @@ public class PrescriptionBuilder {
                 + "</li>";
 
         if (!followUpData.equalsIgnoreCase("")) {
-
+            //added these logic to handle array indexOutOfBound exception
+            String date = "";
+            if(followUpArrayData.length > 0){
+                date = followUpArrayData[0];
+            }
             divSectionContentOpeningTag = divSectionContentOpeningTag
                     + "<li>"
                     + "<div class=\"list-item\">"
                     + "<label>Follow-up Date</label>"
                     + "<div class=\"list-item-content\">"
-                    + DateAndTimeUtils.formatDateFromOnetoAnother(followUpArrayData[0], "yyyy-MM-dd", "dd-MM-yyyy")
+                    + DateAndTimeUtils.formatDateFromOnetoAnother(date, "yyyy-MM-dd", "dd-MM-yyyy")
                     + "</div>"
                     + "</div>"
                     + "</li>";
 
             if (followUpData.contains("Time:")) {
+
+                //added these logic to handle array indexOutOfBound exception
+                String time = "";
+                if(followUpArrayData.length > 1){
+                    if(followUpArrayData[1].contains("Time:")){
+                        if(followUpArrayData[1].split("Time:").length > 1){
+                            time = followUpArrayData[1].split("Time:")[1];
+                        }
+                    }
+
+                }
                 divSectionContentOpeningTag = divSectionContentOpeningTag
                         + "<li>"
                         + "<div class=\"list-item\">"
                         + "<label>Follow-up Time</label>"
                         + "<div class=\"list-item-content\">"
-                        + followUpArrayData[1].split("Time:")[1]
+                        + time
                         + "</div>"
                         + "</div>"
                         + "</li>";
             }
 
             if (followUpData.contains("Remark:")) {
+                //added these logic to handle array indexOutOfBound exception
+                String remarks = "";
+                if(followUpArrayData.length > 2){
+                    if(followUpArrayData[2].contains("Remark:")){
+                        if(followUpArrayData[2].split("Remark:").length > 1){
+                            remarks = followUpArrayData[2].split("Remark:")[1];
+                        }
+                    }
+
+                }
                 divSectionContentOpeningTag = divSectionContentOpeningTag
                         + "<li>"
                         + "<div class=\"list-item\">"
                         + "<label>Reason for follow-up</label>"
                         + "<div class=\"list-item-content\">"
-                        + followUpArrayData[2].split("Remark:")[1]
+                        + remarks
                         + "</div>"
                         + "</div>"
                         + "</li>";

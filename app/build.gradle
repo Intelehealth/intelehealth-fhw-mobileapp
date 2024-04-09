@@ -22,7 +22,7 @@ android {
         minSdk 23
         targetSdk 34
         versionCode 65
-        versionName '5.0.21.03.2024'
+        versionName '5.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
@@ -130,6 +130,9 @@ dependencies {
     implementation 'com.parse:parse-android:1.15.7'
     //date and time
     implementation 'joda-time:joda-time:2.9.9'
+
+    //jsoup to parse html
+    implementation 'org.jsoup:jsoup:1.15.2'
 
     implementation 'org.apache.commons:commons-lang3:3.6'
 

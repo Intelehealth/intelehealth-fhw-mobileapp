@@ -481,7 +481,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 chief_complaint_txt.setText(stringBuilder.toString());
             }
         }
-        chief_complaint_txt.setTextColor(getResources().getColor(R.color.headline_text_color));
+        chief_complaint_txt.setTextColor(ContextCompat.getColor(this,R.color.headline_text_color));
         chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
         //chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
 

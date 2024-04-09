@@ -206,4 +206,15 @@ public interface ApiInterface {
             @Url String url,
             @Body AuthJWTBody authJWTBody
     );
+
+    /**
+     * getting html here like privacy policy, terms of service
+     * @param url
+     * @return
+     */
+
+    @GET
+    Observable<ResponseBody> GET_HTML(
+            @Url String url
+    );
 }

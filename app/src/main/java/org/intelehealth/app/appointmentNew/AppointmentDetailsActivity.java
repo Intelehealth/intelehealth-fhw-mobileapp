@@ -483,7 +483,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                     layoutPrescButtons.setVisibility(View.GONE); // show remind btn for presc to be given as its more than days.
                 }
                 tvPrescStatus.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
-                tvPrescStatus.setTextColor(getResources().getColor(R.color.red));
+                tvPrescStatus.setTextColor(ContextCompat.getColor(this,R.color.red));
             }
         }
         // presc block - end

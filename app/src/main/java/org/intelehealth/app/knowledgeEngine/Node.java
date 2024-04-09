@@ -2349,7 +2349,7 @@ public class Node implements Serializable {
 
                 ImageView imageView = dialog.findViewById(R.id.confirmationImageView);
                 final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
-                Glide.with(context)
+                Glide.with(context.getApplicationContext())
                         .load(new File(imagePath))
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)

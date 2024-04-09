@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.onboarding;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -13,35 +14,41 @@ import android.os.LocaleList;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.WebViewStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
 import java.util.Objects;
 
-public class TermsAndConditionsActivity_New extends AppCompatActivity {
+public class TermsAndConditionsActivity_New extends AppCompatActivity implements WebViewStatus {
     private static final String TAG = "TermsAndConditionsActiv";
     private int mIntentFrom;
     JSONObject obj = null;
     TextView tvText;
     ImageView ivBack;
-    String privacy_string = "";
+    String terms_and_condition_string = "";
     private Context context = TermsAndConditionsActivity_New.this;
     private SessionManager sessionManager;
     private AlertDialog loadingDialog = null;
+    WebView webView;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,34 +58,28 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.WHITE);
 
         ivBack = findViewById(R.id.iv_back_arrow_terms);
-        tvText = findViewById(R.id.tv_term_condition);
+        webView = findViewById(R.id.webview);
         sessionManager = new SessionManager(context);
 
         loadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), getString(R.string.please_wait));
-        loadingDialog.show();
         ivBack.setOnClickListener(v -> finish());
 
-        if (privacy_string.isEmpty()) {
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new GenericWebViewClient(this));
+
 
             new Thread(() -> {
                 // bg task
-                try {
-                    obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-                    privacy_string = sessionManager.getAppLanguage().equalsIgnoreCase("hi") ? obj.getString("terms_and_conditions_Hindi") : obj.getString("terms_and_conditions");
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
                 runOnUiThread(() -> {
                     // ui task
-                    tvText.setAutoLinkMask(Linkify.ALL);
-                    tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT));
-                    loadingDialog.dismiss();
+                    String text;
+                    text = "<html><body style='color:black;font-size: 0.8em;' >"; //style='text-align:justify;text-justify: inter-word;'
+                    text += new ConfigUtils(this).getTermsAndConditionsText(sessionManager.getAppLanguage());
+                    text += "</body></html>";
+                    webView.loadDataWithBaseURL(null,text, "text/html", "utf-8",null);
                 });
             }).start();
-        } else {
-            tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT));
-            loadingDialog.dismiss();
-        }
+
     }
 
 
@@ -114,5 +115,20 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
         }
         res.updateConfiguration(conf, dm);
         return context;
+    }
+
+    @Override
+    public void onPageStarted() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void onPageFinish() {
+        loadingDialog.dismiss();
+    }
+
+    @Override
+    public void onPageError(@NonNull String error) {
+
     }
 }

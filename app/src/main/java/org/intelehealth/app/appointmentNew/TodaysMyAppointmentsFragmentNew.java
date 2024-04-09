@@ -133,7 +133,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
         layoutCompleted.setVisibility(View.VISIBLE);
         layoutCancelled.setVisibility(View.VISIBLE);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.weight = 1.0f;
         params.gravity = Gravity.TOP;
 
@@ -200,7 +200,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -220,7 +220,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -240,7 +240,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             layoutCancelled.setVisibility(View.GONE);
             layoutUpcoming.setVisibility(View.GONE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 

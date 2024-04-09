@@ -88,7 +88,7 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
 

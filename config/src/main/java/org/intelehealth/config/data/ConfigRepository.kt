@@ -28,5 +28,4 @@ class ConfigRepository(private val configDao: ConfigDao) {
 //    fun test(): ConfigDictionary = scope.async {
 //        return@async configDao.getConfigValueByKey(KEY_SPECIALIZATIONS)
 //    }.getCompleted()
-
 }

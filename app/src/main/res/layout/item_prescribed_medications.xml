@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/padding_12"
+        >
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/notifi_divider_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tvMedicineName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:textColor="@color/header_title_color"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            tools:text="1. Dolo (Tab)" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <TextView
+            android:id="@+id/tvStrengthTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/u2022_strength"
+            android:textColor="@color/textColorGray"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/tvMedicineName"
+            app:layout_constraintTop_toBottomOf="@+id/tvMedicineName" />
+
+
+        <TextView
+            android:id="@+id/tvStrength"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorBlack"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvStrengthTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/tvStrengthTitle"
+            tools:text="@string/strength" />
+
+        <TextView
+            android:id="@+id/tvNoDaysTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/u2022_no_of_days"
+            android:textColor="@color/textColorGray"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/tvStrengthTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvStrengthTitle" />
+
+
+        <TextView
+            android:id="@+id/tvNoDays"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorBlack"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvNoDaysTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/tvNoDaysTitle"
+            tools:text="6" />
+
+        <TextView
+            android:id="@+id/tvTimingTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/u2022_timings"
+            android:textColor="@color/textColorGray"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/tvStrengthTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvNoDaysTitle" />
+
+
+        <TextView
+            android:id="@+id/tvTiming"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorBlack"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTimingTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/tvTimingTitle"
+            tools:text="1-0-1" />
+
+        <TextView
+            android:id="@+id/tvRemarksTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/u2022_remarks"
+            android:textColor="@color/textColorGray"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/tvStrengthTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvTimingTitle" />
+
+
+        <TextView
+            android:id="@+id/tvRemarks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorBlack"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/tvRemarksTitle"
+            tools:text="Once after meal, keep hydrated, eat at least 3 hours before sleep, take medicines on time, don’t take medicine on empty stomach" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

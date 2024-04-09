@@ -20,6 +20,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -30,14 +31,20 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.concurrent.Executors;
 
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
@@ -53,6 +60,15 @@ public class VisitActivity extends BaseActivity implements
     SessionManager sessionManager;
     private BroadcastReceiver mBroadcastReceiver;
     private ObjectAnimator syncAnimator;
+
+    //this variable to detect sync click
+    private boolean syncClicked = false;
+
+    //sometimes multiple event came on broadcaster receiver
+    //to detect multiple call added the field
+    private int refreshCount = 0;
+    private AlertDialog loadingDialog;
+    private int currentTabPos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +90,28 @@ public class VisitActivity extends BaseActivity implements
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "Sync Done!");
-                refresh.clearAnimation();
-                syncAnimator.cancel();
-                recreate();
+                if (intent.hasExtra("JOB")) {
+                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
+                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
+                            Log.v(TAG, "Sync Done!");
+                            if (!isFinishing()) {
+                                refresh.clearAnimation();
+                                syncAnimator.cancel();
+                            }
+                            configureTabLayout();
+                    }
+                }
+
+                //just stopping the progressbar here if sync is failed
+                if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+                    int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                    if (flagType == AppConstants.SYNC_FAILED) {
+                        refresh.clearAnimation();
+                        syncAnimator.cancel();
+                        hideProgressbar();
+                    }
+                }
             }
         };
         IntentFilter filterSend = new IntentFilter();
@@ -126,10 +159,12 @@ public class VisitActivity extends BaseActivity implements
     }
 
     public void configureTabLayout() {
+        if(refreshCount > 0) return;
         tabLayout = findViewById(R.id.tablayout_appointments);
         viewPager = findViewById(R.id.pager_appointments);
         VisitPagerAdapter adapter = new VisitPagerAdapter(VisitActivity.this);
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(currentTabPos,false);
 
         new TabLayoutMediator(tabLayout, viewPager,
                 (TabLayout.Tab tab, int position) -> {
@@ -147,6 +182,7 @@ public class VisitActivity extends BaseActivity implements
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                currentTabPos = tab.getPosition();
             }
 
             @Override
@@ -166,8 +202,27 @@ public class VisitActivity extends BaseActivity implements
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getResources().updateConfiguration(config,getResources().getDisplayMetrics());
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         }
+
+        hideProgressbar();
+        refreshCount++;
+
+
+    }
+
+    private void updateCounts(boolean isForReceivedPrescription) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
+            runOnUiThread(() -> {
+                if (isForReceivedPrescription)
+                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getResources().getString(R.string.received) + "\t(" + count + ")");
+                else
+                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getResources().getString(R.string.pending) + "\t(" + count + ")");
+
+            });
+
+        });
     }
 
     @Override
@@ -187,6 +242,13 @@ public class VisitActivity extends BaseActivity implements
         networkUtils.callBroadcastReceiver();
     }
 
+    private void hideProgressbar() {
+        if(syncClicked && !this.isFinishing()){
+            loadingDialog.dismiss();
+        }
+    }
+
+
     @Override
     public void onStop() {
         super.onStop();
@@ -201,20 +263,38 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void receivedCount(int count) {
         Log.v(TAG, "receivedCount: " + count);
-        tabLayout.getTabAt(0).setText(getResources().getString(R.string.received));
+        //tabLayout.getTabAt(0).setText(getResources().getString(R.string.received));
+        updateCounts(true);
     }
 
     @Override
     public void pendingCount(int count) {
         Log.v(TAG, "pendingCount: " + count);
-        tabLayout.getTabAt(1).setText(getResources().getString(R.string.pending));
+        //tabLayout.getTabAt(1).setText(getResources().getString(R.string.pending));
+        updateCounts(false);
     }
 
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
+
+            if (!this.isFinishing()) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog = new DialogUtils().showCommonLoadingDialog(
+                                VisitActivity.this,
+                                getString(R.string.loading),
+                                getString(R.string.please_wait)
+                        );
+                    }
+                });
+
+                refresh.clearAnimation();
+                syncAnimator.start();
+            }
+            syncClicked = true;
+            refreshCount = 0;
             new SyncUtils().syncBackground();
-            refresh.clearAnimation();
-            syncAnimator.start();
         }
     }
 }

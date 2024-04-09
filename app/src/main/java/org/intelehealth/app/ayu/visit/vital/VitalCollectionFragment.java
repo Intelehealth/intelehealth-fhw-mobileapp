@@ -765,7 +765,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
             BMIStatus bmiStatus = getBmiStatus(bmi_value);
             mBmiStatusTextView.setText(String.format("(%s)", bmiStatus.getStatus()));
-            mBmiStatusTextView.setTextColor(getResources().getColor(bmiStatus.getColor()));
+            mBmiStatusTextView.setTextColor(ContextCompat.getColor(getActivity(),(bmiStatus.getColor())));
         } else {
             // do nothing
             mBMITextView.setText("");

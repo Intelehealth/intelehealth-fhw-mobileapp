@@ -1193,6 +1193,11 @@
     <string name="recent_visit">हाल के विज़िट्स</string>
     <string name="older_visits">पहले के विज़िट्स</string>
     <string name="open_visit">विज़िट खोलें</string>
+    <string name="open_visits">विज़िट खोलें</string>
+    <plurals name="open_no_of_visit">
+         <item quantity="one">%d विज़िट खोलें</item>
+        <item quantity="other">%d विज़िट खोले</item>
+    </plurals>
     <string name="no_fingerprint_title">फिंगरप्रिंट उपलब्ध नहीं है!</string>
     <string name="no_prescription_available">कोई प्रिस्क्रिप्शन उपलब्ध नहीं है!</string>
     <string name="no_prescription_title">डॉक्टर ने इस विज़िट के लिए प्रिस्क्रिप्शन नहीं दिया है।</string>
@@ -1469,4 +1474,10 @@
     <string name="username_sent_title">यूजरनेम भेजा गया</string>
     <string name="username_sent_desc">आपका यूजरनेम आपके पंजीकृत मोबाइल नंबर पर एसएमएस के माध्यम से भेज दिया गया है।</string>
     <string name="teleconsultation_consent_title">टेलीपरामर्श सहमति</string>
+    <string name="no_of_days">No. of days</string>
+    <string name="timings">Timings</string>
+    <string name="u2022_strength">• Strength</string>
+    <string name="u2022_no_of_days">• No. of days</string>
+    <string name="u2022_timings">• Timings</string>
+    <string name="u2022_remarks">• Remarks</string>
 </resources>

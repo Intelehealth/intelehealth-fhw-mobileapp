@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -126,63 +126,14 @@ public class SyncDAO {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                 }
                 if (response.isSuccessful()) {
-
                     // SyncDAO syncDAO = new SyncDAO();
-                    boolean sync = false;
-                    try {
-                        sync = SyncData(response.body());
-                        Log.d(TAG, "onResponse: response body : " + response.body().toString());
 
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                    }
-                    if (sync) {
-                        int nextPageNo = response.body().getData().getPageNo();
-                        int totalCount = response.body().getData().getTotalCount();
-                        if (nextPageNo != -1) {
-                            pullData_Background(context, nextPageNo);
-                            return;
-                        }else {
-                            sessionManager.setPullExcutedTime(sessionManager.isPulled());
-                            Intent broadcast = new Intent();
-                            broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
-                            broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-                            context.sendBroadcast(broadcast);
-                            Log.d(TAG, "onResponse: sync : " + sync);
-                            sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
-                        }
-                    } else {
-                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
-                    }
-
-                    if (sessionManager.getTriggerNoti().equals("yes")) {
-                        if (response.body().getData() != null) {
-                            ArrayList<String> listPatientUUID = new ArrayList<String>();
-                            List<VisitDTO> listVisitDTO = new ArrayList<>();
-                            ArrayList<String> encounterVisitUUID = new ArrayList<String>();
-                            for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
-                                if (response.body().getData().getEncounterDTO().get(i)
-                                        .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
-                                    encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
-                                }
-                            }
-                            listVisitDTO.addAll(response.body().getData().getVisitDTO());
-                            for (int i = 0; i < encounterVisitUUID.size(); i++) {
-                                for (int j = 0; j < listVisitDTO.size(); j++) {
-                                    if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
-                                        listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
-                                    }
-                                }
-                            }
-
-                            if (listPatientUUID.size() > 0) {
-                                triggerVisitNotification(listPatientUUID);
-                            }
-                        }
-                    } else {
-                        sessionManager.setTriggerNoti("yes");
-                    }
+                    //handling response data from background thread
+                    //to prevent lagging
+                    Single.fromCallable(() -> populatePullSuccessBackground(response, context))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe();
                 }
 
                 Logger.logD("End Pull request", "Ended");
@@ -204,6 +155,70 @@ public class SyncDAO {
         });
         sessionManager.setPullSyncFinished(true);
         return true;
+    }
+    
+    Object populatePullSuccessBackground(Response<ResponseDTO> response, Context context){
+        boolean sync = false;
+
+        try {
+            sync = SyncData(response.body());
+            Log.d(TAG, "onResponse: response body : " + response.body().toString());
+
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        if (sync) {
+            int nextPageNo = response.body().getData().getPageNo();
+            int totalCount = response.body().getData().getTotalCount();
+            if (nextPageNo != -1) {
+                pullData_Background(context, nextPageNo);
+                return null;
+            }else {
+                //we are not handling
+                //if(!from.equals("pres")){
+                    sessionManager.setPullExcutedTime(sessionManager.isPulled());
+                    Intent broadcast = new Intent();
+                    broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+                    broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                    context.sendBroadcast(broadcast);
+                //}
+
+                Log.d(TAG, "onResponse: sync : " + sync);
+                sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
+            }
+        } else {
+            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+        }
+
+        if (sessionManager.getTriggerNoti().equals("yes")) {
+            if (response.body().getData() != null) {
+                ArrayList<String> listPatientUUID = new ArrayList<String>();
+                List<VisitDTO> listVisitDTO = new ArrayList<>();
+                ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+                for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
+                    if (response.body().getData().getEncounterDTO().get(i)
+                            .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
+                        encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
+                    }
+                }
+                listVisitDTO.addAll(response.body().getData().getVisitDTO());
+                for (int i = 0; i < encounterVisitUUID.size(); i++) {
+                    for (int j = 0; j < listVisitDTO.size(); j++) {
+                        if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
+                            listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+                        }
+                    }
+                }
+
+                if (listPatientUUID.size() > 0) {
+                    triggerVisitNotification(listPatientUUID);
+                }
+            }
+        } else {
+            sessionManager.setTriggerNoti("yes");
+        }
+        return null;
     }
 
 

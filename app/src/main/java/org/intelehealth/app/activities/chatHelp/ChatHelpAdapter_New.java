@@ -325,8 +325,4 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
         notifyDataSetChanged();
     }*/
 
-    public Bitmap createVideoThumbNail(String path) {
-        return ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
-    }
-
 }

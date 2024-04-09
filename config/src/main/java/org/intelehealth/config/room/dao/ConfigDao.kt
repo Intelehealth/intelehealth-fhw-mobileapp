@@ -14,12 +14,12 @@ import org.intelehealth.config.room.entity.ConfigDictionary
  **/
 @Dao
 interface ConfigDao {
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun saveConfiguration(specializations: List<ConfigDictionary>)
-//
-//    @Query("SELECT configId, configValue FROM config_dictionary WHERE dicKey = :key ")
-//    fun getLiveConfigValueByKey(key: String): LiveData<ConfigDictionary>
-//
-//    @Query("SELECT configId, configValue FROM config_dictionary WHERE dicKey = :key ")
-//    suspend fun getConfigValueByKey(key: String): ConfigDictionary
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveConfiguration(specializations: List<ConfigDictionary>)
+
+    @Query("SELECT * FROM config_dictionary WHERE dicKey = :key ")
+    fun getLiveConfigValueByKey(key: String): LiveData<ConfigDictionary>
+
+    @Query("SELECT * FROM config_dictionary WHERE dicKey = :key ")
+    suspend fun getConfigValueByKey(key: String): ConfigDictionary
 }

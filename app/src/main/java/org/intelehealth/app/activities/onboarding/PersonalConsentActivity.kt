@@ -1,33 +1,31 @@
 package org.intelehealth.app.activities.onboarding
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
-import android.text.util.Linkify
 import android.view.View
+import android.webkit.WebView
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.HtmlCompat
 import androidx.core.view.WindowCompat
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New
 import org.intelehealth.app.app.AppConstants
+import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
-import org.intelehealth.app.utilities.FileUtils
 import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.WebViewStatus
 import org.json.JSONException
-import org.json.JSONObject
 import java.util.Locale
-import java.util.Objects
 
 
-class PersonalConsentActivity : AppCompatActivity() {
-    var obj: JSONObject? = null
-    var privacy_string = ""
-    var tvText: TextView? = null
+class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
+    private var personal_consent_string = ""
+    private var webView: WebView? = null
     var ivBack: ImageView? = null
     private val context: Context = this
     private var sessionManager: SessionManager? = null
@@ -38,63 +36,44 @@ class PersonalConsentActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_personal_consent)
         //  mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
-        WindowCompat.getInsetsController(window,window.decorView).isAppearanceLightStatusBars = true
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars =
+            true
 
         window.statusBarColor = Color.WHITE
 
         ivBack = findViewById(R.id.iv_back_arrow_terms)
-        tvText = findViewById(R.id.tv_term_condition)
+        webView = findViewById(R.id.consent_webview)
         sessionManager = SessionManager(context)
+
+        webView?.webViewClient = GenericWebViewClient(this)
 
         loadingDialog = DialogUtils().showCommonLoadingDialog(
             this,
             getString(R.string.loading),
             getString(R.string.please_wait)
         )
-        loadingDialog?.show()
 
         ivBack?.setOnClickListener { v: View? -> finish() }
 
-        if (privacy_string.isEmpty()) {
-            Thread {
+        Thread {
+            var text: String?
+            text =
+                "<html><body style='color:black;font-size: 0.8em;' >" //style='text-align:justify;text-justify: inter-word;'
 
-                // bg task
-                try {
-                    obj = JSONObject(
-                        Objects.requireNonNullElse(
-                            FileUtils.readFileRoot(
-                                AppConstants.CONFIG_FILE_NAME,
-                                context
-                            ),
-                            FileUtils.encodeJSON(
-                                context,
-                                AppConstants.CONFIG_FILE_NAME
-                            ).toString()
-                        )
-                    ) //Load the config file
-                    privacy_string = if (sessionManager!!.appLanguage
-                            .equals("hi", ignoreCase = true)
-                    )
-                        //currently english is defaut
-                        obj!!.getString("personalDataConsentText_English") else obj!!.getString("personalDataConsentText_English")
-                } catch (e: JSONException) {
-                    throw RuntimeException(e)
-                }
-                runOnUiThread {
+            text += ConfigUtils(this).getPersonalDataConsentText(sessionManager?.appLanguage)
+            text += "</body></html>"
 
-                    // ui task
-                    tvText?.autoLinkMask = Linkify.ALL
-                    tvText?.text = HtmlCompat.fromHtml(
-                        privacy_string,
-                        HtmlCompat.FROM_HTML_MODE_COMPACT
-                    )
-                    loadingDialog?.dismiss()
-                }
-            }.start()
-        } else {
-            tvText?.text = HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_COMPACT)
-            loadingDialog?.dismiss()
-        }
+            runOnUiThread {
+                webView?.loadDataWithBaseURL(
+                    null,
+                    text,
+                    "text/html",
+                    "utf-8",
+                    null
+                )
+            }
+        }.start()
+
     }
 
     fun declineCon(view: View?) {
@@ -103,6 +82,12 @@ class PersonalConsentActivity : AppCompatActivity() {
     }
 
     fun acceptCon(view: View?) {
+        startActivity(
+            Intent(
+                this,
+                IdentificationActivity_New::class.java
+            )
+        )
         setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
         finish()
     }
@@ -129,5 +114,17 @@ class PersonalConsentActivity : AppCompatActivity() {
         res.displayMetrics.setTo(dm)
         res.configuration.setTo(conf)
         return context
+    }
+
+    override fun onPageStarted() {
+        loadingDialog?.show()
+    }
+
+    override fun onPageFinish() {
+        loadingDialog?.dismiss()
+    }
+
+    override fun onPageError(error: String) {
+        loadingDialog?.dismiss()
     }
 }

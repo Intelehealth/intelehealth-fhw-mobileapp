@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.intelehealth.app.BuildConfig;
+
+import java.security.Key;
 import java.util.Set;
 
 public class SessionManager {
@@ -64,6 +67,10 @@ public class SessionManager {
     private static final String JWT_AUTH_TOKEN = "JWT_AUTH_TOKEN";
 
     private static final String ACTIVITY_RESULT_APPOINTMENT = "ACTIVITY_RESULT_APPOINTMENT";
+
+    public static final String PRIVACY_POLICY = "PRIVACY_POLICY";
+    public static final String TERMS_OF_USE = "TERMS_OF_USE";
+    public static final String PERSONAL_DATA_PROCESSING_POLICY = "PERSONAL_DATA_PROCESSING_POLICY";
 
 
     // LogCat tag
@@ -221,7 +228,9 @@ public class SessionManager {
     }
 
     public String getServerUrl() {
-        return pref.getString(KEY_PREF_SERVER_URL, "");
+        //added the default server url instead of ""
+        //because some times crash happens for the empty string
+        return pref.getString(KEY_PREF_SERVER_URL, BuildConfig.SERVER_URL);
     }
 
     public void setServerUrl(String serverUrl) {
@@ -552,6 +561,22 @@ public class SessionManager {
 
     public void setAppointmentResult(Boolean appointmentResult) {
         editor.putBoolean(ACTIVITY_RESULT_APPOINTMENT, appointmentResult);
+        editor.commit();
+    }
+
+    /**
+     * setting webview html here
+     * to support offline
+     * @param key
+     * @return
+     */
+
+    public String getHtml(String key) {
+        return pref.getString(key, "");
+    }
+
+    public void setHtml(String key,String html) {
+        editor.putString(key, html);
         editor.commit();
     }
 }
