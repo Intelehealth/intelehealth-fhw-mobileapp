@@ -57,10 +57,6 @@ public class SyncDAO {
 
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
-        if(Looper.getMainLooper().getThread() == Thread.currentThread())
-        {
-            Log.d("cccccccc","main");
-        }
         boolean isSynced = true;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         appLanguage = sessionManager.getAppLanguage();
@@ -163,12 +159,7 @@ public class SyncDAO {
     
     Object populatePullSuccessBackground(Response<ResponseDTO> response, Context context){
         boolean sync = false;
-        if(Looper.getMainLooper().getThread() == Thread.currentThread())
-        {
-            Log.d("cccccccc","mainpopulatePullSuccessBackground");
-        }else {
-            Log.d("cccccccc","back");
-        }
+
         try {
             sync = SyncData(response.body());
             Log.d(TAG, "onResponse: response body : " + response.body().toString());
