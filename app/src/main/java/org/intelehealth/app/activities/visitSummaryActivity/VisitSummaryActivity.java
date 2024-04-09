@@ -182,7 +182,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class VisitSummaryActivity extends BaseActivity /*implements PrinterObserver*/ {
+public class VisitSummaryActivity extends AppCompatActivity /*implements PrinterObserver*/ {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
@@ -4788,7 +4788,7 @@ public class VisitSummaryActivity extends BaseActivity /*implements PrinterObser
     protected void onStart() {
         registerDownloadPrescription();
         callBroadcastReceiver();
-        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
+        ContextCompat.registerReceiver(this,(mMessageReceiver), new IntentFilter(FILTER),ContextCompat.RECEIVER_NOT_EXPORTED);
         super.onStart();
     }
 

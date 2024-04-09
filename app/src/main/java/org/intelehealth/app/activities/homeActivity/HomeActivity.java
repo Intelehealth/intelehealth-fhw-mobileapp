@@ -288,6 +288,7 @@ public class HomeActivity extends BaseActivity /* implements BluetoothService.On
                     intent.putExtra("visit_uuid", visitUUID);
                     intent.putExtra("connection_info", connectionInfoObject.toString());
                     intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
+                    intent.setPackage(IntelehealthApplication.getInstance().getPackageName());
                     getApplicationContext().sendBroadcast(intent);
 
                     Intent chatIntent = new Intent(this, NASChatActivity.class);

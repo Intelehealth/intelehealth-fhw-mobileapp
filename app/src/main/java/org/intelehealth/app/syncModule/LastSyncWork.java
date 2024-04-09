@@ -42,7 +42,9 @@ public class LastSyncWork extends Worker {
         Logger.logD(TAG, "doWork");
 
         Intent in = new Intent();
+        in.setPackage(IntelehealthApplication.getInstance().getPackageName());
         in.setAction(AppConstants.SYNC_INTENT_ACTION);
+        in.setPackage(IntelehealthApplication.getInstance().getPackageName());
         IntelehealthApplication.getAppContext().sendBroadcast(in);
 
         return Result.success();
