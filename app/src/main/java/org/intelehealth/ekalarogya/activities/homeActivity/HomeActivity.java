@@ -115,6 +115,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -415,10 +416,19 @@ public class HomeActivity extends BaseActivity implements SyncListener {
                 }
             }
         }
-        if (isVisitVoid[0] = true) {
-            int count = getUnUploadedVisitCount();
-            unUploadedVisitNotificationTV.setText(getResources().getString(R.string.you_have_unuploaded_visits, String.valueOf(count)));
-            if (count > 0) unUploadedVisitNotificationCV.setVisibility(View.VISIBLE);
+        if (isVisitVoid[0]) {
+            Executors.newSingleThreadExecutor().execute(() -> {
+                int count = getUnUploadedVisitCount();
+
+                runOnUiThread(() -> {
+                    if (count > 0) {
+                        unUploadedVisitNotificationTV.setText(getResources().getString(R.string.you_have_unuploaded_visits, String.valueOf(count)));
+                        unUploadedVisitNotificationCV.setVisibility(View.VISIBLE);
+                    } else {
+                        unUploadedVisitNotificationCV.setVisibility(View.GONE);
+                    }
+                });
+            });
         }
     }
 

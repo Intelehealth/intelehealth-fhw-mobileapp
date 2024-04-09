@@ -45,7 +45,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
-                            android:text="You have 10 un-uploaded visits."
                             android:textSize="14sp" />
 
                     </LinearLayout>
