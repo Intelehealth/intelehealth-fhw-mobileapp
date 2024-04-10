@@ -349,10 +349,14 @@ public class AllAppointmentsFragment extends Fragment {
      */
     private void fragmentResultListener() {
         getParentFragmentManager().setFragmentResultListener("requestKey", AllAppointmentsFragment.this, (requestKey, bundle) -> {
-            String selectedDate = bundle.getString("selectedDate");
+            String selectedDate = bundle.getString(SELECTED_DATE);
             if(selectedDate != null){
-                String whichDate = bundle.getString("whichDate");
-                if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
+                String whichDate = bundle.getString(WHICH_DATE);
+                if (!whichDate.isEmpty() && whichDate.equals(FROM_DATE)) {
+                    if (!toDate.isEmpty() && DateAndTimeUtils.isAfter(selectedDate, toDate, D_FORMAT_dd_M_yyyy)) {
+                        Toast.makeText(requireContext(), R.string.the_from_date_cannot_be_greater_than_the_to_date,Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     fromDate = selectedDate;
                     String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -364,7 +368,11 @@ public class AllAppointmentsFragment extends Fragment {
                     dismissDateFilterDialog();
                 }
 
-                if (!whichDate.isEmpty() && whichDate.equals("todate")) {
+                if (!whichDate.isEmpty() && whichDate.equals(TO_DATE)) {
+                    if (!fromDate.isEmpty() && DateAndTimeUtils.isBefore(selectedDate, fromDate, D_FORMAT_dd_M_yyyy)) {
+                        Toast.makeText(requireContext(), R.string.the_to_date_cannot_be_less_than_the_from_date,Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     toDate = selectedDate;
                     String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -983,7 +991,7 @@ public class AllAppointmentsFragment extends Fragment {
             }, 2000);
         }
     }
-  
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
@@ -1005,6 +1013,7 @@ public class AllAppointmentsFragment extends Fragment {
                 }
                 dismissDateFilterDialog();
              }
+
             if (!whichDate.isEmpty() && whichDate.equals(TO_DATE)) {
                 if (!fromDate.isEmpty() && DateAndTimeUtils.isBefore(selectedDate, fromDate, D_FORMAT_dd_M_yyyy)) {
                     Toast.makeText(requireContext(),"The 'to' date cannot be less than the 'from' date",Toast.LENGTH_SHORT).show();
