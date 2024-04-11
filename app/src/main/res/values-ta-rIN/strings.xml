@@ -778,5 +778,6 @@
     <string name="u2022_timings">• Timings</string>
     <string name="u2022_remarks">• Remarks</string>
     <string name="the_from_date_cannot_be_greater_than_the_to_date">The \'from\' date cannot be greater than the \'to\' date</string>
+    <string name="no_notifications_yet">No Notifications Yet</string>
 </resources>
 

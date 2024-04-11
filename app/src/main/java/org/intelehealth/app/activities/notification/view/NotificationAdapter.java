@@ -1,11 +1,6 @@
-package org.intelehealth.app.activities.notification;
-
-import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
-import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
-import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
+package org.intelehealth.app.activities.notification.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +8,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.visit.PrescriptionActivity;
+import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.models.NotificationModel;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.OnSwipeTouchListener;
 
 import java.util.List;
@@ -31,19 +27,19 @@ import java.util.List;
  */
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolderView> {
-    private Context context;
     List<NotificationModel> patientDTOList;
-    private AdapterInterface anInterface;
+    private NotificationClickListener clickListener;
+    private Context mContext;
 
-    public NotificationAdapter(Context context, List<NotificationModel> patientDTOList, AdapterInterface anInterface) {
-        this.context = context;
+    public NotificationAdapter(List<NotificationModel> patientDTOList, NotificationClickListener clickListener) {
         this.patientDTOList = patientDTOList;
-        this.anInterface = anInterface;
+        this.clickListener = clickListener;
     }
 
     @NonNull
     @Override
     public NotificationAdapter.MyHolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        mContext =parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View row = inflater.inflate(R.layout.notification_list_item, parent, false);
         return new NotificationAdapter.MyHolderView(row);
@@ -51,18 +47,19 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull NotificationAdapter.MyHolderView holder, int position) {
+        Context mContext = holder.search_name.getContext();
         NotificationModel model = patientDTOList.get(position);
         if (model != null) {
-            holder.search_name.setText(model.getFirst_name() + " " + model.getLast_name() + context.getString(R.string.prescription_received));
+            holder.search_name.setText(model.getFirst_name() + " " + model.getLast_name() + mContext.getString(R.string.prescription_received));
 
             holder.delete_imgview.setOnClickListener(v -> {
-                anInterface.deleteNotifi_Item(patientDTOList, holder.getLayoutPosition());
+                clickListener.deleteNotification(patientDTOList.get(position), holder.getLayoutPosition());
                 notifyItemRemoved(holder.getLayoutPosition());
             });
 
 
             holder.open_presc_btn.setOnClickListener(v -> {
-                Intent intent = new Intent(context, PrescriptionActivity.class);
+               /* Intent intent = new Intent(context, PrescriptionActivity.class);
                 intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name());
                 intent.putExtra("patientUuid", model.getPatientuuid());
                 intent.putExtra("tag", "Notification screen");
@@ -88,7 +85,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 model.setFollowupDate(followupDate);
                 intent.putExtra("followupDate", followupDate);
 
-                context.startActivity(intent);
+                context.startActivity(intent);*/
             });
         }
     }
@@ -114,7 +111,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             delete_imgview = itemView.findViewById(R.id.delete_imgview);
             open_presc_btn = itemView.findViewById(R.id.open_presc_btn);
 
-            scroll_relative.setOnTouchListener(new OnSwipeTouchListener(context) {
+            scroll_relative.setOnTouchListener(new OnSwipeTouchListener(mContext) {
                 @Override
                 public void onSwipeLeft() {
                     super.onSwipeLeft();

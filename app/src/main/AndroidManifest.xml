@@ -212,7 +212,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.notification.NotificationActivity"
+            android:name=".activities.notification.view.NotificationActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />

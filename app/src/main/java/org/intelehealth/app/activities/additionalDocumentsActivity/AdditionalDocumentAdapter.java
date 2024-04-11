@@ -37,11 +37,8 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.DocumentObject;
 
-import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
