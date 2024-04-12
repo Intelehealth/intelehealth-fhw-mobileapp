@@ -234,8 +234,8 @@
     <string name="title_activity_patient_detail" translatable="false">Patient Detail</string>
     <string name="header_medical_history" translatable="false">History</string>
     <string name="button_new_visit" translatable="false">Start Doctor new advice</string>
-    <string name="button_sevika_advice" translatable="false">Start Sevika new advice</string>
-    <string name="header_previous_visits" translatable="false">Previous visits</string>
+    <string name="button_sevika_advice" translatable="false">New NCD/Sevika Visit</string>
+    <string name="header_previous_visits" translatable="false">Previous` visits</string>
     <string name="header_patient_history" translatable="false">Medical history</string>
     <string name="header_family_history" translatable="false">Family history</string>
     <string name="string_no_hist" translatable="false">No history of illness</string>
