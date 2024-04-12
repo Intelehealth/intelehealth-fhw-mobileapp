@@ -87,7 +87,6 @@ dependencies {
     api 'com.android.volley:volley:1.2.1'
     api 'com.github.bumptech.glide:glide:4.14.2'
     api 'com.google.code.gson:gson:2.10'
-    api "com.squareup.okhttp3:logging-interceptor:4.10.0"
 
     def room_version = "2.6.1"
     api "androidx.room:room-ktx:$room_version"

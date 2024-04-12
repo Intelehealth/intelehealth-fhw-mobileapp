@@ -6,6 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import org.intelehealth.config.room.dao.ConfigDao
+import org.intelehealth.config.room.dao.LanguageDao
+import org.intelehealth.config.room.dao.SpecializationDao
 import org.intelehealth.config.room.entity.ConfigDictionary
 import java.util.Locale
 
@@ -18,6 +20,10 @@ import java.util.Locale
 abstract class ConfigDatabase : RoomDatabase() {
 
     abstract fun configDao(): ConfigDao
+
+    abstract fun specializationDao(): SpecializationDao
+
+    abstract fun languageDao(): LanguageDao
 
     companion object {
 
