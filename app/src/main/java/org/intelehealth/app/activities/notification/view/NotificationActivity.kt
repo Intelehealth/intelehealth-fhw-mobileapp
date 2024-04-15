@@ -1,19 +1,15 @@
 package org.intelehealth.app.activities.notification.view
 
-import android.database.sqlite.SQLiteDatabase
-import android.os.Build
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.notification.viewmodel.NotificationViewModel
 import org.intelehealth.app.databinding.ActivityNotificationBinding
 import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.shared.BaseActivity
-import org.intelehealth.app.utilities.SessionManager
 
 
 /**
@@ -25,9 +21,7 @@ import org.intelehealth.app.utilities.SessionManager
 private const val TAG = "@@NotificationActivity::"
 
 class NotificationActivity : BaseActivity() {
-    private val sessionManager: SessionManager? = null
-    private val db: SQLiteDatabase? = null
-     private var notificationList: List<NotificationModel>? = null
+    private var notificationList: List<NotificationModel>? = null
     private lateinit var mBinding: ActivityNotificationBinding
     private lateinit var mViewModel: NotificationViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +34,7 @@ class NotificationActivity : BaseActivity() {
     }
 
     private fun initialization() {
-    notificationList = mViewModel.fetchNonDeletedNotification()
+        notificationList = mViewModel.fetchNonDeletedNotification()
     }
 
     private fun setListeners() {
@@ -48,13 +42,18 @@ class NotificationActivity : BaseActivity() {
             ivBack.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }
+            ibClearAll.setOnClickListener{
+                mViewModel.deleteAllNotifications()
+            }
         }
+
     }
 
     private fun setNotificationAdapter() {
         mBinding.rvNotifications.apply {
             adapter = NotificationAdapter(notificationList, clickListener)
-            layoutManager = LinearLayoutManager(this@NotificationActivity,RecyclerView.VERTICAL,false)
+            layoutManager =
+                LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
         }
     }
 

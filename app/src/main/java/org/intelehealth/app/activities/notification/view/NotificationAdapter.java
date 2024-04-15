@@ -1,6 +1,11 @@
 package org.intelehealth.app.activities.notification.view;
 
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
+import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.notification.AdapterInterface;
+import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.models.NotificationModel;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.OnSwipeTouchListener;
 
 import java.util.List;
@@ -59,7 +66,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
             holder.open_presc_btn.setOnClickListener(v -> {
-               /* Intent intent = new Intent(context, PrescriptionActivity.class);
+                Context context = holder.delete_imgview.getContext();
+                Intent intent = new Intent(context, PrescriptionActivity.class);
                 intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name());
                 intent.putExtra("patientUuid", model.getPatientuuid());
                 intent.putExtra("tag", "Notification screen");
@@ -85,7 +93,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 model.setFollowupDate(followupDate);
                 intent.putExtra("followupDate", followupDate);
 
-                context.startActivity(intent);*/
+                context.startActivity(intent);
             });
         }
     }

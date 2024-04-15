@@ -11,9 +11,10 @@ class NotificationViewModel : ViewModel() {
 
     fun fetchNonDeletedNotification() = readNotificationUseCase.fetchNonDeletedNotification()
 
-    fun deleteNotification(uuid : String) {
+    fun deleteNotification(uuid: String) {
         deleteNotificationUseCase.deleteNotification(uuid)
     }
+
     fun deleteAllNotifications() {
         deleteNotificationUseCase.deleteAllNotifications()
     }

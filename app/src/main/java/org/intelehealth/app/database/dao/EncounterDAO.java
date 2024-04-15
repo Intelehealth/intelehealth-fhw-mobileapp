@@ -390,6 +390,51 @@ public class EncounterDAO {
         return patientDTOList;
     }
 
+    public static List<NotificationModel> fetchAllVisits() {
+        List<NotificationModel> patientDTOList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT p.first_name, p.last_name, p.uuid as patientuuid, " +
+                        "v.uuid as visitUUID, p.patient_photo, v.startdate, p.gender, p.openmrs_id, p.date_of_birth, " +
+                        "substr(o.obsservermodifieddate, 1, 10) as obs_server_modified_date from " +
+                        "tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o WHERE " +
+                        "p.uuid = v.patientuuid AND v.uuid = e.visituuid AND e.uuid = o.encounteruuid AND " +
+                        "(e.sync = '1' OR e.sync = 'true' OR e.sync = 'TRUE') COLLATE NOCASE",
+                null);   // Remove the date condition
+
+        try {
+            if (idCursor.moveToFirst()) {
+                do {
+                    NotificationModel model = new NotificationModel();
+
+                    model.setFirst_name(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                    model.setLast_name(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+
+                    model.setUuid(UUID.randomUUID().toString());
+                    model.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+                    model.setDescription(model.getFirst_name() + " " + model.getLast_name() + "\'s prescription was received!");
+                    model.setObs_server_modified_date(idCursor.getString(idCursor.getColumnIndexOrThrow("obs_server_modified_date")));
+                    model.setNotification_type("Prescription");
+                    model.setSync("TRUE");
+
+                    model.setVisitUUID(idCursor.getString(idCursor.getColumnIndexOrThrow("visitUUID")));
+                    model.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                    model.setVisit_startDate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+                    model.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                    model.setOpenmrsID(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setDate_of_birth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setIsDeleted("false");
+                    patientDTOList.add(model);
+                }
+                while (idCursor.moveToNext());
+            }
+        } catch (SQLException e) {
+
+        }
+
+        idCursor.close();
+        return patientDTOList;
+    }
+
 
     public static String getStartVisitNoteEncounterByVisitUUID(String visitUUID) {
         String encounterUuid = "";

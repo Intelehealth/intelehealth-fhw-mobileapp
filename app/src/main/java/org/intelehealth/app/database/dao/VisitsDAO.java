@@ -4,6 +4,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITI
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,6 +13,7 @@ import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.activities.visit.VisitDetailsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
@@ -618,6 +620,15 @@ public class VisitsDAO {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+
+
+
+                Intent intent = new Intent(context, VisitDetailsActivity.class);
+
+                intent.putExtra("priority_tag", model.isEmergency());
+                intent.putExtra("hasPrescription", model.isHasPrescription());
+                intent.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
+                context.startActivity(intent);
 
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
