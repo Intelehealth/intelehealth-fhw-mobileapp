@@ -2,11 +2,9 @@ package org.intelehealth.app.activities.chooseLanguageActivity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -28,11 +26,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.activity.ComponentActivity;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,12 +43,8 @@ import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -67,6 +57,7 @@ import org.intelehealth.app.dataMigration.SmoothUpgrade;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.fcm.utils.FcmRemoteConfig;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,6 +68,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 
 import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String TAG = "SplashScreenActivity";
@@ -94,33 +86,33 @@ public class SplashScreenActivity extends AppCompatActivity {
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
 
-    ActivityResultLauncher<Intent> usageAccessPermission = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
-        if (customDialog.isVisible()) {
-            customDialog.dismiss();
-        }
-    });
+//    ActivityResultLauncher<Intent> usageAccessPermission = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
+//        if (customDialog.isVisible()) {
+//            customDialog.dismiss();
+//        }
+//    });
 
-    ActivityResultLauncher<Intent> drawOverlayPermission = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
-        try {
-            PackageManager packageManager = getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
-            AppOpsManager appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
-
-            if (mode != AppOpsManager.MODE_ALLOWED) {
-                customDialog = new CustomDialog(this);
-                customDialog.showDialog1(usageAccessPermission);
-            }
-        } catch (PackageManager.NameNotFoundException ignored) {
-            // Control shouldn't reach at this point of the code
-            //
-        }
-    });
+//    ActivityResultLauncher<Intent> drawOverlayPermission = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
+//        try {
+//            PackageManager packageManager = getPackageManager();
+//            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
+//            AppOpsManager appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+//            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+//
+//            if (mode != AppOpsManager.MODE_ALLOWED) {
+//                customDialog = new CustomDialog(this);
+//                customDialog.showDialog1(usageAccessPermission);
+//            }
+//        } catch (PackageManager.NameNotFoundException ignored) {
+//            // Control shouldn't reach at this point of the code
+//            //
+//        }
+//    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screenactivity_ui2);
+        setContentView(R.layout.activity_splash);
         sessionManager = new SessionManager(SplashScreenActivity.this);
         rvSelectLanguage = findViewById(R.id.rv_select_language);
         layoutLanguage = findViewById(R.id.layout_panel);
@@ -142,7 +134,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
 
 //        TokenRefreshUtils.refreshToken(this);
-        initFirebaseRemoteConfig();
+
+        FcmRemoteConfig.getRemoteConfig(this, fcmConfigExecutor);
 
         if (sessionManager.isFirstTimeLaunch()) {
             checkPerm();
@@ -162,6 +155,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         saveLanguage();
 
     }
+
+    private final Function1<FirebaseRemoteConfig, Unit> fcmConfigExecutor = firebaseRemoteConfig -> {
+        initFirebaseRemoteConfig(firebaseRemoteConfig);
+        return Unit.INSTANCE;
+    };
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -221,42 +219,29 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     }
 
-    private void initFirebaseRemoteConfig() {
-        FirebaseApp.initializeApp(this);
-        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build();
-        instance.setConfigSettingsAsync(configSettings);
+    private void initFirebaseRemoteConfig(FirebaseRemoteConfig config) {
 
-        instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
-            @Override
-            public void onComplete(@NonNull Task<Boolean> task) {
-                if (task.isSuccessful() && !isFinishing()) {
-                    long force_update_version_code = instance.getLong("force_update_version_code");
-                    if (force_update_version_code > BuildConfig.VERSION_CODE) {
-                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashScreenActivity.this);
-                        alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
-                        alertDialogBuilder.setCancelable(false);
-                        alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-                                } catch (android.content.ActivityNotFoundException anfe) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-                                }
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-                        alertDialogBuilder.show();
-                    } else {
-                        checkPerm();
+        long force_update_version_code = config.getLong("force_update_version_code");
+        if (force_update_version_code > BuildConfig.VERSION_CODE) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashScreenActivity.this);
+            alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
+            alertDialogBuilder.setCancelable(false);
+            alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
                     }
-                } else {
-                    checkPerm();
+                    dialog.dismiss();
+                    finish();
                 }
-            }
-        });
+            });
+            alertDialogBuilder.show();
+        } else {
+            checkPerm();
+        }
     }
 
     public static final int PERMISSION_USAGE_ACCESS_STATS = 2792;
@@ -302,12 +287,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         return true;
     }
 
-    private void checkOverlayPermission() {
-        if (!Settings.canDrawOverlays(this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-            drawOverlayPermission.launch(intent);
-        }
-    }
+//    private void checkOverlayPermission() {
+//        if (!Settings.canDrawOverlays(this)) {
+//            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+//            drawOverlayPermission.launch(intent);
+//        }
+//    }
 
     private void checkPerm() {
         if (checkAndRequestPermissions()) {

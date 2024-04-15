@@ -16,11 +16,11 @@ interface CoreDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(data: T)
 
-    suspend fun getAllRecord(): List<T>
-
-    suspend fun getRecord(key: String): T
-
-    fun getAllLiveRecord(): LiveData<List<T>>
-
-    fun getLiveRecord(key: String): LiveData<T>
+//    suspend fun getAllRecord(): List<T>
+//
+//    suspend fun getRecord(key: String): T
+//
+//    fun getAllLiveRecord(): LiveData<List<T>>
+//
+//    fun getLiveRecord(key: String): LiveData<T>
 }

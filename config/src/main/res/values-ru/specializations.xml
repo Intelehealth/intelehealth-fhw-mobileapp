@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="general_physician">General Physician</string>
+    <string name="pediatrician">Pediatrician</string>
+    <string name="obgyn_specialist_or_gynecologist">OBGyn Specialist or Gynecologist</string>
+    <string name="psychiatrist">Psychiatrist</string>
+    <string name="endocrinologist">Endocrinologist</string>
+    <string name="orthopedician">Orthopedician</string>
+    <string name="neonatologist">Neonatologist</string>
+    <string name="hepatologist">Hepatologist</string>
+    <string name="head_and_neck_surgeon">Head &amp; Neck Surgeon</string>
+</resources>

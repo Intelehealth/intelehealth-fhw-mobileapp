@@ -12,6 +12,7 @@ import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.config.room.dao.ConfigDao
 import org.intelehealth.config.room.entity.ConfigDictionary
 import org.intelehealth.config.utility.KEY_SPECIALIZATIONS
+import org.intelehealth.config.utility.NO_DATA_FOUND
 import org.intelehealth.core.network.state.Result
 
 /**
@@ -27,25 +28,21 @@ class ConfigRepository(
 
     fun fetchAndUpdateConfig(onCompleted: (Result<*>) -> Unit) {
         scope.launch {
-            dataSource.getConfig().collect {
-                if (it.isSuccess()) {
-
-                } else onCompleted(it)
+            dataSource.getConfig().collect { result ->
+                if (result.isSuccess()) {
+                    result.data?.let {
+                        saveAllConfig(it) { onCompleted(result) }
+                    } ?: onCompleted(Result.Fail<Any>(NO_DATA_FOUND))
+                } else onCompleted(result)
             }
         }
     }
 
-    fun saveAllConfig(config: ConfigResponse) {
+    private fun saveAllConfig(config: ConfigResponse, onCompleted: () -> Unit) {
         scope.launch {
             configDb.specializationDao().save(config.specialization)
-            configDb.languageDao()
+            configDb.languageDao().save(config.language)
+            onCompleted.invoke()
         }
     }
-//
-//    fun getSpecificConfigByKey(key: String) = configDao.getLiveConfigValueByKey(key)
-//
-//    @OptIn(ExperimentalCoroutinesApi::class)
-//    fun test(): ConfigDictionary = scope.async {
-//        return@async configDao.getConfigValueByKey(KEY_SPECIALIZATIONS)
-//    }.getCompleted()
 }

@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.room.entity.ConfigDictionary
 
 /**
@@ -13,17 +14,17 @@ import org.intelehealth.config.room.entity.ConfigDictionary
  * Mob   : +919727206702
  **/
 @Dao
-interface LanguageDao : CoreDao<LanguageDao> {
+interface LanguageDao : CoreDao<ActiveLanguage> {
 
     @Query("SELECT * FROM tbl_language")
-    override suspend fun getAllRecord(): List<LanguageDao>
+    suspend fun getAllRecord(): List<ActiveLanguage>
 
     @Query("SELECT * FROM tbl_language where code = :key")
-    override suspend fun getRecord(key: String): LanguageDao
+    suspend fun getRecord(key: String): ActiveLanguage
 
     @Query("SELECT * FROM tbl_language")
-    override fun getAllLiveRecord(): LiveData<List<LanguageDao>>
+    fun getAllLiveRecord(): LiveData<List<ActiveLanguage>>
 
     @Query("SELECT * FROM tbl_language where code = :key")
-    override fun getLiveRecord(key: String): LiveData<LanguageDao>
+    fun getLiveRecord(key: String): LiveData<ActiveLanguage>
 }

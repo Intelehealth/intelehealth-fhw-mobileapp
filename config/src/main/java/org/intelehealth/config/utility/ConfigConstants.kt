@@ -7,3 +7,5 @@ package org.intelehealth.config.utility
  **/
 
 const val NO_NETWORK = "No Network"
+const val NO_DATA_FOUND = "No data found"
+const val WORKER_RESULT = "worker_result"

@@ -16,14 +16,14 @@ import org.intelehealth.config.room.entity.Specialization
 @Dao
 interface SpecializationDao : CoreDao<Specialization> {
     @Query("SELECT * FROM tbl_specialization")
-    override suspend fun getAllRecord(): List<Specialization>
+    suspend fun getAllRecord(): List<Specialization>
 
     @Query("SELECT * FROM tbl_specialization where sKey = :key")
-    override suspend fun getRecord(key: String): Specialization
+    suspend fun getRecord(key: String): Specialization
 
     @Query("SELECT * FROM tbl_specialization")
-    override fun getAllLiveRecord(): LiveData<List<Specialization>>
+    fun getAllLiveRecord(): LiveData<List<Specialization>>
 
     @Query("SELECT * FROM tbl_specialization where sKey = :key")
-    override fun getLiveRecord(key: String): LiveData<Specialization>
+    fun getLiveRecord(key: String): LiveData<Specialization>
 }

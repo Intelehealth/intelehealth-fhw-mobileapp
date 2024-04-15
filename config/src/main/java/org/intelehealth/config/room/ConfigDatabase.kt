@@ -8,7 +8,9 @@ import androidx.room.RoomDatabase
 import org.intelehealth.config.room.dao.ConfigDao
 import org.intelehealth.config.room.dao.LanguageDao
 import org.intelehealth.config.room.dao.SpecializationDao
+import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.room.entity.ConfigDictionary
+import org.intelehealth.config.room.entity.Specialization
 import java.util.Locale
 
 /**
@@ -16,7 +18,11 @@ import java.util.Locale
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@Database(entities = [ConfigDictionary::class], version = 1, exportSchema = false)
+@Database(
+    entities = [ConfigDictionary::class, Specialization::class, ActiveLanguage::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class ConfigDatabase : RoomDatabase() {
 
     abstract fun configDao(): ConfigDao

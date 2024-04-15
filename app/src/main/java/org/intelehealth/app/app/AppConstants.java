@@ -1,6 +1,7 @@
 package org.intelehealth.app.app;
 
 
+import android.content.Context;
 import android.os.Environment;
 
 import androidx.work.Constraints;
@@ -210,5 +211,12 @@ public class AppConstants {
     public static final String CANCELLED = "cancelled";
     public static final String BOOKED = "booked";
 
+    public static String getAppPlayStoreUrl(Context context) {
+        return "https://play.google.com/store/apps/details?id=" + context.getApplicationContext().getPackageName();
+    }
+
+    public static String getAppMarketUrl(Context context) {
+        return "market://details?id=" + context.getApplicationContext().getPackageName();
+    }
 }
 
