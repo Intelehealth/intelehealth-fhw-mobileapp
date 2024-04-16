@@ -130,6 +130,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "education_status TEXT," +
             "caste TEXT," +
             "dead Text," +
+            "guardian_name TEXT," +
+            "guardian_type TEXT," +
+            "contact_type TEXT," +
+            "em_contact_name TEXT," +
+            "em_contact_num TEXT," +
             "modified_date TEXT," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' " +

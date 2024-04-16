@@ -795,7 +795,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+                "patient_photo","guardian_type","guardian_name","contact_type","em_contact_name","em_contact_num"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -815,6 +815,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+
+                patientDTO.setGuardianType(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_type")));
+                patientDTO.setGuardianName(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_name")));
+                patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
+                patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
+                patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();

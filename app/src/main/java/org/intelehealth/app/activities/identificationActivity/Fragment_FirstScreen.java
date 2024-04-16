@@ -3,8 +3,12 @@ package org.intelehealth.app.activities.identificationActivity;
 import static android.app.Activity.RESULT_OK;
 import static org.intelehealth.app.utilities.StringUtils.en_hi_dob_updated;
 import static org.intelehealth.app.utilities.StringUtils.inputFilter_Others;
+import static org.intelehealth.app.utilities.StringUtils.switch_hi_contact_type_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_hi_guardian_type_edit;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,11 +31,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,7 +103,11 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private Button frag1_nxt_btn_main;
     SessionManager sessionManager = null;
     private ImageView personal_icon, address_icon, other_icon;
-    EditText mFirstNameEditText, mMiddleNameEditText, mLastNameEditText, mDOBEditText, mAgeEditText, mPhoneNumberEditText;
+    EditText mFirstNameEditText, mMiddleNameEditText, mLastNameEditText,
+            mDOBEditText, mAgeEditText, mPhoneNumberEditText,
+            mGuardianNameEditText, mEmContactNameEditText,mEmContactNumberEditText;
+
+    Spinner mGuardianTypeSpinner,mContactTypeSpinner;
     private Fragment_SecondScreen fragment_secondScreen;
     PatientDTO patientdto = new PatientDTO();
     private String mGender;
@@ -107,8 +119,12 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private MaterialAlertDialogBuilder mAgePicker;
     Calendar dob = Calendar.getInstance();
     Calendar today = Calendar.getInstance();
-    private CountryCodePicker mCountryCodePicker;
-    TextView mFirstNameErrorTextView, mMiddleNameErrorTextView, mLastNameErrorTextView, mGenderErrorTextView, mDOBErrorTextView, mAgeErrorTextView, mPhoneNumberErrorTextView;
+    private CountryCodePicker mCountryCodePicker,mEmContactNoCountryCodePicker;
+    TextView mFirstNameErrorTextView, mMiddleNameErrorTextView, mLastNameErrorTextView,
+            mGenderErrorTextView, mDOBErrorTextView, mAgeErrorTextView,
+            mPhoneNumberErrorTextView,mGuardianNameErrorTextView,mGuardianTypeErrorTextView,
+            mContactTypeErrorTextView,mEmContactNameErrorTextView,mEmContactNumErrorTextView;
+    LinearLayout guardianNameLay, guardianTypeLay;
     private int mDOBYear, mDOBMonth, mDOBDay, mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     int dob_indexValue = 15;
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
@@ -118,6 +134,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     String patientID_edit;
     boolean patient_detail = false;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
+    private ArrayAdapter<CharSequence> guardianTypeAdapter, contactTypeAdapter;
 
 
     @Nullable
@@ -151,6 +168,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sessionManager = new SessionManager(getActivity());
+
+        guardianNameLay = view.findViewById(R.id.linear_guardian_name);
+        guardianTypeLay = view.findViewById(R.id.linear_guardian_type);
+
         patient_imgview = view.findViewById(R.id.patient_imgview);
         frag1_nxt_btn_main = view.findViewById(R.id.frag1_nxt_btn_main);
         personal_icon = getActivity().findViewById(R.id.addpatient_icon);
@@ -162,6 +183,12 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mMiddleNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
         mLastNameEditText = view.findViewById(R.id.lastname_edittext);
         mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
+
+        mGuardianNameEditText = view.findViewById(R.id.guardian_name_edittext);
+        mGuardianNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
+        mEmContactNameEditText = view.findViewById(R.id.em_contact_name_edittext);
+        mEmContactNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
+
         mGenderMaleRadioButton = view.findViewById(R.id.gender_male);
         mGenderFemaleRadioButton = view.findViewById(R.id.gender_female);
         mGenderOthersRadioButton = view.findViewById(R.id.gender_other);
@@ -173,6 +200,15 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText); // attaches the ccp spinner with the edittext
         mCountryCodePicker.setNumberAutoFormattingEnabled(false);
 
+        mEmContactNoCountryCodePicker = view.findViewById(R.id.emergency_contact_countrycode_spinner);
+        mEmContactNumberEditText = view.findViewById(R.id.emergency_contact_no_edittext);
+        Log.v("em_phone", "phone value: " + mEmContactNoCountryCodePicker.getSelectedCountryCode());
+        mEmContactNoCountryCodePicker.registerCarrierNumberEditText(mEmContactNumberEditText); // attaches the ccp spinner with the edittext
+        mEmContactNoCountryCodePicker.setNumberAutoFormattingEnabled(false);
+
+        mGuardianTypeSpinner = view.findViewById(R.id.guardian_type_spinner);
+        mContactTypeSpinner = view.findViewById(R.id.contact_type_spinner);
+
         mFirstNameErrorTextView = view.findViewById(R.id.firstname_error);
         mMiddleNameErrorTextView = view.findViewById(R.id.middlename_error);
         mLastNameErrorTextView = view.findViewById(R.id.lastname_error);
@@ -181,12 +217,23 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mAgeErrorTextView = view.findViewById(R.id.age_error);
         mPhoneNumberErrorTextView = view.findViewById(R.id.phone_error);
 
+        mGuardianNameErrorTextView = view.findViewById(R.id.guardian_name_error);
+        mGuardianTypeErrorTextView = view.findViewById(R.id.guardian_type_error);
+        mContactTypeErrorTextView = view.findViewById(R.id.contact_type_error);
+        mEmContactNameErrorTextView = view.findViewById(R.id.em_contact_name_error);
+        mEmContactNumErrorTextView = view.findViewById(R.id.emergency_contact_no_error);
+
         mFirstNameEditText.addTextChangedListener(new MyTextWatcher(mFirstNameEditText));
         mMiddleNameEditText.addTextChangedListener(new MyTextWatcher(mMiddleNameEditText));
         mLastNameEditText.addTextChangedListener(new MyTextWatcher(mLastNameEditText));
+        mGuardianNameEditText.addTextChangedListener(new MyTextWatcher(mGuardianNameEditText));
+        mEmContactNameEditText.addTextChangedListener(new MyTextWatcher(mEmContactNameEditText));
         mDOBEditText.addTextChangedListener(new MyTextWatcher(mDOBEditText));
         mAgeEditText.addTextChangedListener(new MyTextWatcher(mAgeEditText));
+        mEmContactNumberEditText.addTextChangedListener(new MyTextWatcher(mEmContactNumberEditText));
         //mPhoneNumberEditText.addTextChangedListener(new MyTextWatcher(mPhoneNumberEditText));
+
+        setupSpinner();
 
         fragment_secondScreen = new Fragment_SecondScreen();
         if (getArguments() != null) {
@@ -204,6 +251,20 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             mFirstNameEditText.setText(patientdto.getFirstname());
             mMiddleNameEditText.setText(patientdto.getMiddlename());
             mLastNameEditText.setText(patientdto.getLastname());
+            mGuardianNameEditText.setText(patientdto.getGuardianName());
+            mEmContactNameEditText.setText(patientdto.getEmContactName());
+
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String guardianType = switch_hi_guardian_type_edit(patientdto.getGuardianType());
+                mGuardianTypeSpinner.setSelection(guardianTypeAdapter.getPosition(guardianType));
+
+                String contactType = switch_hi_contact_type_edit(patientdto.getContactType());
+                mContactTypeSpinner.setSelection(contactTypeAdapter.getPosition(contactType));
+            }else {
+                mGuardianTypeSpinner.setSelection(guardianTypeAdapter.getPosition(patientdto.getGuardianType()));
+                mContactTypeSpinner.setSelection(contactTypeAdapter.getPosition(patientdto.getContactType()));
+            }
+
             dobToDb = patientdto.getDateofbirth();
 
             mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
@@ -222,6 +283,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             mAgeEditText.setText(age);
 
             mCountryCodePicker.setFullNumber(patientdto.getPhonenumber()); // automatically assigns cc to spinner and number to edittext field.
+            mEmContactNoCountryCodePicker.setFullNumber(patientdto.getEmContactNumber());
             //   phoneno_edittext.setText(patientdto.getPhonenumber());
 
             // Gender edit
@@ -271,6 +333,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
             }
         }
+
+        updateGuardianVisibility();
 
         setMobileNumberLimit();
 
@@ -436,6 +500,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                         mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobString));
                         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             mDOBEditText.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(dobString)));
+
+                        updateGuardianVisibility();
+
                         alertDialog.dismiss();
                     }
                 });
@@ -451,7 +518,91 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 //                IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
             }
         });
+
     }
+
+    /**
+     * guardian type and name will change based on age
+     * if age is >=18 the two fields will show
+     **/
+    private void updateGuardianVisibility() {
+        if(mAgeYears <= 18){
+            guardianNameLay.setVisibility(View.VISIBLE);
+            guardianTypeLay.setVisibility(View.VISIBLE);
+        }else {
+            guardianNameLay.setVisibility(View.GONE);
+            guardianTypeLay.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * All spinner view populating here
+     */
+    private void setupSpinner() {
+        Resources res = getResources();
+        // guardian type
+        try {
+            String countriesLanguage = "guardian_type_" + sessionManager.getAppLanguage();
+            int guardianTypes = res.getIdentifier(countriesLanguage, "array", getActivity().getApplicationContext().getPackageName());
+            if (guardianTypes != 0) {
+                guardianTypeAdapter = ArrayAdapter.createFromResource(getActivity(),
+                        guardianTypes, R.layout.simple_spinner_item_1);
+                guardianTypeAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+            }
+            mGuardianTypeSpinner.setAdapter(guardianTypeAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
+            mGuardianTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // contact type
+        try {
+            String countriesLanguage = "contact_type_" + sessionManager.getAppLanguage();
+            int contactTypes = res.getIdentifier(countriesLanguage, "array", getActivity().getApplicationContext().getPackageName());
+            if (contactTypes != 0) {
+                contactTypeAdapter = ArrayAdapter.createFromResource(getActivity(),
+                        contactTypes, R.layout.simple_spinner_item_1);
+                contactTypeAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+            }
+            mContactTypeSpinner.setAdapter(contactTypeAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
+            mContactTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+        mGuardianTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    mGuardianTypeErrorTextView.setVisibility(View.GONE);
+                    mGuardianTypeSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        mContactTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    mContactTypeErrorTextView.setVisibility(View.GONE);
+                    mContactTypeSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+    }
+
+
 
     private int mSelectedMobileNumberValidationLength = 0;
     private String mSelectedCountryCode = "";
@@ -473,6 +624,15 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         // hide the validation fields ...
         mPhoneNumberErrorTextView.setVisibility(View.GONE);
         mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+
+        //emergency contact number
+        mEmContactNumberEditText.setInputType(InputType.TYPE_CLASS_PHONE);
+
+        mEmContactNumberEditText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(mSelectedMobileNumberValidationLength)});
+        // hide the validation fields ...
+        mEmContactNumErrorTextView.setVisibility(View.GONE);
+        mEmContactNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
     }
 
     @Override
@@ -510,6 +670,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     mDOBEditText.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
                 Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+
+                updateGuardianVisibility();
             } else {
                 mAgeEditText.setText("");
                 mDOBEditText.setText("");
@@ -534,6 +696,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
@@ -590,6 +753,45 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 } else {
                     mPhoneNumberErrorTextView.setVisibility(View.GONE);
                     mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }
+            else if (this.editText.getId() == R.id.guardian_name_edittext) {
+                if (val.isEmpty()) {
+                    mGuardianNameErrorTextView.setVisibility(View.VISIBLE);
+                    mGuardianNameErrorTextView.setText(getString(R.string.error_field_required));
+                    mGuardianNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mGuardianNameErrorTextView.setVisibility(View.GONE);
+                    mGuardianNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }
+            else if (this.editText.getId() == R.id.em_contact_name_edittext) {
+                if (val.isEmpty()) {
+                    mEmContactNameErrorTextView.setVisibility(View.VISIBLE);
+                    mEmContactNameErrorTextView.setText(getString(R.string.error_field_required));
+                    mEmContactNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    mEmContactNameErrorTextView.setVisibility(View.GONE);
+                    mEmContactNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }
+            else if (this.editText.getId() == R.id.emergency_contact_no_edittext) {
+                String phoneNumber = mPhoneNumberEditText.getText().toString().trim();
+                String emContactNumber = this.editText.getText().toString().trim();
+
+                if (val.isEmpty()) {
+                    mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
+                    mEmContactNumErrorTextView.setText(getString(R.string.error_field_required));
+                    mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    if(phoneNumber.equals(emContactNumber)){
+                        mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
+                        mEmContactNumErrorTextView.setText(getString(R.string.phone_number_and_emergency_number_can_not_be_the_same));
+                        mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        return;
+                    }
+                    mEmContactNumErrorTextView.setVisibility(View.GONE);
+                    mEmContactNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
             }
         }
@@ -780,6 +982,81 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
+        if(mAgeYears <= 18){
+            //Guardian name edittext
+            if (mGuardianNameEditText.getText().toString().equals("")) {
+                mGuardianNameErrorTextView.setVisibility(View.VISIBLE);
+                mGuardianNameErrorTextView.setText(getString(R.string.error_field_required));
+                mGuardianNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mGuardianNameEditText.requestFocus();
+                return;
+            } else {
+                mGuardianNameErrorTextView.setVisibility(View.GONE);
+                mGuardianNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+
+            //Guardian type spinner
+            if (mGuardianTypeSpinner.getSelectedItemPosition() == 0) {
+                mGuardianTypeErrorTextView.setVisibility(View.VISIBLE);
+                mGuardianTypeErrorTextView.setText(getString(R.string.error_field_required));
+                mGuardianTypeSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mGuardianTypeSpinner.requestFocus();
+                return;
+            } else {
+                mGuardianTypeErrorTextView.setVisibility(View.GONE);
+                mGuardianTypeSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+            }
+        }
+
+        //Emergency contact number edittext
+        /*if (mEmContactNameEditText.getText().toString().equals("")) {
+            mGuardianNameErrorTextView.setVisibility(View.VISIBLE);
+            mGuardianNameErrorTextView.setText(getString(R.string.error_field_required));
+            mEmContactNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mGuardianNameEditText.requestFocus();
+            return;
+        } else {
+            mGuardianNameErrorTextView.setVisibility(View.GONE);
+            mGuardianNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }*/
+
+        //Contact type spinner
+        if (mContactTypeSpinner.getSelectedItemPosition() == 0) {
+            mContactTypeErrorTextView.setVisibility(View.VISIBLE);
+            mContactTypeErrorTextView.setText(getString(R.string.error_field_required));
+            mContactTypeSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mContactTypeSpinner.requestFocus();
+            return;
+        } else {
+            mContactTypeErrorTextView.setVisibility(View.GONE);
+            mContactTypeSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+        }
+
+
+        //Emergency contact name edittext
+        if (mEmContactNameEditText.getText().toString().equals("")) {
+            mEmContactNameErrorTextView.setVisibility(View.VISIBLE);
+            mEmContactNameErrorTextView.setText(getString(R.string.error_field_required));
+            mEmContactNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mEmContactNameEditText.requestFocus();
+            return;
+        } else {
+            mGuardianTypeErrorTextView.setVisibility(View.GONE);
+            mEmContactNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }
+
+        //Emergency contact number edittext
+        if (mEmContactNumberEditText.getText().toString().equals("")) {
+            mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
+            mEmContactNumErrorTextView.setText(getString(R.string.error_field_required));
+            mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mEmContactNumberEditText.requestFocus();
+            return;
+        } else {
+            mEmContactNumErrorTextView.setVisibility(View.GONE);
+            mEmContactNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }
+
         if (!mPhoneNumberEditText.getText().toString().equals("")) {
             String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
             Log.v("phone", "phone: " + s);
@@ -814,6 +1091,48 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         }
 
+        //Emergency contact number country code picker
+        if (!mEmContactNumberEditText.getText().toString().equals("")) {
+            String s = mEmContactNumberEditText.getText().toString().replaceAll("\\s+", "");
+            if (s.length() < mSelectedMobileNumberValidationLength) {
+                mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
+                mEmContactNumErrorTextView.setText(getString(R.string.enter_10_digits));
+                mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mEmContactNumberEditText.requestFocus();
+                return;
+            }
+
+            if (s.equals(mPhoneNumberEditText.getText().toString())) {
+                mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
+                mEmContactNumErrorTextView.setText(getString(R.string.phone_number_and_emergency_number_can_not_be_the_same));
+                mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mEmContactNumberEditText.requestFocus();
+                return;
+            }
+            if (!mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91") && s.length() < 15) {
+                mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
+                mEmContactNumErrorTextView.setText(getString(R.string.enter_15_digits));
+                mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mEmContactNumberEditText.requestFocus();
+                return;
+            } else {
+                mEmContactNumErrorTextView.setVisibility(View.GONE);
+                mEmContactNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+
+            if (mEmContactNoCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91")
+                    && s.length() != mSelectedMobileNumberValidationLength) {
+                mEmContactNumberEditText.setVisibility(View.VISIBLE);
+                mEmContactNumberEditText.setText(R.string.invalid_mobile_no);
+                mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mEmContactNumberEditText.requestFocus();
+                return;
+            } else {
+                mEmContactNumErrorTextView.setVisibility(View.GONE);
+                mEmContactNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+
         if (mCurrentPhotoPath != null)
             patientdto.setPatientPhoto(mCurrentPhotoPath);
         else
@@ -827,7 +1146,22 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             patientdto.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
         else
             patientdto.setPhonenumber("");
+
         patientdto.setDateofbirth(dobToDb);
+
+        if(mAgeYears <= 18){
+            patientdto.setGuardianName(mGuardianNameEditText.getText().toString());
+            patientdto.setGuardianType(StringUtils.getValue(mGuardianTypeSpinner.getSelectedItem().toString()));
+        }else {
+            patientdto.setGuardianName("");
+            patientdto.setGuardianType("");
+        }
+
+        patientdto.setContactType(StringUtils.getValue(mContactTypeSpinner.getSelectedItem().toString()));
+        patientdto.setEmContactName(mEmContactNameEditText.getText().toString());
+        patientdto.setEmContactNumber(StringUtils.getValue(mEmContactNoCountryCodePicker.getFullNumberWithPlus()));
+
+
 
 
         try {
