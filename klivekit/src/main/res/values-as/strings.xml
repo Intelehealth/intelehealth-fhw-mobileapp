@@ -68,8 +68,6 @@
     <string name="permission_denied">অনুমতি অস্বীকাৰ কৰা হৈছে\n</string>
     <string name="incoming_voice_call">ইনকামিং ভইচ(voice)কল</string>
     <string name="incoming_call">ইনকামিং কল</string>
-    <string name="decline">অস্বীকাৰ কৰা</string>
-    <string name="accept">গ্ৰহণ কৰা</string>
     <string name="doctor_profile_picture">ডাক্তৰৰ প্ৰফাইল ছবি(picture)</string>
     <string name="poor_connection">দুৰ্বল সংযোগ</string>
     <string name="remote_participant_mic_off_status">দূৰৱৰ্তী অংশগ্ৰহণকাৰীৰ মাইক অফ অৱস্থা</string>

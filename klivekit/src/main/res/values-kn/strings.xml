@@ -68,8 +68,6 @@
     <string name="permission_denied">ಅನುಮತಿ ನೀಡಲಾಗಿಲ್ಲ\n</string>
     <string name="incoming_voice_call">ಒಳಬರುವ ಧ್ವನಿ ಕರೆ</string>
     <string name="incoming_call">ಒಳಬರುವ ಕರೆ</string>
-    <string name="decline">ನಿರಾಕರಿಸು</string>
-    <string name="accept">ಸ್ವೀಕರಿಸು</string>
     <string name="doctor_profile_picture">ವೈದ್ಯರ ಪ್ರೊಫೈಲ್ ಚಿತ್ರ</string>
     <string name="poor_connection">ನಿರ್ಗತಿಕ/ಸಾಧಾರಣ ಸಂಪರ್ಕ</string>
     <string name="remote_participant_mic_off_status">ರಿಮೋಟ್/ಪರೋಕ್ಷವಾಗಿ ಭಾಗವಹಿಸುವವರ ಮೈಕ್/ಧ್ವನಿವರ್ಧಕ ಆಫ್ ಸ್ಥಿತಿ</string>

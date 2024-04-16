@@ -36,10 +36,13 @@ import org.intelehealth.app.dataMigration.SmoothUpgrade;
 import org.intelehealth.app.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.fcm.utils.FcmTokenGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import kotlin.Unit;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -64,7 +67,10 @@ public class SplashActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         // refresh the fcm token
-        TokenRefreshUtils.refreshToken(this);
+        FcmTokenGenerator.getDeviceToken(token -> {
+            IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+            return Unit.INSTANCE;
+        });
         initFirebaseRemoteConfig();
     }
 
@@ -225,6 +231,13 @@ public class SplashActivity extends AppCompatActivity {
         int fineLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            int fullScreenIntent = ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FULL_SCREEN_INTENT);
+            if (fullScreenIntent != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.USE_FULL_SCREEN_INTENT);
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);

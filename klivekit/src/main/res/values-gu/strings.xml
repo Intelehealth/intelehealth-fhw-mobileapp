@@ -70,8 +70,6 @@
     <string name="permission_denied">અનુમતિ અસ્વીકાર\n</string>
     <string name="incoming_voice_call">ઇનકમિંગ વોઇઝ કોલ</string>
     <string name="incoming_call">ઇનકમિંગ કોલ</string>
-    <string name="decline">ગિરાવટ</string>
-    <string name="accept">સ્વીકાર કરો</string>
     <string name="doctor_profile_picture">ડોકટોર પ્રોફાઈલ ચિત્ર</string>
     <string name="poor_connection">ખરાબ જોડાણ</string>
     <string name="remote_participant_mic_off_status">દૂરના સહભાગીનું માઇક બંધ સ્તિથી</string>

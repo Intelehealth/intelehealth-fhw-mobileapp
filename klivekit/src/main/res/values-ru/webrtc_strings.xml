@@ -21,6 +21,7 @@
     <string name="call_unknown">Неизвестно</string>
     <string name="call_incoming">Incoming Call</string>
     <string name="calling">Звонок</string>
+    <string name="call_logs">Журналы вызовов</string>
 
     <string name="an_hour_ago">Час назад</string>
     <string name="hours_ago">%1$s часов назад</string>
@@ -33,4 +34,8 @@
     <string name="yesterday">Вчера</string>
     <string name="yesterday_at">Вчера в</string>
     <string name="now">сейчас</string>
+
+    <string name="decline">Отклонить</string>
+    <string name="accept">Принять</string>
+    <string name="hang_up">вешать трубку</string>
 </resources>

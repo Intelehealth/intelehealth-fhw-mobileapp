@@ -73,8 +73,6 @@
 
     <string name="incoming_voice_call">Входящий голосовой вызов</string>
     <string name="incoming_call">Входящий звонок</string>
-    <string name="decline">Отклонить</string>
-    <string name="accept">Принять</string>
     <string name="doctor_profile_picture">Фотография профиля врача</string>
     <string name="poor_connection">Плохое соединение</string>
     <string name="remote_participant_mic_off_status">Состояние микрофона удаленного участника выключено</string>

@@ -77,8 +77,6 @@
 
     <string name="incoming_voice_call">ଇନ୍ କମିଂ ଭଏସ କଲ୍</string>
     <string name="incoming_call">ଇନ୍ କମିଂ କଲ୍</string>
-    <string name="decline">ମନା କରିବା</string>
-    <string name="accept">ଗ୍ରହଣ କରିବା</string>
     <string name="doctor_profile_picture">ଡାକ୍ତର ପ୍ରୋଫାଇଲ୍ ଛବି</string>
     <string name="poor_connection">ଅଳ୍ପ ସଂଯୋଗିକରଣ</string>
     <string name="remote_participant_mic_off_status">ରିମୋଟ ବା ଦୁରସ୍ଥ ଯୋଗଦାନ କାରି ମିକ୍ ଅପ୍ ଅବସ୍ଥା</string>

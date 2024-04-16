@@ -74,8 +74,6 @@
     <string name="permission_denied">Permission Denied\n</string>
     <string name="incoming_voice_call">Incoming voice call</string>
     <string name="incoming_call">Incoming call</string>
-    <string name="decline">Decline</string>
-    <string name="accept">Accept</string>
     <string name="doctor_profile_picture">Doctor profile picture</string>
     <string name="poor_connection">Poor Connection</string>
     <string name="remote_participant_mic_off_status">Remote participant mic off status</string>
