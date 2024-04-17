@@ -1481,13 +1481,19 @@
     <string name="u2022_timings">• Timings</string>
     <string name="u2022_remarks">• Remarks</string>
     <string name="the_from_date_cannot_be_greater_than_the_to_date">The \'from\' date cannot be greater than the \'to\' date</string>
-    <string name='guardian_name'>अभिभावक का नाम*</string>
+
+    <string name='guardian_name_required'>अभिभावक का नाम*</string>
+    <string name='guardian_name_non_required'>अभिभावक का नाम</string>
     <string name='enter_guardian_name'>अभिभावक का नाम दर्ज करें</string>
-    <string name='guardian_type'>अभिभावक प्रकार*</string>
+    <string name='guardian_type_required'>अभिभावक प्रकार*</string>
+    <string name='guardian_type_non_required'>अभिभावक प्रकार</string>
     <string name='select_guardian_type'>अभिभावक प्रकार चुनें</string>
-    <string name='contact_type'>संपर्क प्रकार*</string>
-    <string name='emergency_contact_number'>आपातकालीन संपर्क नंबर*</string>
-    <string name="emergency_contact_name"> आपातकालीन संपर्क नाम*</string>
+    <string name='contact_type_required'>संपर्क प्रकार*</string>
+    <string name='contact_type_non_required'>संपर्क प्रकार</string>
+    <string name='emergency_contact_number_required'>आपातकालीन संपर्क नंबर*</string>
+    <string name='emergency_contact_number_non_required'>आपातकालीन संपर्क नंबर</string>
+    <string name="emergency_contact_name_required"> आपातकालीन संपर्क नाम*</string>
+    <string name="emergency_contact_name_non_required"> आपातकालीन संपर्क नाम</string>
     <string name='enter_emergency_contact_name'>आपातकालीन संपर्क नाम दर्ज करें</string>
     <string name='phone_number_and_emergency_number_can_not_be_the_same'>फोन नंबर और आपातकालीन नंबर एक जैसे नहीं हो सकते</string>
 </resources>

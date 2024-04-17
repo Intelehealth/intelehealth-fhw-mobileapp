@@ -1151,13 +1151,13 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         if(mAgeYears <= 18){
             patientdto.setGuardianName(mGuardianNameEditText.getText().toString());
-            patientdto.setGuardianType(StringUtils.getValue(mGuardianTypeSpinner.getSelectedItem().toString()));
+            patientdto.setGuardianType(StringUtils.getProvided(mGuardianTypeSpinner));
         }else {
             patientdto.setGuardianName("");
             patientdto.setGuardianType("");
         }
 
-        patientdto.setContactType(StringUtils.getValue(mContactTypeSpinner.getSelectedItem().toString()));
+        patientdto.setContactType(StringUtils.getProvided(mContactTypeSpinner));
         patientdto.setEmContactName(mEmContactNameEditText.getText().toString());
         patientdto.setEmContactNumber(StringUtils.getValue(mEmContactNoCountryCodePicker.getFullNumberWithPlus()));
 

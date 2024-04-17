@@ -22,8 +22,10 @@ import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_hi_contact_type_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_hi_guardian_type_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_kn_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_kn_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_kn_education_edit;
@@ -150,7 +152,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
-            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
+            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
+            guardina_name_tv,guardian_type_tv,contact_type_tv,em_contact_name_tv,em_contact_number_tv;
+
+    TableRow guardian_type_table_row,guardian_name_table_row;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -520,6 +525,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientdob = findViewById(R.id.dob);
         patientage = findViewById(R.id.age);
         phone = findViewById(R.id.phone);
+
+        guardian_type_tv = findViewById(R.id.guardian_type_tv);
+        guardina_name_tv = findViewById(R.id.guardian_name_tv);
+        contact_type_tv = findViewById(R.id.contact_type_tv);
+        em_contact_name_tv = findViewById(R.id.em_contact_name_tv);
+        em_contact_number_tv = findViewById(R.id.em_contact_number_tv);
+
+        guardian_type_table_row = findViewById(R.id.guardian_type_table_row);
+        guardian_name_table_row = findViewById(R.id.guardian_name_table_row);
 
         postalcode = findViewById(R.id.postalcode);
         patientcountry = findViewById(R.id.country);
@@ -1445,6 +1459,58 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientoccupation.setText(patientDTO.getOccupation());
         } else {
             patientoccupation.setText(getString(R.string.not_provided));
+        }
+
+        if(mAgeYears <= 18){
+            guardian_name_table_row.setVisibility(View.VISIBLE);
+            guardian_type_table_row.setVisibility(View.VISIBLE);
+            //guardian type
+            if (patientDTO.getGuardianType() != null && !patientDTO.getGuardianType().equals("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String type = switch_hi_guardian_type_edit(patientDTO.getGuardianType());
+                    guardian_type_tv.setText(type);
+                }else {
+                    guardian_type_tv.setText(patientDTO.getGuardianType());
+                }
+            } else {
+                guardian_type_tv.setText(getString(R.string.not_provided));
+            }
+
+            //guardian name
+            if (patientDTO.getGuardianName() != null && !patientDTO.getGuardianName().equals("")) {
+                guardina_name_tv.setText(patientDTO.getGuardianName());
+            } else {
+                guardina_name_tv.setText(getString(R.string.not_provided));
+            }
+        }else {
+            guardian_name_table_row.setVisibility(View.GONE);
+            guardian_type_table_row.setVisibility(View.GONE);
+        }
+
+        //contact type
+        if (patientDTO.getContactType() != null && !patientDTO.getContactType().equals("")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String type = switch_hi_contact_type_edit(patientDTO.getContactType());
+                contact_type_tv.setText(type);
+            }else {
+                contact_type_tv.setText(patientDTO.getContactType());
+            }
+        } else {
+            contact_type_tv.setText(getString(R.string.not_provided));
+        }
+
+        //emergency contact name
+        if (patientDTO.getEmContactName() != null && !patientDTO.getEmContactName().equals("")) {
+            em_contact_name_tv.setText(patientDTO.getEmContactName());
+        } else {
+            em_contact_name_tv.setText(getString(R.string.not_provided));
+        }
+
+        //emergency contact number
+        if (patientDTO.getEmContactNumber() != null && !patientDTO.getEmContactNumber().equals("")) {
+            em_contact_number_tv.setText(patientDTO.getEmContactNumber());
+        } else {
+            em_contact_number_tv.setText(getString(R.string.not_provided));
         }
     }
 

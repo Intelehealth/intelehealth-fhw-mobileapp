@@ -408,7 +408,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/guardian_name"
+                    android:text="@string/guardian_name_required"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -457,7 +457,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/guardian_type"
+                    android:text="@string/guardian_type_required"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -580,7 +580,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/contact_type"
+                    android:text="@string/contact_type_required"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -632,7 +632,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/emergency_contact_name"
+                    android:text="@string/emergency_contact_name_required"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -681,7 +681,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/emergency_contact_number"
+                    android:text="@string/emergency_contact_number_required"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
