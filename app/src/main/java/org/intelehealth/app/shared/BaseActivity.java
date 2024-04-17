@@ -12,6 +12,7 @@ import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.ui.language.activity.LanguageActivity;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.notification.AppNotification;
@@ -26,7 +27,7 @@ import java.util.UUID;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class BaseActivity extends AppCompatActivity implements SocketManager.NotificationListener {
+public class BaseActivity extends LanguageActivity implements SocketManager.NotificationListener {
     private static final String TAG = "BaseActivity";
 
     @Override

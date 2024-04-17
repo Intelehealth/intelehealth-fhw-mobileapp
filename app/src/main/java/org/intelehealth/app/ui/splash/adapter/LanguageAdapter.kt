@@ -15,6 +15,7 @@ import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder
  **/
 class LanguageAdapter(context: Context, languages: List<ActiveLanguage>) :
     BaseRecyclerViewAdapter<ActiveLanguage>(context, languages.toMutableList()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return LanguageListItemViewUi2Binding.inflate(inflater, parent, false).let {
             LanguageViewHolder(it)
@@ -22,7 +23,17 @@ class LanguageAdapter(context: Context, languages: List<ActiveLanguage>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is LanguageViewHolder) holder.bind(getItem(position))
+        if (holder is LanguageViewHolder) {
+            viewHolderClickListener?.let { holder.setViewClickListener(it) }
+            holder.bind(getItem(position))
+        }
+    }
+
+    fun select(position: Int, language: ActiveLanguage) {
+        getList().forEach { it.selected = false }
+        language.selected = true
+        getList().toMutableList().set(position, language)
+        notifyItemRangeChanged(0, itemCount)
     }
 }
 
@@ -32,6 +43,8 @@ class LanguageViewHolder(private val binding: LanguageListItemViewUi2Binding) :
     fun bind(language: ActiveLanguage) {
         binding.layoutRbChooseLanguage.tag = language
         binding.layoutRbChooseLanguage.setOnClickListener(this)
+        binding.layoutRbChooseLanguage.isSelected = language.selected
+        binding.rbChooseLanguage.isChecked = language.selected
         binding.language = language
     }
 }

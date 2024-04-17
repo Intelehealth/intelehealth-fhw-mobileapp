@@ -88,6 +88,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -158,6 +160,12 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.config.presenter.language.data.LanguageRepository;
+import org.intelehealth.config.presenter.language.factory.SpecializationViewModelFactory;
+import org.intelehealth.config.presenter.specialization.data.SpecializationRepository;
+import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.Specialization;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
@@ -337,6 +345,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     TooltipWindow tipWindow;
     Boolean doesAppointmentExist = false;
 
+    private SpecializationViewModel viewModel;
+
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -415,6 +425,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary_new);
+        setupSpecialization();
         context = VisitSummaryActivity_New.this;
 
         // changing status bar color
@@ -430,6 +441,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
 
+    }
+
+    private void setupSpecialization() {
+        ConfigDatabase db = ConfigDatabase.getInstance(getApplicationContext());
+        SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
+        viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
+        viewModel.fetchSpecialization().observe(this, new Observer<List<Specialization>>() {
+            @Override
+            public void onChanged(List<Specialization> specializations) {
+                Timber.tag(TAG).d(new Gson().toJson(specializations));
+            }
+        });
     }
 
     private void fetchingIntent() {
@@ -1091,54 +1114,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             flag.setClickable(true);
         }
 
-        //spinner is being populated with the speciality values...
-        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
-
-        List<String> items = providerAttributeLIstDAO.getAllValues();
-        Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
-        //Hashmap to List<String> add all value
-        ArrayAdapter<String> stringArrayAdapter;
-
-        //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
-        if (items != null) {
-            items.add(0, getString(R.string.select_specialization_text));
-            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        } else {
-            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        }
-
-        if (special_value != null) {
-            int spinner_position = stringArrayAdapter.getPosition(special_value);
-            speciality_spinner.setSelection(spinner_position);
-
-            vd_special_value.setText(" " + Node.bullet + "  " + special_value);
-            speciality_selected = special_value;
-        } else {
-
-        }
-
-        speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i != 0) {
-                    Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                    speciality_selected = adapterView.getItemAtPosition(i).toString();
-                    vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
-                    Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
-                } else {
-                    speciality_selected = "";
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        setupSpecializationDataSpinner();
         // todo: speciality code comes in upload btn as well so add that too....later...
         // speciality data - end
 
@@ -1807,6 +1783,57 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
+        });
+    }
+
+    private void setupSpecializationDataSpinner() {
+        //spinner is being populated with the speciality values...
+        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
+
+        List<String> items = providerAttributeLIstDAO.getAllValues();
+        Log.d("specc", "spec: " + visitUuid);
+        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
+        //Hashmap to List<String> add all value
+        ArrayAdapter<String> stringArrayAdapter;
+
+        //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
+        if (items != null) {
+            items.add(0, getString(R.string.select_specialization_text));
+            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+            speciality_spinner.setAdapter(stringArrayAdapter);
+        } else {
+            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
+            speciality_spinner.setAdapter(stringArrayAdapter);
+        }
+
+        if (special_value != null) {
+            int spinner_position = stringArrayAdapter.getPosition(special_value);
+            speciality_spinner.setSelection(spinner_position);
+
+            vd_special_value.setText(" " + Node.bullet + "  " + special_value);
+            speciality_selected = special_value;
+        } else {
+
+        }
+
+        speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
+                    speciality_selected = adapterView.getItemAtPosition(i).toString();
+                    vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
+                    Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+                } else {
+                    speciality_selected = "";
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
         });
     }
 

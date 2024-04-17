@@ -1,6 +1,7 @@
 package org.intelehealth.config.room.entity
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 /**
@@ -13,5 +14,8 @@ data class ActiveLanguage(
     val name: String,
     @PrimaryKey
     val code: String,
-    val isDefault: Boolean
-)
+    val isDefault: Boolean,
+){
+    @Ignore
+    var selected: Boolean = isDefault
+}

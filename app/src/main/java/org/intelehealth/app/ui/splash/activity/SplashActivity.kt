@@ -42,6 +42,7 @@ import org.intelehealth.app.databinding.ActivitySplashBinding
 import org.intelehealth.app.ui.language.activity.LanguageActivity
 import org.intelehealth.app.ui.splash.adapter.LanguageAdapter
 import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.worker.ConfigSyncWorker
@@ -66,6 +67,14 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        loadConfig()
+        handleFcmCall()
+
+        handleButtonClickListener()
+        initLanguageList()
+    }
+
+    private fun loadConfig() {
         ConfigSyncWorker.startConfigSyncWorker(this) {
             Timber.d { "Worker state $it" }
             if (it == WorkInfo.State.SUCCEEDED.name) {
@@ -76,12 +85,24 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                     //as we are implementing force update now thus commenting this.
                     Handler(Looper.getMainLooper()).postDelayed({ nextActivity() }, 3000)
                 }
+            } else if (it == WorkInfo.State.FAILED.name) {
+                runOnUiThread { showConfigFailDialog() }
             }
         }
-        handleFcmCall()
+    }
 
-        handleButtonClickListener()
-        initLanguageList()
+    private fun showConfigFailDialog() {
+        val message = getString(R.string.something_went_wrong)
+        val title = getString(R.string.error)
+        val action = getString(R.string.retry_again)
+        val cancel = getString(R.string.cancel)
+        DialogUtils().showCommonDialog(
+            this, R.drawable.close_patient_svg, title,
+            message, false, action, cancel
+        ) {
+            if (it == CustomDialogListener.NEGATIVE_CLICK) finish()
+            else if (it == CustomDialogListener.POSITIVE_CLICK) loadConfig()
+        }
     }
 
     private fun initLanguageList() {
@@ -338,6 +359,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         if (view.id == R.id.layout_rb_choose_language) {
             val lang = view.tag as ActiveLanguage
             sessionManager.appLanguage = lang.code
+            adapter.select(position, lang)
         }
     }
 }
