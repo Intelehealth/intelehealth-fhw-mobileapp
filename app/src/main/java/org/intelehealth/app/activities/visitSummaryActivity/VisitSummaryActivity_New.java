@@ -82,7 +82,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -143,6 +142,7 @@ import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
@@ -160,12 +160,12 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
-import org.intelehealth.config.presenter.language.data.LanguageRepository;
 import org.intelehealth.config.presenter.language.factory.SpecializationViewModelFactory;
 import org.intelehealth.config.presenter.specialization.data.SpecializationRepository;
 import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.Specialization;
+import org.intelehealth.config.utility.ResUtils;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
@@ -451,6 +451,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             @Override
             public void onChanged(List<Specialization> specializations) {
                 Timber.tag(TAG).d(new Gson().toJson(specializations));
+                setupSpecializationDataSpinner(specializations);
             }
         });
     }
@@ -1114,7 +1115,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             flag.setClickable(true);
         }
 
-        setupSpecializationDataSpinner();
+
         // todo: speciality code comes in upload btn as well so add that too....later...
         // speciality data - end
 
@@ -1786,25 +1787,25 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
-    private void setupSpecializationDataSpinner() {
+    private void setupSpecializationDataSpinner(List<Specialization> specializations) {
         //spinner is being populated with the speciality values...
-        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
+//        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
 
-        List<String> items = providerAttributeLIstDAO.getAllValues();
+//        List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
         //Hashmap to List<String> add all value
-        ArrayAdapter<String> stringArrayAdapter;
-
+        SpecializationArrayAdapter stringArrayAdapter = new SpecializationArrayAdapter(this, specializations);
+        speciality_spinner.setAdapter(stringArrayAdapter);
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
-        if (items != null) {
-            items.add(0, getString(R.string.select_specialization_text));
-            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        } else {
-            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        }
+//        if (items != null) {
+//            items.add(0, getString(R.string.select_specialization_text));
+//            stringArrayAdapter = new SpecializationArrayAdapter(this, specializations);
+//            speciality_spinner.setAdapter(stringArrayAdapter);
+//        } else {
+//            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
+//            speciality_spinner.setAdapter(stringArrayAdapter);
+//        }
 
         if (special_value != null) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
@@ -1812,8 +1813,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             vd_special_value.setText(" " + Node.bullet + "  " + special_value);
             speciality_selected = special_value;
-        } else {
-
         }
 
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -1821,8 +1820,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
                     Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                    speciality_selected = adapterView.getItemAtPosition(i).toString();
-                    vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
+                    Specialization specialization = (Specialization) view.getTag(android.R.id.text1);
+                    speciality_selected = specialization.getName();
+                    String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
+                    vd_special_value.setText(" " + Node.bullet + "  " + value);
                     Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
                 } else {
                     speciality_selected = "";

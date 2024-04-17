@@ -9,4 +9,8 @@
     <string name="neonatologist">Neonatologist</string>
     <string name="hepatologist">Hepatologist</string>
     <string name="head_and_neck_surgeon">Head &amp; Neck Surgeon</string>
+    <string name="dermatologist_or_skin_specialist">Dermatologist or Skin Specialist</string>
+    <string name="neurologist">Neurologist</string>
+    <string name="clinical_immunologist">Clinical Immunologist</string>
+    <string name="rheumatologist">Rheumatologist</string>
 </resources>
