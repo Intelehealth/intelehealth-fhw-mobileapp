@@ -1972,7 +1972,7 @@ public class VisitSummaryActivity extends BaseActivity {
     }
 
     public String checkAndReturnTemperatureValue(ObsDTO dto) {
-        if (dto == null || dto.getValue() == null) {
+        if (dto == null || dto.getValue() == null || dto.getValue().isEmpty()) {
             return "NA";
         } else {
             return convertCtoF(dto.getValue());
