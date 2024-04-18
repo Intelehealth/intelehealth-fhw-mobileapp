@@ -400,6 +400,7 @@
                 android:id="@+id/linear_guardian_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:layout_below="@+id/linear_age"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
@@ -448,6 +449,7 @@
                 android:id="@+id/linear_guardian_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_below="@+id/linear_guardian_name"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">

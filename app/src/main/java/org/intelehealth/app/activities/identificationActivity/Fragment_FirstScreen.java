@@ -523,10 +523,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     /**
      * guardian type and name will change based on age
-     * if age is >=18 the two fields will show
+     * if age is <=18 the two fields will show
      **/
     private void updateGuardianVisibility() {
-        if(mAgeYears <= 18){
+        if(mAgeYears <= 18 && !mDOBEditText.getText().toString().isEmpty()){
             guardianNameLay.setVisibility(View.VISIBLE);
             guardianTypeLay.setVisibility(View.VISIBLE);
         }else {
