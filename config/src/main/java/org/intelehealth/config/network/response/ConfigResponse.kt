@@ -1,0 +1,14 @@
+package org.intelehealth.config.network.response
+
+import org.intelehealth.config.room.entity.ActiveLanguage
+import org.intelehealth.config.room.entity.Specialization
+
+/**
+ * Created by Vaghela Mithun R. on 10-04-2024 - 17:31.
+ * Email : mithun@intelehealth.org
+ * Mob   : +919727206702
+ **/
+data class ConfigResponse(
+    val specialization: List<Specialization>,
+    val language: List<ActiveLanguage>
+)
