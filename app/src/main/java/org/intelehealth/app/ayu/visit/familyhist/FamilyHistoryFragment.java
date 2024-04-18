@@ -2,7 +2,6 @@ package org.intelehealth.app.ayu.visit.familyhist;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.ajalt.timberkt.Timber;
-
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 
@@ -60,7 +58,7 @@ public class FamilyHistoryFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static FamilyHistoryFragment newInstance(Intent intent, boolean isEditMode, Node node) {
+    public static FamilyHistoryFragment newInstance(CommonVisitData commonVisitData, boolean isEditMode, Node node) {
         FamilyHistoryFragment fragment = new FamilyHistoryFragment();
         fragment.mCurrentNode = node;
         fragment.mIsEditMode = isEditMode;

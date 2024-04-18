@@ -33,6 +33,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.model.BMIStatus;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.VitalsObject;
@@ -84,23 +85,23 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
 
-    public static VitalCollectionFragment newInstance(Intent intent, boolean isEditMode, VitalsObject vitalsObject) {
+    public static VitalCollectionFragment newInstance(CommonVisitData commonVisitData, boolean isEditMode, VitalsObject vitalsObject) {
         VitalCollectionFragment fragment = new VitalCollectionFragment();
 
 
         fragment.mIsEditMode = isEditMode;
         fragment.results = vitalsObject;
 
-        fragment.patientUuid = intent.getStringExtra("patientUuid");
-        fragment.visitUuid = intent.getStringExtra("visitUuid");
-        fragment.encounterVitals = intent.getStringExtra("encounterUuidVitals");
-        fragment.encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-        fragment.EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
-        fragment.state = intent.getStringExtra("state");
-        fragment.patientName = intent.getStringExtra("name");
-        fragment.patientGender = intent.getStringExtra("gender");
-        fragment.intentTag = intent.getStringExtra("tag");
-        fragment.float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+        fragment.patientUuid = commonVisitData.getPatientUuid();//intent.getStringExtra("patientUuid");
+        fragment.visitUuid = commonVisitData.getVisitUuid(); // intent.getStringExtra("visitUuid");
+        fragment.encounterVitals = commonVisitData.getEncounterUuidVitals();//intent.getStringExtra("encounterUuidVitals");
+        fragment.encounterAdultIntials = commonVisitData.getEncounterUuidAdultIntial();//intent.getStringExtra("encounterUuidAdultIntial");
+        fragment.EncounterAdultInitial_LatestVisit = commonVisitData.getEncounterAdultInitialLatestVisit();//intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+        fragment.state = commonVisitData.getState();//intent.getStringExtra("state");
+        fragment.patientName = commonVisitData.getPatientName();//intent.getStringExtra("name");
+        fragment.patientGender = commonVisitData.getPatientGender();//intent.getStringExtra("gender");
+        fragment.intentTag = commonVisitData.getIntentTag();//intent.getStringExtra("tag");
+        fragment.float_ageYear_Month = commonVisitData.getPatientAgeYearMonth();//intent.getFloatExtra("float_ageYear_Month", 0);
         String[] temp = String.valueOf(fragment.float_ageYear_Month).split("\\.");
         fragment.mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
         return fragment;
