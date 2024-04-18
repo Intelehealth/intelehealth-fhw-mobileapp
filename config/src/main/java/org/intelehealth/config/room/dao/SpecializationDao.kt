@@ -21,6 +21,9 @@ interface SpecializationDao : CoreDao<Specialization> {
     @Query("SELECT * FROM tbl_specialization where sKey = :key")
     suspend fun getRecord(key: String): Specialization
 
+    @Query("SELECT * FROM tbl_specialization where name = :name")
+    fun getRecordByName(name: String): LiveData<Specialization>
+
     @Query("SELECT * FROM tbl_specialization")
     fun getAllLiveRecord(): LiveData<List<Specialization>>
 

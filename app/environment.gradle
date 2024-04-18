@@ -45,6 +45,7 @@ android {
             archivesBaseName = "intelehealth_biocon-" + versionName + " - " + date
         }
 
+        // This flavor used to handle different type of endpoint
         dev {
             dimension server
         }
@@ -87,6 +88,7 @@ android {
     }
 }
 
+// Generating different type of endpoint base on selected variant or app
 def buildVariantConfigField(clientServer, variant) {
     clientServer = clientServer.concat("_")
     def serverUrl = "SERVER_URL"

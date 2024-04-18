@@ -10,4 +10,6 @@ import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
  **/
 class SpecializationViewModel(private val repository: SpecializationRepository) : BaseViewModel() {
     fun fetchSpecialization() = repository.getAllLiveRecord()
+
+    fun fetchSpecializationByName(name:String) = repository.getRecordByName(name)
 }

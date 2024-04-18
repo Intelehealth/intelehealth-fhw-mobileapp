@@ -12,6 +12,8 @@ class SpecializationRepository(private val specializationDao: SpecializationDao)
 
     suspend fun getRecord(key: String) = specializationDao.getRecord(key)
 
+    fun getRecordByName(name: String) = specializationDao.getRecordByName(name)
+
     fun getAllLiveRecord() = specializationDao.getAllLiveRecord()
 
     fun getLiveRecord(key: String) = specializationDao.getLiveRecord(key)

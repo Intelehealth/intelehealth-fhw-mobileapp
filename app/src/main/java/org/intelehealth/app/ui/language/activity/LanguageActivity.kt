@@ -53,14 +53,14 @@ abstract class LanguageActivity : AppCompatActivity() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(this))
                     } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-                        applicationContext.createConfigurationContext(configuration)
+                        createConfigurationContext(configuration)
                     } else {
                         resources.updateConfiguration(configuration, displayMetrics)
                     }
                 }
             }
         }
-        return applicationContext
+        return this
     }
 
     open fun onLanguageLoaded(languages: List<ActiveLanguage>) {}

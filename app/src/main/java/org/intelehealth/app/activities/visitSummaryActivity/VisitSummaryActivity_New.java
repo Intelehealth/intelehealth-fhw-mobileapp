@@ -1810,8 +1810,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (special_value != null) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
-
-            vd_special_value.setText(" " + Node.bullet + "  " + special_value);
+            Specialization sp = stringArrayAdapter.getItem(spinner_position);
+            String displayValue = ResUtils.getStringResourceByName(this, sp.getSKey());
+            vd_special_value.setText(" " + Node.bullet + "  " + displayValue);
             speciality_selected = special_value;
         }
 
@@ -1820,11 +1821,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
                     Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                    Specialization specialization = (Specialization) view.getTag(android.R.id.text1);
+                    Specialization specialization = (Specialization) view.getTag(R.id.speciality_spinner);
                     speciality_selected = specialization.getName();
                     String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
                     vd_special_value.setText(" " + Node.bullet + "  " + value);
                     Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+                    Log.d("ResUtils", "SPINNER_Selected_final: " + value);
                 } else {
                     speciality_selected = "";
                 }
@@ -2856,7 +2858,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
-            vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
+            viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
+                String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
+                vd_special_value.setText(" " + Node.bullet + "  " + value);
+            });
+
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
             boolean isUpdateVisitDone = false;
             try {

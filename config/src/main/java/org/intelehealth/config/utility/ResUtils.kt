@@ -18,7 +18,6 @@ object ResUtils {
     fun getStringResourceByName(context: Context, aString: String): String {
         Log.d(TAG, "getStringResourceByName: $aString")
         val packageName: String = context.packageName
-//        val resId = Resources.getSystem().getIdentifier(aString, "id", "android")
         val resId: Int = context.resources.getIdentifier(aString, "string", packageName)
         if (resId == 0) return "No resource found"
         return context.getString(resId)
