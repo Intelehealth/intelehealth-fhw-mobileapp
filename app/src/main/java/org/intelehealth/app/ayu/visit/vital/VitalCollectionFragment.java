@@ -4,7 +4,6 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertFtoC;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -22,16 +21,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.adapter.DialogSimpleListAdapter;
+import org.intelehealth.app.adapter.SimpleItemData;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.BMIStatus;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -46,6 +52,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VitalCollectionFragment extends Fragment implements View.OnClickListener {
@@ -79,6 +86,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private List<Integer> mHeightMasterList = new ArrayList<>();
     private List<Integer> mWeightMasterList = new ArrayList<>();
     private boolean mIsEditMode = false;
+    private TextView mBloodGroupTextView;
+    private AlertDialog mBloodGroupAlertDialog;
 
     public VitalCollectionFragment() {
         // Required empty public constructor
@@ -145,6 +154,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         Log.v("float_ageYear_Month", float_ageYear_Month + "");
         //mHeightSpinner = view.findViewById(R.id.sp_height);
         //mWeightSpinner = view.findViewById(R.id.sp_weight);
+
+        mBloodGroupTextView = view.findViewById(R.id.tv_blood_group_spinner);
 
         mHeightEditText = view.findViewById(R.id.etv_height);
         mWeightEditText = view.findViewById(R.id.etv_weight);
@@ -215,6 +226,57 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (mIsEditMode && results == null) {
             loadSavedDateForEditFromDB();
         }
+
+        mBloodGroupTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<SimpleItemData> mItemList = new ArrayList<SimpleItemData>();
+                List<String> displaySelection = new ArrayList<>();
+                String locale = new SessionManager(requireActivity()).getAppLanguage();
+                displaySelection = Arrays.asList(getResources().getStringArray(R.array.blood_group_list));
+                for (int i = 0; i < displaySelection.size(); i++) {
+                    SimpleItemData simpleItemData = new SimpleItemData();
+                    simpleItemData.setTitle(displaySelection.get(i));
+                    simpleItemData.setObject(VisitUtils.getBloodPressureCode(displaySelection.get(i)));
+                    if (displaySelection.get(i).equalsIgnoreCase("Don\\'t Know")) {
+                        simpleItemData.setTitleLocal(getString(R.string.dont_know));
+                    }
+
+                    if (displaySelection.get(i).equalsIgnoreCase("O-")) {
+                        simpleItemData.setSubTitleLocal(getString(R.string.universal_donor));
+                    }
+
+                    if (displaySelection.get(i).equalsIgnoreCase("AB+")) {
+                        simpleItemData.setSubTitleLocal(getString(R.string.universal_recipient));
+                    }
+
+
+                    mItemList.add(simpleItemData);
+                }
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireActivity());
+                final LayoutInflater inflater = getLayoutInflater();
+                View convertView = inflater.inflate(R.layout.list_dialog_language, null);
+                alertDialogBuilder.setView(convertView);
+
+                RecyclerView recyclerView = convertView.findViewById(R.id.lang_dialog_list_view);
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
+                DialogSimpleListAdapter dialogListAdapter = new DialogSimpleListAdapter(recyclerView, requireActivity(), mItemList, new DialogSimpleListAdapter.OnItemSelection() {
+                    @Override
+                    public void onSelect(SimpleItemData data) {
+                        if (mBloodGroupAlertDialog != null) {
+                            mBloodGroupAlertDialog.dismiss();
+                        }
+                        mBloodGroupTextView.setText(data.getTitle());
+                        //as we are saving code not text for blood group
+                        mBloodGroupTextView.setTag(data.getObject().toString());
+                    }
+                });
+                recyclerView.setAdapter(dialogListAdapter);
+                mBloodGroupAlertDialog = alertDialogBuilder.show();
+                mBloodGroupAlertDialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_menu_background);
+            }
+        });
 
         return view;
     }
@@ -689,6 +751,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
             if (results.getSpo2() != null && !results.getSpo2().isEmpty())
                 mSpo2EditText.setText(results.getSpo2());
+            if (results.getBloodGroup() != null && !results.getBloodGroup().isEmpty())
+                mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(results.getBloodGroup()));
 
             if (results.getResp() != null && !results.getResp().isEmpty())
                 mRespEditText.setText(results.getResp());
@@ -747,7 +811,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         BMIStatus bmiStatus = getBmiStatus(bmi_value);
         mBmiStatusTextView.setText(String.format("(%s)", bmiStatus.getStatus()));
-        mBmiStatusTextView.setTextColor(ContextCompat.getColor(getActivity(),bmiStatus.getColor()));
+        mBmiStatusTextView.setTextColor(ContextCompat.getColor(getActivity(), bmiStatus.getColor()));
     }
 
     public void calculateBMI_onEdit(String height, String weight) {
@@ -766,7 +830,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
             BMIStatus bmiStatus = getBmiStatus(bmi_value);
             mBmiStatusTextView.setText(String.format("(%s)", bmiStatus.getStatus()));
-            mBmiStatusTextView.setTextColor(ContextCompat.getColor(getActivity(),(bmiStatus.getColor())));
+            mBmiStatusTextView.setTextColor(ContextCompat.getColor(getActivity(), (bmiStatus.getColor())));
         } else {
             // do nothing
             mBMITextView.setText("");
@@ -845,6 +909,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             case UuidDictionary.SPO2: //SpO2
                 if (value != null && !value.isEmpty())
                     mSpo2EditText.setText(value);
+                break;
+            case UuidDictionary.BLOOD_GROUP: //SpO2
+                if (value != null && !value.isEmpty()) {
+                    mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(value));
+                    mBloodGroupTextView.setTag(value);
+                }
                 break;
             default:
                 break;
@@ -1143,6 +1213,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
             results.setResp((mRespEditText.getText().toString()));
             results.setSpo2((mSpo2EditText.getText().toString()));
+            if (mBloodGroupTextView.getTag() != null)
+                results.setBloodGroup(mBloodGroupTextView.getTag().toString());
+            else
+                results.setBloodGroup("");
             if (mBMITextView.getText() != null && mBMITextView.getText().toString().trim().contains(" ")) {
                 results.setBmi(mBMITextView.getText().toString().trim().split(" ")[0]);
             } else {
@@ -1236,6 +1310,15 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getSpo2());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
+
+
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBloodGroup());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GROUP));
+
 
                 obsDAO.updateObs(obsDTO);
                 //making flag to false in the encounter table so it will sync again
@@ -1360,6 +1443,18 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getSpo2());
+
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getBloodGroup());
 
             try {
                 obsDAO.insertObs(obsDTO);

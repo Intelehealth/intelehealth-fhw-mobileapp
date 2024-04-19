@@ -237,6 +237,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     ObsDTO bpDias = new ObsDTO();
     ObsDTO temperature = new ObsDTO();
     ObsDTO spO2 = new ObsDTO();
+    ObsDTO mBloodGroupObsDTO = new ObsDTO();
     ObsDTO resp = new ObsDTO();
 
     String diagnosisReturned = "";
@@ -275,6 +276,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     TextView bpView;
     TextView tempView;
     TextView spO2View;
+    TextView mBloodGroupTextView;
     TextView bmiView;
     TextView complaintView, patientReports_txtview, patientDenies_txtview;
     TextView famHistView;
@@ -462,7 +464,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isPastVisit = mCommonVisitData.isPastVisit();
             } else {
                 visitUuid = intent.getStringExtra("visitUuid");
-                mCommonVisitData= new CommonVisitData();
+                mCommonVisitData = new CommonVisitData();
                 mCommonVisitData.setVisitUuid(visitUuid);
 
                 encounterVitals = intent.getStringExtra("encounterUuidVitals");
@@ -488,7 +490,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isPastVisit = intent.getBooleanExtra("pastVisit", false);
                 mCommonVisitData.setPastVisit(isPastVisit);
             }
-
 
 
             mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
@@ -1014,6 +1015,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 spO2View.setText(getResources().getString(R.string.no_information));
             else spO2View.setText(spO2.getValue());
         } else spO2View.setText(getResources().getString(R.string.no_information));
+
+        if (mBloodGroupObsDTO.getValue() != null) {
+            if (mBloodGroupObsDTO.getValue().trim().isEmpty() || mBloodGroupObsDTO.getValue().trim().equals("null"))
+                mBloodGroupTextView.setText(getResources().getString(R.string.no_information));
+            else mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(mBloodGroupObsDTO.getValue()));
+        } else mBloodGroupTextView.setText(getResources().getString(R.string.no_information));
 
 
         // temperature - start
@@ -2351,6 +2358,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         tempcel = findViewById(R.id.textView_temp);
 
         spO2View = findViewById(R.id.textView_pulseox_value);
+        mBloodGroupTextView = findViewById(R.id.textView_blood_group);
         respiratory = findViewById(R.id.textView_respiratory_value);
         respiratoryText = findViewById(R.id.textView_respiratory);
         bmiView = findViewById(R.id.textView_bmi_value);
@@ -3279,6 +3287,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             case UuidDictionary.SPO2: //SpO2
             {
                 spO2.setValue(value);
+                break;
+            }case UuidDictionary.BLOOD_GROUP: //BLOOD_GROUP
+            {
+                mBloodGroupObsDTO.setValue(value);
                 break;
             }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {

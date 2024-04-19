@@ -7,6 +7,57 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DecimalFormat;
 
 public class VisitUtils {
+
+    /*A POSITIVE  = 690
+A NEGATIVE  = 692
+B POSITIVE = 694
+B NEGATIVE = 696
+O POSITIVE  = 699
+O NEGATIVE = 701
+AB POSITIVE = 1230
+AB NEGATIVE = 1231*/
+    public static String getBloodPressureCode(String text) {
+        if (text.equalsIgnoreCase("A+")) {
+            return "9d2e98dc-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("A-")) {
+            return "9d2e999b-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("B+")) {
+            return "9d2e9a1f-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("B-")) {
+            return "9d2e9aa2-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("O+")) {
+            return "9d2e9b6a-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("O-")) {
+            return "9d2e9bf0-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("AB+")) {
+            return "9d30fe5a-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("AB-")) {
+            return "9d30fea0-538f-11e6-9cfe-86f436325720";
+        }
+        return "";
+    }
+
+    public static String getBloodPressureEnStringFromCode(String codeString) {
+        if (codeString.equalsIgnoreCase("9d2e98dc-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("690")) {
+            return "A+";
+        } else if (codeString.equalsIgnoreCase("9d2e999b-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("692")) {
+            return "A-";
+        } else if (codeString.equalsIgnoreCase("9d2e9a1f-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("694")) {
+            return "B+";
+        } else if (codeString.equalsIgnoreCase("9d2e9aa2-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("696")) {
+            return "B-";
+        } else if (codeString.equalsIgnoreCase("9d2e9b6a-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("699")) {
+            return "O+";
+        } else if (codeString.equalsIgnoreCase("9d2e9bf0-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("701") ) {
+            return "O-";
+        } else if (codeString.equalsIgnoreCase("9d30fe5a-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("1230")) {
+            return "AB+";
+        } else if (codeString.equalsIgnoreCase("9d30fea0-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("1231")) {
+            return "AB-";
+        }
+        return "";
+    }
+
     public static String getSplitLangByIndex(String text, int requiredIndex) {
         String[] val = text.trim().split(" ");
         if (val.length - 1 >= requiredIndex) {
@@ -44,7 +95,7 @@ public class VisitUtils {
 
 
     public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy, boolean isEditMode, boolean isAlreadyLoaded) {
-        Log.v("VisitUtils", "scrollNow isEditMode - " + isEditMode +"\tisAlreadyLoaded - "+isAlreadyLoaded);
+        Log.v("VisitUtils", "scrollNow isEditMode - " + isEditMode + "\tisAlreadyLoaded - " + isAlreadyLoaded);
         if (!isEditMode && !isAlreadyLoaded)
             recyclerView.postDelayed(() -> recyclerView.smoothScrollBy(dx, dy), delayMills);
     }
@@ -321,7 +372,7 @@ public class VisitUtils {
     public static String convertCtoF(String TAG, String temperature) {
         Log.i(TAG, "convertCtoF IN: " + temperature);
 
-        if (temperature == null) return "";
+        if (temperature == null || temperature.isEmpty()) return "";
         String result = "";
         double a = Double.parseDouble(String.valueOf(temperature));
         Double b = (a * 9 / 5) + 32;

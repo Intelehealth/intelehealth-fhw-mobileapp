@@ -1,5 +1,25 @@
 <resources>
+    <string-array name="blood_group_list">
+        <item>A-</item>
+        <item>A+</item>
+        <item>B-</item>
+        <item>B+</item>
+        <item>AB-</item>
+        <item>AB+</item>
+        <item>O-</item>
+        <item>O+</item>
+    </string-array>
 
+    <string-array name="blood_group_code_list">
+        <item>692</item>
+        <item>690</item>
+        <item>696</item>
+        <item>694</item>
+        <item>1231</item>
+        <item>1230</item>
+        <item>701</item>
+        <item>699</item>
+    </string-array>
 
     <string-array name="language_names">
         <item>English</item>
@@ -15,7 +35,7 @@
         &lt;!&ndash;        <item>Cebuano</item>&ndash;&gt;
         <item>বাংলা</item>
         <item>தமிழ்</item>-->
-<!--        <item>Cebuano</item>-->
+        <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
@@ -32,7 +52,7 @@
         &lt;!&ndash;        <item>cb</item>&ndash;&gt;
         <item>bn</item>
         <item>ta</item>-->
-<!--        <item>cb</item>-->
+        <!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">
@@ -79,7 +99,6 @@
         <item>Mulund</item>
         <item>Bhandup</item>
     </string-array>
-
 
 
     <string-array name="state_error">
@@ -671,7 +690,7 @@
         <item>উচ্চতৰ মাধ্যমিক</item>
         <item>স্নাতক আৰু উচ্চতৰ</item>
     </string-array>
- <string-array name="education_ml">
+    <string-array name="education_ml">
         <item>വിദ്യാഭ്യാസം തിരഞ്ഞെടുക്കുക</item>
         <item>നിരക്ഷരൻ</item>
         <item>പ്രാഥമിക</item>
@@ -793,7 +812,7 @@
         <item>എസ്.ടി</item>
         <item>മറ്റുള്ളവർ</item>
     </string-array>
- <string-array name="caste_kn">
+    <string-array name="caste_kn">
         <item>ಆಯ್ಕೆಮಾಡಿ</item>
         <item>ಸಾಮಾನ್ಯ</item>
         <item>ಓ.ಬಿ.ಸಿ.</item>
@@ -870,12 +889,13 @@
         <item>എ.പി.എൽ</item>
         <item>ബിപിഎൽ</item>
     </string-array>
-<string-array name="economic_kn">
+    <string-array name="economic_kn">
         <item>ಆಯ್ಕೆಮಾಡಿ</item>
         <item>ಬಡತನ ರೇಖೆಯ ಮೇಲೆ</item>
         <item>ಬಡತನ ರೇಖೆಯ ಕೆಳಗೆ</item>
 
-    </string-array><string-array name="economic_ru">
+    </string-array>
+    <string-array name="economic_ru">
         <item>Выбирать</item>
         <item>APL</item>
         <item>BPL</item>

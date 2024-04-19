@@ -645,7 +645,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), insertionLocale);
             //}
-            insertionWithLocaleJsonString = jsonObject.toString();
+            insertionWithLocaleJsonString = jsonObject.toString().replace("\\/","/");
             Log.v(TAG, insertionWithLocaleJsonString);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -1126,7 +1126,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                 jsonObject.put("l-" + sessionManager.getAppLanguage(), physicalStringLocale);
                 //}
-                physicalStringWithLocaleJsonString = jsonObject.toString();
+                physicalStringWithLocaleJsonString = jsonObject.toString().replace("\\/","/");
                 Timber.tag(TAG).v(physicalStringWithLocaleJsonString);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1207,7 +1207,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), patientHistoryLocale);
             //}
-            patientHistoryWithLocaleJsonString = jsonObject.toString();
+            patientHistoryWithLocaleJsonString = jsonObject.toString().replace("\\/","/");
             Log.v(TAG, patientHistoryWithLocaleJsonString);
 
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
@@ -1224,7 +1224,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject1.put("l-" + sessionManager.getAppLanguage(), familyHistoryLocale);
             //}
-            familyHistoryWithLocaleJsonString = jsonObject1.toString();
+            familyHistoryWithLocaleJsonString = jsonObject1.toString().replace("\\/","/");
             Log.v(TAG, familyHistoryWithLocaleJsonString);
 
         } catch (JSONException e) {

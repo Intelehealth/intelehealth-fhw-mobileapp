@@ -8,6 +8,7 @@ package org.intelehealth.app.utilities;
 public class UuidDictionary {
 
     //Concepts
+    public static final String BLOOD_GROUP = "9d2df0c6-538f-11e6-9cfe-86f436325720";
     public static final String CURRENT_COMPLAINT = "3edb0e09-9135-481e-b8f0-07a26fa9a5ce";
     public static final String PHYSICAL_EXAMINATION = "e1761e85-9b50-48ae-8c4d-e6b7eeeba084";
     public static final String HEIGHT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";

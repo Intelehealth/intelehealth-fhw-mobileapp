@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:lineSpacingExtra="1sp"
+        android:maxLines="1"
+        android:minHeight="42dip"
+        android:padding="@dimen/padding_10"
+        android:text="Headache"
+        android:textColor="#1B163A"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/sub_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/title_tv"
+        android:gravity="start|center_vertical"
+        android:lineSpacingExtra="1sp"
+        android:maxLines="1"
+        android:minHeight="42dip"
+        android:padding="@dimen/padding_10"
+        android:text="Headache"
+        android:textColor="#00BCD4"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <ImageView
+        android:id="@+id/tv_check_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:src="@drawable/ic_baseline_check_18_green"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/line_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/title_tv"
+        android:background="@color/gray_1" />
+</RelativeLayout>
+
+
+
