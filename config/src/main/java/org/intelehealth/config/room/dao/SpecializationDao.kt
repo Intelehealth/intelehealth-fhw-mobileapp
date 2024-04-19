@@ -29,4 +29,5 @@ interface SpecializationDao : CoreDao<Specialization> {
 
     @Query("SELECT * FROM tbl_specialization where sKey = :key")
     fun getLiveRecord(key: String): LiveData<Specialization>
+
 }

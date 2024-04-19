@@ -447,12 +447,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         ConfigDatabase db = ConfigDatabase.getInstance(getApplicationContext());
         SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
         viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
-        viewModel.fetchSpecialization().observe(this, new Observer<List<Specialization>>() {
-            @Override
-            public void onChanged(List<Specialization> specializations) {
-                Timber.tag(TAG).d(new Gson().toJson(specializations));
-                setupSpecializationDataSpinner(specializations);
-            }
+        viewModel.fetchSpecialization().observe(this, specializations -> {
+            Timber.tag(TAG).d(new Gson().toJson(specializations));
+            setupSpecializationDataSpinner(specializations);
         });
     }
 
@@ -1799,7 +1796,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         speciality_spinner.setAdapter(stringArrayAdapter);
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
 //        if (items != null) {
-//            items.add(0, getString(R.string.select_specialization_text));
+        specializations.add(0, new Specialization("select_specialization_text",
+                getString(R.string.select_specialization_text)));
 //            stringArrayAdapter = new SpecializationArrayAdapter(this, specializations);
 //            speciality_spinner.setAdapter(stringArrayAdapter);
 //        } else {

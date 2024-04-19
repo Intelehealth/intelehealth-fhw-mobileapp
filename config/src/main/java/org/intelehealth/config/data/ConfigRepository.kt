@@ -11,6 +11,8 @@ import org.intelehealth.config.network.response.ConfigResponse
 import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.config.room.dao.ConfigDao
 import org.intelehealth.config.room.entity.ConfigDictionary
+import org.intelehealth.config.room.entity.PatientRegistrationFields
+import org.intelehealth.config.utility.FieldGroup
 import org.intelehealth.config.utility.KEY_SPECIALIZATIONS
 import org.intelehealth.config.utility.NO_DATA_FOUND
 import org.intelehealth.core.network.state.Result
@@ -31,6 +33,7 @@ class ConfigRepository(
             dataSource.getConfig().collect { result ->
                 if (result.isSuccess()) {
                     result.data?.let {
+                        configDb.clearAllTables()
                         saveAllConfig(it) { onCompleted(result) }
                     } ?: onCompleted(Result.Fail<Any>(NO_DATA_FOUND))
                 } else onCompleted(result)
@@ -42,7 +45,20 @@ class ConfigRepository(
         scope.launch {
             configDb.specializationDao().save(config.specialization)
             configDb.languageDao().save(config.language)
+            groupingPatientRegFields(config.patientRegFields.personal, FieldGroup.PERSONAL)
+            groupingPatientRegFields(config.patientRegFields.address, FieldGroup.ADDRESS)
+            groupingPatientRegFields(config.patientRegFields.other, FieldGroup.OTHER)
             onCompleted.invoke()
         }
+    }
+
+    private suspend fun groupingPatientRegFields(
+        fields: List<PatientRegistrationFields>,
+        group: FieldGroup
+    ) {
+        fields.map {
+            it.groupId = group.value
+            return@map it
+        }.let { configDb.patientRegFieldDao().save(it) }
     }
 }

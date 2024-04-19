@@ -45,19 +45,19 @@ class ConfigSyncWorker(
         withContext(Dispatchers.IO) {
             val configRepository = ConfigRepository(database, dataSource, this)
             configRepository.fetchAndUpdateConfig {
-                workerResult = Result.success()
+                workerResult = if (it.isSuccess()) Result.success() else Result.failure()
             }
         }
         return workerResult
     }
 
-    private fun getResult(configResult: org.intelehealth.core.network.state.Result<*>) =
-        when (configResult) {
-            is Error -> Result.failure(workDataOf(Pair(WORKER_RESULT, configResult)))
-            is Fail -> Result.retry()
-            is Loading -> Result.success(workDataOf(Pair(WORKER_RESULT, configResult)))
-            is Success -> Result.success(workDataOf(Pair(WORKER_RESULT, configResult)))
-        }
+//    private fun getResult(configResult: org.intelehealth.core.network.state.Result<*>) =
+//        when (configResult) {
+//            is Error -> Result.failure(workDataOf(Pair(WORKER_RESULT, configResult)))
+//            is Fail -> Result.retry()
+//            is Loading -> Result.success(workDataOf(Pair(WORKER_RESULT, configResult)))
+//            is Success -> Result.success(workDataOf(Pair(WORKER_RESULT, configResult)))
+//        }
 
     companion object {
         fun startConfigSyncWorker(context: Context, onResult: (String) -> Unit) {

@@ -17,6 +17,7 @@ data class ActiveLanguage(
     val code: String,
     @SerializedName("en_name")
     val generalName: String,
+    @SerializedName("is_default")
     val isDefault: Boolean,
 ) {
     @Ignore

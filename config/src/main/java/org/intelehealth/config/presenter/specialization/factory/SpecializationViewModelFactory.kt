@@ -2,8 +2,6 @@ package org.intelehealth.config.presenter.language.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.intelehealth.config.presenter.language.data.LanguageRepository
-import org.intelehealth.config.presenter.language.viewmodel.LanguageViewModel
 import org.intelehealth.config.presenter.specialization.data.SpecializationRepository
 import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel
 

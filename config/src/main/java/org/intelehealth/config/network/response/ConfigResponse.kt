@@ -1,5 +1,6 @@
 package org.intelehealth.config.network.response
 
+import com.google.gson.annotations.SerializedName
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.room.entity.Specialization
 
@@ -10,5 +11,7 @@ import org.intelehealth.config.room.entity.Specialization
  **/
 data class ConfigResponse(
     val specialization: List<Specialization>,
-    val language: List<ActiveLanguage>
+    val language: List<ActiveLanguage>,
+    @SerializedName("patient_registration")
+    val patientRegFields: PatientRegFieldConfig
 )

@@ -19,6 +19,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -77,6 +78,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     private fun loadConfig() {
         ConfigSyncWorker.startConfigSyncWorker(this) {
             Timber.d { "Worker state $it" }
+            runOnUiThread { binding.pbConfigLoading.isVisible = false }
             if (it == WorkInfo.State.SUCCEEDED.name) {
                 if (sessionManager.isFirstTimeLaunch) {
                     checkPerm()

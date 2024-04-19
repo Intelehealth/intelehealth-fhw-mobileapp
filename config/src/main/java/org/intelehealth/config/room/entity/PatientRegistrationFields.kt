@@ -1,5 +1,6 @@
 package org.intelehealth.config.room.entity
 
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
@@ -8,10 +9,11 @@ import com.google.gson.annotations.SerializedName
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
+@Entity(tableName = "tbl_patient_registration_fields")
 data class PatientRegistrationFields(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val groupName: String,
+    var groupId: String,
     val name: String,
     @SerializedName("is_mandatory")
     val isMandatory: Boolean,

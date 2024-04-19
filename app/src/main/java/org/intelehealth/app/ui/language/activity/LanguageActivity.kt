@@ -10,9 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.config.presenter.fields.data.RegFieldRepository
+import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory
 import org.intelehealth.config.presenter.language.data.LanguageRepository
 import org.intelehealth.config.presenter.language.factory.LanguageViewModelFactory
-import org.intelehealth.config.presenter.language.factory.SpecializationViewModelFactory
 import org.intelehealth.config.presenter.language.viewmodel.LanguageViewModel
 import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.config.room.entity.ActiveLanguage
