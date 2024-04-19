@@ -156,7 +156,7 @@ public class PatientsFrameJson {
                 Ob ob = new Ob();
                 for (ObsDTO obs : obsDTOList) {
                     if (obs != null && obs.getValue() != null) {
-                        if (!obs.getValue().isEmpty()) {
+                      //  if (!obs.getValue().isEmpty()) {  // SYR-426
                             ob = new Ob();
                             //Do not set obs uuid in case of emergency encounter type .Some error occuring in open MRS if passed
 
@@ -165,7 +165,7 @@ public class PatientsFrameJson {
                             ob.setValue(obs.getValue());
                             obsList.add(ob);
 
-                        }
+                    //    }
                     }
                 }
                 encounter.setObs(obsList);
