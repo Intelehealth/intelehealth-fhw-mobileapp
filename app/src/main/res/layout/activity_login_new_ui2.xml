@@ -160,6 +160,7 @@
                     android:layout_marginTop="@dimen/common_forgotpass_margin_top"
                     android:fontFamily="@font/lato_regular"
                     android:gravity="end"
+                    android:visibility="gone"
                     android:text="@string/forgot_username_link"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
