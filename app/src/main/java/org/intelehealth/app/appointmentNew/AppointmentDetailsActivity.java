@@ -492,7 +492,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
         adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
 
-        ivDrawerVisitSummary.setOnClickListener(v -> {
+        layoutVisitSummary.setOnClickListener(v -> {
             Intent in = new Intent(this, VisitSummaryActivity_New.class);
             in.putExtra("patientUuid", patientUuid);
             in.putExtra("visitUuid", visitID);

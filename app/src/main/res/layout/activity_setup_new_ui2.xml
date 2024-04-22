@@ -207,6 +207,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
                     android:gravity="end"
+                    android:visibility="gone"
                     android:text="@string/forgot_username_link"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />

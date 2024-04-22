@@ -75,6 +75,13 @@ public class PatientsDAO {
             values.put("state_province", patient.getStateprovince());
             values.put("city_village", patient.getCityvillage());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+
+            values.put("guardian_type", patient.getGuardianType());
+            values.put("guardian_name", patient.getGuardianName());
+            values.put("contact_type", patient.getContactType());
+            values.put("em_contact_name", patient.getEmContactName());
+            values.put("em_contact_num", patient.getEmContactNumber());
+
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
             createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -112,6 +119,13 @@ public class PatientsDAO {
             values.put("state_province", patientDTO.getStateprovince());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatientPhoto());
+
+            values.put("guardian_type", patientDTO.getGuardianType());
+            values.put("guardian_name", patientDTO.getGuardianName());
+            values.put("contact_type", patientDTO.getContactType());
+            values.put("em_contact_name", patientDTO.getEmContactName());
+            values.put("em_contact_num", patientDTO.getEmContactNumber());
+
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
@@ -157,6 +171,13 @@ public class PatientsDAO {
             values.put("state_province", patientDTO.getStateprovince());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatientPhoto());
+
+            values.put("guardian_type", patientDTO.getGuardianType());
+            values.put("guardian_name", patientDTO.getGuardianName());
+            values.put("contact_type", patientDTO.getContactType());
+            values.put("em_contact_name", patientDTO.getEmContactName());
+            values.put("em_contact_num", patientDTO.getEmContactNumber());
+
             values.put("dead", false);
             values.put("sync", false);
 
@@ -494,7 +515,13 @@ public class PatientsDAO {
                     patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
                     patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
                     patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                    patientDTO.setGuardianType(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_type")));
+                    patientDTO.setGuardianName(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_name")));
+                    patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
+                    patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
+                    patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
                     patientDTOList.add(patientDTO);
+
                 }
             }
             idCursor.close();
@@ -601,6 +628,11 @@ public class PatientsDAO {
                     model.setPhonenumber(StringUtils.mobileNumberEmpty
                             (phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
                     model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
+                    model.setGuardianType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("guardian_type")));
+                    model.setGuardianName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("guardian_name")));
+                    model.setContactType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("contact_type")));
+                    model.setEmContactName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_name")));
+                    model.setEmContactNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_num")));
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
             }
@@ -662,6 +694,11 @@ public class PatientsDAO {
                             model.setPhonenumber(StringUtils.mobileNumberEmpty
                                     (phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
                             model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
+                            model.setGuardianType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("guardian_type")));
+                            model.setGuardianName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("guardian_name")));
+                            model.setContactType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("contact_type")));
+                            model.setEmContactName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_name")));
+                            model.setEmContactNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_num")));
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
                     }
@@ -695,7 +732,11 @@ public class PatientsDAO {
                         model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                         model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
                         model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
-
+                        model.setGuardianType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("guardian_type")));
+                        model.setGuardianName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("guardian_name")));
+                        model.setContactType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("contact_type")));
+                        model.setEmContactName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_name")));
+                        model.setEmContactNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_num")));
                         modelList.add(model);
                     } while (searchCursor.moveToNext());
                 }
@@ -821,7 +862,11 @@ public class PatientsDAO {
                 patientDTO.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
                 patientDTO.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
-
+                patientDTO.setGuardianType(cursor.getString(cursor.getColumnIndexOrThrow("guardian_type")));
+                patientDTO.setGuardianName(cursor.getString(cursor.getColumnIndexOrThrow("guardian_name")));
+                patientDTO.setContactType(cursor.getString(cursor.getColumnIndexOrThrow("contact_type")));
+                patientDTO.setEmContactName(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_name")));
+                patientDTO.setEmContactNumber(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_num")));
 
             }
             while (cursor.moveToNext());

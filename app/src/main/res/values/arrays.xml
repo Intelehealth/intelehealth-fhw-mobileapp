@@ -596,11 +596,15 @@
     <string-array name="education_en">
         <item>Select</item>
         <item>Illiterate</item>
+        <item>Pre-Primary</item>
         <item>Primary</item>
         <item>Secondary</item>
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
+        <item>Bachelors &amp; Equivalent</item>
+        <item>Masters &amp; Higher</item>
     </string-array>
+
     <string-array name="education_te">
         <item>ఎంచుకొను చదువు</item>
         <item>నిరక్షరాస్యులు</item>
@@ -609,6 +613,7 @@
         <item>ଉଚ୍ଚ ମାଧ୍ୟମିକ ଶିକ୍ଷା</item>
         <item>ସగ్రాడ్యుయేషన్ &amp; ఉన్నత</item>
     </string-array>
+
     <string-array name="education_gu">
         <item>પસંદ કરો</item>
         <item>અશિક્ષિત</item>
@@ -649,11 +654,15 @@
     <string-array name="education_hi">
         <item>चयन करें</item>
         <item>अशिक्षित</item>
+        <item>प्री-प्राइमरी</item>
         <item>प्रथम</item>
         <item>माध्यमिक</item>
         <item>उच्च माध्यमिक</item>
         <item>स्नातक और उच्चतर</item>
+        <item>स्नातक एवं समकक्ष</item>
+        <item>परास्नातक एवं उच्चतर</item>
     </string-array>
+
     <string-array name="education_mr">
         <item>निवडा</item>
         <item>निरक्षर</item>
@@ -2130,4 +2139,32 @@
         <item>10</item>
         <item>25</item>
     </array>
+
+    <string-array name="guardian_type_en">
+        <item>Select</item>
+        <item>Mother</item>
+        <item>Father</item>
+        <item>Grandparent</item>
+        <item>Spouse</item>
+    </string-array>
+
+    <string-array name="guardian_type_hi">
+        <item>चयन करें</item>
+        <item>मां</item>
+        <item>पिता</item>
+        <item>दादा-दादी</item>
+        <item>पति/पत्नी</item>
+    </string-array>
+
+    <string-array name="contact_type_en">
+        <item>Select</item>
+        <item>Self</item>
+        <item>Family</item>
+    </string-array>
+
+    <string-array name="contact_type_hi">
+        <item>चयन करें</item>
+        <item>स्वयं</item>
+        <item>परिवार</item>
+    </string-array>
 </resources>

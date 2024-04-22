@@ -241,6 +241,70 @@
                         android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
+                <!--Guardian Name-->
+                <TableRow
+                    android:id="@+id/guardian_name_table_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:text="@string/guardian_name_non_required"
+                        android:drawablePadding="5dp"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/guardian_name_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
+                <!--Guardian Type-->
+                <TableRow
+                    android:id="@+id/guardian_type_table_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:text="@string/guardian_type_non_required"
+                        android:drawablePadding="5dp"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/guardian_type_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
                 <!--Phone number-->
                 <TableRow
                     android:layout_width="match_parent"
@@ -267,6 +331,99 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="+91 9876543210"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
+                <!--Contact Type-->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:text="@string/contact_type_non_required"
+                        android:drawablePadding="5dp"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/contact_type_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
+                <!--Emergency contact name-->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:text="@string/emergency_contact_name_non_required"
+                        android:drawablePadding="5dp"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/em_contact_name_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
+                <!--Emergency contact number-->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:text="@string/emergency_contact_number_non_required"
+                        android:drawablePadding="5dp"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/em_contact_number_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
                         android:textSize="@dimen/find_patient_hint_size" />

@@ -1195,7 +1195,7 @@
     <string name="open_visit">विज़िट खोलें</string>
     <string name="open_visits">विज़िट खोलें</string>
     <plurals name="open_no_of_visit">
-         <item quantity="one">%d विज़िट खोलें</item>
+        <item quantity="one">%d विज़िट खोलें</item>
         <item quantity="other">%d विज़िट खोले</item>
     </plurals>
     <string name="no_fingerprint_title">फिंगरप्रिंट उपलब्ध नहीं है!</string>
@@ -1481,9 +1481,27 @@
     <string name="u2022_timings">• Timings</string>
     <string name="u2022_remarks">• Remarks</string>
     <string name="the_from_date_cannot_be_greater_than_the_to_date">The \'from\' date cannot be greater than the \'to\' date</string>
+
     <string name="no_notifications_yet">No Notifications Yet</string>
     <string name="this_visit_is_completed"> यह विज़िट पूरा हो गया है.</string>
     <string name="confirmation">Confirmation</string>
     <string name="delete">Delete</string>
     <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
+
+
+    <string name='guardian_name_required'>अभिभावक का नाम*</string>
+    <string name='guardian_name_non_required'>अभिभावक का नाम</string>
+    <string name='enter_guardian_name'>अभिभावक का नाम दर्ज करें</string>
+    <string name='guardian_type_required'>अभिभावक प्रकार*</string>
+    <string name='guardian_type_non_required'>अभिभावक प्रकार</string>
+    <string name='select_guardian_type'>अभिभावक प्रकार चुनें</string>
+    <string name='contact_type_required'>संपर्क प्रकार*</string>
+    <string name='contact_type_non_required'>संपर्क प्रकार</string>
+    <string name='emergency_contact_number_required'>आपातकालीन संपर्क नंबर*</string>
+    <string name='emergency_contact_number_non_required'>आपातकालीन संपर्क नंबर</string>
+    <string name="emergency_contact_name_required"> आपातकालीन संपर्क नाम*</string>
+    <string name="emergency_contact_name_non_required"> आपातकालीन संपर्क नाम</string>
+    <string name='enter_emergency_contact_name'>आपातकालीन संपर्क नाम दर्ज करें</string>
+    <string name='phone_number_and_emergency_number_can_not_be_the_same'>फोन नंबर और आपातकालीन नंबर एक जैसे नहीं हो सकते</string>
+
 </resources>

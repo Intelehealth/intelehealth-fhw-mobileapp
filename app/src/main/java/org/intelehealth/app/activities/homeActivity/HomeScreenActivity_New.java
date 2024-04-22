@@ -969,11 +969,20 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     @Override
     protected void onResume() {
+
         if (new PreferenceHelper(this).get(PreferenceHelper.IS_NOTIFICATION, false)) {
             ivNotificationIcon.setVisibility(View.VISIBLE);
         } else {
             ivNotificationIcon.setVisibility(View.GONE);
         }
+
+        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+//        requestPermission();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+
+
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
         }
@@ -999,16 +1008,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         super.onResume();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
-//        requestPermission();
-        //register receiver for internet check
-        networkUtils.callBroadcastReceiver();
     }
 
     private void checkAppVer() {
@@ -1188,19 +1187,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             // lastSyncTextView.setText(dob);
         }
         return sync_text;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        try {
-            unregisterReceiver(syncBroadcastReceiver);
-            //unregister receiver for internet check
-            networkUtils.unregisterNetworkReceiver();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
