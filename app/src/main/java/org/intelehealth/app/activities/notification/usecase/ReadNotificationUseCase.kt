@@ -5,6 +5,7 @@ import org.intelehealth.app.activities.notification.repository.NotificationRepos
 class ReadNotificationUseCase {
     private val notificationRepository = NotificationRepository()
 
-    fun fetchNonDeletedNotification() = notificationRepository.fetchNonDeletedNotification()
+     fun fetchNonDeletedNotification() = notificationRepository.fetchNonDeletedNotification()
+     fun fetchPrescriptionCount() = notificationRepository.fetchPrescriptionCount()
 
 }

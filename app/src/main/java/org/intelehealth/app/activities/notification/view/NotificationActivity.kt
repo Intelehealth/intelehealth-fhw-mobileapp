@@ -6,11 +6,13 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.notification.listeners.ClearNotificationListener
 import org.intelehealth.app.activities.notification.listeners.NotificationClickListener
+import org.intelehealth.app.activities.notification.result.NotificationResult
 import org.intelehealth.app.activities.notification.viewmodel.NotificationViewModel
 import org.intelehealth.app.activities.visit.PrescriptionActivity
 import org.intelehealth.app.database.dao.EncounterDAO
@@ -43,17 +45,41 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
 
         initialization()
         setListeners()
-        setNotificationAdapter()
+
     }
 
     private fun initialization() {
-        notificationList = mViewModel.fetchNonDeletedNotification() as ArrayList<NotificationModel>
-        mBinding.notifiHeaderTitle.text = String.format(
-            getString(
-                R.string.five_presc_received,
-                notificationList?.size.toString()
-            )
-        )
+
+        mViewModel.fetchNonDeletedNotification().observe(this) {
+            when (it) {
+                is NotificationResult.Loading -> {
+                    mBinding.progressBar.visibility = VISIBLE
+                    mBinding.rlPrescriptionHeader.visibility = GONE
+                    mBinding.ibClearAll.visibility = GONE
+
+                }
+
+                is NotificationResult.Data -> {
+                    mBinding.progressBar.visibility = GONE
+                    mBinding.rlPrescriptionHeader.visibility = VISIBLE
+                    mBinding.ibClearAll.visibility = VISIBLE
+                    notificationList = it.data as ArrayList<NotificationModel>
+                    setNotificationAdapter()
+                    if (!notificationList.isNullOrEmpty()) {
+                        mBinding.notifiHeaderTitle.text = String.format(
+                            getString(
+                                R.string.five_presc_received,
+                                mViewModel.getPrescriptionCount().toString()
+                            )
+                        )
+
+                    } else {
+                        clearNotification()
+                    }
+                }
+            }
+        }
+
     }
 
     private fun setListeners() {
@@ -130,13 +156,13 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
 
     override fun deleteNotification() {
         mViewModel.deleteAllNotifications()
+        notificationList?.clear()
         clearNotification()
+        notificationAdapter?.notifyDataSetChanged()
     }
 
     private fun clearNotification() {
-        notificationList?.clear()
         mBinding.rlPrescriptionHeader.visibility = GONE
-        notificationAdapter?.notifyDataSetChanged()
         mBinding.tvNoData.visibility = VISIBLE
         mBinding.ibClearAll.visibility = GONE
     }

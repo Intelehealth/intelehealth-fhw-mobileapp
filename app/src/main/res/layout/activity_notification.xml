@@ -129,6 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_notifications_yet"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/rvNotifications"
             app:layout_constraintEnd_toEndOf="@+id/rvNotifications"
             app:layout_constraintStart_toStartOf="@+id/rvNotifications"
@@ -142,6 +143,17 @@
             app:layout_constraintEnd_toEndOf="@+id/rlPrescriptionHeader"
             app:layout_constraintStart_toStartOf="@+id/rlPrescriptionHeader"
             app:layout_constraintTop_toBottomOf="@+id/ibClearAll" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
