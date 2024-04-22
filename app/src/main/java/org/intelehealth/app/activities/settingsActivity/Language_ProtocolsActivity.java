@@ -196,6 +196,8 @@ public class Language_ProtocolsActivity extends BaseActivity {
             l = "English";
         if (l.equalsIgnoreCase("hi"))
             l = "हिंदी";
+        if (l.equalsIgnoreCase("as"))
+            l = "অসমীয়া";
         mLangTextView.setText(l);
         int i = langAdapter.getPosition(l);
         if (!l.equalsIgnoreCase(""))
