@@ -103,5 +103,9 @@
     <string name="u2022_remarks">• Remarks</string>
     <string name="the_from_date_cannot_be_greater_than_the_to_date">The \'from\' date cannot be greater than the \'to\' date</string>
     <string name="no_notifications_yet">No Notifications Yet</string>
+    <string name="this_visit_is_completed">This visit is completed.</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
 
 </resources>

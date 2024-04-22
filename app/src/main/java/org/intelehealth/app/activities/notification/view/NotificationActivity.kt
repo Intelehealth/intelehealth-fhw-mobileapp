@@ -1,15 +1,25 @@
 package org.intelehealth.app.activities.notification.view
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.notification.listeners.ClearNotificationListener
+import org.intelehealth.app.activities.notification.listeners.NotificationClickListener
 import org.intelehealth.app.activities.notification.viewmodel.NotificationViewModel
+import org.intelehealth.app.activities.visit.PrescriptionActivity
+import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.databinding.ActivityNotificationBinding
 import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.shared.BaseActivity
+import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.ToastUtil
+import org.intelehealth.klivekit.data.PreferenceHelper
 
 
 /**
@@ -20,21 +30,30 @@ import org.intelehealth.app.shared.BaseActivity
  */
 private const val TAG = "@@NotificationActivity::"
 
-class NotificationActivity : BaseActivity() {
-    private var notificationList: List<NotificationModel>? = null
+class NotificationActivity : BaseActivity(), ClearNotificationListener {
+    private var notificationAdapter: NotificationAdapter? = null
+    private var notificationList: ArrayList<NotificationModel>? = null
     private lateinit var mBinding: ActivityNotificationBinding
     private lateinit var mViewModel: NotificationViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_notification)
         mViewModel = ViewModelProvider(this)[NotificationViewModel::class.java]
+        PreferenceHelper(this).save(PreferenceHelper.IS_NOTIFICATION, false)
+
         initialization()
         setListeners()
         setNotificationAdapter()
     }
 
     private fun initialization() {
-        notificationList = mViewModel.fetchNonDeletedNotification()
+        notificationList = mViewModel.fetchNonDeletedNotification() as ArrayList<NotificationModel>
+        mBinding.notifiHeaderTitle.text = String.format(
+            getString(
+                R.string.five_presc_received,
+                notificationList?.size.toString()
+            )
+        )
     }
 
     private fun setListeners() {
@@ -42,30 +61,84 @@ class NotificationActivity : BaseActivity() {
             ivBack.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }
-            ibClearAll.setOnClickListener{
-                mViewModel.deleteAllNotifications()
+            ibClearAll.setOnClickListener {
+                DeleteNotificationDialog.newInstance(
+                    supportFragmentManager,
+                    this@NotificationActivity
+                )
             }
         }
-
     }
 
     private fun setNotificationAdapter() {
-        mBinding.rvNotifications.apply {
-            adapter = NotificationAdapter(notificationList, clickListener)
-            layoutManager =
-                LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
+        if (notificationList.isNullOrEmpty()) {
+            mBinding.tvNoData.visibility = VISIBLE
+            mBinding.ibClearAll.visibility = GONE
+        } else {
+            mBinding.tvNoData.visibility = GONE
+            mBinding.ibClearAll.visibility = VISIBLE
+            mBinding.rvNotifications.apply {
+                notificationAdapter = NotificationAdapter(notificationList, clickListener)
+                adapter = notificationAdapter
+                layoutManager =
+                    LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
+            }
         }
     }
 
     private val clickListener = object : NotificationClickListener {
         override fun deleteNotification(notificationModel: NotificationModel, position: Int) {
-            TODO("Not yet implemented")
+            mViewModel.deleteNotification(notificationModel.uuid)
+            notificationList?.removeAt(position)
+            notificationAdapter?.notifyItemRemoved(position)
         }
 
         override fun openNotification(notificationModel: NotificationModel, position: Int) {
-            TODO("Not yet implemented")
+            notificationModel.apply {
+                if (visitUUID.isNullOrBlank()) {
+                    ToastUtil.showLongToast(
+                        this@NotificationActivity,
+                        getString(R.string.this_visit_is_completed)
+                    )
+                } else {
+                    val intent = Intent(this@NotificationActivity, PrescriptionActivity::class.java)
+                    intent.putExtra("patientname", "$first_name $last_name")
+                    intent.putExtra("patientUuid", patientuuid)
+                    intent.putExtra("patient_photo", patient_photo)
+                    intent.putExtra("visit_ID", visitUUID)
+                    intent.putExtra("visit_startDate", visit_startDate)
+                    intent.putExtra("gender", gender)
+                    val vitalsUUID = EncounterDAO.fetchEncounterUuidForEncounterVitals(visitUUID)
+                    val adultInitialUUID =
+                        EncounterDAO.fetchEncounterUuidForEncounterAdultInitials(visitUUID)
+                    intent.putExtra("encounterUuidVitals", vitalsUUID)
+                    intent.putExtra("encounterUuidAdultIntial", adultInitialUUID)
+                    intent.putExtra(
+                        "age",
+                        DateAndTimeUtils.getAge_FollowUp(date_of_birth, this@NotificationActivity)
+                    )
+                    intent.putExtra("tag", "VisitDetailsActivity")
+                    intent.putExtra("followupDate", followupDate)
+                    intent.putExtra("openmrsID", openmrsID)
+                    startActivity(intent)
+                }
+
+            }
         }
 
+    }
+
+    override fun deleteNotification() {
+        mViewModel.deleteAllNotifications()
+        clearNotification()
+    }
+
+    private fun clearNotification() {
+        notificationList?.clear()
+        mBinding.rlPrescriptionHeader.visibility = GONE
+        notificationAdapter?.notifyDataSetChanged()
+        mBinding.tvNoData.visibility = VISIBLE
+        mBinding.ibClearAll.visibility = GONE
     }
 
 

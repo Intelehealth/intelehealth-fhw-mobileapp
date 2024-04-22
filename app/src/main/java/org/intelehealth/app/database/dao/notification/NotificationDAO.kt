@@ -4,33 +4,34 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
+import android.os.Build
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.utilities.exception.DAOException
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class NotificationDAO {
 
-    fun insertNotifications(notificationModels: List<NotificationModel>): Boolean {
-        var isInserted = true
+    fun insertNotifications(notificationModels: List<NotificationModel>) {
+
         val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
         try {
             db.beginTransaction()
             for (model in notificationModels) {
                 if (!createNotification(model, db)) {
-                    isInserted = false
-                    break // If one notification fails, break the loop
+
+                    continue
                 }
             }
-            if (isInserted) {
-                db.setTransactionSuccessful() // Mark transaction successful only if all notifications are inserted successfully
-            }
+            db.setTransactionSuccessful()
         } catch (e: Exception) {
-            isInserted = false
+
             e.printStackTrace() // Log the exception
         } finally {
             db.endTransaction()
         }
-        return isInserted
+
     }
 
     @Throws(DAOException::class)
@@ -40,7 +41,10 @@ class NotificationDAO {
         values.put(NotificationDbConstants.DESCRIPTION, model.description)
         values.put(NotificationDbConstants.NOTIFICATION_TYPE, model.notification_type)
         values.put(NotificationDbConstants.OBS_SERVER_MODIFIED_DATE, model.obs_server_modified_date)
-        values.put(NotificationDbConstants.IS_DELETED, false) // Assuming 0 represents false for IS_DELETED
+        values.put(
+            NotificationDbConstants.IS_DELETED,
+            false
+        ) // Assuming 0 represents false for IS_DELETED
 
         return try {
             val createdRecordsCount = db.insertWithOnConflict(
@@ -96,7 +100,6 @@ class NotificationDAO {
         return nonDeletedNotifications
     }
 
-    @Throws(DAOException::class)
     fun deleteNotification(uuid: String): Boolean {
         val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
         return try {
@@ -115,7 +118,6 @@ class NotificationDAO {
         }
     }
 
-    @Throws(DAOException::class)
     fun markAllNotificationsAsDeleted(): Boolean {
         val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
         return try {

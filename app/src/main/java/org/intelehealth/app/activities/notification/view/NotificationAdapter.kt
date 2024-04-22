@@ -1,140 +1,86 @@
-package org.intelehealth.app.activities.notification.view;
+package org.intelehealth.app.activities.notification.view
 
-import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
-import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
-import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
-
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
-import org.intelehealth.app.R;
-import org.intelehealth.app.activities.notification.AdapterInterface;
-import org.intelehealth.app.activities.visit.PrescriptionActivity;
-import org.intelehealth.app.models.NotificationModel;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.OnSwipeTouchListener;
-
-import java.util.List;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
+import org.intelehealth.app.R
+import org.intelehealth.app.activities.notification.listeners.NotificationClickListener
+import org.intelehealth.app.activities.notification.view.NotificationAdapter.MyHolderView
+import org.intelehealth.app.models.NotificationModel
 
 /**
  * Created by Prajwal Waingankar on 27/09/22.
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolderView> {
-    List<NotificationModel> patientDTOList;
-    private NotificationClickListener clickListener;
-    private Context mContext;
-
-    public NotificationAdapter(List<NotificationModel> patientDTOList, NotificationClickListener clickListener) {
-        this.patientDTOList = patientDTOList;
-        this.clickListener = clickListener;
+class NotificationAdapter(
+    private var patientDTOList: List<NotificationModel>?,
+    private val clickListener: NotificationClickListener
+) : RecyclerView.Adapter<MyHolderView>() {
+    private var mContext: Context? = null
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolderView {
+        mContext = parent.context
+        val inflater = LayoutInflater.from(parent.context)
+        val row = inflater.inflate(R.layout.notification_list_item, parent, false)
+        return MyHolderView(row)
     }
 
-    @NonNull
-    @Override
-    public NotificationAdapter.MyHolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mContext =parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.notification_list_item, parent, false);
-        return new NotificationAdapter.MyHolderView(row);
-    }
+    @SuppressLint("SetTextI18n")
+    override fun onBindViewHolder(holder: MyHolderView, position: Int) {
+        patientDTOList?.get(position)?.let { model ->
 
-    @Override
-    public void onBindViewHolder(@NonNull NotificationAdapter.MyHolderView holder, int position) {
-        Context mContext = holder.search_name.getContext();
-        NotificationModel model = patientDTOList.get(position);
-        if (model != null) {
-            holder.search_name.setText(model.getFirst_name() + " " + model.getLast_name() + mContext.getString(R.string.prescription_received));
+            model.description?.let {
+                holder.search_name.text = it
+            }
 
-            holder.delete_imgview.setOnClickListener(v -> {
-                clickListener.deleteNotification(patientDTOList.get(position), holder.getLayoutPosition());
-                notifyItemRemoved(holder.getLayoutPosition());
-            });
-
-
-            holder.open_presc_btn.setOnClickListener(v -> {
-                Context context = holder.delete_imgview.getContext();
-                Intent intent = new Intent(context, PrescriptionActivity.class);
-                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name());
-                intent.putExtra("patientUuid", model.getPatientuuid());
-                intent.putExtra("tag", "Notification screen");
-                intent.putExtra("patient_photo", model.getPatient_photo());
-                intent.putExtra("visit_ID", model.getVisitUUID());
-                intent.putExtra("visit_startDate", model.getVisit_startDate());
-                intent.putExtra("gender", model.getGender());
-                intent.putExtra("openmrsID", model.getOpenmrsID());
-
-                String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUUID());
-                String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUUID());
-                model.setEncounterUuidVitals(vitalsUUID);
-                model.setEncounterUuidAdultIntial(adultInitialUUID);
-
-                intent.putExtra("encounterUuidVitals", vitalsUUID);
-                intent.putExtra("encounterUuidAdultIntial", adultInitialUUID);
-
-                String age = DateAndTimeUtils.getAge_FollowUp(model.getDate_of_birth(), context);
-                model.setAge(age);
-                intent.putExtra("age", age);
-
-                String followupDate = getFollowupDataForVisitUUID(model.getVisitUUID());
-                model.setFollowupDate(followupDate);
-                intent.putExtra("followupDate", followupDate);
-
-                context.startActivity(intent);
-            });
+            holder.open_presc_btn.setOnClickListener { _: View? ->
+                clickListener.openNotification(
+                    model, position
+                )
+            }
         }
+        patientDTOList?.get(position)?.let { model ->
+
+            model.description?.let {
+                holder.search_name.text = it
+            }
+            holder.delete_imgview.setOnClickListener { _: View? ->
+                clickListener.deleteNotification(model, holder.layoutPosition)
+            }
+            holder.open_presc_btn.setOnClickListener {
+                clickListener.openNotification(
+                    model, position
+                )
+            }
+        }
+
     }
 
-    @Override
-    public int getItemCount() {
-        return patientDTOList.size();
+    override fun getItemCount(): Int {
+        return patientDTOList?.size ?: 0
     }
 
-    public class MyHolderView extends RecyclerView.ViewHolder {
-        TextView search_name;
-        LinearLayout scroll_layout, open_presc_btn;
-        CardView fu_cardview_item;
-        RelativeLayout delete_relative, scroll_relative;
-        ImageView delete_imgview;
+    inner class MyHolderView(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var search_name: TextView
+        var open_presc_btn: LinearLayout
+        var scroll_relative: RelativeLayout
+        var delete_imgview: ImageView
+        var fu_cardview_item: CardView
 
-        public MyHolderView(@NonNull View itemView) {
-            super(itemView);
-            search_name = itemView.findViewById(R.id.search_name);
-            delete_relative = itemView.findViewById(R.id.delete_relative);
-            scroll_layout = itemView.findViewById(R.id.scroll_layout);
-            scroll_relative = itemView.findViewById(R.id.scroll_relative);
-            delete_imgview = itemView.findViewById(R.id.delete_imgview);
-            open_presc_btn = itemView.findViewById(R.id.open_presc_btn);
-
-            scroll_relative.setOnTouchListener(new OnSwipeTouchListener(mContext) {
-                @Override
-                public void onSwipeLeft() {
-                    super.onSwipeLeft();
-                    delete_relative.setVisibility(View.VISIBLE);
-                    scroll_relative.setTranslationX(-100);
-//                    user is scroll towards left side from right side.
-                }
-                @Override
-                public void onSwipeRight() {
-                    super.onSwipeRight();
-                    delete_relative.setVisibility(View.GONE);
-                    scroll_relative.setTranslationX(10);
-//                    Toast.makeText(MainActivity.this, "Swipe Right gesture detected", Toast.LENGTH_SHORT).show();
-                }
-            });
+        init {
+            search_name = itemView.findViewById(R.id.search_name)
+            scroll_relative = itemView.findViewById(R.id.scroll_relative)
+            delete_imgview = itemView.findViewById(R.id.delete_imgview)
+            open_presc_btn = itemView.findViewById(R.id.open_presc_btn)
+            fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item)
         }
     }
 }

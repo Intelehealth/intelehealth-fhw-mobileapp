@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.notification.view
+package org.intelehealth.app.activities.notification.listeners
 
 import org.intelehealth.app.models.NotificationModel
 
