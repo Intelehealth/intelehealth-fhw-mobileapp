@@ -77,6 +77,12 @@ public class PatientDTO implements Serializable {
     private String visit_startdate;
     private boolean prescription_exists = false;
 
+    private String guardianName;
+    private String guardianType;
+    private String contactType;
+    private String emContactName;
+    private String emContactNumber;
+
     private VisitDTO visitDTO;
 
     public String getUuid() {
@@ -320,6 +326,46 @@ public class PatientDTO implements Serializable {
         this.visitDTO = visitDTO;
     }
 
+    public String getGuardianName() {
+        return guardianName;
+    }
+
+    public void setGuardianName(String guardianName) {
+        this.guardianName = guardianName;
+    }
+
+    public String getGuardianType() {
+        return guardianType;
+    }
+
+    public void setGuardianType(String guardianType) {
+        this.guardianType = guardianType;
+    }
+
+    public String getContactType() {
+        return contactType;
+    }
+
+    public void setContactType(String contactType) {
+        this.contactType = contactType;
+    }
+
+    public String getEmContactName() {
+        return emContactName;
+    }
+
+    public void setEmContactName(String emContactName) {
+        this.emContactName = emContactName;
+    }
+
+    public String getEmContactNumber() {
+        return emContactNumber;
+    }
+
+    public void setEmContactNumber(String emContactNumber) {
+        this.emContactNumber = emContactNumber;
+    }
+
     @Override
     public String toString() {
         return "PatientDTO{" +
@@ -346,6 +392,11 @@ public class PatientDTO implements Serializable {
                 ", emergency=" + emergency +
                 ", visit_startdate='" + visit_startdate + '\'' +
                 ", prescription_exists=" + prescription_exists +
+                ", guardianType='" + guardianType + '\'' +
+                ", guardianName='" + guardianName + '\'' +
+                ", contactType='" + contactType + '\'' +
+                ", emContactName='" + emContactName + '\'' +
+                ", emContactNumber=" + emContactNumber +
                 '}';
     }
 }

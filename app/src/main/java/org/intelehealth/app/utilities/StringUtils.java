@@ -156,6 +156,8 @@ public final class StringUtils {
             val = switch_hi_caste(val);
             val = switch_hi_economic(val);
             val = switch_hi_education(val);
+            val = switch_hi_guardian_type(val);
+            val = switch_hi_contact_type(val);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             val = switch_or_caste(val);
             val = switch_or_economic(val);
@@ -432,6 +434,9 @@ public final class StringUtils {
             case "Illiterate":
                 val = "अशिक्षित";
                 break;
+            case "Pre-Primary":
+                val = "प्री-प्राइमरी";
+                break;
             case "Primary":
                 val = "प्रथम";
                 break;
@@ -443,6 +448,12 @@ public final class StringUtils {
                 break;
             case "Graduation & Higher":
                 val = "स्नातक और उच्चतर";
+                break;
+            case "Bachelors & Equivalent":
+                val = "स्नातक एवं समकक्ष";
+                break;
+            case "Masters & Higher":
+                val = "परास्नातक एवं उच्चतर";
                 break;
             default:
                 return val;
@@ -457,6 +468,9 @@ public final class StringUtils {
             case "अशिक्षित":
                 val = "Illiterate";
                 break;
+            case "प्री-प्राइमरी":
+                val = "Pre-Primary";
+                break;
             case "प्रथम":
                 val = "Primary";
                 break;
@@ -468,6 +482,12 @@ public final class StringUtils {
                 break;
             case "स्नातक और उच्चतर":
                 val = "Graduation & Higher";
+                break;
+            case "स्नातक एवं समकक्ष":
+                val = "Bachelors & Equivalent";
+                break;
+            case "परास्नातक एवं उच्चतर":
+                val = "Masters & Higher";
                 break;
             default:
                 return val;
@@ -4038,6 +4058,58 @@ public final class StringUtils {
             }
         } else {
             return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_guardian_type(String val) {
+        if(val == null || val.isEmpty()) return "";
+        switch (val) {
+            case "मां" -> val = "Mother";
+            case "पिता" -> val = "Father";
+            case "दादा-दादी" -> val = "Grandparent";
+            case "पति/पत्नी" -> val = "Spouse";
+            default -> {
+                return val;
+            }
+        }
+        return val;
+    }
+
+    public static String switch_hi_guardian_type_edit(String val) {
+        if(val == null || val.isEmpty()) return "";
+        switch (val) {
+            case "Mother" -> val = "मां";
+            case "Father" -> val = "पिता";
+            case "Grandparent" -> val = "दादा-दादी";
+            case "Spouse" -> val = "पति/पत्नी";
+            default -> {
+                return val;
+            }
+        }
+        return val;
+    }
+
+    public static String switch_hi_contact_type(String val) {
+        if(val == null || val.isEmpty()) return "";
+        switch (val) {
+            case "स्वयं" -> val = "Self";
+            case "परिवार" -> val = "Family";
+            default -> {
+                return val;
+            }
+        }
+        return val;
+    }
+
+    public static String switch_hi_contact_type_edit(String val) {
+        if(val == null || val.isEmpty()) return "";
+        switch (val) {
+            case "Self" -> val = "स्वयं";
+            case "Family" -> val = "परिवार";
+            default -> {
+                return val;
+            }
         }
         return val;
     }
