@@ -1,45 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".activities.notification.NotificationActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:id="@+id/notifi_relative"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:background="@color/white">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".activities.notification.view.NotificationActivity">
 
-
-        <!-- Frame 100116 -->
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llToolBar"
+            android:layout_width="0dp"
             android:layout_height="?actionBarSize"
-            android:paddingHorizontal="@dimen/toolbar_margin_left">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/toolbar_margin_left"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseCompoundDrawables">
 
-            <!-- arrow-right -->
-            <ImageButton
-                android:id="@+id/backbtn"
+             <ImageView
+                android:id="@+id/ivBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:background="@null"
-                android:src="@drawable/ic_arrow_right" />
+                android:src="@drawable/ic_arrow_right"
+                tools:ignore="ContentDescription" />
 
             <!-- Label -->
             <TextView
-                android:id="@+id/label"
+                android:id="@+id/tvToolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/margin_10"
-                android:layout_toEndOf="@+id/backbtn"
                 android:lineSpacingExtra="1sp"
                 android:text="@string/notifi_title"
                 android:textAppearance="@style/label"
@@ -48,203 +43,117 @@
                 android:textStyle="bold"
                 android:translationY="-0.28sp" />
 
+
+        </LinearLayout>
+        <!--card view-->
+
+        <RelativeLayout
+            android:id="@+id/rlPrescriptionHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginTop="@dimen/fu_card_margin_updown"
+            android:layout_marginEnd="@dimen/toolbar_margin_left"
+            android:background="@drawable/notifi_green_header_card"
+            app:layout_constraintEnd_toEndOf="@id/llToolBar"
+            app:layout_constraintStart_toStartOf="@id/llToolBar"
+            app:layout_constraintTop_toBottomOf="@id/llToolBar">
+
             <ImageButton
-                android:id="@+id/refresh"
+                android:id="@+id/arrow_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/notifi_arrow_margin_end"
+                android:layout_marginEnd="@dimen/notifi_arrow_margin_end"
                 android:background="@null"
-                android:src="@drawable/ic_refreshbtn" />
+                android:src="@drawable/arrow_right_icon8"
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
 
-            <ImageButton
-                android:id="@+id/filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+            <ImageView
+                android:id="@+id/notifi_header_icon"
+                android:layout_width="@dimen/notifi_header_icon"
+                android:layout_height="@dimen/notifi_header_icon"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_marginBottom="@dimen/fu_margin_start"
                 android:background="@null"
-                android:src="@drawable/ui2_ic_filter"
-                android:visibility="gone" />
-        </RelativeLayout>
-
-
-    </RelativeLayout>
-
-    <!--card view-->
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/notifi_relative"
-        android:fillViewport="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RelativeLayout
-                android:id="@+id/relative_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/toolbar_margin_left"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:layout_marginEnd="@dimen/toolbar_margin_left"
-                android:background="@drawable/notifi_green_header_card">
-
-                <ImageButton
-                    android:id="@+id/arrow_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/notifi_arrow_margin_end"
-                    android:layout_marginEnd="@dimen/notifi_arrow_margin_end"
-                    android:background="@null" android:visibility="gone"
-                    android:src="@drawable/arrow_right_icon8" />
-
-                <ImageView
-                    android:id="@+id/notifi_header_icon"
-                    android:layout_width="@dimen/notifi_header_icon"
-                    android:layout_height="@dimen/notifi_header_icon"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_marginTop="@dimen/fu_margin_start"
-                    android:layout_marginBottom="@dimen/fu_margin_start"
-                    android:background="@null"
-                    android:src="@drawable/ic_notifi_header_icon" />
-
-                <TextView
-                    android:id="@+id/notifi_header_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_marginTop="@dimen/fu_margin_start"
-                    android:layout_toEndOf="@+id/notifi_header_icon"
-                    android:background="@null"
-                    android:text="@string/five_presc_received"
-                    android:textColor="@color/header_title_color"
-                    android:textSize="@dimen/fu_name_txt_size" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/notifi_header_title"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_toEndOf="@+id/notifi_header_icon"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:lineSpacingExtra="2sp"
-                    android:text="@string/notifi_subheader_title"
-                    android:textColor="@color/header_subtitle_color"
-                    android:textSize="@dimen/fu_male_textsize" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relative_today"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/search_icon_toolbar"
-                android:layout_below="@+id/relative_header"
-                android:layout_marginStart="@dimen/toolbar_margin_left"
-                android:layout_marginTop="@dimen/toolbar_margin_left"
-                android:layout_marginEnd="@dimen/toolbar_margin_left">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/you_can_add"
-                    android:textColor="@color/header_title_color"
-                    android:textSize="@dimen/fu_male_textsize" />
-
-                <ImageButton
-                    android:id="@+id/clearAll_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:background="@null"
-                    android:src="@drawable/ic_clear_all_icon"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-            </RelativeLayout>
+                android:src="@drawable/ic_notifi_header_icon"
+                tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/today_nodata"
+                android:id="@+id/notifi_header_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relative_today"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:padding="@dimen/card_padding"
-                android:text="@string/no_prescription"
-                android:textAppearance="@style/caption"
-                android:textColor="@null"
-                android:textSize="@dimen/fu_male_textsize" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_today"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/relative_today"
-                android:layout_marginStart="@dimen/toolbar_margin_left"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:layout_marginEnd="@dimen/toolbar_margin_left"
-                android:layout_marginBottom="@dimen/toolbar_margin_left"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="0"
-                tools:listitem="@layout/notification_list_item" />
-
-            <TextView
-                android:id="@+id/txt_yesterday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/recycler_today"
-                android:layout_marginStart="@dimen/toolbar_margin_left"
-                android:layout_marginEnd="@dimen/toolbar_margin_left"
-                android:text="@string/yesterday"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_toEndOf="@+id/notifi_header_icon"
+                android:background="@null"
+                android:text="@string/five_presc_received"
                 android:textColor="@color/header_title_color"
-                android:textSize="@dimen/fu_male_textsize" />
+                android:textSize="@dimen/fu_name_txt_size" />
 
             <TextView
-                android:id="@+id/yesterday_nodata"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_yesterday"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/card_padding"
-                android:text="@string/no_prescription"
-                android:textAppearance="@style/caption"
-                android:textColor="@null"
+                android:layout_below="@+id/notifi_header_title"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_toEndOf="@+id/notifi_header_icon"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="2sp"
+                android:text="@string/notifi_subheader_title"
+                android:textColor="@color/header_subtitle_color"
                 android:textSize="@dimen/fu_male_textsize" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_yesterday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_yesterday"
-                android:layout_marginStart="@dimen/toolbar_margin_left"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:layout_marginEnd="@dimen/toolbar_margin_left"
-                android:layout_marginBottom="@dimen/toolbar_margin_left"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="0"
-                tools:listitem="@layout/notification_list_item" />
-
         </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
 
-    <FrameLayout
-        android:id="@+id/filter_framelayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/margin_45"
-        android:visibility="gone"
-        tools:visibility="visible">
+        <ImageButton
+            android:id="@+id/ibClearAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/space_5dp"
+            android:background="@null"
+            android:src="@drawable/ic_clear_all_icon"
+            app:layout_constraintEnd_toEndOf="@+id/rlPrescriptionHeader"
+            app:layout_constraintTop_toBottomOf="@+id/rlPrescriptionHeader"
+            tools:visibility="visible"
+            tools:ignore="ContentDescription" />
 
-        <include layout="@layout/notifi_filter_layout" />
+        <TextView
+            android:id="@+id/tvNoData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_notifications_yet"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/rvNotifications"
+            app:layout_constraintEnd_toEndOf="@+id/rvNotifications"
+            app:layout_constraintStart_toStartOf="@+id/rvNotifications"
+            app:layout_constraintTop_toTopOf="@+id/rvNotifications" />
 
-    </FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvNotifications"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/rlPrescriptionHeader"
+            app:layout_constraintStart_toStartOf="@+id/rlPrescriptionHeader"
+            app:layout_constraintTop_toBottomOf="@+id/ibClearAll" />
 
-</RelativeLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

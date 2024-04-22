@@ -42,6 +42,19 @@ public class SyncUtils {
         AppointmentSync.getAppointments(context);
     }
 
+    public void syncInBackground() {
+        SyncDAO syncDAO = new SyncDAO();
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        syncDAO.pushDataApi();
+        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0);
+        imagesPushDAO.loggedInUserProfileImagesPush();
+        if (!sessionManager.isLogout()) {
+            AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
+        }
+
+    }
+
     public void syncBackground() {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
