@@ -13,7 +13,7 @@ import org.intelehealth.app.models.NotificationModel
 
 class NotificationViewModel : ViewModel() {
 
-    private var deleteNotificationUseCase = DeleteNotificationUseCase()
+     private var deleteNotificationUseCase = DeleteNotificationUseCase()
     private var readNotificationUseCase = ReadNotificationUseCase()
 
     fun fetchNonDeletedNotification(): MutableLiveData<NotificationResult<List<NotificationModel>>> {
