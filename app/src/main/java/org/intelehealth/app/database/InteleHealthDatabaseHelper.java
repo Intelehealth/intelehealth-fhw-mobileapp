@@ -62,10 +62,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
      */
     public static final String CREATE_NOTIFICATIONS = "CREATE TABLE IF NOT EXISTS tbl_notifications (" +
             "uuid TEXT PRIMARY KEY," +
-            "description TEXT UNIQUE," +
+            "description TEXT," +
             "notification_type TEXT," +
             "obs_server_modified_date TEXT," +
-            "isdeleted TEXT)";
+            "isdeleted TEXT," +
+            "UNIQUE(uuid) ON CONFLICT IGNORE)";
 
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
             "uuid TEXT PRIMARY KEY," +

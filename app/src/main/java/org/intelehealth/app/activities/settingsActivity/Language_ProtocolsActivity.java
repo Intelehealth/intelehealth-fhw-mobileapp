@@ -1,78 +1,67 @@
 package org.intelehealth.app.activities.settingsActivity;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.animation.ObjectAnimator;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.LocaleList;
 import android.os.Looper;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.URLUtil;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.adapter.DialogListAdapter;
-import org.intelehealth.app.adapter.SimpleItemData;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.splash.adapter.LanguageAdapter;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.room.entity.ActiveLanguage;
+import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class Language_ProtocolsActivity extends BaseActivity {
-    private Spinner lang_spinner;
+public class Language_ProtocolsActivity extends BaseActivity implements BaseViewHolder.ViewHolderClickListener {
+    //    private Spinner lang_spinner;
     private ImageButton btRefresh;
     private RelativeLayout reset_btn, update_protocols_btn;
-    private String selected_language = "English";
+    //    private String selected_language = "English";
     private Context context;
-    private ArrayAdapter<String> langAdapter;
+    //    private ArrayAdapter<String> langAdapter;
     private SessionManager sessionManager = null;
     private CardView snackbar_cv;
     private TextView snackbar_text;
@@ -85,10 +74,13 @@ public class Language_ProtocolsActivity extends BaseActivity {
     private ObjectAnimator syncAnimator;
     private TextView mLangTextView;
 
+    private LanguageAdapter languageAdapter;
+    private ActiveLanguage selectedLanguage;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setLocale(Language_ProtocolsActivity.this);
+//        setLocale(Language_ProtocolsActivity.this);
         setContentView(R.layout.activity_language_protocols);
 
         // changing status bar color
@@ -97,20 +89,40 @@ public class Language_ProtocolsActivity extends BaseActivity {
 
         handleBackPress();
         initUI();
-        clickListeners();
+    }
+
+    @Override
+    public void onLanguageLoaded(@NonNull List<ActiveLanguage> languages) {
+        super.onLanguageLoaded(languages);
+        languageAdapter = new LanguageAdapter(this, languages);
+        languageAdapter.setViewHolderClickListener(this);
+        updateSelectedLanguage();
+//        clickListeners();
+    }
+
+    private void updateSelectedLanguage() {
+        if (languageAdapter != null) {
+            for (int i = 0; i < languageAdapter.getList().size(); i++) {
+                ActiveLanguage language = languageAdapter.getList().get(i);
+                if (language.getCode().equalsIgnoreCase(sessionManager.getAppLanguage())) {
+                    languageAdapter.select(i, language);
+                    mLangTextView.setText(language.getName());
+                }
+            }
+        }
     }
 
     private void initUI() {
         context = Language_ProtocolsActivity.this;
         sessionManager = new SessionManager(context);
-        lang_spinner = findViewById(R.id.lang_spinner);
+//        lang_spinner = findViewById(R.id.lang_spinner);
         reset_btn = findViewById(R.id.reset_btn);
         snackbar_cv = findViewById(R.id.snackbar_cv);
         snackbar_text = findViewById(R.id.snackbar_text);
         update_protocols_btn = findViewById(R.id.update_protocols_btn);
         btRefresh = findViewById(R.id.refresh);
         mLangTextView = findViewById(R.id.lang_spinner_txt);
-        setLocale(Language_ProtocolsActivity.this);
+        clickListeners();
 
         Intent intent = getIntent();
         if (intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equalsIgnoreCase("language updated")) {
@@ -118,42 +130,43 @@ public class Language_ProtocolsActivity extends BaseActivity {
         }
     }
 
-    public Context setLocale(Context context) {
-        SessionManager sessionManager1 = new SessionManager(context);
-        String appLanguage = sessionManager1.getAppLanguage();
-        Resources res = context.getResources();
-        Configuration conf = res.getConfiguration();
-        Locale locale = new Locale(appLanguage);
-        Locale.setDefault(locale);
-        conf.setLocale(locale);
-        context.createConfigurationContext(conf);
-        DisplayMetrics dm = res.getDisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            conf.setLocales(new LocaleList(locale));
-        } else {
-            conf.locale = locale;
-        }
-        res.updateConfiguration(conf, dm);
-        return context;
-    }
+//    public Context setLocale(Context context) {
+//        SessionManager sessionManager1 = new SessionManager(context);
+//        String appLanguage = sessionManager1.getAppLanguage();
+//        Resources res = context.getResources();
+//        Configuration conf = res.getConfiguration();
+//        Locale locale = new Locale(appLanguage);
+//        Locale.setDefault(locale);
+//        conf.setLocale(locale);
+//        context.createConfigurationContext(conf);
+//        DisplayMetrics dm = res.getDisplayMetrics();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            conf.setLocales(new LocaleList(locale));
+//        } else {
+//            conf.locale = locale;
+//        }
+//        res.updateConfiguration(conf, dm);
+//        return context;
+//    }
 
     private AlertDialog mLanguageAlertDialog;
 
     public void showLangSelectionDialog(View view) {
-        List<SimpleItemData> mItemList = new ArrayList<SimpleItemData>();
-        List<String> displaySelection = new ArrayList<>();
-        String locale = new SessionManager(this).getAppLanguage();
-        displaySelection = Arrays.asList(getResources().getStringArray(R.array.language_names));
-        for (int i = 0; i < displaySelection.size(); i++) {
-            SimpleItemData simpleItemData = new SimpleItemData();
-            simpleItemData.setTitle(displaySelection.get(i));
-
-            if (locale.equalsIgnoreCase("en") && displaySelection.get(i).equalsIgnoreCase("English"))
-                simpleItemData.setSelected(true);
-            if (locale.equalsIgnoreCase("hi") && displaySelection.get(i).equalsIgnoreCase("हिंदी"))
-                simpleItemData.setSelected(true);
-            mItemList.add(simpleItemData);
-        }
+        updateSelectedLanguage();
+//        List<SimpleItemData> mItemList = new ArrayList<SimpleItemData>();
+//        List<String> displaySelection = new ArrayList<>();
+//        String locale = new SessionManager(this).getAppLanguage();
+//        displaySelection = Arrays.asList(getResources().getStringArray(R.array.language_names));
+//        for (int i = 0; i < displaySelection.size(); i++) {
+//            SimpleItemData simpleItemData = new SimpleItemData();
+//            simpleItemData.setTitle(displaySelection.get(i));
+//
+//            if (locale.equalsIgnoreCase("en") && displaySelection.get(i).equalsIgnoreCase("English"))
+//                simpleItemData.setSelected(true);
+//            if (locale.equalsIgnoreCase("hi") && displaySelection.get(i).equalsIgnoreCase("हिंदी"))
+//                simpleItemData.setSelected(true);
+//            mItemList.add(simpleItemData);
+//        }
 
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         final LayoutInflater inflater = getLayoutInflater();
@@ -163,73 +176,72 @@ public class Language_ProtocolsActivity extends BaseActivity {
         RecyclerView recyclerView = convertView.findViewById(R.id.lang_dialog_list_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(Language_ProtocolsActivity.this, RecyclerView.VERTICAL, false));
-        DialogListAdapter dialogListAdapter = new DialogListAdapter(recyclerView, Language_ProtocolsActivity.this, mItemList, new DialogListAdapter.OnItemSelection() {
-            @Override
-            public void onSelect(SimpleItemData data) {
-                if (mLanguageAlertDialog != null) {
-                    mLanguageAlertDialog.dismiss();
-                }
-                selected_language = data.getTitle();
-                Log.v("Langauge", "selection: " + selected_language);
-                String message = getResources().getString(R.string.sure_change_language, selected_language);
-                dialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
-                        message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
-            }
-        });
-        recyclerView.setAdapter(dialogListAdapter);
+//        DialogListAdapter dialogListAdapter = new DialogListAdapter(recyclerView, Language_ProtocolsActivity.this, mItemList, new DialogListAdapter.OnItemSelection() {
+//            @Override
+//            public void onSelect(SimpleItemData data) {
+//                if (mLanguageAlertDialog != null) {
+//                    mLanguageAlertDialog.dismiss();
+//                }
+//                selected_language = data.getTitle();
+//                Log.v("Langauge", "selection: " + selected_language);
+//                String message = getResources().getString(R.string.sure_change_language, selected_language);
+//                dialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
+//                        message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
+//            }
+//        });
+        recyclerView.setAdapter(languageAdapter);
         mLanguageAlertDialog = alertDialogBuilder.show();
         mLanguageAlertDialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_menu_background);
 
     }
 
     private void clickListeners() {
-        // language spinner - start
-        langAdapter = new ArrayAdapter<String>(this,
-                R.layout.simple_spinner_item_1, getResources().getStringArray(R.array.language_names));
-        langAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-        lang_spinner.setAdapter(langAdapter); // setting up language spinners.
-        // set for dropdown bg
-        //lang_spinner.setPopupBackgroundDrawable(getDrawable(R.drawable.popup_menu_background));
-        lang_spinner.setPopupBackgroundResource(R.drawable.popup_menu_background);
-        String l = sessionManager.getAppLanguage();
-        if (l.equalsIgnoreCase("en"))
-            l = "English";
-        if (l.equalsIgnoreCase("hi"))
-            l = "हिंदी";
-        if (l.equalsIgnoreCase("as"))
-            l = "অসমীয়া";
-        mLangTextView.setText(l);
-        int i = langAdapter.getPosition(l);
-        if (!l.equalsIgnoreCase(""))
-            lang_spinner.setSelection(langAdapter.getPosition(l));
-        else
-            lang_spinner.setSelection(langAdapter.getPosition("English"));
-
-        lang_spinner.setSelection(i, false);
-        lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
-                if (index >= 0) {
-                    selected_language = adapterView.getItemAtPosition(index).toString();
-                    Log.v("Langauge", "selection: " + selected_language);
-                    String message = getResources().getString(R.string.sure_change_language) + " " + selected_language + "?";
-                    dialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
-                            message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
+//        // language spinner - start
+//        langAdapter = new ArrayAdapter<String>(this,
+//                R.layout.simple_spinner_item_1, getResources().getStringArray(R.array.language_names));
+//        langAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+//        lang_spinner.setAdapter(langAdapter); // setting up language spinners.
+//        // set for dropdown bg
+//        //lang_spinner.setPopupBackgroundDrawable(getDrawable(R.drawable.popup_menu_background));
+//        lang_spinner.setPopupBackgroundResource(R.drawable.popup_menu_background);
+//        String l = sessionManager.getAppLanguage();
+//        if (l.equalsIgnoreCase("en"))
+//            l = "English";
+//        if (l.equalsIgnoreCase("hi"))
+//            l = "हिंदी";
+//        mLangTextView.setText(l);
+//        int i = langAdapter.getPosition(l);
+//        if (!l.equalsIgnoreCase(""))
+//            lang_spinner.setSelection(langAdapter.getPosition(l));
+//        else
+//            lang_spinner.setSelection(langAdapter.getPosition("English"));
+//
+//        lang_spinner.setSelection(i, false);
+//        lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
+//                if (index >= 0) {
+//                    selected_language = adapterView.getItemAtPosition(index).toString();
+//                    Log.v("Langauge", "selection: " + selected_language);
+//                    String message = getResources().getString(R.string.sure_change_language) + " " + selected_language + "?";
+//                    dialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language),
+//                            message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+//
         // Reset button.
         reset_btn.setOnClickListener(v -> {
             sessionManager.setAppLanguage("en");
-            lang_spinner.setSelection(0, false);
-            setLocale("en");
+            setupLanguage();
+//            lang_spinner.setSelection(0, false);
+//            setLocale("en");
         });
 
         // language spinner - end
@@ -352,8 +364,7 @@ public class Language_ProtocolsActivity extends BaseActivity {
     }
 
     // Dialog - start
-    public void dialog(Context context, Drawable drawable, String title, String subTitle,
-                       String positiveBtnTxt, String negativeBtnTxt, boolean toDisable) {
+    public void dialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt, boolean toDisable) {
 
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
@@ -386,22 +397,25 @@ public class Language_ProtocolsActivity extends BaseActivity {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
-            lang_spinner.setSelection(langAdapter.getPosition("English"));
+//            lang_spinner.setSelection(langAdapter.getPosition("English"));
             alertDialog.dismiss();
         });
 
         positive_btn.setOnClickListener(v -> {
             // setting app language here...
-            if (!selected_language.equalsIgnoreCase("")) {
-                String locale = selected_language;
-                if (locale.equalsIgnoreCase("English"))
-                    locale = "en";
-                if (locale.equalsIgnoreCase("हिंदी"))
-                    locale = "hi";
-
-                setLocale(locale);
-                mLangTextView.setText(selected_language);
+            if (selectedLanguage != null) {
+                sessionManager.setAppLanguage(selectedLanguage.getCode());
+                mLangTextView.setText(selectedLanguage.getName());
+                setupLanguage();
             }
+//            if (!selected_language.equalsIgnoreCase("")) {
+//                String locale = selected_language;
+//                if (locale.equalsIgnoreCase("English")) locale = "en";
+//                if (locale.equalsIgnoreCase("हिंदी")) locale = "hi";
+//
+//                setLocale(locale);
+//
+//            }
             alertDialog.dismiss();
         });
 
@@ -415,17 +429,16 @@ public class Language_ProtocolsActivity extends BaseActivity {
      *
      * @param // appLanguage
      */
-    public void setLocale(String locale_code) {
-        sessionManager.setAppLanguage(locale_code);
-        Locale locale = new Locale(locale_code);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        Language_ProtocolsActivity.this.getResources().updateConfiguration(config, Language_ProtocolsActivity.this.getResources().getDisplayMetrics());
-        restartActivity();
-
-    }
-
+//    public void setLocale(String locale_code) {
+//        sessionManager.setAppLanguage(locale_code);
+//        Locale locale = new Locale(locale_code);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        Language_ProtocolsActivity.this.getResources().updateConfiguration(config, Language_ProtocolsActivity.this.getResources().getDisplayMetrics());
+//        restartActivity();
+//
+//    }
     private void restartActivity() {
         Intent intent = getIntent();
         intent.putExtra("intentType", "language updated");
@@ -453,51 +466,46 @@ public class Language_ProtocolsActivity extends BaseActivity {
 
     private void getMindmapDownloadURL(String url, String key) {
         // customProgressDialog.show();
-        dialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_icon_logging_in),
-                getResources().getString(R.string.changing_protocols), getResources().getString(R.string.wait_while_protocols_changing),
-                getResources().getString(R.string.yes), getResources().getString(R.string.no), true);
+        dialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_icon_logging_in), getResources().getString(R.string.changing_protocols), getResources().getString(R.string.wait_while_protocols_changing), getResources().getString(R.string.yes), getResources().getString(R.string.no), true);
 
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
-            resultsObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
-                        @Override
-                        public void onNext(DownloadMindMapRes res) {
-                            //  customProgressDialog.dismiss();
-                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<DownloadMindMapRes>() {
+                @Override
+                public void onNext(DownloadMindMapRes res) {
+                    //  customProgressDialog.dismiss();
+                    if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
-                                Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, alertDialog, "home", true);
-                                mindmapURL = res.getMindmap().trim();
-                                sessionManager.setLicenseKey(key);
-                                /**
-                                 * Showing snackbar custom view on success of Protocols udpated...
-                                 */
-                                showSnackBarAndRemoveLater(getResources().getString(R.string.protocols_successfully_changed));
-                                checkExistingMindMaps();
-                                //  alertDialog.dismiss();
+                        Log.e("MindMapURL", "Successfully get MindMap URL");
+                        mTask = new DownloadMindMaps(context, alertDialog, "home", true);
+                        mindmapURL = res.getMindmap().trim();
+                        sessionManager.setLicenseKey(key);
+                        /**
+                         * Showing snackbar custom view on success of Protocols udpated...
+                         */
+                        showSnackBarAndRemoveLater(getResources().getString(R.string.protocols_successfully_changed));
+                        checkExistingMindMaps();
+                        //  alertDialog.dismiss();
 
-                            } else {
-                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    } else {
+                        Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            //  customProgressDialog.dismiss();
-                            alertDialog.dismiss();
-                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
-                        }
+                @Override
+                public void onError(Throwable e) {
+                    //  customProgressDialog.dismiss();
+                    alertDialog.dismiss();
+                    Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
+                }
 
-                        @Override
-                        public void onComplete() {
+                @Override
+                public void onComplete() {
 
-                        }
-                    });
+                }
+            });
         } catch (IllegalArgumentException e) {
             Log.e("TAG", "changeApiBaseUrl: " + e.getMessage());
             Log.e("TAG", "changeApiBaseUrl: " + e.getStackTrace());
@@ -560,4 +568,23 @@ public class Language_ProtocolsActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onViewHolderViewClicked(@Nullable View view, int position) {
+        if (view == null) return;
+        if (view.getId() == R.id.layout_rb_choose_language) {
+            if (mLanguageAlertDialog != null) {
+                mLanguageAlertDialog.dismiss();
+            }
+
+            ActiveLanguage lang = (ActiveLanguage) view.getTag();
+            languageAdapter.select(position, lang);
+            showSelectedLanguageConfirmationDialog(lang);
+        }
+    }
+
+    private void showSelectedLanguageConfirmationDialog(ActiveLanguage language) {
+        selectedLanguage = language;
+        String message = getResources().getString(R.string.sure_change_language, language.getName());
+        dialog(this, ContextCompat.getDrawable(context, R.drawable.ui2_ic_exit_app), getResources().getString(R.string.change_language), message, getResources().getString(R.string.yes), getResources().getString(R.string.no), false);
+    }
 }

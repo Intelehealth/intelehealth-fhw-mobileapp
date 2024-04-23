@@ -1,22 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:id="@+id/layout_rb_choose_language"
-    android:layout_marginStart="@dimen/parent_layout_margin"
-    android:paddingStart="@dimen/parent_layout_padding_start"
-    android:layout_marginEnd="@dimen/parent_layout_margin"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+<layout>
 
-    <RadioButton
-        android:id="@+id/rb_choose_language"
+    <data>
+
+        <variable
+            name="language"
+            type="org.intelehealth.config.room.entity.ActiveLanguage" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_rb_choose_language"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/rb_select_lang_padding"
-        android:text="@string/language"
-        android:button="@drawable/ui2_ic_circle"
-        android:lineHeight="@dimen/rb_select_lang_line_height"
-        android:textColor="@color/textColorBlack"
-        android:textSize="@dimen/rb_select_lang_text_size" />
+        android:layout_marginStart="@dimen/parent_layout_margin"
+        android:layout_marginEnd="@dimen/parent_layout_margin"
+        android:background="@color/color_language_bg"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/parent_layout_padding_start">
 
-</LinearLayout>
+        <RadioButton
+            android:id="@+id/rb_choose_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:button="@drawable/selector_radio_button"
+            android:padding="@dimen/rb_select_lang_padding"
+            android:checked="@{language.selected}"
+            android:text="@{language.name}"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/rb_select_lang_text_size" />
+
+    </LinearLayout>
+</layout>

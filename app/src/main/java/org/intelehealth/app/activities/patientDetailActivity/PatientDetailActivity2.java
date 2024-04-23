@@ -106,6 +106,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -287,8 +288,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         @Override
                         public void onDialogActionDone(int action) {
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                Intent in = new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class);
+                                CommonVisitData commonVisitData  = new CommonVisitData();
+                                commonVisitData.setPatientUuid(patientDTO.getUuid());
+                                commonVisitData.setPrivacyNote(privacy_value_selected);
+                                in.putExtra("CommonVisitData",commonVisitData);
+                                startActivity(in);
                                // startVisit();
-                                mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
+                               // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
                             }
                         }
                     });
