@@ -130,8 +130,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 //                //.disabled(BuildConfig.DEBUG) // comment by Venu as per intelesafe
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
-
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
+        boolean activeCrash = BuildConfig.FLAVOR_server.equals("dev");
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(activeCrash);
 
     }
 
