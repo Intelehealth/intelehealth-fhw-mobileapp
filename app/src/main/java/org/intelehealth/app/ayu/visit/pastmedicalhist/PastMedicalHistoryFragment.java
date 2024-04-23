@@ -2,7 +2,6 @@ package org.intelehealth.app.ayu.visit.pastmedicalhist;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 
@@ -58,7 +58,7 @@ public class PastMedicalHistoryFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static PastMedicalHistoryFragment newInstance(Intent intent, boolean isEditMode, Node node) {
+    public static PastMedicalHistoryFragment newInstance(CommonVisitData commonVisitData, boolean isEditMode, Node node) {
         PastMedicalHistoryFragment fragment = new PastMedicalHistoryFragment();
         fragment.mCurrentNode = node;
         fragment.mIsEditMode = isEditMode;

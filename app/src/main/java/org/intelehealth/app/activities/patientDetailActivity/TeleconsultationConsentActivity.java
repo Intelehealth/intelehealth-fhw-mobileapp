@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -16,9 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.onboarding.CommonWebViewClient;
 import org.intelehealth.app.activities.onboarding.GenericWebViewClient;
-import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -32,12 +33,16 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
 
     SessionManager sessionManager = null;
     private AlertDialog loadingDialog;
+    private CommonVisitData mCommonVisitData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teleconsultation_consent);
         sessionManager = new SessionManager(TeleconsultationConsentActivity.this);
+
+        mCommonVisitData = getIntent().getExtras().getParcelable("CommonVisitData");
+
         String consentText = new ConfigUtils(this).getTeleconsultationConsentText(sessionManager.getAppLanguage());
         WebView consentWebView = findViewById(R.id.content_tv);
 
@@ -49,10 +54,10 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
 
         String text;
         text = "<html><body style='color:black;font-size: 0.8em;' >"; //style='text-align:justify;text-justify: inter-word;'
-        text += consentText ;
+        text += consentText;
         text += "</body></html>";
         consentWebView.setWebViewClient(new GenericWebViewClient(this));
-        consentWebView.loadDataWithBaseURL(null,text, "text/html", "utf-8",null);
+        consentWebView.loadDataWithBaseURL(null, text, "text/html", "utf-8", null);
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -71,12 +76,16 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
     }
 
     public void declineConsent(View view) {
-        setResult(AppConstants.TELECONSULTATION_CONSENT_DECLINE);
+        // setResult(AppConstants.TELECONSULTATION_CONSENT_DECLINE);
         finish();
     }
 
     public void acceptConsent(View view) {
-        setResult(AppConstants.TELECONSULTATION_CONSENT_ACCEPT);
+        //setResult(AppConstants.TELECONSULTATION_CONSENT_ACCEPT);
+        Intent intent = new Intent(TeleconsultationConsentActivity.this, VisitCreationActivity.class);
+        mCommonVisitData.setIntentTag("new");
+        intent.putExtra("CommonVisitData", mCommonVisitData);
+        startActivity(intent);
         finish();
     }
 

@@ -121,6 +121,7 @@ import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -207,8 +208,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
-    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview,
-            vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
+    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
     private RelativeLayout add_additional_doc;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private TextInputEditText etAdditionalNotesVS;
@@ -246,6 +246,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     ObsDTO bpDias = new ObsDTO();
     ObsDTO temperature = new ObsDTO();
     ObsDTO spO2 = new ObsDTO();
+    ObsDTO mBloodGroupObsDTO = new ObsDTO();
     ObsDTO resp = new ObsDTO();
 
     String diagnosisReturned = "";
@@ -284,6 +285,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     TextView bpView;
     TextView tempView;
     TextView spO2View;
+    TextView mBloodGroupTextView;
     TextView bmiView;
     TextView complaintView, patientReports_txtview, patientDenies_txtview;
     TextView famHistView;
@@ -344,6 +346,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private ObjectAnimator syncAnimator;
     TooltipWindow tipWindow;
     Boolean doesAppointmentExist = false;
+
+    private CommonVisitData mCommonVisitData;
 
     private SpecializationViewModel viewModel;
 
@@ -464,17 +468,53 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // todo: uncomment this block later for testing it is commented.
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientUuid = intent.getStringExtra("patientUuid");
-            visitUuid = intent.getStringExtra("visitUuid");
-            patientGender = intent.getStringExtra("gender");
-            encounterVitals = intent.getStringExtra("encounterUuidVitals");
-            encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
-            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+            if (intent.hasExtra("CommonVisitData")) {
+                mCommonVisitData = intent.getExtras().getParcelable("CommonVisitData");
+
+                visitUuid = mCommonVisitData.getVisitUuid();
+
+                encounterVitals = mCommonVisitData.getEncounterUuidVitals();
+                encounterUuidAdultIntial = mCommonVisitData.getEncounterUuidAdultIntial();
+                EncounterAdultInitial_LatestVisit = mCommonVisitData.getEncounterAdultInitialLatestVisit();
+
+                patientUuid = mCommonVisitData.getPatientUuid();
+                patientGender = mCommonVisitData.getPatientGender();
+                patientName = mCommonVisitData.getPatientName();
+                float_ageYear_Month = mCommonVisitData.getPatientAgeYearMonth();
+                intentTag = mCommonVisitData.getIntentTag();
+
+                isPastVisit = mCommonVisitData.isPastVisit();
+            } else {
+                visitUuid = intent.getStringExtra("visitUuid");
+                mCommonVisitData = new CommonVisitData();
+                mCommonVisitData.setVisitUuid(visitUuid);
+
+                encounterVitals = intent.getStringExtra("encounterUuidVitals");
+                mCommonVisitData.setEncounterUuidVitals(encounterVitals);
+                encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
+                mCommonVisitData.setEncounterUuidAdultIntial(encounterUuidAdultIntial);
+                EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+                mCommonVisitData.setEncounterAdultInitialLatestVisit(EncounterAdultInitial_LatestVisit);
+
+                patientUuid = intent.getStringExtra("patientUuid");
+                mCommonVisitData.setPatientUuid(patientUuid);
+                patientGender = intent.getStringExtra("gender");
+                mCommonVisitData.setPatientGender(patientGender);
+                patientName = intent.getStringExtra("name");
+                mCommonVisitData.setPatientName(patientName);
+                float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+                mCommonVisitData.setPatientAgeYearMonth(float_ageYear_Month);
+
+
+                intentTag = intent.getStringExtra("tag");
+                mCommonVisitData.setIntentTag(intentTag);
+
+                isPastVisit = intent.getBooleanExtra("pastVisit", false);
+                mCommonVisitData.setPastVisit(isPastVisit);
+            }
+
+
             mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
-            patientName = intent.getStringExtra("name");
-            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
-            intentTag = intent.getStringExtra("tag");
-            isPastVisit = intent.getBooleanExtra("pastVisit", false);
             try {
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitUuid);
                 Timber.tag(TAG).d("has prescription main::%s", hasPrescription);
@@ -919,8 +959,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         if (patient.getPatient_photo() != null) {
-            RequestBuilder<Drawable> requestBuilder = Glide.with(context)
-                    .asDrawable().sizeMultiplier(0.3f);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(context).asDrawable().sizeMultiplier(0.3f);
             Glide.with(context).load(patient.getPatient_photo()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
         } else {
             profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
@@ -999,6 +1038,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             else spO2View.setText(spO2.getValue());
         } else spO2View.setText(getResources().getString(R.string.no_information));
 
+        if (mBloodGroupObsDTO.getValue() != null) {
+            if (mBloodGroupObsDTO.getValue().trim().isEmpty() || mBloodGroupObsDTO.getValue().trim().equals("null"))
+                mBloodGroupTextView.setText(getResources().getString(R.string.no_information));
+            else mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(mBloodGroupObsDTO.getValue()));
+        } else mBloodGroupTextView.setText(getResources().getString(R.string.no_information));
+
 
         // temperature - start
         try {
@@ -1071,8 +1116,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mAdditionalDocsRecyclerView.setHasFixedSize(true);
             mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial,
-                    rowListItem, AppConstants.IMAGE_PATH, this, isVisitSpecialityExists);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, isVisitSpecialityExists);
 //            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
 //
 //            } else {
@@ -1153,15 +1197,20 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
-                intent1.putExtra("patientUuid", patientUuid);
-                intent1.putExtra("visitUuid", visitUuid);
-                intent1.putExtra("gender", patientGender);
-                intent1.putExtra("encounterUuidVitals", encounterVitals);
-                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("tag", "edit");
-                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-                intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VITAL);
+//                intent1.putExtra("patientUuid", patientUuid);
+//                intent1.putExtra("visitUuid", visitUuid);
+//                intent1.putExtra("gender", patientGender);
+//                intent1.putExtra("encounterUuidVitals", encounterVitals);
+//                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+//                intent1.putExtra("name", patientName);
+//                intent1.putExtra("tag", "edit");
+//                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+//                intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VITAL);
+
+                mCommonVisitData.setEditFor(VisitCreationActivity.STEP_1_VITAL);
+                mCommonVisitData.setIntentTag("edit");
+                intent1.putExtra("CommonVisitData", mCommonVisitData);
+
                 //startActivity(intent1);
                 mStartForEditVisit.launch(intent1);
             }
@@ -1266,15 +1315,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         }
 
                         Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
-                        intent1.putExtra("patientUuid", patientUuid);
-                        intent1.putExtra("visitUuid", visitUuid);
-                        intent1.putExtra("gender", patientGender);
-                        intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        intent1.putExtra("name", patientName);
-                        intent1.putExtra("tag", "edit");
-                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON);
+//                        intent1.putExtra("patientUuid", patientUuid);
+//                        intent1.putExtra("visitUuid", visitUuid);
+//                        intent1.putExtra("gender", patientGender);
+//                        intent1.putExtra("encounterUuidVitals", encounterVitals);
+//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+//                        intent1.putExtra("name", patientName);
+//                        intent1.putExtra("tag", "edit");
+//                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+//                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON);
+
+                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_2_VISIT_REASON);
+                        mCommonVisitData.setIntentTag("edit");
+                        intent1.putExtra("CommonVisitData", mCommonVisitData);
                         //startActivity(intent1);
                         mStartForEditVisit.launch(intent1);
                         dialogInterface.dismiss();
@@ -1408,15 +1461,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             }
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
-                        intent1.putExtra("patientUuid", patientUuid);
-                        intent1.putExtra("visitUuid", visitUuid);
-                        intent1.putExtra("gender", patientGender);
-                        intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        intent1.putExtra("name", patientName);
-                        intent1.putExtra("tag", "edit");
-                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
+//                        intent1.putExtra("patientUuid", patientUuid);
+//                        intent1.putExtra("visitUuid", visitUuid);
+//                        intent1.putExtra("gender", patientGender);
+//                        intent1.putExtra("encounterUuidVitals", encounterVitals);
+//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+//                        intent1.putExtra("name", patientName);
+//                        intent1.putExtra("tag", "edit");
+//                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+//                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
+
+                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
+                        mCommonVisitData.setIntentTag("edit");
+                        intent1.putExtra("CommonVisitData", mCommonVisitData);
                         //startActivity(intent1);
                         mStartForEditVisit.launch(intent1);
                         dialogInterface.dismiss();
@@ -1539,15 +1596,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
-                        intent1.putExtra("patientUuid", patientUuid);
-                        intent1.putExtra("visitUuid", visitUuid);
-                        intent1.putExtra("gender", patientGender);
-                        intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        intent1.putExtra("name", patientName);
-                        intent1.putExtra("tag", "edit");
-                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+//                        intent1.putExtra("patientUuid", patientUuid);
+//                        intent1.putExtra("visitUuid", visitUuid);
+//                        intent1.putExtra("gender", patientGender);
+//                        intent1.putExtra("encounterUuidVitals", encounterVitals);
+//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+//                        intent1.putExtra("name", patientName);
+//                        intent1.putExtra("tag", "edit");
+//                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+//                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+
+                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                        mCommonVisitData.setIntentTag("edit");
+                        intent1.putExtra("CommonVisitData", mCommonVisitData);
                         //startActivity(intent1);
                         mStartForEditVisit.launch(intent1);
                         dialogInterface.dismiss();
@@ -1682,15 +1743,20 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
-                        intent1.putExtra("patientUuid", patientUuid);
-                        intent1.putExtra("visitUuid", visitUuid);
-                        intent1.putExtra("gender", patientGender);
-                        intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        intent1.putExtra("name", patientName);
-                        intent1.putExtra("tag", "edit");
-                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+//                        intent1.putExtra("patientUuid", patientUuid);
+//                        intent1.putExtra("visitUuid", visitUuid);
+//                        intent1.putExtra("gender", patientGender);
+//                        intent1.putExtra("encounterUuidVitals", encounterVitals);
+//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+//                        intent1.putExtra("name", patientName);
+//                        intent1.putExtra("tag", "edit");
+//                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+//                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+
+                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                        mCommonVisitData.setIntentTag("edit");
+                        intent1.putExtra("CommonVisitData", mCommonVisitData);
+
                         //startActivity(intent1);
                         mStartForEditVisit.launch(intent1);
                         dialogInterface.dismiss();
@@ -1841,18 +1907,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void showEndVisitConfirmationDialog() {
         if (!hasPrescription) {
             DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(
-                    this, R.drawable.dialog_close_visit_icon,
-                    context.getResources().getString(R.string.confirm_end_visit_reason),
-                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
-                    false,
-                    context.getResources().getString(R.string.confirm),
-                    context.getResources().getString(R.string.cancel),
-                    action -> {
-                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                            checkIfAppointmentExistsForVisit(visitUUID);
-                        }
-                    });
+            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), action -> {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    checkIfAppointmentExistsForVisit(visitUUID);
+                }
+            });
         } else {
             triggerEndVisit();
         }
@@ -2260,8 +2319,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             public void afterTextChanged(Editable s) {
                 if (s.toString().equalsIgnoreCase(""))
                     etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
-                else
-                    etAdditionalNotesVS.setHint("");
+                else etAdditionalNotesVS.setHint("");
             }
         });
         // textview - end
@@ -2329,6 +2387,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         tempcel = findViewById(R.id.textView_temp);
 
         spO2View = findViewById(R.id.textView_pulseox_value);
+        mBloodGroupTextView = findViewById(R.id.textView_blood_group);
         respiratory = findViewById(R.id.textView_respiratory_value);
         respiratoryText = findViewById(R.id.textView_respiratory);
         bmiView = findViewById(R.id.textView_bmi_value);
@@ -3099,23 +3158,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void registerBroadcastReceiverDynamically() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        ContextCompat.registerReceiver(
-                this,
-                broadcastReceiverForIamgeDownlaod,
-                filter,
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+        ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        ContextCompat.registerReceiver(
-                this,
-                downloadPrescriptionService,
-                filter,
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+        ContextCompat.registerReceiver(this, downloadPrescriptionService, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     @Override
@@ -3271,6 +3320,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             case UuidDictionary.SPO2: //SpO2
             {
                 spO2.setValue(value);
+                break;
+            }case UuidDictionary.BLOOD_GROUP: //BLOOD_GROUP
+            {
+                mBloodGroupObsDTO.setValue(value);
                 break;
             }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
@@ -3644,12 +3697,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            ContextCompat.registerReceiver(
-                    this,
-                    receiver,
-                    filter,
-                    ContextCompat.RECEIVER_NOT_EXPORTED
-            );
+            ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
             isReceiverRegistered = true;
         }
     }
@@ -3659,12 +3707,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         super.onStart();
         registerDownloadPrescription();
         callBroadcastReceiver();
-        ContextCompat.registerReceiver(
-                this,
-                mMessageReceiver,
-                new IntentFilter(FILTER),
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+        ContextCompat.registerReceiver(this, mMessageReceiver, new IntentFilter(FILTER), ContextCompat.RECEIVER_NOT_EXPORTED);
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
@@ -3748,8 +3791,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mAdditionalDocsRecyclerView.setHasFixedSize(true);
             mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial,
-                    rowListItem, AppConstants.IMAGE_PATH, this, isVisitSpecialityExists);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, isVisitSpecialityExists);
 //            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
 //                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, true);
 //            } else {
@@ -4057,8 +4099,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    RequestBuilder<Drawable> requestBuilder = Glide.with(context)
-                            .asDrawable().sizeMultiplier(0.3f);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(context).asDrawable().sizeMultiplier(0.3f);
                     Glide.with(context).load(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
@@ -5273,8 +5314,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             Log.v(TAG, "phyExam : " + value);
             if (isInOldFormat) {
                 physFindingsView.setVisibility(View.VISIBLE);
-                String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
-                        .split("<b>General exams: </b><br/>");
+                String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
                 if (valueArray.length > 1)
                     physFindingsView.setText(Html.fromHtml(valueArray[1]));//.replaceFirst("<b>", "<br/><b>")));
             } else {

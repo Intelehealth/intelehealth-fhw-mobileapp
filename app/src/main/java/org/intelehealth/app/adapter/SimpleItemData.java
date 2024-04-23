@@ -3,32 +3,19 @@ package org.intelehealth.app.adapter;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 public class SimpleItemData implements Parcelable {
     private boolean isSelected;
     private String title;
     private String subTitle;
-    private Object object;
-
-    public SimpleItemData(){
-
-    }
 
     protected SimpleItemData(Parcel in) {
         isSelected = in.readByte() != 0;
         title = in.readString();
         subTitle = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte((byte) (isSelected ? 1 : 0));
-        dest.writeString(title);
-        dest.writeString(subTitle);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        titleLocal = in.readString();
+        subTitleLocal = in.readString();
     }
 
     public static final Creator<SimpleItemData> CREATOR = new Creator<SimpleItemData>() {
@@ -42,6 +29,31 @@ public class SimpleItemData implements Parcelable {
             return new SimpleItemData[size];
         }
     };
+
+    public String getTitleLocal() {
+        return titleLocal;
+    }
+
+    public void setTitleLocal(String titleLocal) {
+        this.titleLocal = titleLocal;
+    }
+
+    public String getSubTitleLocal() {
+        return subTitleLocal;
+    }
+
+    public void setSubTitleLocal(String subTitleLocal) {
+        this.subTitleLocal = subTitleLocal;
+    }
+
+    private String titleLocal;
+    private String subTitleLocal;
+    private Object object;
+
+    public SimpleItemData(){
+
+    }
+
 
     public Object getObject() {
         return object;
@@ -73,5 +85,19 @@ public class SimpleItemData implements Parcelable {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeByte((byte) (isSelected ? 1 : 0));
+        parcel.writeString(title);
+        parcel.writeString(subTitle);
+        parcel.writeString(titleLocal);
+        parcel.writeString(subTitleLocal);
     }
 }

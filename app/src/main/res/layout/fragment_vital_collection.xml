@@ -504,6 +504,74 @@
                 android:textSize="@null"
                 android:visibility="visible" />
 
+
+            <TextView
+                android:id="@+id/tv_sub_title_other_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/enter_other_information_txt"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/tv_blood_group_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/blood_group_txt"
+                android:textColor="@color/gray_3"
+                android:textSize="@dimen/common_label_text_size"
+                android:textStyle="normal" />
+
+
+            <!--<Spinner
+                android:id="@+id/blood_group_spinner"
+                style="@style/SmallSpinnerTheme"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:dropDownVerticalOffset="50dp"
+                android:entries="@array/language_names"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_16dp"
+                android:paddingBottom="@dimen/margin_10"
+                android:popupBackground="@drawable/popup_menu_background"
+                android:spinnerMode="dialog"
+                android:visibility="gone" />-->
+
+            <TextView
+                android:id="@+id/tv_blood_group_spinner"
+                style="@style/SmallSpinnerTheme"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:gravity="start|center_vertical"
+                android:hint="@string/eg_a_ve"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_16dp"
+                android:paddingBottom="@dimen/margin_10"
+                android:textSize="14sp"
+                android:textColorHint="@color/medium_gray" />
+
+            <TextView
+                android:id="@+id/tv_blood_group_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textColor="@color/red"
+                android:textSize="@null"
+                android:visibility="gone" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

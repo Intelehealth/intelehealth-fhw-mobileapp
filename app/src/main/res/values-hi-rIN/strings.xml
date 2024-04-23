@@ -1504,4 +1504,10 @@
     <string name='enter_emergency_contact_name'>आपातकालीन संपर्क नाम दर्ज करें</string>
     <string name='phone_number_and_emergency_number_can_not_be_the_same'>फोन नंबर और आपातकालीन नंबर एक जैसे नहीं हो सकते</string>
 
+    <string name="enter_other_information_txt">अन्य जानकारी दर्ज करें</string>
+    <string name="blood_group_txt">ब्लड ग्रुप</string>
+    <string name="eg_a_ve">Eg. A +ve</string>
+    <string name="dont_know">Don\'t know</string>
+    <string name="universal_donor">( सार्वभौमिक दाता )</string>
+    <string name="universal_recipient">( सार्वभौमिक प्राप्तकर्ता )</string>
 </resources>
