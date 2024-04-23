@@ -22,8 +22,10 @@ import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_hi_contact_type_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_hi_guardian_type_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_kn_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_kn_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_kn_education_edit;
@@ -151,7 +153,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
-            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
+            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
+            guardina_name_tv,guardian_type_tv,contact_type_tv,em_contact_name_tv,em_contact_number_tv;
+
+    TableRow guardian_type_table_row,guardian_name_table_row;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -528,6 +533,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientage = findViewById(R.id.age);
         phone = findViewById(R.id.phone);
 
+        guardian_type_tv = findViewById(R.id.guardian_type_tv);
+        guardina_name_tv = findViewById(R.id.guardian_name_tv);
+        contact_type_tv = findViewById(R.id.contact_type_tv);
+        em_contact_name_tv = findViewById(R.id.em_contact_name_tv);
+        em_contact_number_tv = findViewById(R.id.em_contact_number_tv);
+
+        guardian_type_table_row = findViewById(R.id.guardian_type_table_row);
+        guardian_name_table_row = findViewById(R.id.guardian_name_table_row);
+
         postalcode = findViewById(R.id.postalcode);
         patientcountry = findViewById(R.id.country);
         patientstate = findViewById(R.id.state);
@@ -802,7 +816,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+                "patient_photo","guardian_type","guardian_name","contact_type","em_contact_name","em_contact_num"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -822,6 +836,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+
+                patientDTO.setGuardianType(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_type")));
+                patientDTO.setGuardianName(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_name")));
+                patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
+                patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
+                patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1446,6 +1466,58 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientoccupation.setText(patientDTO.getOccupation());
         } else {
             patientoccupation.setText(getString(R.string.not_provided));
+        }
+
+        if(mAgeYears <= 18){
+            guardian_name_table_row.setVisibility(View.VISIBLE);
+            guardian_type_table_row.setVisibility(View.VISIBLE);
+            //guardian type
+            if (patientDTO.getGuardianType() != null && !patientDTO.getGuardianType().equals("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String type = switch_hi_guardian_type_edit(patientDTO.getGuardianType());
+                    guardian_type_tv.setText(type);
+                }else {
+                    guardian_type_tv.setText(patientDTO.getGuardianType());
+                }
+            } else {
+                guardian_type_tv.setText(getString(R.string.not_provided));
+            }
+
+            //guardian name
+            if (patientDTO.getGuardianName() != null && !patientDTO.getGuardianName().equals("")) {
+                guardina_name_tv.setText(patientDTO.getGuardianName());
+            } else {
+                guardina_name_tv.setText(getString(R.string.not_provided));
+            }
+        }else {
+            guardian_name_table_row.setVisibility(View.GONE);
+            guardian_type_table_row.setVisibility(View.GONE);
+        }
+
+        //contact type
+        if (patientDTO.getContactType() != null && !patientDTO.getContactType().equals("")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String type = switch_hi_contact_type_edit(patientDTO.getContactType());
+                contact_type_tv.setText(type);
+            }else {
+                contact_type_tv.setText(patientDTO.getContactType());
+            }
+        } else {
+            contact_type_tv.setText(getString(R.string.not_provided));
+        }
+
+        //emergency contact name
+        if (patientDTO.getEmContactName() != null && !patientDTO.getEmContactName().equals("")) {
+            em_contact_name_tv.setText(patientDTO.getEmContactName());
+        } else {
+            em_contact_name_tv.setText(getString(R.string.not_provided));
+        }
+
+        //emergency contact number
+        if (patientDTO.getEmContactNumber() != null && !patientDTO.getEmContactNumber().equals("")) {
+            em_contact_number_tv.setText(patientDTO.getEmContactNumber());
+        } else {
+            em_contact_number_tv.setText(getString(R.string.not_provided));
         }
     }
 

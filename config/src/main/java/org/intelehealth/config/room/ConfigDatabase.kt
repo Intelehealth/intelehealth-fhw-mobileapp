@@ -6,7 +6,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import org.intelehealth.config.room.dao.ConfigDao
+import org.intelehealth.config.room.dao.LanguageDao
+import org.intelehealth.config.room.dao.PatientRegFieldDao
+import org.intelehealth.config.room.dao.SpecializationDao
+import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.room.entity.ConfigDictionary
+import org.intelehealth.config.room.entity.PatientRegistrationFields
+import org.intelehealth.config.room.entity.Specialization
 import java.util.Locale
 
 /**
@@ -14,10 +20,25 @@ import java.util.Locale
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@Database(entities = [ConfigDictionary::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        ConfigDictionary::class,
+        Specialization::class,
+        ActiveLanguage::class,
+        PatientRegistrationFields::class
+    ],
+    version = 1,
+    exportSchema = false
+)
 abstract class ConfigDatabase : RoomDatabase() {
 
     abstract fun configDao(): ConfigDao
+
+    abstract fun specializationDao(): SpecializationDao
+
+    abstract fun languageDao(): LanguageDao
+
+    abstract fun patientRegFieldDao(): PatientRegFieldDao
 
     companion object {
 
@@ -40,7 +61,7 @@ abstract class ConfigDatabase : RoomDatabase() {
          * The SQLite database is only created when it's accessed for the first time.
          */
         private fun buildDatabase(appContext: Context): ConfigDatabase {
-            val databaseName = "${getAppName(appContext)}.$DATABASE_NAME"
+            val databaseName = "${appContext.packageName}.$DATABASE_NAME"
             return Room.databaseBuilder(appContext, ConfigDatabase::class.java, databaseName)
                 .fallbackToDestructiveMigration()
                 .build()

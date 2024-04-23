@@ -201,7 +201,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
+            android:name=".ui.splash.activity.SplashActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -212,7 +212,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.notification.NotificationActivity"
+            android:name=".activities.notification.view.NotificationActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />

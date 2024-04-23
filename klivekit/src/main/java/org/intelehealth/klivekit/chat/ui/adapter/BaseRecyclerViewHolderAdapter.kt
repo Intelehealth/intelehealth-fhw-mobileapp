@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
 
 /**
  * Created by Vaghela Mithun R. on 14-08-2023 - 19:07.
@@ -16,6 +17,8 @@ abstract class BaseRecyclerViewHolderAdapter<I, VH : ViewHolder>(
 ) : RecyclerView.Adapter<VH>() {
 
     protected val inflater: LayoutInflater = LayoutInflater.from(context)
+
+    lateinit var viewHolderClickListener: BaseViewHolder.ViewHolderClickListener
 
     override fun getItemCount(): Int = items.size
 

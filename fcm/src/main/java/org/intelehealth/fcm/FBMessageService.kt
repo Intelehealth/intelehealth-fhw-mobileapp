@@ -6,6 +6,7 @@ import org.intelehealth.fcm.utils.NotificationHandler
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import org.intelehealth.fcm.utils.NotificationBroadCast
 
 
 /**
@@ -28,6 +29,7 @@ abstract class FBMessageService(private val clazz: Class<*>) : FirebaseMessaging
         val data = gson.toJson(message.data)
         println("FBMessageService isAppInBackground")
         println("data $data")
+        NotificationBroadCast.initialize(this)
 
         NotificationHandler.getPendingIntentBroadcast(
             context = this,

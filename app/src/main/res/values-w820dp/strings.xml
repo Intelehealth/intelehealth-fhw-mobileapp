@@ -99,5 +99,10 @@
     <string name="dont_know">Don\'t know</string>
     <string name="universal_donor">( Universal Donor)</string>
     <string name="universal_recipient">( Universal Recipient )</string>
+    <string name="no_notifications_yet">No Notifications Yet</string>
+    <string name="this_visit_is_completed">This visit is completed.</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
 
 </resources>
