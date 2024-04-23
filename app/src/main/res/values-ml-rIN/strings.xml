@@ -769,6 +769,12 @@
     <string name="confirmation">Confirmation</string>
     <string name="delete">Delete</string>
     <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
+    <string name="enter_other_information_txt">Enter other information</string>
+    <string name="blood_group_txt">Blood Group</string>
+    <string name="eg_a_ve">Eg. A +ve</string>
+    <string name="dont_know">Don\'t know</string>
+    <string name="universal_donor">( Universal Donor)</string>
+    <string name="universal_recipient">( Universal Recipient )</string>
 </resources>
 
 

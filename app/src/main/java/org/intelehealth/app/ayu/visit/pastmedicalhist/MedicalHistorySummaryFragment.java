@@ -6,7 +6,6 @@ import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +25,7 @@ import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.SummarySingleViewAdapter;
 import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -59,7 +59,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static MedicalHistorySummaryFragment newInstance(Intent intent, String patientHistory, String familyHistory, boolean isEditMode) {
+    public static MedicalHistorySummaryFragment newInstance(CommonVisitData commonVisitData, String patientHistory, String familyHistory, boolean isEditMode) {
         MedicalHistorySummaryFragment fragment = new MedicalHistorySummaryFragment();
         fragment.mSummaryStringPastHistory = patientHistory;
         fragment.mSummaryStringFamilyHistory = familyHistory;
