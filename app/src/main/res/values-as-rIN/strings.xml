@@ -136,7 +136,7 @@
     <string name="complaint_required">অভিযোগ নিৰ্বাচন কৰিব লাগিব!</string>
 
     //Question Node Screen
-    <string name="title_activity_question_node">QuestionNodeActivity</string>
+    <string name="title_activity_question_node">প্রশ্ন নোড ক্ৰিয়াকলাপ</string>
     <string name="complaint_change_selected">শুধৰণি</string>
     <string name="question_answer_all">আপুনি নিশ্চিত নেকি যে আপুনি সকলো প্ৰশ্নৰ উত্তৰ দিছে।</string>
     <string name="question_answer_all_phy_exam">সাধাৰণ পৰীক্ষাৰ সকলো প্ৰশ্নৰ উত্তৰ দিব।</string>
@@ -437,13 +437,13 @@
     <string name="user_login_error">আন এজন ব্যৱহাৰকাৰী এই স্থানত লগ ইন কৰা হৈছে। এডমিনৰ লগত যোগাযোগ কৰক</string>
     <string name="user_server_unreachable">ডিভাইচ অফলাইন। লগইন ভেৰিফিকেশ্যনৰ বাবে চাৰ্ভাৰ চেক কৰিব নোৱাৰি।</string>
 
-    <string name="title_activity_splash_acticity">SplashActicity</string>
-    <string name="title_activity_home">HomeActivity</string>
-    <string name="title_activity_sync">ActivityRefresh</string>
-    <string name="title_activity_privacy_notice">Privacy Notice</string>
-    <string name="title_activity_visit_summary">VisitSummaryActivity</string>
-    <string name="title_activity_past_medical_history">PastMedicalHistoryActivity</string>
-    <string name="title_activity_patient_survey">PatientSurveyActivity</string>
+    <string name="title_activity_splash_acticity">স্প্লেচ কাৰ্য্যকলাপ</string>
+    <string name="title_activity_home">ঘৰৰ কাৰ্য্যকলাপ</string>
+    <string name="title_activity_sync">কাৰ্য্যকলাপ সতেজ কৰক</string>
+    <string name="title_activity_privacy_notice">গোপনীয়তা জাননী</string>
+    <string name="title_activity_visit_summary">সাৰাংশ কাৰ্য্যকলাপ চাওক</string>
+    <string name="title_activity_past_medical_history">অতীত চিকিৎসা ইতিহাস কার্যকলাপ</string>
+    <string name="title_activity_patient_survey">ৰোগীৰ জৰীপ কাৰ্য্যকলাপ</string>
 
     <!--Privacy Notice Activity-->
     <string name="privacy_toast">অনুগ্ৰহ কৰি এটা বিকল্প নিৰ্বাচন কৰক</string>

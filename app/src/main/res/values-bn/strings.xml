@@ -1581,7 +1581,7 @@ The disclosure of personal information to third parties shall be only for identi
     //new strings
     <string name="doctor_annotation">Dr.</string>
     <string name="at">at</string>
-    <string name="in">In</string>
+    <string name="in">ভিতরে</string>
     <string name="hours_at">hours, at</string>
     <string name="hours">hours</string>
     <string name="upcoming_0">Upcoming (0)</string>
@@ -1597,7 +1597,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="pending_since">Pending since</string>
     <string name="max_5_image">Maximum 5 Images you can send per one case</string>
     <string name="max_2_image">Maximum 2 Images you can send per one case</string>
-    <string name="select">Select</string>
+    <string name="select">নির্বাচন করুন</string>
     <string name="select_spinner">Select</string>
     <string name="camera_permission_denied">Camera permission denied!</string>
     <string name="unable_to_pick_data">Unable to pick the gallery data!</string>
@@ -1647,7 +1647,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="protocols_successfully_changed">Protocols have been successfully changed!</string>
     <string name="enter_room_id">Please enter room-id</string>
     <string name="overall">Overall</string>
-    <string name="daily">Daily</string>
+    <string name="daily">দৈনিক</string>
     <string name="date_range">Date Range</string>
     <string name="prescription_received">\'s prescription was received!</string>
     <string name="visit_date">Visit Date</string>
@@ -1841,9 +1841,9 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="open_prescription">Open Prescription</string>
     <string name="reset">Reset</string>
     <string name="update_button">Update</string>
-    <string name="underweight">Underweight</string>
-    <string name="normal">Normal Weight</string>
-    <string name="overweight">Overweight</string>
+    <string name="underweight">কম ওজন</string>
+    <string name="normal">স্বাভাবিক</string>
+    <string name="overweight">অতিরিক্ত ওজন</string>
     <string name="obese">Obese</string>
     <string name="very_severely_obese">Very Severe(Morbid) Obesity(Class 3)</string>
     <string name="severely_obese">Severe Obesity(Class 2)</string>
@@ -1874,7 +1874,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="confirm_cancel_appointment_message">This visit has an associated appointment and ending the visit will also cancel the appointment. Are you sure that you want to proceed?</string>
     <string name="prescription_not_received_because_the_visit_has_been_ended">The prescription hasn\'t been received as the visit has been ended.</string>
     <string name="no_prescription_exists">No Prescription Exists</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">লোড হচ্ছে...</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">You missed the compulsory questions, Please answer them.</string>
 
     <string name="general_exam_title">" सामान्य जाँच:"</string>
