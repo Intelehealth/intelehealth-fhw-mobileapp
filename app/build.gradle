@@ -3,6 +3,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: "kotlin-kapt"
 apply from: "resdir.gradle"
 apply from: "environment.gradle"
 import java.text.DateFormat

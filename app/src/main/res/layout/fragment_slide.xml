@@ -1,14 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.IntroActivity.SlideFragment">
+<layout>
 
-    <LinearLayout
-        android:id="@+id/view_container_lay"
+    <data>
+
+        <variable
+            name="content"
+            type="org.intelehealth.app.models.IntroContent" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
-</LinearLayout>
+        android:orientation="vertical"
+        tools:context=".activities.IntroActivity.SlideFragment">
+
+        <!--    <LinearLayout-->
+        <!--        android:id="@+id/view_container_lay"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="match_parent" />-->
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="vertical"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent">-->
+
+        <ImageView
+            android:id="@+id/ivIntroImage"
+            content="@{content}"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/who_we_are"
+            android:src="@drawable/first"
+            app:layout_constraintBottom_toTopOf="@id/tvIntroTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvIntroTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/intro_heading_margin_top"
+            android:gravity="center"
+            android:text="@{content.title}"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/introscreen_title"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvIntroContent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivIntroImage"
+            tools:text="@string/who_we_are" />
+
+        <TextView
+            android:id="@+id/tvIntroContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/intro_description_margin_start"
+            android:layout_marginTop="@dimen/intro_description_margin_top"
+            android:layout_marginEnd="@dimen/intro_description_margin_end"
+            android:gravity="center"
+            android:justificationMode="inter_word"
+            android:lineHeight="@dimen/intro_description_line_height"
+            android:text="@{content.content}"
+            android:textColor="@color/textColorGray"
+            android:textSize="@dimen/introscreen_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvIntroTitle"
+            tools:text="@string/who_we_are_intro" />
+        <!--        </LinearLayout>-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
