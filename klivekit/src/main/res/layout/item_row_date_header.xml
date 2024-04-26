@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="dateString"
+            type="String" />
+    </data>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingVertical="@dimen/normal_padding"
+        android:text="@{dateString}"
+        android:textColor="#7F7B92"
+        android:textSize="@dimen/date_header_text_siz"
+        tools:text="Wed at 3:00 PM">
+
+    </TextView>
+</layout>

@@ -1,6 +1,7 @@
 *.iml
 *.json
 .gradle
+.idea
 /assets
 salt.env
 .idea/misc.xml

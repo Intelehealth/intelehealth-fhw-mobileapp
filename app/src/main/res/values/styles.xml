@@ -397,7 +397,7 @@
             @dimen/find_patient_hint_size
         </item>
         <item name="android:textColor">
-            #2E1E91
+            #D1484C
         </item>
     </style>
 

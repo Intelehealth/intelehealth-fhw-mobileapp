@@ -83,6 +83,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/tv_most_searched_margin_top">
 
                 <TextView
@@ -126,7 +127,7 @@
                 android:id="@+id/rv_most_searched_videos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:listitem="@layout/row_most_searched_videos_ui2"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"

@@ -47,7 +47,7 @@
             android:layout_marginTop="@dimen/margin_12"
             android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:layout_weight="1.5"
-            android:backgroundTint="@color/cardTintDarkBlue"
+            android:backgroundTint="@color/colorPrimary"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
             app:cardUseCompatPadding="true"
 
@@ -195,7 +195,7 @@
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:layout_weight="2.75"
-            android:backgroundTint="@color/colorAccentCloseVisit"
+            android:backgroundTint="@color/iconsBgPrimaryLight"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -207,7 +207,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/common_all_card_top_margin"
-                android:background="@color/colorAccentCloseVisit"
+                android:background="@color/iconsBgPrimaryLight"
                 android:paddingStart="@dimen/common_all_card_start_padding">
 
                 <TextView
@@ -239,14 +239,13 @@
                     android:paddingTop="@dimen/image_add_patient_icon_padding_top"
                     android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
                     android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
-                    android:src="@drawable/ui2_ic_forward_arrow_white"
+                    android:src="@drawable/ui2_ic_forward_arrow_new"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <ImageView
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="@dimen/card_prescription_image_height"
-
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/margin_8"
                     android:src="@drawable/ui2_ic_close_visit"
@@ -316,12 +315,12 @@
                         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textUpcoming"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/options_sub_heading_margin_top"
                         android:layout_marginBottom="@dimen/common_info_margin_bottom"
-                        android:text="4 Upcoming"
+                        android:text="444545 Upcoming"
                         android:textSize="@dimen/common_label_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -364,7 +363,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/label_folloup"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_8"
@@ -384,7 +383,7 @@
                         android:textSize="@dimen/common_label_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                        app:layout_constraintTop_toBottomOf="@+id/label_folloup" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>

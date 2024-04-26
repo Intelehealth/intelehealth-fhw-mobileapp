@@ -57,7 +57,7 @@
     <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
     <string name="describe_lbl">Describe</string>
     <string name="patinet_history">4/4. Medical history: Patient history</string>
-    <string name="_1_4_vitals">1/4 Vitals</string>
+    <string name="_1_4_vitals">2/4 Vitals</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia always should be < BP Sys]]></string>
     <string name="duration_type">Duration Type</string>

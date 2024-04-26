@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/frame_10021">
+
+<!--    &lt;!&ndash;    Toolbar - start &ndash;&gt;-->
+<!--    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:id="@+id/toolbar_relative"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="@dimen/followup_toolbar"-->
+<!--        android:layout_alignParentLeft="true"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_marginTop="@dimen/toolbar_top_minus_24dp"-->
+<!--        android:background="@drawable/frame_10021">-->
+
+<!--        &lt;!&ndash; Frame 100167 &ndash;&gt;-->
+<!--        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="@dimen/followup_toolbar"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_marginLeft="@dimen/fu_margin_start"-->
+<!--            android:layout_marginTop="@dimen/toolbar_margin_top"-->
+<!--            android:layout_marginRight="@dimen/fu_margin_start"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="3">-->
+
+<!--            &lt;!&ndash; Frame 100116 &ndash;&gt;-->
+<!--            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2.7"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                &lt;!&ndash; arrow-right &ndash;&gt;-->
+<!--                <ImageButton-->
+<!--                    android:id="@+id/vector"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_alignParentLeft="true"-->
+<!--                    android:layout_alignParentTop="true"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:layout_alignParentBottom="true"-->
+<!--                    android:background="@null"-->
+<!--                    android:onClick="backPress"-->
+<!--                    android:padding="@dimen/margin_5"-->
+<!--                    android:src="@drawable/ic_arrow_right" />-->
+
+<!--                &lt;!&ndash; Label &ndash;&gt;-->
+<!--                <TextView-->
+<!--                    android:id="@+id/label"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginStart="@dimen/fu_margin_start"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:lineSpacingExtra="1sp"-->
+<!--                    android:text="@string/change_lang"-->
+<!--                    android:textAppearance="@style/label"-->
+<!--                    android:textSize="@dimen/toolbar_text_size"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:translationY="-0.28sp" />-->
+
+<!--            </LinearLayout>-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/refresh"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="0.3"-->
+<!--                android:background="@null"-->
+<!--                android:src="@drawable/ic_refreshbtn" />-->
+
+<!--        </LinearLayout>-->
+<!--    </RelativeLayout>-->
+<!--    &lt;!&ndash;    Toolbar - end &ndash;&gt;-->
+
+<!--    &lt;!&ndash;Language - Start&ndash;&gt;-->
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/lang_card"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/toolbar_relative"-->
+<!--        android:layout_marginStart="@dimen/toolbar_margin_left"-->
+<!--        android:layout_marginTop="@dimen/margin_32dp"-->
+<!--        android:layout_marginEnd="@dimen/toolbar_margin_left"-->
+<!--        android:layout_marginBottom="@dimen/margin_10"-->
+<!--        android:elevation="16dp"-->
+<!--        app:cardCornerRadius="@dimen/corner_radius_8dp"-->
+<!--        app:cardElevation="@dimen/margin_5">-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <RelativeLayout-->
+<!--                android:id="@+id/lang_header_relative"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/fu_card_margin_sides"-->
+<!--                android:layout_marginTop="@dimen/fu_card_margin_sides"-->
+<!--                android:layout_marginEnd="@dimen/fu_card_margin_sides"-->
+<!--                android:layout_marginBottom="@dimen/fu_card_margin_sides">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/vs_icon"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:padding="@dimen/margin_2dp"-->
+<!--                    android:src="@drawable/language_icon" />-->
+
+<!--                <TextView-->
+<!--                    style="@style/text_title_style"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_marginStart="@dimen/margin_8"-->
+<!--                    android:layout_toEndOf="@+id/vs_icon"-->
+<!--                    android:text="@string/language"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                    android:id="@+id/btn_up_special_vd_header"-->
+<!--                    android:layout_width="@dimen/fu_icon_width"-->
+<!--                    android:layout_height="@dimen/fu_icon_height"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:background="@null"-->
+<!--                    android:src="@drawable/ui2_ic_chevron_down"-->
+<!--                    android:visibility="gone" />-->
+<!--            </RelativeLayout>-->
+
+<!--            &lt;!&ndash;Expanded Vitals&ndash;&gt;-->
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/lang_header_relative">-->
+
+<!--                <View-->
+<!--                    android:id="@+id/divider"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="1dp"-->
+<!--                    android:layout_marginStart="@dimen/fu_margin_start"-->
+<!--                    android:layout_marginEnd="@dimen/fu_margin_start"-->
+<!--                    android:background="@color/notifi_divider_color" />-->
+
+<!--                &lt;!&ndash;Personal Sub-Child&ndash;&gt;-->
+
+<!--                &lt;!&ndash;Language Relative - Start&ndash;&gt;-->
+<!--                <RelativeLayout-->
+<!--                    android:id="@+id/lang_relative"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/divider"-->
+<!--                    android:layout_marginStart="@dimen/fu_margin_start"-->
+<!--                    android:layout_marginTop="@dimen/margin_20dp"-->
+<!--                    android:layout_marginEnd="@dimen/fu_margin_start">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:text="@string/app_language"-->
+<!--                        android:textColor="@color/hint_text_color"-->
+<!--                        android:textSize="@dimen/txtsize_patdetail_14sp" />-->
+
+<!--                    <Spinner-->
+<!--                        android:id="@+id/lang_spinner"-->
+<!--                        style="@style/SmallSpinnerTheme"-->
+<!--                        android:layout_width="@dimen/size_120dp"-->
+<!--                        android:layout_height="@dimen/edittext_height_44dp"-->
+<!--                        android:layout_alignParentEnd="true"-->
+<!--                        android:dropDownVerticalOffset="50dp"-->
+<!--                        android:entries="@array/language_names"-->
+<!--                        android:paddingStart="@dimen/fu_margin_start"-->
+<!--                        android:paddingTop="@dimen/margin_10"-->
+<!--                        android:paddingEnd="@dimen/margin_16dp"-->
+<!--                        android:paddingBottom="@dimen/margin_10"-->
+<!--                        android:popupBackground="@drawable/popup_menu_background"-->
+<!--                        android:spinnerMode="dialog"-->
+<!--                        android:visibility="gone" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/lang_spinner_txt"-->
+<!--                        style="@style/SmallSpinnerTheme"-->
+<!--                        android:layout_width="@dimen/size_120dp"-->
+<!--                        android:layout_height="@dimen/edittext_height_44dp"-->
+<!--                        android:layout_alignParentEnd="true"-->
+<!--                        android:onClick="showLangSelectionDialog"-->
+<!--                        android:paddingStart="@dimen/fu_margin_start"-->
+<!--                        android:paddingTop="@dimen/margin_10"-->
+<!--                        android:paddingEnd="@dimen/margin_16dp"-->
+<!--                        android:paddingBottom="@dimen/margin_10" />-->
+<!--                </RelativeLayout>-->
+
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/lang_relative"-->
+<!--                    android:layout_marginStart="@dimen/fu_margin_start"-->
+<!--                    android:layout_marginTop="@dimen/margin_24"-->
+<!--                    android:layout_marginEnd="@dimen/fu_margin_start"-->
+<!--                    android:layout_marginBottom="@dimen/margin_16dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:text="@string/reset_to_english"-->
+<!--                        android:textColor="@color/hint_text_color"-->
+<!--                        android:textSize="@dimen/txtsize_patdetail_14sp" />-->
+
+<!--                    <RelativeLayout-->
+<!--                        android:id="@+id/reset_btn"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_alignParentEnd="true"-->
+<!--                        android:background="@drawable/reset_lang_icon">-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_centerInParent="true">-->
+
+<!--                            <ImageView-->
+<!--                                android:layout_width="24dp"-->
+<!--                                android:layout_height="24dp"-->
+<!--                                android:src="@drawable/ic_baseline_refresh_24" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginStart="5dp"-->
+<!--                                android:fontFamily="@font/dm_sans"-->
+<!--                                android:text="@string/reset"-->
+<!--                                android:textAlignment="center"-->
+<!--                                android:textColor="#D1484C"-->
+<!--                                android:textSize="16sp"-->
+<!--                                android:textStyle="bold" />-->
+
+
+<!--                        </LinearLayout>-->
+
+
+<!--                    </RelativeLayout>-->
+<!--                </RelativeLayout>-->
+<!--                &lt;!&ndash;Language Relative - End&ndash;&gt;-->
+
+<!--            </RelativeLayout>-->
+<!--        </RelativeLayout>-->
+<!--    </androidx.cardview.widget.CardView>-->
+<!--    &lt;!&ndash;Language - End&ndash;&gt;-->
+
+<!--    &lt;!&ndash;Protocols - Start&ndash;&gt;-->
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/lang_card"-->
+<!--        android:layout_marginStart="@dimen/toolbar_margin_left"-->
+<!--        android:layout_marginTop="@dimen/margin_32dp"-->
+<!--        android:layout_marginEnd="@dimen/toolbar_margin_left"-->
+<!--        android:layout_marginBottom="@dimen/margin_10"-->
+<!--        android:elevation="16dp"-->
+<!--        app:cardCornerRadius="@dimen/corner_radius_8dp"-->
+<!--        app:cardElevation="@dimen/margin_5">-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <RelativeLayout-->
+<!--                android:id="@+id/protocols_header_relative"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/fu_card_margin_sides"-->
+<!--                android:layout_marginTop="@dimen/fu_card_margin_sides"-->
+<!--                android:layout_marginEnd="@dimen/fu_card_margin_sides"-->
+<!--                android:layout_marginBottom="@dimen/fu_card_margin_sides">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/vs_icon"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:padding="@dimen/margin_2dp"-->
+<!--                    android:src="@drawable/protocols_icon" />-->
+
+<!--                <TextView-->
+<!--                    style="@style/text_title_style"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_marginStart="@dimen/margin_8"-->
+<!--                    android:layout_toEndOf="@+id/vs_icon"-->
+<!--                    android:text="@string/protocols"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                    android:id="@+id/btn_up_special_vd_header"-->
+<!--                    android:layout_width="@dimen/fu_icon_width"-->
+<!--                    android:layout_height="@dimen/fu_icon_height"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:background="@null"-->
+<!--                    android:src="@drawable/ui2_ic_chevron_down"-->
+<!--                    android:visibility="gone" />-->
+<!--            </RelativeLayout>-->
+
+<!--            &lt;!&ndash;Expanded Vitals&ndash;&gt;-->
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/protocols_header_relative">-->
+
+<!--                <View-->
+<!--                    android:id="@+id/divider"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="1dp"-->
+<!--                    android:layout_marginStart="@dimen/fu_margin_start"-->
+<!--                    android:layout_marginEnd="@dimen/fu_margin_start"-->
+<!--                    android:background="@color/notifi_divider_color" />-->
+
+<!--                &lt;!&ndash;Personal Sub-Child&ndash;&gt;-->
+
+<!--                &lt;!&ndash;Protocols Relative - Start&ndash;&gt;-->
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/divider"-->
+<!--                    android:layout_marginStart="@dimen/fu_margin_start"-->
+<!--                    android:layout_marginTop="@dimen/margin_20dp"-->
+<!--                    android:layout_marginEnd="@dimen/fu_margin_start"-->
+<!--                    android:layout_marginBottom="@dimen/margin_16dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:text="@string/update_app_protocols"-->
+<!--                        android:textColor="@color/hint_text_color"-->
+<!--                        android:textSize="@dimen/txtsize_patdetail_14sp" />-->
+
+<!--                    <RelativeLayout-->
+<!--                        android:id="@+id/update_protocols_btn"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_alignParentEnd="true"-->
+<!--                        android:background="@drawable/reset_lang_icon">-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_centerInParent="true"-->
+<!--                            android:layout_marginStart="5dp"-->
+<!--                            android:fontFamily="@font/dm_sans"-->
+<!--                            android:text="@string/update_button"-->
+<!--                            android:textAlignment="center"-->
+<!--                            android:textColor="#D1484C"-->
+<!--                            android:textSize="16sp"-->
+<!--                            android:textStyle="bold" />-->
+
+<!--                    </RelativeLayout>-->
+
+<!--                </RelativeLayout>-->
+<!--                &lt;!&ndash;Protocols Relative - End&ndash;&gt;-->
+
+<!--            </RelativeLayout>-->
+<!--        </RelativeLayout>-->
+<!--    </androidx.cardview.widget.CardView>-->
+<!--    &lt;!&ndash;Protocols - End&ndash;&gt;-->
+
+<!--    <include-->
+<!--        android:id="@+id/snackbar_cv"-->
+<!--        layout="@layout/custom_snackbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="@dimen/margin_24"-->
+<!--        android:layout_marginEnd="@dimen/margin_24"-->
+<!--        android:layout_marginBottom="@dimen/margin_24" />-->
+
+</RelativeLayout>

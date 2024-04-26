@@ -321,8 +321,8 @@
     <dimen name="select_language">16sp</dimen>
     <dimen name="intelehealth_logo_height">92dp</dimen>
     <dimen name="intelehealth_logo_margin_top">12dp</dimen>
-    <dimen name="iv_intele_logo_height">88dp</dimen>
-    <dimen name="iv_intele_logo_margin_top">20dp</dimen>
+    <dimen name="iv_intele_logo_height">70dp</dimen>
+    <dimen name="iv_intele_logo_margin_top">5dp</dimen>
     <dimen name="iv_intele_logo_margin_start">20dp</dimen>
     <dimen name="iv_intele_logo_margin_end">20dp</dimen>
     <dimen name="tv_desc_line_height">24dp</dimen>
@@ -1005,5 +1005,10 @@
     <dimen name="tv_cal_view_date_day_margin_top">5dp</dimen>
     <dimen name="tv_cal_view_date_day_text_size">12sp</dimen>
     <dimen name="icons_appoint_height">40dp</dimen>
+    <dimen name="empty_view_spalsh">150dp</dimen>
+    <dimen name="iv_health_for_her_logo_height">145dp</dimen>
+    <dimen name="margin_visit_summary">25dp</dimen>
+    <dimen name="radio_server">16sp</dimen>
+    <dimen name="setup_button_margin_top_bottom">80dp</dimen>
 
 </resources>

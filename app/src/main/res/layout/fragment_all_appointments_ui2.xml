@@ -4,7 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_today"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollIndicators="none"
+        android:scrollbars="none">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/today_apps_parent_margin_top"
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
     <RelativeLayout
         android:id="@+id/layout_all_appoints_filter"
         android:layout_width="wrap_content"
@@ -78,13 +90,6 @@
             android:visibility="gone" />
 
     </RelativeLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsvAllAppointments"
-        android:layout_below="@+id/layout_all_appoints_filter"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <RelativeLayout
             android:id="@+id/layout_parent_all_appointments"
             android:layout_width="match_parent"
@@ -95,7 +100,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -411,7 +416,6 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar_relative"
                 android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
                 android:layout_marginTop="@dimen/search_empty_margin_top"
                 android:visibility="gone">
@@ -471,6 +475,6 @@
 
         </RelativeLayout>
 
-
+    </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

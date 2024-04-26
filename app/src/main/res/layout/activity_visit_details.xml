@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/frame_10021"
-    tools:context=".activities.visit.VisitDetailsActivity">
+    android:background="@drawable/frame_10021">
 
     <RelativeLayout
         android:id="@+id/frame_10021"
@@ -71,7 +70,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:background="@null" android:onClick="syncNow"
+                android:background="@null"
+                android:onClick="syncNow"
                 android:src="@drawable/ic_refreshbtn" />
 
         </LinearLayout>
@@ -117,7 +117,7 @@
                         android:layout_weight="1">
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/profile"
+                            android:id="@+id/cardUserProfile"
                             android:layout_width="@dimen/patdetail_profile_imgview_14sp"
                             android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                             android:layout_centerVertical="true"
@@ -136,7 +136,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/fu_margin_start"
-                            android:layout_toEndOf="@+id/profile"
+                            android:layout_toEndOf="@+id/cardUserProfile"
                             android:orientation="vertical">
 
                             <RelativeLayout
@@ -148,11 +148,11 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
+                                    android:ellipsize="end"
                                     android:gravity="center"
                                     android:lineSpacingExtra="-3sp"
                                     android:maxWidth="70dp"
                                     android:maxLines="1"
-                                    android:ellipsize="end"
                                     android:text="@string/fu_visit_name"
                                     android:textAppearance="@style/label_16sp"
                                     android:textColor="@null"
@@ -163,22 +163,22 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
-                                    android:gravity="center"
                                     android:layout_marginStart="@dimen/fu_male_margin_start"
                                     android:layout_toEndOf="@+id/patname_txt"
+                                    android:gravity="center"
                                     android:text="@string/misc_txt"
-                                    tools:text="पुरुष 50"
                                     android:textAppearance="@style/label_misc_txt_14sp"
                                     android:textColor="@null"
-                                    android:textSize="@dimen/fu_name_txt_size" />
+                                    android:textSize="@dimen/fu_name_txt_size"
+                                    tools:text="पुरुष 50" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
-                                    android:gravity="center"
                                     android:layout_marginStart="@dimen/fu_male_margin_start"
                                     android:layout_toEndOf="@+id/gender_age_txt"
+                                    android:gravity="center"
                                     android:onClick="editPatientInfo"
                                     android:padding="@dimen/margin_4"
                                     android:src="@drawable/ic_icno8_edit" />
@@ -252,27 +252,26 @@
 
                     <LinearLayout
                         android:id="@+id/llPriorityTagVisitDetails"
-                        android:contentDescription="Visit Details Screen Priority Tag Linear Layout"
-                        android:layout_marginEnd="@dimen/cp_margin_start"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_gravity="top"
+                        android:layout_marginEnd="@dimen/cp_margin_start"
                         android:background="@drawable/ui2_frame_priority"
-                        android:layout_gravity="top">
+                        android:contentDescription="Visit Details Screen Priority Tag Linear Layout">
 
                         <TextView
                             android:id="@+id/fu_priority_tag"
-                            android:layout_gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:lineSpacingExtra="0sp"
                             android:text="@string/priority"
-                            android:textColor="@color/white"
                             android:textAlignment="center"
                             android:textAllCaps="true"
+                            android:textColor="@color/white"
                             android:textSize="10sp"
-                            android:textStyle="bold"
-                            />
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -322,7 +321,7 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/fu_details_calendar"
+                            android:id="@+id/ivFUDetailsCalendar"
                             android:layout_width="@dimen/cal_size"
                             android:layout_height="match_parent"
                             android:src="@drawable/followup_item_calendar" />
@@ -332,7 +331,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/margin_6"
-                            android:layout_toEndOf="@+id/fu_details_calendar"
+                            android:layout_toEndOf="@+id/ivFUDetailsCalendar"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
                             android:text="@string/fu_detiails_date"
@@ -345,7 +344,7 @@
 
                     <!--Timer-->
                     <LinearLayout
-                        android:id="@+id/ll_2"
+                        android:id="@+id/llVisitTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/fu_progress_indicator"
@@ -358,7 +357,7 @@
                             android:layout_width="@dimen/cal_size"
                             android:layout_height="match_parent"
                             android:src="@drawable/ui2_ic_time"
-                            android:tint="@color/textview_color" />
+                            app:tint="@color/textview_color" />
 
                         <TextView
                             android:id="@+id/visit_startTime"

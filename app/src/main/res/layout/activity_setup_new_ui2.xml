@@ -100,12 +100,75 @@
 
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:id="@+id/layout_server_selection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@string/server"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textColor="@null"
+                        android:textSize="@null" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_server"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <RadioButton
+                            android:id="@+id/rb_production"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:text="@string/production"
+                            android:textSize="@dimen/radio_server"
+                            android:theme="@style/RadioButtonStyleSelection" />
+
+                        <RadioButton
+                            android:id="@+id/rb_testing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/gender_margin"
+                            android:layout_marginEnd="@dimen/gender_margin"
+                            android:layout_weight="1"
+                            android:text="@string/testing"
+                            android:textSize="@dimen/radio_server"
+                            android:theme="@style/RadioButtonStyleSelection" />
+
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/server_option_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/this_field_is_mandatory"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
 
                 <TextView
                     style="@style/TextviewInputTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/tv_location_margin_top"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
                     android:text="@string/location_new"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
@@ -178,6 +241,7 @@
                         android:hint="@string/enter_username1"
                         android:imeOptions="actionNext"
                         android:maxLength="16"
+                        android:text=""
                         android:paddingStart="@dimen/common_edittext_padding_left"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
@@ -227,6 +291,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
                         android:maxLength="16"
+                        android:text=""
                         android:paddingStart="@dimen/common_edittext_padding_left"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
@@ -346,7 +411,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="@dimen/layout_setup_padding_start"
-        android:layout_marginTop="@dimen/button_setup1_margin_top"
+        android:layout_marginTop="@dimen/setup_button_margin_top_bottom"
         android:layout_marginEnd="@dimen/layout_setup_padding_end"
         android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
         android:orientation="vertical">
