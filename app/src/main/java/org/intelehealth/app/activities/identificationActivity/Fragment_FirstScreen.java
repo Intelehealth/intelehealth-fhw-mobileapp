@@ -39,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -71,14 +75,21 @@ import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
+import org.intelehealth.app.utilities.BundleKeys;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.IReturnValues;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.PatientRegConfigKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
+import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
+import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.PatientRegistrationFields;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
@@ -105,9 +116,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private ImageView personal_icon, address_icon, other_icon;
     EditText mFirstNameEditText, mMiddleNameEditText, mLastNameEditText,
             mDOBEditText, mAgeEditText, mPhoneNumberEditText,
-            mGuardianNameEditText, mEmContactNameEditText,mEmContactNumberEditText;
+            mGuardianNameEditText, mEmContactNameEditText, mEmContactNumberEditText;
 
-    Spinner mGuardianTypeSpinner,mContactTypeSpinner;
+    Spinner mGuardianTypeSpinner, mContactTypeSpinner;
     private Fragment_SecondScreen fragment_secondScreen;
     PatientDTO patientdto = new PatientDTO();
     private String mGender;
@@ -119,12 +130,11 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private MaterialAlertDialogBuilder mAgePicker;
     Calendar dob = Calendar.getInstance();
     Calendar today = Calendar.getInstance();
-    private CountryCodePicker mCountryCodePicker,mEmContactNoCountryCodePicker;
+    private CountryCodePicker mCountryCodePicker, mEmContactNoCountryCodePicker;
     TextView mFirstNameErrorTextView, mMiddleNameErrorTextView, mLastNameErrorTextView,
             mGenderErrorTextView, mDOBErrorTextView, mAgeErrorTextView,
-            mPhoneNumberErrorTextView,mGuardianNameErrorTextView,mGuardianTypeErrorTextView,
-            mContactTypeErrorTextView,mEmContactNameErrorTextView,mEmContactNumErrorTextView;
-    LinearLayout guardianNameLay, guardianTypeLay;
+            mPhoneNumberErrorTextView, mGuardianNameErrorTextView, mGuardianTypeErrorTextView,
+            mContactTypeErrorTextView, mEmContactNameErrorTextView, mEmContactNumErrorTextView;
     private int mDOBYear, mDOBMonth, mDOBDay, mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     int dob_indexValue = 15;
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
@@ -135,6 +145,16 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     boolean patient_detail = false;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     private ArrayAdapter<CharSequence> guardianTypeAdapter, contactTypeAdapter;
+
+    LinearLayout firstNameLay, middleNameLay, lastNameLay, genderLay, dobLay,
+            ageLay, guardianNameLay, guardianTypeLay, phoneNumLay, contactTypeLay,
+            emContactNameLay, emContactNumLay;
+    RelativeLayout addPictureLay;
+
+    RegFieldViewModel regFieldViewModel;
+
+    List<PatientRegistrationFields> patientRegistrationFields;
+    private boolean isEditMode = false;
 
 
     @Nullable
@@ -169,78 +189,26 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         super.onViewCreated(view, savedInstanceState);
         sessionManager = new SessionManager(getActivity());
 
-        guardianNameLay = view.findViewById(R.id.linear_guardian_name);
-        guardianTypeLay = view.findViewById(R.id.linear_guardian_type);
+        //config viewmodel initialization
+        RegFieldRepository repository = new RegFieldRepository(ConfigDatabase.getInstance(getActivity()).patientRegFieldDao());
+        RegFieldViewModelFactory factory = new RegFieldViewModelFactory(repository);
+        regFieldViewModel = new ViewModelProvider(this, factory).get(RegFieldViewModel.class);
 
-        patient_imgview = view.findViewById(R.id.patient_imgview);
-        frag1_nxt_btn_main = view.findViewById(R.id.frag1_nxt_btn_main);
-        personal_icon = getActivity().findViewById(R.id.addpatient_icon);
-        address_icon = getActivity().findViewById(R.id.addresslocation_icon);
-        other_icon = getActivity().findViewById(R.id.other_icon);
-        mFirstNameEditText = view.findViewById(R.id.firstname_edittext);
-        mFirstNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
-        mMiddleNameEditText = view.findViewById(R.id.middlename_edittext);
-        mMiddleNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
-        mLastNameEditText = view.findViewById(R.id.lastname_edittext);
-        mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
+        initUi();
 
-        mGuardianNameEditText = view.findViewById(R.id.guardian_name_edittext);
-        mGuardianNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
-        mEmContactNameEditText = view.findViewById(R.id.em_contact_name_edittext);
-        mEmContactNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
-
-        mGenderMaleRadioButton = view.findViewById(R.id.gender_male);
-        mGenderFemaleRadioButton = view.findViewById(R.id.gender_female);
-        mGenderOthersRadioButton = view.findViewById(R.id.gender_other);
-        mDOBEditText = view.findViewById(R.id.dob_edittext);
-        mAgeEditText = view.findViewById(R.id.age_edittext);
-        mCountryCodePicker = view.findViewById(R.id.countrycode_spinner);
-        mPhoneNumberEditText = view.findViewById(R.id.phoneno_edittext);
-        Log.v("phone", "phone value: " + mCountryCodePicker.getSelectedCountryCode());
-        mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText); // attaches the ccp spinner with the edittext
-        mCountryCodePicker.setNumberAutoFormattingEnabled(false);
-
-        mEmContactNoCountryCodePicker = view.findViewById(R.id.emergency_contact_countrycode_spinner);
-        mEmContactNumberEditText = view.findViewById(R.id.emergency_contact_no_edittext);
-        Log.v("em_phone", "phone value: " + mEmContactNoCountryCodePicker.getSelectedCountryCode());
-        mEmContactNoCountryCodePicker.registerCarrierNumberEditText(mEmContactNumberEditText); // attaches the ccp spinner with the edittext
-        mEmContactNoCountryCodePicker.setNumberAutoFormattingEnabled(false);
-
-        mGuardianTypeSpinner = view.findViewById(R.id.guardian_type_spinner);
-        mContactTypeSpinner = view.findViewById(R.id.contact_type_spinner);
-
-        mFirstNameErrorTextView = view.findViewById(R.id.firstname_error);
-        mMiddleNameErrorTextView = view.findViewById(R.id.middlename_error);
-        mLastNameErrorTextView = view.findViewById(R.id.lastname_error);
-        mGenderErrorTextView = view.findViewById(R.id.gender_error);
-        mDOBErrorTextView = view.findViewById(R.id.dob_error);
-        mAgeErrorTextView = view.findViewById(R.id.age_error);
-        mPhoneNumberErrorTextView = view.findViewById(R.id.phone_error);
-
-        mGuardianNameErrorTextView = view.findViewById(R.id.guardian_name_error);
-        mGuardianTypeErrorTextView = view.findViewById(R.id.guardian_type_error);
-        mContactTypeErrorTextView = view.findViewById(R.id.contact_type_error);
-        mEmContactNameErrorTextView = view.findViewById(R.id.em_contact_name_error);
-        mEmContactNumErrorTextView = view.findViewById(R.id.emergency_contact_no_error);
-
-        mFirstNameEditText.addTextChangedListener(new MyTextWatcher(mFirstNameEditText));
-        mMiddleNameEditText.addTextChangedListener(new MyTextWatcher(mMiddleNameEditText));
-        mLastNameEditText.addTextChangedListener(new MyTextWatcher(mLastNameEditText));
-        mGuardianNameEditText.addTextChangedListener(new MyTextWatcher(mGuardianNameEditText));
-        mEmContactNameEditText.addTextChangedListener(new MyTextWatcher(mEmContactNameEditText));
-        mDOBEditText.addTextChangedListener(new MyTextWatcher(mDOBEditText));
-        mAgeEditText.addTextChangedListener(new MyTextWatcher(mAgeEditText));
-        mEmContactNumberEditText.addTextChangedListener(new MyTextWatcher(mEmContactNumberEditText));
-        //mPhoneNumberEditText.addTextChangedListener(new MyTextWatcher(mPhoneNumberEditText));
+        //fetching registration config
+        fetchRegConfig();
 
         setupSpinner();
 
         fragment_secondScreen = new Fragment_SecondScreen();
-        if (getArguments() != null) {
-            patientdto = (PatientDTO) getArguments().getSerializable("patientDTO");
+        Bundle args = getArguments();
+        if (args != null) {
+            patientdto = (PatientDTO) args.getSerializable("patientDTO");
             //   patientID_edit = getArguments().getString("patientUuid");
-            patient_detail = getArguments().getBoolean("patient_detail");
-            fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
+            patient_detail = args.getBoolean("patient_detail");
+            fromSecondScreen = args.getBoolean("fromSecondScreen");
+            isEditMode = args.getBoolean(BundleKeys.FROM_EDIT,false);
         }
 
         if (patient_detail)
@@ -260,7 +228,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
                 String contactType = switch_hi_contact_type_edit(patientdto.getContactType());
                 mContactTypeSpinner.setSelection(contactTypeAdapter.getPosition(contactType));
-            }else {
+            } else {
                 mGuardianTypeSpinner.setSelection(guardianTypeAdapter.getPosition(patientdto.getGuardianType()));
                 mContactTypeSpinner.setSelection(contactTypeAdapter.getPosition(patientdto.getContactType()));
             }
@@ -521,15 +489,134 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     }
 
+
+    /**
+     * fetching reg config from local db
+     */
+    private void fetchRegConfig() {
+        if (getActivity() != null) {
+            regFieldViewModel.fetchEnabledPersonalRegFields()
+                    .observe(getActivity(), it -> {
+                                patientRegistrationFields = it;
+                                setupFieldStatus();
+                            }
+                    );
+        }
+    }
+
+
+    /**
+     * changing fields status based on config data
+     */
+    private void setupFieldStatus() {
+        for (PatientRegistrationFields fields : patientRegistrationFields) {
+            switch (fields.getIdKey()) {
+                case PatientRegConfigKeys.PROFILE_PHOTO -> setFieldVisibility(addPictureLay);
+                case PatientRegConfigKeys.FIRST_NAME -> setFieldVisibility(firstNameLay);
+                case PatientRegConfigKeys.MIDDLE_NAME -> setFieldVisibility(middleNameLay);
+                case PatientRegConfigKeys.LAST_NAME -> setFieldVisibility(lastNameLay);
+                case PatientRegConfigKeys.GENDER -> setFieldVisibility(genderLay);
+                case PatientRegConfigKeys.DOB -> setFieldVisibility(dobLay);
+                case PatientRegConfigKeys.AGE -> setFieldVisibility(ageLay);
+                case PatientRegConfigKeys.GUARDIAN_TYPE -> setFieldVisibility(guardianTypeLay);
+                case PatientRegConfigKeys.GUARDIAN_NAME -> setFieldVisibility(guardianNameLay);
+                case PatientRegConfigKeys.PHONE_NUM -> setFieldVisibility(phoneNumLay);
+                case PatientRegConfigKeys.EM_CONTACT_TYPE -> setFieldVisibility(contactTypeLay);
+                case PatientRegConfigKeys.EM_CONTACT_NAME -> setFieldVisibility(emContactNameLay);
+                case PatientRegConfigKeys.EM_CONTACT_NUMBER -> setFieldVisibility(emContactNumLay);
+            }
+        }
+    }
+
+    /**
+     * all fragment ui initialization
+     */
+    private void initUi() {
+        addPictureLay = view.findViewById(R.id.add_picture_lay);
+        firstNameLay = view.findViewById(R.id.linear_firstname);
+        middleNameLay = view.findViewById(R.id.linear_middlename);
+        lastNameLay = view.findViewById(R.id.linear_lastname);
+        genderLay = view.findViewById(R.id.linear_gender);
+        guardianNameLay = view.findViewById(R.id.linear_guardian_name);
+        dobLay = view.findViewById(R.id.linear_dob);
+        ageLay = view.findViewById(R.id.linear_age);
+        phoneNumLay = view.findViewById(R.id.linear_phone_num);
+        contactTypeLay = view.findViewById(R.id.linear_contact_type);
+        emContactNameLay = view.findViewById(R.id.linear_em_contact_name);
+        emContactNumLay = view.findViewById(R.id.linear_emergency_contact_num);
+        guardianTypeLay = view.findViewById(R.id.linear_guardian_type);
+
+        patient_imgview = view.findViewById(R.id.patient_imgview);
+        frag1_nxt_btn_main = view.findViewById(R.id.frag1_nxt_btn_main);
+        personal_icon = getActivity().findViewById(R.id.addpatient_icon);
+        address_icon = getActivity().findViewById(R.id.addresslocation_icon);
+        other_icon = getActivity().findViewById(R.id.other_icon);
+        mFirstNameEditText = view.findViewById(R.id.firstname_edittext);
+        mFirstNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
+        mMiddleNameEditText = view.findViewById(R.id.middlename_edittext);
+        mMiddleNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
+        mLastNameEditText = view.findViewById(R.id.lastname_edittext);
+        mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
+
+        mGuardianNameEditText = view.findViewById(R.id.guardian_name_edittext);
+        mGuardianNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
+        mEmContactNameEditText = view.findViewById(R.id.em_contact_name_edittext);
+        mEmContactNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
+
+        mGenderMaleRadioButton = view.findViewById(R.id.gender_male);
+        mGenderFemaleRadioButton = view.findViewById(R.id.gender_female);
+        mGenderOthersRadioButton = view.findViewById(R.id.gender_other);
+        mDOBEditText = view.findViewById(R.id.dob_edittext);
+        mAgeEditText = view.findViewById(R.id.age_edittext);
+        mCountryCodePicker = view.findViewById(R.id.countrycode_spinner);
+        mPhoneNumberEditText = view.findViewById(R.id.phoneno_edittext);
+        Log.v("phone", "phone value: " + mCountryCodePicker.getSelectedCountryCode());
+        mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText); // attaches the ccp spinner with the edittext
+        mCountryCodePicker.setNumberAutoFormattingEnabled(false);
+
+        mEmContactNoCountryCodePicker = view.findViewById(R.id.emergency_contact_countrycode_spinner);
+        mEmContactNumberEditText = view.findViewById(R.id.emergency_contact_no_edittext);
+        Log.v("em_phone", "phone value: " + mEmContactNoCountryCodePicker.getSelectedCountryCode());
+        mEmContactNoCountryCodePicker.registerCarrierNumberEditText(mEmContactNumberEditText); // attaches the ccp spinner with the edittext
+        mEmContactNoCountryCodePicker.setNumberAutoFormattingEnabled(false);
+
+        mGuardianTypeSpinner = view.findViewById(R.id.guardian_type_spinner);
+        mContactTypeSpinner = view.findViewById(R.id.contact_type_spinner);
+
+        mFirstNameErrorTextView = view.findViewById(R.id.firstname_error);
+        mMiddleNameErrorTextView = view.findViewById(R.id.middlename_error);
+        mLastNameErrorTextView = view.findViewById(R.id.lastname_error);
+        mGenderErrorTextView = view.findViewById(R.id.gender_error);
+        mDOBErrorTextView = view.findViewById(R.id.dob_error);
+        mAgeErrorTextView = view.findViewById(R.id.age_error);
+        mPhoneNumberErrorTextView = view.findViewById(R.id.phone_error);
+
+        mGuardianNameErrorTextView = view.findViewById(R.id.guardian_name_error);
+        mGuardianTypeErrorTextView = view.findViewById(R.id.guardian_type_error);
+        mContactTypeErrorTextView = view.findViewById(R.id.contact_type_error);
+        mEmContactNameErrorTextView = view.findViewById(R.id.em_contact_name_error);
+        mEmContactNumErrorTextView = view.findViewById(R.id.emergency_contact_no_error);
+
+        mFirstNameEditText.addTextChangedListener(new MyTextWatcher(mFirstNameEditText));
+        mMiddleNameEditText.addTextChangedListener(new MyTextWatcher(mMiddleNameEditText));
+        mLastNameEditText.addTextChangedListener(new MyTextWatcher(mLastNameEditText));
+        mGuardianNameEditText.addTextChangedListener(new MyTextWatcher(mGuardianNameEditText));
+        mEmContactNameEditText.addTextChangedListener(new MyTextWatcher(mEmContactNameEditText));
+        mDOBEditText.addTextChangedListener(new MyTextWatcher(mDOBEditText));
+        mAgeEditText.addTextChangedListener(new MyTextWatcher(mAgeEditText));
+        mEmContactNumberEditText.addTextChangedListener(new MyTextWatcher(mEmContactNumberEditText));
+        //mPhoneNumberEditText.addTextChangedListener(new MyTextWatcher(mPhoneNumberEditText));
+    }
+
     /**
      * guardian type and name will change based on age
      * if age is <=18 the two fields will show
      **/
     private void updateGuardianVisibility() {
-        if(mAgeYears <= 18 && !mDOBEditText.getText().toString().isEmpty()){
+        if (mAgeYears <= 18 && !mDOBEditText.getText().toString().isEmpty()) {
             guardianNameLay.setVisibility(View.VISIBLE);
             guardianTypeLay.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             guardianNameLay.setVisibility(View.GONE);
             guardianTypeLay.setVisibility(View.GONE);
         }
@@ -550,7 +637,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 guardianTypeAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mGuardianTypeSpinner.setAdapter(guardianTypeAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
-            mGuardianTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
+            mGuardianTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
         } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
         }
@@ -565,7 +652,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 contactTypeAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mContactTypeSpinner.setAdapter(contactTypeAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
-            mContactTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
+            mContactTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
         } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
         }
@@ -601,7 +688,6 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         });
 
     }
-
 
 
     private int mSelectedMobileNumberValidationLength = 0;
@@ -754,8 +840,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mPhoneNumberErrorTextView.setVisibility(View.GONE);
                     mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            }
-            else if (this.editText.getId() == R.id.guardian_name_edittext) {
+            } else if (this.editText.getId() == R.id.guardian_name_edittext) {
                 if (val.isEmpty()) {
                     mGuardianNameErrorTextView.setVisibility(View.VISIBLE);
                     mGuardianNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -764,8 +849,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mGuardianNameErrorTextView.setVisibility(View.GONE);
                     mGuardianNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            }
-            else if (this.editText.getId() == R.id.em_contact_name_edittext) {
+            } else if (this.editText.getId() == R.id.em_contact_name_edittext) {
                 if (val.isEmpty()) {
                     mEmContactNameErrorTextView.setVisibility(View.VISIBLE);
                     mEmContactNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -774,8 +858,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mEmContactNameErrorTextView.setVisibility(View.GONE);
                     mEmContactNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            }
-            else if (this.editText.getId() == R.id.emergency_contact_no_edittext) {
+            } else if (this.editText.getId() == R.id.emergency_contact_no_edittext) {
                 String phoneNumber = mPhoneNumberEditText.getText().toString().trim();
                 String emContactNumber = this.editText.getText().toString().trim();
 
@@ -784,7 +867,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mEmContactNumErrorTextView.setText(getString(R.string.error_field_required));
                     mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 } else {
-                    if(phoneNumber.equals(emContactNumber)){
+                    if (phoneNumber.equals(emContactNumber)) {
                         mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
                         mEmContactNumErrorTextView.setText(getString(R.string.phone_number_and_emergency_number_can_not_be_the_same));
                         mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -848,10 +931,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
     }
@@ -982,7 +1065,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
-        if(mAgeYears <= 18){
+        if (mAgeYears <= 18) {
             //Guardian name edittext
             if (mGuardianNameEditText.getText().toString().equals("")) {
                 mGuardianNameErrorTextView.setVisibility(View.VISIBLE);
@@ -1149,10 +1232,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         patientdto.setDateofbirth(dobToDb);
 
-        if(mAgeYears <= 18){
+        if (mAgeYears <= 18) {
             patientdto.setGuardianName(mGuardianNameEditText.getText().toString());
             patientdto.setGuardianType(StringUtils.getProvided(mGuardianTypeSpinner));
-        }else {
+        } else {
             patientdto.setGuardianName("");
             patientdto.setGuardianType("");
         }
@@ -1160,8 +1243,6 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         patientdto.setContactType(StringUtils.getProvided(mContactTypeSpinner));
         patientdto.setEmContactName(mEmContactNameEditText.getText().toString());
         patientdto.setEmContactNumber(StringUtils.getValue(mEmContactNoCountryCodePicker.getFullNumberWithPlus()));
-
-
 
 
         try {
@@ -1245,4 +1326,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     .into(patient_imgview);
         }
     });
+
+
+    private void setFieldVisibility(View view) {
+        view.setVisibility(View.VISIBLE);
+    }
 }
