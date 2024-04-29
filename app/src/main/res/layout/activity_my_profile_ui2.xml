@@ -12,167 +12,145 @@
         android:layout_height="match_parent">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingEnd="@dimen/layout_profile_padding">
-
-
-        <include
-            android:id="@+id/toolbar_common"
-            layout="@layout/toolbar_common_ui2" />
-
-
         <LinearLayout
-            android:id="@+id/layout_parent_profile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:orientation="vertical"
-            android:paddingStart="@dimen/layout_profile_padding"
-            android:paddingTop="@dimen/layout_profile_padding"
-            android:paddingBottom="@dimen/layout_profile_padding">
+            android:paddingEnd="@dimen/layout_profile_padding">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/img_profile"
-                android:layout_width="@dimen/iv_profile_drawer_width"
-                android:layout_height="@dimen/iv_profile_drawer_height"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:elevation="0dp"
-                app:cardCornerRadius="@dimen/iv_profile_photo_corner_radius">
 
-                <ImageView
-                    android:id="@+id/iv_profilePic"
+            <include
+                android:id="@+id/toolbar_common"
+                layout="@layout/toolbar_common_ui2" />
+
+
+            <LinearLayout
+                android:id="@+id/layout_parent_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/layout_profile_padding"
+                android:paddingTop="@dimen/layout_profile_padding"
+                android:paddingBottom="@dimen/layout_profile_padding">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/img_profile"
                     android:layout_width="@dimen/iv_profile_drawer_width"
                     android:layout_height="@dimen/iv_profile_drawer_height"
-                    android:src="@drawable/avatar1" />
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:elevation="0dp"
+                    app:cardCornerRadius="@dimen/iv_profile_photo_corner_radius">
 
-            </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:id="@+id/iv_profilePic"
+                        android:layout_width="@dimen/iv_profile_drawer_width"
+                        android:layout_height="@dimen/iv_profile_drawer_height"
+                        android:src="@drawable/avatar1" />
 
-            <TextView
-                android:id="@+id/tv_change_photo_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/achievements_user_score_margin_top"
-                android:gravity="center_horizontal"
-                android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
-                android:text="@string/change_photo"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/common_label_text_size" />
-
-            <RelativeLayout
-                android:id="@+id/view_change_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/tv_pass_margin_start"
-                android:layout_marginTop="@dimen/tv_pass_margin_top"
-                android:layout_marginEnd="@dimen/tv_pass_margin_end">
-
-                <ImageView
-                    android:id="@+id/iv_icon1"
-                    android:layout_width="@dimen/iv_camera_width"
-                    android:layout_height="@dimen/iv_camera_height"
-                    android:src="@drawable/ui2_ic_icons8_forgot_password" />
+                </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:id="@+id/tv_user_points"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_change_photo_profile"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/tv_change_pass_margin_start"
-                    android:layout_marginTop="@dimen/tv_change_pass_margin_top"
-                    android:layout_toEndOf="@+id/iv_icon1"
+                    android:layout_marginTop="@dimen/achievements_user_score_margin_top"
+                    android:gravity="center_horizontal"
                     android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
-                    android:text="@string/change_password"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/common_info_text_size"
-                    android:textStyle="bold" />
+                    android:text="@string/change_photo"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
 
-                <ImageView
-                    android:layout_width="@dimen/iv_camera_width"
-                    android:layout_height="@dimen/iv_camera_height"
-                    android:layout_alignParentEnd="true"
-                    android:background="?attr/selectableItemBackground"
-                    android:src="@drawable/ui2_ic_chevron_right" />
+                <RelativeLayout
+                    android:id="@+id/view_change_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/tv_pass_margin_start"
+                    android:layout_marginTop="@dimen/tv_pass_margin_top"
+                    android:layout_marginEnd="@dimen/tv_pass_margin_end">
 
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/iv_icon1"
+                        android:layout_width="@dimen/iv_camera_width"
+                        android:layout_height="@dimen/iv_camera_height"
+                        android:src="@drawable/ui2_ic_icons8_forgot_password"
+                        app:tint="?colorPrimary" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/tv_pass_margin_start"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="@dimen/tv_pass_margin_end">
+                    <TextView
+                        android:id="@+id/tv_user_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/tv_change_pass_margin_start"
+                        android:layout_marginTop="@dimen/tv_change_pass_margin_top"
+                        android:layout_toEndOf="@+id/iv_icon1"
+                        android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
+                        android:text="@string/change_password"
+                        android:textColor="?colorPrimary"
+                        android:textSize="@dimen/common_info_text_size"
+                        android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/iv_icon3"
-                    android:layout_width="@dimen/iv_camera_width"
-                    android:layout_height="@dimen/iv_camera_height"
-                    android:src="@drawable/ic_baseline_fingerprint_24" />
+                    <ImageView
+                        android:layout_width="@dimen/iv_camera_width"
+                        android:layout_height="@dimen/iv_camera_height"
+                        android:layout_alignParentEnd="true"
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/ui2_ic_chevron_right"
+                        app:tint="?colorPrimary" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/tv_pass_margin_start"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="@dimen/tv_pass_margin_end">
+
+                    <ImageView
+                        android:id="@+id/iv_icon3"
+                        android:layout_width="@dimen/iv_camera_width"
+                        android:layout_height="@dimen/iv_camera_height"
+                        android:src="@drawable/ic_baseline_fingerprint_24"
+                        app:tint="?colorPrimary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/tv_change_pass_margin_start"
+                        android:layout_marginTop="@dimen/tv_change_pass_margin_top"
+                        android:layout_toEndOf="@+id/iv_icon3"
+                        android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
+                        android:text="@string/fingerprint_lock"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/common_info_text_size"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/fingerprint_enable_Switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="?attr/selectableItemBackground" />
+
+                </RelativeLayout>
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/tv_change_pass_margin_start"
-                    android:layout_marginTop="@dimen/tv_change_pass_margin_top"
-                    android:layout_toEndOf="@+id/iv_icon3"
-                    android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
-                    android:text="@string/fingerprint_lock"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/common_info_text_size"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="@dimen/profile_username_margin_top"
+                    android:letterSpacing="0.02"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:text="@string/username"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
 
-                <Switch
-                    android:id="@+id/fingerprint_enable_Switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="?attr/selectableItemBackground"/>
-
-            </RelativeLayout>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_username_margin_top"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:text="@string/username"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/common_label_text_size" />
-
-            <TextView
-                android:id="@+id/tv_username_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                android:background="@drawable/bg_input_fieldnew"
-                android:hint="@string/username"
-                android:textColorHint="@color/edittext_hint_color"
-                android:textColor="@color/edittext_hint_color"
-                android:imeOptions="actionNext"
-                android:paddingStart="@dimen/common_edittext_padding_left"
-                android:paddingTop="@dimen/common_edittext_padding_top"
-                android:paddingEnd="@dimen/common_edittext_padding_right"
-                android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                android:singleLine="true"
-                android:textSize="@dimen/common_hint_text_size"
-                android:textStyle="bold"
-                />
-
-<!--
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                app:hintEnabled="false">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <TextView
                     android:id="@+id/tv_username_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
                     android:background="@drawable/bg_input_fieldnew"
                     android:hint="@string/username"
                     android:imeOptions="actionNext"
@@ -181,84 +159,35 @@
                     android:paddingEnd="@dimen/common_edittext_padding_right"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom"
                     android:singleLine="true"
+                    android:textColor="@color/edittext_hint_color"
+                    android:textColorHint="@color/edittext_hint_color"
                     android:textSize="@dimen/common_hint_text_size"
                     android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
--->
 
+                <!--
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                                app:hintEnabled="false">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:text="@string/first_name"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/common_label_text_size" />
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tv_username_profile"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_input_fieldnew"
+                                    android:hint="@string/username"
+                                    android:imeOptions="actionNext"
+                                    android:paddingStart="@dimen/common_edittext_padding_left"
+                                    android:paddingTop="@dimen/common_edittext_padding_top"
+                                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                                    android:singleLine="true"
+                                    android:textSize="@dimen/common_hint_text_size"
+                                    android:textStyle="bold" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                -->
 
-            <TextView
-                android:id="@+id/tv_first_name_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                android:background="@drawable/bg_input_fieldnew"
-                android:hint="@string/enter_first_name"
-                android:textColorHint="@color/edittext_hint_color"
-                android:textColor="@color/edittext_hint_color"
-                android:imeOptions="actionNext"
-                android:paddingStart="@dimen/common_edittext_padding_left"
-                android:paddingTop="@dimen/common_edittext_padding_top"
-                android:paddingEnd="@dimen/common_edittext_padding_right"
-                android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                android:singleLine="true"
-                android:textSize="@dimen/common_hint_text_size"
-                />
-
-<!--
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                app:hintEnabled="false">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tv_first_name_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_input_fieldnew"
-                    android:hint="@string/enter_first_name"
-                    android:enabled="false"
-                    android:imeOptions="actionNext"
-                    android:paddingStart="@dimen/common_edittext_padding_left"
-                    android:paddingTop="@dimen/common_edittext_padding_top"
-                    android:paddingEnd="@dimen/common_edittext_padding_right"
-                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                    android:singleLine="true"
-                    android:textSize="@dimen/common_hint_text_size" />
-            </com.google.android.material.textfield.TextInputLayout>
--->
-
-            <TextView
-                android:id="@+id/tv_firstname_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:text="@string/enter_first_name"
-                android:textAppearance="@style/registr_error_msg"
-                android:textColor="@color/red"
-                android:textSize="@null"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:id="@+id/ll_middlename"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible"
-                tools:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -266,337 +195,452 @@
                     android:layout_marginTop="@dimen/profile_tv_label_margin_top"
                     android:letterSpacing="0.02"
                     android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                    android:text="@string/middle_name"
+                    android:text="@string/first_name"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_middle_name_profile"
+                    android:id="@+id/tv_first_name_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/et_new_pass_margin_top"
                     android:background="@drawable/bg_input_fieldnew"
-                    android:hint="@string/enter_middle_name"
-                    android:textColorHint="@color/edittext_hint_color"
-                    android:textColor="@color/edittext_hint_color"
+                    android:hint="@string/enter_first_name"
                     android:imeOptions="actionNext"
                     android:paddingStart="@dimen/common_edittext_padding_left"
                     android:paddingTop="@dimen/common_edittext_padding_top"
                     android:paddingEnd="@dimen/common_edittext_padding_right"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom"
                     android:singleLine="true"
-                    android:textSize="@dimen/common_hint_text_size"
-                    />
-            </LinearLayout>
+                    android:textColor="@color/edittext_hint_color"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textSize="@dimen/common_hint_text_size" />
 
+                <!--
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                                app:hintEnabled="false">
 
-<!--
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                app:hintEnabled="false">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tv_first_name_profile"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_input_fieldnew"
+                                    android:hint="@string/enter_first_name"
+                                    android:enabled="false"
+                                    android:imeOptions="actionNext"
+                                    android:paddingStart="@dimen/common_edittext_padding_left"
+                                    android:paddingTop="@dimen/common_edittext_padding_top"
+                                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                                    android:singleLine="true"
+                                    android:textSize="@dimen/common_hint_text_size" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                -->
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tv_middle_name_profile"
+                <TextView
+                    android:id="@+id/tv_firstname_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/enter_first_name"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/ll_middlename"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_input_fieldnew"
-                    android:hint="@string/enter_middle_name"
-                    android:textColorHint="@color/edittext_hint_color"
-                    android:enabled="false"
-                    android:imeOptions="actionNext"
-                    android:paddingStart="@dimen/common_edittext_padding_left"
-                    android:paddingTop="@dimen/common_edittext_padding_top"
-                    android:paddingEnd="@dimen/common_edittext_padding_right"
-                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                    android:singleLine="true"
-                    android:textSize="@dimen/common_hint_text_size" />
-            </com.google.android.material.textfield.TextInputLayout>
--->
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    tools:visibility="visible">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:text="@string/last_name"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/common_label_text_size" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                        android:letterSpacing="0.02"
+                        android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                        android:text="@string/middle_name"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size" />
 
-            <TextView
-                android:id="@+id/tv_last_name_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                android:background="@drawable/bg_input_fieldnew"
-                android:hint="@string/enter_last_name"
-                android:textColorHint="@color/edittext_hint_color"
-                android:textColor="@color/edittext_hint_color"
-                android:imeOptions="actionNext"
-                android:paddingStart="@dimen/common_edittext_padding_left"
-                android:paddingTop="@dimen/common_edittext_padding_top"
-                android:paddingEnd="@dimen/common_edittext_padding_right"
-                android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                android:singleLine="true"
-                android:textSize="@dimen/common_hint_text_size"
-                />
+                    <TextView
+                        android:id="@+id/tv_middle_name_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                        android:background="@drawable/bg_input_fieldnew"
+                        android:hint="@string/enter_middle_name"
+                        android:imeOptions="actionNext"
+                        android:paddingStart="@dimen/common_edittext_padding_left"
+                        android:paddingTop="@dimen/common_edittext_padding_top"
+                        android:paddingEnd="@dimen/common_edittext_padding_right"
+                        android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                        android:singleLine="true"
+                        android:textColor="@color/edittext_hint_color"
+                        android:textColorHint="@color/edittext_hint_color"
+                        android:textSize="@dimen/common_hint_text_size" />
+                </LinearLayout>
 
-<!--
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                app:hintEnabled="false">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <!--
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                                app:hintEnabled="false">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tv_middle_name_profile"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_input_fieldnew"
+                                    android:hint="@string/enter_middle_name"
+                                    android:textColorHint="@color/edittext_hint_color"
+                                    android:enabled="false"
+                                    android:imeOptions="actionNext"
+                                    android:paddingStart="@dimen/common_edittext_padding_left"
+                                    android:paddingTop="@dimen/common_edittext_padding_top"
+                                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                                    android:singleLine="true"
+                                    android:textSize="@dimen/common_hint_text_size" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                -->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                    android:letterSpacing="0.02"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:text="@string/last_name"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
+
+                <TextView
                     android:id="@+id/tv_last_name_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
                     android:background="@drawable/bg_input_fieldnew"
                     android:hint="@string/enter_last_name"
                     android:imeOptions="actionNext"
                     android:paddingStart="@dimen/common_edittext_padding_left"
-                    android:enabled="false"
                     android:paddingTop="@dimen/common_edittext_padding_top"
                     android:paddingEnd="@dimen/common_edittext_padding_right"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom"
                     android:singleLine="true"
+                    android:textColor="@color/edittext_hint_color"
+                    android:textColorHint="@color/edittext_hint_color"
                     android:textSize="@dimen/common_hint_text_size" />
-            </com.google.android.material.textfield.TextInputLayout>
--->
 
-            <TextView
-                android:id="@+id/tv_lastname_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:text="@string/enter_last_name"
-                android:textAppearance="@style/registr_error_msg"
-                android:textColor="@color/red"
-                android:textSize="@null"
-                android:visibility="gone"
-                tools:visibility="visible"/>
+                <!--
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                                app:hintEnabled="false">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:text="@string/gender"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/common_label_text_size" />
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tv_last_name_profile"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_input_fieldnew"
+                                    android:hint="@string/enter_last_name"
+                                    android:imeOptions="actionNext"
+                                    android:paddingStart="@dimen/common_edittext_padding_left"
+                                    android:enabled="false"
+                                    android:paddingTop="@dimen/common_edittext_padding_top"
+                                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                                    android:singleLine="true"
+                                    android:textSize="@dimen/common_hint_text_size" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                -->
 
-            <RadioGroup
-                android:id="@+id/radioGroup_gender_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-                <RadioButton
-                    android:id="@+id/rb_male"
+                <TextView
+                    android:id="@+id/tv_lastname_error"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start"
-                    android:paddingStart="@dimen/space_5dp"
-                    android:layout_weight="1"
-                    android:paddingEnd="@dimen/space_5dp"
-                    android:drawableRight="@drawable/gender_male_svg"
-                    android:text="@string/male"
-                    android:textSize="@dimen/select_language"
-                    android:textColor="@color/edittext_hint_color"
-                    android:theme="@style/RadioButtonStyleSelection" />
-
-                <RadioButton
-                    android:id="@+id/rb_female"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:paddingStart="@dimen/space_5dp"
-                    android:paddingEnd="@dimen/space_5dp"
-                    android:layout_weight="1"
-                    android:drawablePadding="5dp"
-                    android:drawableRight="@drawable/gender_female_svg"
-                    android:text="@string/female"
-                    android:textSize="@dimen/select_language"
-                    android:textColor="@color/edittext_hint_color"
-                    android:theme="@style/RadioButtonStyleSelection" />
-
-                <RadioButton
-                    android:id="@+id/rb_other"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_weight="1"
-                    android:paddingStart="@dimen/space_5dp"
-                    android:paddingEnd="@dimen/space_5dp"
-                    android:drawableRight="@drawable/gender_other_svg"
-                    android:text="@string/other"
-                    android:textSize="@dimen/select_language"
-                    android:textColor="@color/edittext_hint_color"
-                    android:theme="@style/RadioButtonStyleSelection" />
-            </RadioGroup>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/enter_last_name"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
+                    android:layout_marginTop="@dimen/profile_tv_label_margin_top"
                     android:letterSpacing="0.02"
                     android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                    android:text="@string/date_of_birth"
+                    android:text="@string/gender"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
 
-                <TextView
-                    android:layout_width="0dp"
+                <RadioGroup
+                    android:id="@+id/radioGroup_gender_profile"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dob_age_margin_start"
-                    android:layout_weight="0.4"
-                    android:letterSpacing="0.02"
-                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                    android:text="@string/age"
-                    android:textColor="@color/textColorGray"
-                    android:textSize="@dimen/common_label_text_size" />
-            </LinearLayout>
+                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                    <RadioButton
+                        android:id="@+id/rb_male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:drawableRight="@drawable/gender_male_svg"
+                        android:paddingStart="@dimen/space_5dp"
+                        android:paddingEnd="@dimen/space_5dp"
+                        android:text="@string/male"
+                        android:textColor="@color/edittext_hint_color"
+                        android:textSize="@dimen/select_language"
+                        android:theme="@style/RadioButtonStyleSelection" />
 
-                <TextView
-                    android:id="@+id/tv_date_of_birth_profile"
-                    android:layout_width="0dp"
+                    <RadioButton
+                        android:id="@+id/rb_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_weight="1"
+                        android:drawableRight="@drawable/gender_female_svg"
+                        android:drawablePadding="5dp"
+                        android:paddingStart="@dimen/space_5dp"
+                        android:paddingEnd="@dimen/space_5dp"
+                        android:text="@string/female"
+                        android:textColor="@color/edittext_hint_color"
+                        android:textSize="@dimen/select_language"
+                        android:theme="@style/RadioButtonStyleSelection" />
+
+                    <RadioButton
+                        android:id="@+id/rb_other"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:layout_weight="1"
+                        android:drawableRight="@drawable/gender_other_svg"
+                        android:paddingStart="@dimen/space_5dp"
+                        android:paddingEnd="@dimen/space_5dp"
+                        android:text="@string/other"
+                        android:textColor="@color/edittext_hint_color"
+                        android:textSize="@dimen/select_language"
+                        android:theme="@style/RadioButtonStyleSelection" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_input_fieldnew"
-                    android:layout_weight="0.6"
-                    android:gravity="center_vertical"
-                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                    android:paddingStart="@dimen/dob_date_padding_start"
-                    android:paddingTop="@dimen/common_edittext_padding_top"
-                    android:paddingEnd="@dimen/dob_date_padding_end"
-                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                    android:text="May 10, 2022"
-                    android:textColorHint="@color/edittext_hint_color"
-                    android:textColor="@color/edittext_hint_color"
-                    android:textSize="@dimen/common_info_text_size" />
+                    android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-                <TextView
-                    android:id="@+id/tv_age_profile"
-                    android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:letterSpacing="0.02"
+                        android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                        android:text="@string/date_of_birth"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dob_age_margin_start"
+                        android:layout_weight="0.4"
+                        android:letterSpacing="0.02"
+                        android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                        android:text="@string/age"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_input_fieldnew"
-                    android:textColorHint="@color/edittext_hint_color"
-                    android:textColor="@color/edittext_hint_color"
-                    android:layout_marginStart="@dimen/dob_age_margin_start"
-                    android:layout_weight="0.4"
-                    android:gravity="center_vertical"
-                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                    android:paddingStart="@dimen/dob_date_padding_start"
-                    android:paddingTop="@dimen/common_edittext_padding_top"
-                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                    android:text="28"
-                    android:textSize="@dimen/common_info_text_size" />
-            </LinearLayout>
+                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/tv_date_of_birth_profile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:background="@drawable/bg_input_fieldnew"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                        android:paddingStart="@dimen/dob_date_padding_start"
+                        android:paddingTop="@dimen/common_edittext_padding_top"
+                        android:paddingEnd="@dimen/dob_date_padding_end"
+                        android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                        android:text="May 10, 2022"
+                        android:textColor="@color/edittext_hint_color"
+                        android:textColorHint="@color/edittext_hint_color"
+                        android:textSize="@dimen/common_info_text_size" />
+
+                    <TextView
+                        android:id="@+id/tv_age_profile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dob_age_margin_start"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/bg_input_fieldnew"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                        android:paddingStart="@dimen/dob_date_padding_start"
+                        android:paddingTop="@dimen/common_edittext_padding_top"
+                        android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                        android:text="28"
+                        android:textColor="@color/edittext_hint_color"
+                        android:textColorHint="@color/edittext_hint_color"
+                        android:textSize="@dimen/common_info_text_size" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_dob_error"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:letterSpacing="0.02"
                     android:layout_gravity="end"
-                    android:textAlignment="viewEnd"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:letterSpacing="0.02"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/hw_min_age"
-                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:textAlignment="viewEnd"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@color/red"
                     android:textSize="@null"
                     android:visibility="gone"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:text="@string/phone_number"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/common_label_text_size" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.hbb20.CountryCodePicker
-                    android:id="@+id/countrycode_spinner_profile"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                    android:layout_marginEnd="@dimen/spinner_countries_margin_end"
-                    android:layout_weight="1"
-                    android:background="@drawable/ui2_spinner_background"
-                    android:gravity="center_vertical"
-                    android:paddingStart="@dimen/country_code_picker_padding_start"
-                    android:paddingTop="@dimen/country_code_picker_padding_top"
-                    android:paddingEnd="@dimen/country_code_picker_padding_start"
-                    android:paddingBottom="@dimen/country_code_picker_padding_top"
-                    app:ccp_countryPreference="us,in"
-                    app:ccp_textSize="@dimen/country_code_picker_text_size" />
+                    android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                    android:letterSpacing="0.02"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:text="@string/phone_number"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
 
-                <!--
-                                <LinearLayout
-                                    android:id="@+id/layout_spinner_bg"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                                    android:layout_below="@+id/textview_mobile_no_note"
-                                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                                    android:layout_marginEnd="@dimen/spinner_countries_margin_end"
-                                    android:background="@drawable/ui2_spinner_background">
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/countrycode_spinner_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                        android:layout_marginEnd="@dimen/spinner_countries_margin_end"
+                        android:layout_weight="1"
+                        android:background="@drawable/ui2_spinner_background"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/country_code_picker_padding_start"
+                        android:paddingTop="@dimen/country_code_picker_padding_top"
+                        android:paddingEnd="@dimen/country_code_picker_padding_start"
+                        android:paddingBottom="@dimen/country_code_picker_padding_top"
+                        app:ccp_countryPreference="us,in"
+                        app:ccp_textSize="@dimen/country_code_picker_text_size" />
 
-                                    <Spinner
-                                        android:id="@+id/spinner_countries_profile"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_margin="@dimen/spinner_countries_margin" />
+                    <!--
+                                    <LinearLayout
+                                        android:id="@+id/layout_spinner_bg"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
 
-                                </LinearLayout>
-                -->
+                                        android:layout_below="@+id/textview_mobile_no_note"
+                                        android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                                        android:layout_marginEnd="@dimen/spinner_countries_margin_end"
+                                        android:background="@drawable/ui2_spinner_background">
+
+                                        <Spinner
+                                            android:id="@+id/spinner_countries_profile"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_margin="@dimen/spinner_countries_margin" />
+
+                                    </LinearLayout>
+                    -->
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                        android:layout_toEndOf="@+id/countrycode_spinner_profile"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_mobile_no_profile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_input_fieldnew"
+                            android:hint="@string/enter_phone_number"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:lineSpacingExtra="3sp"
+                            android:paddingStart="@dimen/common_edittext_padding_left"
+                            android:paddingTop="@dimen/common_edittext_padding_top"
+                            android:paddingEnd="@dimen/common_edittext_padding_right"
+                            android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                            android:singleLine="true"
+                            android:textSize="@dimen/common_hint_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_mobile_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/enter_phone_number"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                    android:letterSpacing="0.02"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:text="@string/email"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                    android:layout_toEndOf="@+id/countrycode_spinner_profile"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_mobile_no_profile"
+                        android:id="@+id/et_email_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_input_fieldnew"
-                        android:hint="@string/enter_phone_number"
-                        android:imeOptions="actionNext"
-                        android:inputType="number"
-                        android:lineSpacingExtra="3sp"
+                        android:hint="@string/enter_your_email"
+                        android:imeOptions="actionDone"
                         android:paddingStart="@dimen/common_edittext_padding_left"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
@@ -604,90 +648,43 @@
                         android:singleLine="true"
                         android:textSize="@dimen/common_hint_text_size" />
                 </com.google.android.material.textfield.TextInputLayout>
-            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_mobile_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:text="@string/enter_phone_number"
-                android:textAppearance="@style/registr_error_msg"
-                android:textColor="@color/red"
-                android:textSize="@null"
-                android:visibility="gone" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:text="@string/email"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/common_label_text_size" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                app:hintEnabled="false">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_email_profile"
+                <Button
+                    android:id="@+id/btn_save_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_input_fieldnew"
-                    android:hint="@string/enter_your_email"
-                    android:imeOptions="actionDone"
-                    android:paddingStart="@dimen/common_edittext_padding_left"
-                    android:paddingTop="@dimen/common_edittext_padding_top"
-                    android:paddingEnd="@dimen/common_edittext_padding_right"
-                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                    android:singleLine="true"
-                    android:textSize="@dimen/common_hint_text_size" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_below="@+id/tv_privacy_notice_link"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:enabled="false"
+                    android:paddingStart="@dimen/common_button_padding_left"
+                    android:paddingTop="@dimen/common_button_padding_top"
+                    android:paddingEnd="@dimen/common_button_padding_right"
+                    android:paddingBottom="@dimen/common_button_padding_bottom"
+                    android:text="@string/save"
+                    android:textSize="@dimen/common_button_text_size" />
 
-            <Button
-                android:id="@+id/btn_save_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_privacy_notice_link"
-                android:layout_marginTop="60dp"
-                android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:paddingStart="@dimen/common_button_padding_left"
-                android:enabled="false"
-                android:paddingTop="@dimen/common_button_padding_top"
-                android:paddingEnd="@dimen/common_button_padding_right"
-                android:paddingBottom="@dimen/common_button_padding_bottom"
-                android:text="@string/save"
-                android:textSize="@dimen/common_button_text_size" />
+
+            </LinearLayout>
 
 
         </LinearLayout>
 
-
-    </LinearLayout>
-
     </ScrollView>
 
 
-        <include
-            android:id="@+id/snackbar_cv"
-            layout="@layout/custom_snackbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/margin_24"
-            android:layout_marginEnd="@dimen/margin_24"
-            android:layout_marginBottom="@dimen/margin_24"
-            style="@style/Widget.Design.FloatingActionButton"
-            />
-
+    <include
+        android:id="@+id/snackbar_cv"
+        style="@style/Widget.Design.FloatingActionButton"
+        layout="@layout/custom_snackbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/margin_24"
+        android:layout_marginEnd="@dimen/margin_24"
+        android:layout_marginBottom="@dimen/margin_24" />
 
 
 </RelativeLayout>

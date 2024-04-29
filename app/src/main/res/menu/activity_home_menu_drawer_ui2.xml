@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
@@ -7,30 +8,37 @@
         <item
             android:id="@+id/menu_my_achievements"
             android:icon="@drawable/ui2_ic_my_achievements"
-            android:title="@string/my_achievements" />
-        <item android:visible="false"
+            android:title="@string/my_achievements"
+            app:iconTint="?colorPrimary" />
+        <item
             android:id="@+id/menu_video_lib"
             android:icon="@drawable/ui2_ic_icon_video_library"
-            android:title="@string/educational_videos" />
+            android:title="@string/educational_videos"
+            android:visible="false"
+            app:iconTint="?colorPrimary" />
 
         <item
             android:id="@+id/menu_change_language"
             android:icon="@drawable/ui2_ic_icon_tune"
-            android:title="@string/change_lang" />
+            android:title="@string/change_lang"
+            app:iconTint="?colorPrimary" />
 
         <item
             android:id="@+id/menu_view_call_log"
             android:icon="@drawable/ic_call_log_video"
-            android:title="@string/call_logs" />
+            android:title="@string/call_logs"
+            app:iconTint="?colorPrimary" />
 
         <item
             android:id="@+id/menu_about_us"
             android:icon="@drawable/ui2_ic_icon_about_us"
-            android:title="@string/about_us" />
+            android:title="@string/about_us"
+            app:iconTint="?colorPrimary" />
         <item
             android:id="@+id/menu_logout"
             android:icon="@drawable/ui2_ic_icon_logout"
-            android:title="@string/log_out" />
+            android:title="@string/log_out"
+            app:iconTint="?colorPrimary" />
     </group>
 
 </menu>

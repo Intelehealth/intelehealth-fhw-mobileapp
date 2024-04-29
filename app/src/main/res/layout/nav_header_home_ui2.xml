@@ -79,13 +79,13 @@
         android:layout_marginStart="@dimen/tv_login_user_margin_start"
         android:layout_marginTop="@dimen/tv_login_edit_margin_top"
         android:layout_toEndOf="@+id/img_profile_header"
-        android:drawableEnd="@drawable/ui2_ic_arrow_right"
         android:drawablePadding="@dimen/common_tv_icon_padding"
         android:fontFamily="@font/lato_regular"
-        android:lineHeight="@dimen/tv_login_edit_line_height"
         android:text="@string/edit_profile"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/nav_header_edit_profile" />
+        android:textColor="?colorPrimary"
+        android:textSize="@dimen/nav_header_edit_profile"
+        app:drawableEndCompat="@drawable/ui2_ic_arrow_right"
+        app:drawableTint="?colorPrimary" />
 
     <View
         android:layout_width="match_parent"

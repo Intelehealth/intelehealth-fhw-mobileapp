@@ -33,4 +33,7 @@ interface PatientRegFieldDao : CoreDao<PatientRegistrationFields> {
     @Query("SELECT * FROM tbl_patient_registration_fields WHERE name = :name")
     fun getLiveRecord(name: String): LiveData<PatientRegistrationFields>
 
+    @Query("SELECT * FROM tbl_patient_registration_fields WHERE idKey = :idKey")
+    fun getLiveKeyRecord(idKey: String): LiveData<PatientRegistrationFields>
+
 }
