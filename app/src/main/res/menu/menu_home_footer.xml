@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/bottom_nav_home_menu"
         android:icon="@drawable/ui2_selector_home_nav"
-        android:title="@string/title_home_screen" />
+        android:title="@string/title_home_screen"
+        app:iconTint="?colorPrimary" />
 
     <item
         android:id="@+id/bottom_nav_achievements"
         android:icon="@drawable/ui2_selector_acievements_nav"
-        android:title="@string/achievements" />
+        android:title="@string/achievements"
+        app:iconTint="?colorPrimary" />
 
     <item
         android:id="@+id/bottom_nav_help"
         android:icon="@drawable/ui2_selector_help_nav"
-        android:title="@string/help_footer" />
+        android:title="@string/help_footer"
+        app:iconTint="?colorPrimary" />
 
     <item
         android:id="@+id/bottom_nav_add_patient"
         android:icon="@drawable/ui2_selector_nav_add_patient"
-        android:title="@string/add_patient" />
+        android:title="@string/add_patient"
+        app:iconTint="?colorPrimary" />
 
 </menu>

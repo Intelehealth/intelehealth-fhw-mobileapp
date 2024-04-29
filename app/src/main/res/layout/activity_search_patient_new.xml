@@ -15,7 +15,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="-25dp"
         android:background="@drawable/search_toolbar"
-        android:backgroundTint="#2E1E91">
+        android:backgroundTint="?colorPrimary">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="0dp"
