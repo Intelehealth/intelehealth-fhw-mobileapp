@@ -68,6 +68,22 @@
                     android:textColor="@null"
                     android:textSize="@null"
                     android:translationY="-1.39sp" />
+
+                <TextView
+                    android:id="@+id/profile_image_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:layout_below="@+id/add_picture"
+                    android:text="@string/profile_picture_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
             </RelativeLayout>
 
 
@@ -240,6 +256,7 @@
                     android:textSize="@null" />
 
                 <RadioGroup
+                    android:id="@+id/gender_radio_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/hamburger_margin_start"

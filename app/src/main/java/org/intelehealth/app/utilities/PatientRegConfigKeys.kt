@@ -17,11 +17,11 @@ class PatientRegConfigKeys {
         const val DOB = "p_date_of_birth"
         const val AGE = "p_age"
         const val PHONE_NUM = "p_phone_number"
-        const val GUARDIAN_NAME = "o_guardian_name"
-        const val GUARDIAN_TYPE = "o_guardian_type"
-        const val EM_CONTACT_NAME = "o_emergency_contact_name"
-        const val EM_CONTACT_NUMBER = "o_emergency_contact_number"
-        const val EM_CONTACT_TYPE = "o_emergency_contact_type"
+        const val GUARDIAN_NAME = "p_guardian_name"
+        const val GUARDIAN_TYPE = "p_guardian_type"
+        const val EM_CONTACT_NAME = "p_emergency_contact_name"
+        const val EM_CONTACT_NUMBER = "p_emergency_contact_number"
+        const val EM_CONTACT_TYPE = "p_emergency_contact_type"
 
         //ADDRESS
         const val PERSONAL_ADDRESS = "a_postal_address"
@@ -32,6 +32,7 @@ class PatientRegConfigKeys {
         const val ADDRESS_1 = "a_corresponding_address_1"
         const val ADDRESS_2 = "a_corresponding_address_2"
 
+        //OTHERS
         const val NATIONAL_ID = "o_national_id"
         const val OCCUPATION = "o_occupation"
         const val SOCIAL_CATEGORY = "o_social_category"
