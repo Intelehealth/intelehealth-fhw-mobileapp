@@ -588,7 +588,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "a.uuid = c.visit_uuid AND  " +
                 //"a.enddate is NOT NULL AND " +
                 "a.patientuuid = b.uuid AND " + "a.uuid = d.visituuid AND " +
-                "d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value !='No' and o.value is NOT NULL and "
+                "d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
                 + "date(substr(o.value, 1, 10)) = DATE('now') AND " + "o.value is NOT NULL GROUP BY a.patientuuid";
         Log.v(TAG, "query - " + query);
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
@@ -596,8 +596,10 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             do {
                 try {
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
-                    //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
-                    //if (isCompletedExitedSurvey) {
+                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                    if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no")) {
+                        //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
+                        //if (isCompletedExitedSurvey) {
                         // Fetch encounters who have emergency set and udpate modelist.
 
                         Log.v("Followup::", "::" + visitUuid);
@@ -617,7 +619,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                             modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
                                     cursor.getString(cursor.getColumnIndexOrThrow("visituuid")), cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")), cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")), cursor.getString(cursor.getColumnIndexOrThrow("first_name")), cursor.getString(cursor.getColumnIndexOrThrow("middle_name")), cursor.getString(cursor.getColumnIndexOrThrow("last_name")), cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")), StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))), cursor.getString(cursor.getColumnIndexOrThrow("gender")), cursor.getString(cursor.getColumnIndexOrThrow("startdate")), cursor.getString(cursor.getColumnIndexOrThrow("speciality")), cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")), cursor.getString(cursor.getColumnIndexOrThrow("sync")), false, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")), cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
                         }
-                   // }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -650,7 +652,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "a.uuid = c.visit_uuid AND   " +
                 //"a.enddate is NOT NULL AND " +
                 "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value !='No' and o.value is NOT NULL and "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
                 + "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) "
                 + "AND STRFTIME('%W',date(substr(o.value, 1, 10))) = STRFTIME('%W',DATE('now')) AND "
                 + "o.value is NOT NULL GROUP BY a.patientuuid";
@@ -661,8 +663,10 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 try {
                     // Fetch encounters who have emergency set and udpate modelist.
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
-                    //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
-                    //if (isCompletedExitedSurvey) {
+                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                    if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no")) {
+                        //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
+                        //if (isCompletedExitedSurvey) {
                         String patientID = cursor.getString(cursor.getColumnIndexOrThrow("patientuuid"));
                         Log.v("Followup::", "::" + visitUuid + "\n" + patientID);
                         String emergencyUuid = "";
@@ -680,7 +684,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                             modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
                                     cursor.getString(cursor.getColumnIndexOrThrow("visituuid")), cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")), cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")), cursor.getString(cursor.getColumnIndexOrThrow("first_name")), cursor.getString(cursor.getColumnIndexOrThrow("middle_name")), cursor.getString(cursor.getColumnIndexOrThrow("last_name")), cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")), StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))), cursor.getString(cursor.getColumnIndexOrThrow("gender")), cursor.getString(cursor.getColumnIndexOrThrow("startdate")), cursor.getString(cursor.getColumnIndexOrThrow("speciality")), cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")), cursor.getString(cursor.getColumnIndexOrThrow("sync")), false, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")), cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
                         }
-                    //}
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
 //                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -719,9 +723,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "a.uuid = c.visit_uuid AND   " +
                 //"a.enddate is NOT NULL AND " +
                 "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value !='No' and o.value is NOT NULL and "
-                + "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
-                + "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) AND "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
+                //+ "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
+                //+ "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) AND "
                 + "o.value is NOT NULL GROUP BY a.patientuuid";
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
@@ -730,8 +734,10 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 try {
                     // Fetch encounters who have emergency set and udpate modelist.
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
-                    //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
-                    //if (isCompletedExitedSurvey) {
+                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                    if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no")) {
+                        //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
+                        //if (isCompletedExitedSurvey) {
                         String emergencyUuid = "";
                         encounterDAO = new EncounterDAO();
                         try {
@@ -747,7 +753,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                             modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
                                     cursor.getString(cursor.getColumnIndexOrThrow("visituuid")), cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")), cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")), cursor.getString(cursor.getColumnIndexOrThrow("first_name")), cursor.getString(cursor.getColumnIndexOrThrow("middle_name")), cursor.getString(cursor.getColumnIndexOrThrow("last_name")), cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")), StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))), cursor.getString(cursor.getColumnIndexOrThrow("gender")), cursor.getString(cursor.getColumnIndexOrThrow("startdate")), cursor.getString(cursor.getColumnIndexOrThrow("speciality")), cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")), cursor.getString(cursor.getColumnIndexOrThrow("sync")), false, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")), cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
                         }
-                   // }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
 //                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -140,18 +140,13 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         Cursor cursor = null;
         if (isForReceivedPrescription)
-            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
-                    + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where"
-                    + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and"
-                    + "  e.encounter_type_uuid = ? and"
-                    + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " //+ " o.conceptuuid = ? "
+            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" + "  e.encounter_type_uuid = ? and" + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " //+ " o.conceptuuid = ? "
                     //+ " and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
                     //+ " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
 //                    +" and v.startdate <= DATETIME('now', '-4 day') "
                     + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
         else
-            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
-                    + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                     //" e.encounter_type_uuid = ?  and " +
                     " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 "
                     //+ "and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
@@ -318,7 +313,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         new Thread(() -> {
             int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
             if (isAdded()) {
-                 activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(activity.getResources().getQuantityString(R.plurals.open_no_of_visit,countPendingCloseVisits,countPendingCloseVisits)));
+                activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(activity.getResources().getQuantityString(R.plurals.open_no_of_visit, countPendingCloseVisits, countPendingCloseVisits)));
 
             }
         }).start();
@@ -467,19 +462,15 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         int count = 0;
 
         // TODO: end date is removed later add it again. --> Added...
-        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
-                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
-                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
-                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, " +
-                "SUBSTR(o.value,1,10) AS value_text, o.obsservermodifieddate "
-                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
+        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, " + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
+                + "b.patient_photo, a.enddate, b.uuid, b.first_name, " + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, "
+                + "SUBSTR(o.value,1,10) AS value_text, o.obsservermodifieddate " + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
                 + "a.uuid = c.visit_uuid AND   " +
                 //"a.enddate is NOT NULL AND " +
-                "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND  o.value !='No' and o.value is NOT NULL and "
-                + "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
-                + "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) AND "
-                + "o.value is NOT NULL GROUP BY a.patientuuid";
+                "a.patientuuid = b.uuid AND " + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0'  "
+                //+ "and STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
+                //+ "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) "
+                + " and o.value is NOT NULL GROUP BY a.patientuuid";
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
@@ -487,6 +478,10 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                 try {
                     // Fetch encounters who have emergency set and udpate modelist.
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                    Log.v(TAG, "value_text - "+value_text);
+                    Log.v(TAG, "visitUuid - "+visitUuid);
+                    if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no"))
 //                    boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
 //                    if (isCompletedExitedSurvey) {
                         count += 1;

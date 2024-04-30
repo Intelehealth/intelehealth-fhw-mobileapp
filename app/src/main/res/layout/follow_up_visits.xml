@@ -240,7 +240,7 @@
                     android:layout_marginTop="@dimen/text_margin"
                     android:gravity="top"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/this_month"
+                    android:text="@string/others"
                     android:textAppearance="@style/you_can_add"
                     android:textSize="@dimen/fu_male_textsize"
                     android:textStyle="bold" />
