@@ -588,7 +588,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "a.uuid = c.visit_uuid AND  " +
                 //"a.enddate is NOT NULL AND " +
                 "a.patientuuid = b.uuid AND " + "a.uuid = d.visituuid AND " +
-                "d.uuid = o.encounteruuid AND o.conceptuuid = ? AND "
+                "d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value !='No' and o.value is NOT NULL and "
                 + "date(substr(o.value, 1, 10)) = DATE('now') AND " + "o.value is NOT NULL GROUP BY a.patientuuid";
         Log.v(TAG, "query - " + query);
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
@@ -650,7 +650,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "a.uuid = c.visit_uuid AND   " +
                 //"a.enddate is NOT NULL AND " +
                 "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value !='No' and o.value is NOT NULL and "
                 + "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) "
                 + "AND STRFTIME('%W',date(substr(o.value, 1, 10))) = STRFTIME('%W',DATE('now')) AND "
                 + "o.value is NOT NULL GROUP BY a.patientuuid";
@@ -719,7 +719,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "a.uuid = c.visit_uuid AND   " +
                 //"a.enddate is NOT NULL AND " +
                 "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value !='No' and o.value is NOT NULL and "
                 + "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
                 + "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) AND "
                 + "o.value is NOT NULL GROUP BY a.patientuuid";

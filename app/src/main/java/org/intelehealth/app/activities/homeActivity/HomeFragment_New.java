@@ -476,7 +476,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                 + "a.uuid = c.visit_uuid AND   " +
                 //"a.enddate is NOT NULL AND " +
                 "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND  o.value !='No' and o.value is NOT NULL and "
                 + "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
                 + "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) AND "
                 + "o.value is NOT NULL GROUP BY a.patientuuid";
