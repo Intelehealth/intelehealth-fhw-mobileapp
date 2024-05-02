@@ -24,7 +24,7 @@ class PatientRegConfigKeys {
         const val EM_CONTACT_TYPE = "p_emergency_contact_type"
 
         //ADDRESS
-        const val PERSONAL_ADDRESS = "a_postal_address"
+        const val POSTAL_CODE = "a_postal_address"
         const val COUNTRY = "a_country"
         const val STATE = "a_state"
         const val DISTRICT = "a_district"

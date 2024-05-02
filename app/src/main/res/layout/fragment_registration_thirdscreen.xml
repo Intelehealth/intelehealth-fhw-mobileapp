@@ -82,7 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/relation_title"
@@ -132,6 +133,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_national_ID"
                 android:layout_marginTop="@dimen/margin_24"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:orientation="vertical">
 
                 <TextView
@@ -183,6 +186,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_occupation"
                 android:layout_marginTop="@dimen/margin_24"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:orientation="vertical">
 
                 <TextView
@@ -235,6 +240,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_caste"
                 android:layout_marginTop="@dimen/margin_24"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:orientation="vertical">
 
                 <TextView
@@ -287,6 +294,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_education"
                 android:layout_marginTop="@dimen/margin_24"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:orientation="vertical">
 
                 <TextView

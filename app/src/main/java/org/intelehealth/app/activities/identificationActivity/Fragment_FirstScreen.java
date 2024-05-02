@@ -137,7 +137,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     TextView mPatientPhotoErrorTextView, mFirstNameErrorTextView, mMiddleNameErrorTextView, mLastNameErrorTextView,
             mGenderErrorTextView, mDOBErrorTextView, mAgeErrorTextView,
             mPhoneNumberErrorTextView, mGuardianNameErrorTextView, mGuardianTypeErrorTextView,
-            mContactTypeErrorTextView, mEmContactNameErrorTextView, mEmContactNumErrorTextView, addAPictureTextView;
+            mContactTypeErrorTextView, mEmContactNameErrorTextView, mEmContactNumErrorTextView, addAPictureTextView,
+            firstNameTv, middleNameTv, lastNameTv, genderTv, dobTv, ageTv, guardianTypeTv, guardianNameTv,
+            phoneNumberTv, contactTypeTv, emContactNameTv, emContactNumberTv;
     private int mDOBYear, mDOBMonth, mDOBDay, mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     int dob_indexValue = 15;
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
@@ -524,37 +526,122 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         for (PatientRegistrationFields fields : patientRegistrationFields) {
             switch (fields.getIdKey()) {
                 case PatientRegConfigKeys.PROFILE_PHOTO ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, addPictureLay, patient_imgview, addAPictureTextView);
-                case PatientRegConfigKeys.FIRST_NAME ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, firstNameLay, mFirstNameEditText, null);
+                        PatientRegFieldsUtils.Companion.configField(
+                                isEditMode,
+                                fields,
+                                addPictureLay,
+                                patient_imgview,
+                                addAPictureTextView,
+                                addAPictureTextView
+                        );
+                case PatientRegConfigKeys.FIRST_NAME -> PatientRegFieldsUtils.Companion.configField(
+                        isEditMode,
+                        fields,
+                        firstNameLay,
+                        mFirstNameEditText,
+                        null,
+                        firstNameTv
+                );
                 case PatientRegConfigKeys.MIDDLE_NAME ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, middleNameLay, mMiddleNameEditText, null);
-                case PatientRegConfigKeys.LAST_NAME ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, lastNameLay, mLastNameEditText, null);
-                case PatientRegConfigKeys.GENDER ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, genderLay, genderRadioGroup, null);
-                case PatientRegConfigKeys.DOB ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, dobLay, mDOBEditText, null);
-                case PatientRegConfigKeys.AGE ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, ageLay, mAgeEditText, null);
+                        PatientRegFieldsUtils.Companion.configField(
+                                isEditMode,
+                                fields,
+                                middleNameLay,
+                                mMiddleNameEditText,
+                                null,
+                                middleNameTv
+                        );
+                case PatientRegConfigKeys.LAST_NAME -> PatientRegFieldsUtils.Companion.configField(
+                        isEditMode,
+                        fields,
+                        lastNameLay,
+                        mLastNameEditText,
+                        null,
+                        lastNameTv
+                );
+                case PatientRegConfigKeys.GENDER -> PatientRegFieldsUtils.Companion.configField(
+                        isEditMode,
+                        fields,
+                        genderLay,
+                        genderRadioGroup,
+                        null,
+                        genderTv
+                );
+                case PatientRegConfigKeys.DOB -> PatientRegFieldsUtils.Companion.configField(
+                        isEditMode,
+                        fields,
+                        dobLay,
+                        mDOBEditText,
+                        null,
+                        dobTv
+                );
+                case PatientRegConfigKeys.AGE -> PatientRegFieldsUtils.Companion.configField(
+                        isEditMode,
+                        fields,
+                        ageLay,
+                        mAgeEditText,
+                        null,
+                        ageTv
+                );
                 case PatientRegConfigKeys.GUARDIAN_TYPE -> {
                     if (mAgeYears <= 18 && !mDOBEditText.getText().toString().isEmpty()) {
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, guardianTypeLay, mGuardianTypeSpinner, null);
+                        PatientRegFieldsUtils.Companion.configField(
+                                isEditMode,
+                                fields,
+                                guardianTypeLay,
+                                mGuardianTypeSpinner,
+                                null,
+                                guardianTypeTv
+                        );
                     }
                 }
                 case PatientRegConfigKeys.GUARDIAN_NAME -> {
                     if (mAgeYears <= 18 && !mDOBEditText.getText().toString().isEmpty()) {
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, guardianNameLay, mGuardianNameEditText, null);
+                        PatientRegFieldsUtils.Companion.configField(
+                                isEditMode,
+                                fields,
+                                guardianNameLay,
+                                mGuardianNameEditText,
+                                null,
+                                guardianNameTv
+                        );
                     }
                 }
-                case PatientRegConfigKeys.PHONE_NUM ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, phoneNumLay, mPhoneNumberEditText, mCountryCodePicker);
+                case PatientRegConfigKeys.PHONE_NUM -> PatientRegFieldsUtils.Companion.configField(
+                        isEditMode,
+                        fields,
+                        phoneNumLay,
+                        mPhoneNumberEditText,
+                        mCountryCodePicker,
+                        phoneNumberTv
+                );
                 case PatientRegConfigKeys.EM_CONTACT_TYPE ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, contactTypeLay, mContactTypeSpinner, null);
+                        PatientRegFieldsUtils.Companion.configField(
+                                isEditMode,
+                                fields,
+                                contactTypeLay,
+                                mContactTypeSpinner,
+                                null,
+                                contactTypeTv
+                        );
                 case PatientRegConfigKeys.EM_CONTACT_NAME ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, emContactNameLay, mEmContactNameEditText, null);
+                        PatientRegFieldsUtils.Companion.configField(
+                                isEditMode,
+                                fields,
+                                emContactNameLay,
+                                mEmContactNameEditText,
+                                null,
+                                emContactNameTv
+                        );
                 case PatientRegConfigKeys.EM_CONTACT_NUMBER ->
-                        PatientRegFieldsUtils.Companion.configField(isEditMode, fields, emContactNumLay, mEmContactNumberEditText, mEmContactNoCountryCodePicker);
+                        PatientRegFieldsUtils.Companion.configField(
+                                isEditMode,
+                                fields,
+                                emContactNumLay,
+                                mEmContactNumberEditText,
+                                mEmContactNoCountryCodePicker,
+                                emContactNumberTv
+                        );
             }
         }
     }
@@ -563,6 +650,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
      * all fragment ui initialization
      */
     private void initUi() {
+        //all view layout
         addPictureLay = view.findViewById(R.id.add_picture_lay);
         firstNameLay = view.findViewById(R.id.linear_firstname);
         middleNameLay = view.findViewById(R.id.linear_middlename);
@@ -615,6 +703,21 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mGuardianTypeSpinner = view.findViewById(R.id.guardian_type_spinner);
         mContactTypeSpinner = view.findViewById(R.id.contact_type_spinner);
 
+        //all title view
+        addAPictureTextView = view.findViewById(R.id.add_picture);
+        firstNameTv = view.findViewById(R.id.first_name_tv);
+        middleNameTv = view.findViewById(R.id.middle_name_tv);
+        lastNameTv = view.findViewById(R.id.last_name_tv);
+        genderTv = view.findViewById(R.id.gender_tv);
+        dobTv = view.findViewById(R.id.dob_tv);
+        ageTv = view.findViewById(R.id.age_tv);
+        guardianTypeTv = view.findViewById(R.id.guardian_type_tv);
+        guardianNameTv = view.findViewById(R.id.guardian_name_tv);
+        phoneNumberTv = view.findViewById(R.id.phone_num_tv);
+        contactTypeTv = view.findViewById(R.id.contact_type_tv);
+        emContactNameTv = view.findViewById(R.id.em_contact_name_tv);
+        emContactNumberTv = view.findViewById(R.id.em_contact_num_tv);
+
         mPatientPhotoErrorTextView = view.findViewById(R.id.profile_image_error);
         mFirstNameErrorTextView = view.findViewById(R.id.firstname_error);
         mMiddleNameErrorTextView = view.findViewById(R.id.middlename_error);
@@ -624,21 +727,20 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mAgeErrorTextView = view.findViewById(R.id.age_error);
         mPhoneNumberErrorTextView = view.findViewById(R.id.phone_error);
 
-        addAPictureTextView = view.findViewById(R.id.add_picture);
         mGuardianNameErrorTextView = view.findViewById(R.id.guardian_name_error);
         mGuardianTypeErrorTextView = view.findViewById(R.id.guardian_type_error);
         mContactTypeErrorTextView = view.findViewById(R.id.contact_type_error);
         mEmContactNameErrorTextView = view.findViewById(R.id.em_contact_name_error);
         mEmContactNumErrorTextView = view.findViewById(R.id.emergency_contact_no_error);
 
-        mFirstNameEditText.addTextChangedListener(new MyTextWatcher(mFirstNameEditText,getActivity()));
-        mMiddleNameEditText.addTextChangedListener(new MyTextWatcher(mMiddleNameEditText,getActivity()));
-        mLastNameEditText.addTextChangedListener(new MyTextWatcher(mLastNameEditText,getActivity()));
-        mGuardianNameEditText.addTextChangedListener(new MyTextWatcher(mGuardianNameEditText,getActivity()));
-        mEmContactNameEditText.addTextChangedListener(new MyTextWatcher(mEmContactNameEditText,getActivity()));
-        mDOBEditText.addTextChangedListener(new MyTextWatcher(mDOBEditText,getActivity()));
-        mAgeEditText.addTextChangedListener(new MyTextWatcher(mAgeEditText,getActivity()));
-        mEmContactNumberEditText.addTextChangedListener(new MyTextWatcher(mEmContactNumberEditText,getActivity()));
+        mFirstNameEditText.addTextChangedListener(new MyTextWatcher(mFirstNameEditText, getActivity()));
+        mMiddleNameEditText.addTextChangedListener(new MyTextWatcher(mMiddleNameEditText, getActivity()));
+        mLastNameEditText.addTextChangedListener(new MyTextWatcher(mLastNameEditText, getActivity()));
+        mGuardianNameEditText.addTextChangedListener(new MyTextWatcher(mGuardianNameEditText, getActivity()));
+        mEmContactNameEditText.addTextChangedListener(new MyTextWatcher(mEmContactNameEditText, getActivity()));
+        mDOBEditText.addTextChangedListener(new MyTextWatcher(mDOBEditText, getActivity()));
+        mAgeEditText.addTextChangedListener(new MyTextWatcher(mAgeEditText, getActivity()));
+        mEmContactNumberEditText.addTextChangedListener(new MyTextWatcher(mEmContactNumberEditText, getActivity()));
         //mPhoneNumberEditText.addTextChangedListener(new MyTextWatcher(mPhoneNumberEditText));
     }
 
@@ -647,15 +749,25 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
      * if age is <=18 the two fields will show
      **/
     private void updateGuardianVisibility() {
+        //guardian name view config
         if (mAgeYears <= 18 && (!mDOBEditText.getText().toString().isEmpty() || !mAgeEditText.getText().toString().isEmpty())
                 && PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_NAME)) {
+            String guardianName = guardianNameTv.getText().toString();
+            if (PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_NAME)) {
+                guardianNameTv.setText(new StringBuilder().append(guardianName).append("*"));
+            }
             guardianNameLay.setVisibility(View.VISIBLE);
         } else {
             guardianNameLay.setVisibility(View.GONE);
         }
 
+        //guardian type view config
         if (mAgeYears <= 18 && (!mDOBEditText.getText().toString().isEmpty() || !mAgeEditText.getText().toString().isEmpty())
                 && PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_TYPE)) {
+            String guardianType = guardianTypeTv.getText().toString();
+            if (PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_TYPE)) {
+                guardianTypeTv.setText(new StringBuilder().append(guardianType).append("*"));
+            }
             guardianTypeLay.setVisibility(View.VISIBLE);
         } else {
             guardianTypeLay.setVisibility(View.GONE);
@@ -1198,55 +1310,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         }
 
-        //Contact type spinner
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_TYPE)) {
-            if (mContactTypeSpinner.getSelectedItemPosition() == 0 &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_TYPE)) {
-                mContactTypeErrorTextView.setVisibility(View.VISIBLE);
-                mContactTypeErrorTextView.setText(getString(R.string.error_field_required));
-                mContactTypeSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                mContactTypeSpinner.requestFocus();
-                return;
-            } else {
-                mContactTypeErrorTextView.setVisibility(View.GONE);
-                mContactTypeSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
-            }
-        }
-
-
-        //Emergency contact name edittext
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NAME)) {
-            if (mEmContactNameEditText.getText().toString().equals("") ||
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NAME)) {
-                mEmContactNameErrorTextView.setVisibility(View.VISIBLE);
-                mEmContactNameErrorTextView.setText(getString(R.string.error_field_required));
-                mEmContactNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                mEmContactNameEditText.requestFocus();
-                return;
-            } else {
-                mGuardianTypeErrorTextView.setVisibility(View.GONE);
-                mEmContactNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-            }
-        }
-
-        //Emergency contact number edittext
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
-            if (mEmContactNumberEditText.getText().toString().equals("") &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
-                mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
-                mEmContactNumErrorTextView.setText(getString(R.string.error_field_required));
-                mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                mEmContactNumberEditText.requestFocus();
-                return;
-            } else {
-                mEmContactNumErrorTextView.setVisibility(View.GONE);
-                mEmContactNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-            }
-        }
-
         //phone number
         if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.PHONE_NUM)) {
-            if (!mPhoneNumberEditText.getText().toString().equals("") &&
+            if (mPhoneNumberEditText.getText().toString().equals("") ||
                     PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.PHONE_NUM)) {
                 String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
                 Log.v("phone", "phone: " + s);
@@ -1283,9 +1349,40 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
 
 
+        //Contact type spinner
+        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_TYPE)) {
+            if (mContactTypeSpinner.getSelectedItemPosition() == 0 &&
+                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_TYPE)) {
+                mContactTypeErrorTextView.setVisibility(View.VISIBLE);
+                mContactTypeErrorTextView.setText(getString(R.string.error_field_required));
+                mContactTypeSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mContactTypeSpinner.requestFocus();
+                return;
+            } else {
+                mContactTypeErrorTextView.setVisibility(View.GONE);
+                mContactTypeSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+            }
+        }
+
+
+        //Emergency contact name edittext
+        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NAME)) {
+            if (mEmContactNameEditText.getText().toString().equals("") &&
+                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NAME)) {
+                mEmContactNameErrorTextView.setVisibility(View.VISIBLE);
+                mEmContactNameErrorTextView.setText(getString(R.string.error_field_required));
+                mEmContactNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mEmContactNameEditText.requestFocus();
+                return;
+            } else {
+                mEmContactNameErrorTextView.setVisibility(View.GONE);
+                mEmContactNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+
         //Emergency contact number country code picker
         if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
-            if (!mEmContactNumberEditText.getText().toString().equals("") &&
+            if (mEmContactNumberEditText.getText().toString().equals("") ||
                     PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
                 String s = mEmContactNumberEditText.getText().toString().replaceAll("\\s+", "");
                 if (s.length() < mSelectedMobileNumberValidationLength) {
