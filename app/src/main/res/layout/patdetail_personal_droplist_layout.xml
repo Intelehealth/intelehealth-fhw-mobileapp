@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/card_name_openmrsid"
@@ -120,8 +121,11 @@
                 android:shrinkColumns="1">
 
                 <TableRow
+                    android:id="@+id/name_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="visible"
+                    tools:visibility="visible"
                     android:layout_weight="2">
 
                     <TextView
@@ -150,8 +154,11 @@
 
                 <!--Gender-->
                 <TableRow
+                    android:id="@+id/gender_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -181,8 +188,11 @@
 
                 <!--Date of birth-->
                 <TableRow
+                    android:id="@+id/dob_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -212,8 +222,11 @@
 
                 <!--Age-->
                 <TableRow
+                    android:id="@+id/age_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -246,6 +259,8 @@
                     android:id="@+id/guardian_name_table_row"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -278,6 +293,8 @@
                     android:id="@+id/guardian_type_table_row"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -307,6 +324,7 @@
 
                 <!--Phone number-->
                 <TableRow
+                    android:id="@+id/phone_num_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/margin_4"
@@ -338,8 +356,11 @@
 
                 <!--Contact Type-->
                 <TableRow
+                    android:id="@+id/contact_type_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -369,8 +390,11 @@
 
                 <!--Emergency contact name-->
                 <TableRow
+                    android:id="@+id/em_contact_name_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -400,8 +424,11 @@
 
                 <!--Emergency contact number-->
                 <TableRow
+                    android:id="@+id/em_contact_num_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 

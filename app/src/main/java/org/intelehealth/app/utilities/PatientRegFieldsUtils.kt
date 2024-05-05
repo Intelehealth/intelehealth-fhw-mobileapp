@@ -1,5 +1,6 @@
 package org.intelehealth.app.utilities
 
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
@@ -19,17 +20,19 @@ class PatientRegFieldsUtils {
             isEditMode: Boolean,
             field: PatientRegistrationFields,
             layoutView: View,
-            fieldViewPrimary: View,
+            fieldViewPrimary: View?,
             fieldViewSecondary: View?,
-            titleTv: TextView
+            titleTv: TextView?
         ) {
             layoutView.visibility = View.VISIBLE
 
             //setting asterisk for mandatory fields
             if (field.isMandatory) {
-                val titleStr = titleTv.text
-                titleTv.text = StringBuilder().append(titleStr).append(" *")
+                val titleStr = titleTv?.text
+                titleTv?.text = StringBuilder().append(titleStr).append(" *")
             }
+
+            Log.d("cccc",field.idKey+"   "+field.isEditable+"   "+isEditMode)
 
             //view updating while edit mode is false
             if (isEditMode && !field.isEditable) {
@@ -41,7 +44,7 @@ class PatientRegFieldsUtils {
                         radioButton.isClickable = false
                     }
                 } else {
-                    fieldViewPrimary.isEnabled = false
+                    fieldViewPrimary?.isEnabled = false
                     //some fields has secondary fields, ex: phone num has country picker
                     //this type of view are handling here
                     fieldViewSecondary?.let {

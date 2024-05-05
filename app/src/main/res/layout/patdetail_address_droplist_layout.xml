@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/personal_card"
@@ -117,8 +118,11 @@
                 android:shrinkColumns="1">
 
                 <TableRow
+                    android:id="@+id/postal_code_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_weight="2">
 
                     <TextView
@@ -147,8 +151,11 @@
 
                 <!--Gender-->
                 <TableRow
+                    android:id="@+id/country_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -178,8 +185,11 @@
 
                 <!--Date of birth-->
                 <TableRow
+                    android:id="@+id/state_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -209,8 +219,11 @@
 
                 <!--Age-->
                 <TableRow
+                    android:id="@+id/district_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -240,8 +253,11 @@
 
                 <!--Phone number-->
                 <TableRow
+                    android:id="@+id/village_city_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -271,8 +287,11 @@
 
                 <!-- Address 1-->
                 <TableRow
+                    android:id="@+id/address1_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -304,6 +323,8 @@
                     android:id="@+id/tr_address_2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 

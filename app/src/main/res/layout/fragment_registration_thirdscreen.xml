@@ -30,6 +30,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_relation"
                 android:layout_marginTop="@dimen/margin_24"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:orientation="vertical">
 
                 <TextView

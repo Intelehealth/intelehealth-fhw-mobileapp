@@ -83,6 +83,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -125,11 +126,18 @@ import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.PatientRegConfigKeys;
+import org.intelehealth.app.utilities.PatientRegFieldsUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
+import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
+import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.PatientRegistrationFields;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -154,9 +162,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
-            guardina_name_tv,guardian_type_tv,contact_type_tv,em_contact_name_tv,em_contact_number_tv;
+            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv;
 
-    TableRow guardian_type_table_row,guardian_name_table_row;
+    TableRow nameTr,genderTr,dobTr,ageTr,phoneNumTr,guardianTypeTr,guardianNameTr,
+            emContactNameTr,emContactTypeTr,emContactNumberTr,postalCodeTr,countryTr,
+            stateTr, districtTr,villageCityTr,addressOneTr,addressTwoTr,nidTr,occupationTr,socialCategoryTr,
+            educationTr,economicCategoryTr;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -191,7 +202,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private ImageView refresh, cancelbtn;
     private NetworkUtils networkUtils;
     String tag = "";
-    private TableRow trAddress2;
+    RegFieldViewModel regFieldViewModel;
+
+    List<PatientRegistrationFields> patientAllFields;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,6 +215,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         context = PatientDetailActivity2.this;
 
         networkUtils = new NetworkUtils(this, this);
+
+        //config viewmodel initialization
+        RegFieldRepository repository = new RegFieldRepository(ConfigDatabase.getInstance(this).patientRegFieldDao());
+        RegFieldViewModelFactory factory = new RegFieldViewModelFactory(repository);
+        regFieldViewModel = new ViewModelProvider(this, factory).get(RegFieldViewModel.class);
+
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -280,7 +299,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         startVisitBtn.setOnClickListener(v -> {
             patientRegistrationDialog(context,
-                    ContextCompat.getDrawable(this,R.drawable.dialog_icon_complete),
+                    ContextCompat.getDrawable(this, R.drawable.dialog_icon_complete),
                     getResources().getString(R.string.patient_registered),
                     getResources().getString(R.string.does_patient_start_visit_now),
                     getResources().getString(R.string.button_continue),
@@ -289,13 +308,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         public void onDialogActionDone(int action) {
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
                                 Intent in = new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class);
-                                CommonVisitData commonVisitData  = new CommonVisitData();
+                                CommonVisitData commonVisitData = new CommonVisitData();
                                 commonVisitData.setPatientUuid(patientDTO.getUuid());
                                 commonVisitData.setPrivacyNote(privacy_value_selected);
-                                in.putExtra("CommonVisitData",commonVisitData);
+                                in.putExtra("CommonVisitData", commonVisitData);
                                 startActivity(in);
-                               // startVisit();
-                               // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
+                                // startVisit();
+                                // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
                             }
                         }
                     });
@@ -539,8 +558,31 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         em_contact_name_tv = findViewById(R.id.em_contact_name_tv);
         em_contact_number_tv = findViewById(R.id.em_contact_number_tv);
 
-        guardian_type_table_row = findViewById(R.id.guardian_type_table_row);
-        guardian_name_table_row = findViewById(R.id.guardian_name_table_row);
+        nameTr = findViewById(R.id.name_tr);
+        genderTr = findViewById(R.id.gender_tr);
+        dobTr = findViewById(R.id.dob_tr);
+        ageTr = findViewById(R.id.age_tr);
+        phoneNumTr = findViewById(R.id.phone_num_tr);
+        guardianTypeTr = findViewById(R.id.guardian_type_table_row);
+        guardianNameTr = findViewById(R.id.guardian_name_table_row);
+        emContactNameTr = findViewById(R.id.em_contact_name_tr);
+        emContactNumberTr = findViewById(R.id.em_contact_num_tr);
+        emContactTypeTr = findViewById(R.id.contact_type_tr);
+
+        postalCodeTr = findViewById(R.id.postal_code_tr);
+        countryTr = findViewById(R.id.country_tr);
+        stateTr = findViewById(R.id.state_tr);
+        districtTr = findViewById(R.id.district_tr);
+        villageCityTr = findViewById(R.id.village_city_tr);
+        guardianTypeTr = findViewById(R.id.guardian_type_table_row);
+        addressOneTr = findViewById(R.id.address1_tr);
+        addressTwoTr = findViewById(R.id.tr_address_2);
+
+        nidTr = findViewById(R.id.nid_tr);
+        occupationTr = findViewById(R.id.occupation_tr);
+        socialCategoryTr = findViewById(R.id.social_category_tr);
+        educationTr = findViewById(R.id.education_tr);
+        economicCategoryTr = findViewById(R.id.economic_category_tr);
 
         postalcode = findViewById(R.id.postalcode);
         patientcountry = findViewById(R.id.country);
@@ -548,7 +590,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientdistrict = findViewById(R.id.district);
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
-        trAddress2 = findViewById(R.id.tr_address_2);
         addr2View = findViewById(R.id.addr2View);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
@@ -571,10 +612,230 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+        fetchAllConfig();
+
         setFullName();
         initForOpenVisit();
         initForPastVisit();
     }
+
+    /**
+     * fetching reg config from local db
+     */
+    private void fetchAllConfig() {
+        regFieldViewModel.fetchEnabledAllRegFields()
+                .observe(this, it -> {
+                            patientAllFields = it;
+                            configAllFields();
+                        }
+                );
+    }
+
+    /**
+     * changing fields status based on config data
+     */
+    private void configAllFields() {
+        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
+        int mAgeYears = Integer.parseInt(ymdData[0]);
+
+        for (PatientRegistrationFields fields : patientAllFields) {
+            switch (fields.getIdKey()) {
+                case PatientRegConfigKeys.GENDER -> PatientRegFieldsUtils.Companion.configField(
+                        false,
+                        fields,
+                        genderTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.DOB -> PatientRegFieldsUtils.Companion.configField(
+                        false,
+                        fields,
+                        dobTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.AGE -> PatientRegFieldsUtils.Companion.configField(
+                        false,
+                        fields,
+                        ageTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.GUARDIAN_TYPE -> {
+                    if (mAgeYears <= 18) {
+                        PatientRegFieldsUtils.Companion.configField(
+                                false,
+                                fields,
+                                guardianTypeTr,
+                                null,
+                                null,
+                                null
+                        );
+                    }
+                }
+                case PatientRegConfigKeys.GUARDIAN_NAME -> {
+                    if (mAgeYears <= 18) {
+                        PatientRegFieldsUtils.Companion.configField(
+                                false,
+                                fields,
+                                guardianNameTr,
+                                null,
+                                null,
+                                null
+                        );
+                    }
+                }
+                case PatientRegConfigKeys.PHONE_NUM -> PatientRegFieldsUtils.Companion.configField(
+                        false,
+                        fields,
+                        phoneNumTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.EM_CONTACT_TYPE ->
+                        PatientRegFieldsUtils.Companion.configField(
+                                false,
+                                fields,
+                                emContactTypeTr,
+                                null,
+                                null,
+                                null
+                        );
+                case PatientRegConfigKeys.EM_CONTACT_NAME ->
+                        PatientRegFieldsUtils.Companion.configField(
+                                false,
+                                fields,
+                                emContactNameTr,
+                                null,
+                                null,
+                                null
+                        );
+                case PatientRegConfigKeys.EM_CONTACT_NUMBER ->
+                        PatientRegFieldsUtils.Companion.configField(
+                                false,
+                                fields,
+                                emContactNumberTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.POSTAL_CODE ->
+                        PatientRegFieldsUtils.Companion.configField(
+                                false,
+                                fields,
+                                postalCodeTr,
+                                null,
+                                null,
+                                null
+                        );
+                case PatientRegConfigKeys.COUNTRY -> {
+                    PatientRegFieldsUtils.Companion.configField(
+                            false,
+                            fields,
+                            countryTr,
+                            null,
+                            null,
+                            null
+                    );
+                }
+                case PatientRegConfigKeys.STATE -> PatientRegFieldsUtils.Companion.configField(
+                        false,
+                        fields,
+                        stateTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.DISTRICT -> PatientRegFieldsUtils.Companion.configField(
+                        false,
+                        fields,
+                        districtTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.VILLAGE_TOWN_CITY -> {
+                    PatientRegFieldsUtils.Companion.configField(
+                            false,
+                            fields,
+                            villageCityTr,
+                            null,
+                            null,
+                            null
+                    );
+                }
+                case PatientRegConfigKeys.ADDRESS_1 -> PatientRegFieldsUtils.Companion.configField(
+                        false,
+                        fields,
+                        addressOneTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.ADDRESS_2 -> PatientRegFieldsUtils.Companion.configField(
+                        false,
+                        fields,
+                        addressTwoTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.NATIONAL_ID -> {
+                    PatientRegFieldsUtils.Companion.configField(
+                            false,
+                            fields,
+                            nidTr,
+                            null,
+                            null,
+                            null
+                    );
+                }
+                case PatientRegConfigKeys.OCCUPATION -> PatientRegFieldsUtils.Companion.configField(
+                        false,
+                        fields,
+                        occupationTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.SOCIAL_CATEGORY ->
+                        PatientRegFieldsUtils.Companion.configField(
+                                false,
+                                fields,
+                                socialCategoryTr,
+                                null,
+                                null,
+                                null
+                        );
+                case PatientRegConfigKeys.EDUCATION -> {
+                    PatientRegFieldsUtils.Companion.configField(
+                            false,
+                            fields,
+                            educationTr,
+                            null,
+                            null,
+                            null
+                    );
+                }
+                case PatientRegConfigKeys.ECONOMIC_CATEGORY ->
+                        PatientRegFieldsUtils.Companion.configField(
+                                false,
+                                fields,
+                                economicCategoryTr,
+                                null,
+                                null,
+                                null
+                        );
+            }
+        }
+    }
+
 
     private RecyclerView mPastVisitsRecyclerView;
     private List<PastVisitData> mPastVisitDataList = new ArrayList<PastVisitData>();
@@ -816,7 +1077,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo","guardian_type","guardian_name","contact_type","em_contact_name","em_contact_num"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -984,59 +1245,62 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         // setTitle(patientDTO.getOpenmrs_id());
 
         Log.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
+        int mAgeYears = -1;
         // setting age
-        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
-        int mAgeYears = Integer.parseInt(ymdData[0]);
-        int mAgeMonths = Integer.parseInt(ymdData[1]);
-        int mAgeDays = Integer.parseInt(ymdData[2]);
-        String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(this, mAgeYears, mAgeMonths, mAgeDays).replace("-", "");
-        patientage.setText(age);
-        float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth());
+        if (patientDTO.getDateofbirth() != null) {
+            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
+            mAgeYears = Integer.parseInt(ymdData[0]);
+            int mAgeMonths = Integer.parseInt(ymdData[1]);
+            int mAgeDays = Integer.parseInt(ymdData[2]);
+            String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(this, mAgeYears, mAgeMonths, mAgeDays).replace("-", "");
+            patientage.setText(age);
+            float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth());
 
-        // setting date of birth
-        String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            String dob_text = en__bn_dob(dob); //to show text of English into Odiya...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            String dob_text = en__te_dob(dob); //to show text of English into telugu...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            String dob_text = en__mr_dob(dob); //to show text of English into telugu...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            String dob_text = en__as_dob(dob); //to show text of English into telugu...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            String dob_text = en__ml_dob(dob); //to show text of English into telugu...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            String dob_text = en__kn_dob(dob); //to show text of English into telugu...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            String dob_text = en__ru_dob(dob); //to show text of English into Russian...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-            patientdob.setText(dob_text);
-        } else {
-            patientdob.setText(dob);
+            // setting date of birth
+            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                String dob_text = en__or_dob(dob); //to show text of English into Odiya...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                String dob_text = en__bn_dob(dob); //to show text of English into Odiya...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                String dob_text = en__te_dob(dob); //to show text of English into telugu...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                String dob_text = en__mr_dob(dob); //to show text of English into telugu...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                String dob_text = en__as_dob(dob); //to show text of English into telugu...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                String dob_text = en__ml_dob(dob); //to show text of English into telugu...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                String dob_text = en__kn_dob(dob); //to show text of English into telugu...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                String dob_text = en__ru_dob(dob); //to show text of English into Russian...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
+                patientdob.setText(dob_text);
+            } else {
+                patientdob.setText(dob);
+            }
         }
 
         // setting gender
-        mGender = patientDTO.getGender();
         if (patientDTO.getGender() == null || patientDTO.getGender().equals("")) {
             gender.setVisibility(View.GONE);
         } else {
+            mGender = patientDTO.getGender();
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 if (patientDTO.getGender().equalsIgnoreCase("M")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
@@ -1161,7 +1425,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         if (patientDTO.getAddress2() == null || patientDTO.getAddress2().equals("")) { //
-            trAddress2.setVisibility(View.GONE);
+            addressTwoTr.setVisibility(View.GONE);
         } else {
             addr2View.setText(patientDTO.getAddress2());
         }
@@ -1185,25 +1449,28 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientstate.setText(getStateTranslated(state, sessionManager.getAppLanguage()));
 
         // setting district and city
-        String[] district_city = patientDTO.getCityvillage().trim().split(":");
-        String district = null;
-        String city_village = null;
-        if (district_city.length == 2) {
-            district = district_city[0];
-            city_village = district_city[1];
+        if (patientDTO.getCityvillage() != null) {
+            String[] district_city = patientDTO.getCityvillage().trim().split(":");
+            String district = null;
+            String city_village = null;
+            if (district_city.length == 2) {
+                district = district_city[0];
+                city_village = district_city[1];
+            }
+
+            if (district != null) {
+                patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
+            } else {
+                patientdistrict.setText(getResources().getString(R.string.no_district_added));
+            }
+
+            if (city_village != null) {
+                village.setText(city_village);
+            } else {
+                village.setText(getResources().getString(R.string.no_city_added));
+            }
         }
 
-        if (district != null) {
-            patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
-        } else {
-            patientdistrict.setText(getResources().getString(R.string.no_district_added));
-        }
-
-        if (city_village != null) {
-            village.setText(city_village);
-        } else {
-            village.setText(getResources().getString(R.string.no_city_added));
-        }
         // end - city and district
 
         // setting postal code
@@ -1468,15 +1735,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientoccupation.setText(getString(R.string.not_provided));
         }
 
-        if(mAgeYears <= 18){
-            guardian_name_table_row.setVisibility(View.VISIBLE);
-            guardian_type_table_row.setVisibility(View.VISIBLE);
+        if (mAgeYears <= 18 && mAgeYears > -1) {
+            guardianNameTr.setVisibility(View.VISIBLE);
+            guardianTypeTr.setVisibility(View.VISIBLE);
             //guardian type
             if (patientDTO.getGuardianType() != null && !patientDTO.getGuardianType().equals("")) {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String type = switch_hi_guardian_type_edit(patientDTO.getGuardianType());
                     guardian_type_tv.setText(type);
-                }else {
+                } else {
                     guardian_type_tv.setText(patientDTO.getGuardianType());
                 }
             } else {
@@ -1489,9 +1756,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             } else {
                 guardina_name_tv.setText(getString(R.string.not_provided));
             }
-        }else {
-            guardian_name_table_row.setVisibility(View.GONE);
-            guardian_type_table_row.setVisibility(View.GONE);
+        } else {
+            guardianNameTr.setVisibility(View.GONE);
+            guardianTypeTr.setVisibility(View.GONE);
         }
 
         //contact type
@@ -1499,7 +1766,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String type = switch_hi_contact_type_edit(patientDTO.getContactType());
                 contact_type_tv.setText(type);
-            }else {
+            } else {
                 contact_type_tv.setText(patientDTO.getContactType());
             }
         } else {
@@ -1556,7 +1823,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         if (distDataList != null && !distDataList.isEmpty())
-            for (int i = 0; i <= distDataList.size(); i++) {
+            for (int i = 0; i < distDataList.size(); i++) {
                 if (distDataList.get(i).getName().equalsIgnoreCase(district)) {
                     if (language.equalsIgnoreCase("hi"))
                         desiredVal = distDataList.get(i).getNameHindi();
@@ -1834,9 +2101,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this, R.drawable.ui2_ic_no_internet));
         }
     }
 

@@ -414,8 +414,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             regFieldViewModel.fetchEnabledPersonalRegFields()
                     .observe(getActivity(), it -> {
                                 patientRegistrationFields = it;
-                                configAllFields();
                                 updateUiFromSecondFrag();
+                                configAllFields();
                             }
                     );
         }
@@ -584,7 +584,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                         ageTv
                 );
                 case PatientRegConfigKeys.GUARDIAN_TYPE -> {
-                    if (mAgeYears <= 18 && !mDOBEditText.getText().toString().isEmpty()) {
+                    if (mAgeYears <= 18 && (!mDOBEditText.getText().toString().isEmpty() ||
+                            !mAgeEditText.getText().toString().isEmpty())) {
                         PatientRegFieldsUtils.Companion.configField(
                                 isEditMode,
                                 fields,
@@ -596,7 +597,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     }
                 }
                 case PatientRegConfigKeys.GUARDIAN_NAME -> {
-                    if (mAgeYears <= 18 && !mDOBEditText.getText().toString().isEmpty()) {
+                    if (mAgeYears <= 18 && (!mDOBEditText.getText().toString().isEmpty() ||
+                            !mAgeEditText.getText().toString().isEmpty())) {
                         PatientRegFieldsUtils.Companion.configField(
                                 isEditMode,
                                 fields,
@@ -1312,7 +1314,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         //phone number
         if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.PHONE_NUM)) {
-            if (mPhoneNumberEditText.getText().toString().equals("") ||
+            if (mPhoneNumberEditText.getText().toString().equals("") &&
                     PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.PHONE_NUM)) {
                 String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
                 Log.v("phone", "phone: " + s);
@@ -1382,7 +1384,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         //Emergency contact number country code picker
         if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
-            if (mEmContactNumberEditText.getText().toString().equals("") ||
+            Log.d("ppppp"," "+PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER));
+            if (mEmContactNumberEditText.getText().toString().equals("") &&
                     PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
                 String s = mEmContactNumberEditText.getText().toString().replaceAll("\\s+", "");
                 if (s.length() < mSelectedMobileNumberValidationLength) {
