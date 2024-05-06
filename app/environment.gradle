@@ -48,14 +48,17 @@ android {
         // This flavor used to handle different type of endpoint
         dev {
             dimension server
+            buildConfigField "boolean", "ACTIVE_CRASH", "false"
         }
 
         staging {
             dimension server
+            buildConfigField "boolean", "ACTIVE_CRASH", "true"
         }
 
         production {
             dimension server
+            buildConfigField "boolean", "ACTIVE_CRASH", "true"
         }
     }
 

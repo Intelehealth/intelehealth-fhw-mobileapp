@@ -3,6 +3,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: "kotlin-kapt"
 apply from: "resdir.gradle"
 apply from: "environment.gradle"
 import java.text.DateFormat
@@ -27,7 +28,7 @@ android {
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Intelehealth IDA " + versionName + " - " + getDateTime()
+        archivesBaseName = "Intelehealth-" + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

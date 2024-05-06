@@ -7,7 +7,7 @@
         android:id="@+id/layout_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/splash_bg"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +29,7 @@
                 android:layout_marginStart="@dimen/iv_intele_logo_margin_start"
                 android:layout_marginTop="@dimen/iv_intele_logo_margin_top"
                 android:layout_marginEnd="@dimen/iv_intele_logo_margin_end"
-                android:src="@drawable/ui2_ic_intelehealth_logo"
+                android:src="@drawable/splash_logo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

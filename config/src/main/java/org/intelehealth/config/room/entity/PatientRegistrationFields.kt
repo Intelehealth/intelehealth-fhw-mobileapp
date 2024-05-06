@@ -15,6 +15,8 @@ data class PatientRegistrationFields(
     val id: Int,
     var groupId: String,
     val name: String,
+    @SerializedName("key")
+    val idKey: String,
     @SerializedName("is_mandatory")
     val isMandatory: Boolean,
     @SerializedName("is_editable")

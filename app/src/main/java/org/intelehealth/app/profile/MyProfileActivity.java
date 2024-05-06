@@ -52,6 +52,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.biometric.BiometricManager;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -133,7 +134,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     NetworkUtils networkUtils;
     private boolean isSynced = false;
     private MyProfilePOJO myProfilePOJO = new MyProfilePOJO();
-    Switch fingerprintSwitch;
+    SwitchCompat fingerprintSwitch;
     private int mSelectedMobileNumberValidationLength = 0;
     private ObjectAnimator syncAnimator;
     String prevDOB = "", prevPhoneNum = null, prevEmail = null, prevCountryCode = null;
