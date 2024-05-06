@@ -1456,6 +1456,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             if (district_city.length == 2) {
                 district = district_city[0];
                 city_village = district_city[1];
+            }else {
+                city_village = patientDTO.getCityvillage();
             }
 
             if (district != null) {
