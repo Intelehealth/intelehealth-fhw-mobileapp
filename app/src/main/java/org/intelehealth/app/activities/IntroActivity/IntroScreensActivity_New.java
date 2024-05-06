@@ -25,6 +25,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
+import org.intelehealth.app.models.IntroContent;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
@@ -107,9 +108,9 @@ public class IntroScreensActivity_New extends AppCompatActivity {
             public void onPageSelected(int position) {
                 //dot not showing when its calling first time from here
                 //that's why skipping first time call
-                if(position == 0 && !dotFromCallback){
+                if (position == 0 && !dotFromCallback) {
                     dotFromCallback = true;
-                }else if(dotFromCallback){
+                } else if (dotFromCallback) {
                     addBottomDots1(position);
                     page = position;
                 }
@@ -204,15 +205,15 @@ public class IntroScreensActivity_New extends AppCompatActivity {
         }
     }*/
 
-    public class MyViewpagerAdapter extends FragmentStateAdapter {
+    public static class MyViewpagerAdapter extends FragmentStateAdapter {
 
         private final ArrayList<Fragment> introFragments = new ArrayList<>();
 
         public MyViewpagerAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);
-            introFragments.add(SlideFragment.newInstance(ViewType.ONE));
-            introFragments.add(SlideFragment.newInstance(ViewType.TWO));
-            introFragments.add(SlideFragment.newInstance(ViewType.THREE));
+            introFragments.add(SlideFragment.newInstance(IntroContent.getContent(fragmentActivity, ViewType.ONE)));
+            introFragments.add(SlideFragment.newInstance(IntroContent.getContent(fragmentActivity, ViewType.TWO)));
+            introFragments.add(SlideFragment.newInstance(IntroContent.getContent(fragmentActivity, ViewType.THREE)));
         }
 
         @NonNull

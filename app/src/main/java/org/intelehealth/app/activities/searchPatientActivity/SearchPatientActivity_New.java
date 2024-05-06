@@ -20,6 +20,7 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -98,7 +99,6 @@ public class SearchPatientActivity_New extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient_new);
-
         sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.search_recycelview);
         LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext());
