@@ -398,13 +398,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             itemList.add(jsonObject);
 
             jsonObject = new JSONObject();
-            jsonObject.put("name", "অসমীয়া");
-            jsonObject.put("code", "as");
-
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("as"));
-            itemList.add(jsonObject);
-
-            jsonObject = new JSONObject();
             jsonObject.put("name", "English");
             jsonObject.put("code", "en");
 
