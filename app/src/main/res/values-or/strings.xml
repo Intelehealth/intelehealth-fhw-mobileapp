@@ -383,13 +383,13 @@
     <string name="Ayu_name">ଆୟୁ</string>
     <string name="active_tag_patientDetail">" ସକ୍ରିୟ"</string>
     <string name="associated_symptoms_patientDetail">ସମ୍ମିଳତି ଲେଣ</string>
-    <string name="device_ID">\"Device Id: \"</string>
-    <string name="enter_valid_license_url">Enter valid License Url</string>
-    <string name="please_enter_url_and_key">Please enter URL and Key</string>
-    <string name="please_enter_valid_license_key">Please enter a valid license key</string>
-    <string name="permission_denied">Permission Denied\n</string>
-    <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
-    <string name="current_time"><![CDATA[\"Current time => \"]]></string>
+    <string name="device_ID">ଡିଭାଇସ୍ ଆଇଡି:</string>
+    <string name="enter_valid_license_url">ବୈଧ ଥିବା ୟୁ ଆର୍ ଏଲ୍ ଲେଖନ୍ତୁ</string>
+    <string name="please_enter_url_and_key">ଦୟାକରି ୟୁ ଆର୍ ଏଲ ଏଵଂ କି ଲେଖନ୍ତୁ</string>
+    <string name="please_enter_valid_license_key">ଦୟାକରି ଏକ ଭ।ଲିଡ ବୈଧ କି ଲେଖନ୍ତୁ</string>
+    <string name="permission_denied">ଅନୁମତି ପ୍ରତ୍ୟାଖ୍ୟାନ\n</string>
+    <string name="reject_permission_results"><![CDATA[ଯଦି ଆପଣ ଅନୁମତି ପ୍ରତ୍ୟାଖ୍ୟାନ କରନ୍ତି, ଆପଣ ଏହି ସେବା ବ୍ୟବହାର କରିପାରିବେ ନାହିଁ\n\nଦୟାକରି ରେ ଅନୁମତି ଟର୍ନ୍ ଅନ୍ କରନ୍ତୁ [ସେଟିଂ] > [ଅନୁମତି]]]></string>
+    <string name="current_time"><![CDATA[\"ସାମ୍ପ୍ରତିକ ସମୟ => \"]]></string>
     <string name="dr_email">ଇସମଲ୍</string>
     <string name="_visit_summary">ପରିଦଶଡନ ସାରାାଂଶ</string>
     <string name="patient_id_">"ସରାଗୀଙ୍କ ଆଇର୍:ି "</string>
