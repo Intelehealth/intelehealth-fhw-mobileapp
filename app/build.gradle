@@ -23,7 +23,7 @@ android {
         minSdk 23
         targetSdk 34
         versionCode 65
-        versionName '5.0'
+        versionName '5.0-lp-sp3.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
