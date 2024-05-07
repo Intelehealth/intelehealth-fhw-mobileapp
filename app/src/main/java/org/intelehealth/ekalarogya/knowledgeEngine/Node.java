@@ -43,6 +43,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.ekalarogya.knowledgeEngine.ncd.ValidationRules;
 import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -128,6 +129,11 @@ public class Node implements Serializable {
     public static String bullet_arrow = "\u25BA";
     public static String next_line = "<br/>";
     String space = "\t";
+
+    // NCD Attributes
+    private ValidationRules validationRules;
+    private Boolean flowEnd;
+    private Boolean isAutoFill;
 
 
     //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
@@ -294,6 +300,14 @@ public class Node implements Serializable {
             this.pop_up = jsonNode.optString("pop-up");
             this.hasPopUp = !pop_up.isEmpty();
 
+            JSONObject validationRulesObject = jsonNode.optJSONObject("validation-rules");
+            if (validationRulesObject != null) {
+                this.validationRules = new ValidationRules(validationRulesObject);
+            }
+
+            this.flowEnd = jsonNode.optBoolean("flowEnd");
+            this.isAutoFill = jsonNode.optBoolean("is-auto-fill");
+
         } catch (JSONException | NullPointerException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -341,6 +355,7 @@ public class Node implements Serializable {
         this.required = source.required;
         this.positiveCondition = source.positiveCondition;
         this.negativeCondition = source.negativeCondition;
+        this.validationRules = source.validationRules;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
@@ -1281,7 +1296,7 @@ public class Node implements Serializable {
                                     }
 
                                     // in case not answered than
-                                  //  stringsList.add(mOptions.get(i).getLanguage());
+                                    //  stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
@@ -1306,7 +1321,7 @@ public class Node implements Serializable {
                                     } else {
                                         stringsList.add(mOptions.get(i).getDisplay());
                                     }
-                                 //   stringsList.add(mOptions.get(i).getLanguage());
+                                    //   stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                 }
@@ -1367,7 +1382,7 @@ public class Node implements Serializable {
             mLanguage = mLanguage.replaceAll("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি");
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ");
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही");
         }
         return mLanguage;
@@ -1409,7 +1424,7 @@ public class Node implements Serializable {
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
-                                 //   stringsList.add(mOptions.get(i).getLanguage());
+                                    //   stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
@@ -1436,7 +1451,7 @@ public class Node implements Serializable {
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
-                                  //  stringsList.add(mOptions.get(i).getLanguage());
+                                    //  stringsList.add(mOptions.get(i).getLanguage());
 
                                 }
 
@@ -1495,7 +1510,7 @@ public class Node implements Serializable {
             mLanguage = mLanguage.replaceAll("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি");
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ");
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही");
         }
         return mLanguage;
@@ -1708,7 +1723,7 @@ public class Node implements Serializable {
             mLanguage = mLanguage.replaceAll("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি");
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ");
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही");
         }
         return mLanguage;
@@ -3307,6 +3322,7 @@ public class Node implements Serializable {
     public String getDisplay_hindi() {
         return display_hindi;
     }
+
     public String getDisplay_bengali() {
         return display_bengali;
     }
@@ -3314,6 +3330,7 @@ public class Node implements Serializable {
     public String getDisplay_kannada() {
         return display_kannada;
     }
+
     public String getDisplay_marathi() {
         return display_marathi;
     }
@@ -3441,7 +3458,7 @@ public class Node implements Serializable {
         } else
             return false;
     }
-    
+
     public void setImagePathList(List<String> imagePathList) {
         this.imagePathList = imagePathList;
     }
@@ -3487,32 +3504,25 @@ public class Node implements Serializable {
         if (appLanguage.equalsIgnoreCase("hi")) {
             mLanguagePositive = "पेशेंट की रिपोर्ट -" + next_line;
             mLanguageNegative = "पेशेंट इनकार करता है -" + next_line;
-        }
-        else if (appLanguage.equalsIgnoreCase("bn")) {
+        } else if (appLanguage.equalsIgnoreCase("bn")) {
             mLanguagePositive = "রোগীর রিপোর্ট -" + next_line;
             mLanguageNegative = "রোগী অস্বীকার করে -" + next_line;
-        }
-        else if (appLanguage.equalsIgnoreCase("kn")) {
+        } else if (appLanguage.equalsIgnoreCase("kn")) {
             mLanguagePositive = "ರೋಗಿಯ ವರದಿಗಳು -" + next_line;
             mLanguageNegative = "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ -" + next_line;
-        }
-        else if (appLanguage.equalsIgnoreCase("mr")) {
+        } else if (appLanguage.equalsIgnoreCase("mr")) {
             mLanguagePositive = "रुग्ण अहवाल -" + next_line;
             mLanguageNegative = "रुग्ण नकार देतो -" + next_line;
-        }
-        else if (appLanguage.equalsIgnoreCase("or")) {
+        } else if (appLanguage.equalsIgnoreCase("or")) {
             mLanguagePositive = "ରୋଗୀ ରିପୋର୍ଟ କରୁଛନ୍ତି -" + next_line;
             mLanguageNegative = "ରୋଗୀ ମନା କରୁଛନ୍ତି -" + next_line;
-        }
-        else if (appLanguage.equalsIgnoreCase("gu")) {
+        } else if (appLanguage.equalsIgnoreCase("gu")) {
             mLanguagePositive = "દર્દીના અહેવાલો -" + next_line;
             mLanguageNegative = "દર્દી નકારે છે -" + next_line;
-        }
-        else if (appLanguage.equalsIgnoreCase("as")) {
+        } else if (appLanguage.equalsIgnoreCase("as")) {
             mLanguagePositive = "ৰোগীৰ ৰিপৰ্ট -" + next_line;
             mLanguageNegative = "ৰোগীয়ে অস্বীকাৰ কৰিছে -" + next_line;
-        }
-        else {
+        } else {
             mLanguagePositive = "Patient reports -" + next_line;
             mLanguageNegative = "Patient denies -" + next_line;
         }
@@ -3542,14 +3552,14 @@ public class Node implements Serializable {
                     else
                         pos_REG = mOptions.get(i).getDisplay();
 
-                        if (mOptions.get(i).getLanguage().equals("%")) {
-                        } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
-                            positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
-                        } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                            positiveAssociations.add(pos_REG); //
-                        } else {
-                            positiveAssociations.add(pos_REG); //
-                        }
+                    if (mOptions.get(i).getLanguage().equals("%")) {
+                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                        positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                        positiveAssociations.add(pos_REG); //
+                    } else {
+                        positiveAssociations.add(pos_REG); //
+                    }
                 }
                 if (!mOptions.get(i).isTerminal()) {
                     if (positiveAssociations.size() > 0) {
@@ -3580,14 +3590,14 @@ public class Node implements Serializable {
                     else
                         neg_REG = mOptions.get(i).getDisplay();
 
-                        if (mOptions.get(i).getLanguage().equals("%")) {
-                        } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
-                            negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
-                        } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                            negativeAssociations.add(neg_REG); //
-                        } else {
-                            negativeAssociations.add(neg_REG); //
-                        }
+                    if (mOptions.get(i).getLanguage().equals("%")) {
+                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                        negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                        negativeAssociations.add(neg_REG); //
+                    } else {
+                        negativeAssociations.add(neg_REG); //
+                    }
                 }
             }
 
