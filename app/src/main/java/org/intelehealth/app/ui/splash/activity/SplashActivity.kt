@@ -76,20 +76,20 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     }
 
     private fun loadConfig() {
-        ConfigSyncWorker.startConfigSyncWorker(this) {
-            Timber.d { "Worker state $it" }
-            runOnUiThread { binding.pbConfigLoading.isVisible = false }
-            if (it == WorkInfo.State.SUCCEEDED.name) {
-                if (sessionManager.isFirstTimeLaunch) {
+        if (sessionManager.isFirstTimeLaunch) {
+            ConfigSyncWorker.startConfigSyncWorker(this) {
+                Timber.d { "Worker state $it" }
+                runOnUiThread { binding.pbConfigLoading.isVisible = false }
+                if (it == WorkInfo.State.SUCCEEDED.name) {
                     checkPerm()
                     animateViews()
-                } else {
-                    //as we are implementing force update now thus commenting this.
-                    Handler(Looper.getMainLooper()).postDelayed({ nextActivity() }, 3000)
+                } else if (it == WorkInfo.State.FAILED.name) {
+                    runOnUiThread { showConfigFailDialog() }
                 }
-            } else if (it == WorkInfo.State.FAILED.name) {
-                runOnUiThread { showConfigFailDialog() }
             }
+        } else {
+            //as we are implementing force update now thus commenting this.
+            Handler(Looper.getMainLooper()).postDelayed({ nextActivity() }, 3000)
         }
     }
 

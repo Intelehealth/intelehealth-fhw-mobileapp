@@ -13,5 +13,6 @@ data class ConfigResponse(
     val specialization: List<Specialization>,
     val language: List<ActiveLanguage>,
     @SerializedName("patient_registration")
-    val patientRegFields: PatientRegFieldConfig
+    val patientRegFields: PatientRegFieldConfig,
+    val version: Int = 0
 )

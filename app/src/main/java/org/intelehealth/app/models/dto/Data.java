@@ -4,6 +4,8 @@ package org.intelehealth.app.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.config.network.response.ConfigResponse;
+
 import java.util.List;
 
 public class Data {
@@ -54,6 +56,9 @@ public class Data {
     @SerializedName("totalCount")
     @Expose
     private int totalCount;
+
+    @SerializedName("propertyContents")
+    private ConfigResponse configResponse;
 
 
 
@@ -176,5 +181,9 @@ public class Data {
 
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public ConfigResponse getConfigResponse() {
+        return configResponse;
     }
 }
