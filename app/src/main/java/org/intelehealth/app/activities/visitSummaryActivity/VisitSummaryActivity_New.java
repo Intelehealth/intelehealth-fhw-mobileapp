@@ -62,7 +62,6 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -87,7 +86,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -112,6 +110,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
+import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -127,7 +126,6 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -231,7 +229,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     boolean hasLicense = false;
     private boolean hasPrescription = false;
     private boolean isRespiratory = false, uploaded = false, downloaded = false;
-    Button uploadButton, btn_vs_print, btn_vs_share;
+    Button uploadButton, /*btn_vs_print, btn_vs_share,*/
+            mViewPrescriptionButton;
     ImageView ivPrescription;   // todo: not needed here
 
     Patient patient = new Patient();
@@ -1041,7 +1040,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (mBloodGroupObsDTO.getValue() != null) {
             if (mBloodGroupObsDTO.getValue().trim().isEmpty() || mBloodGroupObsDTO.getValue().trim().equals("null"))
                 mBloodGroupTextView.setText(getResources().getString(R.string.no_information));
-            else mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(mBloodGroupObsDTO.getValue()));
+            else
+                mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(mBloodGroupObsDTO.getValue()));
         } else mBloodGroupTextView.setText(getResources().getString(R.string.no_information));
 
 
@@ -2440,23 +2440,45 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // Bottom Buttons - start
         btn_bottom_printshare = findViewById(R.id.btn_bottom_printshare);   // linear: print - share
-        btn_vs_print = findViewById(R.id.btn_vs_print);   // print
-        btn_vs_share = findViewById(R.id.btn_vs_share);   // share
+        /*btn_vs_print = findViewById(R.id.btn_vs_print);   // print
+        btn_vs_share = findViewById(R.id.btn_vs_share);   // share*/
+        mViewPrescriptionButton = findViewById(R.id.btnPrescriptionView);   // share*/
 
         btn_bottom_vs = findViewById(R.id.btn_bottom_vs);   // appointment - upload
         uploadButton = findViewById(R.id.btn_vs_sendvisit);
 
-        btn_vs_print.setOnClickListener(v -> {
+        mViewPrescriptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(VisitSummaryActivity_New.this, PrescriptionActivity.class);
+                in.putExtra("patientname", patientName);
+                in.putExtra("patientUuid", patientUuid);
+                in.putExtra("patient_photo", patient.getPatient_photo());
+                in.putExtra("visit_ID", visitUUID);
+                in.putExtra("visit_startDate", "");
+                in.putExtra("gender", patient.getGender());
+                in.putExtra("encounterUuidVitals", encounterVitals);
+                in.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                String age = DateAndTimeUtils.getAge_FollowUp(patient.getDate_of_birth(), VisitSummaryActivity_New.this);
+
+                in.putExtra("age", age);
+                in.putExtra("tag", "VISITSUMMARY");
+                in.putExtra("followupDate", "");
+                in.putExtra("openmrsID", patient.getOpenmrs_id());
+                startActivity(in);
+            }
+        });
+        /*btn_vs_print.setOnClickListener(v -> {
             try {
                 doWebViewPrint_Button();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        });
+        });*/
 
-        btn_vs_share.setOnClickListener(v -> {
+        /*btn_vs_share.setOnClickListener(v -> {
             sharePresc();
-        });
+        });*/
         // Bottom Buttons - end
         refresh.setOnClickListener(v -> {
             syncNow(VisitSummaryActivity_New.this, refresh, syncAnimator);
@@ -3321,7 +3343,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             {
                 spO2.setValue(value);
                 break;
-            }case UuidDictionary.BLOOD_GROUP: //BLOOD_GROUP
+            }
+            case UuidDictionary.BLOOD_GROUP: //BLOOD_GROUP
             {
                 mBloodGroupObsDTO.setValue(value);
                 break;

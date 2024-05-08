@@ -21,7 +21,7 @@
     <string name="generic_deleted">ಅಳಿಸಲಾಗಿದೆ</string>
 
 
-    //Database Schema Names
+    <!--    Database Schema Names  DO not change-->
     <string name="db_first_name">first_name</string>
     <string name="db_middle_name">middle_name</string>
     <string name="db_last_name">last_name</string>
@@ -37,7 +37,7 @@
     <string name="db_patient_id1">patient_identifier1</string>
     <string name="db_patient_id2">patient_identifier2</string>
     <string name="db_patient_id3">patient_identifier3</string>
-
+    <!--=================================-->
     //Login Screen
     <string name="title_activity_login">ಇಂಟೆಲೆಹೆಲ್ತ್</string>
     <string name="prompt_email">ಬಳಕೆದಾರ ಹೆಸರು</string>
@@ -152,7 +152,7 @@
     <string name="table_bpsys">ಬಿಪಿ. (ಸಿಸ್ಟೋಲಿಕ್)</string>
     <string name="table_bpdia">ಬಿಪಿ (ಡಯಾಸ್‌ಟೋಲಿಕ್ )</string>
     <string name="table_temp">ತಾಪಮಾನ (ಸಿ)</string>
-<!--    <string name="table_spo">SpO2 (%)</string>-->
+    <!--    <string name="table_spo">SpO2 (%)</string>-->
 
     //Patient Search Screen
     <string name="search_hint">ಹೆಸರಿನಿಂದ ರೋಗಿಯನ್ನು ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಿ ...</string>
@@ -360,7 +360,7 @@
 
     <string name="weight_error">ತೂಕವು %1$s ಕೆಜಿಗಿಂತ ಕಡಿಮೆಯಿರಬೇಕು</string>
     <string name="height_error">ಎತ್ತರವು 0 ಮತ್ತು %1$s ಸೆಂ.ಮೀ ನಡುವೆ ಇರಬೇಕು</string>
-<!--    <string name="spo_error">SpO2 %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು </string>-->
+    <!--    <string name="spo_error">SpO2 %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು </string>-->
     <string name="pulse_error">ನಾಡಿ %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="bpsys_error">ಸಿಸ್ಟೊಲಿಕ್ ಒತ್ತಡವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="bpdia_error">ಡಯಾಸ್ಟೊಲಿಕ್ ಒತ್ತಡವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
@@ -622,41 +622,41 @@
     <string name="no_family_member_registered">ಯಾವುದೇ ಕುಟುಂಬ ಸದಸ್ಯರನ್ನು ನೋಂದಾಯಿಸಲಾಗಿಲ್ಲ</string>
     <string name="document_">ಡಾಕ್ಯುಮೆಂಟ್-</string>
     <string name="gender">ಲಿಂಗ</string>
-<!--    <string name="are_you_head_of_the_family">ನೀವು ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರಾಗಿದ್ದೀರಾ?</string>-->
-<!--    <string name="what_is_your_occupation">ನಿಮ್ಮ ವೃತ್ತಿ ಏನು?</string>-->
-<!--    <string name="do_you_have_a_bank_account">ನಿಮ್ಮ ಬಳಿ ಬ್ಯಾಂಕ್ ಖಾತೆ ಇದೆಯೇ?</string>-->
-<!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">ನೀವು ವೈಯಕ್ತಿಕವಾಗಿ ಯಾವ ರೀತಿಯ ಮೊಬೈಲ್ ಫೋನ್ ಹೊಂದಿದ್ದೀರಿ?</string>-->
-<!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">ನೀವು ಅಥವಾ ನಿಮ್ಮ ಕುಟುಂಬದ ಯಾವುದೇ ಸದಸ್ಯರು ವಾಟ್ಸಾಪ್ ಬಳಸುತ್ತೀರಾ?</string>-->
-<!--    <string name="total_number_of_members_in_the_household">ಮನೆಯ ಒಟ್ಟು ಸದಸ್ಯರ ಸಂಖ್ಯೆ</string>-->
-<!--    <string name="enter_number">ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>-->
-<!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">ನಿಮ್ಮ ಮನೆಯಲ್ಲಿ ಸಾಮಾನ್ಯವಾಗಿ ಎಷ್ಟು ಸದಸ್ಯರು ವಾಸಿಸುತ್ತಿದ್ದಾರೆ ಅಥವಾ ಈಗ ನಿಮ್ಮೊಂದಿಗೆ ಇರುತ್ತಾರೆ</string>-->
-<!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">ನಿಮ್ಮ ಮನೆಯ ಸದಸ್ಯರಿಗೆ ಕುಡಿಯುವ ನೀರಿನ ಮುಖ್ಯ ಮೂಲ ಯಾವುದು?</string>-->
-<!--    <string name="what_do_you_do_to_make_drinking_water_safer">"ಕುಡಿಯುವ ನೀರನ್ನು ಸುರಕ್ಷಿತವಾಗಿಸಲು ನೀವು ಏನು ಮಾಡುತ್ತೀರಿ?  "</string>-->
-<!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">ಅಲ್ಲಿಂದ ಒಂದು ಬಾರಿ ನೀರು ತರಲು ಎಷ್ಟು ಸಮಯ ಬೇಕಾಗುತ್ತದೆ ?</string>-->
-<!--    <string name="declined">ಉತ್ತರಿಸಲು ನಿರಾಕರಿಸಲಾಗಿದೆ</string>-->
-<!--    <string name="enter_time">ಸಮಯವನ್ನು ನಮೂದಿಸಿ</string>-->
-<!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">ಕಳೆದ ಎರಡು ವಾರಗಳಲ್ಲಿ, ಈ ಮೂಲದಿಂದ ನೀರು ಎಷ್ಟು ಬಾರಿ ಲಭ್ಯವಿರಲಿಲ್ಲ, ಕನಿಷ್ಠ  ಪೂರ್ತಿ ಒಂದು ದಿನ</string>-->
-<!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">ನಿಮ್ಮ ಮನೆಯ ಸದಸ್ಯರು ಸಾಮಾನ್ಯವಾಗಿ ಯಾವ ರೀತಿಯ ಶೌಚಾಲಯ ಸೌಲಭ್ಯವನ್ನು ಬಳಸುತ್ತಾರೆ?</string>-->
-<!--    <string name="select_the_structure_of_house">ಮನೆಯ ರಚನೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>-->
-<!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">ನಿಮ್ಮ ಕುಟುಂಬವು ಎಷ್ಟು ಹೆಕ್ಟೇರ್ ಕೃಷಿ ಭೂಮಿಯನ್ನು ಹೊಂದಿದೆ?</string>-->
-<!--    <string name="enter_answer">ಉತ್ತರವನ್ನು ನಮೂದಿಸಿ</string>-->
-<!--    <string name="enter_occupation">" ಉದ್ಯೋಗವನ್ನು ನಮೂದಿಸಿ"</string>-->
-<!--    <string name="select">ಆಯ್ಕೆ ಮಾಡಿ</string>-->
+    <!--    <string name="are_you_head_of_the_family">ನೀವು ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರಾಗಿದ್ದೀರಾ?</string>-->
+    <!--    <string name="what_is_your_occupation">ನಿಮ್ಮ ವೃತ್ತಿ ಏನು?</string>-->
+    <!--    <string name="do_you_have_a_bank_account">ನಿಮ್ಮ ಬಳಿ ಬ್ಯಾಂಕ್ ಖಾತೆ ಇದೆಯೇ?</string>-->
+    <!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">ನೀವು ವೈಯಕ್ತಿಕವಾಗಿ ಯಾವ ರೀತಿಯ ಮೊಬೈಲ್ ಫೋನ್ ಹೊಂದಿದ್ದೀರಿ?</string>-->
+    <!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">ನೀವು ಅಥವಾ ನಿಮ್ಮ ಕುಟುಂಬದ ಯಾವುದೇ ಸದಸ್ಯರು ವಾಟ್ಸಾಪ್ ಬಳಸುತ್ತೀರಾ?</string>-->
+    <!--    <string name="total_number_of_members_in_the_household">ಮನೆಯ ಒಟ್ಟು ಸದಸ್ಯರ ಸಂಖ್ಯೆ</string>-->
+    <!--    <string name="enter_number">ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>-->
+    <!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">ನಿಮ್ಮ ಮನೆಯಲ್ಲಿ ಸಾಮಾನ್ಯವಾಗಿ ಎಷ್ಟು ಸದಸ್ಯರು ವಾಸಿಸುತ್ತಿದ್ದಾರೆ ಅಥವಾ ಈಗ ನಿಮ್ಮೊಂದಿಗೆ ಇರುತ್ತಾರೆ</string>-->
+    <!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">ನಿಮ್ಮ ಮನೆಯ ಸದಸ್ಯರಿಗೆ ಕುಡಿಯುವ ನೀರಿನ ಮುಖ್ಯ ಮೂಲ ಯಾವುದು?</string>-->
+    <!--    <string name="what_do_you_do_to_make_drinking_water_safer">"ಕುಡಿಯುವ ನೀರನ್ನು ಸುರಕ್ಷಿತವಾಗಿಸಲು ನೀವು ಏನು ಮಾಡುತ್ತೀರಿ?  "</string>-->
+    <!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">ಅಲ್ಲಿಂದ ಒಂದು ಬಾರಿ ನೀರು ತರಲು ಎಷ್ಟು ಸಮಯ ಬೇಕಾಗುತ್ತದೆ ?</string>-->
+    <!--    <string name="declined">ಉತ್ತರಿಸಲು ನಿರಾಕರಿಸಲಾಗಿದೆ</string>-->
+    <!--    <string name="enter_time">ಸಮಯವನ್ನು ನಮೂದಿಸಿ</string>-->
+    <!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">ಕಳೆದ ಎರಡು ವಾರಗಳಲ್ಲಿ, ಈ ಮೂಲದಿಂದ ನೀರು ಎಷ್ಟು ಬಾರಿ ಲಭ್ಯವಿರಲಿಲ್ಲ, ಕನಿಷ್ಠ  ಪೂರ್ತಿ ಒಂದು ದಿನ</string>-->
+    <!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">ನಿಮ್ಮ ಮನೆಯ ಸದಸ್ಯರು ಸಾಮಾನ್ಯವಾಗಿ ಯಾವ ರೀತಿಯ ಶೌಚಾಲಯ ಸೌಲಭ್ಯವನ್ನು ಬಳಸುತ್ತಾರೆ?</string>-->
+    <!--    <string name="select_the_structure_of_house">ಮನೆಯ ರಚನೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>-->
+    <!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">ನಿಮ್ಮ ಕುಟುಂಬವು ಎಷ್ಟು ಹೆಕ್ಟೇರ್ ಕೃಷಿ ಭೂಮಿಯನ್ನು ಹೊಂದಿದೆ?</string>-->
+    <!--    <string name="enter_answer">ಉತ್ತರವನ್ನು ನಮೂದಿಸಿ</string>-->
+    <!--    <string name="enter_occupation">" ಉದ್ಯೋಗವನ್ನು ನಮೂದಿಸಿ"</string>-->
+    <!--    <string name="select">ಆಯ್ಕೆ ಮಾಡಿ</string>-->
     <string name="Hours">ಗಂಟೆಗಳು</string>
     <string name="Days">ದಿನಗಳು</string>
     <string name="Weeks">ವಾರಗಳು</string>
     <string name="Months">ತಿಂಗಳುಗಳು</string>
     <string name="Years">ವರ್ಷಗಳು</string>
-<!--    <string name="image_saved">ಚಿತ್ರವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದೆ </string>-->
-<!--    <string name="emergency_confirmation">ಈ ಭೇಟಿಯನ್ನು ತುರ್ತು ಎಂದು ಪರಿಗಣಿಸಬೇಕೆ?</string>-->
+    <!--    <string name="image_saved">ಚಿತ್ರವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದೆ </string>-->
+    <!--    <string name="emergency_confirmation">ಈ ಭೇಟಿಯನ್ನು ತುರ್ತು ಎಂದು ಪರಿಗಣಿಸಬೇಕೆ?</string>-->
     <string name="per_Hour">ಪ್ರತಿ ಗಂಟೆಗೆ</string>
     <string name="per_Day">ಪ್ರತಿ ದಿನಕ್ಕೆ</string>
     <string name="per_Week"> ಪ್ರತಿ ವಾರಕ್ಕೆ</string>
     <string name="per_Month">ಪ್ರತಿ ತಿಂಗಳು</string>
     <string name="per_Year">ವರ್ಷಕ್ಕೆ</string>
     <string name="something_went_wrong">ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಸಹಾಯಕರನ್ನು ಸಂಪರ್ಕಿಸಿ</string>
-<!--    <string name="please_select_specialization">ದಯವಿಟ್ಟು ವಿಶೇಷತೆಯನ್ನು ಆರಿಸಿ</string>-->
-<!--    <string name="speciality">ವಿಶೇಷತೆ</string>-->
+    <!--    <string name="please_select_specialization">ದಯವಿಟ್ಟು ವಿಶೇಷತೆಯನ್ನು ಆರಿಸಿ</string>-->
+    <!--    <string name="speciality">ವಿಶೇಷತೆ</string>-->
     <string name="identification_screen_prompt_last_name">ಕೊನೆಯ ಹೆಸರು*</string>
     <string name="identification_screen_prompt_address">ವಿಳಾಸ ಸಾಲು 1</string>
     <string name="identification_screen_prompt_address2">ವಿಳಾಸ ಸಾಲು 2</string>
@@ -705,14 +705,14 @@
     <string name="appointment_for">ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್‌</string>
     <string name="please_select_appointment_slot">ದಯವಿಟ್ಟು ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಸ್ಲಾಟ್ ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="please_select_speciality">ದಯವಿಟ್ಟು ವಿಶೇಷತೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ!</string>
-    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
-    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
-    <string name="doctor_is_not_available">Doctor is not available</string>
-    <string name="patient_is_not_available">Patient is not available</string>
-    <string name="others">Others</string>
-    <string name="please_enter_the_reason_details">Please enter the reason details</string>
-    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
-    <string name="please_enter_reason_txt">Please enter the reason!</string>
+    <string name="please_select_your_reschedule_reason">ದಯವಿಟ್ಟು ನಿಮ್ಮ ಮರುಹೊಂದಾಣಿಕೆಯ ಕಾರಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="please_select_your_cancel_reason">ದಯವಿಟ್ಟು ನಿಮ್ಮ ಮರುಹೊಂದಾಣಿಕೆಯ ಕಾರಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="doctor_is_not_available">ವೈದ್ಯರು ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="patient_is_not_available">ರೋಗಿಯು ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="others">ಇತರೆ</string>
+    <string name="please_enter_the_reason_details">ದಯವಿಟ್ಟು ಕಾರಣದ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="save_amp_proceed"><![CDATA[ಉಳಿಸಿ ಮತ್ತು ಮುಂದುವರೆಯಿರಿ]]></string>
+    <string name="please_enter_reason_txt">ದಯವಿಟ್ಟು ಕಾರಣವನ್ನು ನಮೂದಿಸಿ!</string>
 
     <string name="doctor_appointments">ವೈದ್ಯರ ನೇಮಕಾತಿಗಳು</string>
     <string name="slot_info">ಸ್ಲಾಟ್ ಮಾಹಿತಿ</string>
@@ -881,8 +881,7 @@
     <string name="enter_mobile_no_given_text">Please make sure your mobile number is updated in the profile section before proceeding</string>
     <string name="username_sent_title">Username Sent</string>
     <string name="username_sent_desc">Your username has been sent via SMS to your registered mobile number.</string>
-    <string name="teleconsultation_consent_title">Teleconsultation Consent</string>
-    <string name="no_of_days">No. of days</string>
+        <string name="no_of_days">No. of days</string>
     <string name="timings">Timings</string>
     <string name="u2022_strength">• Strength</string>
     <string name="u2022_no_of_days">• No. of days</string>
@@ -900,4 +899,5 @@
     <string name="dont_know">Don\'t know</string>
     <string name="universal_donor">( Universal Donor)</string>
     <string name="universal_recipient">( Universal Recipient )</string>
+    <string name="view_prescription_lbl">View Prescription</string>
 </resources>

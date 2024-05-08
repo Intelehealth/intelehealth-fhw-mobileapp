@@ -1905,6 +1905,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="confirmation">Confirmation</string>
     <string name="delete">Delete</string>
     <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
+    <string name="view_prescription_lbl">View Prescription</string>
 
 
     <string name="guardian_name_non_required">Guardian Name</string>
