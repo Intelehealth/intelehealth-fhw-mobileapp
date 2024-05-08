@@ -156,7 +156,7 @@ public class VisitActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
-        notificationReceiver.registerNotificationReceiver(this);
+        notificationReceiver.unregisterNotificationReceiver(this);
     }
 
     public void configureTabLayout() {

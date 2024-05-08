@@ -1510,4 +1510,5 @@
     <string name="dont_know">Don\'t know</string>
     <string name="universal_donor">( सार्वभौमिक दाता )</string>
     <string name="universal_recipient">( सार्वभौमिक प्राप्तकर्ता )</string>
+    <string name="view_prescription_lbl">View Prescription</string>
 </resources>
