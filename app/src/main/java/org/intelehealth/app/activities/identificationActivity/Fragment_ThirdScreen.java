@@ -624,9 +624,9 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
-        patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
-        patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
-        patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
+        patientDTO.setCaste(mCasteSpinner.getSelectedItem()==null?"":StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
+        patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem()==null?"":mEducationSpinner.getSelectedItem().toString()));
+        patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem()==null?"":mEconomicstatusSpinner.getSelectedItem().toString()));
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
@@ -719,9 +719,9 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
-        patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
-        patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
-        patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
+        patientDTO.setCaste(mCasteSpinner.getSelectedItem() == null?"":StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
+        patientDTO.setEducation(mEducationSpinner.getSelectedItem() == null?"":StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
+        patientDTO.setEconomic(mEconomicstatusSpinner.getSelectedItem() == null?"":StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();

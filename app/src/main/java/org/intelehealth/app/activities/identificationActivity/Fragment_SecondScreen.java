@@ -826,7 +826,7 @@ public class Fragment_SecondScreen extends Fragment {
         mCityVillageName = mCityVillageET.getText().toString().trim();
 
         patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
-        patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
+        patientDTO.setCountry(mCountryNameSpinner.getSelectedItem() == null?"":StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
         patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameSpinner.getSelectedItem().toString() : mStateName));
         if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null)
             patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
@@ -999,7 +999,7 @@ public class Fragment_SecondScreen extends Fragment {
             mCityVillageName = mCityVillageET.getText().toString().trim();
 
             patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
-            patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
+            patientDTO.setCountry(mCountryNameSpinner.getSelectedItem()==null?"":StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
             patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameSpinner.getSelectedItem().toString() : mStateName));
             if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null){
                 patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));

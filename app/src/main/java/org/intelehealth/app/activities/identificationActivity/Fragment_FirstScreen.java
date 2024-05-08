@@ -1446,9 +1446,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         patientdto.setFirstname(mFirstNameEditText.getText().toString());
         patientdto.setMiddlename(mMiddleNameEditText.getText().toString());
         patientdto.setLastname(mLastNameEditText.getText().toString());
-        patientdto.setGender(StringUtils.getValue(mGender));
+        patientdto.setGender(mGender==null?"":StringUtils.getValue(mGender));
         if (!mPhoneNumberEditText.getText().toString().trim().equals(""))
-            patientdto.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
+            patientdto.setPhonenumber(mCountryCodePicker.getFullNumberWithPlus()==null?"":StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
         else
             patientdto.setPhonenumber("");
 
@@ -1464,7 +1464,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         patientdto.setContactType(StringUtils.getProvided(mContactTypeSpinner));
         patientdto.setEmContactName(mEmContactNameEditText.getText().toString());
-        patientdto.setEmContactNumber(StringUtils.getValue(mEmContactNoCountryCodePicker.getFullNumberWithPlus()));
+        patientdto.setEmContactNumber(mEmContactNoCountryCodePicker.getFullNumberWithPlus()==null?"":StringUtils.getValue(mEmContactNoCountryCodePicker.getFullNumberWithPlus()));
 
 
         try {
@@ -1481,7 +1481,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(patientdto.getUuid());
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-                patientAttributesDTO.setValue(StringUtils.getValue(patientdto.getPhonenumber()));
+                patientAttributesDTO.setValue(patientdto.getPhonenumber()==null?"":StringUtils.getValue(patientdto.getPhonenumber()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
             patientdto.setPatientAttributesDTOList(patientAttributesDTOList);

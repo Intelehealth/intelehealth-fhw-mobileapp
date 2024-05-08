@@ -446,11 +446,8 @@ public final class StringUtils {
             case "Higher Secondary":
                 val = "उच्च माध्यमिक";
                 break;
-            case "Graduation & Higher":
-                val = "स्नातक और उच्चतर";
-                break;
-            case "Bachelors & Equivalent":
-                val = "स्नातक एवं समकक्ष";
+            case "Graduate":
+                val = "स्नातक";
                 break;
             case "Masters & Higher":
                 val = "परास्नातक एवं उच्चतर";
@@ -480,11 +477,8 @@ public final class StringUtils {
             case "उच्च माध्यमिक":
                 val = "Higher Secondary";
                 break;
-            case "स्नातक और उच्चतर":
-                val = "Graduation & Higher";
-                break;
-            case "स्नातक एवं समकक्ष":
-                val = "Bachelors & Equivalent";
+            case "स्नातक":
+                val = "Graduate";
                 break;
             case "परास्नातक एवं उच्चतर":
                 val = "Masters & Higher";

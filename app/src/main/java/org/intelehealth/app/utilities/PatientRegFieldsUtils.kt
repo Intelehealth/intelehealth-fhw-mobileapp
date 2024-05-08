@@ -26,13 +26,19 @@ class PatientRegFieldsUtils {
         ) {
             layoutView.visibility = View.VISIBLE
 
+            //if existing title has * then removing it first
+            var titleStr = titleTv?.text
+            titleStr?.let {
+                if(it.contains('*')){
+                    titleStr = it.toString().replace("*","")
+                }
+            }
             //setting asterisk for mandatory fields
             if (field.isMandatory) {
-                val titleStr = titleTv?.text
                 titleTv?.text = StringBuilder().append(titleStr).append(" *")
+            }else{
+                titleTv?.text = titleStr
             }
-
-            Log.d("cccc",field.idKey+"   "+field.isEditable+"   "+isEditMode)
 
             //view updating while edit mode is false
             if (isEditMode && !field.isEditable) {
