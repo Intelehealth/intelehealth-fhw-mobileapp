@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.prescription;
 
+import static org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME;
 import static org.intelehealth.app.utilities.StringUtils.convertCtoF;
 
 import android.text.TextUtils;
@@ -9,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.VitalsObject;
@@ -26,7 +26,7 @@ public class PrescriptionBuilder {
     private final AppCompatActivity activityContext;
     JSONObject obj;
     String disclaimerStr = "";
-    private static String mFileName = "config.json";
+    private static String mFileName = CONFIG_FILE_NAME;
     public PrescriptionBuilder(AppCompatActivity activityContext) {
         this.activityContext = activityContext;
     }
@@ -61,7 +61,7 @@ public class PrescriptionBuilder {
         SessionManager sessionManager = new SessionManager(activityContext);
 
         try {
-            obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, activityContext), String.valueOf(FileUtils.encodeJSON(activityContext, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+            obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(CONFIG_FILE_NAME, activityContext), String.valueOf(FileUtils.encodeJSON(activityContext, CONFIG_FILE_NAME)))); //Load the config file
 
             disclaimerStr = obj.getString("prescriptionDisclaimer_English");
 
@@ -295,9 +295,9 @@ public class PrescriptionBuilder {
         try {
             JSONObject obj = null;
             //TODO: Need to link whether its in license version or not
-            boolean hasLicense = false;
+            boolean hasLicense = !new SessionManager(activityContext).getLicenseKey().isEmpty();
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, activityContext), String.valueOf(FileUtils.encodeJSON(activityContext, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(CONFIG_FILE_NAME, activityContext), String.valueOf(FileUtils.encodeJSON(activityContext, CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(activityContext, mFileName)));
             }//Load the config file
