@@ -131,6 +131,7 @@ public class Node implements Serializable {
     String space = "\t";
 
     // NCD Attributes
+    private Boolean isNcdProtocol = false;
     private ValidationRules validationRules;
     private Boolean flowEnd;
     private Boolean isAutoFill;
@@ -299,6 +300,8 @@ public class Node implements Serializable {
 
             this.pop_up = jsonNode.optString("pop-up");
             this.hasPopUp = !pop_up.isEmpty();
+
+            this.isNcdProtocol = jsonNode.optBoolean("is-ncd-protocol");
 
             JSONObject validationRulesObject = jsonNode.optJSONObject("validation-rules");
             if (validationRulesObject != null) {
