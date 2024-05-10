@@ -5,16 +5,11 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -32,19 +27,28 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.activities.cameraActivity.CameraActivity;
+import org.intelehealth.ekalarogya.activities.complaintNodeActivity.CustomArrayAdapter;
+import org.intelehealth.ekalarogya.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.knowledgeEngine.ncd.ValidationRules;
 import org.intelehealth.ekalarogya.models.AnswerResult;
+import org.intelehealth.ekalarogya.utilities.InputFilterMinMax;
+import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,15 +64,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
-import org.intelehealth.ekalarogya.R;
-import org.intelehealth.ekalarogya.activities.questionNodeActivity.QuestionsAdapter;
-import org.intelehealth.ekalarogya.app.IntelehealthApplication;
-import org.intelehealth.ekalarogya.utilities.InputFilterMinMax;
-import org.intelehealth.ekalarogya.utilities.SessionManager;
-
-import org.intelehealth.ekalarogya.activities.cameraActivity.CameraActivity;
-import org.intelehealth.ekalarogya.activities.complaintNodeActivity.CustomArrayAdapter;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.
@@ -132,6 +127,15 @@ public class Node implements Serializable {
 
     // NCD Attributes
     private Boolean isNcdProtocol = false;
+
+    public ValidationRules getValidationRules() {
+        return validationRules;
+    }
+
+    public void setValidationRules(ValidationRules validationRules) {
+        this.validationRules = validationRules;
+    }
+
     private ValidationRules validationRules;
     private Boolean flowEnd;
     private Boolean isAutoFill;
@@ -4701,6 +4705,30 @@ public class Node implements Serializable {
 
         }
         return allAnswered;
+    }
+
+    public Boolean getNcdProtocol() {
+        return isNcdProtocol;
+    }
+
+    public void setNcdProtocol(Boolean ncdProtocol) {
+        isNcdProtocol = ncdProtocol;
+    }
+
+    public Boolean getFlowEnd() {
+        return flowEnd;
+    }
+
+    public void setFlowEnd(Boolean flowEnd) {
+        this.flowEnd = flowEnd;
+    }
+
+    public Boolean getAutoFill() {
+        return isAutoFill;
+    }
+
+    public void setAutoFill(Boolean autoFill) {
+        isAutoFill = autoFill;
     }
 }
 
