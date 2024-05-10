@@ -20,7 +20,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -115,10 +115,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     private JSONObject finalAssoSympObj = new JSONObject();
     ScrollingPagerIndicator recyclerViewIndicator;
 
-    FloatingActionButton fab;
+    FloatingActionButton fab, forwardButton, backButton;
+    RelativeLayout navButtonRelativeLayout;
     RecyclerView question_recyclerView;
     Context context;
 
+    private HorizontalScrollLockLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,9 +201,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 fabClick();
             }
         });
+
+        navButtonRelativeLayout = findViewById(R.id.rl_nav_btn);
+        forwardButton = findViewById(R.id.btn_forward);
+        backButton = findViewById(R.id.btn_back);
+
         recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         question_recyclerView = findViewById(R.id.question_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        linearLayoutManager = new HorizontalScrollLockLayoutManager(this);
         question_recyclerView.setLayoutManager(linearLayoutManager);
 
         question_recyclerView.setNestedScrollingEnabled(true);
@@ -457,14 +464,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     }
 
                     insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
-                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG,sessionManager);  // English to Regional - for HW to show in reg lang.
+                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG, sessionManager);  // English to Regional - for HW to show in reg lang.
                     Log.v("insertion_tag", "insertion_update: " + insertion);
                     updateDatabase(insertion, UuidDictionary.CURRENT_COMPLAINT);  // updating data.
 
                     JSONObject object = new JSONObject();
                     try {
                         object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
-                      //  object.put("text_en", insertion_REG);
+                        //  object.put("text_en", insertion_REG);
                         updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
                         Log.v("insertion_tag", "insertion_update_regional: " + object.toString());
                     } catch (JSONException e) {
@@ -499,14 +506,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     }
 
                     insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
-                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG,sessionManager);  // English to Regional - for HW to show in reg lang.
+                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG, sessionManager);  // English to Regional - for HW to show in reg lang.
                     Log.v("insertion_tag", "insertion_insert: " + insertion);
                     insertDb(insertion, UuidDictionary.CURRENT_COMPLAINT);    // inserting data.
 
                     JSONObject object = new JSONObject();
                     try {
                         object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
-                     //   object.put("text_en", insertion_REG);
+                        //   object.put("text_en", insertion_REG);
                         insertDb(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // inserting regional data.
                         Log.v("insertion_tag", "insertion_insert_regional: " + object.toString());
                     } catch (JSONException e) {
@@ -616,6 +623,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             getAssociatedSymptoms(complaintIndex);
         } else {
             currentNode = complaintsNodes.get(complaintIndex);
+            setupUI(currentNode);
         }
 
         mgender = PatientsDAO.fetch_gender(patientUuid);
@@ -635,12 +643,25 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             question_recyclerView.setAdapter(adapter);
             recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
             setTitle(patientName + ": " + currentNode.findDisplay());
-        }
-        else {
+        } else {
             Toast.makeText(context, context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             return;
         }
 
+    }
+
+    private void setupUI(Node currentNode) {
+        if (currentNode != null) {
+            if (currentNode.getIsNcdProtocol()) {
+                recyclerViewIndicator.setVisibility(View.GONE);
+                linearLayoutManager.setHorizontalScrollEnabled(false);
+                navButtonRelativeLayout.setVisibility(View.VISIBLE);
+            } else {
+                recyclerViewIndicator.setVisibility(View.VISIBLE);
+                linearLayoutManager.setHorizontalScrollEnabled(true);
+                navButtonRelativeLayout.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void getAssociatedSymptoms(int complaintIndex) {
@@ -671,10 +692,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
                     assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
                     currentNode = assoComplaintsNodes.get(complaintIndex);
-                 //   Log.e("CurrentNode", "" + currentNode);
-
+                    //   Log.e("CurrentNode", "" + currentNode);
+                    setupUI(currentNode);
                 } else {
                     currentNode = complaintsNodes.get(complaintIndex);
+                    setupUI(currentNode);
                 }
             }
         }
