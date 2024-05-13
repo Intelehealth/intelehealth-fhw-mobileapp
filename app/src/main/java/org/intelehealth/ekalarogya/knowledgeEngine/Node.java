@@ -128,13 +128,13 @@ public class Node implements Serializable {
     // NCD Attributes
     private Boolean isNcdProtocol = false;
 
-    public ValidationRules getValidationRules() {
+    /*public ValidationRules getValidationRules() {
         return validationRules;
     }
 
     public void setValidationRules(ValidationRules validationRules) {
         this.validationRules = validationRules;
-    }
+    }*/
 
     private ValidationRules validationRules;
     private Boolean flowEnd;
@@ -4747,7 +4747,7 @@ public class Node implements Serializable {
         isNcdProtocol = ncdProtocol;
     }
 
-    public Boolean getFlowEnd() {
+  /*  public Boolean getFlowEnd() {
         return flowEnd;
     }
 
@@ -4761,6 +4761,6 @@ public class Node implements Serializable {
 
     public void setAutoFill(Boolean autoFill) {
         isAutoFill = autoFill;
-    }
+    }*/
 }
 

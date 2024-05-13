@@ -25,15 +25,22 @@ public class NCDNodeValidationLogic {
         boolean isFlowEnd = selectedNode.getFlowEnd();
         ValidationRules validationRules = selectedNode.getValidationRules();
         if (validationRules != null) {
+            if (validationRules.getCheck().equalsIgnoreCase("NAVIGATE")) {
+                return checkForNavigationType(mmRootNode, selectedRootIndex);
+            } else if (validationRules.getCheck().equalsIgnoreCase("RANGE_TEXT")) {
+                return checkForRangeTextType(mmRootNode, selectedRootIndex);
+            } else if (validationRules.getCheck().equalsIgnoreCase("TEXT_DATE")) {
+                return checkForTextDateType(mmRootNode, selectedRootIndex);
 
+            }
         } else {
             if (isFlowEnd) {
                 // need to remove the other nodes from root
                 List<Node> temp = new ArrayList<Node>();
                 for (int i = 0; i < mmRootNode.getOptionsList().size(); i++) {
-                    if(i<=selectedRootIndex){
+                    if (i <= selectedRootIndex) {
                         temp.add(mmRootNode.getOptionsList().get(i));
-                    }else{
+                    } else {
                         break;
                     }
                 }
@@ -45,5 +52,28 @@ public class NCDNodeValidationLogic {
         }
 
         return ncdValidationResult;
+    }
+
+    /**
+     * @param mmRootNode
+     * @param selectedRootIndex
+     * @return
+     */
+    private static NCDValidationResult checkForNavigationType(Node mmRootNode, int selectedRootIndex) {
+        return new NCDValidationResult();
+    }
+
+    /**
+     *
+     * @param mmRootNode
+     * @param selectedRootIndex
+     * @return
+     */
+    private static NCDValidationResult checkForRangeTextType(Node mmRootNode, int selectedRootIndex) {
+        return new NCDValidationResult();
+    }
+
+    private static NCDValidationResult checkForTextDateType(Node mmRootNode, int selectedRootIndex) {
+        return new NCDValidationResult();
     }
 }
