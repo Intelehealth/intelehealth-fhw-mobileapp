@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search.viewmodel
+package org.intelehealth.ncd.category.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,17 +11,16 @@ import org.intelehealth.ncd.data.SearchRepository
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
-class HypertensionScreeningViewModel(
+class DiabetesScreeningViewModel(
     private val repository: SearchRepository,
     private val utils: CategorySegregationUtils
 ) : ViewModel() {
 
-    private val _hypertensionScreeningMutableLiveData = MutableLiveData<List<Patient>>()
-    val hypertensionScreeningLiveData: LiveData<List<Patient>> =
-        _hypertensionScreeningMutableLiveData
+    private val _diabetesScreeningMutableLiveData = MutableLiveData<List<Patient>>()
+    val diabetesScreeningLiveData: LiveData<List<Patient>> = _diabetesScreeningMutableLiveData
 
-    fun getPatientsForHypertensionScreening(age: Int) {
-        var hypertensionScreeningPatients: MutableList<Patient>
+    fun getPatientsForDiabetesScreening(age: Int) {
+        var diabetesScreeningPatients: MutableList<Patient>
 
         viewModelScope.launch(Dispatchers.IO) {
             val patientsBasedOnAge = repository.getPatientsBasedOnAge(age)
@@ -30,13 +29,13 @@ class HypertensionScreeningViewModel(
                 Constants.OTHER_MEDICAL_HISTORY
             )
 
-            hypertensionScreeningPatients = utils.segregateAndFetchData(
+            diabetesScreeningPatients = utils.segregateAndFetchData(
                 patientsBasedOnAge.toMutableList(),
                 patientsBasedOnUuids.toMutableList(),
-                Constants.HYPERTENSION_SCREENING
+                Constants.DIABETES_SCREENING
             )
 
-            _hypertensionScreeningMutableLiveData.postValue(hypertensionScreeningPatients)
+            _diabetesScreeningMutableLiveData.postValue(diabetesScreeningPatients)
         }
     }
 }

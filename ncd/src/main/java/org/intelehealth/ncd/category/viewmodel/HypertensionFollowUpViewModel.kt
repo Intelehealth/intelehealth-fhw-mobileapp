@@ -1,30 +1,27 @@
-package org.intelehealth.ncd.search.viewmodel
+package org.intelehealth.ncd.category.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.intelehealth.ncd.R
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.SearchRepository
-import org.intelehealth.ncd.model.MedicalHistory
 import org.intelehealth.ncd.model.Patient
-import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
-class AnemiaScreeningViewModel(
+class HypertensionFollowUpViewModel(
     private val repository: SearchRepository,
     private val utils: CategorySegregationUtils
 ) : ViewModel() {
 
-    private val _anemiaScreeningMutableLiveData: MutableLiveData<List<Patient>> = MutableLiveData()
-    val anemiaScreeningLiveData = _anemiaScreeningMutableLiveData
+    private val _hypertensionFollowUpMutableLiveData = MutableLiveData<List<Patient>>()
+    val hypertensionFollowUpLiveData: LiveData<List<Patient>> =
+        _hypertensionFollowUpMutableLiveData
 
-    fun getPatientsForAnemiaScreening(age: Int) {
-        var anemiaScreeningPatients: MutableList<Patient>
+    fun getPatientsForHypertensionFollowUp(age: Int) {
+        var hypertensionFollowUpPatients: MutableList<Patient>
 
         viewModelScope.launch(Dispatchers.IO) {
             val patientsBasedOnAge = repository.getPatientsBasedOnAge(age)
@@ -33,13 +30,13 @@ class AnemiaScreeningViewModel(
                 Constants.OTHER_MEDICAL_HISTORY
             )
 
-            anemiaScreeningPatients = utils.segregateAndFetchData(
+            hypertensionFollowUpPatients = utils.segregateAndFetchData(
                 patientsBasedOnAge.toMutableList(),
                 patientsBasedOnUuids.toMutableList(),
-                Constants.ANEMIA_SCREENING
+                Constants.HYPERTENSION_FOLLOW_UP
             )
 
-            _anemiaScreeningMutableLiveData.postValue(anemiaScreeningPatients)
+            _hypertensionFollowUpMutableLiveData.postValue(hypertensionFollowUpPatients)
         }
     }
 }

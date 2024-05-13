@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search.pager
+package org.intelehealth.ncd.category.pager
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

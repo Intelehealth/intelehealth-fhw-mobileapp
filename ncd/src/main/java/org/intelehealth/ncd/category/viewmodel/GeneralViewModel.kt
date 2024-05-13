@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search.viewmodel
+package org.intelehealth.ncd.category.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,8 +9,6 @@ import kotlinx.coroutines.launch
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.SearchRepository
 import org.intelehealth.ncd.model.Patient
-import org.intelehealth.ncd.model.PatientAttributes
-import org.intelehealth.ncd.utils.CategorySegregationUtils
 
 class GeneralViewModel(private val repository: SearchRepository) : ViewModel() {
 

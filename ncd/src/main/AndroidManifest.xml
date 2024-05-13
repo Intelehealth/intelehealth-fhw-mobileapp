@@ -4,7 +4,12 @@
     <application>
 
         <activity
-            android:name=".search.activity.SearchPatientCategoryActivity"
+            android:name=".search.NcdSearchActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".category.activity.NcdPatientCategoryActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
 

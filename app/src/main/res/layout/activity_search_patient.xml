@@ -66,7 +66,7 @@
         android:layout_marginTop="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".activities.search_patient_activity.SearchPatientActivity"
-        tools:showIn="@layout/activity_search_patient_category">
+        tools:showIn="@layout/activity_ncd_patient_category">
 
         <TextView
             android:id="@+id/textviewmessage"

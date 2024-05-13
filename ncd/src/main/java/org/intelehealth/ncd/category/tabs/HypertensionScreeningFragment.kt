@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search.tabs
+package org.intelehealth.ncd.category.tabs
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,28 +12,27 @@ import org.intelehealth.ncd.callbacks.PatientClickedListener
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.SearchDataSource
 import org.intelehealth.ncd.data.SearchRepository
-import org.intelehealth.ncd.databinding.LayoutSearchPatientCategoryBinding
+import org.intelehealth.ncd.databinding.LayoutNcdPatientCategoryBinding
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.room.CategoryDatabase
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
-import org.intelehealth.ncd.search.adapter.CategoryRecyclerViewAdapter
-import org.intelehealth.ncd.search.viewmodel.AnemiaScreeningViewModel
-import org.intelehealth.ncd.search.viewmodel.DiabetesScreeningViewModel
-import org.intelehealth.ncd.search.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
+import org.intelehealth.ncd.category.viewmodel.HypertensionScreeningViewModel
+import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
-class DiabetesScreeningFragment : Fragment(), PatientClickedListener {
+class HypertensionScreeningFragment : Fragment(), PatientClickedListener {
 
-    private var binding: LayoutSearchPatientCategoryBinding? = null
-    private var viewModel: DiabetesScreeningViewModel? = null
+    private var binding: LayoutNcdPatientCategoryBinding? = null
+    private var viewModel: HypertensionScreeningViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = LayoutSearchPatientCategoryBinding.inflate(layoutInflater)
+        binding = LayoutNcdPatientCategoryBinding.inflate(layoutInflater)
         return binding!!.root
     }
 
@@ -54,25 +53,25 @@ class DiabetesScreeningFragment : Fragment(), PatientClickedListener {
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@DiabetesScreeningFragment,
+            owner = this@HypertensionScreeningFragment,
             factory = CategoryViewModelFactory(repository, utils)
-        )[DiabetesScreeningViewModel::class.java]
+        )[HypertensionScreeningViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.diabetesScreeningLiveData?.observe(requireActivity()) {
+        viewModel?.hypertensionScreeningLiveData?.observe(requireActivity()) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
 
             binding?.recyclerView?.let { rv ->
                 rv.adapter = adapter
                 rv.layoutManager =
-                    LinearLayoutManager(this@DiabetesScreeningFragment.requireContext())
+                    LinearLayoutManager(this@HypertensionScreeningFragment.requireContext())
             }
         }
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForDiabetesScreening(Constants.DIABETES_EXCLUSION_AGE)
+        viewModel?.getPatientsForHypertensionScreening(Constants.HYPERTENSION_EXCLUSION_AGE)
     }
 
     override fun onPatientClicked(patient: Patient) {
@@ -100,5 +99,6 @@ class DiabetesScreeningFragment : Fragment(), PatientClickedListener {
             exception.printStackTrace()
         }
     }
+
 
 }

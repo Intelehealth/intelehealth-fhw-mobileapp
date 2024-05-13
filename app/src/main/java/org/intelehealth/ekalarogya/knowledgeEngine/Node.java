@@ -3496,6 +3496,38 @@ public class Node implements Serializable {
         isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
 
+    public Boolean getIsNcdProtocol() {
+        return isNcdProtocol;
+    }
+
+    public void setIsNcdProtocol(Boolean ncdProtocol) {
+        isNcdProtocol = ncdProtocol;
+    }
+
+    public ValidationRules getValidationRules() {
+        return validationRules;
+    }
+
+    public void setValidationRules(ValidationRules validationRules) {
+        this.validationRules = validationRules;
+    }
+
+    public Boolean getFlowEnd() {
+        return flowEnd;
+    }
+
+    public void setFlowEnd(Boolean flowEnd) {
+        this.flowEnd = flowEnd;
+    }
+
+    public Boolean getAutoFill() {
+        return isAutoFill;
+    }
+
+    public void setAutoFill(Boolean autoFill) {
+        isAutoFill = autoFill;
+    }
+
     private String generateAssociatedSymptomsOrHistory_REG(String appLanguage, Node associatedSymptomNode) {
 
         List<String> positiveAssociations = new ArrayList<>();
