@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search.adapter
+package org.intelehealth.ncd.category.adapter
 
 import android.content.Context
 import android.content.res.Resources

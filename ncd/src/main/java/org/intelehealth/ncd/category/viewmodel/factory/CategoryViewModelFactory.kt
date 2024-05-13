@@ -1,16 +1,15 @@
-package org.intelehealth.ncd.search.viewmodel.factory
+package org.intelehealth.ncd.category.viewmodel.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.intelehealth.ncd.data.SearchRepository
-import org.intelehealth.ncd.search.tabs.HypertensionFollowUpFragment
-import org.intelehealth.ncd.search.viewmodel.AnemiaFollowUpViewModel
-import org.intelehealth.ncd.search.viewmodel.AnemiaScreeningViewModel
-import org.intelehealth.ncd.search.viewmodel.DiabetesFollowUpViewModel
-import org.intelehealth.ncd.search.viewmodel.DiabetesScreeningViewModel
-import org.intelehealth.ncd.search.viewmodel.GeneralViewModel
-import org.intelehealth.ncd.search.viewmodel.HypertensionFollowUpViewModel
-import org.intelehealth.ncd.search.viewmodel.HypertensionScreeningViewModel
+import org.intelehealth.ncd.category.viewmodel.AnemiaFollowUpViewModel
+import org.intelehealth.ncd.category.viewmodel.AnemiaScreeningViewModel
+import org.intelehealth.ncd.category.viewmodel.DiabetesFollowUpViewModel
+import org.intelehealth.ncd.category.viewmodel.DiabetesScreeningViewModel
+import org.intelehealth.ncd.category.viewmodel.GeneralViewModel
+import org.intelehealth.ncd.category.viewmodel.HypertensionFollowUpViewModel
+import org.intelehealth.ncd.category.viewmodel.HypertensionScreeningViewModel
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
 @Suppress("UNCHECKED_CAST")

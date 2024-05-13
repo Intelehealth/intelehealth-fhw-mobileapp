@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search.tabs
+package org.intelehealth.ncd.category.tabs
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,21 +17,18 @@ import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.room.CategoryDatabase
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
-import org.intelehealth.ncd.search.adapter.CategoryRecyclerViewAdapter
-import org.intelehealth.ncd.search.viewmodel.DiabetesFollowUpViewModel
-import org.intelehealth.ncd.search.viewmodel.DiabetesScreeningViewModel
-import org.intelehealth.ncd.search.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
+import org.intelehealth.ncd.category.viewmodel.AnemiaScreeningViewModel
+import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
-class DiabetesFollowUpFragment : Fragment(), PatientClickedListener {
+class AnemiaScreeningFragment : Fragment(), PatientClickedListener {
 
     private var binding: LayoutSearchPatientCategoryBinding? = null
-    private var viewModel: DiabetesFollowUpViewModel? = null
+    private var viewModel: AnemiaScreeningViewModel? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = LayoutSearchPatientCategoryBinding.inflate(layoutInflater)
         return binding!!.root
@@ -54,25 +51,25 @@ class DiabetesFollowUpFragment : Fragment(), PatientClickedListener {
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@DiabetesFollowUpFragment,
+            owner = this@AnemiaScreeningFragment,
             factory = CategoryViewModelFactory(repository, utils)
-        )[DiabetesFollowUpViewModel::class.java]
+        )[AnemiaScreeningViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.diabetesFollowUpLiveData?.observe(requireActivity()) {
+        viewModel?.anemiaScreeningLiveData?.observe(requireActivity()) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
 
             binding?.recyclerView?.let { rv ->
                 rv.adapter = adapter
                 rv.layoutManager =
-                    LinearLayoutManager(this@DiabetesFollowUpFragment.requireContext())
+                    LinearLayoutManager(this@AnemiaScreeningFragment.requireContext())
             }
         }
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForDiabetesFollowUp(Constants.DIABETES_EXCLUSION_AGE)
+        viewModel?.getPatientsForAnemiaScreening(Constants.ANEMIA_EXCLUSION_AGE)
     }
 
     override fun onPatientClicked(patient: Patient) {
@@ -100,5 +97,4 @@ class DiabetesFollowUpFragment : Fragment(), PatientClickedListener {
             exception.printStackTrace()
         }
     }
-
 }

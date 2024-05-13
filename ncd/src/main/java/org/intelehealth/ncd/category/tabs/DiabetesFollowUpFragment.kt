@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search.tabs
+package org.intelehealth.ncd.category.tabs
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,15 +17,15 @@ import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.room.CategoryDatabase
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
-import org.intelehealth.ncd.search.adapter.CategoryRecyclerViewAdapter
-import org.intelehealth.ncd.search.viewmodel.DiabetesFollowUpViewModel
-import org.intelehealth.ncd.search.viewmodel.GeneralViewModel
-import org.intelehealth.ncd.search.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
+import org.intelehealth.ncd.category.viewmodel.DiabetesFollowUpViewModel
+import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
-class GeneralFragment : Fragment(), PatientClickedListener {
+class DiabetesFollowUpFragment : Fragment(), PatientClickedListener {
+
     private var binding: LayoutSearchPatientCategoryBinding? = null
-    private var viewModel: GeneralViewModel? = null
+    private var viewModel: DiabetesFollowUpViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,25 +53,25 @@ class GeneralFragment : Fragment(), PatientClickedListener {
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@GeneralFragment,
+            owner = this@DiabetesFollowUpFragment,
             factory = CategoryViewModelFactory(repository, utils)
-        )[GeneralViewModel::class.java]
+        )[DiabetesFollowUpViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.generalLiveData?.observe(requireActivity()) {
+        viewModel?.diabetesFollowUpLiveData?.observe(requireActivity()) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
 
             binding?.recyclerView?.let { rv ->
                 rv.adapter = adapter
                 rv.layoutManager =
-                    LinearLayoutManager(this@GeneralFragment.requireContext())
+                    LinearLayoutManager(this@DiabetesFollowUpFragment.requireContext())
             }
         }
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForGeneral()
+        viewModel?.getPatientsForDiabetesFollowUp(Constants.DIABETES_EXCLUSION_AGE)
     }
 
     override fun onPatientClicked(patient: Patient) {

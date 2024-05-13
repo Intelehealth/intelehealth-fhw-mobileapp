@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search.viewmodel
+package org.intelehealth.ncd.category.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,17 +11,16 @@ import org.intelehealth.ncd.data.SearchRepository
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
-class HypertensionFollowUpViewModel(
+class DiabetesFollowUpViewModel(
     private val repository: SearchRepository,
     private val utils: CategorySegregationUtils
 ) : ViewModel() {
 
-    private val _hypertensionFollowUpMutableLiveData = MutableLiveData<List<Patient>>()
-    val hypertensionFollowUpLiveData: LiveData<List<Patient>> =
-        _hypertensionFollowUpMutableLiveData
+    private val _diabetesFollowUpMutableLiveData = MutableLiveData<List<Patient>>()
+    val diabetesFollowUpLiveData: LiveData<List<Patient>> = _diabetesFollowUpMutableLiveData
 
-    fun getPatientsForHypertensionFollowUp(age: Int) {
-        var hypertensionFollowUpPatients: MutableList<Patient>
+    fun getPatientsForDiabetesFollowUp(age: Int) {
+        var diabetesFollowUpPatients: MutableList<Patient>
 
         viewModelScope.launch(Dispatchers.IO) {
             val patientsBasedOnAge = repository.getPatientsBasedOnAge(age)
@@ -30,13 +29,13 @@ class HypertensionFollowUpViewModel(
                 Constants.OTHER_MEDICAL_HISTORY
             )
 
-            hypertensionFollowUpPatients = utils.segregateAndFetchData(
+            diabetesFollowUpPatients = utils.segregateAndFetchData(
                 patientsBasedOnAge.toMutableList(),
                 patientsBasedOnUuids.toMutableList(),
-                Constants.HYPERTENSION_FOLLOW_UP
+                Constants.DIABETES_FOLLOW_UP
             )
 
-            _hypertensionFollowUpMutableLiveData.postValue(hypertensionFollowUpPatients)
+            _diabetesFollowUpMutableLiveData.postValue(diabetesFollowUpPatients)
         }
     }
 }

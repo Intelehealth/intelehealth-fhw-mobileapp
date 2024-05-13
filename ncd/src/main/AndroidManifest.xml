@@ -4,7 +4,7 @@
     <application>
 
         <activity
-            android:name=".search.activity.SearchPatientCategoryActivity"
+            android:name=".category.activity.NCDPatientCategoryActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
 

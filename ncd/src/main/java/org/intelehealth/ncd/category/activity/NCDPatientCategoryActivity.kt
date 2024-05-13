@@ -1,25 +1,25 @@
-package org.intelehealth.ncd.search.activity
+package org.intelehealth.ncd.category.activity
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.intelehealth.ncd.R
-import org.intelehealth.ncd.databinding.ActivitySearchPatientCategoryBinding
-import org.intelehealth.ncd.search.pager.CategoryPagerAdapter
-import org.intelehealth.ncd.search.tabs.AnemiaFollowUpFragment
-import org.intelehealth.ncd.search.tabs.AnemiaScreeningFragment
-import org.intelehealth.ncd.search.tabs.DiabetesFollowUpFragment
-import org.intelehealth.ncd.search.tabs.DiabetesScreeningFragment
-import org.intelehealth.ncd.search.tabs.GeneralFragment
-import org.intelehealth.ncd.search.tabs.HypertensionFollowUpFragment
-import org.intelehealth.ncd.search.tabs.HypertensionScreeningFragment
+import org.intelehealth.ncd.category.pager.CategoryPagerAdapter
+import org.intelehealth.ncd.category.tabs.AnemiaFollowUpFragment
+import org.intelehealth.ncd.category.tabs.AnemiaScreeningFragment
+import org.intelehealth.ncd.category.tabs.DiabetesFollowUpFragment
+import org.intelehealth.ncd.category.tabs.DiabetesScreeningFragment
+import org.intelehealth.ncd.category.tabs.GeneralFragment
+import org.intelehealth.ncd.category.tabs.HypertensionFollowUpFragment
+import org.intelehealth.ncd.category.tabs.HypertensionScreeningFragment
+import org.intelehealth.ncd.databinding.ActivityNcdPatientCategoryBinding
 
-class SearchPatientCategoryActivity : AppCompatActivity() {
+class NCDPatientCategoryActivity : AppCompatActivity() {
 
-    private var binding: ActivitySearchPatientCategoryBinding? = null
+    private var binding: ActivityNcdPatientCategoryBinding? = null
     private var backPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             finish()
@@ -28,7 +28,7 @@ class SearchPatientCategoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchPatientCategoryBinding.inflate(layoutInflater)
+        binding = ActivityNcdPatientCategoryBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
         setToolbar()
@@ -39,7 +39,7 @@ class SearchPatientCategoryActivity : AppCompatActivity() {
     private fun setToolbar() {
         binding?.toolbar?.apply {
             setSupportActionBar(this)
-            setTitleTextAppearance(this@SearchPatientCategoryActivity, R.style.ToolbarTheme)
+            setTitleTextAppearance(this@NCDPatientCategoryActivity, R.style.ToolbarTheme)
             setTitleTextColor(Color.WHITE)
         }
     }

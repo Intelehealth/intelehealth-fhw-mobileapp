@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search.tabs
+package org.intelehealth.ncd.category.tabs
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,16 +17,14 @@ import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.room.CategoryDatabase
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
-import org.intelehealth.ncd.search.adapter.CategoryRecyclerViewAdapter
-import org.intelehealth.ncd.search.viewmodel.HypertensionFollowUpViewModel
-import org.intelehealth.ncd.search.viewmodel.HypertensionScreeningViewModel
-import org.intelehealth.ncd.search.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
+import org.intelehealth.ncd.category.viewmodel.GeneralViewModel
+import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
-class HypertensionFollowUpFragment : Fragment(), PatientClickedListener {
-
+class GeneralFragment : Fragment(), PatientClickedListener {
     private var binding: LayoutSearchPatientCategoryBinding? = null
-    private var viewModel: HypertensionFollowUpViewModel? = null
+    private var viewModel: GeneralViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,25 +52,25 @@ class HypertensionFollowUpFragment : Fragment(), PatientClickedListener {
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@HypertensionFollowUpFragment,
+            owner = this@GeneralFragment,
             factory = CategoryViewModelFactory(repository, utils)
-        )[HypertensionFollowUpViewModel::class.java]
+        )[GeneralViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.hypertensionFollowUpLiveData?.observe(requireActivity()) {
+        viewModel?.generalLiveData?.observe(requireActivity()) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
 
             binding?.recyclerView?.let { rv ->
                 rv.adapter = adapter
                 rv.layoutManager =
-                    LinearLayoutManager(this@HypertensionFollowUpFragment.requireContext())
+                    LinearLayoutManager(this@GeneralFragment.requireContext())
             }
         }
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForHypertensionFollowUp(Constants.HYPERTENSION_EXCLUSION_AGE)
+        viewModel?.getPatientsForGeneral()
     }
 
     override fun onPatientClicked(patient: Patient) {

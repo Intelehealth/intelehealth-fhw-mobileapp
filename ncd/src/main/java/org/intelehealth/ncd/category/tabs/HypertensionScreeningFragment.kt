@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search.tabs
+package org.intelehealth.ncd.category.tabs
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,9 +17,9 @@ import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.room.CategoryDatabase
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
-import org.intelehealth.ncd.search.adapter.CategoryRecyclerViewAdapter
-import org.intelehealth.ncd.search.viewmodel.HypertensionScreeningViewModel
-import org.intelehealth.ncd.search.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
+import org.intelehealth.ncd.category.viewmodel.HypertensionScreeningViewModel
+import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
 class HypertensionScreeningFragment : Fragment(), PatientClickedListener {
