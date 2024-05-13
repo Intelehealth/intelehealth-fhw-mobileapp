@@ -45,7 +45,7 @@ import org.intelehealth.app.activities.visit.VisitActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
-import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
+import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
@@ -264,7 +264,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         cardAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), MyAppointmentActivity.class);
+                Intent intent = new Intent(requireActivity(), MyAppointmentActivityNew.class);
                 startActivity(intent);
 
             }

@@ -1424,8 +1424,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             address1.setText(patientDTO.getAddress1());
         }
 
+        //setting address 2
         if (patientDTO.getAddress2() == null || patientDTO.getAddress2().equals("")) { //
-            addressTwoTr.setVisibility(View.GONE);
+            addr2View.setText(getResources().getString(R.string.no_address_added));
         } else {
             addr2View.setText(patientDTO.getAddress2());
         }

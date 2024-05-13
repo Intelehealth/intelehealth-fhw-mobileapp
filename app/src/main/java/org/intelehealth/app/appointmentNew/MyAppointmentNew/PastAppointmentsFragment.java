@@ -1,4 +1,4 @@
-package org.intelehealth.app.appointmentNew;
+package org.intelehealth.app.appointmentNew.MyAppointmentNew;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
@@ -54,7 +54,10 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
-import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
+import org.intelehealth.app.appointmentNew.AllAppointmentsAdapter;
+import org.intelehealth.app.appointmentNew.TodaysMyAppointmentsFragment;
+import org.intelehealth.app.appointmentNew.UpdateAppointmentsCount;
+import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
@@ -69,7 +72,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class AllAppointmentsFragment extends Fragment {
+public class PastAppointmentsFragment extends Fragment {
     private static final String TAG = "AllAppointmentsFragment";
     View parentView;
     LinearLayout cardUpcomingAppointments, cardCancelledAppointments, cardCompletedAppointments, layoutMainAppOptions;
@@ -349,7 +352,7 @@ public class AllAppointmentsFragment extends Fragment {
      * listening result from calender dialog
      */
     private void fragmentResultListener() {
-        getParentFragmentManager().setFragmentResultListener("requestKey", AllAppointmentsFragment.this, (requestKey, bundle) -> {
+        getParentFragmentManager().setFragmentResultListener("requestKey", PastAppointmentsFragment.this, (requestKey, bundle) -> {
             String selectedDate = bundle.getString(SELECTED_DATE);
             if(selectedDate != null){
                 String whichDate = bundle.getString(WHICH_DATE);

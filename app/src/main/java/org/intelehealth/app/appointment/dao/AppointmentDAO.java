@@ -1303,7 +1303,6 @@ public class AppointmentDAO {
                         + "a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                         + "FROM tbl_patient p, tbl_appointments a "
                         + "WHERE p.uuid = a.patient_id "
-                        + "AND a.slot_date = '" + currentDate + "'"
                         + "AND a.status = 'booked'"
                         + "AND datetime(a.slot_js_date) >= datetime('now') "
                         + "LIMIT ? OFFSET ?"
