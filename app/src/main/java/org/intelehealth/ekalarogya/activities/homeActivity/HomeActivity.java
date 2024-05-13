@@ -446,7 +446,7 @@ public class HomeActivity extends BaseActivity implements SyncListener {
 
     private void ncdModule() {
         try {
-            Intent intent = new Intent(this, Class.forName("org.intelehealth.ncd.category.activity.NCDPatientCategoryActivity"));
+            Intent intent = new Intent(this, Class.forName("org.intelehealth.ncd.category.activity.NcdPatientCategoryActivity"));
             startActivity(intent);
         } catch (Exception exception) {
             exception.printStackTrace();

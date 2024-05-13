@@ -1,12 +1,24 @@
 package org.intelehealth.ncd.search
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import org.intelehealth.ncd.R
+import org.intelehealth.ncd.databinding.ActivityNcdSearchBinding
 
 class NcdSearchActivity : AppCompatActivity() {
+
+    private var binding: ActivityNcdSearchBinding? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ncd_search)
+        binding = ActivityNcdSearchBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+
+        setToolbar()
+    }
+
+    private fun setToolbar() {
+
     }
 }

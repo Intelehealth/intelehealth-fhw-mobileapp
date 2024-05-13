@@ -17,7 +17,7 @@ import org.intelehealth.ncd.category.tabs.HypertensionFollowUpFragment
 import org.intelehealth.ncd.category.tabs.HypertensionScreeningFragment
 import org.intelehealth.ncd.databinding.ActivityNcdPatientCategoryBinding
 
-class NCDPatientCategoryActivity : AppCompatActivity() {
+class NcdPatientCategoryActivity : AppCompatActivity() {
 
     private var binding: ActivityNcdPatientCategoryBinding? = null
     private var backPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
@@ -39,7 +39,7 @@ class NCDPatientCategoryActivity : AppCompatActivity() {
     private fun setToolbar() {
         binding?.toolbar?.apply {
             setSupportActionBar(this)
-            setTitleTextAppearance(this@NCDPatientCategoryActivity, R.style.ToolbarTheme)
+            setTitleTextAppearance(this@NcdPatientCategoryActivity, R.style.ToolbarTheme)
             setTitleTextColor(Color.WHITE)
         }
     }

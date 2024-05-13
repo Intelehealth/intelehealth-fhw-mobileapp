@@ -9,9 +9,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".category.activity.NCDPatientCategoryActivity"
+            android:name=".category.activity.NcdPatientCategoryActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>
