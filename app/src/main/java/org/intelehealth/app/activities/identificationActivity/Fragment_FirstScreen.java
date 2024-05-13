@@ -756,7 +756,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 && PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_NAME)) {
             String guardianName = guardianNameTv.getText().toString();
             if (PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_NAME)) {
-                guardianNameTv.setText(new StringBuilder().append(guardianName).append("*"));
+                String name = guardianName.replace("*","");
+                guardianNameTv.setText(new StringBuilder().append(name).append("*"));
             }
             guardianNameLay.setVisibility(View.VISIBLE);
         } else {
@@ -768,7 +769,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 && PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_TYPE)) {
             String guardianType = guardianTypeTv.getText().toString();
             if (PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_TYPE)) {
-                guardianTypeTv.setText(new StringBuilder().append(guardianType).append("*"));
+                String type = guardianType.replace("*","");
+                guardianTypeTv.setText(new StringBuilder().append(type).append("*"));
             }
             guardianTypeLay.setVisibility(View.VISIBLE);
         } else {
@@ -1314,8 +1316,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         //phone number
         if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.PHONE_NUM)) {
-            if (mPhoneNumberEditText.getText().toString().equals("") &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.PHONE_NUM)) {
+            if (PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.PHONE_NUM)) {
                 String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
                 Log.v("phone", "phone: " + s);
                 if (s.length() < mSelectedMobileNumberValidationLength) {
@@ -1346,6 +1347,39 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 } else {
                     mPhoneNumberErrorTextView.setVisibility(View.GONE);
                     mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }else {
+                String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
+                if(s.length()>0){
+                    if (s.length() < mSelectedMobileNumberValidationLength) {
+                        mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
+                        mPhoneNumberErrorTextView.setText(getString(R.string.enter_10_digits));
+                        mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        mPhoneNumberEditText.requestFocus();
+                        return;
+                    }
+                    if (!mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91") && s.length() < 15) {
+                        mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
+                        mPhoneNumberErrorTextView.setText(getString(R.string.enter_15_digits));
+                        mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        mPhoneNumberEditText.requestFocus();
+                        return;
+                    } else {
+                        mPhoneNumberErrorTextView.setVisibility(View.GONE);
+                        mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    }
+
+                    if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91")
+                            && s.length() != mSelectedMobileNumberValidationLength) {
+                        mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
+                        mPhoneNumberErrorTextView.setText(R.string.invalid_mobile_no);
+                        mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        mPhoneNumberEditText.requestFocus();
+                        return;
+                    } else {
+                        mPhoneNumberErrorTextView.setVisibility(View.GONE);
+                        mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    }
                 }
             }
         }
@@ -1385,8 +1419,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         //Emergency contact number country code picker
         if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
             Log.d("ppppp"," "+PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER));
-            if (mEmContactNumberEditText.getText().toString().equals("") &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
+            if (PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
                 String s = mEmContactNumberEditText.getText().toString().replaceAll("\\s+", "");
                 if (s.length() < mSelectedMobileNumberValidationLength) {
                     mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
@@ -1424,6 +1457,47 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 } else {
                     mEmContactNumErrorTextView.setVisibility(View.GONE);
                     mEmContactNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            }else {
+                String s = mEmContactNumberEditText.getText().toString().replaceAll("\\s+", "");
+                if (s.length()>0){
+                    if (s.length() < mSelectedMobileNumberValidationLength) {
+                        mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
+                        mEmContactNumErrorTextView.setText(getString(R.string.enter_10_digits));
+                        mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        mEmContactNumberEditText.requestFocus();
+                        return;
+                    }
+
+                    if (s.equals(mPhoneNumberEditText.getText().toString())) {
+                        mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
+                        mEmContactNumErrorTextView.setText(getString(R.string.phone_number_and_emergency_number_can_not_be_the_same));
+                        mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        mEmContactNumberEditText.requestFocus();
+                        return;
+                    }
+                    if (!mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91") && s.length() < 15) {
+                        mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
+                        mEmContactNumErrorTextView.setText(getString(R.string.enter_15_digits));
+                        mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        mEmContactNumberEditText.requestFocus();
+                        return;
+                    } else {
+                        mEmContactNumErrorTextView.setVisibility(View.GONE);
+                        mEmContactNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    }
+
+                    if (mEmContactNoCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91")
+                            && s.length() != mSelectedMobileNumberValidationLength) {
+                        mEmContactNumberEditText.setVisibility(View.VISIBLE);
+                        mEmContactNumberEditText.setText(R.string.invalid_mobile_no);
+                        mEmContactNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        mEmContactNumberEditText.requestFocus();
+                        return;
+                    } else {
+                        mEmContactNumErrorTextView.setVisibility(View.GONE);
+                        mEmContactNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    }
                 }
             }
         }
