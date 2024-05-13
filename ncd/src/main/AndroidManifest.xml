@@ -4,10 +4,14 @@
     <application>
 
         <activity
+            android:name=".search.NcdSearchActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".category.activity.NCDPatientCategoryActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
-
     </application>
 
 </manifest>
