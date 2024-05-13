@@ -97,7 +97,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
-        initFirebaseRemoteConfig();
+//        initFirebaseRemoteConfig();
 
         if (sessionManager.isFirstTimeLaunch()) {
             checkPerm();
@@ -176,54 +176,60 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     }
 
-    private void initFirebaseRemoteConfig() {
-        FirebaseApp.initializeApp(this);
-        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(0)
-                .build();
-        instance.setConfigSettingsAsync(configSettings);
-
-        instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
-            @Override
-            public void onComplete(@NonNull Task<Boolean> task) {
-                if (task.isSuccessful() && !isFinishing()) {
-                    long force_update_version_code = instance.getLong("force_update_version_code");
-                    if (force_update_version_code > BuildConfig.VERSION_CODE) {
-                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashScreenActivity.this);
-                        alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
-                        alertDialogBuilder.setCancelable(false);
-                        alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-                                } catch (android.content.ActivityNotFoundException anfe) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-                                }
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-                        alertDialogBuilder.show();
-                    } else {
-                        checkPerm();
-                    }
-                } else {
-                    checkPerm();
-                }
-            }
-        });
-    }
+//    private void initFirebaseRemoteConfig() {
+//        FirebaseApp.initializeApp(this);
+//        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
+//        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+//                .setMinimumFetchIntervalInSeconds(0)
+//                .build();
+//        instance.setConfigSettingsAsync(configSettings);
+//
+//        instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Boolean> task) {
+//                if (task.isSuccessful() && !isFinishing()) {
+//                    long force_update_version_code = instance.getLong("force_update_version_code");
+//                    if (force_update_version_code > BuildConfig.VERSION_CODE) {
+//                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashScreenActivity.this);
+//                        alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
+//                        alertDialogBuilder.setCancelable(false);
+//                        alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                try {
+//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+//                                } catch (android.content.ActivityNotFoundException anfe) {
+//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+//                                }
+//                                dialog.dismiss();
+//                                finish();
+//                            }
+//                        });
+//                        alertDialogBuilder.show();
+//                    } else {
+//                        checkPerm();
+//                    }
+//                } else {
+//                    checkPerm();
+//                }
+//            }
+//        });
+//    }
 
     private boolean checkAndRequestPermissions() {
-        int cameraPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
         int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+            int notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS);
+            if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
         int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
 
-        List<String> listPermissionsNeeded = new ArrayList<>();
 
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
@@ -232,17 +238,22 @@ public class SplashScreenActivity extends AppCompatActivity {
             listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
         }
         if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+            } else {
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
         }
         if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
-
         }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
+
+//        checkOverlayPermission();
         return true;
     }
 

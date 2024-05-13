@@ -10,23 +10,20 @@ buildscript {
 android {
     sourceSets.main {
         jniLibs.srcDir 'libs'
-        jni.srcDirs = [] //disable automatic ndk-build call
+        //disable automatic ndk-build call
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    compileSdkVersion 31
-    buildToolsVersion '28.0.3'
+    compileSdk 34
     dataBinding {
         enabled true
     }
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         minSdkVersion 19
-        targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        targetSdk 34
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,25 +33,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'org.intelehealth.apprtc'
 }
 
 dependencies {
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':ihutils')
     //implementation 'com.google.firebase:firebase-database:16.0.4'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 
-    implementation 'io.reactivex.rxjava2:rxjava:2.0.5'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
     //noinspection GradleCompatible
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.material:material:1.11.0'
     //noinspection GradleCompatible
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     //noinspection GradleCompatible
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     //implementation 'com.myhexaville:smart-image-picker:1.0.4'
@@ -70,10 +68,9 @@ dependencies {
     //implementation 'com.google.firebase:firebase-firestore:21.4.3'
     implementation 'com.android.support:multidex:1.0.3'
 
-    implementation 'com.android.volley:volley:1.2.0'
-    annotationProcessor 'androidx.databinding:databinding-compiler:4.1.3'
+    implementation 'com.android.volley:volley:1.2.1'
+    annotationProcessor 'androidx.databinding:databinding-compiler:8.3.2'
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.github.bumptech.glide:glide:3.8.0'
 
     implementation 'com.amazonaws:aws-android-sdk-s3:2.17.1'

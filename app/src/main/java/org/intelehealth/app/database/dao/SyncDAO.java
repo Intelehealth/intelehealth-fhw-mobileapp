@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -49,48 +50,48 @@ public class SyncDAO {
     private SQLiteDatabase db;
     String appLanguage;
 
-    public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
+    public boolean SyncData(ResponseDTO responseDTO) {
         boolean isSynced = true;
-        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        appLanguage = sessionManager.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            setLocale(appLanguage);
-        }
-        PatientsDAO patientsDAO = new PatientsDAO();
-        VisitsDAO visitsDAO = new VisitsDAO();
-        EncounterDAO encounterDAO = new EncounterDAO();
-        ObsDAO obsDAO = new ObsDAO();
-        LocationDAO locationDAO = new LocationDAO();
-        ProviderDAO providerDAO = new ProviderDAO();
-        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
+        Executors.newFixedThreadPool(4).execute(() -> {
+            sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+            appLanguage = sessionManager.getAppLanguage();
+            if (!appLanguage.equalsIgnoreCase("")) {
+                setLocale(appLanguage);
+            }
+            PatientsDAO patientsDAO = new PatientsDAO();
+            VisitsDAO visitsDAO = new VisitsDAO();
+            EncounterDAO encounterDAO = new EncounterDAO();
+            ObsDAO obsDAO = new ObsDAO();
+            LocationDAO locationDAO = new LocationDAO();
+            ProviderDAO providerDAO = new ProviderDAO();
+            VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+            ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
 
-        try {
-            Logger.logD(TAG, "pull sync started");
+            try {
+                Logger.logD(TAG, "pull sync started");
 
-            patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
-            patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
-            patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
-            visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
-            encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
-            obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
-            locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
-            providerDAO.insertProviders(responseDTO.getData().getProviderlist());
-            providerAttributeLIstDAO.insertProvidersAttributeList
-                    (responseDTO.getData().getProviderAttributeList());
-            visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+                patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
+                patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
+                patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
+                visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
+                encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
+                obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
+                locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
+                providerDAO.insertProviders(responseDTO.getData().getProviderlist());
+                providerAttributeLIstDAO.insertProvidersAttributeList
+                        (responseDTO.getData().getProviderAttributeList());
+                visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
-            Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
-            Logger.logD(TAG, "Pull sync ended");
-            sessionManager.setPullExcutedTime(sessionManager.isPulled());
-            sessionManager.setFirstTimeSyncExecute(false);
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE(TAG, "Exception", e);
-            throw new DAOException(e.getMessage(), e);
-        }
-
+                Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
+                Logger.logD(TAG, "Pull sync ended");
+                sessionManager.setPullExcutedTime(sessionManager.isPulled());
+                sessionManager.setFirstTimeSyncExecute(false);
+            } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                Logger.logE(TAG, "Exception", e);
+            }
+        });
         return isSynced;
 
     }
@@ -123,7 +124,7 @@ public class SyncDAO {
                         sync = SyncData(response.body());
                         Log.d(TAG, "onResponse: response body : " + response.body().toString());
 
-                    } catch (DAOException e) {
+                    } catch (Exception e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
                     if (sync) {
@@ -222,7 +223,7 @@ public class SyncDAO {
                     boolean sync = false;
                     try {
                         sync = SyncData(response.body());
-                    } catch (DAOException e) {
+                    } catch (Exception e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
                     if (sync) {
@@ -252,11 +253,11 @@ public class SyncDAO {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
                         if (fromActivity.equalsIgnoreCase("home")) {
-                           // Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
                             //Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
-                           // Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
                         }
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
@@ -450,7 +451,7 @@ public class SyncDAO {
                                 //providerDAO.updateProviderProfileSync(sessionManager.getProviderID(), "true");
 
                                 //ui2.0 for provider profile details
-                                if(pushResponseApiCall.getData().getProviderlist()!=null) {
+                                if (pushResponseApiCall.getData().getProviderlist() != null) {
                                     Log.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());
                                     for (int i = 0; i < pushResponseApiCall.getData().getProviderlist().size(); i++) {
                                         try {

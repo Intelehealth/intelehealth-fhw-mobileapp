@@ -1149,17 +1149,17 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             //CallListenerBackgroundService.getInstance().stopForegroundService();
             context.startService(serviceIntent);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
-                    dialogRefreshInProgress.dismiss();
-                }
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
-                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
-            } else {
-                //Permission Granted-System will work
-            }
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (!Settings.canDrawOverlays(this)) {
+//                if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
+//                    dialogRefreshInProgress.dismiss();
+//                }
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
+//                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+//            } else {
+//                //Permission Granted-System will work
+//            }
+//        }
 
     }
 
