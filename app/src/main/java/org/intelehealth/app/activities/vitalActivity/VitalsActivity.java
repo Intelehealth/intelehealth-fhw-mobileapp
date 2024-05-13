@@ -614,13 +614,14 @@ public class VitalsActivity extends BaseActivity {
                 if (!value.equalsIgnoreCase("0")) mBpDia.setText(value);
                 break;
             case UuidDictionary.TEMPERATURE: //Temperature
+                boolean validate = value != null && !value.isEmpty() && !value.equalsIgnoreCase("0");
                 if (findViewById(R.id.tinput_c).getVisibility() == View.GONE) {
                     //Converting Celsius to Fahrenheit
-                    if (value != null && !value.isEmpty() && !value.equalsIgnoreCase("0")) {
+                    if (validate)
                         mTemperature.setText(convertCtoF(value));
-                    }
                 } else {
-                    if (!value.equalsIgnoreCase("0")) mTemperature.setText(value);
+                    if (validate)
+                        mTemperature.setText(value);
                 }
 
                 break;
@@ -962,12 +963,12 @@ public class VitalsActivity extends BaseActivity {
                 obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
-               /* if (results.getTemperature().equals("")) {
-                    obsDTO.setValue("0");
+                if (results.getTemperature().equals("")) {
+                    obsDTO.setValue("25");
                 } else {
                     obsDTO.setValue(results.getTemperature());
-                }*/
-                obsDTO.setValue(results.getTemperature());
+                }
+             //   obsDTO.setValue(results.getTemperature());    SYR-426 -- This line is not needed and is not added anywhere above too.
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
                 obsDAO.updateObs(obsDTO);
 
