@@ -12,7 +12,7 @@ import org.intelehealth.ncd.callbacks.PatientClickedListener
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.SearchDataSource
 import org.intelehealth.ncd.data.SearchRepository
-import org.intelehealth.ncd.databinding.LayoutSearchPatientCategoryBinding
+import org.intelehealth.ncd.databinding.LayoutNcdPatientCategoryBinding
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.room.CategoryDatabase
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
@@ -24,7 +24,7 @@ import org.intelehealth.ncd.utils.CategorySegregationUtils
 
 class HypertensionScreeningFragment : Fragment(), PatientClickedListener {
 
-    private var binding: LayoutSearchPatientCategoryBinding? = null
+    private var binding: LayoutNcdPatientCategoryBinding? = null
     private var viewModel: HypertensionScreeningViewModel? = null
 
     override fun onCreateView(
@@ -32,7 +32,7 @@ class HypertensionScreeningFragment : Fragment(), PatientClickedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = LayoutSearchPatientCategoryBinding.inflate(layoutInflater)
+        binding = LayoutNcdPatientCategoryBinding.inflate(layoutInflater)
         return binding!!.root
     }
 
