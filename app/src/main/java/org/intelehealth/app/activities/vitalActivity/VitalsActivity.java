@@ -852,13 +852,16 @@ public class VitalsActivity extends BaseActivity {
 
                 if (mTemperature.getText() != null) {
 
+                    String value = mTemperature.getText().toString();
+                    if (value.isEmpty())
+                        value = "25";
                     if (findViewById(R.id.tinput_c).getVisibility() == View.GONE) {
                         //Converting Fahrenheit to Celsius
 //                        results.setTemperature((mTemperature.getText().toString()));
 
-                        results.setTemperature(ConvertFtoC(mTemperature.getText().toString()));
+                        results.setTemperature(ConvertFtoC(value));
                     } else {
-                        results.setTemperature((mTemperature.getText().toString()));
+                        results.setTemperature((value));
                     }
 
                 }
