@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.ncd.callbacks.PatientClickedListener
 import org.intelehealth.ncd.constants.Constants
-import org.intelehealth.ncd.data.SearchDataSource
-import org.intelehealth.ncd.data.SearchRepository
+import org.intelehealth.ncd.data.category.CategoryDataSource
+import org.intelehealth.ncd.data.category.CategoryRepository
 import org.intelehealth.ncd.databinding.LayoutNcdPatientCategoryBinding
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.room.CategoryDatabase
@@ -48,8 +48,8 @@ class HypertensionScreeningFragment : Fragment(), PatientClickedListener {
         val patientAttributeDao: PatientAttributeDao =
             CategoryDatabase.getInstance(requireContext()).patientAttributeDao()
 
-        val dataSource = SearchDataSource(patientDao, patientAttributeDao)
-        val repository = SearchRepository(dataSource)
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao)
+        val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(

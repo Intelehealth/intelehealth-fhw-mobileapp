@@ -1,9 +1,9 @@
-package org.intelehealth.ncd.data
+package org.intelehealth.ncd.data.category
 
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 
-class SearchRepository(private val dataSource: SearchDataSource) {
+class CategoryRepository(private val dataSource: CategoryDataSource) {
 
     suspend fun getPatientsBasedOnAge(age: Int): List<Patient> =
         dataSource.getPatientsBasedOnAge(age)

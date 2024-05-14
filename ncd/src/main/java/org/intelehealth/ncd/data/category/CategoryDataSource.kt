@@ -1,11 +1,11 @@
-package org.intelehealth.ncd.data
+package org.intelehealth.ncd.data.category
 
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
 
-class SearchDataSource(
+class CategoryDataSource(
     private val patientDao: PatientDao,
     private val patientAttributeDao: PatientAttributeDao
 ) {
