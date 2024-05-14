@@ -75,22 +75,19 @@ import java.util.Locale;
 public class PastAppointmentsFragment extends Fragment {
     private static final String TAG = "AllAppointmentsFragment";
     View parentView;
-    LinearLayout cardUpcomingAppointments, cardCancelledAppointments, cardCompletedAppointments, layoutMainAppOptions;
     RecyclerView rvUpcomingApp, rvCancelledApp, rvCompletedApp;
-    RelativeLayout layoutParent;
-    FrameLayout frameLayoutFilter, frameLayoutDateFilter;
-    ImageView ivFilterAllApp, ivDateFilter, ivClearText;
+    LinearLayout layoutParent;
+    FrameLayout frameLayoutFilter;
+    ImageView ivFilterAllApp, ivClearText;
     List<FilterOptionsModel> filtersList;
     List<String> filtersListNew;
     RadioGroup rgFilterAppointments;
     String selectedAppointmentOption;
-    RadioButton rbUpcoming, rbCancelled, rbCompleted;
+    RadioButton rbUpcoming;
     TextView tvResultsFor;
     HorizontalScrollView scrollChips;
     boolean isChipInit = false;
     LinearLayout layoutUpcoming, layoutCancelled, layoutCompleted, layoutParentAll;
-    TextView tvUpcomingAppsCount, tvCompletedAppsCount, tvUpcomingAppsCountTitle,
-            tvCompletedAppsCountTitle, tvCancelledAppsCount, tvCancelledAppsCountTitle;
     String fromDate = "";
     String toDate = "";
     String whichAppointment = "";
@@ -109,27 +106,14 @@ public class PastAppointmentsFragment extends Fragment {
     private NestedScrollView nsvToday;
 
     private final int upcomingLimit = 15;
-    private final int completedLimit = 15;
-    private final int cancelledLimit = 15;
     private int upcomingStart = 0, upcomingEnd = upcomingStart + upcomingLimit;
-    private int completedStart = 0, completedEnd = completedStart + completedLimit;
-    private int cancelledStart = 0, cancelledEnd = cancelledStart + cancelledLimit;
 
     private boolean isUpcomingFullyLoaded = false;
-    private boolean isCompletedFullyLoaded = false;
-    private boolean isCancelledFullyLoaded = false;
-
     private List<AppointmentInfo> upcomingAppointmentInfoList;
-    private List<AppointmentInfo> completedAppointmentInfoList;
-    private List<AppointmentInfo> cancelledAppointmentInfoList;
 
     private final List<AppointmentInfo> upcomingSearchList = new ArrayList<>();
-    private final List<AppointmentInfo> completedSearchList = new ArrayList<>();
-    private final List<AppointmentInfo> cancelledSearchList = new ArrayList<>();
 
-    private AllAppointmentsAdapter upcomingAllAppointmentsAdapter;
-    private AllAppointmentsAdapter completedAllAppointmentsAdapter;
-    private AllAppointmentsAdapter cancelledAllAppointmentsAdapter;
+    private PastMyAppointmentsAdapter pastAppointmentsAdapter;
 
 
     @Override
@@ -159,7 +143,7 @@ public class PastAppointmentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setLocale(getContext());
-        parentView = inflater.inflate(R.layout.fragment_all_appointments_ui2, container, false);
+        parentView = inflater.inflate(R.layout.fragment_past_appointments, container, false);
         initUI();
         clickListeners();
         return parentView;
@@ -259,38 +243,17 @@ public class PastAppointmentsFragment extends Fragment {
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         currentDate = dateFormat1.format(new Date());
 
-        rvUpcomingApp = parentView.findViewById(R.id.rv_all_upcoming_appointments);
-        rvCancelledApp = parentView.findViewById(R.id.rv_all_cancelled_appointments);
-        rvCompletedApp = parentView.findViewById(R.id.rv_all_completed_appointments);
-        cardUpcomingAppointments = parentView.findViewById(R.id.card_upcoming_appointments1);
-        cardCancelledAppointments = parentView.findViewById(R.id.card_cancelled_appointments1);
-        cardCompletedAppointments = parentView.findViewById(R.id.card_completed_appointments1);
-        layoutMainAppOptions = parentView.findViewById(R.id.layout_main_app_options1);
-        layoutParent = parentView.findViewById(R.id.layout_parent_all_appointments);
+        rvUpcomingApp = parentView.findViewById(R.id.rv_upcoming_appointments);
+        layoutParent = parentView.findViewById(R.id.layout_parent);
         frameLayoutFilter = parentView.findViewById(R.id.filter_frame_all_appointments);
-        ivFilterAllApp = parentView.findViewById(R.id.iv_filter_all_app);
-        frameLayoutDateFilter = parentView.findViewById(R.id.filter_frame_date_appointments);
-        tvFromDate = frameLayoutDateFilter.findViewById(R.id.tv_from_date_all_app);
-        tvToDate = frameLayoutDateFilter.findViewById(R.id.tv_to_date_all_app);
-        ivDateFilter = parentView.findViewById(R.id.iv_calendar_all_app);
+        ivFilterAllApp = parentView.findViewById(R.id.filter_im);
         rgFilterAppointments = frameLayoutFilter.findViewById(R.id.rg_filter_appointments);
         rbUpcoming = frameLayoutFilter.findViewById(R.id.rb_upcoming_appointments);
-        rbCancelled = frameLayoutFilter.findViewById(R.id.rb_cancelled_appointments);
-        rbCompleted = frameLayoutFilter.findViewById(R.id.rb_completed_appointments);
-        tvResultsFor = parentView.findViewById(R.id.tv_results_for);
         scrollChips = parentView.findViewById(R.id.scroll_chips);
         layoutUpcoming = parentView.findViewById(R.id.layout_upcoming1);
-        layoutCancelled = parentView.findViewById(R.id.layout_cancelled1);
-        layoutCompleted = parentView.findViewById(R.id.layout_completed1);
         layoutParentAll = parentView.findViewById(R.id.layout_parent_all1);
-        tvUpcomingAppsCount = parentView.findViewById(R.id.tv_upcoming_appointments_all);
-        tvCompletedAppsCount = parentView.findViewById(R.id.tv_completed_appointments_all);
-        tvUpcomingAppsCountTitle = parentView.findViewById(R.id.tv_upcoming_apps_title_all);
-        tvCompletedAppsCountTitle = parentView.findViewById(R.id.tv_completed_apps_title_all);
-        tvCancelledAppsCount = parentView.findViewById(R.id.tv_cancelled_appointments_all);
-        tvCancelledAppsCountTitle = parentView.findViewById(R.id.tv_cancelled_apps_title_all);
-        autotvSearch = parentView.findViewById(R.id.et_search_all);
-        ivClearText = parentView.findViewById(R.id.iv_clear_all);
+        autotvSearch = parentView.findViewById(R.id.et_search);
+        ivClearText = parentView.findViewById(R.id.iv_clear);
         ivClearText.setOnClickListener(v -> {
             autotvSearch.setText("");
             searchPatientText = "";
@@ -300,15 +263,12 @@ public class PastAppointmentsFragment extends Fragment {
         noDataFoundForCompleted = parentView.findViewById(R.id.layout_no_data_found_completed);
         noDataFoundForCancelled = parentView.findViewById(R.id.layout_no_data_found_cancelled);
         if (isChipInit) {
-            tvResultsFor.setVisibility(View.VISIBLE);
             scrollChips.setVisibility(View.VISIBLE);
         } else {
-            tvResultsFor.setVisibility(View.GONE);
             scrollChips.setVisibility(View.GONE);
         }
         filtersList = new ArrayList<>();
         filtersListNew = new ArrayList<>();
-        updateCardBackgrounds("upcoming");
 
         nsvToday = parentView.findViewById(R.id.nsv_today);
         nsvToday.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -321,25 +281,6 @@ public class PastAppointmentsFragment extends Fragment {
 
                     if (!isUpcomingFullyLoaded) {
                         setMoreDataIntoUpcomingRecyclerView();
-                    }
-
-                    if (cancelledAppointmentInfoList != null && cancelledAppointmentInfoList.size() == 0) {
-                        isCancelledFullyLoaded = true;
-                    }
-
-                    if (isUpcomingFullyLoaded && !isCancelledFullyLoaded) {
-                        setMoreDataIntoCancelledRecyclerView();
-                    }
-
-                    if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
-                        if (completedAppointmentInfoList != null && completedAppointmentInfoList.size() == 0) {
-                            isCompletedFullyLoaded = true;
-                            return;
-                        }
-
-                        if (!isCompletedFullyLoaded) {
-                            setMoreDataIntoCompletedRecyclerView();
-                        }
                     }
                 }
             }
@@ -392,7 +333,7 @@ public class PastAppointmentsFragment extends Fragment {
     }
 
     private void setMoreDataIntoUpcomingRecyclerView() {
-        if (upcomingSearchList.size() > 0 || cancelledSearchList.size() > 0 || completedSearchList.size() > 0) {
+        if (upcomingSearchList.size() > 0) {
             return;
         }
 
@@ -401,81 +342,22 @@ public class PastAppointmentsFragment extends Fragment {
             return;
         }
 
-        List<AppointmentInfo> tempList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate);
+        List<AppointmentInfo> tempList = new AppointmentDAO().getPastAppointmentsWithFilters(upcomingLimit, upcomingStart, currentDate);
         if (tempList.size() > 0) {
             upcomingAppointmentInfoList.addAll(tempList);
-            upcomingAllAppointmentsAdapter.notifyDataSetChanged();
+            pastAppointmentsAdapter.notifyDataSetChanged();
             upcomingStart = upcomingEnd;
             upcomingEnd += upcomingLimit;
-            tvUpcomingAppsCount.setText(upcomingAppointmentInfoList.size() + "");
-            tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentInfoList.size() + ")");
-        }
-    }
-
-    private void setMoreDataIntoCancelledRecyclerView() {
-        if (upcomingSearchList.size() > 0 || cancelledSearchList.size() > 0 || completedSearchList.size() > 0) {
-            return;
-        }
-
-        if (cancelledAppointmentInfoList != null && cancelledAppointmentInfoList.size() == 0) {
-            isCancelledFullyLoaded = true;
-            return;
-        }
-
-        List<AppointmentInfo> tempList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate);
-        if (tempList.size() > 0) {
-            cancelledAppointmentInfoList.addAll(tempList);
-            cancelledAllAppointmentsAdapter.notifyDataSetChanged();
-            cancelledStart = cancelledEnd;
-            cancelledEnd += cancelledLimit;
-            tvCancelledAppsCount.setText(cancelledAppointmentInfoList.size() + "");
-            tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentInfoList.size() + ")");
-        }
-    }
-
-    private void setMoreDataIntoCompletedRecyclerView() {
-        if (upcomingSearchList.size() > 0 || cancelledSearchList.size() > 0 || completedSearchList.size() > 0) {
-            return;
-        }
-
-        if (completedAppointmentInfoList != null && completedAppointmentInfoList.size() == 0) {
-            isCompletedFullyLoaded = true;
-            return;
-        }
-
-        List<AppointmentInfo> tempList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate);
-        if (tempList.size() > 0) {
-            getDataForCompletedAppointments(tempList);
-            completedAppointmentInfoList.addAll(tempList);
-            completedAllAppointmentsAdapter.notifyDataSetChanged();
-            upcomingStart = upcomingEnd;
-            upcomingEnd += upcomingLimit;
-            tvCompletedAppsCount.setText(completedAppointmentInfoList.size() + "");
-            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void clickListeners() {
-        cardUpcomingAppointments.setOnClickListener(v -> {
-            updateCardBackgrounds("upcoming");
-            updateMAinLayoutAsPerOptionSelected("upcoming");
-        });
-        cardCancelledAppointments.setOnClickListener(v -> {
-            updateCardBackgrounds("cancelled");
-            updateMAinLayoutAsPerOptionSelected("cancelled");
-        });
-        cardCompletedAppointments.setOnClickListener(v -> {
-            updateCardBackgrounds("completed");
-            updateMAinLayoutAsPerOptionSelected("completed");
-        });
 
         layoutParent.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (frameLayoutFilter.isShown())
                     frameLayoutFilter.setVisibility(View.GONE);
-                if (frameLayoutDateFilter.isShown())
-                    frameLayoutDateFilter.setVisibility(View.GONE);
                 return true;
             }
             return false;
@@ -484,8 +366,6 @@ public class PastAppointmentsFragment extends Fragment {
         layoutParent.setOnClickListener(v -> {
             if (frameLayoutFilter.isShown())
                 frameLayoutFilter.setVisibility(View.GONE);
-            if (frameLayoutDateFilter.isShown())
-                frameLayoutDateFilter.setVisibility(View.GONE);
 
         });
 
@@ -493,21 +373,15 @@ public class PastAppointmentsFragment extends Fragment {
         ivFilterAllApp.setOnClickListener(v -> {
 
             // filter options
-            if (frameLayoutDateFilter.isShown())
-                frameLayoutDateFilter.setVisibility(View.GONE);
             if (frameLayoutFilter.getVisibility() == View.VISIBLE)
                 frameLayoutFilter.setVisibility(View.GONE);
             else
                 frameLayoutFilter.setVisibility(View.VISIBLE);
         });
 
-        ivDateFilter.setOnClickListener(v -> {
+       /* ivDateFilter.setOnClickListener(v -> {
 
             //selectDateRange();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                selectDateRangeNew();
-            }
-
 
             // filter options
             if (frameLayoutFilter.isShown())
@@ -518,7 +392,7 @@ public class PastAppointmentsFragment extends Fragment {
                 frameLayoutDateFilter.setVisibility(View.VISIBLE);
 
 
-        });
+        });*/
 
         //filter all appointments
         rgFilterAppointments.setOnCheckedChangeListener((group, checkedId) -> {
@@ -527,7 +401,7 @@ public class PastAppointmentsFragment extends Fragment {
             if (isChecked) {
                 selectedAppointmentOption = checkedRadioButton.getText().toString();
 
-                onRadioButtonClicked(checkedRadioButton, selectedAppointmentOption);
+                //onRadioButtonClicked(checkedRadioButton, selectedAppointmentOption);
 
 
             }
@@ -573,6 +447,7 @@ public class PastAppointmentsFragment extends Fragment {
 
     }
 
+
     private void searchOperation(String query) {
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
@@ -580,13 +455,9 @@ public class PastAppointmentsFragment extends Fragment {
 
         new Thread(() -> {
             List<AppointmentInfo> allUpcomingList = new AppointmentDAO().getAllUpcomingAppointmentsWithFilters(fromDate, toDate);
-            List<AppointmentInfo> allCancelledList = new AppointmentDAO().getAllCancelledAppointmentsWithFilters(fromDate, toDate);
-            List<AppointmentInfo> allCompletedList = new AppointmentDAO().getAllCompletedAppointmentsWithFilters(fromDate, toDate);
 
             if (!finalQuery.isEmpty()) {
                 upcomingSearchList.clear();
-                cancelledSearchList.clear();
-                completedSearchList.clear();
 
                 if (allUpcomingList.size() > 0) {
                     for (AppointmentInfo info : allUpcomingList) {
@@ -597,36 +468,11 @@ public class PastAppointmentsFragment extends Fragment {
                     }
                 }
 
-                if (allCancelledList.size() > 0) {
-                    for (AppointmentInfo info : allCancelledList) {
-                        String patientName = info.getPatientName().toLowerCase();
-                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
-                            cancelledSearchList.add(info);
-                        }
-                    }
-                }
-
-                if (allCompletedList.size() > 0) {
-                    for (AppointmentInfo info : allCompletedList) {
-                        String patientName = info.getPatientName().toLowerCase();
-                        if (patientName.contains(finalQuery) || patientName.equalsIgnoreCase(finalQuery)) {
-                            completedSearchList.add(info);
-                        }
-                    }
-                }
 
                 requireActivity().runOnUiThread(() -> {
-                    upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedAppointmentInfoList, "upcoming");
+                    pastAppointmentsAdapter = new PastMyAppointmentsAdapter(getActivity(), upcomingAppointmentInfoList, "upcoming");
                     rvUpcomingApp.setNestedScrollingEnabled(true);
-                    rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
-
-                    cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledAppointmentInfoList, "cancelled");
-                    rvCancelledApp.setNestedScrollingEnabled(true);
-                    rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
-
-                    completedAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedAppointmentInfoList, "completed");
-                    rvCompletedApp.setNestedScrollingEnabled(true);
-                    rvCompletedApp.setAdapter(completedAllAppointmentsAdapter);
+                    rvUpcomingApp.setAdapter(pastAppointmentsAdapter);
                 });
             }
 
@@ -635,28 +481,6 @@ public class PastAppointmentsFragment extends Fragment {
     }
 
 
-    private void updateCardBackgrounds(String cardName) {
-        // update all 3 cards background as per selection
-        if (cardName.equals("upcoming")) {
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
-        } else if (cardName.equals("cancelled")) {
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
-        } else if (cardName.equals("completed")) {
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
-        }
-
-    }
 
     private void updateMAinLayoutAsPerOptionSelected(String cardName) {
         //adjust main layout as per option selected like figma prototype
@@ -670,101 +494,9 @@ public class PastAppointmentsFragment extends Fragment {
             params.gravity = Gravity.TOP;
 
             layoutUpcoming.setLayoutParams(params);
-        } else if (cardName.equals("cancelled")) {
-            layoutUpcoming.setVisibility(View.GONE);
-            layoutCompleted.setVisibility(View.VISIBLE);
-            layoutCancelled.setVisibility(View.VISIBLE);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.weight = 1.0f;
-            params.gravity = Gravity.TOP;
-
-            layoutCancelled.setLayoutParams(params);
-        } else if (cardName.equals("completed")) {
-            layoutCompleted.setVisibility(View.VISIBLE);
-            layoutCancelled.setVisibility(View.GONE);
-            layoutUpcoming.setVisibility(View.GONE);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.weight = 1.0f;
-            params.gravity = Gravity.TOP;
-
-            layoutCompleted.setLayoutParams(params);
         }
-
     }
 
-    public void onRadioButtonClicked(View view, String selectedAppointmentOption) {
-        boolean checked = ((RadioButton) view).isChecked();
-        RadioButton checkedRadioButton = ((RadioButton) view);
-        FilterOptionsModel filterOptionsModel = new FilterOptionsModel("appointment", selectedAppointmentOption);
-
-        setFiltersToTheGroup(filterOptionsModel);
-        switch (view.getId()) {
-            case R.id.rb_upcoming_appointments:
-                if (checked) {
-                    whichAppointment = "upcoming";
-
-                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_selected_green));
-                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
-                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
-                    updateCardBackgrounds("upcoming");
-                    updateMAinLayoutAsPerOptionSelected("upcoming");
-                }
-
-                break;
-            case R.id.rb_cancelled_appointments:
-                if (checked) {
-                    whichAppointment = "cancelled";
-
-                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
-                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_selected_green));
-                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
-                    updateCardBackgrounds("cancelled");
-                    updateMAinLayoutAsPerOptionSelected("cancelled");
-
-                }
-
-                break;
-            case R.id.rb_completed_appointments:
-                if (checked) {
-                    whichAppointment = "completed";
-
-                    rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
-                    rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
-                    rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_selected_green));
-                    updateCardBackgrounds("completed");
-
-                    updateMAinLayoutAsPerOptionSelected("completed");
-
-                }
-
-                break;
-
-        }
-
-        if (whichAppointment.isEmpty()) {
-            //call both
-            getUpcomingAppointments();
-            getCompletedAppointments();
-            getCancelledAppointments();
-
-
-        } else if (whichAppointment.equals("upcoming")) {
-            //upcoming
-            getUpcomingAppointments();
-
-        } else if (whichAppointment.equals("completed")) {
-            getCompletedAppointments();
-
-        } else if (whichAppointment.equals("cancelled")) {
-            getCancelledAppointments();
-
-        }
-
-
-        new Handler().postDelayed(() -> frameLayoutFilter.setVisibility(View.GONE), 1000);
-    }
 
 
     public class FilterOptionsModel {
@@ -795,16 +527,12 @@ public class PastAppointmentsFragment extends Fragment {
     private void getAppointments() {
         //whichAppointment = "";
         getUpcomingAppointments();
-        getCompletedAppointments();
-        getCancelledAppointments();
 
     }
 
     private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
-        tvUpcomingAppsCount.setText("0");
-        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        upcomingAppointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsWithFilters(fromDate, toDate, upcomingLimit, upcomingStart, currentDate);
+        upcomingAppointmentInfoList = new AppointmentDAO().getPastAppointmentsWithFilters(upcomingLimit, upcomingStart, currentDate);
 
         if (upcomingAppointmentInfoList.size() > 0) {
             rvUpcomingApp.setVisibility(View.VISIBLE);
@@ -815,98 +543,17 @@ public class PastAppointmentsFragment extends Fragment {
                 appointmentInfo.setPatientProfilePhoto(patientProfilePath);
             });
 
-            upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), upcomingAppointmentInfoList, "upcoming");
-            rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
+            pastAppointmentsAdapter = new PastMyAppointmentsAdapter(getActivity(), upcomingAppointmentInfoList, "upcoming");
+            rvUpcomingApp.setAdapter(pastAppointmentsAdapter);
             upcomingStart = upcomingEnd;
             upcomingEnd += upcomingLimit;
         } else {
             rvUpcomingApp.setVisibility(View.GONE);
             noDataFoundForUpcoming.setVisibility(View.VISIBLE);
         }
-
-        tvUpcomingAppsCount.setText(upcomingAppointmentInfoList.size() + "");
-        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentInfoList.size() + ")");
-    }
-
-    private void getCancelledAppointments() {
-        //recyclerview for getCancelledAppointments appointments
-        tvCancelledAppsCount.setText("0");
-        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled_0));
-        cancelledAppointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, cancelledLimit, cancelledStart, currentDate);
-
-        if (cancelledAppointmentInfoList.size() > 0) {
-            rvCancelledApp.setVisibility(View.VISIBLE);
-            noDataFoundForCancelled.setVisibility(View.GONE);
-
-            cancelledAppointmentInfoList.forEach(appointmentInfo -> {
-                String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
-                appointmentInfo.setPatientProfilePhoto(patientProfilePath);
-            });
-
-            cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledAppointmentInfoList, "cancelled");
-            rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
-            cancelledStart = cancelledEnd;
-            cancelledEnd += cancelledLimit;
-        } else {
-            rvCancelledApp.setVisibility(View.GONE);
-            noDataFoundForCancelled.setVisibility(View.VISIBLE);
-        }
-
-        tvCancelledAppsCount.setText(cancelledAppointmentInfoList.size() + "");
-        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentInfoList.size() + ")");
     }
 
 
-    private void getCompletedAppointments() {
-        tvCompletedAppsCount.setText("0");
-        tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        completedAppointmentInfoList = new AppointmentDAO().getCompletedAppointmentsWithFilters(fromDate, toDate, completedLimit, completedStart, currentDate);
-
-        if (completedAppointmentInfoList.size() > 0) {
-            rvCompletedApp.setVisibility(View.VISIBLE);
-            noDataFoundForCompleted.setVisibility(View.GONE);
-            tvCompletedAppsCount.setText(completedAppointmentInfoList.size() + "");
-            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");
-            getDataForCompletedAppointments(completedAppointmentInfoList);
-            completedStart = completedEnd;
-            completedEnd += completedLimit;
-        } else {
-            //no data found
-            rvCompletedApp.setVisibility(View.GONE);
-            noDataFoundForCompleted.setVisibility(View.VISIBLE);
-            tvCompletedAppsCount.setText(completedAppointmentInfoList.size() + "");
-            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentInfoList.size() + ")");
-        }
-    }
-
-    private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
-        for (int i = 0; i < appointmentsDaoList.size(); i++) {
-            VisitDTO visitDTO = isVisitPresentForPatient_fetchVisitValues(appointmentsDaoList.get(i).getPatientId());
-            if (visitDTO.getUuid() != null && visitDTO.getStartdate() != null) {
-                String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
-                if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
-                    appointmentsDaoList.get(i).setPrescription_exists(true);
-                } else {
-                    appointmentsDaoList.get(i).setPrescription_exists(false);
-                }
-                String patientProfilePath = getPatientProfile(appointmentsDaoList.get(i).getPatientId());
-                appointmentsDaoList.get(i).setPatientProfilePhoto(patientProfilePath);
-                try {
-                    String encounterId = EncounterDAO.getEncounterIdForCompletedVisit(visitDTO.getUuid());
-                    String prescReceivedTime = EncounterDAO.getPrescriptionReceivedTime(encounterId);
-
-                    if (prescReceivedTime != null && !prescReceivedTime.isEmpty()) {
-                        appointmentsDaoList.get(i).setPresc_received_time(prescReceivedTime);
-                    }
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        AllAppointmentsAdapter allAppointmentsFragment = new
-                AllAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
-        rvCompletedApp.setAdapter(allAppointmentsFragment);
-    }
 
     private String getPatientProfile(String patientUuid) {
         Log.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
@@ -923,61 +570,20 @@ public class PastAppointmentsFragment extends Fragment {
         return imagePath;
     }
 
-    private void selectDateRangeNew() {
-        tvFromDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putString("whichDate", "fromdate");
-                CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
-                dialog.setArguments(args);
-                getParentFragmentManager().setFragmentResult("requestKey", args);
-
-                if (getActivity().getSupportFragmentManager() != null) {
-                    dialog.show(getActivity().getSupportFragmentManager(), "AllAppointmentsFragment");
-                }
-            }
-        });
-        tvToDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putString("whichDate", "todate");
-                CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
-                dialog.setArguments(args);
-                getParentFragmentManager().setFragmentResult("requestKey", args);
-
-                if (getActivity().getSupportFragmentManager() != null) {
-                    dialog.show(getActivity().getSupportFragmentManager(), "tag");
-                }
-            }
-        });
-
-    }
-
     private void filterAsPerSelectedOptions() {
         initLimits();
         if (whichAppointment.isEmpty() && fromDate.isEmpty() && toDate.isEmpty()) {
             //all data
             getUpcomingAppointments();
-            getCompletedAppointments();
-            getCancelledAppointments();
 
         } else if (whichAppointment.isEmpty() && !fromDate.isEmpty() && !toDate.isEmpty()) {
             //all
             getUpcomingAppointments();
-            getCompletedAppointments();
-            getCancelledAppointments();
 
         } else if (whichAppointment.equals("upcoming") && !fromDate.isEmpty() && !toDate.isEmpty()) {
             //upcoming
             getUpcomingAppointments();
 
-        } else if (whichAppointment.equals("completed") && !fromDate.isEmpty() && !toDate.isEmpty()) {
-            getCompletedAppointments();
-
-        } else if (whichAppointment.equals("cancelled") && !fromDate.isEmpty() && !toDate.isEmpty()) {
-            getCancelledAppointments();
         }
     }
 
@@ -990,7 +596,6 @@ public class PastAppointmentsFragment extends Fragment {
                     String date = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate) + " - " + DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
                     FilterOptionsModel filterOptionsModel = new FilterOptionsModel("date", date);
                     setFiltersToTheGroup(filterOptionsModel);
-                    frameLayoutDateFilter.setVisibility(View.GONE);
                 }
             }, 2000);
         }
@@ -1055,17 +660,11 @@ public class PastAppointmentsFragment extends Fragment {
 
     private void initLimits() {
         upcomingStart = 0;
-        cancelledStart = 0;
-        completedStart = 0;
 
         upcomingEnd = upcomingStart + upcomingLimit;
-        cancelledEnd = cancelledStart + cancelledLimit;
-        completedEnd = completedEnd + completedLimit;
     }
 
     private void resetData() {
-        completedSearchList.clear();
-        cancelledSearchList.clear();
         upcomingSearchList.clear();
 
         initLimits();

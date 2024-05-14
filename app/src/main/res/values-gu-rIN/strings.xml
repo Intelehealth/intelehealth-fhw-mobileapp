@@ -1301,5 +1301,6 @@
     <string name="universal_recipient">( Universal Recipient )</string>
     <string name="view_prescription_lbl">View Prescription</string>
     <string name="past">Past</string>
+    <string name="missed">Missed</string>
 
 </resources>

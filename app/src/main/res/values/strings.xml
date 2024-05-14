@@ -1932,4 +1932,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="universal_recipient">( Universal Recipient )</string>
     <string name="profile_picture_is_mandatory">Profile picture is mandatory</string>
     <string name="past">Past</string>
+    <string name="missed">Missed</string>
 </resources>

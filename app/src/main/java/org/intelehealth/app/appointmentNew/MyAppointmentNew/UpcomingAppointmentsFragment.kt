@@ -84,7 +84,7 @@ class UpcomingAppointmentsFragment : Fragment() {
     private var isUpcomingFullyLoaded = false
     private var upcomingAppointmentInfoList: MutableList<AppointmentInfo>? = null
     private val upcomingSearchList: MutableList<AppointmentInfo> = ArrayList()
-    private var todaysMyAppointmentsAdapter: TodaysMyAppointmentsAdapter? = null
+    private var upcomingMyAppointmentsAdapter: UpcomingMyAppointmentsAdapter? = null
 
     private var sortIm: ImageView? = null
 
@@ -248,9 +248,9 @@ class UpcomingAppointmentsFragment : Fragment() {
                 upcomingAppointmentInfoList?.sortWith(compareBy({ it.slotDate }, { it.slotTime }))
                 ToastUtil.showShortToast(requireActivity(), "As")
             }
-            todaysMyAppointmentsAdapter =
-                TodaysMyAppointmentsAdapter(activity, upcomingAppointmentInfoList, "upcoming")
-            rvUpcomingApp?.adapter = todaysMyAppointmentsAdapter
+            upcomingMyAppointmentsAdapter =
+                UpcomingMyAppointmentsAdapter(activity, upcomingAppointmentInfoList, "upcoming")
+            rvUpcomingApp?.adapter = upcomingMyAppointmentsAdapter
             sortStatus = !sortStatus
         }
     }
@@ -273,7 +273,7 @@ class UpcomingAppointmentsFragment : Fragment() {
         completedStart = 0
         upcomingEnd = upcomingStart + upcomingLimit
         cancelledEnd = cancelledStart + cancelledLimit
-        completedEnd = completedEnd + completedLimit
+        completedEnd += completedLimit
     }
 
     private fun setMoreDataIntoUpcomingRecyclerView() {
@@ -297,7 +297,7 @@ class UpcomingAppointmentsFragment : Fragment() {
             }else{
                 upcomingAppointmentInfoList?.sortWith(compareBy({ it.slotDate }, { it.slotTime }))
             }
-            todaysMyAppointmentsAdapter!!.notifyDataSetChanged()
+            upcomingMyAppointmentsAdapter!!.notifyDataSetChanged()
             upcomingStart = upcomingEnd
             upcomingEnd += upcomingLimit
         }
@@ -308,7 +308,7 @@ class UpcomingAppointmentsFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
-                if (s.toString().length > 0) {
+                if (s.toString().isNotEmpty()) {
                     ivClearText!!.visibility = View.VISIBLE
                 } else {
                     searchPatientText = ""
@@ -354,9 +354,9 @@ class UpcomingAppointmentsFragment : Fragment() {
                     val patientProfilePath = getPatientProfile(appointmentInfo.patientId)
                     appointmentInfo.patientProfilePhoto = patientProfilePath
                 })
-                todaysMyAppointmentsAdapter =
-                    TodaysMyAppointmentsAdapter(activity, upcomingAppointmentInfoList, "upcoming")
-                rvUpcomingApp?.adapter = todaysMyAppointmentsAdapter
+                upcomingMyAppointmentsAdapter =
+                    UpcomingMyAppointmentsAdapter(activity, upcomingAppointmentInfoList, "upcoming")
+                rvUpcomingApp?.adapter = upcomingMyAppointmentsAdapter
                 upcomingStart = upcomingEnd
                 upcomingEnd += upcomingLimit
             } else {
@@ -464,10 +464,10 @@ class UpcomingAppointmentsFragment : Fragment() {
                     }
                 }
                 requireActivity().runOnUiThread {
-                    todaysMyAppointmentsAdapter =
-                        TodaysMyAppointmentsAdapter(activity, upcomingSearchList, "upcoming")
+                    upcomingMyAppointmentsAdapter =
+                        UpcomingMyAppointmentsAdapter(activity, upcomingSearchList, "upcoming")
                     rvUpcomingApp!!.isNestedScrollingEnabled = true
-                    rvUpcomingApp!!.adapter = todaysMyAppointmentsAdapter
+                    rvUpcomingApp!!.adapter = upcomingMyAppointmentsAdapter
                 }
             }
         }.start()

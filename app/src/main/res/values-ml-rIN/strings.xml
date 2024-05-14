@@ -777,6 +777,7 @@
     <string name="universal_recipient">( Universal Recipient )</string>
     <string name="view_prescription_lbl">View Prescription</string>
     <string name="past">കഴിഞ്ഞ</string>
+    <string name="missed">Missed</string>
 </resources>
 
 

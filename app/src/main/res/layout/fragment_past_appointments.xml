@@ -14,6 +14,7 @@
         android:scrollbars="none">
 
         <LinearLayout
+            android:id="@+id/layout_parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/today_apps_parent_margin_top"
@@ -27,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/et_search_patient_height"
                     android:layout_marginTop="@dimen/ma_icon_margin_top"
-                    android:layout_toStartOf="@+id/sort_im"
+                    android:layout_toStartOf="@+id/filter_lay"
                     android:background="@drawable/ui2_background_input_field_new">
 
                     <EditText
@@ -51,7 +52,7 @@
                         android:textSize="@dimen/common_hint_text_size" />
 
                     <ImageView
-                        android:id="@+id/iv_clear_today"
+                        android:id="@+id/iv_clear"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentEnd="true"
@@ -65,20 +66,62 @@
 
                 </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/sort_im"
-                    android:layout_width="@dimen/icon_filters_width"
-                    android:layout_height="@dimen/icon_filters_height"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="@dimen/ma_icon_margin_start"
-                    android:layout_marginTop="@dimen/ma_icon_margin_top"
-                    android:layout_marginEnd="@dimen/ma_icon_margin_end"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/ui2_ic_filter_bg"
-                    android:padding="@dimen/my_appointment_padding"
-                    android:src="@drawable/sort" />
-            </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/filter_lay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true">
 
+                    <ImageView
+                        android:id="@+id/filter_im"
+                        android:layout_width="@dimen/icon_filters_width"
+                        android:layout_height="@dimen/icon_filters_height"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/ma_icon_margin_start"
+                        android:layout_marginTop="@dimen/ma_icon_margin_top"
+                        android:layout_marginEnd="@dimen/ma_icon_margin_end"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/ui2_ic_filter_bg"
+                        android:padding="@dimen/my_appointment_padding"
+                        android:src="@drawable/ui2_ic_filter" />
+
+                    <ImageView
+                        android:id="@+id/sort_im"
+                        android:layout_width="@dimen/icon_filters_width"
+                        android:layout_height="@dimen/icon_filters_height"
+                        android:layout_marginTop="@dimen/ma_icon_margin_top"
+                        android:layout_marginEnd="@dimen/ma_icon_margin_end"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/ui2_ic_filter_bg"
+                        android:padding="@dimen/my_appointment_padding"
+                        android:src="@drawable/sort" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/filter_frame_all_appointments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/margin_45"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <include layout="@layout/layout_filter_all_appointments_ui2" />
+
+                </FrameLayout>
+
+            </RelativeLayout>
+            <HorizontalScrollView
+                android:id="@+id/scroll_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipgroup_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/chip_group_apps_height"
+                    android:layout_marginTop="@dimen/chip_group_apps_margin_top" />
+            </HorizontalScrollView>
 
             <LinearLayout
                 android:id="@+id/layout_parent_all"
