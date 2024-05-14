@@ -119,6 +119,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.AgeUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -637,6 +638,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private void configAllFields() {
         String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
         int mAgeYears = Integer.parseInt(ymdData[0]);
+        int mAgeMonths = Integer.parseInt(ymdData[1]);
+        int mAgeDays = Integer.parseInt(ymdData[2]);
 
         for (PatientRegistrationFields fields : patientAllFields) {
             switch (fields.getIdKey()) {
@@ -665,7 +668,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
                 case PatientRegConfigKeys.GUARDIAN_TYPE -> {
-                    if (mAgeYears <= 18) {
+                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays)) {
                         PatientRegFieldsUtils.Companion.configField(
                                 false,
                                 fields,
@@ -677,7 +680,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
                 }
                 case PatientRegConfigKeys.GUARDIAN_NAME -> {
-                    if (mAgeYears <= 18) {
+                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays)) {
                         PatientRegFieldsUtils.Companion.configField(
                                 false,
                                 fields,
@@ -1245,13 +1248,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         // setTitle(patientDTO.getOpenmrs_id());
 
         Log.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
-        int mAgeYears = -1;
+        int mAgeYears = -1, mAgeMonths=0, mAgeDays=0;
         // setting age
         if (patientDTO.getDateofbirth() != null) {
             String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
             mAgeYears = Integer.parseInt(ymdData[0]);
-            int mAgeMonths = Integer.parseInt(ymdData[1]);
-            int mAgeDays = Integer.parseInt(ymdData[2]);
+            mAgeMonths = Integer.parseInt(ymdData[1]);
+            mAgeDays = Integer.parseInt(ymdData[2]);
             String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(this, mAgeYears, mAgeMonths, mAgeDays).replace("-", "");
             patientage.setText(age);
             float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth());
@@ -1737,7 +1740,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientoccupation.setText(getString(R.string.not_provided));
         }
 
-        if (mAgeYears <= 18 && mAgeYears > -1) {
+        if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && mAgeYears > -1) {
             guardianNameTr.setVisibility(View.VISIBLE);
             guardianTypeTr.setVisibility(View.VISIBLE);
             //guardian type

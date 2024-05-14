@@ -74,6 +74,7 @@ import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
+import org.intelehealth.app.utilities.AgeUtils;
 import org.intelehealth.app.utilities.BundleKeys;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
@@ -584,7 +585,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                         ageTv
                 );
                 case PatientRegConfigKeys.GUARDIAN_TYPE -> {
-                    if (mAgeYears <= 18 && (!mDOBEditText.getText().toString().isEmpty() ||
+                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() ||
                             !mAgeEditText.getText().toString().isEmpty())) {
                         PatientRegFieldsUtils.Companion.configField(
                                 isEditMode,
@@ -597,7 +598,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     }
                 }
                 case PatientRegConfigKeys.GUARDIAN_NAME -> {
-                    if (mAgeYears <= 18 && (!mDOBEditText.getText().toString().isEmpty() ||
+                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() ||
                             !mAgeEditText.getText().toString().isEmpty())) {
                         PatientRegFieldsUtils.Companion.configField(
                                 isEditMode,
@@ -752,7 +753,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
      **/
     private void updateGuardianVisibility() {
         //guardian name view config
-        if (mAgeYears <= 18 && (!mDOBEditText.getText().toString().isEmpty() || !mAgeEditText.getText().toString().isEmpty())
+        if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() || !mAgeEditText.getText().toString().isEmpty())
                 && PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_NAME)) {
             String guardianName = guardianNameTv.getText().toString();
             if (PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_NAME)) {
@@ -765,7 +766,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
 
         //guardian type view config
-        if (mAgeYears <= 18 && (!mDOBEditText.getText().toString().isEmpty() || !mAgeEditText.getText().toString().isEmpty())
+        if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() || !mAgeEditText.getText().toString().isEmpty())
                 && PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_TYPE)) {
             String guardianType = guardianTypeTv.getText().toString();
             if (PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_TYPE)) {
@@ -1282,7 +1283,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         }
 
-        if (mAgeYears <= 18) {
+        if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays)) {
             //Guardian name edittext
             if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_NAME)) {
                 if (mGuardianNameEditText.getText().toString().equals("") &&
@@ -1528,7 +1529,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         patientdto.setDateofbirth(dobToDb);
 
-        if (mAgeYears <= 18) {
+        if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays)) {
             patientdto.setGuardianName(mGuardianNameEditText.getText().toString());
             patientdto.setGuardianType(StringUtils.getProvided(mGuardianTypeSpinner));
         } else {
