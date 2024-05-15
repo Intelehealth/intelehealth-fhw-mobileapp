@@ -13,6 +13,6 @@
         android:fontFamily="@font/lato_regular"
         android:text="@string/sample_disease_category"
         android:textColor="@color/search_results_chips_text"
-        android:textSize="15sp" />
+        android:textSize="@dimen/search_result_chips_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

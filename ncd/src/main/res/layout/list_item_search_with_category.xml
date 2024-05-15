@@ -21,7 +21,7 @@
             android:fontFamily="@font/lato_medium"
             android:text="@string/sample_name_open_mrs_id_text"
             android:textColor="@color/search_results_head_text"
-            android:textSize="20sp"
+            android:textSize="@dimen/search_result_head_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +34,7 @@
             android:fontFamily="@font/lato_medium"
             android:text="@string/sample_age_text"
             android:textColor="@color/search_results_body_text"
-            android:textSize="15sp"
+            android:textSize="@dimen/search_result_body_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_name_openmrs_id" />
