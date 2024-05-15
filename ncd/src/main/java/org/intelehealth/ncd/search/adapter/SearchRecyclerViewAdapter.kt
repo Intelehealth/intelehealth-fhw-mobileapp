@@ -9,14 +9,17 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import org.intelehealth.ncd.R
+import org.intelehealth.ncd.callbacks.PatientClickedListener
 import org.intelehealth.ncd.databinding.ListItemSearchWithCategoryBinding
+import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientWithAttribute
 import org.intelehealth.ncd.utils.DateAndTimeUtils
 
 class SearchRecyclerViewAdapter(
     private val patientList: List<PatientWithAttribute>,
     private val resources: Resources,
-    private val context: Context
+    private val context: Context,
+    private val listener: PatientClickedListener
 ) : RecyclerView.Adapter<SearchRecyclerViewAdapter.SearchViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -31,7 +34,7 @@ class SearchRecyclerViewAdapter(
     override fun getItemCount(): Int = patientList.size
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.setData(patientList[position], resources, context)
+        holder.setData(patientList[position], resources, context, listener)
     }
 
     class SearchViewHolder(
@@ -41,7 +44,8 @@ class SearchRecyclerViewAdapter(
         fun setData(
             data: PatientWithAttribute,
             resources: Resources,
-            context: Context
+            context: Context,
+            listener: PatientClickedListener
         ) {
             val headText = "${data.firstName} ${data.lastname}, ${data.openmrsId}"
             val bodyText = "${resources.getString(R.string.age)}: ${
@@ -67,7 +71,14 @@ class SearchRecyclerViewAdapter(
             }
 
             binding.root.setOnClickListener {
-
+                listener.onPatientClicked(
+                    Patient(
+                        uuid = data.uuid,
+                        firstName = data.firstName,
+                        middleName = data.middleName,
+                        lastname = data.lastname
+                    )
+                )
             }
         }
     }
