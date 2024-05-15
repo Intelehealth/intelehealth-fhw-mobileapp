@@ -559,6 +559,23 @@ public class PatientsDAO {
 
         return gender;
     }
+    public static String fetchDateOfBirth(String patientUuid) {
+        String dob = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.query("tbl_patient", new String[]{"date_of_birth"}, "uuid=?",
+                new String[]{patientUuid}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                dob = cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth"));
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return dob;
+    }
 
     public boolean surveyUpdatePatientToDB(String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
         boolean isCreated = true;
