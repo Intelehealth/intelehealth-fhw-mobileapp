@@ -1,5 +1,6 @@
 package org.intelehealth.ncd.category.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
@@ -16,6 +17,7 @@ import org.intelehealth.ncd.category.tabs.GeneralFragment
 import org.intelehealth.ncd.category.tabs.HypertensionFollowUpFragment
 import org.intelehealth.ncd.category.tabs.HypertensionScreeningFragment
 import org.intelehealth.ncd.databinding.ActivityNcdPatientCategoryBinding
+import org.intelehealth.ncd.search.activity.NcdSearchActivity
 
 class NcdPatientCategoryActivity : AppCompatActivity() {
 
@@ -49,6 +51,11 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
 
         binding?.ivBack?.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+
+        binding?.toolbarSearch?.setOnClickListener {
+            val intent = Intent(this@NcdPatientCategoryActivity, NcdSearchActivity::class.java)
+            startActivity(intent)
         }
     }
 

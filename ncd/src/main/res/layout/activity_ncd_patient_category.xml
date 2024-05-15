@@ -40,7 +40,7 @@
                     android:fontFamily="@font/lato_regular"
                     android:text="@string/search_patient"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="23sp" />
 
                 <ImageView
                     android:id="@+id/toolbar_search"
@@ -49,7 +49,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:layout_weight="0.25"
                     android:paddingHorizontal="5dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:srcCompat="@drawable/ic_baseline_search_24" />
 
             </LinearLayout>
