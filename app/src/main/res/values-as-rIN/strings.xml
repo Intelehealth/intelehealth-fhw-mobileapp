@@ -1932,4 +1932,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="profile_picture_is_mandatory">Profile picture is mandatory</string>
     <string name="past">অতীত</string>
     <string name="missed">Missed</string>
+    <string name="sorted_by_descending_order">Sorted By Descending order</string>
+    <string name="sorted_by_ascending_order">Sorted By Ascending order</string>
 </resources>

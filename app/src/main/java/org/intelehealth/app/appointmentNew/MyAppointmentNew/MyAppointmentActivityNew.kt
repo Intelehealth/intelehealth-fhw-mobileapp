@@ -28,6 +28,8 @@ import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.MyAppointmentLoadingListener
 import org.intelehealth.app.utilities.NavigationUtils
 import org.intelehealth.app.utilities.NetworkUtils
 import org.intelehealth.app.utilities.SessionManager
@@ -38,7 +40,8 @@ import retrofit2.Response
 import java.util.Objects
 
 class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
-    NetworkUtils.InternetCheckUpdateInterface {
+    NetworkUtils.InternetCheckUpdateInterface, MyAppointmentLoadingListener {
+    lateinit var loadingDialog: androidx.appcompat.app.AlertDialog
     var bottomNav: BottomNavigationView? = null
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager2? = null
@@ -49,6 +52,9 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     private val syncAnimator: ObjectAnimator? = null
     private var mIsInternetAvailable = false
     private val mUpdateFragmentOnEventHashMap = HashMap<Int, UpdateFragmentOnEvent>()
+    private var onStartUpcoming = false
+    private var onStartPast = false
+
     fun initUpdateFragmentOnEvent(tab: Int, listener: UpdateFragmentOnEvent) {
         Log.v(TAG, "initUpdateFragmentOnEvent")
         mUpdateFragmentOnEventHashMap[tab] = listener
@@ -82,7 +88,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
             .enqueue(object : Callback<AppointmentListingResponse?> {
                 override fun onResponse(
                     call: Call<AppointmentListingResponse?>,
-                    response: Response<AppointmentListingResponse?>
+                    response: Response<AppointmentListingResponse?>,
                 ) {
                     if (response.body() == null) return
                     Log.v(TAG, "onResponse - " + Gson().toJson(response.body()))
@@ -150,7 +156,9 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
             val intent = Intent(this@MyAppointmentActivityNew, HomeScreenActivity_New::class.java)
             startActivity(intent)
         }
+
         configureTabLayout()
+        setTabCount()
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         window.statusBarColor = Color.WHITE
         bottomNav = findViewById(R.id.bottom_nav_my_appointments)
@@ -159,7 +167,18 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
         bottomNav?.menu?.findItem(R.id.bottom_nav_home_menu)?.isChecked = false
     }
 
-    fun configureTabLayout() {
+    private fun setTabCount() {
+        val appointmentDao = AppointmentDAO()
+        val upComingCount = appointmentDao.getAppointmentCountsByStatus(true)
+        val pastCount = appointmentDao.getAppointmentCountsByStatus(false)
+        runOnUiThread {
+            tabLayout?.getTabAt(0)?.text = getString(R.string.upcoming) + " (" + upComingCount + ")"
+            tabLayout?.getTabAt(1)?.text = getString(R.string.past) + " (" + pastCount + ")"
+        }
+
+    }
+
+    private fun configureTabLayout() {
         tabLayout = findViewById(R.id.tablayout_appointments)
 
         /* tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.todays)));
@@ -180,9 +199,9 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
             viewPager!!
         ) { tab, position ->
             if (position == 0) {
-                tab.text = getString(R.string.upcoming)+"(3)"
+                tab.text = getString(R.string.upcoming)
             } else {
-                tab.text = getString(R.string.past)+"(4)"
+                tab.text = getString(R.string.past)
             }
         }.attach()
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -263,6 +282,42 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
         super.onStart()
         //register receiver for internet check
         networkUtils!!.callBroadcastReceiver()
+    }
+
+    override fun onStartUpcoming() {
+        if (!onStartPast) {
+            loadingDialog = DialogUtils().showCommonLoadingDialog(
+                this,
+                getString(R.string.loading),
+                getString(R.string.please_wait)
+            )
+        }
+        onStartUpcoming = true
+    }
+
+    override fun onStartPast() {
+        if (!onStartUpcoming) {
+            loadingDialog = DialogUtils().showCommonLoadingDialog(
+                this,
+                getString(R.string.loading),
+                getString(R.string.please_wait)
+            )
+        }
+        onStartPast = true
+    }
+
+    override fun onStopUpcoming() {
+        if (loadingDialog.isShowing) {
+            loadingDialog.dismiss()
+        }
+
+    }
+
+    override fun onStopPast() {
+        if (loadingDialog.isShowing) {
+            loadingDialog.dismiss()
+        }
+
     }
 
     //update ui as per internet availability

@@ -10,7 +10,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +17,14 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.TextView.OnEditorActionListener
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.IntelehealthApplication
@@ -31,27 +32,24 @@ import org.intelehealth.app.appointment.api.ApiClientAppointment
 import org.intelehealth.app.appointment.dao.AppointmentDAO
 import org.intelehealth.app.appointment.model.AppointmentInfo
 import org.intelehealth.app.appointment.model.AppointmentListingResponse
-import org.intelehealth.app.appointmentNew.TodaysMyAppointmentsAdapter
 import org.intelehealth.app.appointmentNew.UpdateAppointmentsCount
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent
-import org.intelehealth.app.database.dao.EncounterDAO
-import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.MyAppointmentLoadingListener
 import org.intelehealth.app.utilities.NavigationUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.ToastUtil
+import org.intelehealth.app.utilities.ToastUtil.showShortToast
 import org.intelehealth.app.utilities.exception.DAOException
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 import java.util.function.Consumer
 
-class UpcomingAppointmentsFragment : Fragment() {
+class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyAppointmentLoadingListener) : Fragment() {
     var cardUpcomingAppointments: LinearLayout? = null
     var layoutMainAppOptions: LinearLayout? = null
     var layoutUpcoming: LinearLayout? = null
@@ -85,6 +83,8 @@ class UpcomingAppointmentsFragment : Fragment() {
     private var upcomingAppointmentInfoList: MutableList<AppointmentInfo>? = null
     private val upcomingSearchList: MutableList<AppointmentInfo> = ArrayList()
     private var upcomingMyAppointmentsAdapter: UpcomingMyAppointmentsAdapter? = null
+    private val disposables = CompositeDisposable()
+
 
     private var sortIm: ImageView? = null
 
@@ -95,6 +95,7 @@ class UpcomingAppointmentsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLocale(context)
+        myAppointmentLoadingListener.onStartUpcoming()
         (activity as MyAppointmentActivityNew?)!!.initUpdateFragmentOnEvent(
             0,
             object : UpdateFragmentOnEvent {
@@ -242,16 +243,13 @@ class UpcomingAppointmentsFragment : Fragment() {
     private fun sortList() {
         if ((upcomingAppointmentInfoList?.size ?: 0) > 1) {
             if (sortStatus) {
-                upcomingAppointmentInfoList?.sortWith(compareByDescending<AppointmentInfo> { it.slotDate }.thenByDescending { it.slotTime })
-                ToastUtil.showShortToast(requireActivity(), "Ds")
+                showShortToast(requireActivity(), getString(R.string.sorted_by_descending_order))
             } else {
-                upcomingAppointmentInfoList?.sortWith(compareBy({ it.slotDate }, { it.slotTime }))
-                ToastUtil.showShortToast(requireActivity(), "As")
+                showShortToast(requireActivity(), getString(R.string.sorted_by_ascending_order))
             }
-            upcomingMyAppointmentsAdapter =
-                UpcomingMyAppointmentsAdapter(activity, upcomingAppointmentInfoList, "upcoming")
-            rvUpcomingApp?.adapter = upcomingMyAppointmentsAdapter
             sortStatus = !sortStatus
+            initLimits()
+            appointments
         }
     }
 
@@ -271,6 +269,7 @@ class UpcomingAppointmentsFragment : Fragment() {
         upcomingStart = 0
         cancelledStart = 0
         completedStart = 0
+        isUpcomingFullyLoaded = false
         upcomingEnd = upcomingStart + upcomingLimit
         cancelledEnd = cancelledStart + cancelledLimit
         completedEnd += completedLimit
@@ -280,26 +279,23 @@ class UpcomingAppointmentsFragment : Fragment() {
         if (upcomingSearchList.size > 0) {
             return
         }
-        if (upcomingAppointmentInfoList != null && upcomingAppointmentInfoList!!.size == 0) {
-            isUpcomingFullyLoaded = true
+        if (isUpcomingFullyLoaded) {
             return
         }
-        val tempList = AppointmentDAO().getUpcomingAppointmentsForToday(
-            currentDate,
+        showShortToast(requireActivity(),getString(R.string.loading_more))
+        val tempList = AppointmentDAO().getUpcomingAppointments(
             upcomingLimit,
-            upcomingStart
+            upcomingAppointmentInfoList!!.size,
+            if (sortStatus) "ASC" else "DESC"
         )
 
         if (tempList.size > 0) {
             upcomingAppointmentInfoList!!.addAll(tempList)
-            if(sortStatus){
-                upcomingAppointmentInfoList?.sortWith(compareByDescending<AppointmentInfo> { it.slotDate }.thenByDescending { it.slotTime })
-            }else{
-                upcomingAppointmentInfoList?.sortWith(compareBy({ it.slotDate }, { it.slotTime }))
-            }
             upcomingMyAppointmentsAdapter!!.notifyDataSetChanged()
             upcomingStart = upcomingEnd
             upcomingEnd += upcomingLimit
+        }else{
+            isUpcomingFullyLoaded = true
         }
     }
 
@@ -334,36 +330,61 @@ class UpcomingAppointmentsFragment : Fragment() {
 
     private val appointments: Unit
         get() {
-            upcomingAppointments
-        }
-    private val upcomingAppointments: Unit
-        get() {
             //recyclerview for upcoming appointments
-            upcomingAppointmentInfoList = AppointmentDAO().getUpcomingAppointmentsForToday(
-                currentDate,
-                upcomingLimit,
-                upcomingStart
-            )
-            upcomingAppointmentInfoList?.sortWith(compareByDescending<AppointmentInfo> { it.slotDate }.thenByDescending { it.slotTime })
+            val upcomingAppointmentDisposable = getUpcomingDataObserver
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ appointments ->
+                    if (appointments.size > 0) {
+                        rvUpcomingApp?.visibility = View.VISIBLE
+                        noDataFoundForUpcoming?.visibility = View.GONE
+                        totalUpcomingApps = appointments?.size ?: 0
 
-            if ((upcomingAppointmentInfoList?.size ?: 0) > 0) {
-                rvUpcomingApp?.visibility = View.VISIBLE
-                noDataFoundForUpcoming?.visibility = View.GONE
-                totalUpcomingApps = upcomingAppointmentInfoList?.size ?: 0
-                upcomingAppointmentInfoList?.forEach(Consumer { appointmentInfo: AppointmentInfo ->
-                    val patientProfilePath = getPatientProfile(appointmentInfo.patientId)
-                    appointmentInfo.patientProfilePhoto = patientProfilePath
-                })
-                upcomingMyAppointmentsAdapter =
-                    UpcomingMyAppointmentsAdapter(activity, upcomingAppointmentInfoList, "upcoming")
-                rvUpcomingApp?.adapter = upcomingMyAppointmentsAdapter
-                upcomingStart = upcomingEnd
-                upcomingEnd += upcomingLimit
-            } else {
-                rvUpcomingApp?.visibility = View.GONE
-                noDataFoundForUpcoming?.visibility = View.VISIBLE
-            }
+                        upcomingMyAppointmentsAdapter =
+                            UpcomingMyAppointmentsAdapter(activity, appointments, "upcoming")
+                        rvUpcomingApp?.adapter = upcomingMyAppointmentsAdapter
+                        upcomingStart = upcomingEnd
+                        upcomingEnd += upcomingLimit
+                    } else {
+                        rvUpcomingApp?.visibility = View.GONE
+                        noDataFoundForUpcoming?.visibility = View.VISIBLE
+                    }
+
+
+                    myAppointmentLoadingListener.onStopUpcoming()
+                },
+                    { error ->
+                        myAppointmentLoadingListener.onStopUpcoming()
+                        error.printStackTrace()
+                    })
+            
+            disposables.add(upcomingAppointmentDisposable)
         }
+
+    private val getUpcomingDataObserver = Observable.create<MutableList<AppointmentInfo>?> {
+        upcomingAppointmentInfoList = AppointmentDAO().getUpcomingAppointments(
+            upcomingLimit,
+            upcomingStart,
+            if (sortStatus) "ASC" else "DESC"
+        )
+
+        if ((upcomingAppointmentInfoList?.size ?: 0) > 0) {
+            rvUpcomingApp?.visibility = View.VISIBLE
+            noDataFoundForUpcoming?.visibility = View.GONE
+            totalUpcomingApps = upcomingAppointmentInfoList?.size ?: 0
+            upcomingAppointmentInfoList?.forEach(Consumer { appointmentInfo: AppointmentInfo ->
+                val patientProfilePath = getPatientProfile(appointmentInfo.patientId)?:""
+                appointmentInfo.patientProfilePhoto = patientProfilePath
+            })
+        }
+        if (upcomingAppointmentInfoList != null) {
+            it.onNext(upcomingAppointmentInfoList!!)
+        } else {
+            it.onNext(mutableListOf())
+        }
+        it.onComplete()
+
+    }
 
 
     private fun getPatientProfile(patientUuid: String): String {
@@ -473,10 +494,15 @@ class UpcomingAppointmentsFragment : Fragment() {
         }.start()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
+    }
+
     companion object {
         private const val TAG = "TodaysMyAppointmentsFra"
-        fun newInstance(): UpcomingAppointmentsFragment {
-            return UpcomingAppointmentsFragment()
-        }
+        /*fun newInstance(): UpcomingAppointmentsFragment {
+            return UpcomingAppointmentsFragment(myAppointmentLoadingListener)
+        }*/
     }
 }

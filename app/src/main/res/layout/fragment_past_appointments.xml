@@ -13,7 +13,7 @@
         android:scrollIndicators="none"
         android:scrollbars="none">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/layout_parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,6 +22,7 @@
             android:paddingBottom="40dp">
 
             <RelativeLayout
+                android:id="@+id/top_lay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RelativeLayout
@@ -97,24 +98,13 @@
                         android:src="@drawable/sort" />
                 </LinearLayout>
 
-                <FrameLayout
-                    android:id="@+id/filter_frame_all_appointments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/margin_45"
-                    android:visibility="gone"
-                    tools:visibility="visible">
-
-                    <include layout="@layout/layout_filter_all_appointments_ui2" />
-
-                </FrameLayout>
-
             </RelativeLayout>
+
             <HorizontalScrollView
                 android:id="@+id/scroll_chips"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_lay">
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipgroup_filter"
@@ -122,11 +112,11 @@
                     android:layout_height="@dimen/chip_group_apps_height"
                     android:layout_marginTop="@dimen/chip_group_apps_margin_top" />
             </HorizontalScrollView>
-
             <LinearLayout
                 android:id="@+id/layout_parent_all"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/scroll_chips"
                 android:orientation="vertical">
 
 
@@ -165,7 +155,20 @@
 
 
             </LinearLayout>
-        </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/filter_frame_past_appointments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/margin_45"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <include layout="@layout/layout_filter_past_appointments_ui2" />
+
+            </FrameLayout>
+        </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
 

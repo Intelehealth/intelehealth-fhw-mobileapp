@@ -778,6 +778,8 @@
     <string name="view_prescription_lbl">View Prescription</string>
     <string name="past">കഴിഞ്ഞ</string>
     <string name="missed">Missed</string>
+    <string name="sorted_by_descending_order">Sorted By Descending order</string>
+    <string name="sorted_by_ascending_order">Sorted By Ascending order</string>
 </resources>
 
 

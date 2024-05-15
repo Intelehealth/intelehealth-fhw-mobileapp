@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import org.intelehealth.app.appointmentNew.AllAppointmentsFragment
+import org.intelehealth.app.utilities.MyAppointmentLoadingListener
 
 class NewMyAppointmentsPagerAdapter(
     fm: FragmentManager?,
@@ -16,9 +16,9 @@ class NewMyAppointmentsPagerAdapter(
 ) {
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> UpcomingAppointmentsFragment()
-            1 -> PastAppointmentsFragment()
-            else -> PastAppointmentsFragment()
+            0 -> UpcomingAppointmentsFragment(context as MyAppointmentLoadingListener)
+            1 -> PastAppointmentsFragment(context as MyAppointmentLoadingListener)
+            else -> PastAppointmentsFragment(context as MyAppointmentLoadingListener)
         }
     }
 
