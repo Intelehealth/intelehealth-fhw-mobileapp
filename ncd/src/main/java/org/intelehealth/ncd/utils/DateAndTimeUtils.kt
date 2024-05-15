@@ -5,6 +5,7 @@ import org.intelehealth.ncd.R
 import org.joda.time.LocalDate
 import org.joda.time.Period
 import org.joda.time.PeriodType
+import org.joda.time.Years
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -46,6 +47,15 @@ object DateAndTimeUtils {
         else ""
 
         return listOf(tYears, tMonth, tDays).filterNot(String::isEmpty).joinToString(" ")
+    }
+
+    fun calculateAgeInYears(birthDate: String?): Int {
+        birthDate?.let {
+            val today = LocalDate.now()
+            val birth = LocalDate.parse(birthDate)
+            return@let Years.yearsBetween(birth, today).years
+        }
+        return 0;
     }
 
 }

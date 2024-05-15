@@ -1,6 +1,7 @@
 package org.intelehealth.ncd.model
 
 import androidx.room.ColumnInfo
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 data class PatientWithAttribute(
@@ -13,4 +14,7 @@ data class PatientWithAttribute(
     @ColumnInfo(name = "phone_number") var phoneNumber: String? = null,
     @ColumnInfo(name = "value") var value: String? = null,
     @ColumnInfo(name = "person_attribute_type_uuid") var personAttributeTypeUuid: String? = null,
-)
+) {
+    @Ignore
+    var attributeList: MutableList<String>? = null
+}

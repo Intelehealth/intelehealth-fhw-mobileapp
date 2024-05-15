@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.search
+package org.intelehealth.ncd.search.activity
 
 import android.graphics.Color
 import android.os.Bundle

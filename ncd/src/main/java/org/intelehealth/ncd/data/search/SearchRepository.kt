@@ -1,12 +1,13 @@
 package org.intelehealth.ncd.data.search
 
 import org.intelehealth.ncd.model.PatientWithAttribute
-import org.intelehealth.ncd.room.dao.PatientDao
 
-class SearchDataSource(private val patientDao: PatientDao) {
+class SearchRepository(private val dataSource: SearchDataSource) {
+
     suspend fun queryPatientsAndAttributesForSearchString(
         attribute: String,
         name: String
     ): List<PatientWithAttribute> =
-        patientDao.queryPatientsAndAttributesForSearchString(attribute, name)
+        dataSource.queryPatientsAndAttributesForSearchString(attribute, name)
+
 }

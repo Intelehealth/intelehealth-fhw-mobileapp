@@ -8,6 +8,7 @@ import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.model.MedicalHistory
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
+import org.intelehealth.ncd.model.PatientWithAttribute
 
 class CategorySegregationUtils(private val resources: Resources) {
 
@@ -51,6 +52,45 @@ class CategorySegregationUtils(private val resources: Resources) {
             Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
                 if (!isHistoryOfHypertensionPresent(attribute.value)) {
                     removePatientsFromList(patientList, attribute)
+                }
+            }
+        }
+
+        return patientList
+    }
+
+    fun fetchListOfDiseases(patientList: MutableList<PatientWithAttribute>): List<PatientWithAttribute> {
+        patientList.forEach {
+
+            val patientAge: Int = DateAndTimeUtils.calculateAgeInYears(it.dateOfBirth)
+
+            // For general patients
+            if (patientAge < Constants.GENERAL_EXCLUSION_AGE) {
+                it.attributeList?.add(resources.getString(R.string.tab_general))
+                return@forEach
+            }
+
+            if (patientAge >= Constants.ANEMIA_EXCLUSION_AGE) {
+                if (!isHistoryOfAnemiaPresent(it.value)) {
+                    it.attributeList?.add(resources.getString(R.string.tab_anemia_screening))
+                } else {
+                    it.attributeList?.add(resources.getString(R.string.tab_anemia_follow_up))
+                }
+            }
+
+            if (patientAge >= Constants.HYPERTENSION_EXCLUSION_AGE) {
+                if (!isHistoryOfHypertensionPresent(it.value)) {
+                    it.attributeList?.add(resources.getString(R.string.tab_hypertension_screening))
+                } else {
+                    it.attributeList?.add(resources.getString(R.string.tab_hypertension_follow_up))
+                }
+            }
+
+            if (patientAge >= Constants.DIABETES_EXCLUSION_AGE) {
+                if (!isHistoryOfDiabetesPresent(it.value)) {
+                    it.attributeList?.add(resources.getString(R.string.tab_diabetes_screening))
+                } else {
+                    it.attributeList?.add(resources.getString(R.string.tab_diabetes_follow_up))
                 }
             }
         }
