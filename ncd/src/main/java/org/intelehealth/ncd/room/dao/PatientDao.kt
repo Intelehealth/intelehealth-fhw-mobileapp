@@ -20,7 +20,8 @@ interface PatientDao {
                 "INNER JOIN tbl_patient_attribute AS b " +
                 "ON a.uuid = b.patientuuid " +
                 "WHERE person_attribute_type_uuid = :attribute " +
-                "AND (a.first_name LIKE '%' || :searchString || '%' OR a.last_name LIKE '%' || :searchString || '%' OR openmrs_id = :searchString OR phone_number = :searchString)"
+                "AND (a.first_name LIKE '%' || :searchString || '%' OR a.last_name LIKE '%' || :searchString || '%' OR openmrs_id = :searchString OR phone_number = :searchString)" +
+                "GROUP BY a.uuid"
     )
     suspend fun queryPatientsAndAttributesForSearchString(
         attribute: String,
