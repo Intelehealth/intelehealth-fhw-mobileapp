@@ -2,6 +2,10 @@
 <resources>
     <color name="colorPrimary">#D1484C</color>
     <color name="colorPrimaryDark">#9f282c</color>
-    <color name="colorAccent">#E6FFF3</color>
-    <color name="splash_bg">@color/white</color>
+    <color name="colorAccent">#0FD197</color>
+    <color name="color_splash_bg">@color/white</color>
+    <color name="color_tagline_text">@color/colorBlackTransparent_1</color>
+    <color name="colorPrimaryLightCard">#1aD1484C</color>
+    <color name="colorPrimaryDarkerArrowBg">#33000000</color>
+    <color name="colorAccentLightCard">#1a0FD197</color>
 </resources>
