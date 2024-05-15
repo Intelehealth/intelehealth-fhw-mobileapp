@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_haveABHANumber"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fl_haveABHANumber"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginHorizontal="@dimen/margin_20dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_marginHorizontal="@dimen/margin_20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,8 +16,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button_username"
@@ -49,196 +48,231 @@
                 android:textSize="@dimen/btn_options_text_Size" />
         </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/layout_parent_username"
+        <Button
+            android:id="@+id/button_abha_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible"
-            tools:visibility="visible">
+            android:layout_marginTop="@dimen/margin_12"
+            android:background="@drawable/button_bg_forgot_pass_disabled_ui2"
+            android:paddingStart="@dimen/options_button_padding_start"
+            android:paddingTop="@dimen/options_button_padding_top"
+            android:paddingEnd="@dimen/options_button_padding_end"
+            android:paddingBottom="@dimen/options_button_padding_bottom"
+            android:text="@string/abhanumber"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/btn_options_text_Size" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/title_options_margin_top"
-                android:text="@string/enter_username2"
-                android:textColor="@color/textColorBlack"
-                android:textSize="@dimen/info_options_text_size"
-                android:textStyle="bold"
-                android:visibility="gone" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/info_options_margin_top"
-                android:text="@string/enter_username_given"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/info_options_text_size"
-                android:visibility="gone" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
+                android:id="@+id/llAadharMobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_15"
-                app:hintEnabled="false">
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edittext_username"
+                <LinearLayout
+                    android:id="@+id/layout_parent_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLength="12"
-                    android:background="@drawable/textbox_outline"
-                    android:hint="@string/enter_your_aadhar_card_number"
-                    android:imeOptions="actionNext"
-                    android:textColor="@null"
-                    android:textSize="@null"
-                    android:inputType="number"
-                    android:textAppearance="@style/type_mobile_no"
-                    android:textColorHint="@color/hint_color"
-                    android:padding="14dp"
-                    android:singleLine="true"
-                    />
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    tools:visibility="visible">
 
-                <TextView
-                    android:id="@+id/aadhar_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:lineSpacingExtra="0sp"
-                    android:text="@string/this_field_is_mandatory"
-                    android:textAppearance="@style/registr_error_msg"
-                    android:textColor="@color/red"
-                    android:textSize="@null"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/title_options_margin_top"
+                        android:text="@string/enter_username2"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/info_options_text_size"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/info_options_margin_top"
+                        android:text="@string/enter_username_given"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/info_options_text_size"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_15"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edittext_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/textbox_outline"
+                            android:hint="@string/enter_your_aadhar_card_number"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:maxLength="12"
+                            android:padding="14dp"
+                            android:singleLine="true"
+                            android:textAppearance="@style/type_mobile_no"
+                            android:textColor="@null"
+                            android:textColorHint="@color/hint_color"
+                            android:textSize="@null" />
+
+                        <TextView
+                            android:id="@+id/aadhar_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/this_field_is_mandatory"
+                            android:textAppearance="@style/registr_error_msg"
+                            android:textColor="@color/red"
+                            android:textSize="@null"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
-            <TextView
-                android:id="@+id/tv_username_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:text="@string/enter_username"
-                android:textAppearance="@style/registr_error_msg"
-                android:textColor="@color/red"
-                android:textSize="@null"
-                android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/tv_username_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/enter_username"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone" />
 
-        </LinearLayout>
+                </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/layout_parent_mobile_no"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible"
-            tools:visibility="visible">
-
-            <TextView
-                android:id="@+id/textview_enter_mobileno"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/title_options_margin_top"
-                android:text="@string/enter_mobile_no"
-                android:textColor="@color/textColorBlack"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/textview_mobile_no_note"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textview_enter_mobileno"
-                android:layout_marginTop="@dimen/info_options_margin_top"
-                android:text="@string/enter_mobile_no_given"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/common_label_text_size"
-                android:visibility="gone" />
-
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/countrycode_spinner_forgot"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textview_mobile_no_note"
-                android:layout_marginTop="@dimen/spinner_countries_margin_top"
-                android:layout_marginEnd="@dimen/spinner_countries_margin_end"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_spinner_background"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/country_code_picker_padding_start"
-                android:paddingTop="@dimen/country_code_picker_padding_top"
-                android:paddingEnd="@dimen/country_code_picker_padding_start"
-                android:paddingBottom="@dimen/country_code_picker_padding_top"
-                android:textSize="@dimen/country_code_picker_text_size"
-                app:ccp_countryPreference="us,in"
-                app:ccp_textSize="@dimen/country_code_picker_text_size" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textview_mobile_no_note"
-                android:layout_marginTop="@dimen/spinner_countries_margin_top"
-                android:layout_toEndOf="@+id/countrycode_spinner_forgot"
-                app:hintEnabled="false">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edittext_mobile_number"
+                <RelativeLayout
+                    android:id="@+id/layout_parent_mobile_no"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:maxLength="10"
-                    android:background="@drawable/textbox_outline"
-                    android:hint="@string/enter_mobile_no"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:lineSpacingExtra="3sp"
-                    android:textColor="@null"
-                    android:textSize="@null"
-                    android:textAppearance="@style/type_mobile_no"
-                    android:textColorHint="@color/hint_color"
-                    android:padding="14dp"
-                    android:singleLine="true"
-                    />
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textview_enter_mobileno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/title_options_margin_top"
+                        android:text="@string/enter_mobile_no"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/common_button_text_size"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textview_mobile_no_note"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview_enter_mobileno"
+                        android:layout_marginTop="@dimen/info_options_margin_top"
+                        android:text="@string/enter_mobile_no_given"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:visibility="gone" />
+
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/countrycode_spinner_forgot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview_mobile_no_note"
+                        android:layout_marginTop="@dimen/spinner_countries_margin_top"
+                        android:layout_marginEnd="@dimen/spinner_countries_margin_end"
+                        android:layout_weight="1"
+                        android:background="@drawable/ui2_spinner_background"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/country_code_picker_padding_start"
+                        android:paddingTop="@dimen/country_code_picker_padding_top"
+                        android:paddingEnd="@dimen/country_code_picker_padding_start"
+                        android:paddingBottom="@dimen/country_code_picker_padding_top"
+                        android:textSize="@dimen/country_code_picker_text_size"
+                        android:visibility="gone"
+                        app:ccp_countryPreference="us,in"
+                        app:ccp_textSize="@dimen/country_code_picker_text_size" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview_mobile_no_note"
+                        android:layout_marginTop="@dimen/spinner_countries_margin_top"
+                        android:layout_toEndOf="@+id/countrycode_spinner_forgot"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edittext_mobile_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/textbox_outline"
+                            android:hint="@string/enter_mobile_no"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:lineSpacingExtra="3sp"
+                            android:maxLength="10"
+                            android:padding="14dp"
+                            android:singleLine="true"
+                            android:textAppearance="@style/type_mobile_no"
+                            android:textColor="@null"
+                            android:textColorHint="@color/hint_color"
+                            android:textSize="@null" />
+
+                        <TextView
+                            android:id="@+id/mobile_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/this_field_is_mandatory"
+                            android:textAppearance="@style/registr_error_msg"
+                            android:textColor="@color/red"
+                            android:textSize="@null"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/mobile_error"
+                    android:id="@+id/tv_mobile_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
-                    android:text="@string/this_field_is_mandatory"
+                    android:text="@string/enter_mobile_no"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@color/red"
                     android:textSize="@null"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
+                    android:visibility="gone" />
+            </LinearLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+            <FrameLayout
+                android:id="@+id/flAbhaDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
-
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tv_mobile_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/hamburger_margin_start"
-            android:lineSpacingExtra="0sp"
-            android:text="@string/enter_mobile_no"
-            android:textAppearance="@style/registr_error_msg"
-            android:textColor="@color/red"
-            android:textSize="@null"
-            android:visibility="gone" />
+                <include
+                    android:id="@+id/abhaDetails"
+                    layout="@layout/layout_abha_details" />
+            </FrameLayout>
+        </FrameLayout>
 
     </LinearLayout>
 

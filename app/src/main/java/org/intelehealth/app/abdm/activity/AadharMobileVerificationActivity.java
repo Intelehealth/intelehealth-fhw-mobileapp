@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -56,7 +57,9 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class AadharMobileVerificationActivity extends AppCompatActivity {
+
     private Context context = AadharMobileVerificationActivity.this;
+
     public static final String TAG = AadharMobileVerificationActivity.class.getSimpleName();
     public static String SCOPE = "mobile";
     ActivityAadharMobileVerificationBinding binding;
@@ -111,8 +114,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             if (abhaCard) {
                 binding.layoutHaveABHANumber.buttonMobileNumber.setVisibility(View.GONE);
                 binding.layoutHaveABHANumber.buttonUsername.setEnabled(false);
-            }
-            else
+            } else
                 binding.layoutHaveABHANumber.buttonMobileNumber.setVisibility(View.VISIBLE);
 
             clickListenerFor_HasABHA();
@@ -149,16 +151,14 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                     if (!binding.otpBox.getText().toString().isEmpty()) {
                         String mobileNo = "";
                         if (hasABHA) {
-                            if (optionSelected.equalsIgnoreCase("mobile")) {
+                            if (optionSelected.equalsIgnoreCase("mobile") || optionSelected.equalsIgnoreCase("abha")) {
                                 // via. mobile login
                                 mobileNo = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().trim();
                                 callOTPForMobileLoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
-                            }
-                            else {
+                            } else {
                                 if (abhaCard) {
                                     callOTPForMobileLoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
-                                }
-                                else {
+                                } else {
                                     // via. aadhar login
                                     mobileNo = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().trim();
                                     callOTPForVerificationApi((String) binding.sendOtpBtn.getTag(), mobileNo, binding.otpBox.getText().toString());
@@ -183,40 +183,56 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             optionSelected = "username";
             /*binding.layoutHaveABHANumber.edittextUsername.setText("");
             binding.layoutHaveABHANumber.edittextMobileNumber.setText("");*/
+            binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);  // show mobile no as well for aadhar as api requires it.
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.tvMobileError.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
             binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
             binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         });
 
         binding.layoutHaveABHANumber.buttonMobileNumber.setOnClickListener(v -> {
             optionSelected = "mobile";
-         //   binding.layoutHaveABHANumber.edittextUsername.setText("");
+            //   binding.layoutHaveABHANumber.edittextUsername.setText("");
+            binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.tvMobileError.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
             binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
             binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         });
 
+        binding.layoutHaveABHANumber.buttonAbhaNumber.setOnClickListener(v -> {
+            optionSelected = "abha";
+            binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.VISIBLE);
+            binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
+            binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+
+        });
+
         if (abhaCard) {
             optionSelected = "username";
-          //  binding.layoutHaveABHANumber.edittextUsername.setText("");
-          //  binding.layoutHaveABHANumber.edittextMobileNumber.setText("");
+            //  binding.layoutHaveABHANumber.edittextUsername.setText("");
+            //  binding.layoutHaveABHANumber.edittextMobileNumber.setText("");
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.GONE);  // in case of card, mobile no is not required...
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
-      //      binding.layoutHaveABHANumber.tvMobileError.setVisibility(View.GONE);
+            //      binding.layoutHaveABHANumber.tvMobileError.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
-        //    binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
-        //    binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            //    binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            //    binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         }
     }
@@ -249,11 +265,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                     if (abhaCard) {
                                         // call mobile api.
                                         callMobileNumberVerificationApi(accessToken);
-                                    }
-                                    else {
+                                    } else {
                                         if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("username")) {
                                             callAadharMobileVerificationApi(accessToken);   // via. aadharEnroll api
-                                        } else if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("mobile")) {
+                                        } else if (!optionSelected.isEmpty() && (optionSelected.equalsIgnoreCase("mobile") || optionSelected.equalsIgnoreCase("abha"))) {
                                             // call mobile api.
                                             callMobileNumberVerificationApi(accessToken);
                                         }
@@ -279,15 +294,39 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
     }
 
+    public static String formatIntoAbhaString(String input) {
+        StringBuilder result = new StringBuilder();
+        int length = input.length();
+        int[] groupSizes = {2, 4, 4, 4}; // The size of each group
+
+        int startIndex = 0;
+        for (int groupSize : groupSizes) {
+            int endIndex = startIndex + groupSize;
+            result.append(input.substring(startIndex, endIndex));
+            if (endIndex < length) {
+                result.append("-");
+            }
+            startIndex = endIndex;
+        }
+
+        return result.toString();
+    }
+
     private void callMobileNumberVerificationApi(String accessToken) {  // mobile: Step 2
         // payload - start
         MobileLoginApiBody mobileLoginApiBody = new MobileLoginApiBody();
         if (abhaCard) {
             SCOPE = "aadhar";
             mobileLoginApiBody.setValue(Objects.requireNonNull(binding.layoutHaveABHANumber.edittextUsername.getText()).toString().trim()); // aadhar value.
-        }
-        else
+        } else if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("abha")) {
+            SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? "abha-address" : "abha-number";
+            String value = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString() : formatIntoAbhaString(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().toString());
+            mobileLoginApiBody.setValue(value); // mobile value.
+
+        } else {
+            SCOPE = "mobile";
             mobileLoginApiBody.setValue(Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().trim()); // mobile value.
+        }
 
         mobileLoginApiBody.setScope(SCOPE);
         String url = UrlModifiers.getMobileLoginVerificationUrl();
@@ -419,6 +458,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         if (abhaCard)
             SCOPE = "aadhar";
 
+        if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("abha")) {
+            SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? "abha-address" : "abha-number";
+        }
+
         requestBody.setScope(SCOPE);
         Single<MobileLoginOnOTPVerifiedResponse> mobileLoginOnOTPVerifiedResponseSingle =
                 AppConstants.apiInterface.PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(url, accessToken, requestBody);
@@ -434,14 +477,19 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 cpd.dismiss();
 
                                 Log.d("callOTPForMobileLoginVerificationApi", "onSuccess: " + mobileLoginOnOTPVerifiedResponse.toString());
+                                if (mobileLoginOnOTPVerifiedResponse!=null && SCOPE.equalsIgnoreCase("abha-address"))
+                                {
+                                    String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                    callFetchUserProfileAPI(null, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                                    return;
+                                }
                                 if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
 
                                     // TODO: Handle abha card implementation here.... 16th Feb - start
                                     if (abhaCard) {
                                         String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
                                         callGETAbhaCardApi(X_TOKEN, accessToken, mobileLoginOnOTPVerifiedResponse);
-                                    }
-                                    else {
+                                    } else {
                                         // TODO: Handle abha card implementation here.... 16th Feb - end
 
                                         if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is atleast one (1) account.
@@ -546,6 +594,11 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         AbhaProfileRequestBody requestBody = new AbhaProfileRequestBody();
         requestBody.setTxnId(txnId);
         requestBody.setAbhaNumber(abhaNumber);
+
+        if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("abha"))
+        {
+            requestBody.setScope(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? "abha-address" : "abha-number");
+        }
         // payload - end
 
         Single<AbhaProfileResponse> abhaProfileResponseSingle =
@@ -703,10 +756,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         return addressList;
     }
 
-    public static boolean validateAadharNumber(String aadharNumber){
+    public static boolean validateAadharNumber(String aadharNumber) {
         Pattern aadharPattern = Pattern.compile("\\d{12}");
         boolean isValidAadhar = aadharPattern.matcher(aadharNumber).matches();
-        if(isValidAadhar){
+        if (isValidAadhar) {
             isValidAadhar = VerhoeffAlgorithm.validateVerhoeff(aadharNumber);
         }
         return isValidAadhar;
@@ -723,21 +776,18 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 binding.layoutDoNotHaveABHANumber.aadharError.setText(getString(R.string.error_field_required));
                 binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 isValid = false;
-            }
-            else { // ie. aadhar no empty
+            } else { // ie. aadhar no empty
                 if (binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().length() < 12) {
                     binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
                     binding.layoutDoNotHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
                     binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                     isValid = false;
-                }
-                else if (!validateAadharNumber(binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString())) {   // Verhoeff Algo check.
+                } else if (!validateAadharNumber(binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString())) {   // Verhoeff Algo check.
                     binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
-                    binding.layoutDoNotHaveABHANumber.aadharError.setText(R.string.enter_valid_aadhar_number);
+                    binding.layoutDoNotHaveABHANumber.aadharError.setText(R.string.aadhar_number_is_not_valid);
                     binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                     isValid = false;
-                }
-                else {
+                } else {
                     binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.GONE);
                     binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                 }
@@ -747,15 +797,13 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 binding.layoutDoNotHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                 binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 isValid = false;
-            }
-            else {
+            } else {
                 if (binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().length() < 10) {
                     binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
                     binding.layoutDoNotHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
                     binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                     isValid = false;
-                }
-                else {
+                } else {
                     binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.GONE);
                     binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                 }
@@ -786,20 +834,17 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 binding.layoutHaveABHANumber.aadharError.setText(getString(R.string.error_field_required));
                 binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 isvalid = false;
-            }
-            else {
+            } else {
                 if (aadharNo.length() != 12) {
                     binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
                     binding.layoutHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
                     isvalid = false;
-                }
-                else if (!validateAadharNumber(binding.layoutHaveABHANumber.edittextUsername.getText().toString())) {   // Verhoeff algo. check
+                } else if (!validateAadharNumber(binding.layoutHaveABHANumber.edittextUsername.getText().toString())) {   // Verhoeff algo. check
                     binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
-                    binding.layoutHaveABHANumber.aadharError.setText(R.string.enter_valid_aadhar_number);
+                    binding.layoutHaveABHANumber.aadharError.setText(R.string.aadhar_number_is_not_valid);
                     binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                     isvalid = false;
-                }
-                else {
+                } else {
                     binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                     binding.layoutHaveABHANumber.aadharError.setVisibility(View.GONE);
                 }
@@ -816,23 +861,20 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                     binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                     binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                     isvalid = false;
-                }
-                else {
+                } else {
                     if (/*code.equalsIgnoreCase("91") &&*/ mobile.length() != 10) {
                         binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
                         binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
                         binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                         isvalid = false;
-                    }
-                    else {
+                    } else {
                         binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                         binding.layoutHaveABHANumber.mobileError.setVisibility(View.GONE);
                     }
                 }
             }
             // mobile for aadhar - end
-        }
-        else if (!optionSelected.isEmpty() && optionSelected.equals("mobile")) {  // Phone number field
+        } else if (!optionSelected.isEmpty() && optionSelected.equals("mobile")) {  // Phone number field
 
             String mobile = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().replace(" ", "").trim();
             Log.v(TAG, mobile);
@@ -842,18 +884,24 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                 binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 isvalid = false;
-            }
-            else {
+            } else {
                 if (/*code.equalsIgnoreCase("91") &&*/ mobile.length() != 10) {
                     binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
                     binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
                     binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                     isvalid = false;
-                }
-                else {
+                } else {
                     binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                     binding.layoutHaveABHANumber.mobileError.setVisibility(View.GONE);
                 }
+            }
+        } else if (!optionSelected.isEmpty() && optionSelected.equals("abha")) {
+            binding.layoutHaveABHANumber.abhaDetails.tvAbhaNumberError.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.abhaDetails.tvAbhaNumberError.setVisibility(View.GONE);
+            if (TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()) && TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText())) {
+                binding.layoutHaveABHANumber.abhaDetails.tvAbhaNumberError.setVisibility(View.VISIBLE);
+                binding.layoutHaveABHANumber.abhaDetails.tvAbhaAddressError.setVisibility(View.VISIBLE);
+                isvalid = false;
             }
         }
 
@@ -928,7 +976,6 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
         }.start();
     }
-
 
 
 }

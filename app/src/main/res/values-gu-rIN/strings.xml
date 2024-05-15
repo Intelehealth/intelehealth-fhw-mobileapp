@@ -911,5 +911,9 @@
     <string name="abha_card_is_downloaded_successfully">ABHA Card is downloaded successfully!</string>
     <string name="abhanumber">ABHA number</string>
     <string name="abha_address">ABHA address</string>
+    <string name="enter_14_digit_abha_id_number">Enter 14 Digit ABHA ID Number</string>
+    <string name="please_enter_abha_number_or_abha_address">Please enter ABHA number or ABHA address</string>
+    <string name="or">Or</string>
+    <string name="aadhar_number_is_not_valid">Aadhar number is not valid</string>
 
 </resources>

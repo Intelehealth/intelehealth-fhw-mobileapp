@@ -17,6 +17,17 @@ public class AbhaProfileRequestBody {
     @Expose
     private String abhaNumber;
 
+    @SerializedName("scope")
+    private String scope;
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
     public String getTxnId() {
         return txnId;
     }
