@@ -53,7 +53,7 @@ object DateAndTimeUtils {
         birthDate?.let {
             val today = LocalDate.now()
             val birth = LocalDate.parse(birthDate)
-            return@let Years.yearsBetween(birth, today).years
+            return Years.yearsBetween(birth, today).years
         }
         return 0;
     }

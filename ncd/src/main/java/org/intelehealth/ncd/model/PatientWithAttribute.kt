@@ -16,5 +16,5 @@ data class PatientWithAttribute(
     @ColumnInfo(name = "person_attribute_type_uuid") var personAttributeTypeUuid: String? = null,
 ) {
     @Ignore
-    var attributeList: MutableList<String>? = null
+    var attributeList: MutableList<String>? = mutableListOf()
 }

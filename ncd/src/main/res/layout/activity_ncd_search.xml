@@ -56,7 +56,8 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="15dp"
         android:drawablePadding="5dp"
-        android:padding="@dimen/search_box_padding"
+        app:endIconDrawable="@drawable/ic_baseline_clear_24"
+        app:endIconMode="custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar_layout">
@@ -66,9 +67,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:drawableStart="@drawable/ic_baseline_search_24"
-            android:drawableEnd="@drawable/ic_baseline_clear_24"
             android:drawablePadding="5dp"
             android:hint="@string/type_to_search"
+            android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1"
             android:textSize="@dimen/search_text_size" />
