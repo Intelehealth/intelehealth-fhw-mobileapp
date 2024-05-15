@@ -59,43 +59,53 @@ class CategorySegregationUtils(private val resources: Resources) {
         return patientList
     }
 
-    fun fetchListOfDiseases(patientList: MutableList<PatientWithAttribute>): List<PatientWithAttribute> {
+    fun populatePatientDiseaseAttributes(patientList: MutableList<PatientWithAttribute>): List<PatientWithAttribute> {
         patientList.forEach {
-
             val patientAge: Int = DateAndTimeUtils.calculateAgeInYears(it.dateOfBirth)
+            val diseaseList: List<String> =
+                populateDiseaseListBasedOnAgeAndHistory(patientAge, it.value)
+            it.attributeList = diseaseList.toMutableList()
+        }
+        return patientList
+    }
 
-            // For general patients
-            if (patientAge < Constants.GENERAL_EXCLUSION_AGE) {
-                it.attributeList?.add(resources.getString(R.string.tab_general))
-                return@forEach
-            }
+    fun populateDiseaseListBasedOnAgeAndHistory(
+        patientAge: Int,
+        medicalHistoryJson: String?
+    ): List<String> {
+        val diseaseList: MutableList<String> = mutableListOf()
 
-            if (patientAge >= Constants.ANEMIA_EXCLUSION_AGE) {
-                if (!isHistoryOfAnemiaPresent(it.value)) {
-                    it.attributeList?.add(resources.getString(R.string.tab_anemia_screening))
-                } else {
-                    it.attributeList?.add(resources.getString(R.string.tab_anemia_follow_up))
-                }
-            }
+        // For general patients
+        if (patientAge < Constants.GENERAL_EXCLUSION_AGE) {
+            diseaseList.add(resources.getString(R.string.tab_general))
+            return diseaseList
+        }
 
-            if (patientAge >= Constants.HYPERTENSION_EXCLUSION_AGE) {
-                if (!isHistoryOfHypertensionPresent(it.value)) {
-                    it.attributeList?.add(resources.getString(R.string.tab_hypertension_screening))
-                } else {
-                    it.attributeList?.add(resources.getString(R.string.tab_hypertension_follow_up))
-                }
-            }
-
-            if (patientAge >= Constants.DIABETES_EXCLUSION_AGE) {
-                if (!isHistoryOfDiabetesPresent(it.value)) {
-                    it.attributeList?.add(resources.getString(R.string.tab_diabetes_screening))
-                } else {
-                    it.attributeList?.add(resources.getString(R.string.tab_diabetes_follow_up))
-                }
+        if (patientAge >= Constants.ANEMIA_EXCLUSION_AGE) {
+            if (!isHistoryOfAnemiaPresent(medicalHistoryJson)) {
+                diseaseList.add(resources.getString(R.string.tab_anemia_screening))
+            } else {
+                diseaseList.add(resources.getString(R.string.tab_anemia_follow_up))
             }
         }
 
-        return patientList
+        if (patientAge >= Constants.HYPERTENSION_EXCLUSION_AGE) {
+            if (!isHistoryOfHypertensionPresent(medicalHistoryJson)) {
+                diseaseList.add(resources.getString(R.string.tab_hypertension_screening))
+            } else {
+                diseaseList.add(resources.getString(R.string.tab_hypertension_follow_up))
+            }
+        }
+
+        if (patientAge >= Constants.DIABETES_EXCLUSION_AGE) {
+            if (!isHistoryOfDiabetesPresent(medicalHistoryJson)) {
+                diseaseList.add(resources.getString(R.string.tab_diabetes_screening))
+            } else {
+                diseaseList.add(resources.getString(R.string.tab_diabetes_follow_up))
+            }
+        }
+
+        return diseaseList
     }
 
     private fun isHistoryOfAnemiaPresent(medicalHistoryJson: String?): Boolean {

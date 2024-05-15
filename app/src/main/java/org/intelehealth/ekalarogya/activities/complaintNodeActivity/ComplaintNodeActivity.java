@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
@@ -37,6 +38,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import org.intelehealth.ncd.constants.Constants;
+import org.intelehealth.ncd.utils.CategorySegregationUtils;
+import org.intelehealth.ncd.utils.DateAndTimeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,7 +71,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     SearchView searchView;
     List<Node> complaints/*, suggestedComplaints*/;
     ComplaintNodeListAdapter listAdapter;
-//    SuggestedComplaintNodeListAdapter suggestedComplaintListAdapter;
+    //    SuggestedComplaintNodeListAdapter suggestedComplaintListAdapter;
     EncounterDTO encounterDTO;
     SessionManager sessionManager = null;
     ImageView img_question;
@@ -222,8 +226,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     }
                 }
             }
-        }
-        else {
+        } else {
             String[] fileNames = new String[0];
             try {
                 fileNames = getApplicationContext().getAssets().list("engines");
@@ -240,7 +243,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 //                                name.equalsIgnoreCase("Jaundice.json"))
 //                        suggestedComplaints.add(currentNode);
 //                    else
-                        complaints.add(currentNode);
+                    complaints.add(currentNode);
                 }
                 //remove items from complaints array here...
                 mgender = PatientsDAO.fetch_gender(patientUuid);
@@ -264,8 +267,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                             complaints.get(i).remove(complaints, i);
                             i--;
-                        }
-                        else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
+                        } else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
                             complaints.get(i).remove(complaints, i);
                             i--;
                         }
@@ -285,6 +287,30 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         list_recyclerView.setVisibility(View.VISIBLE);
 //        rv_suggested_complaints.setVisibility(View.VISIBLE);
         fab.setVisibility(View.VISIBLE);
+        autoSelectComplaints();
+    }
+
+    private void autoSelectComplaints() {
+        PatientsDAO patientsDAO = new PatientsDAO();
+        try {
+            String patientBirthDate = PatientsDAO.getPatientDetailsForRedirection(patientUuid).getDate_of_birth();
+            String patientMedicalHistoryJson = patientsDAO.getValueFromPatientAttrbTable(patientUuid, Constants.OTHER_MEDICAL_HISTORY);
+            List<String> diseaseList = new CategorySegregationUtils(getResources()).populateDiseaseListBasedOnAgeAndHistory(
+                    DateAndTimeUtils.INSTANCE.calculateAgeInYears(patientBirthDate),
+                    patientMedicalHistoryJson
+            );
+
+            for (String disease : diseaseList) {
+                for (Node complaint : complaints) {
+                    if (disease.equalsIgnoreCase(complaint.getText())) {
+                        complaint.toggleSelected();
+                    }
+                }
+            }
+
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

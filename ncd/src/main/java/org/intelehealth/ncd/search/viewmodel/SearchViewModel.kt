@@ -25,7 +25,7 @@ class SearchViewModel(
                 searchString
             )
 
-            patientsWithAttribute = utils.fetchListOfDiseases(patientsWithAttribute.toMutableList())
+            patientsWithAttribute = utils.populatePatientDiseaseAttributes(patientsWithAttribute.toMutableList())
             _searchMutableLiveData.postValue(patientsWithAttribute)
         }
     }
