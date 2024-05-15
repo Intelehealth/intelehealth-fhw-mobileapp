@@ -77,6 +77,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_results"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="15dp"
