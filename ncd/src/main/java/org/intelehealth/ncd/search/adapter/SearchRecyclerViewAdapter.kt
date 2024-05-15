@@ -5,6 +5,9 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import org.intelehealth.ncd.R
 import org.intelehealth.ncd.databinding.ListItemSearchWithCategoryBinding
 import org.intelehealth.ncd.model.PatientWithAttribute
@@ -50,6 +53,19 @@ class SearchRecyclerViewAdapter(
 
             binding.tvNameOpenmrsId.text = headText
             binding.tvAge.text = bodyText
+            binding.rvDiseases.apply {
+                data.attributeList?.let {
+                    val adapter = NcdNameAdapter(it, context)
+                    val layoutManager = FlexboxLayoutManager(context).also { flm ->
+                        flm.flexDirection = FlexDirection.ROW
+                        flm.justifyContent = JustifyContent.FLEX_START
+                    }
+
+                    this.adapter = adapter
+                    this.layoutManager = layoutManager
+                }
+            }
+
             binding.root.setOnClickListener {
 
             }

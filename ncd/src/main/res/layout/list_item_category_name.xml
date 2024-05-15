@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:fontFamily="@font/lato_regular"
         android:text="@string/sample_disease_category"
-        android:textSize="13sp" />
+        android:textColor="@color/search_results_chips_text"
+        android:textSize="15sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
