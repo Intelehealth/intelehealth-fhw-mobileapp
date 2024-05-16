@@ -27,6 +27,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
+import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.appointment.api.ApiClientAppointment
 import org.intelehealth.app.appointment.dao.AppointmentDAO
@@ -71,14 +72,9 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
     private var listener: UpdateAppointmentsCount? = null
     private var nsvToday: NestedScrollView? = null
     private val upcomingLimit = 15
-    private val completedLimit = 15
-    private val cancelledLimit = 15
-    private var upcomingStart = 0
-    private var upcomingEnd = upcomingStart + upcomingLimit
+    private var offset = 0
     private var completedStart = 0
-    private var completedEnd = completedStart + completedLimit
     private var cancelledStart = 0
-    private var cancelledEnd = cancelledStart + cancelledLimit
     private var isUpcomingFullyLoaded = false
     private var upcomingAppointmentInfoList: MutableList<AppointmentInfo>? = null
     private val upcomingSearchList: MutableList<AppointmentInfo> = ArrayList()
@@ -104,9 +100,11 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
                 }
 
                 override fun onFinished(eventFlag: Int) {
-                    Log.v(TAG, "onFinished")
-                    initLimits()
-                    appointments
+                    Log.v(TAG, "onFinished"+" "+eventFlag)
+                    if(eventFlag == AppConstants.EVENT_FLAG_SUCCESS){
+                        appointments
+                    }
+
                 }
             })
     }
@@ -248,7 +246,6 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
                 showShortToast(requireActivity(), getString(R.string.sorted_by_ascending_order))
             }
             sortStatus = !sortStatus
-            initLimits()
             appointments
         }
     }
@@ -261,18 +258,12 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
 
     private fun resetData() {
         upcomingSearchList.clear()
-        initLimits()
         appointments
     }
 
     private fun initLimits() {
-        upcomingStart = 0
-        cancelledStart = 0
-        completedStart = 0
+        offset = 0
         isUpcomingFullyLoaded = false
-        upcomingEnd = upcomingStart + upcomingLimit
-        cancelledEnd = cancelledStart + cancelledLimit
-        completedEnd += completedLimit
     }
 
     private fun setMoreDataIntoUpcomingRecyclerView() {
@@ -285,15 +276,15 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
         showShortToast(requireActivity(),getString(R.string.loading_more))
         val tempList = AppointmentDAO().getUpcomingAppointments(
             upcomingLimit,
-            upcomingAppointmentInfoList!!.size,
-            if (sortStatus) "ASC" else "DESC"
+            offset,
+            if (sortStatus) "ASC" else "DESC",
+            searchPatientText
         )
 
         if (tempList.size > 0) {
             upcomingAppointmentInfoList!!.addAll(tempList)
             upcomingMyAppointmentsAdapter!!.notifyDataSetChanged()
-            upcomingStart = upcomingEnd
-            upcomingEnd += upcomingLimit
+            offset = upcomingAppointmentInfoList?.size?:0
         }else{
             isUpcomingFullyLoaded = true
         }
@@ -316,12 +307,13 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
 
         autotvSearch?.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val searchText = autotvSearch?.text.toString()
-                if (searchText.isNotEmpty()) {
-                    searchOperation(searchText)
-                } else {
-                    appointments
+                val searchText = autotvSearch!!.text.toString()
+                searchPatientText = if (searchText.isNotEmpty()) {
+                    autotvSearch!!.text.toString()
+                }else{
+                    ""
                 }
+                appointments
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
@@ -343,8 +335,7 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
                         upcomingMyAppointmentsAdapter =
                             UpcomingMyAppointmentsAdapter(activity, appointments, "upcoming")
                         rvUpcomingApp?.adapter = upcomingMyAppointmentsAdapter
-                        upcomingStart = upcomingEnd
-                        upcomingEnd += upcomingLimit
+                        offset = appointments.size
                     } else {
                         rvUpcomingApp?.visibility = View.GONE
                         noDataFoundForUpcoming?.visibility = View.VISIBLE
@@ -362,16 +353,16 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
         }
 
     private val getUpcomingDataObserver = Observable.create<MutableList<AppointmentInfo>?> {
+        initLimits()
+        Log.d("sssssslm",""+upcomingLimit+" "+offset)
         upcomingAppointmentInfoList = AppointmentDAO().getUpcomingAppointments(
             upcomingLimit,
-            upcomingStart,
-            if (sortStatus) "ASC" else "DESC"
+            offset,
+            if (sortStatus) "ASC" else "DESC",
+            searchPatientText
         )
 
         if ((upcomingAppointmentInfoList?.size ?: 0) > 0) {
-            rvUpcomingApp?.visibility = View.VISIBLE
-            noDataFoundForUpcoming?.visibility = View.GONE
-            totalUpcomingApps = upcomingAppointmentInfoList?.size ?: 0
             upcomingAppointmentInfoList?.forEach(Consumer { appointmentInfo: AppointmentInfo ->
                 val patientProfilePath = getPatientProfile(appointmentInfo.patientId)?:""
                 appointmentInfo.patientProfilePhoto = patientProfilePath
@@ -413,55 +404,6 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
             throw RuntimeException("$context must implement OnFragmentCommunicationListener")
         }
     }
-
-    private val slots: Unit
-        get() {
-            val serverUrl = BuildConfig.SERVER_URL + ":3004"
-            ApiClientAppointment.getInstance(serverUrl).api.getSlotsAll(
-                DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
-                DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
-                SessionManager(
-                    activity
-                ).locationUuid
-            ).enqueue(object : Callback<AppointmentListingResponse?> {
-
-                override fun onResponse(
-                    call: Call<AppointmentListingResponse?>,
-                    response: Response<AppointmentListingResponse?>,
-                ) {
-                    if (response.body() == null) return
-                    val slotInfoResponse = response.body()
-                    val appointmentDAO = AppointmentDAO()
-                    appointmentDAO.deleteAllAppointments()
-                    for (i in slotInfoResponse!!.data.indices) {
-                        try {
-                            appointmentDAO.insert(slotInfoResponse.data[i])
-                        } catch (e: DAOException) {
-                            e.printStackTrace()
-                        }
-                    }
-                    /*if (slotInfoResponse.getCancelledAppointments() != null) {
-                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
-                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
-                                    try {
-                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
-
-                                    } catch (DAOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        } else {
-                        }*/appointments
-                }
-
-                override fun onFailure(call: Call<AppointmentListingResponse?>, t: Throwable) {
-                    Log.v("onFailure", t.message!!)
-                    //log out operation if response code is 401
-                    NavigationUtils().logoutOperation(activity, t)
-                }
-            })
-        }
 
     private fun searchOperation(query: String) {
         var query = query

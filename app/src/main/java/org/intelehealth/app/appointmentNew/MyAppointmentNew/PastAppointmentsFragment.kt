@@ -23,7 +23,6 @@ import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -66,7 +65,7 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
     var rvCompletedApp: RecyclerView? = null
     var layoutParent: RelativeLayout? = null
     var frameLayoutFilter: FrameLayout? = null
-    var ivFilterAllApp: ImageView? = null
+    var filterIm: ImageView? = null
     var ivClearText: ImageView? = null
     var filtersList: MutableList<FilterOptionsModel>? = null
     var filtersListNew: List<String>? = null
@@ -117,6 +116,7 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
     private val upcomingSearchList: MutableList<AppointmentInfo> = ArrayList()
     private var pastAppointmentsAdapter: PastMyAppointmentsAdapter? = null
     private var sortIm: ImageView? = null
+    var tvResultsFor: TextView? = null
 
     private val disposables = CompositeDisposable()
 
@@ -139,7 +139,6 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
 
                 override fun onFinished(eventFlag: Int) {
                     Log.v(TAG, "onFinished")
-                    initLimits()
                     appointments
                 }
             })
@@ -182,6 +181,7 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
             for (i in filtersList!!.indices) {
                 val optionModel1 = filtersList!![i]
                 if (optionModel1.filterValue == inputModel.filterValue) {
+                    return
                     result = false
                     filtersList!!.remove(optionModel1)
                     filtersList!!.add(inputModel)
@@ -191,13 +191,16 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
             }
             if (result) {
                 filtersList!!.add(inputModel)
+                appointments
             }
         } else {
             filtersList!!.add(inputModel)
+            appointments
         }
         if (filtersList!!.size > 0) {
             scrollChips!!.visibility = View.VISIBLE
         }
+
         val chipGroup = parentView!!.findViewById<ChipGroup>(R.id.chipgroup_filter)
         isChipInit = true
         chipGroup.removeAllViews()
@@ -228,8 +231,9 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
                     fromDate = ""
                     toDate = ""
                     whichAppointment = ""
-                    appointments
                 }
+                appointments
+                updateFilterUi()
             }
         }
     }
@@ -252,7 +256,7 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         rvUpcomingApp = parentView!!.findViewById(R.id.rv_upcoming_appointments)
         layoutParent = parentView!!.findViewById(R.id.layout_parent)
         frameLayoutFilter = parentView!!.findViewById(R.id.filter_frame_past_appointments)
-        ivFilterAllApp = parentView!!.findViewById(R.id.filter_im)
+        filterIm = parentView!!.findViewById(R.id.filter_im)
 
         completedLay = frameLayoutFilter?.findViewById(R.id.completed_lay)
         cancelledLay = frameLayoutFilter?.findViewById(R.id.cancelled_lay)
@@ -267,8 +271,9 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         missedIm = frameLayoutFilter?.findViewById(R.id.missed_im)
 
         scrollChips = parentView!!.findViewById(R.id.scroll_chips)
+        tvResultsFor = parentView!!.findViewById(R.id.tv_results_for)
         layoutUpcoming = parentView!!.findViewById(R.id.layout_upcoming1)
-        layoutParentAll = parentView!!.findViewById(R.id.layout_parent_all1)
+        layoutParentAll = parentView!!.findViewById(R.id.layout_parent_past)
         autotvSearch = parentView!!.findViewById(R.id.et_search)
         ivClearText = parentView!!.findViewById(R.id.iv_clear)
         ivClearText?.setOnClickListener(View.OnClickListener { v: View? ->
@@ -281,9 +286,11 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         noDataFoundForCompleted = parentView!!.findViewById(R.id.layout_no_data_found_completed)
         noDataFoundForCancelled = parentView!!.findViewById(R.id.layout_no_data_found_cancelled)
         if (isChipInit) {
-            scrollChips?.setVisibility(View.VISIBLE)
+            tvResultsFor?.visibility = View.VISIBLE
+            scrollChips?.visibility = View.VISIBLE
         } else {
-            scrollChips?.setVisibility(View.GONE)
+            tvResultsFor?.visibility = View.GONE
+            scrollChips?.visibility = View.GONE
         }
         filtersList = ArrayList()
         filtersListNew = ArrayList()
@@ -303,17 +310,46 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         sortIm?.setOnClickListener(View.OnClickListener { sortList() })
 
         completedLay?.setOnClickListener {
-            setFiltersToTheGroup(FilterOptionsModel("status","Completed"))
+            setFiltersToTheGroup(FilterOptionsModel("status", "Completed"))
+            updateFilterUi()
         }
 
         cancelledLay?.setOnClickListener {
-            setFiltersToTheGroup(FilterOptionsModel("status","Cancelled"))
+            setFiltersToTheGroup(FilterOptionsModel("status", "Cancelled"))
+            updateFilterUi()
         }
 
         missedLay?.setOnClickListener {
-            setFiltersToTheGroup(FilterOptionsModel("status","Missed"))
+            setFiltersToTheGroup(FilterOptionsModel("status", "Missed"))
+            updateFilterUi()
         }
         fragmentResultListener()
+    }
+
+    private fun updateFilterUi() {
+        val isCompletedExist = filtersList?.find { it.filterValue == "Completed" }
+        if (isCompletedExist != null) {
+            completedIm?.visibility = View.VISIBLE
+        } else {
+            completedIm?.visibility = View.INVISIBLE
+        }
+
+        val isCancelledExist = filtersList?.find { it.filterValue == "Cancelled" }
+        if (isCancelledExist != null) {
+            cancelledIm?.visibility = View.VISIBLE
+        } else {
+            cancelledIm?.visibility = View.INVISIBLE
+        }
+
+        val isMissedExist = filtersList?.find { it.filterValue == "Missed" }
+        if (isMissedExist != null) {
+            missedIm?.visibility = View.VISIBLE
+        } else {
+            missedIm?.visibility = View.INVISIBLE
+        }
+
+        frameLayoutFilter?.visibility = View.GONE
+        filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_bg);
     }
 
     private fun sortList() {
@@ -324,7 +360,6 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
                 showShortToast(requireActivity(), getString(R.string.sorted_by_ascending_order))
             }
             sortStatus = !sortStatus
-            initLimits()
             appointments
         }
     }
@@ -412,10 +447,12 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         val tempList = AppointmentDAO().getPastAppointmentsWithFilters(
             upcomingLimit,
             upcomingStart,
-            if (sortStatus) "ASC" else "DESC"
+            if (sortStatus) "ASC" else "DESC",
+            searchPatientText,
+            filtersList
         )
-        if (tempList.size > 0) {
-            upcomingAppointmentInfoList!!.addAll(tempList)
+        if ((tempList?.size ?: 0) > 0) {
+            upcomingAppointmentInfoList!!.addAll(tempList!!)
             pastAppointmentsAdapter!!.notifyDataSetChanged()
             upcomingStart = upcomingEnd
             upcomingEnd += upcomingLimit
@@ -428,21 +465,37 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
     private fun clickListeners() {
         layoutParent!!.setOnTouchListener { v: View?, event: MotionEvent ->
             if (event.action == MotionEvent.ACTION_UP) {
-                if (frameLayoutFilter!!.isShown) frameLayoutFilter!!.visibility = View.GONE
+                if (frameLayoutFilter!!.isShown) {
+                    frameLayoutFilter!!.visibility = View.GONE
+                    filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_bg);
+                }else{
+                    filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_border_bg);
+
+                }
                 return@setOnTouchListener true
             }
             false
         }
         layoutParent!!.setOnClickListener { v: View? ->
-            if (frameLayoutFilter!!.isShown) frameLayoutFilter!!.visibility = View.GONE
+            if (frameLayoutFilter!!.isShown) {
+                frameLayoutFilter!!.visibility = View.GONE
+                filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_bg);
+            }else{
+                filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_border_bg);
+            }
         }
 
         //click listeners for filters
-        ivFilterAllApp!!.setOnClickListener { v: View? ->
+        filterIm!!.setOnClickListener { v: View? ->
 
             // filter options
-            if (frameLayoutFilter!!.visibility == View.VISIBLE) frameLayoutFilter!!.visibility =
-                View.GONE else frameLayoutFilter!!.visibility = View.VISIBLE
+            if (frameLayoutFilter!!.visibility == View.VISIBLE) {
+                frameLayoutFilter!!.visibility = View.GONE
+                filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_bg);
+            } else {
+                frameLayoutFilter!!.visibility = View.VISIBLE
+                filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_border_bg);
+            }
         }
 
 
@@ -459,12 +512,12 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         autotvSearch!!.setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val searchText = autotvSearch!!.text.toString()
-                if (!searchText.isEmpty()) {
-                    searchPatientText = autotvSearch!!.text.toString()
-                    searchOperation(searchPatientText)
+                searchPatientText = if (searchText.isNotEmpty()) {
+                    autotvSearch!!.text.toString()
                 } else {
-                    appointments
+                    ""
                 }
+                appointments
                 return@setOnEditorActionListener true
             }
             false
@@ -473,48 +526,35 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
-                if (s.toString().length > 0) {
+                if (s.toString().isNotEmpty()) {
                     ivClearText!!.visibility = View.VISIBLE
                 } else {
                     searchPatientText = ""
-                    appointments
                     ivClearText!!.visibility = View.GONE
+                    appointments
                 }
             }
         })
     }
 
     private fun searchOperation(query: String) {
-        var query = query
-        query = query.lowercase(Locale.getDefault()).trim { it <= ' ' }
-        query = query.replace(" {2}".toRegex(), " ")
-        val finalQuery = query
         Thread {
-            val allUpcomingList =
-                AppointmentDAO().getAllUpcomingAppointmentsWithFilters(fromDate, toDate)
-            if (!finalQuery.isEmpty()) {
-                upcomingSearchList.clear()
-                if (allUpcomingList.size > 0) {
-                    for (info in allUpcomingList) {
-                        val patientName = info.patientName.lowercase(Locale.getDefault())
-                        if (patientName.contains(finalQuery) || patientName.equals(
-                                finalQuery,
-                                ignoreCase = true
-                            )
-                        ) {
-                            upcomingSearchList.add(info)
-                        }
-                    }
-                }
-                requireActivity().runOnUiThread {
-                    pastAppointmentsAdapter =
-                        PastMyAppointmentsAdapter(activity, upcomingAppointmentInfoList, "upcoming")
-                    rvUpcomingApp!!.isNestedScrollingEnabled = true
-                    rvUpcomingApp!!.adapter = pastAppointmentsAdapter
-                }
+            upcomingAppointmentInfoList =
+                AppointmentDAO().getPastAppointmentsWithFilters(
+                    upcomingLimit,
+                    upcomingStart, if (sortStatus) "ASC" else "DESC", query, filtersList
+                )
+
+            requireActivity().runOnUiThread {
+                pastAppointmentsAdapter =
+                    PastMyAppointmentsAdapter(activity, upcomingAppointmentInfoList, "upcoming")
+                rvUpcomingApp!!.isNestedScrollingEnabled = true
+                rvUpcomingApp!!.adapter = pastAppointmentsAdapter
             }
+
         }.start()
     }
+
 
     private fun updateMAinLayoutAsPerOptionSelected(cardName: String) {
         //adjust main layout as per option selected like figma prototype
@@ -546,18 +586,21 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ appointments ->
-                    if (appointments.size > 0) {
-                        rvUpcomingApp?.visibility = View.VISIBLE
-                        noDataFoundForUpcoming?.visibility = View.GONE
-                        totalUpcomingApps = appointments?.size ?: 0
-                        pastAppointmentsAdapter =
-                            PastMyAppointmentsAdapter(activity, appointments, "upcoming")
-                        rvUpcomingApp!!.adapter = pastAppointmentsAdapter
-                        upcomingStart = upcomingEnd
-                        upcomingEnd += upcomingLimit
-                    } else {
-                        rvUpcomingApp!!.visibility = View.GONE
-                        noDataFoundForUpcoming!!.visibility = View.VISIBLE
+                    noDataFoundForUpcoming!!.visibility = View.VISIBLE
+                    appointments?.let {
+                        if (it.isNotEmpty()) {
+                            rvUpcomingApp?.visibility = View.VISIBLE
+                            noDataFoundForUpcoming?.visibility = View.GONE
+                            totalUpcomingApps = appointments.size ?: 0
+                            pastAppointmentsAdapter =
+                                PastMyAppointmentsAdapter(activity, appointments, "upcoming")
+                            rvUpcomingApp!!.adapter = pastAppointmentsAdapter
+                            upcomingStart = upcomingEnd
+                            upcomingEnd += upcomingLimit
+                        } else {
+                            rvUpcomingApp!!.visibility = View.GONE
+                            noDataFoundForUpcoming!!.visibility = View.VISIBLE
+                        }
                     }
                     myAppointmentLoadingListener.onStopPast()
                 },
@@ -570,16 +613,19 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         }
 
     private val getPastDataObserver = Observable.create<MutableList<AppointmentInfo>?> {
+        initLimits()
         upcomingAppointmentInfoList = AppointmentDAO().getPastAppointmentsWithFilters(
             upcomingLimit,
             upcomingStart,
-            if (sortStatus) "ASC" else "DESC"
+            if (sortStatus) "ASC" else "DESC",
+            searchPatientText,
+            filtersList
         )
 
         if ((upcomingAppointmentInfoList?.size ?: 0) > 0) {
             upcomingAppointmentInfoList?.forEach(Consumer { appointmentInfo: AppointmentInfo ->
                 val visitDTO = PatientsDAO.isVisitPresentForPatient_fetchVisitValues(
-                    appointmentInfo.getPatientId()
+                    appointmentInfo.patientId
                 )
                 if (visitDTO.uuid != null && visitDTO.startdate != null) {
                     val encounteruuid =
@@ -589,6 +635,8 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
                 }
                 val patientProfilePath = getPatientProfile(appointmentInfo.patientId)
                 appointmentInfo.patientProfilePhoto = patientProfilePath
+
+
             })
         }
         if (upcomingAppointmentInfoList != null) {

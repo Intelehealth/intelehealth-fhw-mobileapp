@@ -1,6 +1,7 @@
 package org.intelehealth.app.appointmentNew.MyAppointmentNew;
 
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocalByCommaContact;
 
 import android.content.Context;
 import android.content.Intent;
@@ -84,9 +85,7 @@ public class UpcomingMyAppointmentsAdapter extends RecyclerView.Adapter<Upcoming
             }
 
             // Set Age and Gender - start
-            /*String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.getPatientDob(), context);
-            holder.search_gender.setText(appointmentInfoModel.getPatientGender() + " " + age);*/
-            setGenderAgeLocal(context, holder.search_gender, appointmentInfoModel.getPatientDob(),
+            setGenderAgeLocalByCommaContact(context, holder.search_gender, appointmentInfoModel.getPatientDob(),
                     appointmentInfoModel.getPatientGender(), sessionManager);
             // Set Age and Gender - end
 

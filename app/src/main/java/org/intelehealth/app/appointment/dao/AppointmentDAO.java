@@ -1,7 +1,5 @@
 package org.intelehealth.app.appointment.dao;
 
-import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -16,6 +14,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
+import org.intelehealth.app.appointmentNew.MyAppointmentNew.PastAppointmentsFragment;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.RescheduledAppointmentsModel;
 import org.intelehealth.app.utilities.Base64Utils;
@@ -23,14 +22,13 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class AppointmentDAO {
 
@@ -417,10 +415,17 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
-    public List<AppointmentInfo> getPastAppointmentsWithFilters(int limit, int offset, String orderType) {
+    public @Nullable List<AppointmentInfo> getPastAppointmentsWithFilters(int limit, int offset, @Nullable String orderType, @Nullable String query, @Nullable List<PastAppointmentsFragment.FilterOptionsModel> filtersList) {
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor;
+
+        String searchQuery = "";
+        StringBuilder filterQuery = new StringBuilder();
+
+        if (query != null && !query.isEmpty()) {
+            searchQuery = " AND ((patient_name_new LIKE " + "'%" + query + "%') OR (p.openmrs_id LIKE " + "'%" + query + "%'))";
+        }
 
         String modifiedTime = "CASE WHEN length(a.slot_time) = 7 THEN '0' || substr(a.slot_time, 1, 5) ELSE substr(a.slot_time, 1, 5) END";
         String middleName = "CASE WHEN p.middle_name IS NOT NULL THEN ' ' || p.middle_name || ' ' ELSE ' ' END";
@@ -430,13 +435,34 @@ public class AppointmentDAO {
                 + " ELSE strftime('%H:%M:%S', " + modifiedTime + ")"
                 + " END)";
 
+        if (filtersList != null && filtersList.size() > 0) {
+            String andOr = "";
+
+            for (PastAppointmentsFragment.FilterOptionsModel item : filtersList) {
+                if (filterQuery.length() > 0) {
+                    andOr = " or ";
+                }
+                if (item.getFilterValue().equals("Completed")) {
+                    filterQuery.append(andOr).append("((").append(modifiedDateTime).append(" < ").append("datetime('now', 'localtime'))").append(" and ").append("a.status = 'completed')");
+                }
+                if (item.getFilterValue().equals("Cancelled")) {
+                    filterQuery.append(andOr).append("((").append(modifiedDateTime).append(" < ").append("datetime('now', 'localtime'))").append(" and ").append("a.status = 'cancelled')");
+                }
+                if (item.getFilterValue().equals("Missed")) {
+                    filterQuery.append(andOr).append("((").append(modifiedDateTime).append(" < ").append("datetime('now', 'localtime'))").append(" and ").append("a.status = 'booked')");
+                }
+            }
+        } else {
+            filterQuery.append("(").append(modifiedDateTime).append(" < ").append("datetime('now', 'localtime'))");
+        }
+
         idCursor = db.rawQuery("select p.patient_photo, p.first_name || " + middleName + " || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
                         + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
                         + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
                         + "from tbl_patient p, tbl_appointments a "
                         + "where p.uuid = a.patient_id "
-                        + "AND ((" + modifiedDateTime + " < datetime('now', 'localtime'))"
-                        + "or a.status = 'completed')"
+                        + "AND (" + filterQuery + ")"
+                        + searchQuery
                         + "ORDER BY " + modifiedDateTime + " " + orderType
                         + " LIMIT ? OFFSET ?"
                 , new String[]{String.valueOf(limit), String.valueOf(offset)});
@@ -547,6 +573,7 @@ public class AppointmentDAO {
 
     /**
      * getting upcoming and past appointment count
+     *
      * @param isUpcoming
      * @return
      */
@@ -574,8 +601,7 @@ public class AppointmentDAO {
             cursor = db.rawQuery("select count(*) "
                             + "from tbl_patient p, tbl_appointments a "
                             + "where p.uuid = a.patient_id "
-                            + "AND ((" + modifiedDateTime + " < datetime('now', 'localtime'))"
-                            + "or a.status = 'completed')"
+                            + "AND (" + modifiedDateTime + " < datetime('now', 'localtime'))"
 
                     , new String[]{});
         }
@@ -1462,10 +1488,14 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
-    public List<AppointmentInfo> getUpcomingAppointments(int limit, int offset, String orderType) {
+    public List<AppointmentInfo> getUpcomingAppointments(int limit, int offset, String orderType, String query) {
         Cursor idCursor;
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        String searchQuery = "";
+        if (!query.isEmpty()) {
+            searchQuery = " AND ((patient_name_new LIKE " + "'%" + query + "%') OR (p.openmrs_id LIKE " + "'%" + query + "%'))";
+        }
 
         String modifiedTime = "CASE WHEN length(a.slot_time) = 7 THEN '0' || substr(a.slot_time, 1, 5) ELSE substr(a.slot_time, 1, 5) END";
         String middleName = "CASE WHEN p.middle_name IS NOT NULL THEN ' ' || p.middle_name || ' ' ELSE ' ' END";
@@ -1482,6 +1512,7 @@ public class AppointmentDAO {
                         + "WHERE p.uuid = a.patient_id "
                         + "AND a.status = 'booked'"
                         + "AND  " + modifiedDateTime + " >= datetime('now', 'localtime')"
+                        + searchQuery
                         + "ORDER BY " + modifiedDateTime + " " + orderType
                         + " LIMIT ? OFFSET ?"
                 , new String[]{String.valueOf(limit), String.valueOf(offset)});

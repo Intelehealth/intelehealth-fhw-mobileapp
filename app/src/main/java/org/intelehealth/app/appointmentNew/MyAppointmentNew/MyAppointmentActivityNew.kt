@@ -16,6 +16,10 @@ import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
@@ -54,6 +58,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     private val mUpdateFragmentOnEventHashMap = HashMap<Int, UpdateFragmentOnEvent>()
     private var onStartUpcoming = false
     private var onStartPast = false
+    var disposable =  CompositeDisposable()
 
     fun initUpdateFragmentOnEvent(tab: Int, listener: UpdateFragmentOnEvent) {
         Log.v(TAG, "initUpdateFragmentOnEvent")
@@ -168,14 +173,46 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     }
 
     private fun setTabCount() {
-        val appointmentDao = AppointmentDAO()
+        /*val appointmentDao = AppointmentDAO()
         val upComingCount = appointmentDao.getAppointmentCountsByStatus(true)
         val pastCount = appointmentDao.getAppointmentCountsByStatus(false)
         runOnUiThread {
             tabLayout?.getTabAt(0)?.text = getString(R.string.upcoming) + " (" + upComingCount + ")"
             tabLayout?.getTabAt(1)?.text = getString(R.string.past) + " (" + pastCount + ")"
-        }
+        }*/
+        val upcomingCountObserver = getCountObserver(true)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe (
+                {
+                    tabLayout?.getTabAt(0)?.text = getString(R.string.upcoming) + " (" + it + ")"
+                },
+                {error->
+                    error.printStackTrace()
+                }
+            )
+        val pastCountObserver = getCountObserver(false)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe (
+                {
+                    tabLayout?.getTabAt(1)?.text = getString(R.string.past) + " (" + it + ")"
+                },
+                {error->
+                    error.printStackTrace()
+                }
+            )
+        disposable.add(upcomingCountObserver)
+        disposable.add(pastCountObserver)
+    }
 
+    fun getCountObserver(type:Boolean): Observable<Int> {
+        val appointmentDao = AppointmentDAO()
+        return Observable.create<Int> {emitter->
+            val count = appointmentDao.getAppointmentCountsByStatus(type)
+            emitter.onNext(count)
+            emitter.onComplete()
+        }
     }
 
     private fun configureTabLayout() {
@@ -338,6 +375,11 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                 )
             )
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.dispose()
     }
 
     companion object {

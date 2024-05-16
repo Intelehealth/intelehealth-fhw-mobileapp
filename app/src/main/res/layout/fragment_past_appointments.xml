@@ -99,12 +99,25 @@
                 </LinearLayout>
 
             </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_results_for"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_lay"
+                android:layout_marginStart="@dimen/results_for_margin_start"
+                android:layout_marginTop="@dimen/results_for_margin_top"
+                android:lineHeight="@dimen/results_for_line_height"
+                android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
+                android:text="@string/results_for"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/results_for_text_size"
+                android:textStyle="bold" />
 
             <HorizontalScrollView
                 android:id="@+id/scroll_chips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/top_lay">
+                android:layout_below="@+id/tv_results_for">
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipgroup_filter"
@@ -113,7 +126,7 @@
                     android:layout_marginTop="@dimen/chip_group_apps_margin_top" />
             </HorizontalScrollView>
             <LinearLayout
-                android:id="@+id/layout_parent_all"
+                android:id="@+id/layout_parent_past"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/scroll_chips"
@@ -161,7 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="@dimen/margin_45"
+                android:layout_marginTop="55dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 

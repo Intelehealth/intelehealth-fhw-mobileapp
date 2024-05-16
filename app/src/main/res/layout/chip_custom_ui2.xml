@@ -8,6 +8,7 @@
     android:paddingStart="@dimen/chip_apps_padding_start"
     android:paddingTop="@dimen/chip_apps_padding_top"
     android:paddingBottom="@dimen/chip_apps_padding_top"
+    android:clickable="false"
     android:textFontWeight="500"
     android:lineHeight="@dimen/card_apps_title_line_height"
     android:textSize="@dimen/chip_apps_text_size"

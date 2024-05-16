@@ -1,6 +1,7 @@
 package org.intelehealth.app.appointmentNew.MyAppointmentNew;
 
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocalByCommaContact;
 
 import android.content.Context;
 import android.content.Intent;
@@ -83,12 +84,9 @@ public class PastMyAppointmentsAdapter extends RecyclerView.Adapter<PastMyAppoin
                 }
             }
 
-            // Set Age and Gender - start
-            /*String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.getPatientDob(), context);
-            holder.search_gender.setText(appointmentInfoModel.getPatientGender() + " " + age);*/
-            setGenderAgeLocal(context, holder.search_gender, appointmentInfoModel.getPatientDob(),
+
+            setGenderAgeLocalByCommaContact(context, holder.search_gender, appointmentInfoModel.getPatientDob(),
                     appointmentInfoModel.getPatientGender(), sessionManager);
-            // Set Age and Gender - end
 
             if (appointmentInfoModel.getPatientProfilePhoto() != null && !appointmentInfoModel.getPatientProfilePhoto().isEmpty()) {
                 RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
@@ -134,7 +132,6 @@ public class PastMyAppointmentsAdapter extends RecyclerView.Adapter<PastMyAppoin
                             holder.cvPrescRx.setVisibility(View.VISIBLE);
                             holder.cvPrescPending.setVisibility(View.GONE);
                         } else {
-                            holder.tvDate.setVisibility(View.GONE);
                             holder.cvPrescPending.setVisibility(View.VISIBLE);
                             holder.cvPrescRx.setVisibility(View.GONE);
                         }
