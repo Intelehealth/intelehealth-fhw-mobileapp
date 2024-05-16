@@ -1032,63 +1032,65 @@ public class VisitsDAO {
     public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
         int count = 0;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-        db.beginTransactionNonExclusive();
-
-        Cursor cursor = null;
-        if (isForReceivedPrescription)
-            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
-                    + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where"
-                    + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and"
-                    + "  e.encounter_type_uuid = ? and"
-                    + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " //+ " o.conceptuuid = ? "
-                    //+ " and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
-                    //+ " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
+        try{
+            db.beginTransaction();
+            Cursor cursor = null;
+            if (isForReceivedPrescription)
+                cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
+                        + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where"
+                        + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and"
+                        + "  e.encounter_type_uuid = ? and"
+                        + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " //+ " o.conceptuuid = ? "
+                        //+ " and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
+                        //+ " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
 //                    +" and v.startdate <= DATETIME('now', '-4 day') "
-                    + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
-        else
-            cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
-                    + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                    //" e.encounter_type_uuid = ?  and " +
-                    " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 "
-                    //+ "and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
-                    //+ " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
+                        + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+            else
+                cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
+                        + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        //" e.encounter_type_uuid = ?  and " +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 "
+                        //+ "and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
+                        //+ " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
 //                    +" and v.startdate <= DATETIME('now', '-4 day') "
-                    + "  group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{});
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-            do {
+                        + "  group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{});
+            if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                do {
 
-                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
-                boolean isCompletedExitedSurvey = false;
-                boolean isPrescriptionReceived = false;
-                try {
-                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
-                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
-                //TODO: need more improvement in main query, this condition can be done by join query
-                if (isForReceivedPrescription) {
-                    if (!isCompletedExitedSurvey && isPrescriptionReceived) {
-                        count += 1;
-                        Timber.tag("getVisitCountsByStatus").v("Received - "+cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
-                                +" "+cursor.getString(cursor.getColumnIndexOrThrow("last_name")) +" Gender - "+cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                    boolean isCompletedExitedSurvey = false;
+                    boolean isPrescriptionReceived = false;
+                    try {
+                        isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
+                        isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+                    } catch (DAOException e) {
+                        e.printStackTrace();
                     }
-                } else {
-                    if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
-                        count += 1;
-                        Timber.tag("getVisitCountsByStatus").v("Pending - "+cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
-                                +" "+cursor.getString(cursor.getColumnIndexOrThrow("last_name")) +" Gender - "+cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    //TODO: need more improvement in main query, this condition can be done by join query
+                    if (isForReceivedPrescription) {
+                        if (!isCompletedExitedSurvey && isPrescriptionReceived) {
+                            count += 1;
+                            Timber.tag("getVisitCountsByStatus").v("Received - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
+                                    + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                        }
+                    } else {
+                        if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
+                            count += 1;
+                            Timber.tag("getVisitCountsByStatus").v("Pending - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
+                                    + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
 
+                        }
                     }
-                }
-            } while (cursor.moveToNext());
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }catch (Exception e){
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return -5;
         }
-
-
-        cursor.close();
-
 
         return count;
     }
