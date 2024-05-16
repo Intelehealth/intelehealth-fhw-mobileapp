@@ -107,7 +107,7 @@
                         android:id="@+id/card_upcoming_appointments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ui2_ic_bg_options_appointment"
+                        android:background="@drawable/selector_appointment_tab_bg"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="@dimen/card_apps_options_padding">
@@ -147,7 +147,7 @@
                         android:id="@+id/card_cancelled_appointments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ui2_ic_bg_options_appointment"
+                        android:background="@drawable/selector_appointment_tab_bg"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="@dimen/card_apps_options_padding">
@@ -187,7 +187,7 @@
                         android:id="@+id/card_completed_appointments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ui2_ic_bg_options_appointment"
+                        android:background="@drawable/selector_appointment_tab_bg"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="@dimen/card_apps_options_padding">

@@ -34,7 +34,7 @@
     <color name="hint_light_gray">#D3D3D3</color>
     <color name="medium_gray">#9E9E9E</color>
     <color name="white">#FFFFFF</color>
-    <color name="transparent">#80FFFFFF</color>
+    <color name="transparent">#00000000</color>
     <color name="button_text_color">#4B0082</color>
     <!--scale colors-->
     <color name="scale_1">#ff0000</color>
@@ -152,5 +152,8 @@
     <color name="ui2_transparent">#221B163A</color>
 
 
+<!-- White labeling colors   -->
+    <color name="colorPrimaryBlackOverlay">#33000000</color>
+    <color name="colorAccentWhiteOverlay">#ccffffff</color>
     <!--END-->
 </resources>

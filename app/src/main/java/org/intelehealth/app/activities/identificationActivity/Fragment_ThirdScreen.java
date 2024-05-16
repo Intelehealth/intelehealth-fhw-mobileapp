@@ -237,9 +237,12 @@ public class Fragment_ThirdScreen extends Fragment {
             }
         });
 
-        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addpatient_icon_done));
-        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addresslocation_icon_done));
-        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.other_icon));
+        personal_icon.setActivated(true);
+        address_icon.setActivated(true);
+        other_icon.setSelected(true);
+//        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addpatient_icon_done));
+//        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addresslocation_icon_done));
+//        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.other_icon));
 
         frag3_btn_back.setOnClickListener(v -> {
             onBackInsertIntoPatientDTO();
@@ -262,7 +265,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 casteAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mCasteSpinner.setAdapter(casteAdapter);
-            mCasteSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
+            mCasteSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
 
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
@@ -279,7 +282,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 educationAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mEducationSpinner.setAdapter(educationAdapter);
-            mEducationSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
+            mEducationSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -295,7 +298,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 economicStatusAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mEconomicstatusSpinner.setAdapter(economicStatusAdapter);
-            mEconomicstatusSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
+            mEconomicstatusSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);

@@ -6,6 +6,5 @@
     <color name="color_splash_bg">@color/colorPrimary</color>
     <color name="color_tagline_text">@color/white</color>
     <color name="colorPrimaryLightCard">#1a2E1E91</color>
-    <color name="colorPrimaryDarkerArrowBg">#33000000</color>
     <color name="colorAccentLightCard">#1a0FD197</color>
 </resources>

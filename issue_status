@@ -1,3 +1,10 @@
+16 May, 2024
+- Patient registration success dialog icon
+- Start visit button
+- Vital summery change icon
+- confirm visit reason dialog -> selected reason bg
+- Visit summery add additional doc
+
 Configurability
 - Step 1
 - Created the environment.gradle

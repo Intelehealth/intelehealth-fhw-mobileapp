@@ -178,9 +178,11 @@ public class Fragment_SecondScreen extends Fragment {
             }
         }
 
-        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addpatient_icon_done));
-        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addresslocation_icon));
-        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.other_icon_unselected));
+        personal_icon.setActivated(true);
+        address_icon.setSelected(true);
+//        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addpatient_icon_done));
+//        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addresslocation_icon));
+//        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.other_icon_unselected));
 
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
