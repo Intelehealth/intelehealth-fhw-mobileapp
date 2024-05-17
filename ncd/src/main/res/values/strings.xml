@@ -23,4 +23,6 @@
     <string name="sample_age_text">Age: 16 years 10 months 16 days</string>
     <string name="sample_disease_category">Sample Disease</string>
 
+    <string name="search_text_filed_hint">Find patient by name, ID or mobile</string>
+
 </resources>

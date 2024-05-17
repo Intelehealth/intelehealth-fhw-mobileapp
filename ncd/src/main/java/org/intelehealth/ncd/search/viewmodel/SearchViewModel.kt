@@ -18,14 +18,20 @@ class SearchViewModel(
     private val _searchMutableLiveData = MutableLiveData<List<PatientWithAttribute>>()
     val searchMutableLiveData: LiveData<List<PatientWithAttribute>> = _searchMutableLiveData
 
-    fun queryPatientWithAttributesAndSearchString(attribute: String, searchString: String) {
+    fun queryPatientWithAttributesAndSearchString(
+        attribute: String,
+        searchString: String,
+        phoneNumberAttribute: String
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             var patientsWithAttribute = repository.queryPatientsAndAttributesForSearchString(
                 attribute,
-                searchString
+                searchString,
+                phoneNumberAttribute
             )
 
-            patientsWithAttribute = utils.populatePatientDiseaseAttributes(patientsWithAttribute.toMutableList())
+            patientsWithAttribute =
+                utils.populatePatientDiseaseAttributes(patientsWithAttribute.toMutableList())
             _searchMutableLiveData.postValue(patientsWithAttribute)
         }
     }

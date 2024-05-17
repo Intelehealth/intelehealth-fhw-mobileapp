@@ -53,8 +53,10 @@ class NcdSearchActivity : AppCompatActivity(), PatientClickedListener {
     }
 
     private fun setListeners() {
+        onBackPressedDispatcher.addCallback(backPressedCallback)
+
         binding?.ivBack?.setOnClickListener {
-            onBackPressedDispatcher.addCallback(backPressedCallback)
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding?.tilSearch?.setEndIconOnClickListener {
@@ -89,7 +91,8 @@ class NcdSearchActivity : AppCompatActivity(), PatientClickedListener {
     private fun performSearch(searchString: String) {
         viewModel?.queryPatientWithAttributesAndSearchString(
             Constants.OTHER_MEDICAL_HISTORY,
-            searchString
+            searchString,
+            Constants.ATTRIBUTE_PHONE_NUMBER
         )
     }
 

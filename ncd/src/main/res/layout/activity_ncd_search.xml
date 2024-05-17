@@ -68,7 +68,7 @@
             android:layout_height="match_parent"
             android:drawableStart="@drawable/ic_baseline_search_24"
             android:drawablePadding="5dp"
-            android:hint="@string/type_to_search"
+            android:hint="@string/search_text_filed_hint"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1"

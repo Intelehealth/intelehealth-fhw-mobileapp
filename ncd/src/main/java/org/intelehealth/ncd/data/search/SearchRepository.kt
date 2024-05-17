@@ -6,8 +6,9 @@ class SearchRepository(private val dataSource: SearchDataSource) {
 
     suspend fun queryPatientsAndAttributesForSearchString(
         attribute: String,
-        name: String
+        name: String,
+        phoneNumberAttribute: String
     ): List<PatientWithAttribute> =
-        dataSource.queryPatientsAndAttributesForSearchString(attribute, name)
+        dataSource.queryPatientsAndAttributesForSearchString(attribute, name, phoneNumberAttribute)
 
 }
