@@ -893,7 +893,7 @@
     <string name="describe_lbl">वर्णन करें</string>
     <string name="patinet_history">4/4. मेडिकल हिस्ट्री : रोगी हिस्ट्री</string>
     <string name="_1_4_vitals">"1/4. वायटल्स "</string>
-    <string name="who_we_are">हम कौन हैं?</string>
+    <string name="intro_title_1">हम कौन हैं?</string>
     <string name="and">”, और “</string>
     <string name="your_time_spent_today">आपके द्वारा आज बिताया गया समय</string>
     <string name="your_patient_score">आपकी रोगी संतुष्टि स्कोर</string>
@@ -952,17 +952,17 @@
     <string name="this_months_visits">इस महीने के विज़िट्स</string>
     <string name="this_month">इस महीने</string>
     <string name="this_field_is_mandatory">यह फील्ड अनिवार्य है</string>
-    <string name="take_patient_visits_intro">यह प्लैटफ़ॉर्म एक प्रोग्रामेबल डिज़िटल असिस्टेंस Ayu द्वारा संचालित है जो फ्रंटलाइन स्वास्थ्य कार्यकर्ताओं को क्षेत्रीय भाषाओं में प्राथमिक स्वास्थ्य देखभाल के लिए साक्ष्य-आधारित प्रोटोकॉल प्रदान करता है।</string>
+    <string name="intro_tagline_2">यह प्लैटफ़ॉर्म एक प्रोग्रामेबल डिज़िटल असिस्टेंस Ayu द्वारा संचालित है जो फ्रंटलाइन स्वास्थ्य कार्यकर्ताओं को क्षेत्रीय भाषाओं में प्राथमिक स्वास्थ्य देखभाल के लिए साक्ष्य-आधारित प्रोटोकॉल प्रदान करता है।</string>
     <string name="the_password_has_been_successfully_changed">पासवर्ड सफलतापूर्वक बदला जा चुका है!</string>
     <string name="doctor_suggested_follow_up_on">डॉक्टर ने %1$s को फॉलो-अप विज़िट की सलाह दी है</string>
-    <string name="provide_prescriptions_intro">मनचाही क्रियान्वयन रणनीति के साथ-साथ कम-संसाधन के लिए बनाया गया क्लाउड-बेस्ड ओपन-सोर्स प्लैटफॉर्म असरदार स्वास्थ्य परिणामों के लिए एक डिज़िटल हेल्थ समाधान तैयार करता है।</string>
+    <string name="intro_tagline_3">मनचाही क्रियान्वयन रणनीति के साथ-साथ कम-संसाधन के लिए बनाया गया क्लाउड-बेस्ड ओपन-सोर्स प्लैटफॉर्म असरदार स्वास्थ्य परिणामों के लिए एक डिज़िटल हेल्थ समाधान तैयार करता है।</string>
     <string name="thank_you_for_feedback">आपके फीडबैक के लिए आपका धन्यवाद!</string>
     <string name="th">गुरू</string>
     <string name="terms_of_use">इस्तेमाल की शर्तें</string>
     <string name="terms_conditions">नियम व शर्तें</string>
     <string name="intro_text_1">हमारा टेलिमेडिसिन ऐप प्राथमिक हेल्थकेयर में आने वाले ग्रामीण आबादी के लिए विशेषज्ञ डॉक्टर का परामर्श उपलब्ध करता है। ऐप का उपयोग करके, HWs रोगी के दवा का विवरण, डायग्नॉस्टिक्स, प्रिक्रिप्शन और इलाज के विवरण लेने में सक्षम होते हैं। इसके बाद इन सभी विवरणों को हमने परामर्श प्रदान करने के लिए दूरस्थ डॉक्टरों के साथ साझा किया किया जाता है। यह रोगियों को हेल्थकेयर के लिए मीलों दूर तक जाने से बचाता है।</string>
     <string name="why_intelehealth_exist_ans">इंटेलिहेल्थ के टीम का विजन है \”सभी के लिए स्वास्थ्य\” इस प्रकार, सर्वव्यापी स्वास्थ्य पहुंच के इस विजन को साकार करने के लिए इंटेलिहेल्थ अस्तित्व में है। यह इस बात को हासिल करने का प्रयास करता है कि इस दुनिया का हर एक नागरिक को किसी वित्तीय कठिनाई का सामना किए बिना, जब और जहां जरूरत हो, उन्हें स्वास्थ्य सेवाएं मिले।</string>
-    <string name="take_patient_visits">रोगी विज़िट करें</string>
+    <string name="intro_title_2">रोगी विज़िट करें</string>
     <string name="sync_successful">सिंक सफल हुआ</string>
     <string name="notification_title_1">ऐप्लिकेशन सक्रिय है!</string>
     <string name="identification_screen_picker_hours" translatable="false">घंटा</string>
@@ -1021,13 +1021,13 @@
     <string name="close_visits">विज़िट्स बंद करें</string>
     <string name="close_visit">विज़िट बंद करें</string>
     <string name="skip_new">छोड़ें</string>
-    <string name="who_we_are_intro">इंटेलिहेल्थ एक ऐसा नया टेलिमेडिसिन प्लैटफॉर्म है जिसे फ्रंटलाइन स्वास्थ्य कार्यकर्ताओं और रोगियों को वर्चुअल डॉक्टर के साथ कनेक्ट करके दूरवर्ती इलाकों में स्वास्थ्य देखभाल कमी को दूर करने के लिए तैयार किया गया है ताकि उच्च गुणवत्तापूर्ण स्वास्थ्य देखभाल प्रदान की जा सके।</string>
+    <string name="intro_tagline_1">इंटेलिहेल्थ एक ऐसा नया टेलिमेडिसिन प्लैटफॉर्म है जिसे फ्रंटलाइन स्वास्थ्य कार्यकर्ताओं और रोगियों को वर्चुअल डॉक्टर के साथ कनेक्ट करके दूरवर्ती इलाकों में स्वास्थ्य देखभाल कमी को दूर करने के लिए तैयार किया गया है ताकि उच्च गुणवत्तापूर्ण स्वास्थ्य देखभाल प्रदान की जा सके।</string>
     <string name="collect_patient_info">AYU की मदद से रोगी जानकारी एकत्र करें</string>
     <string name="profile_details_added">प्रोफ़ाइल विवरण सफलतापूर्वज जुड़ गया</string>
     <string name="profile_details_updated_new">प्रोफ़ाइल विवरण सफलतापूर्वज अपडेट हुआ!</string>
     <string name="profile_photo_updated_new">प्रोफ़ाइल फ़ोटो सफलतापूर्वज अपडेट हुआ</string>
     <string name="otp_sent_success">ओटीपी सफलतापूर्वक भेजा गया</string>
-    <string name="provide_prescriptions">प्रिस्क्रिप्शन प्रदान करें</string>
+    <string name="intro_title_3">प्रिस्क्रिप्शन प्रदान करें</string>
     <string name="share_prescriptions">प्रिस्क्रिप्शन शेयर करें</string>
     <string name="hello_i_am_ayu">नमस्ते, मैं AYU हूं,</string>
     <string name="ayu_intro">डिज़िटल स्वास्थ्य सहायता।\nआइए शुरू करें!</string>

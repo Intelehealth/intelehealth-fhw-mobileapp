@@ -321,7 +321,7 @@
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginEnd="@dimen/margin_24"
             android:layout_marginBottom="@dimen/margin_24"
-            android:background="@drawable/blue_common_bg_button"
+            android:background="@drawable/ui2_common_primary_bg"
             android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
             android:paddingStart="@dimen/margin_30"
             android:paddingEnd="@dimen/margin_14"

@@ -22,23 +22,23 @@ data class IntroContent(
         fun getContent(context: Context, viewType: ViewType) = when (viewType) {
             ViewType.ONE -> IntroContent(
                 isResourceImage = true,
-                resId = R.drawable.first,
-                title = context.getString(R.string.who_we_are),
-                content = context.getString(R.string.who_we_are_intro)
+                resId = R.drawable.intro_image_1,
+                title = context.getString(R.string.intro_title_1),
+                content = context.getString(R.string.intro_tagline_1)
             )
 
             ViewType.TWO -> IntroContent(
                 isResourceImage = true,
-                resId = R.drawable.second,
-                title = context.getString(R.string.take_patient_visits),
-                content = context.getString(R.string.take_patient_visits_intro)
+                resId = R.drawable.intro_image_2,
+                title = context.getString(R.string.intro_title_2),
+                content = context.getString(R.string.intro_tagline_2)
             )
 
             ViewType.THREE -> IntroContent(
                 isResourceImage = true,
-                resId = R.drawable.third,
-                title = context.getString(R.string.provide_prescriptions),
-                content = context.getString(R.string.provide_prescriptions_intro)
+                resId = R.drawable.intro_image_3,
+                title = context.getString(R.string.intro_title_3),
+                content = context.getString(R.string.intro_tagline_3)
             )
         }
     }

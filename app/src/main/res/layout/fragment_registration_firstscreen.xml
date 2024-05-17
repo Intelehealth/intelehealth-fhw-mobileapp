@@ -45,6 +45,7 @@
                 android:layout_alignBottom="@id/img_profile"
                 android:layout_marginStart="-20dip"
                 android:layout_toEndOf="@+id/img_profile"
+                android:background="@drawable/rounded_icon_white_bg"
                 android:elevation="8dip"
                 android:src="@drawable/lense_with_camera_icon" />
 

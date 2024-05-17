@@ -93,7 +93,8 @@
         android:layout_below="@+id/toolbar_relative"
         android:layout_marginStart="@dimen/fu_margin_start"
         android:layout_marginEnd="@dimen/fu_margin_start"
-        app:tabIndicatorColor="@color/lite_red"
+        app:tabIconTint="@color/colorPrimary"
+        app:tabIndicatorColor="@color/colorPrimary"
         app:tabSelectedTextColor="@color/textColorBlack"
         app:tabTextAppearance="@style/CustomTabText" />
 

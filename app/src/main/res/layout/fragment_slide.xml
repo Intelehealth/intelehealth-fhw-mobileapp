@@ -36,8 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/who_we_are"
-            android:src="@drawable/first"
+            android:contentDescription="@string/intro_title_1"
+            android:src="@drawable/intro_image_1"
             app:layout_constraintBottom_toTopOf="@id/tvIntroTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivIntroImage"
-            tools:text="@string/who_we_are" />
+            tools:text="@string/intro_title_1" />
 
         <TextView
             android:id="@+id/tvIntroContent"
@@ -77,7 +77,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvIntroTitle"
-            tools:text="@string/who_we_are_intro" />
+            tools:text="@string/intro_tagline_1" />
         <!--        </LinearLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

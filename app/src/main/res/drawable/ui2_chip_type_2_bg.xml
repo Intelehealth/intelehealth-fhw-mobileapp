@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="#EFE8FF" />
+    <solid android:color="@color/colorPrimaryLightCard" />
     <stroke
         android:width="1dip"
-        android:color="#EFE8FF"
+        android:color="@color/colorPrimaryLightCard"
         android:dashWidth="1dip" />
     <corners android:radius="8dp" />
 
