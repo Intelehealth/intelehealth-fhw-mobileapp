@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -64,14 +65,11 @@ public class MedicalHistoryDialog extends DialogFragment {
         binding = DialogMedicalHistoryBinding.inflate(inflater);
         setListeners();
 
-        if (bundle != null)
-            setBundleData();
+        if (bundle != null) setBundleData();
 
-        builder.setView(binding.getRoot())
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
+        builder.setView(binding.getRoot()).setPositiveButton(R.string.ok, (dialog, which) -> {
 
-                })
-                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
+        }).setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
 
         final AlertDialog dialog = builder.create();
         dialog.setOnShowListener(dialog1 -> {
@@ -87,8 +85,7 @@ public class MedicalHistoryDialog extends DialogFragment {
 
                     if (bundle != null)
                         callback.saveMedicalHistoryDataAtPosition(medicalHistory, position);
-                    else
-                        callback.saveMedicalHistoryData(medicalHistory);
+                    else callback.saveMedicalHistoryData(medicalHistory);
 
                     dialog1.dismiss();
                 }
@@ -105,6 +102,88 @@ public class MedicalHistoryDialog extends DialogFragment {
                 binding.reasonForSurgeryEditText.setFilters(new InputFilter[]{inputFilter_Name, emojiFilter});
             } else {
                 binding.surgeryLinearLayout.setVisibility(View.GONE);
+            }
+        });
+
+        setHypertensionListeners();
+        setDiabetesListeners();
+        setAnemiaListeners();
+    }
+
+    private void setHypertensionListeners() {
+        binding.bpYes.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.llBpMedication.setVisibility(View.VISIBLE);
+            } else {
+                binding.llBpMedication.setVisibility(View.GONE);
+            }
+        });
+
+        binding.bpMedicationYes.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.llBpHealthcareWorker.setVisibility(View.VISIBLE);
+            } else {
+                binding.llBpHealthcareWorker.setVisibility(View.GONE);
+            }
+        });
+
+        binding.bpMedicationNo.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.llBpNoMedicationReason.setVisibility(View.VISIBLE);
+            } else {
+                binding.llBpNoMedicationReason.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void setDiabetesListeners() {
+        binding.diabetesYes.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.llDiabetesMedication.setVisibility(View.VISIBLE);
+            } else {
+                binding.llDiabetesMedication.setVisibility(View.GONE);
+            }
+        });
+
+        binding.diabetesMedicationYes.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.llDiabetesHealthcareWorker.setVisibility(View.VISIBLE);
+            } else {
+                binding.llDiabetesHealthcareWorker.setVisibility(View.GONE);
+            }
+        });
+
+        binding.diabetesMedicationNo.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.llDiabetesNoMedicationReason.setVisibility(View.VISIBLE);
+            } else {
+                binding.llDiabetesNoMedicationReason.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void setAnemiaListeners() {
+        binding.anemiaYes.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.llAnemiaMedication.setVisibility(View.VISIBLE);
+            } else {
+                binding.llAnemiaMedication.setVisibility(View.GONE);
+            }
+        });
+
+        binding.anemiaMedicationYes.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.llAnemiaHealthcareWorker.setVisibility(View.VISIBLE);
+            } else {
+                binding.llAnemiaHealthcareWorker.setVisibility(View.GONE);
+            }
+        });
+
+        binding.anemiaMedicationNo.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.llAnemiaNoMedicationReason.setVisibility(View.VISIBLE);
+            } else {
+                binding.llAnemiaNoMedicationReason.setVisibility(View.GONE);
             }
         });
     }
@@ -150,40 +229,15 @@ public class MedicalHistoryDialog extends DialogFragment {
     private MedicalHistory getData() {
         MedicalHistory medicalHistory = new MedicalHistory();
 
-        medicalHistory.setHypertension(getMedicalHistoryStrings(
-                ((RadioButton) binding.hypertensionRadioGroup.findViewById(binding.hypertensionRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(),
-                requireContext().getResources(),
-                updatedResources,
-                sessionManager.getAppLanguage()
-        ));
+        medicalHistory.setHypertension(getMedicalHistoryStrings(((RadioButton) binding.hypertensionRadioGroup.findViewById(binding.hypertensionRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
 
-        medicalHistory.setDiabetes(getMedicalHistoryStrings(
-                ((RadioButton) binding.diabetesRadioGroup.findViewById(binding.diabetesRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(),
-                requireContext().getResources(),
-                updatedResources,
-                sessionManager.getAppLanguage()
-        ));
+        medicalHistory.setDiabetes(getMedicalHistoryStrings(((RadioButton) binding.diabetesRadioGroup.findViewById(binding.diabetesRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
 
-        medicalHistory.setArthritis(getMedicalHistoryStrings(
-                ((RadioButton) binding.arthritisRadioGroup.findViewById(binding.arthritisRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(),
-                requireContext().getResources(),
-                updatedResources,
-                sessionManager.getAppLanguage()
-        ));
+        medicalHistory.setArthritis(getMedicalHistoryStrings(((RadioButton) binding.arthritisRadioGroup.findViewById(binding.arthritisRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
 
-        medicalHistory.setAnaemia(getMedicalHistoryStrings(
-                ((RadioButton) binding.anaemiaRadioGroup.findViewById(binding.anaemiaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext().getResources(),
-                updatedResources,
-                sessionManager.getAppLanguage()
-        ));
+        medicalHistory.setAnaemia(getMedicalHistoryStrings(((RadioButton) binding.anaemiaRadioGroup.findViewById(binding.anaemiaRadioGroup.getCheckedRadioButtonId())).getText().toString(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
 
-        medicalHistory.setAnySurgeries(getMedicalHistoryStrings(
-                ((RadioButton) binding.anySurgeriesRadioGroup.findViewById(binding.anySurgeriesRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext().getResources(),
-                updatedResources,
-                sessionManager.getAppLanguage()
-        ));
+        medicalHistory.setAnySurgeries(getMedicalHistoryStrings(((RadioButton) binding.anySurgeriesRadioGroup.findViewById(binding.anySurgeriesRadioGroup.getCheckedRadioButtonId())).getText().toString(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
 
         if (medicalHistory.getAnySurgeries().equalsIgnoreCase("Yes"))
             medicalHistory.setReasonForSurgery(Objects.requireNonNull(binding.reasonForSurgeryEditText.getText()).toString().trim());
@@ -226,13 +280,10 @@ public class MedicalHistoryDialog extends DialogFragment {
                 char c = charSequence.charAt(i);
                 if (isCharAllowed(c)) // put your condition here
                     sb.append(c);
-                else if (c == '.')
-                    sb.append(c);
-                else
-                    keepOriginal = false;
+                else if (c == '.') sb.append(c);
+                else keepOriginal = false;
             }
-            if (keepOriginal)
-                return null;
+            if (keepOriginal) return null;
             else {
                 if (charSequence instanceof Spanned) {
                     SpannableString sp = new SpannableString(sb);
@@ -245,10 +296,7 @@ public class MedicalHistoryDialog extends DialogFragment {
         }
 
         private boolean isCharAllowed(char c) {
-            return Character.isLetter(c)
-                    || Character.isSpaceChar(c)
-                    || Character.getType(c) == Character.NON_SPACING_MARK
-                    || Character.getType(c) == Character.COMBINING_SPACING_MARK;     // This allows only alphabets, digits and spaces.
+            return Character.isLetter(c) || Character.isSpaceChar(c) || Character.getType(c) == Character.NON_SPACING_MARK || Character.getType(c) == Character.COMBINING_SPACING_MARK;     // This allows only alphabets, digits and spaces.
         }
     };
 
