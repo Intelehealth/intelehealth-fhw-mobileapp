@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/bp_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
@@ -37,6 +38,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/bp_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
@@ -68,6 +70,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/bp_medication_yes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -75,6 +78,7 @@
                         android:textSize="14sp" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/bp_medication_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -108,6 +112,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/bp_healthworker_yes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -115,6 +120,7 @@
                         android:textSize="14sp" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/bp_healthworker_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -129,6 +135,7 @@
                 android:id="@+id/ll_bp_no_medication_reason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:visibility="gone"
                 tools:visibility="visible">
@@ -142,75 +149,21 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <RadioGroup
-                    android:id="@+id/rg_bp_no_medication_reason"
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/bp_no_medication_reason"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
 
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/never_prescribed_medication"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/forgot_to_take_it"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/cannot_afford_medications"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/ran_out_of_medication"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/i_am_needing_follow_up_with_my_PHC"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/i_dont_think_i_need_it"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/side_effect_related_to_medication"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/unknown_other"
-                        android:textSize="14sp" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/other_reason_bp_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:textSize="14sp" />
-
-                </RadioGroup>
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/other_reason_bp_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
@@ -230,6 +183,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/diabetes_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
@@ -237,6 +191,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/diabetes_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
@@ -268,6 +223,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/diabetes_medication_yes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -275,6 +231,7 @@
                         android:textSize="14sp" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/diabetes_medication_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -308,6 +265,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/diabetes_healthcare_yes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -315,6 +273,7 @@
                         android:textSize="14sp" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/diabetes_healthcare_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -347,68 +306,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/diabetes_no_medication_reason"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/never_prescribed_medication"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/forgot_to_take_it"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/cannot_afford_medications"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/ran_out_of_medication"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/i_am_needing_follow_up_with_my_PHC"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/i_dont_think_i_need_it"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/side_effect_related_to_medication"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/unknown_other"
-                        android:textSize="14sp" />
+                        android:layout_marginTop="10dp" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/other_reason_diabetes_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:fontFamily="@font/lato_regular"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                 </RadioGroup>
 
@@ -461,6 +373,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/anemia_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
@@ -468,6 +381,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/anemia_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
@@ -499,6 +413,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/anemia_medication_yes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -506,6 +421,7 @@
                         android:textSize="14sp" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/anemia_medication_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -539,6 +455,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/anemia_healthcare_yes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -546,6 +463,7 @@
                         android:textSize="14sp" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/anemia_healthcare_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
@@ -573,75 +491,22 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <RadioGroup
-                    android:id="@+id/rg_anemia_no_medication_reason"
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/anemia_no_medication_reason"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
 
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/never_prescribed_medication"
-                        android:textSize="14sp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/other_reason_anemia_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/forgot_to_take_it"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/cannot_afford_medications"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/ran_out_of_medication"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/i_am_needing_follow_up_with_my_PHC"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/i_dont_think_i_need_it"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/side_effect_related_to_medication"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="@string/unknown_other"
-                        android:textSize="14sp" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/other_reason_anemia_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:textSize="14sp" />
-
-                </RadioGroup>
 
             </LinearLayout>
 
