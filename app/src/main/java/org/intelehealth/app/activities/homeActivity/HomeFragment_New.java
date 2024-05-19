@@ -73,9 +73,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     NetworkUtils networkUtils;
     ImageView ivInternet;
     private TextView mUpcomingAppointmentCountTextView, mCountPendingFollowupVisitsTextView;
-    TextView prescriptionCountTextView;
     private Executor initUIExecutor = Executors.newSingleThreadExecutor();
-    private int visitCount = 0;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -290,9 +288,25 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             }
         });
 
-        prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
+        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
+            int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
+//            int pendingCountTotalVisits = getCurrentMonthsVisits(false);
+//            int countReceivedPrescription = getCurrentMonthsVisits(true);
 
-        getVisitCount();
+            int total = pendingCountTotalVisits + countReceivedPrescription;
+
+            if (isAdded()) {
+                activity.runOnUiThread(() -> {
+                    String prescCountText = countReceivedPrescription + " " + activity.getString(R.string.out_of) + " " + total + " " + activity.getString(R.string.received).toLowerCase();
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
+                    }
+                    prescriptionCountTextView.setText(prescCountText);
+                });
+            }
+        });
 
         //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
@@ -316,38 +330,6 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             }
         });
         getUpcomingAppointments();
-    }
-
-    private void getVisitCount() {
-        if(visitCount > 5) return;
-        Executors.newSingleThreadExecutor().execute(() -> {
-            int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
-            int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
-            if(pendingCountTotalVisits == -5 || countReceivedPrescription == -5){
-                try {
-                    Thread.sleep(2000);
-                    getVisitCount();
-                } catch (InterruptedException interruptedException) {
-                    Thread.currentThread().interrupt();
-                    // Handle interruption if needed
-                }
-            }
-//            int pendingCountTotalVisits = getCurrentMonthsVisits(false);
-//            int countReceivedPrescription = getCurrentMonthsVisits(true);
-
-            int total = pendingCountTotalVisits + countReceivedPrescription;
-
-            if (isAdded()) {
-                getActivity().runOnUiThread(() -> {
-                    String prescCountText = countReceivedPrescription + " " + getActivity().getString(R.string.out_of) + " " + total + " " + getActivity().getString(R.string.received).toLowerCase();
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
-                    }
-                    prescriptionCountTextView.setText(prescCountText);
-                });
-            }
-        });
-        visitCount++;
     }
 
     private void startExecutor() {

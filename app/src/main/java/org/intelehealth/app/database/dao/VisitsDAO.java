@@ -1029,10 +1029,17 @@ public class VisitsDAO {
         return visitId;
     }
 
+    //visit count to retry db operation
+    //sometimes app crash cause of db lock
+    //that's why added the retry mechanism whenever db will be lock
+    int getVisitCount = 0;
     public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
         int count = 0;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        //we are retrying db operation for 5 times
+        if(getVisitCount > 5) return 0;
+
         try{
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
             db.beginTransaction();
             Cursor cursor = null;
             if (isForReceivedPrescription)
@@ -1087,9 +1094,19 @@ public class VisitsDAO {
             cursor.close();
             db.setTransactionSuccessful();
             db.endTransaction();
-        }catch (Exception e){
-            FirebaseCrashlytics.getInstance().recordException(e);
-            return -5;
+
+            //resetting count after successful db operation
+            getVisitCount = 0;
+        }
+        catch (Exception e){
+            //if db is locked then retrying to execute db operation
+            try{
+                Thread.sleep(2000);
+                getVisitCount++;
+                getVisitCountsByStatus(isForReceivedPrescription);
+            }catch (Exception ex){
+                FirebaseCrashlytics.getInstance().recordException(ex);
+            }
         }
 
         return count;
