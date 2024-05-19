@@ -1241,4 +1241,25 @@
     <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">What is the mobile number associated with your (“family member”) or (“personal”) WhatsApp account?</string>
     <string name="i_dont_know">I don\’t know</string>
 
+    <string name="are_you_taking_any_medication_for_bp">Are you taking any medication for BP?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">Are you taking any medication for diabetes?</string>
+    <string name="are_you_taking_any_medication_for_anemia">Are you taking any medication for anemia?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">Why are you not taking your BP medication?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">Why are you not taking your diabetes medication?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">Why are you not taking your anemia medication?</string>
+
+    <string name="never_prescribed_medication">I was never prescribed medications.</string>
+    <string name="forgot_to_take_it">I forgot to take it.</string>
+    <string name="cannot_afford_medications">I cannot afford medications.</string>
+    <string name="ran_out_of_medication">I ran out of medications / lost medications.</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">I am needing follow up with my PHC.</string>
+    <string name="i_dont_think_i_need_it">I don\'t think I need it.</string>
+    <string name="side_effect_related_to_medication">Side effect related to medication.</string>
+    <string name="unknown_other">Unknown / Other</string>
+
 </resources>
