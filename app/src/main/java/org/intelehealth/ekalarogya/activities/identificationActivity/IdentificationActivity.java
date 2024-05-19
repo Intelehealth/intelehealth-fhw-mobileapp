@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -47,6 +48,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
@@ -136,7 +138,7 @@ public class IdentificationActivity extends AppCompatActivity implements
     RadioButton mGenderM, mGenderF, mGenderO, radioYes, radioNo;
     Spinner mCountry, mState, mVillage, mCaste, mEducation, mEconomicStatus, spinner_vaccination;
     TextInputLayout casteLayout, economicLayout, educationLayout;
-    LinearLayout countryStateLayout;
+    LinearLayout countryStateLayout, whatsAppDataLayout;
     ImageView mImageView;
     String uuid = "";
     PatientDTO patientdto = new PatientDTO();
@@ -171,6 +173,9 @@ public class IdentificationActivity extends AppCompatActivity implements
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
+
+    private MaterialCheckBox iDontKnowCheckbox;
+    private EditText whatsAppNumberEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,6 +290,10 @@ public class IdentificationActivity extends AppCompatActivity implements
         hohRadioGroup = findViewById(R.id.hoh_radio_group);
         ekalProcessRadioGroup = findViewById(R.id.ekal_process_radio_group);
         waterSourceWithin30minutesRadioGroup = findViewById(R.id.water_source_30minutes_radio_group);
+
+        whatsAppDataLayout = findViewById(R.id.ll_whatsapp_data);
+        iDontKnowCheckbox = findViewById(R.id.cb_i_do_not_know);
+        whatsAppNumberEditText = findViewById(R.id.et_whatsapp_number);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -687,7 +696,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                         whatsapp_id, android.R.layout.simple_spinner_dropdown_item);
             }
             whatsapp_spinner.setAdapter(whatsapp_adapt);
-
+            setWhatsAppSpinnerListener(whatsapp_spinner);
         } catch (Exception e) {
             Toast.makeText(this, "Whatsapp values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -2271,6 +2280,33 @@ public class IdentificationActivity extends AppCompatActivity implements
                     cardview_household.setVisibility(View.GONE);
                     hohRelationshipCardView.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+    }
+
+    private void setWhatsAppSpinnerListener(Spinner whatsappSpinner) {
+        whatsappSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0 && position < 3) {
+                    whatsAppDataLayout.setVisibility(View.VISIBLE);
+                } else {
+                    whatsAppDataLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        iDontKnowCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                whatsAppNumberEditText.setEnabled(false);
+                whatsAppNumberEditText.getText().clear();
+            } else {
+                whatsAppNumberEditText.setEnabled(true);
             }
         });
     }

@@ -1238,5 +1238,7 @@
     <string name="tab_hypertension_screening">Hypertension Screening</string>
     <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
     <string name="tab_general">General</string>
+    <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">What is the mobile number associated with your (“family member”) or (“personal”) WhatsApp account?</string>
+    <string name="i_dont_know">I don\’t know</string>
 
 </resources>
