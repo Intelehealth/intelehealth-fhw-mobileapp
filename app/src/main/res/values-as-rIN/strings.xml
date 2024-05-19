@@ -1173,4 +1173,29 @@
     <string name="title_un_uploaded_visit_reminder_desc">নমস্কাৰ, কিছুমান ভ্ৰমণ আছে যিবোৰ এতিয়াও আপলোড কৰা হোৱা নাই, অনুগ্ৰহ কৰি ব্যৱস্থা লওক।</string>
     <string name="you_have_unuploaded_visits">আপোনাৰ %1$s আন-আপল\'ড কৰা ভ্ৰমণ আছে।</string>
 
+    <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">আপোনাৰ “পৰিয়ালৰ সদস্য” বা “ব্যক্তিগত” হোৱাটছএপ একাউণ্টৰ লগত জড়িত মোবাইল নম্বৰটো কি?</string>
+    <string name="i_dont_know">মই নাজানো</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">একালে আপোনাৰ ওচৰলৈ আমাৰ ভ্ৰমণৰ সাৰাংশৰ বিনামূলীয়া হোৱাটছএপ মেছেজ দিব পাৰিবনে?</string>
+
+    <string name="are_you_taking_any_medication_for_bp">Are you taking any medication for BP?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">Are you taking any medication for diabetes?</string>
+    <string name="are_you_taking_any_medication_for_anemia">Are you taking any medication for anemia?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">Why are you not taking your BP medication?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">Why are you not taking your diabetes medication?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">Why are you not taking your anemia medication?</string>
+
+    <string name="never_prescribed_medication">মোক কেতিয়াও ঔষধ প্ৰেছক্ৰিপচন কৰা হোৱা নাছিল</string>
+    <string name="forgot_to_take_it">ল’বলৈ পাহৰিলোঁ৷</string>
+    <string name="cannot_afford_medications">ঔষধ কিনিব পৰা নাই</string>
+    <string name="ran_out_of_medication">মোৰ ঔষধ শেষ হৈ গ’ল / ঔষধ হেৰাই গ’ল</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">মোৰ পি এইচ চিৰ সৈতে মোক ফ’ল’ আপৰ প্ৰয়োজন হৈছে</string>
+    <string name="i_dont_think_i_need_it">মোৰ প্ৰয়োজন নাই বুলি ভাবো</string>
+    <string name="side_effect_related_to_medication">ঔষধৰ লগত জড়িত পাৰ্শ্বক্ৰিয়া</string>
+    <string name="unknown_other">অজ্ঞাত / অন্যান্য</string>
+
 </resources>
