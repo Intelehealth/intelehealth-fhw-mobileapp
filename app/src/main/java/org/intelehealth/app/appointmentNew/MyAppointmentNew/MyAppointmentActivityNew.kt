@@ -29,6 +29,7 @@ import org.intelehealth.app.appointment.dao.AppointmentDAO
 import org.intelehealth.app.appointment.model.AppointmentListingResponse
 import org.intelehealth.app.appointmentNew.UpdateAppointmentsCount
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent
+import org.intelehealth.app.enums.AppointmentTabType
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
@@ -127,6 +128,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
 
                     //getAppointments();
                     Log.v(TAG, "onFinished - " + Gson().toJson(slotInfoResponse))
+                    setTabCount()
                     Objects.requireNonNull(
                         mUpdateFragmentOnEventHashMap[tabIndex]
                     )?.onFinished(AppConstants.EVENT_FLAG_SUCCESS)
@@ -163,7 +165,6 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
         }
 
         configureTabLayout()
-        setTabCount()
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         window.statusBarColor = Color.WHITE
         bottomNav = findViewById(R.id.bottom_nav_my_appointments)
@@ -173,25 +174,13 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     }
 
     private fun setTabCount() {
-        /*val appointmentDao = AppointmentDAO()
-        val upComingCount = appointmentDao.getAppointmentCountsByStatus(true)
-        val pastCount = appointmentDao.getAppointmentCountsByStatus(false)
-        runOnUiThread {
-            tabLayout?.getTabAt(0)?.text = getString(R.string.upcoming) + " (" + upComingCount + ")"
-            tabLayout?.getTabAt(1)?.text = getString(R.string.past) + " (" + pastCount + ")"
-        }*/
-        val upcomingCountObserver = getCountObserver(true)
+        val upcomingAndPastCountObserver = getCountObserver(AppointmentTabType.UPCOMING)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe (
-                {
-                    tabLayout?.getTabAt(0)?.text = getString(R.string.upcoming) + " (" + it + ")"
-                },
-                {error->
-                    error.printStackTrace()
-                }
-            )
-        val pastCountObserver = getCountObserver(false)
+            .concatMap {
+                tabLayout?.getTabAt(0)?.text = getString(R.string.upcoming) + " (" + it + ")"
+                getCountObserver(AppointmentTabType.PAST)
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe (
@@ -202,14 +191,13 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                     error.printStackTrace()
                 }
             )
-        disposable.add(upcomingCountObserver)
-        disposable.add(pastCountObserver)
+        disposable.add(upcomingAndPastCountObserver)
     }
 
-    fun getCountObserver(type:Boolean): Observable<Int> {
+    private fun getCountObserver(appointmentTabType: AppointmentTabType): Observable<Int> {
         val appointmentDao = AppointmentDAO()
         return Observable.create<Int> {emitter->
-            val count = appointmentDao.getAppointmentCountsByStatus(type)
+            val count = appointmentDao.getAppointmentCountsByStatus(appointmentTabType)
             emitter.onNext(count)
             emitter.onComplete()
         }

@@ -35,6 +35,7 @@ import org.intelehealth.app.appointment.model.AppointmentInfo
 import org.intelehealth.app.appointment.model.AppointmentListingResponse
 import org.intelehealth.app.appointmentNew.UpdateAppointmentsCount
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent
+import org.intelehealth.app.enums.DataLoadingType
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.MyAppointmentLoadingListener
 import org.intelehealth.app.utilities.NavigationUtils
@@ -51,24 +52,24 @@ import java.util.Locale
 import java.util.function.Consumer
 
 class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyAppointmentLoadingListener) : Fragment() {
-    var cardUpcomingAppointments: LinearLayout? = null
-    var layoutMainAppOptions: LinearLayout? = null
-    var layoutUpcoming: LinearLayout? = null
-    var layoutCancelled: LinearLayout? = null
-    var layoutCompleted: LinearLayout? = null
-    var rvUpcomingApp: RecyclerView? = null
-    var layoutParentAll: LinearLayout? = null
-    var sessionManager: SessionManager? = null
+    private var cardUpcomingAppointments: LinearLayout? = null
+    private var layoutMainAppOptions: LinearLayout? = null
+    private var layoutUpcoming: LinearLayout? = null
+    private var layoutCancelled: LinearLayout? = null
+    private var layoutCompleted: LinearLayout? = null
+    private var rvUpcomingApp: RecyclerView? = null
+    private var layoutParentAll: LinearLayout? = null
+    private var sessionManager: SessionManager? = null
     private var db: SQLiteDatabase? = null
-    var ivRefresh: ImageView? = null
-    var ivClearText: ImageView? = null
-    var noDataFoundForUpcoming: View? = null
-    var autotvSearch: EditText? = null
-    var searchPatientText = ""
-    var currentDate = ""
-    var totalUpcomingApps = 0
-    var totalCancelled = 0
-    var totalCompleted = 0
+    private var ivRefresh: ImageView? = null
+    private var ivClearText: ImageView? = null
+    private var noDataFoundForUpcoming: View? = null
+    private var autotvSearch: EditText? = null
+    private var searchPatientText = ""
+    private var currentDate = ""
+    private var totalUpcomingApps = 0
+    private var totalCancelled = 0
+    private var totalCompleted = 0
     private var listener: UpdateAppointmentsCount? = null
     private var nsvToday: NestedScrollView? = null
     private val upcomingLimit = 15
@@ -84,10 +85,10 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
 
     private var sortIm: ImageView? = null
 
-    lateinit var upcommingView: View
+    private lateinit var upcommingView: View
 
     //true = ascending, false = descending
-    var sortStatus = true
+    private var sortStatus = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLocale(context)
@@ -183,16 +184,12 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
             searchPatientText = ""
             resetData()
         })
-        layoutMainAppOptions?.setBackground(
-            ContextCompat.getDrawable(
-                requireActivity(),
-                R.drawable.ui2_ic_bg_options_appointment
-            )
+        layoutMainAppOptions?.background = ContextCompat.getDrawable(
+            requireActivity(),
+            R.drawable.ui2_ic_bg_options_appointment
         )
-        cardUpcomingAppointments?.setBackground(
-            ContextCompat.getDrawable(
-                requireActivity(), R.drawable.ui2_bg_selcted_card
-            )
+        cardUpcomingAppointments?.background = ContextCompat.getDrawable(
+            requireActivity(), R.drawable.ui2_bg_selcted_card
         )
         layoutUpcoming?.visibility = View.VISIBLE
         layoutCompleted?.visibility = View.VISIBLE
@@ -210,7 +207,7 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
             sortList()
         }
 
-        nsvToday?.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+        nsvToday?.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             if (v.getChildAt(v.childCount - 1) != null) {
                 if (scrollY > oldScrollY) {
                     if (upcomingAppointmentInfoList != null && upcomingAppointmentInfoList!!.size == 0) {
@@ -233,7 +230,7 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
                     }*/
                 }
             }
-        })
+        }
         searchPatient()
         //getSlots();
     }
@@ -266,6 +263,9 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
         isUpcomingFullyLoaded = false
     }
 
+    /**
+     * this function will call whenever we paginate the list
+     */
     private fun setMoreDataIntoUpcomingRecyclerView() {
         if (upcomingSearchList.size > 0) {
             return
@@ -274,20 +274,25 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
             return
         }
         showShortToast(requireActivity(),getString(R.string.loading_more))
-        val tempList = AppointmentDAO().getUpcomingAppointments(
-            upcomingLimit,
-            offset,
-            if (sortStatus) "ASC" else "DESC",
-            searchPatientText
-        )
 
-        if (tempList.size > 0) {
-            upcomingAppointmentInfoList!!.addAll(tempList)
-            upcomingMyAppointmentsAdapter!!.notifyDataSetChanged()
-            offset = upcomingAppointmentInfoList?.size?:0
-        }else{
-            isUpcomingFullyLoaded = true
-        }
+        val upcomingAppointmentDisposable = getUpcomingDataObserver(DataLoadingType.PAGINATION)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ appointments ->
+                if (appointments.size > 0) {
+                    upcomingAppointmentInfoList!!.addAll(appointments)
+                    upcomingMyAppointmentsAdapter!!.notifyDataSetChanged()
+                    offset = upcomingAppointmentInfoList?.size?:0
+                } else {
+                    isUpcomingFullyLoaded = true
+                }
+
+            },
+                { error ->
+                    error.printStackTrace()
+                })
+
+        disposables.add(upcomingAppointmentDisposable)
     }
 
     private fun searchPatient() {
@@ -320,10 +325,13 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
         }
     }
 
+    /**
+     * to getting appointment for first time, from search, sort
+     */
     private val appointments: Unit
         get() {
             //recyclerview for upcoming appointments
-            val upcomingAppointmentDisposable = getUpcomingDataObserver
+            val upcomingAppointmentDisposable = getUpcomingDataObserver(DataLoadingType.INITIAL)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ appointments ->
@@ -333,7 +341,7 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
                         totalUpcomingApps = appointments?.size ?: 0
 
                         upcomingMyAppointmentsAdapter =
-                            UpcomingMyAppointmentsAdapter(activity, appointments, "upcoming")
+                            UpcomingMyAppointmentsAdapter(requireActivity(), appointments, "upcoming")
                         rvUpcomingApp?.adapter = upcomingMyAppointmentsAdapter
                         offset = appointments.size
                     } else {
@@ -352,29 +360,48 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
             disposables.add(upcomingAppointmentDisposable)
         }
 
-    private val getUpcomingDataObserver = Observable.create<MutableList<AppointmentInfo>?> {
-        initLimits()
-        Log.d("sssssslm",""+upcomingLimit+" "+offset)
-        upcomingAppointmentInfoList = AppointmentDAO().getUpcomingAppointments(
-            upcomingLimit,
-            offset,
-            if (sortStatus) "ASC" else "DESC",
-            searchPatientText
-        )
+    /**
+     * getting upcoming appointment here
+     */
+    private fun getUpcomingDataObserver(dataLoadingType: DataLoadingType): Observable<MutableList<AppointmentInfo>> {
+        return Observable.create {
+            //if calling type is initial like first time or from search
+            // then we are resetting the offset
+            if (dataLoadingType == DataLoadingType.INITIAL){
+                initLimits()
+            }
+            val tempList = AppointmentDAO().getUpcomingAppointments(
+                upcomingLimit,
+                offset,
+                if (sortStatus) "ASC" else "DESC",
+                searchPatientText
+            )
+            if ((tempList?.size ?: 0) > 0) {
+                tempList?.forEach(Consumer { appointmentInfo: AppointmentInfo ->
+                    val patientProfilePath = getPatientProfile(appointmentInfo.patientId)?:""
+                    appointmentInfo.patientProfilePhoto = patientProfilePath
+                })
+            }
+            //if type is initial then returning the actual list
+            if (dataLoadingType == DataLoadingType.INITIAL){
+                upcomingAppointmentInfoList = tempList
+                if (upcomingAppointmentInfoList != null) {
+                    it.onNext(upcomingAppointmentInfoList!!)
+                } else {
+                    it.onNext(mutableListOf())
+                }
+            }
+            //if type is from pagination returning the tem list
+            else{
+                if (tempList != null) {
+                    it.onNext(tempList)
+                } else {
+                    it.onNext(mutableListOf())
+                }
+            }
+            it.onComplete()
 
-        if ((upcomingAppointmentInfoList?.size ?: 0) > 0) {
-            upcomingAppointmentInfoList?.forEach(Consumer { appointmentInfo: AppointmentInfo ->
-                val patientProfilePath = getPatientProfile(appointmentInfo.patientId)?:""
-                appointmentInfo.patientProfilePhoto = patientProfilePath
-            })
         }
-        if (upcomingAppointmentInfoList != null) {
-            it.onNext(upcomingAppointmentInfoList!!)
-        } else {
-            it.onNext(mutableListOf())
-        }
-        it.onComplete()
-
     }
 
 
@@ -403,37 +430,6 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
         } else {
             throw RuntimeException("$context must implement OnFragmentCommunicationListener")
         }
-    }
-
-    private fun searchOperation(query: String) {
-        var query = query
-        query = query.lowercase(Locale.getDefault()).trim { it <= ' ' }
-        query = query.replace(" {2}".toRegex(), " ")
-        val finalQuery = query
-        Thread {
-            val allUpcomingList = AppointmentDAO().getAllUpcomingAppointmentsForToday(currentDate)
-            if (!finalQuery.isEmpty()) {
-                upcomingSearchList.clear()
-                if (allUpcomingList.size > 0) {
-                    for (info in allUpcomingList) {
-                        val patientName = info.patientName.lowercase(Locale.getDefault())
-                        if (patientName.contains(finalQuery) || patientName.equals(
-                                finalQuery,
-                                ignoreCase = true
-                            )
-                        ) {
-                            upcomingSearchList.add(info)
-                        }
-                    }
-                }
-                requireActivity().runOnUiThread {
-                    upcomingMyAppointmentsAdapter =
-                        UpcomingMyAppointmentsAdapter(activity, upcomingSearchList, "upcoming")
-                    rvUpcomingApp!!.isNestedScrollingEnabled = true
-                    rvUpcomingApp!!.adapter = upcomingMyAppointmentsAdapter
-                }
-            }
-        }.start()
     }
 
     override fun onDestroy() {

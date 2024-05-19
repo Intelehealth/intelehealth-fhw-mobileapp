@@ -933,6 +933,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
     private final ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == AppConstants.EVENT_APPOINTMENT_BOOKING) {
             Toast.makeText(AppointmentDetailsActivity.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
+            finish();
         }
     });
 

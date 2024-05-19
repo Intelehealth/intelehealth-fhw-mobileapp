@@ -46,6 +46,7 @@ import org.intelehealth.app.appointmentNew.UpdateAppointmentsCount
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent
 import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.enums.DataLoadingType
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.MyAppointmentLoadingListener
 import org.intelehealth.app.utilities.SessionManager
@@ -59,69 +60,64 @@ import java.util.function.Consumer
 
 class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLoadingListener) :
     Fragment() {
-    var parentView: View? = null
-    var rvUpcomingApp: RecyclerView? = null
-    var rvCancelledApp: RecyclerView? = null
-    var rvCompletedApp: RecyclerView? = null
-    var layoutParent: RelativeLayout? = null
-    var frameLayoutFilter: FrameLayout? = null
-    var filterIm: ImageView? = null
-    var ivClearText: ImageView? = null
-    var filtersList: MutableList<FilterOptionsModel>? = null
-    var filtersListNew: List<String>? = null
+    private var parentView: View? = null
+    private var rvUpcomingApp: RecyclerView? = null
+    private var rvCancelledApp: RecyclerView? = null
+    private var rvCompletedApp: RecyclerView? = null
+    private var layoutParent: RelativeLayout? = null
+    private var frameLayoutFilter: FrameLayout? = null
+    private var filterIm: ImageView? = null
+    private var ivClearText: ImageView? = null
+    private var filtersList: MutableList<FilterOptionsModel>? = null
+    private var filtersListNew: List<String>? = null
 
-    var completedLay: LinearLayout? = null
-    var cancelledLay: LinearLayout? = null
-    var missedLay: LinearLayout? = null
+    private var completedLay: LinearLayout? = null
+    private var cancelledLay: LinearLayout? = null
+    private var missedLay: LinearLayout? = null
 
-    var completedTv: TextView? = null
-    var cancelledTv: TextView? = null
-    var missedTv: TextView? = null
+    private var completedTv: TextView? = null
+    private var cancelledTv: TextView? = null
+    private var missedTv: TextView? = null
 
-    var completedIm: ImageView? = null
-    var cancelledIm: ImageView? = null
-    var missedIm: ImageView? = null
+    private var completedIm: ImageView? = null
+    private var cancelledIm: ImageView? = null
+    private var missedIm: ImageView? = null
 
-    var selectedAppointmentOption: String? = null
-    var rbUpcoming: RadioButton? = null
-    var scrollChips: HorizontalScrollView? = null
-    var isChipInit = false
-    var layoutUpcoming: LinearLayout? = null
-    var layoutCancelled: LinearLayout? = null
-    var layoutCompleted: LinearLayout? = null
-    var layoutParentAll: LinearLayout? = null
-    var fromDate: String? = ""
-    var toDate: String? = ""
-    var whichAppointment = ""
-    var autotvSearch: EditText? = null
-    var searchPatientText = ""
-    var noDataFoundForUpcoming: View? = null
-    var noDataFoundForCompleted: View? = null
-    var noDataFoundForCancelled: View? = null
-    var tvFromDate: TextView? = null
-    var tvToDate: TextView? = null
-    var MY_REQUEST_CODE = 5555
+    private var scrollChips: HorizontalScrollView? = null
+    private var isChipInit = false
+    private var layoutUpcoming: LinearLayout? = null
+    private var layoutParentAll: LinearLayout? = null
+    private var mainLayout: RelativeLayout? = null
+    private var fromDate: String? = ""
+    private var toDate: String? = ""
+    private var whichAppointment = ""
+    private var autotvSearch: EditText? = null
+    private var searchPatientText = ""
+    private var noDataFoundForPast: View? = null
+    private var tvFromDate: TextView? = null
+    private var tvToDate: TextView? = null
+    private var MY_REQUEST_CODE = 5555
     private var listener: UpdateAppointmentsCount? = null
-    var totalUpcomingApps = 0
-    var totalCancelled = 0
-    var totalCompleted = 0
-    var sessionManager: SessionManager? = null
-    var currentDate = ""
+    private var totalUpcomingApps = 0
+    private var totalCancelled = 0
+    private var totalCompleted = 0
+    private var sessionManager: SessionManager? = null
+    private var currentDate = ""
     private var nsvToday: NestedScrollView? = null
-    private val upcomingLimit = 15
-    private var upcomingStart = 0
-    private var upcomingEnd = upcomingStart + upcomingLimit
-    private var isUpcomingFullyLoaded = false
-    private var upcomingAppointmentInfoList: MutableList<AppointmentInfo>? = null
-    private val upcomingSearchList: MutableList<AppointmentInfo> = ArrayList()
+    private val pastLimit = 15
+    private var offset = 0
+    private var pastStart = 0
+    private var isPastFullyLoaded = false
+    private var pastAppointmentInfoList: MutableList<AppointmentInfo>? = null
+    private val pastSearchList: MutableList<AppointmentInfo> = ArrayList()
     private var pastAppointmentsAdapter: PastMyAppointmentsAdapter? = null
     private var sortIm: ImageView? = null
-    var tvResultsFor: TextView? = null
+    private var tvResultsFor: TextView? = null
 
     private val disposables = CompositeDisposable()
 
     //true = ascending, false = descending
-    var sortStatus = true
+    private var sortStatus = true
     override fun onResume() {
         super.onResume()
     }
@@ -223,9 +219,6 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
             chip.setOnCloseIconClickListener { v: View? ->
                 filtersList!!.remove(filterOptionsModel)
                 chipGroup.removeView(chip)
-                if (tagName.contains("appointment")) {
-                    manageUIAsPerChips("upcoming")
-                }
                 if (filtersList != null && filtersList!!.size == 0) {
                     scrollChips!!.visibility = View.GONE
                     fromDate = ""
@@ -238,23 +231,13 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         }
     }
 
-    private fun manageUIAsPerChips(tagName: String) {
-        val textToMatch = tagName.lowercase(Locale.getDefault())
-        if (textToMatch.contains("upcoming")) {
-            updateMAinLayoutAsPerOptionSelected("upcoming")
-        } else if (tagName.contains("cancelled")) {
-            updateMAinLayoutAsPerOptionSelected("cancelled")
-        } else if (tagName.contains("completed")) {
-            updateMAinLayoutAsPerOptionSelected("completed")
-        }
-    }
-
     private fun initUI() {
         sessionManager = SessionManager(context)
         val dateFormat1 = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         currentDate = dateFormat1.format(Date())
         rvUpcomingApp = parentView!!.findViewById(R.id.rv_upcoming_appointments)
         layoutParent = parentView!!.findViewById(R.id.layout_parent)
+        mainLayout = parentView!!.findViewById(R.id.main_layout)
         frameLayoutFilter = parentView!!.findViewById(R.id.filter_frame_past_appointments)
         filterIm = parentView!!.findViewById(R.id.filter_im)
 
@@ -282,9 +265,7 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
             resetData()
         })
         sortIm = parentView!!.findViewById(R.id.sort_im)
-        noDataFoundForUpcoming = parentView!!.findViewById(R.id.layout_no_data_found_upcoming)
-        noDataFoundForCompleted = parentView!!.findViewById(R.id.layout_no_data_found_completed)
-        noDataFoundForCancelled = parentView!!.findViewById(R.id.layout_no_data_found_cancelled)
+        noDataFoundForPast = parentView!!.findViewById(R.id.layout_no_data_found_upcoming)
         if (isChipInit) {
             tvResultsFor?.visibility = View.VISIBLE
             scrollChips?.visibility = View.VISIBLE
@@ -298,10 +279,10 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         nsvToday?.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             if (v.getChildAt(v.childCount - 1) != null) {
                 if (scrollY > oldScrollY) {
-                    if (upcomingAppointmentInfoList != null && upcomingAppointmentInfoList!!.size == 0) {
-                        isUpcomingFullyLoaded = true
+                    if (pastAppointmentInfoList != null && pastAppointmentInfoList!!.size == 0) {
+                        isPastFullyLoaded = true
                     }
-                    if (!isUpcomingFullyLoaded) {
+                    if (!isPastFullyLoaded) {
                         setMoreDataIntoUpcomingRecyclerView()
                     }
                 }
@@ -310,38 +291,37 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         sortIm?.setOnClickListener(View.OnClickListener { sortList() })
 
         completedLay?.setOnClickListener {
-            setFiltersToTheGroup(FilterOptionsModel("status", "Completed"))
+            setFiltersToTheGroup(FilterOptionsModel("status", getString(R.string.completed)))
             updateFilterUi()
         }
 
         cancelledLay?.setOnClickListener {
-            setFiltersToTheGroup(FilterOptionsModel("status", "Cancelled"))
+            setFiltersToTheGroup(FilterOptionsModel("status", getString(R.string.cancelled)))
             updateFilterUi()
         }
 
         missedLay?.setOnClickListener {
-            setFiltersToTheGroup(FilterOptionsModel("status", "Missed"))
+            setFiltersToTheGroup(FilterOptionsModel("status", getString(R.string.missed)))
             updateFilterUi()
         }
-        fragmentResultListener()
     }
 
     private fun updateFilterUi() {
-        val isCompletedExist = filtersList?.find { it.filterValue == "Completed" }
+        val isCompletedExist = filtersList?.find { it.filterValue == getString(R.string.completed) }
         if (isCompletedExist != null) {
             completedIm?.visibility = View.VISIBLE
         } else {
             completedIm?.visibility = View.INVISIBLE
         }
 
-        val isCancelledExist = filtersList?.find { it.filterValue == "Cancelled" }
+        val isCancelledExist = filtersList?.find { it.filterValue == getString(R.string.cancelled) }
         if (isCancelledExist != null) {
             cancelledIm?.visibility = View.VISIBLE
         } else {
             cancelledIm?.visibility = View.INVISIBLE
         }
 
-        val isMissedExist = filtersList?.find { it.filterValue == "Missed" }
+        val isMissedExist = filtersList?.find { it.filterValue == getString(R.string.missed) }
         if (isMissedExist != null) {
             missedIm?.visibility = View.VISIBLE
         } else {
@@ -353,7 +333,7 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
     }
 
     private fun sortList() {
-        if (upcomingAppointmentInfoList!!.size > 1) {
+        if (pastAppointmentInfoList!!.size > 1) {
             if (sortStatus) {
                 showShortToast(requireActivity(), getString(R.string.sorted_by_descending_order))
             } else {
@@ -365,123 +345,84 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
     }
 
     /**
-     * listening result from calender dialog
+     * this function will call whenever we paginate the list
      */
-    private fun fragmentResultListener() {
-        parentFragmentManager.setFragmentResultListener(
-            "requestKey",
-            this@PastAppointmentsFragment
-        ) { requestKey: String?, bundle: Bundle ->
-            val selectedDate = bundle.getString(BundleConstants.SELECTED_DATE)
-            if (selectedDate != null) {
-                val whichDate = bundle.getString(BundleConstants.WHICH_DATE)
-                if (!whichDate!!.isEmpty() && whichDate == BundleConstants.FROM_DATE) {
-                    if (!toDate!!.isEmpty() && DateAndTimeUtils.isAfter(
-                            selectedDate,
-                            toDate,
-                            DateAndTimeUtils.D_FORMAT_dd_M_yyyy
-                        )
-                    ) {
-                        Toast.makeText(
-                            requireContext(),
-                            R.string.the_from_date_cannot_be_greater_than_the_to_date,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@setFragmentResultListener
-                    }
-                    fromDate = selectedDate
-                    var dateToshow1 =
-                        DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate)
-                    if (sessionManager!!.appLanguage.equals("hi", ignoreCase = true)) dateToshow1 =
-                        StringUtils.en_hi_dob_updated(
-                            DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate)
-                        )
-                    if (!fromDate!!.isEmpty()) {
-                        val splitedDate =
-                            fromDate!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }
-                                .toTypedArray()
-                        tvFromDate!!.text = dateToshow1 + ", " + splitedDate[2]
-                    }
-                    dismissDateFilterDialog()
-                }
-                if (!whichDate.isEmpty() && whichDate == BundleConstants.TO_DATE) {
-                    if (!fromDate!!.isEmpty() && DateAndTimeUtils.isBefore(
-                            selectedDate,
-                            fromDate,
-                            DateAndTimeUtils.D_FORMAT_dd_M_yyyy
-                        )
-                    ) {
-                        Toast.makeText(
-                            requireContext(),
-                            R.string.the_to_date_cannot_be_less_than_the_from_date,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@setFragmentResultListener
-                    }
-                    toDate = selectedDate
-                    var dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate)
-                    if (sessionManager!!.appLanguage.equals("hi", ignoreCase = true)) dateToshow1 =
-                        StringUtils.en_hi_dob_updated(
-                            DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate)
-                        )
-                    if (!toDate!!.isEmpty()) {
-                        val splitedDate =
-                            toDate!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }
-                                .toTypedArray()
-                        tvToDate!!.text = dateToshow1 + ", " + splitedDate[2]
-                    }
-                    dismissDateFilterDialog()
-                }
-            }
-        }
-    }
-
     private fun setMoreDataIntoUpcomingRecyclerView() {
-        if (upcomingSearchList.size > 0) {
+        if (pastSearchList.size > 0) {
             return
         }
-        if (isUpcomingFullyLoaded) {
+        if (isPastFullyLoaded) {
             return
         }
-        showShortToast(requireActivity(), getString(R.string.loading_more))
-        val tempList = AppointmentDAO().getPastAppointmentsWithFilters(
-            upcomingLimit,
-            upcomingStart,
-            if (sortStatus) "ASC" else "DESC",
-            searchPatientText,
-            filtersList
-        )
-        if ((tempList?.size ?: 0) > 0) {
-            upcomingAppointmentInfoList!!.addAll(tempList!!)
-            pastAppointmentsAdapter!!.notifyDataSetChanged()
-            upcomingStart = upcomingEnd
-            upcomingEnd += upcomingLimit
-        } else {
-            isUpcomingFullyLoaded
-        }
+        showShortToast(requireActivity(),getString(R.string.loading_more))
+
+        val upcomingAppointmentDisposable = getPastDataObserver(DataLoadingType.PAGINATION)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ appointments ->
+                if (appointments.size > 0) {
+                    pastAppointmentInfoList!!.addAll(appointments)
+                    pastAppointmentsAdapter!!.notifyDataSetChanged()
+                    offset = pastAppointmentInfoList?.size?:0
+                } else {
+                    isPastFullyLoaded = true
+                }
+
+            },
+                { error ->
+                    error.printStackTrace()
+                })
+
+        disposables.add(upcomingAppointmentDisposable)
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private fun clickListeners() {
-        layoutParent!!.setOnTouchListener { v: View?, event: MotionEvent ->
+        layoutParent?.setOnTouchListener { v: View?, event: MotionEvent ->
             if (event.action == MotionEvent.ACTION_UP) {
                 if (frameLayoutFilter!!.isShown) {
                     frameLayoutFilter!!.visibility = View.GONE
                     filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_bg);
-                }else{
-                    filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_border_bg);
-
                 }
+                v?.performClick()
                 return@setOnTouchListener true
             }
             false
         }
-        layoutParent!!.setOnClickListener { v: View? ->
+        layoutParent?.setOnClickListener { v: View? ->
             if (frameLayoutFilter!!.isShown) {
                 frameLayoutFilter!!.visibility = View.GONE
                 filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_bg);
-            }else{
-                filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_border_bg);
+            }
+        }
+
+        nsvToday?.setOnTouchListener { v: View?, event: MotionEvent ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (frameLayoutFilter!!.isShown) {
+                    frameLayoutFilter!!.visibility = View.GONE
+                    filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_bg);
+                }
+                v?.performClick()
+                return@setOnTouchListener true
+            }
+            false
+        }
+
+        autotvSearch?.setOnTouchListener { v: View?, event: MotionEvent ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (frameLayoutFilter!!.isShown) {
+                    frameLayoutFilter!!.visibility = View.GONE
+                    filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_bg);
+                }
+                v?.performClick()
+                return@setOnTouchListener false
+            }
+            false
+        }
+
+        nsvToday?.setOnClickListener {
+            if (frameLayoutFilter!!.isShown) {
+                frameLayoutFilter!!.visibility = View.GONE
+                filterIm?.background = ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_filter_bg);
             }
         }
 
@@ -537,69 +478,34 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
         })
     }
 
-    private fun searchOperation(query: String) {
-        Thread {
-            upcomingAppointmentInfoList =
-                AppointmentDAO().getPastAppointmentsWithFilters(
-                    upcomingLimit,
-                    upcomingStart, if (sortStatus) "ASC" else "DESC", query, filtersList
-                )
-
-            requireActivity().runOnUiThread {
-                pastAppointmentsAdapter =
-                    PastMyAppointmentsAdapter(activity, upcomingAppointmentInfoList, "upcoming")
-                rvUpcomingApp!!.isNestedScrollingEnabled = true
-                rvUpcomingApp!!.adapter = pastAppointmentsAdapter
-            }
-
-        }.start()
-    }
-
-
-    private fun updateMAinLayoutAsPerOptionSelected(cardName: String) {
-        //adjust main layout as per option selected like figma prototype
-        if (cardName == "upcoming") {
-            layoutUpcoming!!.visibility = View.VISIBLE
-            layoutCompleted!!.visibility = View.VISIBLE
-            layoutCancelled!!.visibility = View.VISIBLE
-            val params = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            params.weight = 1.0f
-            params.gravity = Gravity.TOP
-            layoutUpcoming!!.layoutParams = params
-        }
-    }
 
     inner class FilterOptionsModel(var filterType: String, var filterValue: String)
 
     private val appointments: Unit
         get() {
             //whichAppointment = "";
-            upcomingAppointments
+            pastAppointments
         }
-    private val upcomingAppointments: Unit
+    private val pastAppointments: Unit
         get() {
             //recyclerview for upcoming appointments
-            val pastAppointmentDisposable = getPastDataObserver
+            val pastAppointmentDisposable = getPastDataObserver(DataLoadingType.INITIAL)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ appointments ->
-                    noDataFoundForUpcoming!!.visibility = View.VISIBLE
+                    noDataFoundForPast!!.visibility = View.VISIBLE
                     appointments?.let {
                         if (it.isNotEmpty()) {
                             rvUpcomingApp?.visibility = View.VISIBLE
-                            noDataFoundForUpcoming?.visibility = View.GONE
+                            noDataFoundForPast?.visibility = View.GONE
                             totalUpcomingApps = appointments.size ?: 0
                             pastAppointmentsAdapter =
-                                PastMyAppointmentsAdapter(activity, appointments, "upcoming")
+                                PastMyAppointmentsAdapter(requireActivity(), appointments, "upcoming")
                             rvUpcomingApp!!.adapter = pastAppointmentsAdapter
-                            upcomingStart = upcomingEnd
-                            upcomingEnd += upcomingLimit
+                            offset = appointments.size
                         } else {
                             rvUpcomingApp!!.visibility = View.GONE
-                            noDataFoundForUpcoming!!.visibility = View.VISIBLE
+                            noDataFoundForPast!!.visibility = View.VISIBLE
                         }
                     }
                     myAppointmentLoadingListener.onStopPast()
@@ -612,41 +518,62 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
             disposables.add(pastAppointmentDisposable)
         }
 
-    private val getPastDataObserver = Observable.create<MutableList<AppointmentInfo>?> {
-        initLimits()
-        upcomingAppointmentInfoList = AppointmentDAO().getPastAppointmentsWithFilters(
-            upcomingLimit,
-            upcomingStart,
-            if (sortStatus) "ASC" else "DESC",
-            searchPatientText,
-            filtersList
-        )
 
-        if ((upcomingAppointmentInfoList?.size ?: 0) > 0) {
-            upcomingAppointmentInfoList?.forEach(Consumer { appointmentInfo: AppointmentInfo ->
-                val visitDTO = PatientsDAO.isVisitPresentForPatient_fetchVisitValues(
-                    appointmentInfo.patientId
-                )
-                if (visitDTO.uuid != null && visitDTO.startdate != null) {
-                    val encounteruuid =
-                        EncounterDAO.getStartVisitNoteEncounterByVisitUUID(visitDTO.uuid)
-                    appointmentInfo.isPrescription_exists =
-                        encounteruuid.isNotEmpty() && !encounteruuid.equals("", ignoreCase = true)
+    /**
+     * getting past appointment here
+     */
+    private fun getPastDataObserver(dataLoadingType: DataLoadingType): Observable<MutableList<AppointmentInfo>> {
+        return Observable.create {
+            //if calling type is initial like first time or from search
+            // then we are resetting the offset
+            if (dataLoadingType == DataLoadingType.INITIAL){
+                initLimits()
+            }
+            val tempList = AppointmentDAO().getPastAppointmentsWithFilters(
+                requireActivity(),
+                pastLimit,
+                offset,
+                if (sortStatus) "ASC" else "DESC",
+                searchPatientText,
+                filtersList
+            )
+            if ((tempList?.size ?: 0) > 0) {
+                tempList?.forEach(Consumer { appointmentInfo: AppointmentInfo ->
+                    val visitDTO = PatientsDAO.isVisitPresentForPatient_fetchVisitValues(
+                        appointmentInfo.patientId
+                    )
+                    if (visitDTO.uuid != null && visitDTO.startdate != null) {
+                        val encounteruuid =
+                            EncounterDAO.getStartVisitNoteEncounterByVisitUUID(visitDTO.uuid)
+                        appointmentInfo.isPrescription_exists =
+                            encounteruuid.isNotEmpty() && !encounteruuid.equals("", ignoreCase = true)
+                    }
+                    val patientProfilePath = getPatientProfile(appointmentInfo.patientId)
+                    appointmentInfo.patientProfilePhoto = patientProfilePath
+                })
+            }
+            //if type is initial then returning the actual list
+            if (dataLoadingType == DataLoadingType.INITIAL){
+                pastAppointmentInfoList = tempList
+                if (pastAppointmentInfoList != null) {
+                    it.onNext(pastAppointmentInfoList!!)
+                } else {
+                    it.onNext(mutableListOf())
                 }
-                val patientProfilePath = getPatientProfile(appointmentInfo.patientId)
-                appointmentInfo.patientProfilePhoto = patientProfilePath
+            }
+            //if type is from pagination returning the tem list
+            else{
+                if (tempList != null) {
+                    it.onNext(tempList)
+                } else {
+                    it.onNext(mutableListOf())
+                }
+            }
+            it.onComplete()
 
-
-            })
         }
-        if (upcomingAppointmentInfoList != null) {
-            it.onNext(upcomingAppointmentInfoList!!)
-        } else {
-            it.onNext(mutableListOf())
-        }
-        it.onComplete()
-
     }
+
 
     private fun getPatientProfile(patientUuid: String): String {
         Log.d(TAG, "getPatientProfile: patientUuid : $patientUuid")
@@ -666,16 +593,6 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
 
     private fun filterAsPerSelectedOptions() {
         initLimits()
-        if (whichAppointment.isEmpty() && fromDate!!.isEmpty() && toDate!!.isEmpty()) {
-            //all data
-            upcomingAppointments
-        } else if (whichAppointment.isEmpty() && !fromDate!!.isEmpty() && !toDate!!.isEmpty()) {
-            //all
-            upcomingAppointments
-        } else if (whichAppointment == "upcoming" && !fromDate!!.isEmpty() && !toDate!!.isEmpty()) {
-            //upcoming
-            upcomingAppointments
-        }
     }
 
     private fun dismissDateFilterDialog() {
@@ -774,13 +691,12 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
     }
 
     private fun initLimits() {
-        upcomingStart = 0
-        isUpcomingFullyLoaded = false
-        upcomingEnd = upcomingStart + upcomingLimit
+        offset = 0
+        isPastFullyLoaded = false
     }
 
     private fun resetData() {
-        upcomingSearchList.clear()
+        pastSearchList.clear()
         initLimits()
         appointments
     }
