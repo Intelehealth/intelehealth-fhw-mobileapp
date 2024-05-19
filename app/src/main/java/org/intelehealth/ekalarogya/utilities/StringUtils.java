@@ -5889,6 +5889,47 @@ public final class StringUtils {
             return updatedResources.getString(R.string.generic_no);
         }
         //    }
+
+        if (resources.getString(R.string.i_dont_know).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.i_dont_know);
+        }
+
+        if (resources.getString(R.string.never_prescribed_medication).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.never_prescribed_medication);
+        }
+
+        if (resources.getString(R.string.forgot_to_take_it).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.forgot_to_take_it);
+        }
+
+        if (resources.getString(R.string.cannot_afford_medications).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.cannot_afford_medications);
+        }
+
+        if (resources.getString(R.string.ran_out_of_medication).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.ran_out_of_medication);
+        }
+
+        if (resources.getString(R.string.i_am_needing_follow_up_with_my_PHC).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.i_am_needing_follow_up_with_my_PHC);
+        }
+
+        if (resources.getString(R.string.i_am_needing_follow_up_with_my_PHC).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.i_am_needing_follow_up_with_my_PHC);
+        }
+
+        if (resources.getString(R.string.i_dont_think_i_need_it).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.i_dont_think_i_need_it);
+        }
+
+        if (resources.getString(R.string.side_effect_related_to_medication).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.side_effect_related_to_medication);
+        }
+
+        if (resources.getString(R.string.unknown_other).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.unknown_other);
+        }
+
         return text;
     }
 
