@@ -14,6 +14,8 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -42,6 +44,8 @@ public class MedicalHistoryDialog extends DialogFragment {
     private SessionManager sessionManager;
     private Bundle bundle;
     private int position;
+
+    private ArrayAdapter<CharSequence> bpNoMedicationAdapter, diabetesNoMedicationAdapter, anemiaNoMedicationAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -108,6 +112,70 @@ public class MedicalHistoryDialog extends DialogFragment {
         setHypertensionListeners();
         setDiabetesListeners();
         setAnemiaListeners();
+
+        setAdapters();
+    }
+
+    private void setAdapters() {
+        String reasonForNoMedicationLanguage = "reason_for_no_medication_" + sessionManager.getAppLanguage();
+        int reason = getResources().getIdentifier(reasonForNoMedicationLanguage, "array", requireContext().getApplicationContext().getPackageName());
+        if (reason != 0) {
+            bpNoMedicationAdapter = ArrayAdapter.createFromResource(requireContext(), reason, R.layout.custom_spinner);
+            anemiaNoMedicationAdapter = ArrayAdapter.createFromResource(requireContext(), reason, R.layout.custom_spinner);
+            diabetesNoMedicationAdapter = ArrayAdapter.createFromResource(requireContext(), reason, R.layout.custom_spinner);
+        }
+
+        binding.bpNoMedicationReason.setAdapter(bpNoMedicationAdapter);
+        binding.anemiaNoMedicationReason.setAdapter(anemiaNoMedicationAdapter);
+        binding.diabetesNoMedicationReason.setAdapter(diabetesNoMedicationAdapter);
+
+        binding.bpNoMedicationReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.unknown_other))) {
+                    binding.otherReasonBpEditText.setVisibility(View.VISIBLE);
+                } else {
+                    binding.otherReasonBpEditText.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        binding.diabetesNoMedicationReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.unknown_other))) {
+                    binding.otherReasonDiabetesEditText.setVisibility(View.VISIBLE);
+                } else {
+                    binding.otherReasonDiabetesEditText.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        binding.anemiaNoMedicationReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.unknown_other))) {
+                    binding.otherReasonAnemiaEditText.setVisibility(View.VISIBLE);
+                } else {
+                    binding.otherReasonAnemiaEditText.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void setHypertensionListeners() {

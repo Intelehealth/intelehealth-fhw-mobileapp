@@ -159,8 +159,8 @@
                     android:id="@+id/other_reason_bp_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/lato_regular"
+                    android:hint="@string/please_enter_reason_txt"
                     android:textSize="14sp"
                     android:visibility="gone"
                     tools:visibility="visible" />
@@ -316,8 +316,8 @@
                         android:id="@+id/other_reason_diabetes_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:fontFamily="@font/lato_regular"
+                        android:hint="@string/please_enter_reason_txt"
                         android:textSize="14sp"
                         android:visibility="gone"
                         tools:visibility="visible" />
@@ -501,8 +501,8 @@
                     android:id="@+id/other_reason_anemia_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/lato_regular"
+                    android:hint="@string/please_enter_reason_txt"
                     android:textSize="14sp"
                     android:visibility="gone"
                     tools:visibility="visible" />
