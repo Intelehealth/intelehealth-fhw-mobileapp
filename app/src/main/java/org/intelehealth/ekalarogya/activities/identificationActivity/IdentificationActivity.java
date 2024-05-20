@@ -1270,6 +1270,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 whatsapp_spinner.setSelection(whatsAppPosition);
             }
 
+            String mobileNumberAssociatedWithWhatsApp = getWhatsAppStrings(patient1.getMobileNumberAssociatedWithWhatsApp(), updatedResources, originalResources, sessionManager.getAppLanguage());
+            if (mobileNumberAssociatedWithWhatsApp.equalsIgnoreCase(updatedResources.getString(R.string.i_dont_know))) {
+                iDontKnowCheckbox.setChecked(true);
+            } else {
+                if (!mobileNumberAssociatedWithWhatsApp.equalsIgnoreCase("-")) {
+                    whatsAppNumberEditText.setText(mobileNumberAssociatedWithWhatsApp);
+                }
+            }
+
             //vaccination - start
             if (patient1.getVaccination() != null &&
                     !patient1.getVaccination().equalsIgnoreCase("")) {
@@ -2305,6 +2314,7 @@ public class IdentificationActivity extends AppCompatActivity implements
             if (isChecked) {
                 whatsAppNumberEditText.setEnabled(false);
                 whatsAppNumberEditText.getText().clear();
+                whatsAppNumberEditText.setError(null);
             } else {
                 whatsAppNumberEditText.setEnabled(true);
             }
@@ -2568,6 +2578,9 @@ public class IdentificationActivity extends AppCompatActivity implements
                 }
                 if (name.equalsIgnoreCase("Use WhatsApp")) {
                     patient1.setWhatsapp_mobile(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("doYourFamilyMembersUseWhatsAppResponse")) {
+                    patient1.setMobileNumberAssociatedWithWhatsApp(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Covid Vaccination")) {
                     patient1.setVaccination(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -3086,6 +3099,15 @@ public class IdentificationActivity extends AppCompatActivity implements
             return;
         }
 
+        if (whatsAppDataLayout.getVisibility() == View.VISIBLE) {
+            if (whatsAppNumberEditText.getText().toString().isEmpty() && !iDontKnowCheckbox.isChecked()) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                whatsAppNumberEditText.setText(getString(R.string.enter_number));
+                focusView = whatsAppDataLayout;
+                cancel = true;
+                return;
+            }
+        }
 
         //vaccination
         if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
@@ -3723,6 +3745,21 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(whatsapp_spinner.getSelectedItem().toString(), originalResources, updatedResources, sessionManager.getAppLanguage()));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            if (whatsAppDataLayout.getVisibility() == View.VISIBLE) {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("doYourFamilyMembersUseWhatsAppResponse"));
+
+                if (iDontKnowCheckbox.isChecked()) {
+                    patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(iDontKnowCheckbox.getText().toString(), originalResources, updatedResources, sessionManager.getAppLanguage()));
+                } else {
+                    patientAttributesDTO.setValue(whatsAppNumberEditText.getText().toString());
+                }
+
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
 
             if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
                 if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
@@ -4682,6 +4719,16 @@ public class IdentificationActivity extends AppCompatActivity implements
             return;
         }
 
+        if (whatsAppDataLayout.getVisibility() == View.VISIBLE) {
+            if (whatsAppNumberEditText.getText().toString().isEmpty() && !iDontKnowCheckbox.isChecked()) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                whatsAppNumberEditText.setText(getString(R.string.enter_number));
+                focusView = whatsAppDataLayout;
+                cancel = true;
+                return;
+            }
+        }
+
         //vaccination
         if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
             if (!radioYes.isChecked() && !radioNo.isChecked()) {
@@ -5324,6 +5371,21 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(whatsapp_spinner.getSelectedItem().toString(), originalResources, updatedResources, sessionManager.getAppLanguage()));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            if (whatsAppDataLayout.getVisibility() == View.VISIBLE) {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("doYourFamilyMembersUseWhatsAppResponse"));
+
+                if (iDontKnowCheckbox.isChecked()) {
+                    patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(iDontKnowCheckbox.getText().toString(), originalResources, updatedResources, sessionManager.getAppLanguage()));
+                } else {
+                    patientAttributesDTO.setValue(whatsAppNumberEditText.getText().toString());
+                }
+
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
 
             if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
                 if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {

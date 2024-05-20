@@ -6200,6 +6200,9 @@ public final class StringUtils {
         if (resources.getString(R.string.generic_no).equalsIgnoreCase(text)) {
             return updatedResources.getString(R.string.generic_no);
         }
+        if (resources.getString(R.string.i_dont_know).equalsIgnoreCase(text)) {
+            return updatedResources.getString(R.string.i_dont_know);
+        }
         //   }
         return text;
     }
