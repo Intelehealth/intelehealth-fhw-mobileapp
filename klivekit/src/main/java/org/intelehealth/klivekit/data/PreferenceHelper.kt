@@ -15,6 +15,7 @@ class PreferenceHelper @Inject constructor(val context: Context) {
         const val RTC_CONFIG = "rtc_config"
         const val MESSAGE_BODY = "message_body"
         const val IS_NOTIFICATION = "isNotification"
+        const val CONFIG_VERSION = "config_version"
     }
 
     fun save(key: String?, value: Any?) {

@@ -1,13 +1,15 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.klivekit.data.PreferenceHelper.CONFIG_VERSION;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Looper;
 import android.util.Log;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -29,6 +31,9 @@ import org.intelehealth.app.utilities.NotificationID;
 import org.intelehealth.app.utilities.PatientsFrameJson;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.data.ConfigRepository;
+import org.intelehealth.config.network.response.ConfigResponse;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -41,6 +46,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,7 +80,7 @@ public class SyncDAO {
 
         try {
             Logger.logD(TAG, "pull sync started");
-
+            saveConfig(responseDTO.getData().getConfigResponse());
             patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
             patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
             patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
@@ -103,6 +109,17 @@ public class SyncDAO {
 
     }
 
+    private void saveConfig(ConfigResponse response) {
+        Timber.tag(TAG).d("saveConfig");
+        PreferenceHelper helper = new PreferenceHelper(IntelehealthApplication.getAppContext());
+        int version = helper.get(CONFIG_VERSION, 0);
+        Timber.tag(TAG).d("saveConfig old version => %s", version);
+        if (version > 0 && response.getVersion() > version) {
+            ConfigRepository repository = new ConfigRepository(IntelehealthApplication.getAppContext());
+            repository.saveAllConfig(response, () -> Unit.INSTANCE);
+            Timber.tag(TAG).d("saveConfig new version => %s", response.getVersion());
+        } else helper.save(CONFIG_VERSION, response.getVersion());
+    }
 
     public boolean pullData_Background(final Context context, int pageNo) {
 
@@ -113,8 +130,9 @@ public class SyncDAO {
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" +
-                sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime()+
-                "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;;
+                sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
+                "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+        ;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
@@ -156,8 +174,8 @@ public class SyncDAO {
         sessionManager.setPullSyncFinished(true);
         return true;
     }
-    
-    Object populatePullSuccessBackground(Response<ResponseDTO> response, Context context){
+
+    Object populatePullSuccessBackground(Response<ResponseDTO> response, Context context) {
         boolean sync = false;
 
         try {
@@ -173,14 +191,14 @@ public class SyncDAO {
             if (nextPageNo != -1) {
                 pullData_Background(context, nextPageNo);
                 return null;
-            }else {
+            } else {
                 //we are not handling
                 //if(!from.equals("pres")){
-                    sessionManager.setPullExcutedTime(sessionManager.isPulled());
-                    Intent broadcast = new Intent();
-                    broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
-                    broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-                    context.sendBroadcast(broadcast);
+                sessionManager.setPullExcutedTime(sessionManager.isPulled());
+                Intent broadcast = new Intent();
+                broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+                broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                context.sendBroadcast(broadcast);
                 //}
 
                 Log.d(TAG, "onResponse: sync : " + sync);
@@ -232,7 +250,7 @@ public class SyncDAO {
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/"
-                + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime()+
+                + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
                 "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
@@ -259,12 +277,12 @@ public class SyncDAO {
                         int percentage = 0; // this should be only in initialSync....
 
                         if (nextPageNo != -1) {
-                            percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0/totalCount);
+                            percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0 / totalCount);
                             Logger.logD(PULL_ISSUE, "percentage: " + percentage);
                             setProgress(percentage);
                             pullData(context, fromActivity, nextPageNo);
                             return;
-                        }else {
+                        } else {
                             percentage = 100;
                             sessionManager.setPullExcutedTime(sessionManager.isPulled());
                             Logger.logD(PULL_ISSUE, "percentage page -1: " + percentage);
@@ -358,6 +376,7 @@ public class SyncDAO {
     /**
      * this method for syncing data first time with background service
      * we starting background service here
+     *
      * @param context
      * @param fromActivity
      * @return
@@ -371,8 +390,9 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime()+
-                "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;;
+        String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
+                "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+        ;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Logger.logD(PULL_ISSUE, url);
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
@@ -393,9 +413,8 @@ public class SyncDAO {
                     //Inserting huge data to database is a heavy operation
                     //that's why we using service here for initial data push
                     Intent intent = new Intent(context, InitialSyncIntentService.class);
-                    intent.putExtra("from",fromActivity);
+                    intent.putExtra("from", fromActivity);
                     context.startService(intent);
-
 
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
