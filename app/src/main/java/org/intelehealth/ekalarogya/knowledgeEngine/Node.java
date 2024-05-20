@@ -139,6 +139,7 @@ public class Node implements Serializable {
     private ValidationRules validationRules;
     private Boolean flowEnd;
     private Boolean isAutoFill;
+    private Boolean isHidden;
 
 
     //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
@@ -4739,12 +4740,37 @@ public class Node implements Serializable {
         return allAnswered;
     }
 
+    public boolean isNestedMandatoryOptionsAnswered() {
+        boolean allAnswered = isSelected();
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (int i = 0; i < optionsList.size(); i++) {
+                Node innerNode = optionsList.get(i);
+                if (innerNode.isRequired() && innerNode.isSelected() && innerNode.optionsList != null && !innerNode.optionsList.isEmpty()) {
+                    if (!isNestedMandatoryOptionsAnswered(innerNode)) {
+                        allAnswered = false;
+                        break;
+                    }
+                }
+            }
+
+        }
+        return allAnswered;
+    }
+
     public Boolean getNcdProtocol() {
         return isNcdProtocol;
     }
 
     public void setNcdProtocol(Boolean ncdProtocol) {
         isNcdProtocol = ncdProtocol;
+    }
+
+    public Boolean getHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        isHidden = hidden;
     }
 
   /*  public Boolean getFlowEnd() {

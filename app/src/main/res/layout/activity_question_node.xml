@@ -84,21 +84,23 @@
         android:visibility="gone">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_forward"
+            android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:contentDescription="@string/back_desc"
             android:visibility="visible"
             app:rippleColor="@color/amber"
             app:srcCompat="@drawable/ic_back_arrow" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_back"
+            android:id="@+id/btn_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:contentDescription="@string/next_desc"
             android:visibility="visible"
             app:rippleColor="@color/amber"
             app:srcCompat="@drawable/ic_forward_arrow" />

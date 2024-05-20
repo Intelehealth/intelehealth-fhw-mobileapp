@@ -1192,4 +1192,6 @@
     <string name="title_un_uploaded_visit_reminder">ಅಪ್‌ಲೋಡ್ ಮಾಡದ ಭೇಟಿ ಜ್ಞಾಪನೆ</string>
     <string name="title_un_uploaded_visit_reminder_desc">ಹಲೋ, ಇನ್ನೂ ಕೆಲವು ಭೇಟಿಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಬೇಕಾಗಿದೆ, ದಯವಿಟ್ಟು ಕ್ರಮ ತೆಗೆದುಕೊಳ್ಳಿ.</string>
     <string name="you_have_unuploaded_visits">ನೀವು ಮತ್ತು %1$s ಅಪ್‌ಲೋಡ್ ಮಾಡದ ಭೇಟಿಗಳನ್ನು ಹೊಂದಿದ್ದೀರಿ</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
 </resources>

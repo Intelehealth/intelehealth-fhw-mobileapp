@@ -1045,4 +1045,6 @@
     <string name="title_un_uploaded_visit_reminder">अपलोड न केलेले भेट स्मरणपत्र</string>
     <string name="title_un_uploaded_visit_reminder_desc">नमस्कार , काही भेटी आहेत ज्या अजून अपलोड कराय च्या आहेत</string>
     <string name="you_have_unuploaded_visits">तुमच्याकडे अपलोड न केलेल्या %1$s भेटी आहेत.</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
 </resources>

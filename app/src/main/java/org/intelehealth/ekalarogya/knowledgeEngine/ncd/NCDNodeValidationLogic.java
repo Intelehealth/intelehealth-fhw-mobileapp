@@ -31,9 +31,15 @@ public class NCDNodeValidationLogic {
         NCDValidationResult ncdValidationResult = new NCDValidationResult();
         boolean isFlowEnd = selectedNode.getFlowEnd();
         ValidationRules validationRules = selectedNode.getValidationRules();
+        for (int i = 0; i < selectedNode.getOptionsList().size() ; i++) {
+            if(selectedNode.getOptionsList().get(i).isSelected()){
+                validationRules = selectedNode.getOptionsList().get(i).getValidationRules();
+            }
+        }
+
         if (validationRules != null) {
-            if (validationRules.getCheck().equalsIgnoreCase("NAVIGATE")) {
-                return checkForNavigationType(context, patientUUID,mmRootNode, selectedRootIndex, selectedNode);
+            if (validationRules.getType().equalsIgnoreCase("NAVIGATE")) {
+                return checkForNavigationType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode, validationRules);
             } else if (validationRules.getCheck().equalsIgnoreCase("RANGE_TEXT")) {
                 return checkForRangeTextType(mmRootNode, selectedRootIndex, selectedNode);
             } else if (validationRules.getCheck().equalsIgnoreCase("TEXT_DATE")) {
@@ -55,6 +61,10 @@ public class NCDNodeValidationLogic {
                 ncdValidationResult.setTargetNodeID(null);
                 ncdValidationResult.setReadyToEndTheScreening(true);
                 ncdValidationResult.setUpdatedNode(mmRootNode);
+            }else {
+                ncdValidationResult.setTargetNodeID(null);
+                ncdValidationResult.setReadyToEndTheScreening(false);
+                ncdValidationResult.setUpdatedNode(mmRootNode);
             }
         }
 
@@ -67,20 +77,36 @@ public class NCDNodeValidationLogic {
      * @param selectedNode
      * @return
      */
-    private static NCDValidationResult checkForNavigationType(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode) {
+    private static NCDValidationResult checkForNavigationType(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode,ValidationRules validationRules) {
         NCDValidationResult ncdValidationResult = new NCDValidationResult();
-        String rulesType = selectedNode.getValidationRules().getType();
-        String sourceDataType = selectedNode.getValidationRules().getSourceDataType();
-        String sourceDataNameType = selectedNode.getValidationRules().getSourceData();
+        String rulesType = validationRules.getType();
+        String sourceDataType = validationRules.getSourceDataType();
+        String sourceDataNameType = validationRules.getSourceData();
         List<SourceData> sourceDataInfoList = ValidationRulesParser.getSourceDataInfoList(rulesType, sourceDataNameType);
         if (sourceDataInfoList != null) {
-            List<SourceData> sourceDataInfoValueList = DataSourceManager.getValuesForDataSourceFromPatientAttributes(sourceDataInfoList, patientUUID);
+            List<SourceData> sourceDataInfoValueList = new ArrayList<>();
+            if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_PATIENT_ATTRIBUTE)) {
+                sourceDataInfoValueList = DataSourceManager.getValuesForDataSourceFromPatientAttributes(sourceDataInfoList, patientUUID);
+            } else if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_RANGE_NODE_VAL)) {
+                sourceDataInfoValueList = DataSourceManager.getValuesForDataSourceFromTargetNode(sourceDataInfoList, mmRootNode, patientUUID);
+            }
+            String attribute1 = "";
+            String attribute2 = "";
+            for (int i = 0; i < sourceDataInfoValueList.size(); i++) {
+                if(i==0){
+                    attribute1 = sourceDataInfoValueList.get(i).getValue();
+                }
+            }
+
+            ncdValidationResult.setTargetNodeID(mmRootNode.getOptionsList().get(4).getId());
+
+
         } else {
             // something went wrong
             Timber.tag(TAG).v(context.getString(R.string.something_went_wrong));
         }
 
-        return new NCDValidationResult();
+        return ncdValidationResult;
     }
 
     /**
@@ -96,4 +122,6 @@ public class NCDNodeValidationLogic {
     private static NCDValidationResult checkForTextDateType(Node mmRootNode, int selectedRootIndex, Node selectedNode) {
         return new NCDValidationResult();
     }
+
+
 }

@@ -1194,5 +1194,7 @@
     <string name="title_un_uploaded_visit_reminder">મુલાકાત અપલોડ નથી એનું રીમાઇન્ડર</string>
     <string name="title_un_uploaded_visit_reminder_desc">નમસ્કાર, કેટલીક મુલાકાતો છે જે અપલોડ કરવાની બાકી છે, કૃપા કરીને પગલાં લો.</string>
     <string name="you_have_unuploaded_visits">તમારી પાસે %1$s મુલાકાતો અપલોડ કરવાની બાકી છે.</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
 
 </resources>

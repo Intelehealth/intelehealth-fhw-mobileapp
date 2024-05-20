@@ -1085,5 +1085,7 @@
     <string name="title_un_uploaded_visit_reminder">ପରିଦର୍ଶନ ନ ହେବାକୁ ମନେ ପକାଇବା</string>
     <string name="title_un_uploaded_visit_reminder_desc">ହ।ଲୋ , କିଛି ପରିଦର୍ଶନ ଅଛି ଅପଲୋଡ଼ ହେବା ପାଇଁ, ଦୟାକରି ଚେଷ୍ଟା ଜାରି ରଖ</string>
     <string name="you_have_unuploaded_visits">ତୁମର %1$s ଅପଲୋଡ଼ ନ ହୋଇଥିବା ପରିଦର୍ଶନ</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
 
 </resources>

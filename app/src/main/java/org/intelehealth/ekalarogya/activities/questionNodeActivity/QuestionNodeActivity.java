@@ -10,19 +10,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -35,8 +22,38 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+
+import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.ekalarogya.app.AppConstants;
+import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
+import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
+import org.intelehealth.ekalarogya.database.dao.ObsDAO;
+import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
+import org.intelehealth.ekalarogya.knowledgeEngine.Node;
+import org.intelehealth.ekalarogya.knowledgeEngine.ncd.NCDNodeValidationLogic;
+import org.intelehealth.ekalarogya.knowledgeEngine.ncd.NCDValidationResult;
 import org.intelehealth.ekalarogya.models.AnswerResult;
+import org.intelehealth.ekalarogya.models.dto.ObsDTO;
+import org.intelehealth.ekalarogya.utilities.FileUtils;
+import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.ekalarogya.utilities.StringUtils;
+import org.intelehealth.ekalarogya.utilities.UuidDictionary;
+import org.intelehealth.ekalarogya.utilities.exception.DAOException;
+import org.intelehealth.ekalarogya.utilities.pageindicator.ScrollingPagerIndicator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,26 +68,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-
-import org.intelehealth.ekalarogya.R;
-import org.intelehealth.ekalarogya.app.AppConstants;
-import org.intelehealth.ekalarogya.app.IntelehealthApplication;
-import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
-import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
-import org.intelehealth.ekalarogya.database.dao.ObsDAO;
-import org.intelehealth.ekalarogya.models.dto.ObsDTO;
-import org.intelehealth.ekalarogya.utilities.FileUtils;
-import org.intelehealth.ekalarogya.utilities.SessionManager;
-import org.intelehealth.ekalarogya.utilities.UuidDictionary;
-
-import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.ekalarogya.knowledgeEngine.Node;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
-import org.intelehealth.ekalarogya.utilities.exception.DAOException;
-import org.intelehealth.ekalarogya.utilities.pageindicator.ScrollingPagerIndicator;
-
-import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 
 
 public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
@@ -99,7 +96,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     ArrayList<String> physicalExams;
     Node currentNode;
     // CustomExpandableListAdapter adapter;
-    QuestionsAdapter adapter;
+    QuestionsAdapter mQuestionListingadapter;
     boolean nodeComplete = false;
 
     int lastExpandedPosition = -1;
@@ -264,15 +261,15 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         filePath.mkdirs();
                     }
                     imageName = UUID.randomUUID().toString();
-                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                    Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
                 } else {
-                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
+                    Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, null, null);
                 }
             }
 
 
             if (!question.isTerminal() && question.isSelected()) {
-                Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                Node.subLevelQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
                 //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
         } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
@@ -332,20 +329,20 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     if (!filePath.exists()) {
                         filePath.mkdirs();
                     }
-                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                    Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
                 } else {
-                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
+                    Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, null, null);
                 }
                 //If there is an input type, then the question has a special method of data entry.
             }
 
             if (!question.isTerminal() && question.isSelected()) {
-                Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                Node.subLevelQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
                 //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
         }
         //adapter.updateNode(currentNode);
-        adapter.notifyDataSetChanged();
+        mQuestionListingadapter.notifyDataSetChanged();
 
     }
 
@@ -541,7 +538,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         // question_recyclerView.setAdapter(adapter);
 
-        adapter.notifyDataSetChanged();
+        mQuestionListingadapter.notifyDataSetChanged();
         //question_recyclerView.notifyAll();
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
 
@@ -639,8 +636,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             currentNode.fetchAge(float_ageYear_Month);
 
 
-            adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
-            question_recyclerView.setAdapter(adapter);
+            mQuestionListingadapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
+            question_recyclerView.setAdapter(mQuestionListingadapter);
             recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
             setTitle(patientName + ": " + currentNode.findDisplay());
         } else {
@@ -650,17 +647,75 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     }
 
+    private int mCurrentNodeIndex = 0;
+    private int mTotalQuestions = 0;
+
     private void setupUI(Node currentNode) {
         if (currentNode != null) {
             if (currentNode.getIsNcdProtocol()) {
                 recyclerViewIndicator.setVisibility(View.GONE);
                 linearLayoutManager.setHorizontalScrollEnabled(false);
                 navButtonRelativeLayout.setVisibility(View.VISIBLE);
+                mTotalQuestions = currentNode.getOptionsList().size();
+                decideToDisplayTheActionButtons();
+                forwardButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Node currentDisplayingNode = currentNode.getOptionsList().get(mCurrentNodeIndex);
+                        if (!currentDisplayingNode.isSelected() || !currentDisplayingNode.isNestedMandatoryOptionsAnswered()) {
+                            Toast.makeText(QuestionNodeActivity.this, "Please answer!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //mCurrentNodeIndex += 1;
+                            NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex));
+
+                            if (ncdValidationResult.isReadyToEndTheScreening()) {
+                                Toast.makeText(QuestionNodeActivity.this, "Screening done!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (ncdValidationResult.getTargetNodeID()==null && !ncdValidationResult.isReadyToEndTheScreening()) {
+                                    mCurrentNodeIndex += 1;
+                                    question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
+                                    decideToDisplayTheActionButtons();
+                                } else {
+                                    for (int i = 0; i < currentNode.getOptionsList().size(); i++) {
+                                        Node tempNode = currentNode.getOptionsList().get(i);
+                                        if (tempNode.getId().equals(ncdValidationResult.getTargetNodeID())) {
+                                            mCurrentNodeIndex = i;
+                                        }
+                                    }
+                                    Log.v(TAG, currentNode.toString());
+                                    question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
+                                    decideToDisplayTheActionButtons();
+                                }
+                            }
+                        }
+                    }
+                });
+                backButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mCurrentNodeIndex -= 1;
+                        question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
+                        decideToDisplayTheActionButtons();
+                    }
+                });
             } else {
                 recyclerViewIndicator.setVisibility(View.VISIBLE);
                 linearLayoutManager.setHorizontalScrollEnabled(true);
                 navButtonRelativeLayout.setVisibility(View.GONE);
             }
+        }
+    }
+
+    private void decideToDisplayTheActionButtons() {
+        if (mCurrentNodeIndex == 0) {
+            forwardButton.setVisibility(View.VISIBLE);
+            backButton.setVisibility(View.GONE);
+        } else if (mCurrentNodeIndex == mTotalQuestions - 1) {
+            forwardButton.setVisibility(View.GONE);
+            backButton.setVisibility(View.VISIBLE);
+        } else {
+            forwardButton.setVisibility(View.VISIBLE);
+            backButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -703,7 +758,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     }
 
     public void setRecyclerViewIndicator() {
-        question_recyclerView.setAdapter(adapter);
+        question_recyclerView.setAdapter(mQuestionListingadapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
     }
 
@@ -776,8 +831,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 // flaoting value of age is passed to Node for comparison...
                 currentNode.fetchAge(float_ageYear_Month);
 
-                adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
-                question_recyclerView.setAdapter(adapter);
+                mQuestionListingadapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
+                question_recyclerView.setAdapter(mQuestionListingadapter);
                 //setTitle(patientName + ": " + currentNode.getText());
                 setTitle(patientName + ": " + currentNode.findDisplay());
             }

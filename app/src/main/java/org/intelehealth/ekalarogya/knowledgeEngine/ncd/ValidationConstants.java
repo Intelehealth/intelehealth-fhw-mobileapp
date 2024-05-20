@@ -1,5 +1,8 @@
 package org.intelehealth.ekalarogya.knowledgeEngine.ncd;
 
+/**
+ *
+ */
 public class ValidationConstants {
     //types
     public static final String TYPE_NAVIGATE = "NAVIGATE";

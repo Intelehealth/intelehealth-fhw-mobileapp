@@ -5,7 +5,11 @@ import java.util.List;
 
 public class ValidationRulesParser {
 
-
+    /**
+     * @param type
+     * @param data
+     * @return
+     */
     public static List<SourceData> getSourceDataInfoList(String type, String data) {
         if (type.equals(ValidationConstants.TYPE_NAVIGATE)) {
             return parseDataNameTypeByUnderscore(data);
@@ -17,6 +21,10 @@ public class ValidationRulesParser {
         return null;
     }
 
+    /**
+     * @param data
+     * @return
+     */
     public static List<SourceData> parseDataNameTypeByUnderscore(String data) {
         List<SourceData> sourceDataList = new ArrayList<>();
         String[] tempLevel1 = data.split("_");
@@ -37,7 +45,14 @@ public class ValidationRulesParser {
         return sourceDataList; // 1st :
     }
 
+    /**
+     * @param data
+     * @return
+     */
     public static String[] parseByHyphen(String data) {
         return data.split("-"); // 1st :
+    }
+    public static void translatingCheckInfo(){
+
     }
 }

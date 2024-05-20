@@ -1238,5 +1238,7 @@
     <string name="tab_hypertension_screening">Hypertension Screening</string>
     <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
     <string name="tab_general">General</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
 
 </resources>
