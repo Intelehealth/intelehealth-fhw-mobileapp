@@ -15,15 +15,11 @@ interface PatientDao {
     suspend fun getPatientsBelowAge(age: Int): List<Patient>
 
     @Query(
-        "SELECT a.uuid, a.openmrs_id, a.first_name, a.middle_name, a.last_name, a.date_of_birth, b.value, b.person_attribute_type_uuid " +
-                "FROM tbl_patient AS a INNER JOIN tbl_patient_attribute AS b " +
-                "ON a.uuid = b.patientuuid " +
-                "WHERE ((a.first_name LIKE '%' || :searchString || '%') " +
-                "OR (a.last_name LIKE '%' || :searchString || '%') " +
-                "OR (first_name|| ' ' || last_name LIKE '%' || :searchString || '%') " +
-                "OR (openmrs_id = :searchString)) " +
-                "OR b.patientuuid IN (SELECT patientuuid FROM tbl_patient_attribute WHERE person_attribute_type_uuid = :phoneNumberAttribute AND value = :searchString) " +
-                "AND person_attribute_type_uuid = :attribute " +
+        "SELECT a.uuid, a.openmrs_id, a.first_name, a.middle_name, a.last_name, a.date_of_birth, b.value, b.person_attribute_type_uuid FROM tbl_patient AS a " +
+                "INNER JOIN tbl_patient_attribute AS b ON a.uuid = b.patientuuid " +
+                "WHERE b.person_attribute_type_uuid = :attribute " +
+                "AND (((a.first_name LIKE '%' || :searchString || '%') OR (a.last_name LIKE '%' || :searchString || '%') OR (a.first_name|| ' ' || a.last_name LIKE '%' || :searchString || '%') OR (a.openmrs_id = :searchString)) " +
+                "OR b.patientuuid IN (SELECT c.patientuuid FROM tbl_patient_attribute as c WHERE c.person_attribute_type_uuid = :phoneNumberAttribute AND c.value = :searchString)) " +
                 "GROUP BY a.uuid"
     )
     suspend fun queryPatientsAndAttributesForSearchString(
