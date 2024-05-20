@@ -7,7 +7,7 @@
     tools:context=".activities.aboutus.AboutUsActivity">
 
     <!--    Toolbar - start -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/toolbar_relative"
         android:layout_width="0dp"
         android:layout_height="@dimen/followup_toolbar"
@@ -18,7 +18,7 @@
         android:background="@drawable/frame_10021">
 
         <!-- Frame 100167 -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/followup_toolbar"
             android:layout_alignParentLeft="true"
@@ -31,7 +31,7 @@
             android:weightSum="3">
 
             <!-- Frame 100116 -->
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.7"
@@ -42,10 +42,6 @@
                     android:id="@+id/vector"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
                     android:background="@null"
                     android:onClick="backPress"
                     android:padding="@dimen/margin_5"
@@ -191,7 +187,7 @@
                         android:layout_marginTop="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/margin_24"
                         android:layout_marginBottom="@dimen/margin_24"
-                        android:background="@drawable/blue_common_bg_button"
+                        android:background="@drawable/ui2_common_primary_bg"
                         android:drawableEnd="@drawable/globe"
                         android:fontFamily="@font/dm_sans"
                         android:paddingStart="@dimen/margin_30"

@@ -1,3 +1,17 @@
+16 May, 2024
+- Patient registration success dialog icon - Done
+- Start visit button - Done
+- Vital summery change icon - Done
+- confirm visit reason dialog -> selected reason bg - Done
+- Visit summery add additional doc - Done
+
+17 May, 2024
+- Prescription received/pending tabs icon
+- Visit details icons
+
+# if we disable the vital screen
+-
+
 Configurability
 - Step 1
 - Created the environment.gradle

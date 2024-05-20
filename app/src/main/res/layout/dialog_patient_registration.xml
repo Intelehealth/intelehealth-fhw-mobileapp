@@ -36,9 +36,9 @@
                 android:lineSpacingExtra="4sp"
                 android:text="@string/patient_registered"
                 android:textAppearance="@style/dialog_title"
-                android:textStyle="bold"
                 android:textColor="@null"
-                android:textSize="@null" />
+                android:textSize="@null"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dialog_subtitle"
@@ -68,21 +68,22 @@
                     style="@style/negative_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginEnd="@dimen/fu_margin_start"
                     android:background="@drawable/ui2_common_primary_bg_disabled"
+                    android:gravity="center"
                     android:paddingHorizontal="@dimen/margin_32dp"
                     android:paddingVertical="@dimen/margin_20dp"
-                    android:text="@string/yes" />
+                    android:text="@string/yes"
+                    android:textColor="?attr/colorPrimary" />
 
                 <Button
                     android:id="@+id/positive_btn"
                     style="@style/positive_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_toEndOf="@id/negative_btn"
                     android:background="@drawable/ui2_common_primary_bg"
+                    android:gravity="center"
                     android:paddingHorizontal="@dimen/margin_32dp"
                     android:paddingVertical="@dimen/margin_20dp"
                     android:text="@string/no" />

@@ -7,17 +7,17 @@
       android:pathData="M19.576,9.003L18.058,10.537L18.606,12.625L16.523,13.192L15.956,15.275L13.868,14.727L12.334,16.244L10.799,14.727L8.712,15.275L8.144,13.192L6.061,12.625L6.609,10.537L5.092,9.003L6.609,7.468L6.062,5.381L8.144,4.813L8.712,2.73L10.799,3.278L12.334,1.761L13.868,3.278L15.956,2.731L16.524,4.813L18.606,5.381L18.058,7.468L19.576,9.003Z"
       android:strokeLineJoin="round"
       android:strokeWidth="2"
-      android:fillColor="#2E1E91"
-      android:strokeColor="#2E1E91"
+      android:fillColor="?attr/colorPrimary"
+      android:strokeColor="?attr/colorPrimary"
       android:strokeLineCap="round"/>
   <path
       android:pathData="M16.084,15.021V22.25L12.889,20.121C12.552,19.896 12.115,19.896 11.779,20.121L8.584,22.25V15.021"
-      android:fillColor="#2E1E91"/>
+      android:fillColor="?attr/colorPrimary"/>
   <path
       android:pathData="M16.084,15.021V22.25L12.889,20.121C12.552,19.896 12.115,19.896 11.779,20.121L8.584,22.25V15.021"
       android:strokeLineJoin="round"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="#2E1E91"
+      android:strokeColor="?attr/colorPrimary"
       android:strokeLineCap="round"/>
 </vector>

@@ -122,7 +122,7 @@
                 android:lineSpacingExtra="1sp"
                 android:paddingHorizontal="@dimen/toolbar_margin_left"
                 android:text="@string/_visit_reason_summary"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="@dimen/toolbar_text_size"
                 android:textStyle="bold" />
 
@@ -158,12 +158,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/ui2_common_gray_round_stroke_bg"
-                    android:drawableStart="@drawable/ui2_ic_edit"
                     android:drawablePadding="4dip"
+                    android:drawableTint="?attr/colorPrimary"
                     android:gravity="center"
                     android:lineSpacingExtra="1sp"
                     android:padding="@dimen/padding_5"
-                    android:text="@string/change" />
+                    android:text="@string/change"
+                    app:drawableStartCompat="@drawable/ui2_ic_edit" />
             </RelativeLayout>
 
             <LinearLayout

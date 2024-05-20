@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.identificationActivity.IdentificationActivity_New">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="@dimen/fu_toolbat_txt_height"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/common_title_margin_top"
         android:layout_marginEnd="@dimen/toolbar_margin_right"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         android:weightSum="1">
 
         <!-- Frame 100116 -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
@@ -32,11 +32,8 @@
                 android:id="@+id/backbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
                 android:background="@null"
+                android:contentDescription="@string/generic_back"
                 android:padding="@dimen/margin_5"
                 android:src="@drawable/ic_arrow_right"
                 android:visibility="gone"
@@ -48,8 +45,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_10"
-                android:lineSpacingExtra="1sp"
                 android:gravity="center_vertical"
+                android:lineSpacingExtra="1sp"
                 android:text="@string/add_new_patient"
                 android:textAppearance="@style/label"
                 android:textColor="@null"
@@ -68,22 +65,22 @@
                 android:id="@+id/refresh"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/common_title_margin_top"
                 android:layout_weight="1"
                 android:background="@null"
                 android:onClick="syncNow"
-                android:layout_gravity="center"
                 android:src="@drawable/ic_refreshbtn" />
 
             <ImageButton
                 android:id="@+id/cancelbtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@null"
-                android:padding="1dp"
                 android:onClick="cancelRegistration"
-                android:layout_gravity="center"
+                android:padding="1dp"
                 android:src="@drawable/cancel_btn_cross" />
 
         </LinearLayout>
@@ -109,6 +106,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="2dp"
+            android:contentDescription="@string/personal_identification"
             android:src="@drawable/addpatient_icon" />
 
         <ImageView
@@ -129,6 +127,7 @@
             android:layout_marginEnd="@dimen/common_edittext_margin_top"
             android:layout_marginBottom="@dimen/card_appointment_card_elevation"
             android:layout_toEndOf="@+id/line_1"
+            android:contentDescription="@string/address_identification"
             android:src="@drawable/addresslocation_icon_unselected" />
 
         <ImageView
@@ -148,6 +147,7 @@
             android:layout_marginEnd="@dimen/margin_10"
             android:layout_marginBottom="@dimen/card_appointment_card_elevation"
             android:layout_toEndOf="@+id/line_2"
+            android:contentDescription="@string/other_identification"
             android:src="@drawable/other_icon_unselected" />
     </RelativeLayout>
 
@@ -209,7 +209,6 @@
         android:id="@+id/frame_firstscreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/frame_nxtbtn_viewgrp"
         android:layout_below="@+id/title_text">
 
         <!--        <include layout="@layout/fragment_registration_firstscreen" />-->
@@ -217,56 +216,56 @@
     </FrameLayout>
 
 
-<!--
-    <FrameLayout
-        android:id="@+id/frame_nxtbtn_viewgrp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/margin_24">
-
-        <RelativeLayout
-            android:id="@+id/relative_firstscreen_nxt_btn"
+    <!--
+        <FrameLayout
+            android:id="@+id/frame_nxtbtn_viewgrp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible">
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_24">
 
-            <Button
-                android:id="@+id/nxt_btn_main"
+            <RelativeLayout
+                android:id="@+id/relative_firstscreen_nxt_btn"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:background="@drawable/registr_nxt_btn" />
+                android:layout_height="wrap_content"
+                android:visibility="visible">
 
-        </RelativeLayout>
+                <Button
+                    android:id="@+id/nxt_btn_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginEnd="@dimen/margin_24"
+                    android:background="@drawable/registr_nxt_btn" />
 
-        <LinearLayout
-            android:id="@+id/linear_secondscreen_nxt_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:visibility="gone">
+            </RelativeLayout>
 
-            <Button
-                android:id="@+id/btn_back_firstscreen"
+            <LinearLayout
+                android:id="@+id/linear_secondscreen_nxt_btn"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/fu_card_margin_updown"
-                android:layout_weight="1"
-                android:background="@drawable/back_btn_patregistra" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="gone">
 
-            <Button
-                android:id="@+id/btn_nxt_firstscreen"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:layout_toEndOf="@+id/btn_back_firstscreen"
-                android:layout_weight="1"
-                android:background="@drawable/nxt_btn_secondscreen" />
-        </LinearLayout>
-    </FrameLayout>
--->
+                <Button
+                    android:id="@+id/btn_back_firstscreen"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginEnd="@dimen/fu_card_margin_updown"
+                    android:layout_weight="1"
+                    android:background="@drawable/back_btn_patregistra" />
+
+                <Button
+                    android:id="@+id/btn_nxt_firstscreen"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_marginEnd="@dimen/margin_24"
+                    android:layout_toEndOf="@+id/btn_back_firstscreen"
+                    android:layout_weight="1"
+                    android:background="@drawable/nxt_btn_secondscreen" />
+            </LinearLayout>
+        </FrameLayout>
+    -->
 
 </RelativeLayout>

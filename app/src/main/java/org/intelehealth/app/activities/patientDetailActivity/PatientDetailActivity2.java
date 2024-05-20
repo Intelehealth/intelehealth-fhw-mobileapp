@@ -154,9 +154,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
-            guardina_name_tv,guardian_type_tv,contact_type_tv,em_contact_name_tv,em_contact_number_tv;
+            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv;
 
-    TableRow guardian_type_table_row,guardian_name_table_row;
+    TableRow guardian_type_table_row, guardian_name_table_row;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -280,7 +280,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         startVisitBtn.setOnClickListener(v -> {
             patientRegistrationDialog(context,
-                    ContextCompat.getDrawable(this,R.drawable.dialog_icon_complete),
+                    ContextCompat.getDrawable(this, R.drawable.dialog_icon_complete),
                     getResources().getString(R.string.patient_registered),
                     getResources().getString(R.string.does_patient_start_visit_now),
                     getResources().getString(R.string.button_continue),
@@ -289,13 +289,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         public void onDialogActionDone(int action) {
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
                                 Intent in = new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class);
-                                CommonVisitData commonVisitData  = new CommonVisitData();
+                                CommonVisitData commonVisitData = new CommonVisitData();
                                 commonVisitData.setPatientUuid(patientDTO.getUuid());
                                 commonVisitData.setPrivacyNote(privacy_value_selected);
-                                in.putExtra("CommonVisitData",commonVisitData);
+                                in.putExtra("CommonVisitData", commonVisitData);
                                 startActivity(in);
-                               // startVisit();
-                               // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
+                                // startVisit();
+                                // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
                             }
                         }
                     });
@@ -816,7 +816,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo","guardian_type","guardian_name","contact_type","em_contact_name","em_contact_num"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1185,12 +1185,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientstate.setText(getStateTranslated(state, sessionManager.getAppLanguage()));
 
         // setting district and city
-        String[] district_city = patientDTO.getCityvillage().trim().split(":");
         String district = null;
         String city_village = null;
-        if (district_city.length == 2) {
-            district = district_city[0];
-            city_village = district_city[1];
+        if (patientDTO.getCityvillage() != null && patientDTO.getCityvillage().length() > 0) {
+            String[] district_city = patientDTO.getCityvillage().trim().split(":");
+            if (district_city.length == 2) {
+                district = district_city[0];
+                city_village = district_city[1];
+            }
         }
 
         if (district != null) {
@@ -1468,7 +1470,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientoccupation.setText(getString(R.string.not_provided));
         }
 
-        if(mAgeYears <= 18){
+        if (mAgeYears <= 18) {
             guardian_name_table_row.setVisibility(View.VISIBLE);
             guardian_type_table_row.setVisibility(View.VISIBLE);
             //guardian type
@@ -1476,7 +1478,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String type = switch_hi_guardian_type_edit(patientDTO.getGuardianType());
                     guardian_type_tv.setText(type);
-                }else {
+                } else {
                     guardian_type_tv.setText(patientDTO.getGuardianType());
                 }
             } else {
@@ -1489,7 +1491,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             } else {
                 guardina_name_tv.setText(getString(R.string.not_provided));
             }
-        }else {
+        } else {
             guardian_name_table_row.setVisibility(View.GONE);
             guardian_type_table_row.setVisibility(View.GONE);
         }
@@ -1499,7 +1501,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String type = switch_hi_contact_type_edit(patientDTO.getContactType());
                 contact_type_tv.setText(type);
-            }else {
+            } else {
                 contact_type_tv.setText(patientDTO.getContactType());
             }
         } else {
@@ -1834,9 +1836,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this, R.drawable.ui2_ic_no_internet));
         }
     }
 

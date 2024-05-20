@@ -11,7 +11,7 @@
         <clip-path android:pathData="M8 0H270C274.418 0 278 3.58172 278 8V36C278 40.4183 274.418 44 270 44H8C3.58172 44 0 40.4183 0 36V8C0 3.58172 3.58172 0 8 0Z" />
 
         <path
-            android:fillColor="#6650E5"
+            android:fillColor="@color/colorPrimaryBlackOverlay"
             android:pathData="M0 0V44H278V0" />
 
     </group>

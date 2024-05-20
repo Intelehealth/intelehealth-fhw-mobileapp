@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AppConstants {
     //Constants
-    public static final String DATABASE_NAME = "localrecords.db";
+    public static final String DATABASE_NAME = BuildConfig.FLAVOR_client + "-localrecords.db";
     public static final int DATABASE_VERSION = 4;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";

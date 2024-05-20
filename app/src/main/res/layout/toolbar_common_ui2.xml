@@ -16,8 +16,7 @@
         android:background="?attr/selectableItemBackground"
         android:foregroundGravity="center_horizontal"
         android:visibility="visible"
-        app:srcCompat="@drawable/ui2_ic_arrow_back_new"
-        app:tint="?colorPrimary" />
+        app:srcCompat="@drawable/ui2_ic_arrow_back_new" />
 
     <TextView
         android:id="@+id/tv_screen_title_common"

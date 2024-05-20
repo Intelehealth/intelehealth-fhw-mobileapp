@@ -667,7 +667,7 @@
                                     android:layout_marginStart="@dimen/common_edittext_margin_top"
                                     android:layout_weight="1"
                                     android:background="@drawable/ui2_common_primary_bg"
-                                    android:backgroundTint="@color/grey_button_bg"
+                                    android:backgroundTint="@color/colorPrimaryLightCard"
                                     android:lineHeight="@dimen/button_line_height"
                                     android:padding="@dimen/hamburger_margin_top"
                                     android:text="@string/remind_doctor"

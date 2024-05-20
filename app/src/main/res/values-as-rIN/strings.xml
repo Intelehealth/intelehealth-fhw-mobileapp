@@ -891,20 +891,20 @@
     <string name="close_visits">ভিজিট বন্ধ</string>
     <string name="close_visit">ভিজিট বন্ধ</string>
     <string name="skip_new">বাদ দিয়ক</string>
-    <string name="who_we_are_intro">ইণ্টেলিহেল্ঠ হৈছে উচ্চমানৰ স্বাস্থ্য সেৱা প্ৰদান কৰিবলৈ ফ্ৰণ্টলাইন স্বাস্থ্য কৰ্মী আৰু ৰোগীক ভাৰ্চুৱেল চিকিৎসকৰ সৈতে সংযোগ কৰি দূৰৱৰ্তী অঞ্চলত স্বাস্থ্যসেৱাৰ প্ৰৱেশৰ ব্যৱধান দূৰ কৰিবলৈ ডিজাইন কৰা এক উদ্ভাৱনীমূলক টেলিমেডিচিন প্লেটফৰ্ম</string>
-    <string name="who_we_are">আমি কোন?</string>
-    <string name="take_patient_visits">ৰোগীৰ ওচৰলৈ যাওক</string>
+    <string name="intro_tagline_1">ইণ্টেলিহেল্ঠ হৈছে উচ্চমানৰ স্বাস্থ্য সেৱা প্ৰদান কৰিবলৈ ফ্ৰণ্টলাইন স্বাস্থ্য কৰ্মী আৰু ৰোগীক ভাৰ্চুৱেল চিকিৎসকৰ সৈতে সংযোগ কৰি দূৰৱৰ্তী অঞ্চলত স্বাস্থ্যসেৱাৰ প্ৰৱেশৰ ব্যৱধান দূৰ কৰিবলৈ ডিজাইন কৰা এক উদ্ভাৱনীমূলক টেলিমেডিচিন প্লেটফৰ্ম</string>
+    <string name="intro_title_1">আমি কোন?</string>
+    <string name="intro_title_2">ৰোগীৰ ওচৰলৈ যাওক</string>
     <string name="collect_patient_info">এ ৱাই ইউ ব্যৱহাৰ কৰি ৰোগীৰ তথ্য সংগ্ৰহ কৰক</string>
     <string name="profile_details_added">প্ৰফাইলৰ বিৱৰণ সফলতাৰে যোগ কৰা হৈছে</string>
     <string name="profile_details_updated_new">প্ৰফাইলৰ বিৱৰণ সফলতাৰে আপডেট কৰা হৈছে!</string>
     <string name="profile_photo_updated_new">প্ৰফাইল ফটো সফলতাৰে আপডেট কৰা হৈছে</string>
     <string name="otp_sent_success">অ টি পি সফলতাৰে প্ৰেৰণ কৰা হৈছে</string>
 
-    <string name="take_patient_visits_intro">এই প্লেটফৰ্মটো এ ৱাই ইউৰ দ্বাৰা চালিত, যিটো এটা প্ৰগ্ৰেমেবল ডিজিটেল সহায়ক যিয়ে আঞ্চলিক ভাষাত প্ৰাথমিক স্বাস্থ্যসেৱাৰ বাবে প্ৰমাণভিত্তিক প্ৰট’কলৰ সৈতে ফ্ৰণ্টলাইন স্বাস্থ্য কৰ্মীসকলক সমৰ্থন কৰে</string>
-    <string name="provide_prescriptions">প্ৰেছক্ৰিপচন দিব লাগে</string>
+    <string name="intro_tagline_2">এই প্লেটফৰ্মটো এ ৱাই ইউৰ দ্বাৰা চালিত, যিটো এটা প্ৰগ্ৰেমেবল ডিজিটেল সহায়ক যিয়ে আঞ্চলিক ভাষাত প্ৰাথমিক স্বাস্থ্যসেৱাৰ বাবে প্ৰমাণভিত্তিক প্ৰট’কলৰ সৈতে ফ্ৰণ্টলাইন স্বাস্থ্য কৰ্মীসকলক সমৰ্থন কৰে</string>
+    <string name="intro_title_3">প্ৰেছক্ৰিপচন দিব লাগে</string>
     <string name="share_prescriptions">প্ৰেছক্ৰিপচন শ্বেয়াৰ কৰক</string>
 
-    <string name="provide_prescriptions_intro">কম সম্পদৰ পৰিৱেশৰ বাবে ডিজাইন কৰা ক্লাউড-ভিত্তিক অ\'পেন চৌর্ছ প্লেটফৰ্মে এটা কাষ্টমাইজড ৰূপায়ণ কৌশলৰ সৈতে সংযুক্ত কৰি প্ৰভাৱশালী স্বাস্থ্য ফলাফলৰ বাবে এটা ডিজিটেল স্বাস্থ্য সমাধান সৃষ্টি কৰে</string>
+    <string name="intro_tagline_3">কম সম্পদৰ পৰিৱেশৰ বাবে ডিজাইন কৰা ক্লাউড-ভিত্তিক অ\'পেন চৌর্ছ প্লেটফৰ্মে এটা কাষ্টমাইজড ৰূপায়ণ কৌশলৰ সৈতে সংযুক্ত কৰি প্ৰভাৱশালী স্বাস্থ্য ফলাফলৰ বাবে এটা ডিজিটেল স্বাস্থ্য সমাধান সৃষ্টি কৰে</string>
     <string name="hello_i_am_ayu">নমস্কাৰ, মই এ ৱাই ইউ,</string>
     <string name="ayu_intro">এজন ডিজিটেল স্বাস্থ্য সহায়ক।\nআৰম্ভ কৰোঁ আহক!</string>
     <string name="agree_to_terms"><font color='#2F1E91'><u>চৰ্ত আৰু নিয়ম</u></font> and <font color='#2F1E91'><u>গোপনীয়তা নীতিৰ</u></font> সৈতে সন্মত হওক</string>

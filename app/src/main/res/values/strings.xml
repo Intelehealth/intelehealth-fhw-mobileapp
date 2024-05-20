@@ -892,20 +892,17 @@
     <string name="close_visits">Close Visits</string>
     <string name="close_visit">Close visit</string>
     <string name="skip_new">Skip</string>
-    <string name="who_we_are_intro">Intelehealth is an innovative telemedicine platform designed to bridge healthcare access gap in remote regions by connecting frontline health worker and patient with a virtual doctor to provide high-quality health services</string>
-    <string name="who_we_are">Who are we?</string>
-    <string name="take_patient_visits">Take patient visits</string>
+
     <string name="collect_patient_info">Collect Patient information using AYU</string>
     <string name="profile_details_added">Profile details added successfully</string>
     <string name="profile_details_updated_new">Profile details updated successfully!</string>
     <string name="profile_photo_updated_new">Profile photo updated successfully</string>
     <string name="otp_sent_success">OTP sent successfully</string>
 
-    <string name="take_patient_visits_intro">The platform is powered by Ayu, a programmable digital assistant that supports frontline health workers with evidence-based protocols for primary healthcare in regional languages</string>
-    <string name="provide_prescriptions">Provide prescriptions</string>
+
     <string name="share_prescriptions">Share the prescription</string>
 
-    <string name="provide_prescriptions_intro">The cloud-based open-source platform designed for a low-resource environment combined with a customized implementation strategy creates a digital health solution for impactful health outcomes</string>
+
     <string name="hello_i_am_ayu">Hello, I am AYU,</string>
     <string name="ayu_intro">A digital health assistant.\nLet’s get started!</string>
     <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>Terms &amp; Conditions</u></font> and <font color='#2F1E91'><u>Privacy Policy</u></font></string>

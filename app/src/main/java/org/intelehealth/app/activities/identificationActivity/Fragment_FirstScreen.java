@@ -339,9 +339,11 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         setMobileNumberLimit();
 
 
-        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addpatient_icon));
-        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addresslocation_icon_unselected));
-        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.other_icon_unselected));
+        personal_icon.setSelected(true);
+
+//        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addpatient_icon));
+//        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addresslocation_icon_unselected));
+//        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.other_icon_unselected));
 
 
         // next btn click
