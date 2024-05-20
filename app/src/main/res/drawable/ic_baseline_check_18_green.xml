@@ -1,7 +1,7 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="18dp"
     android:height="18dp"
-    android:tint="#0FD197"
+    android:tint="@color/selector_color_associate_sym_icon"
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path

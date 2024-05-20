@@ -787,6 +787,7 @@
                         android:padding="@dimen/margin_8"
                         android:layout_toEndOf="@+id/doc_speciality_title_1"
                         android:background="@null"
+                        app:tint="?attr/colorPrimary"
                         android:src="@drawable/question_mark_helpicon" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial

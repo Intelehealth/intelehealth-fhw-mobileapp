@@ -55,12 +55,9 @@
             android:id="@+id/btn_cancel"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-
             android:layout_weight="1"
             android:background="@drawable/ui2_common_input_bg"
             android:drawableTint="@color/iconTintWhite"
-            android:lineHeight="@dimen/button_skip_line_height"
             android:paddingStart="@dimen/common_button_padding_left"
             android:paddingTop="@dimen/common_button_padding_top"
             android:paddingEnd="@dimen/common_button_padding_right"
@@ -159,12 +156,12 @@
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/ui2_common_gray_round_stroke_bg"
                     android:drawablePadding="4dip"
-                    android:drawableTint="?attr/colorPrimary"
                     android:gravity="center"
                     android:lineSpacingExtra="1sp"
                     android:padding="@dimen/padding_5"
                     android:text="@string/change"
-                    app:drawableStartCompat="@drawable/ui2_ic_edit" />
+                    app:drawableStartCompat="@drawable/ui2_ic_edit"
+                    app:drawableTint="?attr/colorPrimary" />
             </RelativeLayout>
 
             <LinearLayout
