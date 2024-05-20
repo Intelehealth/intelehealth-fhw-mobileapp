@@ -427,6 +427,26 @@ public class MedicalHistoryDialog extends DialogFragment {
 
         medicalHistory.setAnaemia(getMedicalHistoryStrings(((RadioButton) binding.anaemiaRadioGroup.findViewById(binding.anaemiaRadioGroup.getCheckedRadioButtonId())).getText().toString(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
 
+        if (binding.llAnemiaMedication.getVisibility() == View.VISIBLE) {
+            medicalHistory.setMedicationForAnemia(getMedicalHistoryStrings(((RadioButton) binding.anemiaMedicationRadioGroup.findViewById(binding.anemiaMedicationRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
+        }
+
+        if (binding.llAnemiaHealthcareWorker.getVisibility() == View.VISIBLE) {
+            medicalHistory.setHealthWorkerForAnemia(getMedicalHistoryStrings(((RadioButton) binding.anemiaHealthcareRadioGroup.findViewById(binding.anemiaHealthcareRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
+        }
+
+        if (binding.llAnemiaNoMedicationReason.getVisibility() == View.VISIBLE) {
+            String reasonForNoAnemiaMedication = "";
+            if (binding.anemiaNoMedicationReason.getSelectedItemPosition() == anemiaNoMedicationAdapter.getCount() - 1) {
+                String spinnerText = getMedicalHistoryStrings(binding.anemiaNoMedicationReason.getSelectedItem().toString(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage());
+                String reasonText = binding.otherReasonAnemiaEditText.getText().toString();
+                reasonForNoAnemiaMedication = spinnerText + ":" + reasonText;
+            } else {
+                reasonForNoAnemiaMedication = getMedicalHistoryStrings(binding.anemiaNoMedicationReason.getSelectedItem().toString(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage());
+            }
+            medicalHistory.setReasonForNoAnemiaMedication(reasonForNoAnemiaMedication);
+        }
+
         medicalHistory.setAnySurgeries(getMedicalHistoryStrings(((RadioButton) binding.anySurgeriesRadioGroup.findViewById(binding.anySurgeriesRadioGroup.getCheckedRadioButtonId())).getText().toString(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
 
         if (medicalHistory.getAnySurgeries().equalsIgnoreCase("Yes"))
@@ -514,6 +534,35 @@ public class MedicalHistoryDialog extends DialogFragment {
                 }
 
                 setSelectedSpinner(binding.diabetesNoMedicationReason, diabetesNoMedicationAdapter, spinnerText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
+            }
+        }
+
+        if (binding.llAnemiaMedication.getVisibility() == View.VISIBLE) {
+            String medicationForAnemiaText = bundle.getString("medicationForAnemia");
+            setSelectedCheckboxes(binding.anemiaMedicationRadioGroup, medicationForAnemiaText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
+        }
+
+        if (binding.llAnemiaHealthcareWorker.getVisibility() == View.VISIBLE) {
+            String healthWorkerForAnemiaText = bundle.getString("healthWorkerForAnemia");
+            setSelectedCheckboxes(binding.anemiaHealthcareRadioGroup, healthWorkerForAnemiaText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
+        }
+
+        if (binding.llAnemiaNoMedicationReason.getVisibility() == View.VISIBLE) {
+            String reasonForNoAnemiaMedicationText = bundle.getString("reasonForNoAnemiaMedication");
+            String spinnerText = "";
+            String reasonText = "";
+
+            if (reasonForNoAnemiaMedicationText != null) {
+                if (reasonForNoAnemiaMedicationText.contains(":")) {
+                    String[] noAnemiaMedicationReason = reasonForNoAnemiaMedicationText.split(":");
+                    spinnerText = noAnemiaMedicationReason[0];
+                    reasonText = noAnemiaMedicationReason[1];
+                    binding.otherReasonAnemiaEditText.setText(reasonText);
+                } else {
+                    spinnerText = reasonForNoAnemiaMedicationText;
+                }
+
+                setSelectedSpinner(binding.anemiaNoMedicationReason, anemiaNoMedicationAdapter, spinnerText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
             }
         }
     }

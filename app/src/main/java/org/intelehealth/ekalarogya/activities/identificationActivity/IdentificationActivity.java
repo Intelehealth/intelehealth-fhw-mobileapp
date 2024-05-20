@@ -6210,6 +6210,10 @@ public class IdentificationActivity extends AppCompatActivity implements
                 bundle.putString("healthWorkerForDiabetes", medicalHistory.getHealthWorkerForDiabetes());
                 bundle.putString("reasonForNoDiabetesMedication", medicalHistory.getReasonForNoDiabetesMedication());
 
+                bundle.putString("medicationForAnemia", medicalHistory.getMedicationForAnemia());
+                bundle.putString("healthWorkerForAnemia", medicalHistory.getHealthWorkerForAnemia());
+                bundle.putString("reasonForNoAnemiaMedication", medicalHistory.getReasonForNoAnemiaMedication());
+
                 MedicalHistoryDialog medicalHistoryDialog = new MedicalHistoryDialog();
                 medicalHistoryDialog.setArguments(bundle);
                 medicalHistoryDialog.show(getSupportFragmentManager(), MedicalHistoryDialog.TAG);
