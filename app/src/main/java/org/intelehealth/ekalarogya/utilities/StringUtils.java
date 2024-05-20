@@ -5077,7 +5077,7 @@ public final class StringUtils {
     public static void setSelectedSpinner(Spinner spinner, ArrayAdapter<CharSequence> adapter, String text, Resources resources, Resources updatedResources, String locale) {
         if (spinner == null) return;
 
-        String getUpdatedString = getMedicalHistoryStrings(text, updatedResources, resources, locale);
+        String getUpdatedString = getMedicalHistoryStrings(text, resources, updatedResources, locale);
         int getSpinnerPosition = adapter.getPosition(getUpdatedString);
         spinner.setSelection(getSpinnerPosition);
     }

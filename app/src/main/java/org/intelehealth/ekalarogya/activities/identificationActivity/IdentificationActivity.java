@@ -1271,7 +1271,7 @@ public class IdentificationActivity extends AppCompatActivity implements
             }
 
             String mobileNumberAssociatedWithWhatsApp = getWhatsAppStrings(patient1.getMobileNumberAssociatedWithWhatsApp(), updatedResources, originalResources, sessionManager.getAppLanguage());
-            if (mobileNumberAssociatedWithWhatsApp.equalsIgnoreCase(updatedResources.getString(R.string.i_dont_know))) {
+            if (mobileNumberAssociatedWithWhatsApp.equalsIgnoreCase(originalResources.getString(R.string.i_dont_know))) {
                 iDontKnowCheckbox.setChecked(true);
             } else {
                 if (!mobileNumberAssociatedWithWhatsApp.equalsIgnoreCase("-")) {
