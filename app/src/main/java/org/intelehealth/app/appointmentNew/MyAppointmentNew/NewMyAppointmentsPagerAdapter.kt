@@ -16,9 +16,22 @@ class NewMyAppointmentsPagerAdapter(
 ) {
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> UpcomingAppointmentsFragment(context as MyAppointmentLoadingListener)
-            1 -> PastAppointmentsFragment(context as MyAppointmentLoadingListener)
-            else -> PastAppointmentsFragment(context as MyAppointmentLoadingListener)
+
+            0 -> {
+                val fragment = UpcomingAppointmentsFragment()
+                fragment.setListener(context as MyAppointmentLoadingListener)
+                fragment
+            }
+            1 -> {
+                val fragment = PastAppointmentsFragment()
+                fragment.setListener(context as MyAppointmentLoadingListener)
+                fragment
+            }
+            else -> {
+                val fragment = PastAppointmentsFragment()
+                fragment.setListener(context as MyAppointmentLoadingListener)
+                fragment
+            }
         }
     }
 

@@ -58,7 +58,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.function.Consumer
 
-class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLoadingListener) :
+class PastAppointmentsFragment :
     Fragment() {
     private var parentView: View? = null
     private var rvUpcomingApp: RecyclerView? = null
@@ -116,6 +116,12 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
 
     private val disposables = CompositeDisposable()
 
+    lateinit var myAppointmentLoadingListener: MyAppointmentLoadingListener
+
+    fun setListener(myAppointmentLoadingListener: MyAppointmentLoadingListener){
+        this.myAppointmentLoadingListener = myAppointmentLoadingListener
+    }
+
     //true = ascending, false = descending
     private var sortStatus = true
     override fun onResume() {
@@ -125,7 +131,9 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLocale(context)
-        myAppointmentLoadingListener.onStartPast()
+        if(::myAppointmentLoadingListener.isInitialized){
+            myAppointmentLoadingListener.onStartPast()
+        }
         (activity as MyAppointmentActivityNew?)!!.initUpdateFragmentOnEvent(
             1,
             object : UpdateFragmentOnEvent {
@@ -508,10 +516,14 @@ class PastAppointmentsFragment(var myAppointmentLoadingListener: MyAppointmentLo
                             noDataFoundForPast!!.visibility = View.VISIBLE
                         }
                     }
-                    myAppointmentLoadingListener.onStopPast()
+                    if(::myAppointmentLoadingListener.isInitialized){
+                        myAppointmentLoadingListener.onStopPast()
+                    }
                 },
                     { error ->
-                        myAppointmentLoadingListener.onStopPast()
+                        if(::myAppointmentLoadingListener.isInitialized){
+                            myAppointmentLoadingListener.onStopPast()
+                        }
                         error.printStackTrace()
                     })
 

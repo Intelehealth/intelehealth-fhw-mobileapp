@@ -36,6 +36,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.MyAppointmentLoadingListener
 import org.intelehealth.app.utilities.NavigationUtils
+import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.exception.DAOException
@@ -85,64 +86,70 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex)) Objects.requireNonNull(
             mUpdateFragmentOnEventHashMap[tabIndex]
         )?.onFinished(AppConstants.EVENT_FLAG_START)
-        ApiClientAppointment.getInstance(baseurl).api
-            .getSlotsAll(
-                DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
-                DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
-                SessionManager(this).locationUuid
-            )
-            .enqueue(object : Callback<AppointmentListingResponse?> {
-                override fun onResponse(
-                    call: Call<AppointmentListingResponse?>,
-                    response: Response<AppointmentListingResponse?>,
-                ) {
-                    if (response.body() == null) return
-                    Log.v(TAG, "onResponse - " + Gson().toJson(response.body()))
-                    val slotInfoResponse = response.body()
-                    val appointmentDAO = AppointmentDAO()
-                    appointmentDAO.deleteAllAppointments()
-                    if (slotInfoResponse!!.data.size > 0) {
-                        for (i in slotInfoResponse.data.indices) {
-                            try {
-                                appointmentDAO.insert(slotInfoResponse.data[i])
-                            } catch (e: DAOException) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-
-                    /*if (slotInfoResponse.getCancelledAppointments() != null) {
-                            if (slotInfoResponse.getCancelledAppointments().size() > 0) {
-
-                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
-
-                                    try {
-                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
-
-                                    } catch (DAOException e) {
-                                        e.printStackTrace();
-                                    }
+        if(NetworkConnection.isCapableNetwork(this)){
+            ApiClientAppointment.getInstance(baseurl).api
+                .getSlotsAll(
+                    DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
+                    DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
+                    SessionManager(this).locationUuid
+                )
+                .enqueue(object : Callback<AppointmentListingResponse?> {
+                    override fun onResponse(
+                        call: Call<AppointmentListingResponse?>,
+                        response: Response<AppointmentListingResponse?>,
+                    ) {
+                        if (response.body() == null) return
+                        Log.v(TAG, "onResponse - " + Gson().toJson(response.body()))
+                        val slotInfoResponse = response.body()
+                        val appointmentDAO = AppointmentDAO()
+                        appointmentDAO.deleteAllAppointments()
+                        if (slotInfoResponse!!.data.size > 0) {
+                            for (i in slotInfoResponse.data.indices) {
+                                try {
+                                    appointmentDAO.insert(slotInfoResponse.data[i])
+                                } catch (e: DAOException) {
+                                    e.printStackTrace()
                                 }
                             }
-                        }*/
+                        }
 
-                    //getAppointments();
-                    Log.v(TAG, "onFinished - " + Gson().toJson(slotInfoResponse))
-                    setTabCount()
-                    Objects.requireNonNull(
-                        mUpdateFragmentOnEventHashMap[tabIndex]
-                    )?.onFinished(AppConstants.EVENT_FLAG_SUCCESS)
-                }
+                        /*if (slotInfoResponse.getCancelledAppointments() != null) {
+                                if (slotInfoResponse.getCancelledAppointments().size() > 0) {
 
-                override fun onFailure(call: Call<AppointmentListingResponse?>, t: Throwable) {
-                    Log.v("onFailure", t.message!!)
-                    Objects.requireNonNull(
-                        mUpdateFragmentOnEventHashMap[tabIndex]
-                    )?.onFinished(AppConstants.EVENT_FLAG_FAILED)
-                    //log out operation if response code is 401
-                    NavigationUtils().logoutOperation(this@MyAppointmentActivityNew, t)
-                }
-            })
+                                    for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
+
+                                        try {
+                                            appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
+
+                                        } catch (DAOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            }*/
+
+                        //getAppointments();
+                        Log.v(TAG, "onFinished - " + Gson().toJson(slotInfoResponse))
+                        setTabCount()
+                        Objects.requireNonNull(
+                            mUpdateFragmentOnEventHashMap[tabIndex]
+                        )?.onFinished(AppConstants.EVENT_FLAG_SUCCESS)
+                    }
+
+                    override fun onFailure(call: Call<AppointmentListingResponse?>, t: Throwable) {
+                        Log.v("onFailure", t.message!!)
+                        Objects.requireNonNull(
+                            mUpdateFragmentOnEventHashMap[tabIndex]
+                        )?.onFinished(AppConstants.EVENT_FLAG_FAILED)
+                        //log out operation if response code is 401
+                        NavigationUtils().logoutOperation(this@MyAppointmentActivityNew, t)
+                    }
+                })
+        }else{
+            Objects.requireNonNull(
+                mUpdateFragmentOnEventHashMap[tabIndex]
+            )?.onFinished(AppConstants.EVENT_FLAG_FAILED)
+        }
     }
 
     private fun initUI() {

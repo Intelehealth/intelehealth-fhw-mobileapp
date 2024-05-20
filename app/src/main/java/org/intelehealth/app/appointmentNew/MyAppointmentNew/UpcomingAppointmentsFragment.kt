@@ -51,7 +51,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.function.Consumer
 
-class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyAppointmentLoadingListener) : Fragment() {
+class UpcomingAppointmentsFragment : Fragment() {
     private var cardUpcomingAppointments: LinearLayout? = null
     private var layoutMainAppOptions: LinearLayout? = null
     private var layoutUpcoming: LinearLayout? = null
@@ -87,12 +87,19 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
 
     private lateinit var upcommingView: View
 
+    private lateinit var myAppointmentLoadingListener: MyAppointmentLoadingListener
+    fun setListener(myAppointmentLoadingListener: MyAppointmentLoadingListener){
+        this.myAppointmentLoadingListener = myAppointmentLoadingListener
+    }
+
     //true = ascending, false = descending
     private var sortStatus = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLocale(context)
-        myAppointmentLoadingListener.onStartUpcoming()
+        if(::myAppointmentLoadingListener.isInitialized){
+            myAppointmentLoadingListener.onStartUpcoming()
+        }
         (activity as MyAppointmentActivityNew?)!!.initUpdateFragmentOnEvent(
             0,
             object : UpdateFragmentOnEvent {
@@ -349,11 +356,14 @@ class UpcomingAppointmentsFragment(private var myAppointmentLoadingListener: MyA
                         noDataFoundForUpcoming?.visibility = View.VISIBLE
                     }
 
-
-                    myAppointmentLoadingListener.onStopUpcoming()
+                    if(::myAppointmentLoadingListener.isInitialized){
+                        myAppointmentLoadingListener.onStopUpcoming()
+                    }
                 },
                     { error ->
-                        myAppointmentLoadingListener.onStopUpcoming()
+                        if(::myAppointmentLoadingListener.isInitialized){
+                            myAppointmentLoadingListener.onStopUpcoming()
+                        }
                         error.printStackTrace()
                     })
             
