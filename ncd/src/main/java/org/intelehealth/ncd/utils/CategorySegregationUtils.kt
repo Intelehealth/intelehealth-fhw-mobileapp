@@ -20,7 +20,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         when (category) {
 
             Constants.ANEMIA_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (isHistoryOfAnemiaPresent(attribute.value)) {
+                if ((isHistoryOfAnemiaPresent(attribute.value) && isCurrentlyTakingAnemiaMedication(attribute.value)) || isThereAFollowUpWithPHC(attribute.value)) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
@@ -114,6 +114,24 @@ class CategorySegregationUtils(private val resources: Resources) {
             false
         } else {
             medicalHistoryList[0].anaemia == resources.getString(R.string.medical_history_yes)
+        }
+    }
+
+    private fun isCurrentlyTakingAnemiaMedication(medicalHistoryJson: String?): Boolean {
+        val medicalHistoryList: List<MedicalHistory> = convertJsonToList(medicalHistoryJson)
+        return if (medicalHistoryList.isEmpty()) {
+            false
+        } else {
+            medicalHistoryList[0].medicationForAnemia == resources.getString(R.string.medical_history_yes)
+        }
+    }
+
+    private fun isThereAFollowUpWithPHC(medicalHistoryJson: String?): Boolean {
+        val medicalHistoryList: List<MedicalHistory> = convertJsonToList(medicalHistoryJson)
+        return if (medicalHistoryList.isEmpty()) {
+            false
+        } else {
+            medicalHistoryList[0].healthWorkerForAnemia == resources.getString(R.string.medical_history_yes)
         }
     }
 
