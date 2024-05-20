@@ -160,7 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
-                    android:hint="@string/please_enter_reason_txt"
+                    android:hint="@string/enter_answer"
                     android:textSize="14sp"
                     android:visibility="gone"
                     tools:visibility="visible" />
@@ -317,7 +317,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:hint="@string/please_enter_reason_txt"
+                        android:hint="@string/enter_answer"
                         android:textSize="14sp"
                         android:visibility="gone"
                         tools:visibility="visible" />
@@ -502,11 +502,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
-                    android:hint="@string/please_enter_reason_txt"
+                    android:hint="@string/enter_answer"
                     android:textSize="14sp"
                     android:visibility="gone"
                     tools:visibility="visible" />
-
 
             </LinearLayout>
 

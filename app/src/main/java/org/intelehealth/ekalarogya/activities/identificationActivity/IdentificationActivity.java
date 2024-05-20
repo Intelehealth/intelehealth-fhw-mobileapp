@@ -6202,6 +6202,10 @@ public class IdentificationActivity extends AppCompatActivity implements
                 bundle.putString("anySurgeries", medicalHistory.getAnySurgeries());
                 bundle.putString("reasonForSurgery", medicalHistory.getReasonForSurgery());
 
+                bundle.putString("medicationForBP", medicalHistory.getMedicationForBP());
+                bundle.putString("healthWorkerForBP", medicalHistory.getHealthWorkerForBP());
+                bundle.putString("reasonForNoBPMedication", medicalHistory.getReasonForNoBPMedication());
+
                 MedicalHistoryDialog medicalHistoryDialog = new MedicalHistoryDialog();
                 medicalHistoryDialog.setArguments(bundle);
                 medicalHistoryDialog.show(getSupportFragmentManager(), MedicalHistoryDialog.TAG);

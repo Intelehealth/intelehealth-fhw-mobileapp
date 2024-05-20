@@ -25,6 +25,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -5071,6 +5072,14 @@ public final class StringUtils {
                 }
             }
         }
+    }
+
+    public static void setSelectedSpinner(Spinner spinner, ArrayAdapter<CharSequence> adapter, String text, Resources resources, Resources updatedResources, String locale) {
+        if (spinner == null) return;
+
+        String getUpdatedString = getMedicalHistoryStrings(text, updatedResources, resources, locale);
+        int getSpinnerPosition = adapter.getPosition(getUpdatedString);
+        spinner.setSelection(getSpinnerPosition);
     }
 
     public static int getIndex(Spinner spinner, String s) {
