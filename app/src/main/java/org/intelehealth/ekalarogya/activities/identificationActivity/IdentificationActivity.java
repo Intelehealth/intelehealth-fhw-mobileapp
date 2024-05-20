@@ -24,7 +24,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -2267,12 +2266,13 @@ public class IdentificationActivity extends AppCompatActivity implements
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
             }
         });
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            if (patientID_edit != null) {
-                onPatientUpdateClicked(patient1);
+            if (!iDontKnowCheckbox.isChecked()) {
+                showEkalWhatsAppMessageDialog();
             } else {
-                onPatientCreateClicked();
+                triggerDbTransactions(null);
             }
         });
 
@@ -2291,6 +2291,30 @@ public class IdentificationActivity extends AppCompatActivity implements
                 }
             }
         });
+    }
+
+    private void showEkalWhatsAppMessageDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        builder.setMessage(getString(R.string.can_ekal_send_a_summary_of_visit_to_you));
+        builder.setNegativeButton(getString(R.string.generic_no), (dialog, which) -> {
+            triggerDbTransactions(updatedResources.getString(R.string.generic_no));
+            dialog.dismiss();
+        });
+
+        builder.setPositiveButton(getString(R.string.generic_yes), (dialog, which) -> {
+            triggerDbTransactions(updatedResources.getString(R.string.generic_yes));
+            dialog.dismiss();
+        });
+
+        builder.show();
+    }
+
+    private void triggerDbTransactions(String ekalWhatsAppResponse) {
+        if (patientID_edit != null) {
+            onPatientUpdateClicked(patient1, ekalWhatsAppResponse);
+        } else {
+            onPatientCreateClicked(ekalWhatsAppResponse);
+        }
     }
 
     private void setWhatsAppSpinnerListener(Spinner whatsappSpinner) {
@@ -2848,7 +2872,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         }
     }
 
-    public void onPatientCreateClicked() {
+    public void onPatientCreateClicked(String ekalWhatsAppResponse) {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -3761,6 +3785,17 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
+            if (whatsAppDataLayout.getVisibility() == View.VISIBLE && !iDontKnowCheckbox.isChecked()) {
+                if (ekalWhatsAppResponse != null) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("canEkalSendFreeWhatsAppMessageForVisitSummary"));
+                    patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(ekalWhatsAppResponse, originalResources, updatedResources, sessionManager.getAppLanguage()));
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
+            }
+
             if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
                 if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
                     //Vaccination ...
@@ -4465,7 +4500,7 @@ public class IdentificationActivity extends AppCompatActivity implements
 
     }
 
-    public void onPatientUpdateClicked(Patient patientdto) {
+    public void onPatientUpdateClicked(Patient patientdto, String ekalWhatsAppResponse) {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -5385,6 +5420,17 @@ public class IdentificationActivity extends AppCompatActivity implements
                 }
 
                 patientAttributesDTOList.add(patientAttributesDTO);
+            }
+
+            if (whatsAppDataLayout.getVisibility() == View.VISIBLE && !iDontKnowCheckbox.isChecked()) {
+                if (ekalWhatsAppResponse != null) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("canEkalSendFreeWhatsAppMessageForVisitSummary"));
+                    patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(ekalWhatsAppResponse, originalResources, updatedResources, sessionManager.getAppLanguage()));
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
             }
 
             if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
