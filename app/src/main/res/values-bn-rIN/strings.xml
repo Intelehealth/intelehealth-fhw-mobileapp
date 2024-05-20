@@ -1008,7 +1008,7 @@
 
     <string name="what_is_your_marital_status">আপনার বৈবাহিক অবস্থা কি?*</string>
     <string name="currently_married">বর্তমানে বিবাহিত</string>
-<!--    <string name="married_gauna_not_performed">বিবাহিত, গৌণ সঞ্চালিত নয়</string>-->
+    <!--    <string name="married_gauna_not_performed">বিবাহিত, গৌণ সঞ্চালিত নয়</string>-->
     <string name="widowed">বিধবা</string>
     <string name="divorced">তালাকপ্রাপ্ত</string>
     <string name="separated">বিচ্ছিন্ন</string>
@@ -1197,17 +1197,17 @@
     <string name="i_dont_know">আমি জানি না</string>
     <string name="can_ekal_send_a_summary_of_visit_to_you">ଏକଲ୍ ଆପଣଙ୍କ ଭ୍ରମଣର ସାରାଂଶର ଏକ ମାଗଣା Whatsapp ବାର୍ତ୍ତା ପଠାଇ ପାରିବ କି?</string>
 
-    <string name="are_you_taking_any_medication_for_bp">Are you taking any medication for BP?</string>
-    <string name="are_you_taking_any_medication_for_diabetes">Are you taking any medication for diabetes?</string>
-    <string name="are_you_taking_any_medication_for_anemia">Are you taking any medication for anemia?</string>
+    <string name="are_you_taking_any_medication_for_bp">আপনি কি বর্তমানে BP এর জন্য ওষুধ খাচ্ছেন?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">আপনি কি বর্তমানে ডায়াবেটিস এর জন্য ওষুধ খাচ্ছেন? </string>
+    <string name="are_you_taking_any_medication_for_anemia">আপনি কি বর্তমানে রক্তাল্পতা এর জন্য ওষুধ খাচ্ছেন?</string>
 
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
 
-    <string name="why_are_you_not_taking_your_bp_medication">Why are you not taking your BP medication?</string>
-    <string name="why_are_you_not_taking_your_diabetes_medication">Why are you not taking your diabetes medication?</string>
-    <string name="why_are_you_not_taking_your_anemia_medication">Why are you not taking your anemia medication?</string>
+    <string name="why_are_you_not_taking_your_bp_medication">কেন আপনি আপনার BP ওষুধ খাচ্ছেন না?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">কেন আপনি আপনার ডায়াবেটিস ওষুধ খাচ্ছেন না?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">কেন আপনি আপনার রক্তাল্পতা ওষুধ খাচ্ছেন না?</string>
 
     <string name="never_prescribed_medication">ମୋତେ କଦାପି ଔଷଧ ଚିଠା ଦିଆଯାଇନଥିଲା</string>
     <string name="forgot_to_take_it">ମୁଁ ଏହାକୁ ନେବାକୁ ଭୁଲିଗଲି |</string>

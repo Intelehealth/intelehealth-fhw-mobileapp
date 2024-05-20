@@ -1197,17 +1197,17 @@
     <string name="i_dont_know">ನನಗೆ ಗೊತ್ತಿಲ್ಲ</string>
     <string name="can_ekal_send_a_summary_of_visit_to_you">ನಮ್ಮ ಭೇಟಿಯ ಸಾರಾಂಶದ ಉಚಿತ WhatsApp ಸಂದೇಶವನ್ನು ಏಕಲ್ ನಿಮಗೆ ಕಳುಹಿಸಬಹುದೇ?</string>
 
-    <string name="are_you_taking_any_medication_for_bp">Are you taking any medication for BP?</string>
-    <string name="are_you_taking_any_medication_for_diabetes">Are you taking any medication for diabetes?</string>
-    <string name="are_you_taking_any_medication_for_anemia">Are you taking any medication for anemia?</string>
+    <string name="are_you_taking_any_medication_for_bp">ನೀವು ಪ್ರಸ್ತುತ BP ಗಾಗಿ ಔಷಧಿಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿರುವಿರಾ?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">ನೀವು ಪ್ರಸ್ತುತ ಮಧುಮೇಹ ಗಾಗಿ ಔಷಧಿಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿರುವಿರಾ?</string>
+    <string name="are_you_taking_any_medication_for_anemia">ನೀವು ಪ್ರಸ್ತುತ ರಕ್ತಹೀನತೆ ಮತ್ತು ಗಾಗಿ ಔಷಧಿಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿರುವಿರಾ?</string>
 
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
 
-    <string name="why_are_you_not_taking_your_bp_medication">Why are you not taking your BP medication?</string>
-    <string name="why_are_you_not_taking_your_diabetes_medication">Why are you not taking your diabetes medication?</string>
-    <string name="why_are_you_not_taking_your_anemia_medication">Why are you not taking your anemia medication?</string>
+    <string name="why_are_you_not_taking_your_bp_medication">ನೀವು ನಿಮ್ಮ BP ಔಷಧಿಗಳನ್ನು ಏಕೆ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">ನೀವು ನಿಮ್ಮ ಮಧುಮೇಹ ಔಷಧಿಗಳನ್ನು ಏಕೆ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">ನೀವು ನಿಮ್ಮ ರಕ್ತಹೀನತೆ ಔಷಧಿಗಳನ್ನು ಏಕೆ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ?</string>
 
     <string name="never_prescribed_medication">ನಾನು ಎಂದಿಗೂ ಔಷಧಿಗಳನ್ನು ಶಿಫಾರಸು ಮಾಡಿಲ್ಲ</string>
     <string name="forgot_to_take_it">ನಾನು ಅದನ್ನು ತೆಗೆದುಕೊಳ್ಳಲು ಮರೆತಿದ್ದೇನೆ</string>

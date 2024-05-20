@@ -1090,17 +1090,17 @@
     <string name="i_dont_know">ମୁଁ ଜାଣେ ନାହିଁ|</string>
     <string name="can_ekal_send_a_summary_of_visit_to_you">ଏକଲ୍ ଆପଣଙ୍କ ଭ୍ରମଣର ସାରାଂଶର ଏକ ମାଗଣା Whatsapp ବାର୍ତ୍ତା ପଠାଇ ପାରିବ କି?</string>
 
-    <string name="are_you_taking_any_medication_for_bp">Are you taking any medication for BP?</string>
-    <string name="are_you_taking_any_medication_for_diabetes">Are you taking any medication for diabetes?</string>
-    <string name="are_you_taking_any_medication_for_anemia">Are you taking any medication for anemia?</string>
+    <string name="are_you_taking_any_medication_for_bp">ଆପଣ ବର୍ତ୍ତମାନ BP ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">ଆପଣ ବର୍ତ୍ତମାନ ମଧୁମେହ ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
+    <string name="are_you_taking_any_medication_for_anemia">ଆପଣ ବର୍ତ୍ତମାନ ରକ୍ତହୀନତା ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
 
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
 
-    <string name="why_are_you_not_taking_your_bp_medication">Why are you not taking your BP medication?</string>
-    <string name="why_are_you_not_taking_your_diabetes_medication">Why are you not taking your diabetes medication?</string>
-    <string name="why_are_you_not_taking_your_anemia_medication">Why are you not taking your anemia medication?</string>
+    <string name="why_are_you_not_taking_your_bp_medication">ତୁମେ ତୁମର BP ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">ତୁମେ ତୁମର ମଧୁମେହ ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">ତୁମେ ତୁମର ରକ୍ତହୀନତା ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
 
     <string name="never_prescribed_medication">ମୋତେ କଦାପି ଔଷଧ ଚିଠା ଦିଆଯାଇନଥିଲା</string>
     <string name="forgot_to_take_it">ମୁଁ ଏହାକୁ ନେବାକୁ ଭୁଲିଗଲି |</string>
