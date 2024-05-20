@@ -1054,9 +1054,9 @@
     <string name="are_you_taking_any_medication_for_diabetes">तुम्ही सध्या मधुमेह साठी औषधे घेत आहात का?</string>
     <string name="are_you_taking_any_medication_for_anemia">तुम्ही सध्या ॲनिमिया साठी औषधे घेत आहात का?</string>
 
-    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
-    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
-    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">तुम्हाला तुमच्या BP साठी गेल्या 1 वर्षात आरोग्य सेवा कर्मचाऱ्याने पाहिले आहे का?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">तुम्हाला तुमच्या मधुमेह साठी गेल्या 1 वर्षात आरोग्य सेवा कर्मचाऱ्याने पाहिले आहे का?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">तुम्हाला तुमच्या ॲनिमिया साठी गेल्या 1 वर्षात आरोग्य सेवा कर्मचाऱ्याने पाहिले आहे का?</string>
 
     <string name="why_are_you_not_taking_your_bp_medication">तुम्ही तुमची BP औषधे का घेत नाही?</string>
     <string name="why_are_you_not_taking_your_diabetes_medication">तुम्ही तुमची मधुमेह औषधे का घेत नाही?</string>

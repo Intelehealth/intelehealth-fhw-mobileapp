@@ -1094,9 +1094,9 @@
     <string name="are_you_taking_any_medication_for_diabetes">ଆପଣ ବର୍ତ୍ତମାନ ମଧୁମେହ ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
     <string name="are_you_taking_any_medication_for_anemia">ଆପଣ ବର୍ତ୍ତମାନ ରକ୍ତହୀନତା ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
 
-    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
-    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
-    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">ତୁମର ବିପି ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">ତୁମର ମଧୁମେହ ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">ତୁମର ରକ୍ତହୀନତା ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
 
     <string name="why_are_you_not_taking_your_bp_medication">ତୁମେ ତୁମର BP ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
     <string name="why_are_you_not_taking_your_diabetes_medication">ତୁମେ ତୁମର ମଧୁମେହ ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>

@@ -1181,9 +1181,9 @@
     <string name="are_you_taking_any_medication_for_diabetes">বৰ্তমান আপুনি diabetes ৰ বাবে ঔষধ খাই আছেনে?</string>
     <string name="are_you_taking_any_medication_for_anemia">বৰ্তমান আপুনি anemia ৰ বাবে ঔষধ খাই আছেনে?</string>
 
-    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
-    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
-    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">যোৱা ১ বছৰৰ ভিতৰত আপোনাৰ BP ৰ বাবে স্বাস্থ্যসেৱা কৰ্মীয়ে দেখা পাইছেনে?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">যোৱা ১ বছৰৰ ভিতৰত আপোনাৰ diabetes ৰ বাবে স্বাস্থ্যসেৱা কৰ্মীয়ে দেখা পাইছেনে?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">যোৱা ১ বছৰৰ ভিতৰত আপোনাৰ anemia ৰ বাবে স্বাস্থ্যসেৱা কৰ্মীয়ে দেখা পাইছেনে?</string>
 
     <string name="why_are_you_not_taking_your_bp_medication">আপুনি আপোনাৰ BP ঔষধ কিয় গ্ৰহণ কৰা নাই?</string>
     <string name="why_are_you_not_taking_your_diabetes_medication">আপুনি আপোনাৰ diabetes ঔষধ কিয় গ্ৰহণ কৰা নাই?</string>
