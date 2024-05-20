@@ -403,6 +403,26 @@ public class MedicalHistoryDialog extends DialogFragment {
 
         medicalHistory.setDiabetes(getMedicalHistoryStrings(((RadioButton) binding.diabetesRadioGroup.findViewById(binding.diabetesRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
 
+        if (binding.llDiabetesMedication.getVisibility() == View.VISIBLE) {
+            medicalHistory.setMedicationForDiabetes(getMedicalHistoryStrings(((RadioButton) binding.diabetesMedicationRadioGroup.findViewById(binding.diabetesMedicationRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
+        }
+
+        if (binding.llDiabetesHealthcareWorker.getVisibility() == View.VISIBLE) {
+            medicalHistory.setHealthWorkerForDiabetes(getMedicalHistoryStrings(((RadioButton) binding.diabetesHealthcareRadioGroup.findViewById(binding.diabetesHealthcareRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
+        }
+
+        if (binding.llDiabetesNoMedicationReason.getVisibility() == View.VISIBLE) {
+            String reasonForNoDiabetesMedication = "";
+            if (binding.diabetesNoMedicationReason.getSelectedItemPosition() == diabetesNoMedicationAdapter.getCount() - 1) {
+                String spinnerText = getMedicalHistoryStrings(binding.diabetesNoMedicationReason.getSelectedItem().toString(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage());
+                String reasonText = binding.otherReasonDiabetesEditText.getText().toString();
+                reasonForNoDiabetesMedication = spinnerText + ":" + reasonText;
+            } else {
+                reasonForNoDiabetesMedication = getMedicalHistoryStrings(binding.diabetesNoMedicationReason.getSelectedItem().toString(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage());
+            }
+            medicalHistory.setReasonForNoDiabetesMedication(reasonForNoDiabetesMedication);
+        }
+
         medicalHistory.setArthritis(getMedicalHistoryStrings(((RadioButton) binding.arthritisRadioGroup.findViewById(binding.arthritisRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
 
         medicalHistory.setAnaemia(getMedicalHistoryStrings(((RadioButton) binding.anaemiaRadioGroup.findViewById(binding.anaemiaRadioGroup.getCheckedRadioButtonId())).getText().toString(), requireContext().getResources(), updatedResources, sessionManager.getAppLanguage()));
@@ -465,6 +485,35 @@ public class MedicalHistoryDialog extends DialogFragment {
                 }
 
                 setSelectedSpinner(binding.bpNoMedicationReason, bpNoMedicationAdapter, spinnerText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
+            }
+        }
+
+        if (binding.llDiabetesMedication.getVisibility() == View.VISIBLE) {
+            String medicationForDiabetesText = bundle.getString("medicationForDiabetes");
+            setSelectedCheckboxes(binding.diabetesMedicationRadioGroup, medicationForDiabetesText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
+        }
+
+        if (binding.llDiabetesHealthcareWorker.getVisibility() == View.VISIBLE) {
+            String healthWorkerForDiabetesText = bundle.getString("healthWorkerForDiabetes");
+            setSelectedCheckboxes(binding.diabetesHealthcareRadioGroup, healthWorkerForDiabetesText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
+        }
+
+        if (binding.llDiabetesNoMedicationReason.getVisibility() == View.VISIBLE) {
+            String reasonForNoDiabetesMedicationText = bundle.getString("reasonForNoDiabetesMedication");
+            String spinnerText = "";
+            String reasonText = "";
+
+            if (reasonForNoDiabetesMedicationText != null) {
+                if (reasonForNoDiabetesMedicationText.contains(":")) {
+                    String[] noDiabetesMedicationReason = reasonForNoDiabetesMedicationText.split(":");
+                    spinnerText = noDiabetesMedicationReason[0];
+                    reasonText = noDiabetesMedicationReason[1];
+                    binding.otherReasonDiabetesEditText.setText(reasonText);
+                } else {
+                    spinnerText = reasonForNoDiabetesMedicationText;
+                }
+
+                setSelectedSpinner(binding.diabetesNoMedicationReason, diabetesNoMedicationAdapter, spinnerText, updatedResources, requireContext().getResources(), sessionManager.getAppLanguage());
             }
         }
     }
