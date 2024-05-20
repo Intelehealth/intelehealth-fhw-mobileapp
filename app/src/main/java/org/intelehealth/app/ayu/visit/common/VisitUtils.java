@@ -48,7 +48,7 @@ AB NEGATIVE = 1231*/
             return "B-";
         } else if (codeString.equalsIgnoreCase("9d2e9b6a-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("699")) {
             return "O+";
-        } else if (codeString.equalsIgnoreCase("9d2e9bf0-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("701") ) {
+        } else if (codeString.equalsIgnoreCase("9d2e9bf0-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("701")) {
             return "O-";
         } else if (codeString.equalsIgnoreCase("9d30fe5a-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("1230")) {
             return "AB+";
@@ -69,6 +69,9 @@ AB NEGATIVE = 1231*/
 
     public static boolean checkNodeValidByGenderAndAge(String patientGender, float floatAgeYearMonth, String nodeGender, String minAge, String maxAge) {
 
+        if(nodeGender==null || nodeGender.isEmpty()){
+            return true;
+        }
         float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
         float maxAgeF = maxAge != null && !maxAge.isEmpty() ? Float.parseFloat(maxAge) : 0f;
         boolean isValidByGender = true;

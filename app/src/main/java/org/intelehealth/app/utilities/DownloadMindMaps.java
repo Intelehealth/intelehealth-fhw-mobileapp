@@ -1,9 +1,10 @@
 package org.intelehealth.app.utilities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import org.intelehealth.app.R;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -16,8 +17,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.intelehealth.app.R;
 
 
 /**
@@ -52,6 +51,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
         String destinationFilePath = "";
         try {
             URL url = new URL(args[0]);
+            Log.d("MindMapDownloadTask", "url=" + url);
             destinationFilePath = args[1];
 
             connection = (HttpURLConnection) url.openConnection();
@@ -116,7 +116,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
 
         if (alertDialog != null)
             alertDialog.dismiss();
-
+        Log.e("MindMapDownloadTask", "Successfully get MindMap URL"+s);
         if(!s.equalsIgnoreCase(context.getResources().getString(R.string.protocols_downloaded_successfully))) {
             if(screenStr.equalsIgnoreCase("setup")){
               //  ((SetupActivity)context).showMindmapFailedAlert();    // Prajwal - commenting this line as it is using old java context. Not sure on what change is needed so commenting it out.

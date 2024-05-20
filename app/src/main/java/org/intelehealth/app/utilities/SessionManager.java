@@ -3,10 +3,10 @@ package org.intelehealth.app.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.intelehealth.app.BuildConfig;
 
-import java.security.Key;
 import java.util.Set;
 
 public class SessionManager {
@@ -297,11 +297,13 @@ public class SessionManager {
     }
 
     public void setLicenseKey(String licenseKey) {
+        Log.e("MindMapURL", "setLicenseKey - "+licenseKey);
         editor.putString(LICENSE_KEY, licenseKey);
         editor.commit();
     }
 
     public void deleteLicensekey() {
+        Log.e("MindMapURL", "deleteLicensekey - ");
         editor.remove(LICENSE_KEY);
         editor.commit();
     }
