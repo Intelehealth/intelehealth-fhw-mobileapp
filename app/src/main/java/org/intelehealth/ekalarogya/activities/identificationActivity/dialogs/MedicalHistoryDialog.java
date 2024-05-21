@@ -185,6 +185,8 @@ public class MedicalHistoryDialog extends DialogFragment {
                 binding.llBpMedication.setVisibility(View.VISIBLE);
             } else {
                 binding.llBpMedication.setVisibility(View.GONE);
+                binding.hypertensionMedicationRadioGroup.clearCheck();
+
             }
         });
 
@@ -211,6 +213,7 @@ public class MedicalHistoryDialog extends DialogFragment {
                 binding.llDiabetesMedication.setVisibility(View.VISIBLE);
             } else {
                 binding.llDiabetesMedication.setVisibility(View.GONE);
+                binding.diabetesMedicationRadioGroup.clearCheck();
             }
         });
 
@@ -237,6 +240,7 @@ public class MedicalHistoryDialog extends DialogFragment {
                 binding.llAnemiaMedication.setVisibility(View.VISIBLE);
             } else {
                 binding.llAnemiaMedication.setVisibility(View.GONE);
+                binding.anemiaMedicationRadioGroup.clearCheck();
             }
         });
 
