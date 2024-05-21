@@ -22,12 +22,12 @@ public class DataSourceManager {
             if (sourceData.getDataName().equals(ValidationConstants.SOURCE_DATA_NAME_AGE)) {
                 // get eh age of the patient from the db
                 String dob = PatientsDAO.fetchDateOfBirth(patientUUID);
-                String age = DateAndTimeUtils.getAgeInYearMonth(dob, IntelehealthApplication.getAppContext());
-                sourceDataInfoList.get(i).setValue(age);
+                int age = DateAndTimeUtils.getAgeInYear(dob, IntelehealthApplication.getAppContext());
+                sourceDataInfoList.get(i).setValue(String.valueOf(age));
             } else if (sourceData.getDataName().equals(ValidationConstants.SOURCE_DATA_NAME_GENDER)) {
                 // get eh gender of the patient from the db
                 String gender = PatientsDAO.fetch_gender(patientUUID);
-                sourceDataInfoList.get(i).setValue(gender);
+                sourceDataInfoList.get(i).setValue(gender.equalsIgnoreCase("M") ? "MALE" : "FEMALE");
             }
         }
         return sourceDataInfoList;

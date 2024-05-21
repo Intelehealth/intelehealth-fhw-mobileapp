@@ -31,8 +31,8 @@ public class NCDNodeValidationLogic {
         NCDValidationResult ncdValidationResult = new NCDValidationResult();
         boolean isFlowEnd = selectedNode.getFlowEnd();
         ValidationRules validationRules = selectedNode.getValidationRules();
-        for (int i = 0; i < selectedNode.getOptionsList().size() ; i++) {
-            if(selectedNode.getOptionsList().get(i).isSelected()){
+        for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
+            if (selectedNode.getOptionsList().get(i).isSelected()) {
                 validationRules = selectedNode.getOptionsList().get(i).getValidationRules();
             }
         }
@@ -61,7 +61,7 @@ public class NCDNodeValidationLogic {
                 ncdValidationResult.setTargetNodeID(null);
                 ncdValidationResult.setReadyToEndTheScreening(true);
                 ncdValidationResult.setUpdatedNode(mmRootNode);
-            }else {
+            } else {
                 ncdValidationResult.setTargetNodeID(null);
                 ncdValidationResult.setReadyToEndTheScreening(false);
                 ncdValidationResult.setUpdatedNode(mmRootNode);
@@ -77,7 +77,7 @@ public class NCDNodeValidationLogic {
      * @param selectedNode
      * @return
      */
-    private static NCDValidationResult checkForNavigationType(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode,ValidationRules validationRules) {
+    private static NCDValidationResult checkForNavigationType(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode, ValidationRules validationRules) {
         NCDValidationResult ncdValidationResult = new NCDValidationResult();
         String rulesType = validationRules.getType();
         String sourceDataType = validationRules.getSourceDataType();
@@ -90,15 +90,30 @@ public class NCDNodeValidationLogic {
             } else if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_RANGE_NODE_VAL)) {
                 sourceDataInfoValueList = DataSourceManager.getValuesForDataSourceFromTargetNode(sourceDataInfoList, mmRootNode, patientUUID);
             }
-            String attribute1 = "";
-            String attribute2 = "";
-            for (int i = 0; i < sourceDataInfoValueList.size(); i++) {
-                if(i==0){
-                    attribute1 = sourceDataInfoValueList.get(i).getValue();
-                }
-            }
+            List<CheckInfoData> checkInfoDataList = ValidationRulesParser.getCheckInfoList(validationRules.getCheck());
+            ActionResult actionResult = ActionLogic.foundNextTargetNodeText(sourceDataInfoValueList, checkInfoDataList, validationRules.getActionList());
+            if (actionResult == null) {
+                ncdValidationResult.setTargetNodeID(null);
+                ncdValidationResult.setReadyToEndTheScreening(false);
+                ncdValidationResult.setUpdatedNode(mmRootNode);
+            } else {
+                for (int i = 0; i < mmRootNode.getOptionsList().size(); i++) {
+                    Node tempNode = mmRootNode.getOptionsList().get(i);
+                    if (i != selectedRootIndex) {
+                        if (actionResult.getTarget().equalsIgnoreCase(tempNode.getText())) {
+                            mmRootNode.getOptionsList().get(i).setHidden(false);
+                            ncdValidationResult.setTargetNodeID(mmRootNode.getOptionsList().get(i).getId());
+                        } else {
+                            mmRootNode.getOptionsList().get(i).setHidden(true);
+                        }
+                    } else {
+                        mmRootNode.getOptionsList().get(i).setHidden(false);
+                    }
 
-            ncdValidationResult.setTargetNodeID(mmRootNode.getOptionsList().get(4).getId());
+                }
+
+
+            }
 
 
         } else {
