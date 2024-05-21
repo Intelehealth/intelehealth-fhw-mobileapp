@@ -196,6 +196,7 @@ class PastAppointmentsFragment :
         }
         if (filtersList!!.size > 0) {
             scrollChips!!.visibility = View.VISIBLE
+            tvResultsFor?.visibility = View.VISIBLE
         }
 
         val chipGroup = parentView!!.findViewById<ChipGroup>(R.id.chipgroup_filter)
@@ -222,6 +223,7 @@ class PastAppointmentsFragment :
                 chipGroup.removeView(chip)
                 if (filtersList != null && filtersList!!.size == 0) {
                     scrollChips!!.visibility = View.GONE
+                    tvResultsFor?.visibility = View.GONE
                     fromDate = ""
                     toDate = ""
                     whichAppointment = ""
