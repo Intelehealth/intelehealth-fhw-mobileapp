@@ -1195,7 +1195,7 @@
 
     <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">পরিবারের সদস্য" বা "ব্যক্তিগত" হোয়াটসঅ্যাপ অ্যাকাউন্টের সাথে যুক্ত মোবাইল নম্বরটি কী?</string>
     <string name="i_dont_know">আমি জানি না</string>
-    <string name="can_ekal_send_a_summary_of_visit_to_you">ଏକଲ୍ ଆପଣଙ୍କ ଭ୍ରମଣର ସାରାଂଶର ଏକ ମାଗଣା Whatsapp ବାର୍ତ୍ତା ପଠାଇ ପାରିବ କି?</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">একল কি আপনাকে আমাদের সফরের সারাংশের একটি বিনামূল্যের হোয়াটসঅ্যাপ বার্তা পাঠাতে পারে?</string>
 
     <string name="are_you_taking_any_medication_for_bp">আপনি কি বর্তমানে BP এর জন্য ওষুধ খাচ্ছেন?</string>
     <string name="are_you_taking_any_medication_for_diabetes">আপনি কি বর্তমানে ডায়াবেটিস এর জন্য ওষুধ খাচ্ছেন? </string>
@@ -1209,13 +1209,13 @@
     <string name="why_are_you_not_taking_your_diabetes_medication">কেন আপনি আপনার ডায়াবেটিস ওষুধ খাচ্ছেন না?</string>
     <string name="why_are_you_not_taking_your_anemia_medication">কেন আপনি আপনার রক্তাল্পতা ওষুধ খাচ্ছেন না?</string>
 
-    <string name="never_prescribed_medication">ମୋତେ କଦାପି ଔଷଧ ଚିଠା ଦିଆଯାଇନଥିଲା</string>
-    <string name="forgot_to_take_it">ମୁଁ ଏହାକୁ ନେବାକୁ ଭୁଲିଗଲି |</string>
-    <string name="cannot_afford_medications">ମୁଁ ଔଷଧ ନିଜ ପାଇଁ ଦେଇ ପାରୁନାହିଁ </string>
-    <string name="ran_out_of_medication">ମୁଁ ଔଷଧପାଇଁ ବ୍ୟସ୍ତ ଅଛି / ଔଷଧ ହଜିଗଲା</string>
-    <string name="i_am_needing_follow_up_with_my_PHC">ମୁଁ ମୋର PHC ସହିତ ଅନୁସରଣ କରିବା ଆବଶ୍ୟକ କରୁଛି |</string>
-    <string name="i_dont_think_i_need_it">ମୁଁ ଭାବୁନାହିଁ ଯେ ଏହା ମୋର ଦରକାର ବୋଲି </string>
-    <string name="side_effect_related_to_medication">ଔଷଧ ସମ୍ବନ୍ଧୀୟ ପାର୍ଶ୍ୱ ପ୍ରତିକ୍ରିୟା |</string>
-    <string name="unknown_other">ଅଜ୍ଞାତ / ଅନ୍ୟ</string>
+    <string name="never_prescribed_medication">আমাকে কখনই ওষুধ দেওয়া হয়নি</string>
+    <string name="forgot_to_take_it">নিতে ভুলে গেছি</string>
+    <string name="cannot_afford_medications">আমি ওষুধ দিতে পারি না</string>
+    <string name="ran_out_of_medication">আমার ওষুধ ফুরিয়ে গেছে/ ওষুধ হারিয়ে গেছে</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">আমার পিএইচসি এর সাথে ফলোআপ করা দরকার</string>
+    <string name="i_dont_think_i_need_it">আমি এটা প্রয়োজন মনে করি না</string>
+    <string name="side_effect_related_to_medication">ওষুধের সাথে সম্পর্কিত পার্শ্ব প্রতিক্রিয়া</string>
+    <string name="unknown_other">অজানা/অন্য</string>
 
 </resources>

@@ -20,7 +20,13 @@ class CategorySegregationUtils(private val resources: Resources) {
         when (category) {
 
             Constants.ANEMIA_SCREENING -> patientAttributeList.forEach { attribute ->
-                if ((isHistoryOfAnemiaPresent(attribute.value) && isCurrentlyTakingAnemiaMedication(attribute.value)) || isThereAFollowUpWithPHC(attribute.value)) {
+                if (isHistoryOfAnemiaPresent(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
+                }
+
+                if (isCurrentlyTakingAnemiaMedication(attribute.value) ||
+                    isThereAFollowUpWithAnemiaPHC(attribute.value)
+                ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
@@ -35,6 +41,12 @@ class CategorySegregationUtils(private val resources: Resources) {
                 if (isHistoryOfDiabetesPresent(attribute.value)) {
                     removePatientsFromList(patientList, attribute)
                 }
+
+                if (isCurrentlyTakingDiabetesMedication(attribute.value) ||
+                    isThereAFollowUpWithDiabetesPHC(attribute.value)
+                ) {
+                    removePatientsFromList(patientList, attribute)
+                }
             }
 
             Constants.DIABETES_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
@@ -45,6 +57,12 @@ class CategorySegregationUtils(private val resources: Resources) {
 
             Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
                 if (isHistoryOfHypertensionPresent(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
+                }
+
+                if (isCurrentlyTakingHypertensionMedication(attribute.value) ||
+                    isThereAFollowUpWithHypertensionPHC(attribute.value)
+                ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
@@ -126,7 +144,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
     }
 
-    private fun isThereAFollowUpWithPHC(medicalHistoryJson: String?): Boolean {
+    private fun isThereAFollowUpWithAnemiaPHC(medicalHistoryJson: String?): Boolean {
         val medicalHistoryList: List<MedicalHistory> = convertJsonToList(medicalHistoryJson)
         return if (medicalHistoryList.isEmpty()) {
             false
@@ -144,12 +162,48 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
     }
 
+    private fun isCurrentlyTakingHypertensionMedication(medicalHistoryJson: String?): Boolean {
+        val medicalHistoryList: List<MedicalHistory> = convertJsonToList(medicalHistoryJson)
+        return if (medicalHistoryList.isEmpty()) {
+            false
+        } else {
+            medicalHistoryList[0].medicationForBP == resources.getString(R.string.medical_history_yes)
+        }
+    }
+
+    private fun isThereAFollowUpWithHypertensionPHC(medicalHistoryJson: String?): Boolean {
+        val medicalHistoryList: List<MedicalHistory> = convertJsonToList(medicalHistoryJson)
+        return if (medicalHistoryList.isEmpty()) {
+            false
+        } else {
+            medicalHistoryList[0].healthWorkerForBP == resources.getString(R.string.medical_history_yes)
+        }
+    }
+
     private fun isHistoryOfDiabetesPresent(medicalHistoryJson: String?): Boolean {
         val medicalHistoryList: List<MedicalHistory> = convertJsonToList(medicalHistoryJson)
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
             medicalHistoryList[0].diabetes == resources.getString(R.string.medical_history_yes)
+        }
+    }
+
+    private fun isCurrentlyTakingDiabetesMedication(medicalHistoryJson: String?): Boolean {
+        val medicalHistoryList: List<MedicalHistory> = convertJsonToList(medicalHistoryJson)
+        return if (medicalHistoryList.isEmpty()) {
+            false
+        } else {
+            medicalHistoryList[0].medicationForDiabetes == resources.getString(R.string.medical_history_yes)
+        }
+    }
+
+    private fun isThereAFollowUpWithDiabetesPHC(medicalHistoryJson: String?): Boolean {
+        val medicalHistoryList: List<MedicalHistory> = convertJsonToList(medicalHistoryJson)
+        return if (medicalHistoryList.isEmpty()) {
+            false
+        } else {
+            medicalHistoryList[0].healthWorkerForDiabetes == resources.getString(R.string.medical_history_yes)
         }
     }
 
