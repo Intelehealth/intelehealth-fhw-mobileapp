@@ -5939,6 +5939,10 @@ public final class StringUtils {
             return updatedResources.getString(R.string.unknown_other);
         }
 
+        if (text.contains(resources.getString(R.string.unknown_other))) {
+            return text.replace(resources.getString(R.string.unknown_other), updatedResources.getString(R.string.unknown_other));
+        }
+
         return text;
     }
 
