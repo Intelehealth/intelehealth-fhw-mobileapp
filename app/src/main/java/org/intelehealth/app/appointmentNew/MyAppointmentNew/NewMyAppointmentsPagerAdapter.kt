@@ -9,7 +9,7 @@ import org.intelehealth.app.utilities.MyAppointmentLoadingListener
 
 class NewMyAppointmentsPagerAdapter(
     fm: FragmentManager?,
-    var tabCount: Int,
+    private var tabCount: Int,
     var context: Context?
 ) : FragmentStateAdapter(
     (context as FragmentActivity?)!!

@@ -42,17 +42,12 @@ import kotlin.math.abs
 class UpcomingMyAppointmentsAdapter(
     var context: Context,
     var appointmentInfoList: List<AppointmentInfo>,
-    var whichAppointments: String
 ) : RecyclerView.Adapter<UpcomingMyAppointmentsAdapter.MyViewHolder>() {
-    var sessionManager: SessionManager
-
-    init {
-        sessionManager = SessionManager(context)
-    }
+    var sessionManager: SessionManager = SessionManager(context)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): MyViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_upcoming_appointments_ui2_new, parent, false)
@@ -96,170 +91,111 @@ class UpcomingMyAppointmentsAdapter(
                     )
                 )
             }
-            if (whichAppointments.equals("upcoming", ignoreCase = true)) {
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
-                val currentDateTime = dateFormat.format(Date())
-                val slottime = appointmentInfoModel.slotDate + " " + appointmentInfoModel.slotTime
-                var diff: Long = 0
-                try {
-                    diff = dateFormat.parse(slottime).time - dateFormat.parse(currentDateTime).time
-                    val second = diff / 1000
-                    val minutes = second / 60
-                    Log.v("AppointmentInfo", "Diff minutes - $minutes")
-                    var timeText: String? = ""
-                    //check for appointmet but presc not given and visit not completed
-                    if (minutes > 0) {
-                        if (minutes >= 60) {
-                            val hours = minutes / 60
-                            val mins = minutes % 60
-                            if (hours > 24) {
-                                holder.tvPatientName.text = appointmentInfoModel.patientName
-                                timeText = DateAndTimeUtils.convertDateToDdMmYyyyHhMmFormat(
-                                    appointmentInfoModel.slotDate,
-                                    appointmentInfoModel.slotTime
-                                )
-                                holder.tvDate.text = timeText
-                                holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1))
+
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
+            val currentDateTime = dateFormat.format(Date())
+            val slottime = appointmentInfoModel.slotDate + " " + appointmentInfoModel.slotTime
+            var diff: Long = 0
+            try {
+                diff = dateFormat.parse(slottime).time - dateFormat.parse(currentDateTime).time
+                val second = diff / 1000
+                val minutes = second / 60
+                Log.v("AppointmentInfo", "Diff minutes - $minutes")
+                var timeText: String? = ""
+                //check for appointmet but presc not given and visit not completed
+                if (minutes > 0) {
+                    if (minutes >= 60) {
+                        val hours = minutes / 60
+                        val mins = minutes % 60
+                        if (hours > 24) {
+                            holder.tvPatientName.text = appointmentInfoModel.patientName
+                            timeText = DateAndTimeUtils.convertDateToDdMmYyyyHhMmFormat(
+                                appointmentInfoModel.slotDate,
+                                appointmentInfoModel.slotTime
+                            )
+                            holder.tvDate.text = timeText
+                            holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1))
+                        } else {
+                            if (hours > 1) {
+                                if (sessionManager.appLanguage.equals(
+                                        "en",
+                                        ignoreCase = true
+                                    )
+                                ) timeText =
+                                    context.getString(R.string.`in`) + " " + hours + " " + context.getString(
+                                        R.string.hours
+                                    ) + " " +
+                                            mins + " " + context.getString(R.string.minutes_txt) + " " +
+                                            context.getString(R.string.at) + " " + appointmentInfoModel.slotTime else if (sessionManager.appLanguage.equals(
+                                        "hi",
+                                        ignoreCase = true
+                                    )
+                                ) timeText =
+                                    (hours.toString() + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(
+                                        R.string.minutes_txt
+                                    ) + " "
+                                            + context.getString(R.string.`in`) + "  " + appointmentInfoModel.slotTime + " " + context.getString(
+                                        R.string.at
+                                    ))
                             } else {
-                                if (hours > 1) {
-                                    if (sessionManager.appLanguage.equals(
-                                            "en",
-                                            ignoreCase = true
-                                        )
-                                    ) timeText =
-                                        context.getString(R.string.`in`) + " " + hours + " " + context.getString(
-                                            R.string.hours
-                                        ) + " " +
-                                                mins + " " + context.getString(R.string.minutes_txt) + " " +
-                                                context.getString(R.string.at) + " " + appointmentInfoModel.slotTime else if (sessionManager.appLanguage.equals(
-                                            "hi",
-                                            ignoreCase = true
-                                        )
-                                    ) timeText =
-                                        (hours.toString() + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(
-                                            R.string.minutes_txt
-                                        ) + " "
-                                                + context.getString(R.string.`in`) + "  " + appointmentInfoModel.slotTime + " " + context.getString(
-                                            R.string.at
-                                        ))
-                                } else {
-                                    if (sessionManager.appLanguage.equals(
-                                            "en",
-                                            ignoreCase = true
-                                        )
-                                    ) timeText =
-                                        context.getString(R.string.`in`) + " " + hours + " " + context.getString(
-                                            R.string.hour
-                                        ) + " " +
-                                                mins + " " + context.getString(R.string.minutes_txt) + " " +
-                                                context.getString(R.string.at) + " " + appointmentInfoModel.slotTime else if (sessionManager.appLanguage.equals(
-                                            "hi",
-                                            ignoreCase = true
-                                        )
-                                    ) timeText =
-                                        (hours.toString() + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(
-                                            R.string.minutes_txt
-                                        ) + " "
-                                                + context.getString(R.string.`in`) + "  " + appointmentInfoModel.slotTime + " " + context.getString(
-                                            R.string.at
-                                        ))
-                                }
-                                holder.tvDate.text = timeText
-                                holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1))
+                                if (sessionManager.appLanguage.equals(
+                                        "en",
+                                        ignoreCase = true
+                                    )
+                                ) timeText =
+                                    context.getString(R.string.`in`) + " " + hours + " " + context.getString(
+                                        R.string.hour
+                                    ) + " " +
+                                            mins + " " + context.getString(R.string.minutes_txt) + " " +
+                                            context.getString(R.string.at) + " " + appointmentInfoModel.slotTime else if (sessionManager.appLanguage.equals(
+                                        "hi",
+                                        ignoreCase = true
+                                    )
+                                ) timeText =
+                                    (hours.toString() + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(
+                                        R.string.minutes_txt
+                                    ) + " "
+                                            + context.getString(R.string.`in`) + "  " + appointmentInfoModel.slotTime + " " + context.getString(
+                                        R.string.at
+                                    ))
                             }
-                        }
-                        else {
-                            if (sessionManager.appLanguage.equals(
-                                    "en",
-                                    ignoreCase = true
-                                )
-                            ) timeText =
-                                context.getString(R.string.`in`) + " " + minutes + " " + context.getString(
-                                    R.string.minutes_txt
-                                ) + " " + context.getString(R.string.at) + " " + appointmentInfoModel.slotTime else if (sessionManager.appLanguage.equals(
-                                    "hi",
-                                    ignoreCase = true
-                                )
-                            ) timeText =
-                                minutes.toString() + " " + context.getString(R.string.minutes_txt) + " " + context.getString(
-                                    R.string.`in`
-                                ) + " " + appointmentInfoModel.slotTime + context.getString(R.string.at)
-                            //                            holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                             holder.tvDate.text = timeText
                             holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1))
                         }
-                    }
-                    else{
-                        timeText = ""+ abs(minutes) +" "+ context.getString(R.string.minutes_txt)+ context.getString(
-                            R.string.over
-                        )
+                    } else {
+                        if (sessionManager.appLanguage.equals(
+                                "en",
+                                ignoreCase = true
+                            )
+                        ) timeText =
+                            context.getString(R.string.`in`) + " " + minutes + " " + context.getString(
+                                R.string.minutes_txt
+                            ) + " " + context.getString(R.string.at) + " " + appointmentInfoModel.slotTime else if (sessionManager.appLanguage.equals(
+                                "hi",
+                                ignoreCase = true
+                            )
+                        ) timeText =
+                            minutes.toString() + " " + context.getString(R.string.minutes_txt) + " " + context.getString(
+                                R.string.`in`
+                            ) + " " + appointmentInfoModel.slotTime + context.getString(R.string.at)
+                        //                            holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                         holder.tvDate.text = timeText
                         holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1))
                     }
-                    holder.tvPatientName.text = appointmentInfoModel.patientName
-                } catch (e: ParseException) {
-                    Log.d(TAG, "onBindViewHolder: date exce : " + e.localizedMessage)
-                    e.printStackTrace()
-                }
-            }
-            if (whichAppointments.equals("completed", ignoreCase = true)) {
-                //bcz of common UI
-                //hide  : ivTime, tvDate, tvPatientId
-                //show :  tvPrescRecStatus
-                holder.tvDate.visibility = View.GONE
-                holder.tvPatientName.text = appointmentInfoModel.patientName
-                holder.tvDate.text = DateAndTimeUtils.getDisplayDateAndTime(
-                    appointmentInfoModel.presc_received_time,
-                    context
-                )
-                Log.d(TAG, "onBindViewHolder:time :  " + appointmentInfoModel.presc_received_time)
-                if (appointmentInfoModel.isPrescription_exists) {
-                    holder.cvPrescRx.visibility = View.VISIBLE
-                    holder.cvPrescPending.visibility = View.GONE
                 } else {
-                    holder.cvPrescPending.visibility = View.VISIBLE
-                    holder.cvPrescRx.visibility = View.GONE
+                    timeText =
+                        "" + abs(minutes) + " " + context.getString(R.string.minutes_txt) + context.getString(
+                            R.string.over
+                        )
+                    holder.tvDate.text = timeText
+                    holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1))
                 }
-            }
-            if (whichAppointments.equals("cancelled", ignoreCase = true)) {
                 holder.tvPatientName.text = appointmentInfoModel.patientName
-                holder.tvDate.visibility = View.VISIBLE
-                holder.cvPrescRx.visibility = View.GONE
-                holder.cvPrescPending.visibility = View.GONE
-                holder.tvDate.text = appointmentInfoModel.slotTime
-                Log.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.slotDate)
-                Log.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.slotTime)
+            } catch (e: ParseException) {
+                Log.d(TAG, "onBindViewHolder: date exce : " + e.localizedMessage)
+                e.printStackTrace()
             }
-            holder.cardParent.setOnClickListener { /*    patientname patientUuid gender age openmrsID visit_ID visit_startDate visit_speciality followup_date
-                  priority_tag hasPrescription patient_photo chief_complaint */
-                val intent = Intent(context, AppointmentDetailsActivity::class.java)
-                intent.putExtra("patientname", appointmentInfoModel.patientName)
-                intent.putExtra("patientUuid", appointmentInfoModel.patientId)
-                intent.putExtra("gender", "")
-                intent.putExtra("dob", appointmentInfoModel.patientDob)
-                //String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.get(), context);
-                intent.putExtra("age", "")
-                intent.putExtra("priority_tag", "")
-                intent.putExtra("hasPrescription", appointmentInfoModel.isPrescription_exists)
-                intent.putExtra("openmrsID", appointmentInfoModel.openMrsId)
-                intent.putExtra("visit_ID", appointmentInfoModel.visitUuid)
-                intent.putExtra("visit_startDate", "")
-                intent.putExtra("patient_photo", appointmentInfoModel.patientProfilePhoto)
-                intent.putExtra("app_start_date", appointmentInfoModel.slotDate)
-                intent.putExtra("app_start_time", appointmentInfoModel.slotTime)
-                intent.putExtra("visit_speciality", appointmentInfoModel.speciality)
-                intent.putExtra("appointment_id", appointmentInfoModel.id)
-                intent.putExtra("app_start_day", appointmentInfoModel.slotDay)
-                intent.putExtra(
-                    "prescription_received_time",
-                    DateAndTimeUtils.getDisplayDateAndTime(
-                        appointmentInfoModel.presc_received_time,
-                        context
-                    )
-                )
-                intent.putExtra("status", appointmentInfoModel.status)
-                context.startActivity(intent)
-            }
+
         } catch (e: Exception) {
             Log.d(TAG, "onBindViewHolder: e main : " + e.localizedMessage)
             e.printStackTrace()
@@ -290,6 +226,40 @@ class UpcomingMyAppointmentsAdapter(
             cvPrescPending = itemView.findViewById(R.id.cvPrescPendingTodayAppointment)
             cvPrescRx = itemView.findViewById(R.id.cvPrescRxTodayAppointment)
             search_gender = itemView.findViewById(R.id.search_gender)
+
+            cardParent.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val appointmentInfoModel = appointmentInfoList[position]
+                    val intent = Intent(context, AppointmentDetailsActivity::class.java).apply {
+                        putExtra("patientname", appointmentInfoModel.patientName)
+                        putExtra("patientUuid", appointmentInfoModel.patientId)
+                        putExtra("gender", "")
+                        putExtra("dob", appointmentInfoModel.patientDob)
+                        putExtra("age", "")
+                        putExtra("priority_tag", "")
+                        putExtra("hasPrescription", appointmentInfoModel.isPrescription_exists)
+                        putExtra("openmrsID", appointmentInfoModel.openMrsId)
+                        putExtra("visit_ID", appointmentInfoModel.visitUuid)
+                        putExtra("visit_startDate", "")
+                        putExtra("patient_photo", appointmentInfoModel.patientProfilePhoto)
+                        putExtra("app_start_date", appointmentInfoModel.slotDate)
+                        putExtra("app_start_time", appointmentInfoModel.slotTime)
+                        putExtra("visit_speciality", appointmentInfoModel.speciality)
+                        putExtra("appointment_id", appointmentInfoModel.id)
+                        putExtra("app_start_day", appointmentInfoModel.slotDay)
+                        putExtra(
+                            "prescription_received_time",
+                            DateAndTimeUtils.getDisplayDateAndTime(
+                                appointmentInfoModel.presc_received_time,
+                                context
+                            )
+                        )
+                        putExtra("status", appointmentInfoModel.status)
+                    }
+                    context.startActivity(intent)
+                }
+            }
         }
     }
 

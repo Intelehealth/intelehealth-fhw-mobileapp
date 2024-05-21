@@ -62,8 +62,6 @@ class PastAppointmentsFragment :
     Fragment() {
     private var parentView: View? = null
     private var rvUpcomingApp: RecyclerView? = null
-    private var rvCancelledApp: RecyclerView? = null
-    private var rvCompletedApp: RecyclerView? = null
     private var layoutParent: RelativeLayout? = null
     private var frameLayoutFilter: FrameLayout? = null
     private var filterIm: ImageView? = null
@@ -96,7 +94,6 @@ class PastAppointmentsFragment :
     private var noDataFoundForPast: View? = null
     private var tvFromDate: TextView? = null
     private var tvToDate: TextView? = null
-    private var MY_REQUEST_CODE = 5555
     private var listener: UpdateAppointmentsCount? = null
     private var totalUpcomingApps = 0
     private var totalCancelled = 0
@@ -106,7 +103,6 @@ class PastAppointmentsFragment :
     private var nsvToday: NestedScrollView? = null
     private val pastLimit = 15
     private var offset = 0
-    private var pastStart = 0
     private var isPastFullyLoaded = false
     private var pastAppointmentInfoList: MutableList<AppointmentInfo>? = null
     private val pastSearchList: MutableList<AppointmentInfo> = ArrayList()
@@ -116,7 +112,7 @@ class PastAppointmentsFragment :
 
     private val disposables = CompositeDisposable()
 
-    lateinit var myAppointmentLoadingListener: MyAppointmentLoadingListener
+    private lateinit var myAppointmentLoadingListener: MyAppointmentLoadingListener
 
     fun setListener(myAppointmentLoadingListener: MyAppointmentLoadingListener){
         this.myAppointmentLoadingListener = myAppointmentLoadingListener
@@ -186,9 +182,6 @@ class PastAppointmentsFragment :
                 val optionModel1 = filtersList!![i]
                 if (optionModel1.filterValue == inputModel.filterValue) {
                     return
-                    result = false
-                    filtersList!!.remove(optionModel1)
-                    filtersList!!.add(inputModel)
                 } else {
                     result = true
                 }
@@ -224,7 +217,7 @@ class PastAppointmentsFragment :
             chip.background =
                 ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_selcted_chip_bg)
             chipGroup.addView(chip)
-            chip.setOnCloseIconClickListener { v: View? ->
+            chip.setOnCloseIconClickListener {
                 filtersList!!.remove(filterOptionsModel)
                 chipGroup.removeView(chip)
                 if (filtersList != null && filtersList!!.size == 0) {
@@ -284,7 +277,7 @@ class PastAppointmentsFragment :
         filtersList = ArrayList()
         filtersListNew = ArrayList()
         nsvToday = parentView!!.findViewById(R.id.nsv_today)
-        nsvToday?.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+        nsvToday?.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             if (v.getChildAt(v.childCount - 1) != null) {
                 if (scrollY > oldScrollY) {
                     if (pastAppointmentInfoList != null && pastAppointmentInfoList!!.size == 0) {
@@ -295,7 +288,7 @@ class PastAppointmentsFragment :
                     }
                 }
             }
-        })
+        }
         sortIm?.setOnClickListener(View.OnClickListener { sortList() })
 
         completedLay?.setOnClickListener {
@@ -369,8 +362,8 @@ class PastAppointmentsFragment :
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ appointments ->
                 if (appointments.size > 0) {
-                    pastAppointmentInfoList!!.addAll(appointments)
-                    pastAppointmentsAdapter!!.notifyDataSetChanged()
+                    pastAppointmentInfoList?.addAll(appointments)
+                    pastAppointmentsAdapter?.notifyDataSetChanged()
                     offset = pastAppointmentInfoList?.size?:0
                 } else {
                     isPastFullyLoaded = true
@@ -448,16 +441,6 @@ class PastAppointmentsFragment :
         }
 
 
-        //filter all appointments
-        /*rgFilterAppointments!!.setOnCheckedChangeListener { group: RadioGroup, checkedId: Int ->
-            val checkedRadioButton = group.findViewById<RadioButton>(checkedId)
-            val isChecked = checkedRadioButton.isChecked
-            if (isChecked) {
-                selectedAppointmentOption = checkedRadioButton.text.toString()
-
-                //onRadioButtonClicked(checkedRadioButton, selectedAppointmentOption);
-            }
-        }*/
         autotvSearch!!.setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val searchText = autotvSearch!!.text.toString()
@@ -508,7 +491,7 @@ class PastAppointmentsFragment :
                             noDataFoundForPast?.visibility = View.GONE
                             totalUpcomingApps = appointments.size ?: 0
                             pastAppointmentsAdapter =
-                                PastMyAppointmentsAdapter(requireActivity(), appointments, "upcoming")
+                                PastMyAppointmentsAdapter(requireActivity(), appointments)
                             rvUpcomingApp!!.adapter = pastAppointmentsAdapter
                             offset = appointments.size
                         } else {
@@ -607,88 +590,11 @@ class PastAppointmentsFragment :
         initLimits()
     }
 
-    private fun dismissDateFilterDialog() {
-        if (!fromDate!!.isEmpty() && !toDate!!.isEmpty()) {
-            filterAsPerSelectedOptions()
-            Handler().postDelayed({
-                val date =
-                    DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate) + " - " + DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(
-                        toDate
-                    )
-                val filterOptionsModel: FilterOptionsModel = FilterOptionsModel("date", date)
-                setFiltersToTheGroup(filterOptionsModel)
-            }, 2000)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (data != null) {
-            val bundle = data.extras
-            val selectedDate = bundle!!.getString(BundleConstants.SELECTED_DATE)
-            val whichDate = bundle.getString(BundleConstants.WHICH_DATE)
-            if (!whichDate!!.isEmpty() && whichDate == BundleConstants.FROM_DATE) {
-                if (!toDate!!.isEmpty() && DateAndTimeUtils.isAfter(
-                        selectedDate,
-                        toDate,
-                        DateAndTimeUtils.D_FORMAT_dd_M_yyyy
-                    )
-                ) {
-                    Toast.makeText(
-                        requireContext(),
-                        "The 'from' date cannot be greater than the 'to' date",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return
-                }
-                fromDate = selectedDate
-                var dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate)
-                if (sessionManager!!.appLanguage.equals("hi", ignoreCase = true)) dateToshow1 =
-                    StringUtils.en_hi_dob_updated(
-                        DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate)
-                    )
-                if (!fromDate!!.isEmpty()) {
-                    val splitedDate = fromDate!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }
-                        .toTypedArray()
-                    tvFromDate!!.text = dateToshow1 + ", " + splitedDate[2]
-                }
-                dismissDateFilterDialog()
-            }
-            if (!whichDate.isEmpty() && whichDate == BundleConstants.TO_DATE) {
-                if (!fromDate!!.isEmpty() && DateAndTimeUtils.isBefore(
-                        selectedDate,
-                        fromDate,
-                        DateAndTimeUtils.D_FORMAT_dd_M_yyyy
-                    )
-                ) {
-                    Toast.makeText(
-                        requireContext(),
-                        "The 'to' date cannot be less than the 'from' date",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return
-                }
-                toDate = selectedDate
-                var dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate)
-                if (sessionManager!!.appLanguage.equals("hi", ignoreCase = true)) dateToshow1 =
-                    StringUtils.en_hi_dob_updated(
-                        DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate)
-                    )
-                if (!toDate!!.isEmpty()) {
-                    val splitedDate =
-                        toDate!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    tvToDate!!.text = dateToshow1 + ", " + splitedDate[2]
-                }
-                dismissDateFilterDialog()
-            }
-        }
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is UpdateAppointmentsCount) {
             listener = context
-            val totalAllApps = totalUpcomingApps + totalCancelled + totalCompleted
-            listener!!.updateCount("all", 2000)
+            listener?.updateCount("all", 2000)
         } else {
             throw RuntimeException(
                 context.toString()

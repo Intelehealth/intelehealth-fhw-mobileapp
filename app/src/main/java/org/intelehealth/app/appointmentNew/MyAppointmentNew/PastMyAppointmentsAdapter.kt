@@ -40,18 +40,13 @@ import java.util.Locale
 
 class PastMyAppointmentsAdapter(
     var context: Context,
-    var appointmentInfoList: List<AppointmentInfo>,
-    var whichAppointments: String
+    private var appointmentInfoList: List<AppointmentInfo>,
 ) : RecyclerView.Adapter<PastMyAppointmentsAdapter.MyViewHolder?>() {
-    var sessionManager: SessionManager
-
-    init {
-        sessionManager = SessionManager(context)
-    }
+    var sessionManager: SessionManager = SessionManager(context)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): MyViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_past_appointments_ui2_new, parent, false)
@@ -92,97 +87,67 @@ class PastMyAppointmentsAdapter(
                     )
                 )
             }
-            if (whichAppointments.equals("upcoming", ignoreCase = true)) {
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
-                val currentDateTime = dateFormat.format(Date())
-                val slottime = appointmentInfoModel.slotDate + " " + appointmentInfoModel.slotTime
-                var diff: Long = 0
-                try {
-                    diff = dateFormat.parse(slottime).time - dateFormat.parse(currentDateTime).time
-                    val second = diff / 1000
-                    val minutes = second / 60
-                    Log.v("AppointmentInfo", "Diff minutes - $minutes")
-                    var timeText: String? = ""
-                    //check for appointmet but presc not given and visit not completed
-                    holder.tvPatientName.text = appointmentInfoModel.patientName
-                    timeText =
-                        DateAndTimeUtils.convertDateToDdMmYyyyHhMmFormat(
-                            appointmentInfoModel.slotDate,
-                            appointmentInfoModel.slotTime
-                        )
-                    
-                    holder.tvDate.text = timeText
-                    holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray))
-                    holder.tvDate.setCompoundDrawables(null, null, null, null)
-                    if (appointmentInfoModel.status.equals("completed", ignoreCase = true)) {
-                        holder.status_tv.text = ContextCompat.getString(
-                            context, R.string.completed
-                        )
-                        holder.status_tv.setTextColor(
-                            ContextCompat.getColor(
-                                context, R.color.colorPrimary1
-                            )
-                        )
-                        if (appointmentInfoModel.isPrescription_exists) {
-                            holder.cvPrescRx.visibility = View.VISIBLE
-                            holder.cvPrescPending.visibility = View.GONE
-                        } else {
-                            holder.cvPrescPending.visibility = View.VISIBLE
-                            holder.cvPrescRx.visibility = View.GONE
-                        }
-                    } else if (appointmentInfoModel.status.equals("cancelled", ignoreCase = true)) {
-                        holder.status_tv.text = ContextCompat.getString(
-                            context, R.string.cancelled
-                        )
-                        holder.status_tv.setTextColor(
-                            ContextCompat.getColor(
-                                context, R.color.red
-                            )
-                        )
-                    } else {
-                        holder.status_tv.text = ContextCompat.getString(
-                            context, R.string.missed
-                        )
-                        holder.status_tv.setTextColor(
-                            ContextCompat.getColor(
-                                context, R.color.red
-                            )
-                        )
-                    }
-                } catch (e: ParseException) {
-                    Log.d(TAG, "onBindViewHolder: date exce : " + e.localizedMessage)
-                    e.printStackTrace()
-                }
-            }
-            holder.cardParent.setOnClickListener { /*    patientname patientUuid gender age openmrsID visit_ID visit_startDate visit_speciality followup_date
-                  priority_tag hasPrescription patient_photo chief_complaint */
-                val intent = Intent(context, AppointmentDetailsActivity::class.java)
-                intent.putExtra("patientname", appointmentInfoModel.patientName)
-                intent.putExtra("patientUuid", appointmentInfoModel.patientId)
-                intent.putExtra("gender", "")
-                intent.putExtra("dob", appointmentInfoModel.patientDob)
-                //String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.get(), context);
-                intent.putExtra("age", "")
-                intent.putExtra("priority_tag", "")
-                intent.putExtra("hasPrescription", appointmentInfoModel.isPrescription_exists)
-                intent.putExtra("openmrsID", appointmentInfoModel.openMrsId)
-                intent.putExtra("visit_ID", appointmentInfoModel.visitUuid)
-                intent.putExtra("visit_startDate", "")
-                intent.putExtra("patient_photo", appointmentInfoModel.patientProfilePhoto)
-                intent.putExtra("app_start_date", appointmentInfoModel.slotDate)
-                intent.putExtra("app_start_time", appointmentInfoModel.slotTime)
-                intent.putExtra("visit_speciality", appointmentInfoModel.speciality)
-                intent.putExtra("appointment_id", appointmentInfoModel.id)
-                intent.putExtra("app_start_day", appointmentInfoModel.slotDay)
-                intent.putExtra(
-                    "prescription_received_time",
-                    DateAndTimeUtils.getDisplayDateAndTime(
-                        appointmentInfoModel.presc_received_time,
-                        context
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
+            val currentDateTime = dateFormat.format(Date())
+            val slottime = appointmentInfoModel.slotDate + " " + appointmentInfoModel.slotTime
+            var diff: Long = 0
+            try {
+                diff = (dateFormat.parse(slottime)?.time
+                    ?: 0) - (dateFormat.parse(currentDateTime)?.time
+                    ?: 0)
+                val second = diff / 1000
+                val minutes = second / 60
+                Log.v("AppointmentInfo", "Diff minutes - $minutes")
+                var timeText: String? = ""
+                //check for appointmet but presc not given and visit not completed
+                holder.tvPatientName.text = appointmentInfoModel.patientName
+                timeText =
+                    DateAndTimeUtils.convertDateToDdMmYyyyHhMmFormat(
+                        appointmentInfoModel.slotDate,
+                        appointmentInfoModel.slotTime
                     )
-                )
-                intent.putExtra("status", appointmentInfoModel.status)
-                context.startActivity(intent)
+
+                holder.tvDate.text = timeText
+                holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray))
+                holder.tvDate.setCompoundDrawables(null, null, null, null)
+                if (appointmentInfoModel.status.equals("completed", ignoreCase = true)) {
+                    holder.status_tv.text = ContextCompat.getString(
+                        context, R.string.completed
+                    )
+                    holder.status_tv.setTextColor(
+                        ContextCompat.getColor(
+                            context, R.color.colorPrimary1
+                        )
+                    )
+                    if (appointmentInfoModel.isPrescription_exists) {
+                        holder.cvPrescRx.visibility = View.VISIBLE
+                        holder.cvPrescPending.visibility = View.GONE
+                    } else {
+                        holder.cvPrescPending.visibility = View.VISIBLE
+                        holder.cvPrescRx.visibility = View.GONE
+                    }
+                } else if (appointmentInfoModel.status.equals("cancelled", ignoreCase = true)) {
+                    holder.status_tv.text = ContextCompat.getString(
+                        context, R.string.cancelled
+                    )
+                    holder.status_tv.setTextColor(
+                        ContextCompat.getColor(
+                            context, R.color.red
+                        )
+                    )
+                } else {
+                    holder.status_tv.text = ContextCompat.getString(
+                        context, R.string.missed
+                    )
+                    holder.status_tv.setTextColor(
+                        ContextCompat.getColor(
+                            context, R.color.red
+                        )
+                    )
+                }
+            } catch (e: ParseException) {
+                Log.d(TAG, "onBindViewHolder: date exce : " + e.localizedMessage)
+                e.printStackTrace()
             }
         } catch (e: Exception) {
             Log.d(TAG, "onBindViewHolder: e main : " + e.localizedMessage)
@@ -215,7 +180,42 @@ class PastMyAppointmentsAdapter(
             cvPrescRx = itemView.findViewById(R.id.cvPrescRxTodayAppointment)
             search_gender = itemView.findViewById(R.id.search_gender)
             status_tv = itemView.findViewById(R.id.status_tv)
+
+            cardParent.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val appointmentInfoModel = appointmentInfoList[position]
+                    val intent = Intent(context, AppointmentDetailsActivity::class.java).apply {
+                        putExtra("patientname", appointmentInfoModel.patientName)
+                        putExtra("patientUuid", appointmentInfoModel.patientId)
+                        putExtra("gender", "")
+                        putExtra("dob", appointmentInfoModel.patientDob)
+                        putExtra("age", "")
+                        putExtra("priority_tag", "")
+                        putExtra("hasPrescription", appointmentInfoModel.isPrescription_exists)
+                        putExtra("openmrsID", appointmentInfoModel.openMrsId)
+                        putExtra("visit_ID", appointmentInfoModel.visitUuid)
+                        putExtra("visit_startDate", "")
+                        putExtra("patient_photo", appointmentInfoModel.patientProfilePhoto)
+                        putExtra("app_start_date", appointmentInfoModel.slotDate)
+                        putExtra("app_start_time", appointmentInfoModel.slotTime)
+                        putExtra("visit_speciality", appointmentInfoModel.speciality)
+                        putExtra("appointment_id", appointmentInfoModel.id)
+                        putExtra("app_start_day", appointmentInfoModel.slotDay)
+                        putExtra(
+                            "prescription_received_time",
+                            DateAndTimeUtils.getDisplayDateAndTime(
+                                appointmentInfoModel.presc_received_time,
+                                context
+                            )
+                        )
+                        putExtra("status", appointmentInfoModel.status)
+                    }
+                    context.startActivity(intent)
+                }
+            }
         }
+
     }
 
     fun profilePicDownloaded(model: AppointmentInfo, holder: MyViewHolder) {
@@ -260,15 +260,6 @@ class PastMyAppointmentsAdapter(
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true)
                             .into(holder.ivProfileImage)
-                    }
-                    val imagesDAO = ImagesDAO()
-                    var isImageDownloaded = false
-                    try {
-                        isImageDownloaded = imagesDAO.insertPatientProfileImages(
-                            AppConstants.IMAGE_PATH + model.uuid + ".jpg", model.uuid
-                        )
-                    } catch (e: DAOException) {
-                        FirebaseCrashlytics.getInstance().recordException(e)
                     }
                 }
             })

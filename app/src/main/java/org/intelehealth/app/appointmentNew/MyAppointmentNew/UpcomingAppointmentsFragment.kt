@@ -186,11 +186,11 @@ class UpcomingAppointmentsFragment : Fragment() {
         noDataFoundForUpcoming = upcommingView.findViewById(R.id.layout_no_data_found_upcoming)
         autotvSearch = upcommingView.findViewById(R.id.et_search)
         ivClearText = upcommingView.findViewById(R.id.iv_clear_today)
-        ivClearText?.setOnClickListener(View.OnClickListener { v: View? ->
+        ivClearText?.setOnClickListener {
             autotvSearch?.setText("")
             searchPatientText = ""
             resetData()
-        })
+        }
         layoutMainAppOptions?.background = ContextCompat.getDrawable(
             requireActivity(),
             R.drawable.ui2_ic_bg_options_appointment
@@ -223,23 +223,10 @@ class UpcomingAppointmentsFragment : Fragment() {
                     if (!isUpcomingFullyLoaded) {
                         setMoreDataIntoUpcomingRecyclerView()
                     }
-                    /*if (isUpcomingFullyLoaded && !isCancelledFullyLoaded) {
-                        setMoreDataIntoCancelledRecyclerView()
-                    }
-                    if (scrollY >= v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight) {
-                        if (completedAppointmentInfoList != null && completedAppointmentInfoList!!.size == 0) {
-                            isCompletedFullyLoaded = true
-                            return@OnScrollChangeListener
-                        }
-                        if (!isCompletedFullyLoaded) {
-                            setMoreDataIntoCompletedRecyclerView()
-                        }
-                    }*/
                 }
             }
         }
         searchPatient()
-        //getSlots();
     }
 
     private fun sortList() {
@@ -254,11 +241,6 @@ class UpcomingAppointmentsFragment : Fragment() {
         }
     }
 
-    fun stringToTimestampUsingSimpleDateFormat(datetimeString: String, format: String): Long {
-        val dateFormat = SimpleDateFormat(format, Locale.getDefault())
-        val date = dateFormat.parse(datetimeString)
-        return date?.time ?: 0L
-    }
 
     private fun resetData() {
         upcomingSearchList.clear()
@@ -312,7 +294,7 @@ class UpcomingAppointmentsFragment : Fragment() {
                 } else {
                     searchPatientText = ""
                     appointments
-                    ivClearText!!.visibility = View.GONE
+                    ivClearText?.visibility = View.GONE
                 }
             }
         })
@@ -321,7 +303,7 @@ class UpcomingAppointmentsFragment : Fragment() {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val searchText = autotvSearch!!.text.toString()
                 searchPatientText = if (searchText.isNotEmpty()) {
-                    autotvSearch!!.text.toString()
+                    autotvSearch?.text.toString()
                 }else{
                     ""
                 }
@@ -348,7 +330,7 @@ class UpcomingAppointmentsFragment : Fragment() {
                         totalUpcomingApps = appointments?.size ?: 0
 
                         upcomingMyAppointmentsAdapter =
-                            UpcomingMyAppointmentsAdapter(requireActivity(), appointments, "upcoming")
+                            UpcomingMyAppointmentsAdapter(requireActivity(), appointments)
                         rvUpcomingApp?.adapter = upcomingMyAppointmentsAdapter
                         offset = appointments.size
                     } else {

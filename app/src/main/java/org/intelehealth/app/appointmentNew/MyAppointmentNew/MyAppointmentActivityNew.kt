@@ -47,12 +47,10 @@ import java.util.Objects
 
 class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     NetworkUtils.InternetCheckUpdateInterface, MyAppointmentLoadingListener {
-    lateinit var loadingDialog: androidx.appcompat.app.AlertDialog
-    var bottomNav: BottomNavigationView? = null
-    var tabLayout: TabLayout? = null
+    private lateinit var loadingDialog: androidx.appcompat.app.AlertDialog
+    private var bottomNav: BottomNavigationView? = null
+    private var tabLayout: TabLayout? = null
     var viewPager: ViewPager2? = null
-    var fromFragment = ""
-    var totalCount = 0
     var networkUtils: NetworkUtils? = null
     var ivIsInternet: ImageView? = null
     private val syncAnimator: ObjectAnimator? = null
@@ -60,7 +58,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     private val mUpdateFragmentOnEventHashMap = HashMap<Int, UpdateFragmentOnEvent>()
     private var onStartUpcoming = false
     private var onStartPast = false
-    var disposable =  CompositeDisposable()
+    var disposable = CompositeDisposable()
 
     fun initUpdateFragmentOnEvent(tab: Int, listener: UpdateFragmentOnEvent) {
         Log.v(TAG, "initUpdateFragmentOnEvent")
@@ -83,10 +81,9 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
         Log.v(TAG, "loadAllAppointments")
         val baseurl = BuildConfig.SERVER_URL + ":3004"
         val tabIndex = tabLayout!!.selectedTabPosition
-        if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex)) Objects.requireNonNull(
-            mUpdateFragmentOnEventHashMap[tabIndex]
-        )?.onFinished(AppConstants.EVENT_FLAG_START)
-        if(NetworkConnection.isCapableNetwork(this)){
+        if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
+            mUpdateFragmentOnEventHashMap[tabIndex]?.onFinished(AppConstants.EVENT_FLAG_START)
+        if (NetworkConnection.isCapableNetwork(this)) {
             ApiClientAppointment.getInstance(baseurl).api
                 .getSlotsAll(
                     DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
@@ -113,42 +110,20 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                             }
                         }
 
-                        /*if (slotInfoResponse.getCancelledAppointments() != null) {
-                                if (slotInfoResponse.getCancelledAppointments().size() > 0) {
-
-                                    for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
-
-                                        try {
-                                            appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
-
-                                        } catch (DAOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-                            }*/
-
-                        //getAppointments();
                         Log.v(TAG, "onFinished - " + Gson().toJson(slotInfoResponse))
                         setTabCount()
-                        Objects.requireNonNull(
-                            mUpdateFragmentOnEventHashMap[tabIndex]
-                        )?.onFinished(AppConstants.EVENT_FLAG_SUCCESS)
+                        mUpdateFragmentOnEventHashMap[tabIndex]?.onFinished(AppConstants.EVENT_FLAG_SUCCESS)
                     }
 
                     override fun onFailure(call: Call<AppointmentListingResponse?>, t: Throwable) {
                         Log.v("onFailure", t.message!!)
-                        Objects.requireNonNull(
-                            mUpdateFragmentOnEventHashMap[tabIndex]
-                        )?.onFinished(AppConstants.EVENT_FLAG_FAILED)
+                        mUpdateFragmentOnEventHashMap[tabIndex]?.onFinished(AppConstants.EVENT_FLAG_FAILED)
                         //log out operation if response code is 401
                         NavigationUtils().logoutOperation(this@MyAppointmentActivityNew, t)
                     }
                 })
-        }else{
-            Objects.requireNonNull(
-                mUpdateFragmentOnEventHashMap[tabIndex]
-            )?.onFinished(AppConstants.EVENT_FLAG_FAILED)
+        } else {
+            mUpdateFragmentOnEventHashMap[tabIndex]?.onFinished(AppConstants.EVENT_FLAG_FAILED)
         }
     }
 
@@ -159,13 +134,13 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
         val ivBackArrow = toolbar.findViewById<ImageView>(R.id.iv_back_arrow_common)
         tvTitle.text = resources.getString(R.string.my_appointments)
 
-        ivIsInternet?.setOnClickListener(View.OnClickListener { v: View? ->
+        ivIsInternet?.setOnClickListener {
             SyncUtils.syncNow(
                 this@MyAppointmentActivityNew,
                 ivIsInternet,
                 syncAnimator
             )
-        })
+        }
         ivBackArrow.setOnClickListener { v: View? ->
             val intent = Intent(this@MyAppointmentActivityNew, HomeScreenActivity_New::class.java)
             startActivity(intent)
@@ -190,11 +165,11 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe (
+            .subscribe(
                 {
                     tabLayout?.getTabAt(1)?.text = getString(R.string.past) + " (" + it + ")"
                 },
-                {error->
+                { error ->
                     error.printStackTrace()
                 }
             )
@@ -203,7 +178,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
 
     private fun getCountObserver(appointmentTabType: AppointmentTabType): Observable<Int> {
         val appointmentDao = AppointmentDAO()
-        return Observable.create<Int> {emitter->
+        return Observable.create<Int> { emitter ->
             val count = appointmentDao.getAppointmentCountsByStatus(appointmentTabType)
             emitter.onNext(count)
             emitter.onComplete()
@@ -212,21 +187,14 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
 
     private fun configureTabLayout() {
         tabLayout = findViewById(R.id.tablayout_appointments)
-
-        /* tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.todays)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.all_appointments)));*/viewPager =
+        viewPager =
             findViewById(R.id.pager_appointments)
         val adapter =
             NewMyAppointmentsPagerAdapter(supportFragmentManager, 2, this@MyAppointmentActivityNew)
         viewPager?.adapter = adapter
         viewPager?.offscreenPageLimit = adapter.itemCount - 1
 
-        // int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
-
-        //viewPager.setOffscreenPageLimit(limit);
-
-        /*viewPager.addOnPageChangeListener(new
-                TabLayout.TabLayoutOnPageChangeListener(tabLayout));*/TabLayoutMediator(
+        TabLayoutMediator(
             tabLayout!!,
             viewPager!!
         ) { tab, position ->
@@ -239,42 +207,23 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager?.currentItem = tab.position
-                /*  Log.d(TAG, "onTabSelected:position : : " + tab.getPosition());
-                if (fromFragment != null && !fromFragment.isEmpty() && fromFragment.equals("today")) {
-                    if (tab.getPosition() == 0) {
-                        tab.setText("Today's (" + totalCount + ")");
-
-                    }
-                } else if (fromFragment != null && !fromFragment.isEmpty() && fromFragment.equals("all")) {
-                    if (tab.getPosition() == 1) {
-                        tab.setText("All appointments (" + totalCount + ")");
-
-                    }
-
-                }*/loadAllAppointments()
+                loadAllAppointments()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
-        Objects.requireNonNull(viewPager?.getAdapter()).notifyDataSetChanged()
+        viewPager?.getAdapter()?.notifyDataSetChanged()
     }
 
-    var navigationItemSelectedListener = NavigationBarView.OnItemSelectedListener { item ->
+    private var navigationItemSelectedListener = NavigationBarView.OnItemSelectedListener { item ->
         var fragment: Fragment
         when (item.itemId) {
-            R.id.bottom_nav_home_menu ->                            /* Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
-                            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
-                            fragment = new HomeFragment_New();
-                            loadFragment(fragment);*/return@OnItemSelectedListener true
+            R.id.bottom_nav_home_menu -> return@OnItemSelectedListener true
 
-            R.id.bottom_nav_achievements ->                          /*   tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                            fragment = new MyAchievementsFragment();
-                            loadFragmentForBottomNav(fragment);*/return@OnItemSelectedListener true
+            R.id.bottom_nav_achievements -> return@OnItemSelectedListener true
 
-            R.id.bottom_nav_help ->                        /*     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help));
-                            fragment = new HelpFragment_New();
-                            loadFragmentForBottomNav(fragment);*/return@OnItemSelectedListener true
+            R.id.bottom_nav_help -> return@OnItemSelectedListener true
 
             R.id.bottom_nav_add_patient -> return@OnItemSelectedListener true
         }
@@ -282,22 +231,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     }
 
     override fun updateCount(whichFrag: String, count: Int) {
-        //  Log.d(TAG, "updateCount:selected tab : " + tabLayout.getSelectedTabPosition());
 
-        //  Log.d(TAG, "updateCount: count : " + count);
-
-        /*   fromFragment = whichFrag;
-        totalCount = count;*/
-
-        /*        new TabLayoutMediator(tabLayout, viewPager,
-                (TabLayout.Tab tab, int position) -> {
-                    if (position == 0)
-                        tab.setText("Received (" + count + ")").setIcon(R.drawable.presc_tablayout_icon);
-                    else
-                        tab.setText("Pending (" + count + ")").setIcon(R.drawable.presc_tablayout_icon);
-
-                }
-        ).attach();*/
     }
 
     override fun onStop() {
@@ -356,14 +290,14 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     override fun updateUIForInternetAvailability(isInternetAvailable: Boolean) {
         mIsInternetAvailable = isInternetAvailable
         if (isInternetAvailable) {
-            ivIsInternet!!.setImageDrawable(
+            ivIsInternet?.setImageDrawable(
                 ContextCompat.getDrawable(
                     this,
                     R.drawable.ui2_ic_internet_available
                 )
             )
         } else {
-            ivIsInternet!!.setImageDrawable(
+            ivIsInternet?.setImageDrawable(
                 ContextCompat.getDrawable(
                     this,
                     R.drawable.ui2_ic_no_internet
