@@ -101,7 +101,11 @@ class CategorySegregationUtils(private val resources: Resources) {
 
         if (patientAge >= Constants.ANEMIA_EXCLUSION_AGE) {
             if (!isHistoryOfAnemiaPresent(medicalHistoryJson)) {
-                diseaseList.add(resources.getString(R.string.tab_anemia_screening))
+                if (!isCurrentlyTakingAnemiaMedication(medicalHistoryJson) ||
+                    !isThereAFollowUpWithAnemiaPHC(medicalHistoryJson)
+                ) {
+                    diseaseList.add(resources.getString(R.string.tab_anemia_screening))
+                }
             } else {
                 diseaseList.add(resources.getString(R.string.tab_anemia_follow_up))
             }
@@ -109,7 +113,11 @@ class CategorySegregationUtils(private val resources: Resources) {
 
         if (patientAge >= Constants.HYPERTENSION_EXCLUSION_AGE) {
             if (!isHistoryOfHypertensionPresent(medicalHistoryJson)) {
-                diseaseList.add(resources.getString(R.string.tab_hypertension_screening))
+                if (isCurrentlyTakingDiabetesMedication(medicalHistoryJson) ||
+                    isThereAFollowUpWithDiabetesPHC(medicalHistoryJson)
+                ) {
+                    diseaseList.add(resources.getString(R.string.tab_hypertension_screening))
+                }
             } else {
                 diseaseList.add(resources.getString(R.string.tab_hypertension_follow_up))
             }
@@ -117,7 +125,11 @@ class CategorySegregationUtils(private val resources: Resources) {
 
         if (patientAge >= Constants.DIABETES_EXCLUSION_AGE) {
             if (!isHistoryOfDiabetesPresent(medicalHistoryJson)) {
-                diseaseList.add(resources.getString(R.string.tab_diabetes_screening))
+                if (isCurrentlyTakingHypertensionMedication(medicalHistoryJson) ||
+                    isThereAFollowUpWithHypertensionPHC(medicalHistoryJson)
+                ) {
+                    diseaseList.add(resources.getString(R.string.tab_diabetes_screening))
+                }
             } else {
                 diseaseList.add(resources.getString(R.string.tab_diabetes_follow_up))
             }
