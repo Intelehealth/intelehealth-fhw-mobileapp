@@ -5,8 +5,12 @@ package org.intelehealth.app.abdm.model;
  * Email: prajwalwaingankar@gmail.com
  * Mobile: +917304154312
  **/
+
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -18,6 +22,13 @@ public class AbhaProfileResponse implements Serializable {
     @SerializedName("preferredAbhaAddress")
     @Expose
     private String preferredAbhaAddress;
+    @SerializedName("healthIdNumber")
+    @Expose
+    private String healthIdNumber;
+    @SerializedName("healthId")
+    @Expose
+    private String healthId;
+
     @SerializedName("mobile")
     @Expose
     private String mobile;
@@ -118,8 +129,13 @@ public class AbhaProfileResponse implements Serializable {
     @Expose
     private Object emailVerified;
 
+    private String uuiD;
+    private String openMrsId;
+
+
+
     public String getABHANumber() {
-        return aBHANumber;
+        return TextUtils.isEmpty(aBHANumber) ? healthIdNumber : aBHANumber;
     }
 
     public void setABHANumber(String aBHANumber) {
@@ -127,7 +143,7 @@ public class AbhaProfileResponse implements Serializable {
     }
 
     public String getPreferredAbhaAddress() {
-        return preferredAbhaAddress;
+        return TextUtils.isEmpty(preferredAbhaAddress)?healthId:preferredAbhaAddress;
     }
 
     public void setPreferredAbhaAddress(String preferredAbhaAddress) {
@@ -396,6 +412,22 @@ public class AbhaProfileResponse implements Serializable {
 
     public void setEmailVerified(Object emailVerified) {
         this.emailVerified = emailVerified;
+    }
+
+    public String getUuiD() {
+        return uuiD;
+    }
+
+    public void setUuiD(String uuiD) {
+        this.uuiD = uuiD;
+    }
+
+    public String getOpenMrsId() {
+        return openMrsId;
+    }
+
+    public void setOpenMrsId(String openMrsId) {
+        this.openMrsId = openMrsId;
     }
 
     @Override

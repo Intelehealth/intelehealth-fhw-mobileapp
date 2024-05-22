@@ -5,6 +5,8 @@ import org.intelehealth.app.abdm.model.AadharApiBody;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
+import org.intelehealth.app.abdm.model.EnrollNumberWithABDMRequest;
+import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
@@ -216,6 +218,11 @@ public interface ApiInterface {
                                            @Header("Authorization") String accessToken,
                                            @Body AadharApiBody aadharApiBody);
     @POST
+    Single<OTPResponse> getEnrollNumberWithABDM(@Url String url,
+                                           @Header("Authorization") String accessToken,
+                                           @Body EnrollNumberWithABDMRequest apiRequest);
+
+    @POST
     Single<OTPResponse> GET_OTP_FOR_MOBILE(@Url String url,
                                            @Header("Authorization") String accessToken,
                                            @Body MobileLoginApiBody mobileLoginApiBody);
@@ -242,7 +249,9 @@ public interface ApiInterface {
                                                                     @Header("Authorization") String accessToken,
                                                                     @Header("X-TOKEN") String xToken,
                                                                     @Body AbhaProfileRequestBody abhaProfileRequestBody);
-
+    @GET
+    Single<ExistUserStatusResponse> checkExistingUser(@Url String url,
+                                                    @Header("Authorization") String authHeader);
     @GET
     Single<AbhaCardResponseBody> GET_ABHA_CARD(@Url String url,
                                                @Header("Authorization") String accessToken,

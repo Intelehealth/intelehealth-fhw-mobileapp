@@ -5,21 +5,43 @@ package org.intelehealth.app.abdm.model;
  * Email: prajwalwaingankar@gmail.com
  * Mobile: +917304154312
  **/
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class AadharApiBody {
 
-    @SerializedName("aadhar")
+    @SerializedName("value")
     @Expose
-    private String aadhar;
+    private String value;
+    @SerializedName("scope")
+    @Expose
+    private String scope;
+    @SerializedName("txnId")
+    @Expose
+    private String txnId;
 
-    public String getAadhar() {
-        return aadhar;
+    public String getValue() {
+        return value;
     }
 
-    public void setAadhar(String aadhar) {
-        this.aadhar = aadhar;
+    public void setValue(String value) {
+        this.value = value;
     }
 
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public String getTxnId() {
+        return txnId;
+    }
+
+    public void setTxnId(String txnId) {
+        this.txnId = txnId;
+    }
 }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/llParents"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="@dimen/space_20dp"
+    tools:context=".abdm.MobileNumberOtpVerificationDialog">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/padding_20"
+        android:text="@string/_6_digit_otp_sent_on_your_registered_number_nplease_check_and_enter_the_otp"
+        />
+
+    <com.mukesh.OtpView
+        android:id="@+id/otpBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:itemBackground="@color/fade_color"
+        app:OtpLineColor="@color/colorPrimaryDark"
+        android:focusableInTouchMode="true"
+        app:OtpItemCount="6"
+        app:OtpViewType="line"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:paddingBottom="@dimen/margin_20dp"
+        tools:text="123456"/>
+    <RelativeLayout
+        android:id="@+id/rl_resendOTP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_40dp"
+        android:orientation="horizontal"
+       >
+
+        <TextView
+            android:id="@+id/resendTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_otp_received"
+            android:textColor="@color/textColorGray"
+            android:textSize="@dimen/common_label_text_size" />
+
+        <TextView
+            android:id="@+id/resendBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/resendTxt"
+            android:layout_marginStart="@dimen/tv_resend_otp_margin_start"
+            android:text="@string/resend"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/common_label_text_size" />
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/sendOtpBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:background="@drawable/ui2_common_primary_bg_with_state"
+        android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+        android:drawableTint="@color/iconTintWhite"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:paddingStart="@dimen/common_button_padding_left"
+        android:paddingTop="@dimen/common_button_padding_top"
+        android:paddingEnd="@dimen/common_button_padding_right"
+        android:paddingBottom="@dimen/common_button_padding_bottom"
+        android:text="@string/send_otp" />
+
+
+</LinearLayout>
+</layout>

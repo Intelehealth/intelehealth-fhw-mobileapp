@@ -1909,4 +1909,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="please_enter_abha_number_or_abha_address">Please enter ABHA number or ABHA address</string>
     <string name="or">Or</string>
     <string name="aadhar_number_is_not_valid">Aadhar number is not valid</string>
+    <string name="please_enter_valid_otp">Please enter valid otp</string>
+    <string name="_6_digit_otp_sent_on_your_registered_number_nplease_check_and_enter_the_otp">6-digit OTP sent on your registered number.\nPlease check and enter the OTP.</string>
+    <string name="resend">Resend</string>
 </resources>

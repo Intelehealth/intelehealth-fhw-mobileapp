@@ -109,6 +109,10 @@ public class UrlModifiers {
         Log.d("TAG", "getAadharOTPVerificationUrl: " + BuildConfig.SERVER_URL + "/abha/enrollOTPReq");
         return BuildConfig.SERVER_URL + "/abha/enrollOTPReq";
     }
+    public static String getEnrollByAbdmUrl() {
+        Log.d("TAG", "getEnrollByAbdmUrl: " + BuildConfig.SERVER_URL + "/abha/enrollByAbdm");
+        return BuildConfig.SERVER_URL + "/abha/enrollByAbdm";
+    }
 
     public static String getOTPForVerificationUrl() {
         return BuildConfig.SERVER_URL + "/abha/enrollByAadhar";
@@ -128,6 +132,9 @@ public class UrlModifiers {
     }
     public static String getABHAProfileUrl() {
         return BuildConfig.SERVER_URL + "/abha/profile";
+    }
+    public static String getCheckExistingUserUrl() {
+        return BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/check/id/";
     }
     public static String getABHACardUrl() {
         return BuildConfig.SERVER_URL + "/abha/getCard";

@@ -1,7 +1,11 @@
 package org.intelehealth.app.abdm.activity;
 
+import static org.intelehealth.app.abdm.ABDMConstant.BUNDLE_KEY;
+import static org.intelehealth.app.abdm.ABDMConstant.INTENT_PATIENT_UUID;
+import static org.intelehealth.app.abdm.ABDMConstant.PERSONAL_EDIT;
 import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -20,13 +24,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.ajalt.timberkt.Timber;
+
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.ABDMConstant;
+import org.intelehealth.app.abdm.MobileNumberOtpVerificationDialog;
 import org.intelehealth.app.abdm.model.AadharApiBody;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
+import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
@@ -319,7 +328,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             SCOPE = "aadhar";
             mobileLoginApiBody.setValue(Objects.requireNonNull(binding.layoutHaveABHANumber.edittextUsername.getText()).toString().trim()); // aadhar value.
         } else if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("abha")) {
-            SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? "abha-address" : "abha-number";
+            SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? ABDMConstant.SCOPE_ABHA_ADDRESS : ABDMConstant.SCOPE_ABHA_NUMBER;
             String value = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString() : formatIntoAbhaString(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().toString());
             mobileLoginApiBody.setValue(value); // mobile value.
 
@@ -387,7 +396,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         else
             aadharNo = binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().trim();
 
-        aadharApiBody.setAadhar(aadharNo);
+        aadharApiBody.setScope(ABDMConstant.SCOPE_AADHAR);
+        aadharApiBody.setValue(aadharNo);
         String url = UrlModifiers.getAadharOTPVerificationUrl();
 
         Single<OTPResponse> responseBodySingle = AppConstants.apiInterface.GET_OTP_FOR_AADHAR(url, accessToken, aadharApiBody);
@@ -456,10 +466,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         requestBody.setOtp(otp);
 
         if (abhaCard)
-            SCOPE = "aadhar";
+            SCOPE = ABDMConstant.SCOPE_AADHAR;
 
         if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("abha")) {
-            SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? "abha-address" : "abha-number";
+            SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? ABDMConstant.SCOPE_ABHA_ADDRESS : ABDMConstant.SCOPE_ABHA_NUMBER;
         }
 
         requestBody.setScope(SCOPE);
@@ -477,8 +487,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 cpd.dismiss();
 
                                 Log.d("callOTPForMobileLoginVerificationApi", "onSuccess: " + mobileLoginOnOTPVerifiedResponse.toString());
-                                if (mobileLoginOnOTPVerifiedResponse!=null && SCOPE.equalsIgnoreCase("abha-address"))
-                                {
+                                if (mobileLoginOnOTPVerifiedResponse != null && SCOPE.equalsIgnoreCase("abha-address")) {
                                     String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
                                     callFetchUserProfileAPI(null, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
                                     return;
@@ -594,10 +603,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         AbhaProfileRequestBody requestBody = new AbhaProfileRequestBody();
         requestBody.setTxnId(txnId);
         requestBody.setAbhaNumber(abhaNumber);
+        cpd.show();
 
-        if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("abha"))
-        {
-            requestBody.setScope(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? "abha-address" : "abha-number");
+        if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("abha")) {
+            requestBody.setScope(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? ABDMConstant.SCOPE_ABHA_ADDRESS : ABDMConstant.SCOPE_ABHA_NUMBER);
         }
         // payload - end
 
@@ -612,23 +621,63 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                         .subscribe(new DisposableSingleObserver<AbhaProfileResponse>() {
                             @Override
                             public void onSuccess(AbhaProfileResponse abhaProfileResponse) {
-                                Log.d("callFetchUserProfileAPI", "onSuccess: " + abhaProfileResponse);
-                                Intent intent;
-                                // ie. only 1 account exists.
-                                intent = new Intent(context, IdentificationActivity_New.class);
-                                intent.putExtra("mobile_payload", abhaProfileResponse);
-                                intent.putExtra("accessToken", accessToken);
-                                startActivity(intent);
-                                finish();
+                                cpd.dismiss();
+                                Timber.tag("callFetchUserProfileAPI").d("onSuccess: %s", abhaProfileResponse);
+                                checkUserExist(abhaProfileResponse.getPreferredAbhaAddress(),abhaProfileResponse);
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.e("callFetchUserProfileAPI", "onError: " + e.toString());
+                                cpd.dismiss();
+                                Timber.tag("callFetchUserProfileAPI").e("onError: %s", e.toString());
                             }
                         });
             }
         }).start();
+
+    }
+
+    private void checkUserExist(String abhaAddress, AbhaProfileResponse abhaProfileResponse) {
+
+        sessionManager = new SessionManager(context);
+        String encoded = sessionManager.getEncoded();
+        String url = UrlModifiers.getCheckExistingUserUrl();
+        cpd.show();
+        // payload - end
+        Single<ExistUserStatusResponse> abhaProfileResponseSingle =
+                AppConstants.apiInterface.checkExistingUser(url + abhaAddress, "Basic " + encoded);
+        new Thread(() -> abhaProfileResponseSingle
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<>() {
+                    @Override
+                    public void onSuccess(ExistUserStatusResponse response) {
+                        cpd.dismiss();
+                        Timber.tag("checkExistingUserAPI").d("onSuccess: %s", response);
+                        Intent intent;
+                        if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
+                            abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
+                            abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
+                            intent = new Intent(context, IdentificationActivity_New.class);
+                            intent.putExtra("mobile_payload", abhaProfileResponse);
+                            intent.putExtra("accessToken", accessToken);
+                            intent.putExtra(INTENT_PATIENT_UUID, response.getData().getUuid());
+                            startActivity(intent);
+                        } else {
+                            intent = new Intent(context, IdentificationActivity_New.class);
+                            intent.putExtra("mobile_payload", abhaProfileResponse);
+                            intent.putExtra("accessToken", accessToken);
+                            startActivity(intent);
+                        }
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        cpd.dismiss();
+                        Timber.tag("checkExistingUserAPI").e("onError: %s", e.toString());
+                    }
+                })).start();
 
     }
 
@@ -680,11 +729,25 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                     callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
                                 } else {
                                     // Already user exist -> than take to Patient Registration screen.
-                                    Intent intent = new Intent(context, IdentificationActivity_New.class);
-                                    intent.putExtra("payload", otpVerificationResponse);
-                                    intent.putExtra("accessToken", accessToken);
-                                    startActivity(intent);
-                                    finish();
+
+
+                                    if (otpVerificationResponse.getABHAProfile().getMobile() != null && otpVerificationResponse.getABHAProfile().getMobile().equalsIgnoreCase(mobileNo)) {
+                                        Intent intent = new Intent(context, IdentificationActivity_New.class);
+                                        intent.putExtra("payload", otpVerificationResponse);
+                                        intent.putExtra("accessToken", accessToken);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();
+                                        dialog.openMobileNumberVerificationDialog(accessToken, otpVerificationResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
+                                            Intent intent = new Intent(context, IdentificationActivity_New.class);
+                                            intent.putExtra("payload", otpVerificationResponse);
+                                            intent.putExtra("accessToken", accessToken);
+                                            startActivity(intent);
+                                            finish();
+                                        });
+                                        dialog.show(getSupportFragmentManager(), "");
+                                    }
                                 }
                             }
 
