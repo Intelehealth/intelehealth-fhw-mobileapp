@@ -70,7 +70,7 @@ import java.util.Locale;
  * Contact me: contact@amal.io
  */
 public class Node implements Serializable {
-
+    private boolean isDataCapture;
     private String validation = ""; // MAX_TODAY , MIN_TODAY
     private String id;
     private String text;
@@ -1794,6 +1794,7 @@ public class Node implements Serializable {
                                 //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                             }
                             node.setSelected(true);
+                            node.setDataCapture(true);
                         } else {
                             if (node.isRequired()) {
                                 node.setSelected(false);
@@ -1808,7 +1809,8 @@ public class Node implements Serializable {
                             }
                         }
 
-                        adapter.notifyDataSetChanged();
+
+                        adapter.notifyItemChanged(adapter.getCurrentPosition());
                         //TODO:: Check if the language is actually what is intended to be displayed
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -1833,7 +1835,11 @@ public class Node implements Serializable {
         /*if (node.validation.equals("MAX_TODAY")) {
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         }*/
-        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+        if (node.getValidation().equalsIgnoreCase("MIN_TODAY")) {
+            datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis() - 10000);
+        } else {
+            datePickerDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis() - 10000);
+        }
         datePickerDialog.setCanceledOnTouchOutside(false);
         datePickerDialog.setCancelable(false);
         datePickerDialog.show();
@@ -2595,6 +2601,7 @@ public class Node implements Serializable {
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
                         node.setSelected(true);
+                        node.setDataCapture(true);
                         adapter.notifyDataSetChanged();
                         //TODO:: Check if the language is actually what is intended to be displayed
                     }
@@ -2619,7 +2626,12 @@ public class Node implements Serializable {
         /*if (node.validation.equals("MAX_TODAY")) {
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         }*/
-        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+        if (node.getValidation().equalsIgnoreCase("MIN_TODAY")) {
+            datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis() - 10000);
+        } else {
+            datePickerDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis() - 10000);
+        }
+        //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
 
@@ -4485,7 +4497,7 @@ public class Node implements Serializable {
         stringBuilder.append("\n");
         for (int i = 0; i < optionsList.size(); i++) {
             Node node = optionsList.get(i);
-            if (node.isRequired()) {
+            if (node.isRequired() & !node.getHidden()) {
                 if (node.optionsList != null && !node.optionsList.isEmpty()) {
                     if (!node.isSelected() || !node.anySubSelected() || (node.isSelected() && !isNestedMandatoryOptionsAnswered(node))) {
                         switch (locale) {
@@ -4771,6 +4783,22 @@ public class Node implements Serializable {
 
     public void setHidden(Boolean hidden) {
         isHidden = hidden;
+    }
+
+    public String getValidation() {
+        return validation;
+    }
+
+    public void setValidation(String validation) {
+        this.validation = validation;
+    }
+
+    public boolean isDataCapture() {
+        return isDataCapture;
+    }
+
+    public void setDataCapture(boolean dataCapture) {
+        isDataCapture = dataCapture;
     }
 
   /*  public Boolean getFlowEnd() {

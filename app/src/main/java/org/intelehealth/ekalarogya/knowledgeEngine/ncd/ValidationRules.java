@@ -13,6 +13,12 @@ public class ValidationRules {
     private String sourceDataType;
     private String sourceData;
     private String check;
+
+    // if true then we can consider its an inbound logic and will check the validation rules to autofill the inner options data
+    private boolean isSelfCheck;
+
+    // this represent the type of action need to do after rules satisfied
+    private String actionType;
     private List<Action> actionList;
 
     public ValidationRules(JSONObject jsonObject) {
@@ -20,6 +26,8 @@ public class ValidationRules {
         this.sourceDataType = jsonObject.optString("source-data-type");
         this.sourceData = jsonObject.optString("source-data");
         this.check = jsonObject.optString("check");
+        this.isSelfCheck = jsonObject.optBoolean("is-self-check");
+        this.actionType = jsonObject.optString("action-type");
 
         JSONArray tempArray = jsonObject.optJSONArray("action");
         if (tempArray != null) {
@@ -80,6 +88,22 @@ public class ValidationRules {
 
     public void setActionList(List<Action> actionList) {
         this.actionList = actionList;
+    }
+
+    public boolean isSelfCheck() {
+        return isSelfCheck;
+    }
+
+    public void setSelfCheck(boolean selfCheck) {
+        isSelfCheck = selfCheck;
+    }
+
+    public String getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
     }
 }
 

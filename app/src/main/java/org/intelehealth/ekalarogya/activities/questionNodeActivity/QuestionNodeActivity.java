@@ -94,7 +94,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     ArrayList<String> complaints; //list of complaints going to be used
     List<Node> complaintsNodes; //actual nodes to be used
     ArrayList<String> physicalExams;
-    Node currentNode;
+    private Node mCurrentNode;
     // CustomExpandableListAdapter adapter;
     QuestionsAdapter mQuestionListingadapter;
     boolean nodeComplete = false;
@@ -245,14 +245,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
 
     public void onListClicked(View v, int groupPosition, int childPosition) {
-        Log.e(TAG, "CLICKED: " + currentNode.getOption(groupPosition).toString());
-        if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
-            Node question = currentNode.getOption(groupPosition).getOption(childPosition);
+        Log.e(TAG, "CLICKED: " + mCurrentNode.getOption(groupPosition).toString());
+        if ((mCurrentNode.getOption(groupPosition).getChoiceType().equals("single")) && !mCurrentNode.getOption(groupPosition).anySubSelected()) {
+            Node question = mCurrentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
-            if (currentNode.getOption(groupPosition).anySubSelected()) {
-                currentNode.getOption(groupPosition).setSelected(true);
+            if (mCurrentNode.getOption(groupPosition).anySubSelected()) {
+                mCurrentNode.getOption(groupPosition).setSelected(true);
             } else {
-                currentNode.getOption(groupPosition).setUnselected();
+                mCurrentNode.getOption(groupPosition).setUnselected();
             }
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
@@ -272,7 +272,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 Node.subLevelQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
                 //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
-        } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
+        } else if ((mCurrentNode.getOption(groupPosition).getChoiceType().equals("single")) && mCurrentNode.getOption(groupPosition).anySubSelected()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
@@ -287,29 +287,30 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         } else {
 
-            Node question = currentNode.getOption(groupPosition).getOption(childPosition);
+            Node question = mCurrentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
-            if (currentNode.getOption(groupPosition).anySubSelected()) {
-                currentNode.getOption(groupPosition).setSelected(true);
+            if (mCurrentNode.getOption(groupPosition).anySubSelected()) {
+                mCurrentNode.getOption(groupPosition).setSelected(true);
             } else {
-                currentNode.getOption(groupPosition).setUnselected();
+                mCurrentNode.getOption(groupPosition).setUnselected();
             }
 
-            if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
-                    && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
-                    && !currentNode.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
-                    && !currentNode.findDisplay().equalsIgnoreCase("संबद्ध लक्षणे")
-                    && !currentNode.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
-                    && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
-                    && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
-                    && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
+            if (!mCurrentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("संबद्ध लक्षणे")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
                 //code added to handle multiple and single option selection.
-                Node rootNode = currentNode.getOption(groupPosition);
+                Node rootNode = mCurrentNode.getOption(groupPosition);
                 if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
                     for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
                         Node childNode = rootNode.getOptionsList().get(i);
                         if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
-                            currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                            mCurrentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                            mCurrentNode.getOption(groupPosition).getOptionsList().get(i).setDataCapture(false);
                         }
                     }
                 }
@@ -319,7 +320,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
                         Node childNode = rootNode.getOptionsList().get(i);
                         if (!childNode.getId().equals(question.getId())) {
-                            currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                            mCurrentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                            mCurrentNode.getOption(groupPosition).getOptionsList().get(i).setDataCapture(false);
                         }
                     }
                 }
@@ -355,7 +357,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     private void fabClick() {
         nodeComplete = true;
 
-        AnswerResult answerResult = currentNode.checkAllRequiredAnswered(context);
+        AnswerResult answerResult = mCurrentNode.checkAllRequiredAnswered(context);
         if (!answerResult.result) {
             // show alert dialog
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
@@ -376,7 +378,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         if (!complaintConfirmed) {
             questionsMissing();
         } else {
-            List<String> imagePathList = currentNode.getImagePathList();
+            List<String> imagePathList = mCurrentNode.getImagePathList();
 
             if (imagePathList != null) {
                 for (String imagePath : imagePathList) {
@@ -384,26 +386,26 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 }
             }
 
-            String complaintString = currentNode.generateLanguage();
-            String complaintString_REG = currentNode.generateRegional_Language(sessionManager.getAppLanguage());
-            String complaint = currentNode.getText();
+            String complaintString = mCurrentNode.generateLanguage();
+            String complaintString_REG = mCurrentNode.generateRegional_Language(sessionManager.getAppLanguage());
+            String complaint = mCurrentNode.getText();
             String complaint_REG = "";
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                complaint_REG = currentNode.getDisplay_hindi();
+                complaint_REG = mCurrentNode.getDisplay_hindi();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
-                complaint_REG = currentNode.getDisplay_bengali();
+                complaint_REG = mCurrentNode.getDisplay_bengali();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
-                complaint_REG = currentNode.getDisplay_kannada();
+                complaint_REG = mCurrentNode.getDisplay_kannada();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
-                complaint_REG = currentNode.getDisplay_marathi();
+                complaint_REG = mCurrentNode.getDisplay_marathi();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("or"))
-                complaint_REG = currentNode.getDisplay_oriya();
+                complaint_REG = mCurrentNode.getDisplay_oriya();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
-                complaint_REG = currentNode.getDisplay_gujarati();
+                complaint_REG = mCurrentNode.getDisplay_gujarati();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("as"))
-                complaint_REG = currentNode.getDisplay_assamese();
+                complaint_REG = mCurrentNode.getDisplay_assamese();
             else
-                complaint_REG = currentNode.getDisplay();
+                complaint_REG = mCurrentNode.getDisplay();
 
             if (complaintString != null && !complaintString.isEmpty()) {
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
@@ -415,7 +417,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 }
             }
 
-            ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
+            ArrayList<String> selectedAssociatedComplaintsList = mCurrentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
                 for (String associatedComplaint : selectedAssociatedComplaintsList) {
                     if (!complaints.contains(associatedComplaint)) {
@@ -428,11 +430,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 }
             }
 
-            ArrayList<String> childNodeSelectedPhysicalExams = currentNode.getPhysicalExamList();
+            ArrayList<String> childNodeSelectedPhysicalExams = mCurrentNode.getPhysicalExamList();
             if (!childNodeSelectedPhysicalExams.isEmpty())
                 physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
-            ArrayList<String> rootNodePhysicalExams = parseExams(currentNode);
+            ArrayList<String> rootNodePhysicalExams = parseExams(mCurrentNode);
             if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
                 physicalExams.addAll(rootNodePhysicalExams); //For Root Node
 
@@ -619,27 +621,28 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         if (complaints.size() >= 1) {
             getAssociatedSymptoms(complaintIndex);
         } else {
-            currentNode = complaintsNodes.get(complaintIndex);
-            setupUI(currentNode);
+            mCurrentNode = complaintsNodes.get(complaintIndex);
+            setupUI(mCurrentNode);
         }
 
         mgender = PatientsDAO.fetch_gender(patientUuid);
 
-        if (currentNode != null) {
+        if (mCurrentNode != null) {
             if (mgender.equalsIgnoreCase("M")) {
-                currentNode.fetchItem("0");
+                mCurrentNode.fetchItem("0");
             } else if (mgender.equalsIgnoreCase("F")) {
-                currentNode.fetchItem("1");
+                mCurrentNode.fetchItem("1");
             }
 
             // flaoting value of age is passed to Node for comparison...
-            currentNode.fetchAge(float_ageYear_Month);
+            mCurrentNode.fetchAge(float_ageYear_Month);
 
 
-            mQuestionListingadapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
+            mQuestionListingadapter = new QuestionsAdapter(this, mCurrentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
             question_recyclerView.setAdapter(mQuestionListingadapter);
+            mQuestionListingadapter.setForNCDProtocol(mCurrentNode.getIsNcdProtocol());
             recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
-            setTitle(patientName + ": " + currentNode.findDisplay());
+            setTitle(patientName + ": " + mCurrentNode.findDisplay());
         } else {
             Toast.makeText(context, context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             return;
@@ -666,8 +669,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                             Toast.makeText(QuestionNodeActivity.this, "Please answer!", Toast.LENGTH_SHORT).show();
                         } else {
                             //mCurrentNodeIndex += 1;
-                            NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex));
+                            NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false);
 
+                            mCurrentNode = ncdValidationResult.getUpdatedNode();
                             if (ncdValidationResult.isReadyToEndTheScreening()) {
                                 Toast.makeText(QuestionNodeActivity.this, "Screening done!", Toast.LENGTH_SHORT).show();
                             } else {
@@ -676,13 +680,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                     question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
                                     decideToDisplayTheActionButtons();
                                 } else {
-                                    for (int i = 0; i < currentNode.getOptionsList().size(); i++) {
-                                        Node tempNode = currentNode.getOptionsList().get(i);
+                                    for (int i = 0; i < mCurrentNode.getOptionsList().size(); i++) {
+                                        Node tempNode = mCurrentNode.getOptionsList().get(i);
                                         if (tempNode.getId().equals(ncdValidationResult.getTargetNodeID())) {
                                             mCurrentNodeIndex = i;
                                         }
                                     }
-                                    Log.v(TAG, currentNode.toString());
+                                    Log.v(TAG, mCurrentNode.toString());
                                     question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
                                     decideToDisplayTheActionButtons();
                                 }
@@ -717,6 +721,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             forwardButton.setVisibility(View.VISIBLE);
             backButton.setVisibility(View.VISIBLE);
         }
+        fab.setVisibility(View.GONE);
     }
 
     private void getAssociatedSymptoms(int complaintIndex) {
@@ -746,12 +751,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
                     assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
-                    currentNode = assoComplaintsNodes.get(complaintIndex);
+                    mCurrentNode = assoComplaintsNodes.get(complaintIndex);
                     //   Log.e("CurrentNode", "" + currentNode);
-                    setupUI(currentNode);
+                    setupUI(mCurrentNode);
                 } else {
-                    currentNode = complaintsNodes.get(complaintIndex);
-                    setupUI(currentNode);
+                    mCurrentNode = complaintsNodes.get(complaintIndex);
+                    setupUI(mCurrentNode);
                 }
             }
         }
@@ -817,24 +822,25 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             assoSympNode.getOptionsList().get(0).setOptionsList(finalOptionsList);
             assoSympNode.getOptionsList().get(0).setTerminal(false);
 
-            currentNode = assoSympNode;
+            mCurrentNode = assoSympNode;
 
             mgender = PatientsDAO.fetch_gender(patientUuid);
 
-            if (currentNode != null) {
+            if (mCurrentNode != null) {
                 if (mgender.equalsIgnoreCase("M")) {
-                    currentNode.fetchItem("0");
+                    mCurrentNode.fetchItem("0");
                 } else if (mgender.equalsIgnoreCase("F")) {
-                    currentNode.fetchItem("1");
+                    mCurrentNode.fetchItem("1");
                 }
 
                 // flaoting value of age is passed to Node for comparison...
-                currentNode.fetchAge(float_ageYear_Month);
+                mCurrentNode.fetchAge(float_ageYear_Month);
 
-                mQuestionListingadapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
+                mQuestionListingadapter = new QuestionsAdapter(this, mCurrentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
                 question_recyclerView.setAdapter(mQuestionListingadapter);
+                mQuestionListingadapter.setForNCDProtocol(mCurrentNode.getIsNcdProtocol());
                 //setTitle(patientName + ": " + currentNode.getText());
-                setTitle(patientName + ": " + currentNode.findDisplay());
+                setTitle(patientName + ": " + mCurrentNode.findDisplay());
             }
         }
     }
@@ -848,7 +854,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        String currentNodeVal = node_fetch_local_language(context, sessionManager, currentNode);
+        String currentNodeVal = node_fetch_local_language(context, sessionManager, mCurrentNode);
         alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
 
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
@@ -887,8 +893,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                currentNode.setImagePath(mCurrentPhotoPath);
-                currentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
+                mCurrentNode.setImagePath(mCurrentPhotoPath);
+                mCurrentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
             }
         }
     }

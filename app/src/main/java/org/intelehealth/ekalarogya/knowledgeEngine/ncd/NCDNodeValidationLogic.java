@@ -27,23 +27,24 @@ public class NCDNodeValidationLogic {
      * @param selectedNode
      * @return An instance of NCDValidationResult representing the result of the validation.
      */
-    public static NCDValidationResult validateAndFindNextPath(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode) {
+    public static NCDValidationResult validateAndFindNextPath(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode, boolean isInboundRequest) {
         NCDValidationResult ncdValidationResult = new NCDValidationResult();
         boolean isFlowEnd = selectedNode.getFlowEnd();
         ValidationRules validationRules = selectedNode.getValidationRules();
-        for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
-            if (selectedNode.getOptionsList().get(i).isSelected()) {
-                validationRules = selectedNode.getOptionsList().get(i).getValidationRules();
+        if (!isInboundRequest)
+            for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
+                if (selectedNode.getOptionsList().get(i).isSelected()) {
+                    validationRules = selectedNode.getOptionsList().get(i).getValidationRules();
+                }
             }
-        }
 
         if (validationRules != null) {
             if (validationRules.getType().equalsIgnoreCase("NAVIGATE")) {
                 return checkForNavigationType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode, validationRules);
             } else if (validationRules.getCheck().equalsIgnoreCase("RANGE_TEXT")) {
-                return checkForRangeTextType(mmRootNode, selectedRootIndex, selectedNode);
+                return checkForRangeTextType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode);
             } else if (validationRules.getCheck().equalsIgnoreCase("TEXT_DATE")) {
-                return checkForTextDateType(mmRootNode, selectedRootIndex, selectedNode);
+                return checkForTextDateType(context, patientUUID,mmRootNode, selectedRootIndex, selectedNode, validationRules);
 
             }
         } else {
@@ -101,8 +102,15 @@ public class NCDNodeValidationLogic {
                     Node tempNode = mmRootNode.getOptionsList().get(i);
                     if (i != selectedRootIndex) {
                         if (actionResult.getTarget().equalsIgnoreCase(tempNode.getText())) {
+                            // found the target node
                             mmRootNode.getOptionsList().get(i).setHidden(false);
                             ncdValidationResult.setTargetNodeID(mmRootNode.getOptionsList().get(i).getId());
+                            // check if it required the autofill for target node
+                            // "is-auto-fill": true,
+                            if (tempNode.getAutoFill()) {
+                                // need to again parse the
+                                NCDValidationResult targetNcdValidationResult = validateAndFindNextPath(context, patientUUID, mmRootNode, i, tempNode, true);
+                            }
                         } else {
                             mmRootNode.getOptionsList().get(i).setHidden(true);
                         }
@@ -111,7 +119,8 @@ public class NCDNodeValidationLogic {
                     }
 
                 }
-
+                ncdValidationResult.setReadyToEndTheScreening(false);
+                ncdValidationResult.setUpdatedNode(mmRootNode);
 
             }
 
@@ -130,11 +139,11 @@ public class NCDNodeValidationLogic {
      * @param selectedNode
      * @return
      */
-    private static NCDValidationResult checkForRangeTextType(Node mmRootNode, int selectedRootIndex, Node selectedNode) {
+    private static NCDValidationResult checkForRangeTextType(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode) {
         return new NCDValidationResult();
     }
 
-    private static NCDValidationResult checkForTextDateType(Node mmRootNode, int selectedRootIndex, Node selectedNode) {
+    private static NCDValidationResult checkForTextDateType(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode, ValidationRules validationRulese) {
         return new NCDValidationResult();
     }
 
