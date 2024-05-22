@@ -63,6 +63,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -150,7 +151,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
-    patientAbhaNumber, patientAbhaAddress;
+            patientAbhaNumber, patientAbhaAddress;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -248,12 +249,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 if (args.containsKey(PAYLOAD)) {
                     otpVerificationResponse = (OTPVerificationResponse) args.getSerializable(PAYLOAD);
                     if (otpVerificationResponse != null) {
-                      //  setAutoFillValuesViaAadhar(otpVerificationResponse);
+                        //  setAutoFillValuesViaAadhar(otpVerificationResponse);
                     }
                 } else if (args.containsKey(MOBILE_PAYLOAD)) {
                     abhaProfileResponse = (AbhaProfileResponse) args.getSerializable(MOBILE_PAYLOAD);
                     if (abhaProfileResponse != null) {
-                      //  setAutoFillValuesViaMobile(abhaProfileResponse);
+                        //  setAutoFillValuesViaMobile(abhaProfileResponse);
                     }
                 }
             }
@@ -1182,39 +1183,42 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientstate.setText(getStateTranslated(state, sessionManager.getAppLanguage()));
 
         // setting district and city
-        String[] district_city = patientDTO.getCityvillage().trim().split(":");
-        String district = null;
+        String[] district_city = null;
+        if (!TextUtils.isEmpty(patientDTO.getCityvillage()))
+        {
+            district_city=  patientDTO.getCityvillage().trim().split(":");
+        }
+            String district = null;
         String city_village = null;
-        if (district_city.length == 2) {
+        if (district_city != null && district_city.length == 2) {
             district = district_city[0];
             city_village = district_city[1];
         }
 
         // district = start
-            if (district != null) {
-                try {
-                    patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
-                }
-                catch (Exception e) {
-                   // if (otpVerificationResponse != null || abhaProfileResponse != null) {
-                        if (district != null)
-                            patientdistrict.setText(district);
-                        else
-                            patientdistrict.setText(getResources().getString(R.string.no_district_added));
-                  //  }
-                }
-
-            } else {
-                patientdistrict.setText(getResources().getString(R.string.no_district_added));
+        if (district != null) {
+            try {
+                patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
+            } catch (Exception e) {
+                // if (otpVerificationResponse != null || abhaProfileResponse != null) {
+                if (district != null)
+                    patientdistrict.setText(district);
+                else
+                    patientdistrict.setText(getResources().getString(R.string.no_district_added));
+                //  }
             }
+
+        } else {
+            patientdistrict.setText(getResources().getString(R.string.no_district_added));
+        }
         // district = end
 
         // city - start
-            if (city_village != null) {
-                village.setText(city_village);
-            } else {
-                village.setText(getResources().getString(R.string.no_city_added));
-            }
+        if (city_village != null) {
+            village.setText(city_village);
+        } else {
+            village.setText(getResources().getString(R.string.no_city_added));
+        }
         // end - city and district
 
         // setting postal code

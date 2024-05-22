@@ -206,13 +206,18 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
             if (getArguments().containsKey(PAYLOAD)) {
                 otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
-                if (otpVerificationResponse != null)
+                if (otpVerificationResponse != null) {
                     setAutoFillValuesViaAadhar(otpVerificationResponse);
-            }
-            else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
+                    patientdto.setOpenmrsId(otpVerificationResponse.getOpenMrsId());
+                    patientdto.setUuid(otpVerificationResponse.getUuID());
+                }
+            } else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
                 abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
-                if (abhaProfileResponse != null)
+                if (abhaProfileResponse != null) {
                     setAutoFillValuesViaMobile(abhaProfileResponse);
+                    patientdto.setOpenmrsId(abhaProfileResponse.getOpenMrsId());
+                    patientdto.setUuid(abhaProfileResponse.getUuiD());
+                }
             }
         }
 
@@ -872,9 +877,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private void onPatientCreateClicked() {
         uuid = UUID.randomUUID().toString();
         Log.v(TAG, "reltion: " + patientID_edit + ", " + patientdto.toString());
-        if (patient_detail) {
-        } else {
+        if (!patient_detail && patientdto.getUuid().isEmpty()) {
             patientdto.setUuid(uuid);
+        }else {
+            patientdto.setIsExist(true);
         }
 
         if (mFirstNameEditText.getText().toString().equals("")) {

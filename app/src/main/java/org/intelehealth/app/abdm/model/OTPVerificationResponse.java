@@ -34,6 +34,26 @@ public class OTPVerificationResponse implements Serializable {
     @Expose
     private Boolean isNew;
 
+    private String uuID;
+    private String openMrsId;
+
+
+    public String getUuID() {
+        return uuID;
+    }
+
+    public void setUuID(String uuID) {
+        this.uuID = uuID;
+    }
+
+    public String getOpenMrsId() {
+        return openMrsId;
+    }
+
+    public void setOpenMrsId(String openMrsId) {
+        this.openMrsId = openMrsId;
+    }
+
     public String getMessage() {
         return message;
     }

@@ -105,7 +105,7 @@ public class Fragment_ThirdScreen extends Fragment {
     private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
     private EditText mRelationNameEditText, mOccupationEditText, mNationalIDEditText,
-    mAbhaNumberEditText, mAbhaAddressEditText;
+            mAbhaNumberEditText, mAbhaAddressEditText;
     private Spinner mCasteSpinner, mEducationSpinner, mEconomicstatusSpinner;
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag3_btn_back, frag3_btn_next;
@@ -207,11 +207,10 @@ public class Fragment_ThirdScreen extends Fragment {
             // abdm - start
             if (getArguments().containsKey(PAYLOAD)) {
                 otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
-                    if (otpVerificationResponse != null) {
-                        setAutoFillValuesViaAadhar(otpVerificationResponse);
-                    }
-            }
-            else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
+                if (otpVerificationResponse != null) {
+                    setAutoFillValuesViaAadhar(otpVerificationResponse);
+                }
+            } else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
                 abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
                 if (abhaProfileResponse != null) {
                     setAutoFillValuesViaMobile(abhaProfileResponse);
@@ -597,65 +596,6 @@ public class Fragment_ThirdScreen extends Fragment {
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
         Gson gson = new Gson();
-        boolean cancel = false;
-        View focusView = null;
-
-        // validation - start
-        /*if (mRelationNameEditText.getText().toString().equals("")) {
-            mRelationNameErrorTextView.setVisibility(View.VISIBLE);
-            mRelationNameErrorTextView.setText(getString(R.string.error_field_required));
-            mRelationNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mRelationNameEditText.requestFocus();
-            return;
-        } else {
-            mRelationNameErrorTextView.setVisibility(View.GONE);
-            mRelationNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
-
-        if (mOccupationEditText.getText().toString().equals("")) {
-            mOccupationErrorTextView.setVisibility(View.VISIBLE);
-            mOccupationErrorTextView.setText(getString(R.string.error_field_required));
-            mOccupationEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mOccupationEditText.requestFocus();
-            return;
-        } else {
-            mOccupationErrorTextView.setVisibility(View.GONE);
-            mOccupationEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
-
-        if (mCasteSpinner.getSelectedItemPosition() == 0) {
-            mCasteErrorTextView.setVisibility(View.VISIBLE);
-            mCasteErrorTextView.setText(getString(R.string.error_field_required));
-            mCasteSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mCasteSpinner.requestFocus();
-            return;
-        } else {
-            mCasteErrorTextView.setVisibility(View.GONE);
-            mCasteSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
-        }
-
-        if (mEducationSpinner.getSelectedItemPosition() == 0) {
-            mEducationErrorTextView.setVisibility(View.VISIBLE);
-            mEducationErrorTextView.setText(getString(R.string.error_field_required));
-            mEducationSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mEducationSpinner.requestFocus();
-            return;
-        } else {
-            mEducationErrorTextView.setVisibility(View.GONE);
-            mEducationSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
-        }
-
-        if (mEconomicstatusSpinner.getSelectedItemPosition() == 0) {
-            mEconomicErrorTextView.setVisibility(View.VISIBLE);
-            mEconomicErrorTextView.setText(getString(R.string.error_field_required));
-            mEconomicstatusSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mEconomicstatusSpinner.requestFocus();
-            return;
-        } else {
-            mEconomicErrorTextView.setVisibility(View.GONE);
-            mEconomicstatusSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
-        }*/
-        // validation - end
 
 
         /**
@@ -765,8 +705,14 @@ public class Fragment_ThirdScreen extends Fragment {
                 isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
                 isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
             } else {
-                isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());
-                isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
+                if (patientDTO.getIsExist()) {
+                    isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
+                    isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
+                } else {
+                    isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());
+                    isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
+                }
+
             }
 
             if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.

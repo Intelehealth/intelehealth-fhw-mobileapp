@@ -3,6 +3,7 @@ package org.intelehealth.app.abdm.activity;
 import static org.intelehealth.app.abdm.ABDMConstant.BUNDLE_KEY;
 import static org.intelehealth.app.abdm.ABDMConstant.INTENT_PATIENT_UUID;
 import static org.intelehealth.app.abdm.ABDMConstant.PERSONAL_EDIT;
+import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
 import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
 
 import androidx.annotation.Nullable;
@@ -637,6 +638,50 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
     }
 
+    private void checkUserExist(String abhaAddress, OTPVerificationResponse abhaProfileResponse) {
+
+        sessionManager = new SessionManager(context);
+        String encoded = sessionManager.getEncoded();
+        String url = UrlModifiers.getCheckExistingUserUrl();
+        cpd.show();
+        // payload - end
+        Single<ExistUserStatusResponse> abhaProfileResponseSingle =
+                AppConstants.apiInterface.checkExistingUser(url + abhaAddress, "Basic " + encoded);
+        new Thread(() -> abhaProfileResponseSingle
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<>() {
+                    @Override
+                    public void onSuccess(ExistUserStatusResponse response) {
+                        cpd.dismiss();
+                        Timber.tag("checkExistingUserAPI").d("onSuccess: %s", response);
+                        Intent intent;
+                        if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
+                            abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
+                            abhaProfileResponse.setUuID(response.getData().getUuid());
+                            intent = new Intent(context, IdentificationActivity_New.class);
+                            intent.putExtra(PAYLOAD, abhaProfileResponse);
+                            intent.putExtra("accessToken", accessToken);
+                            intent.putExtra("patient_detail", true);
+                            startActivity(intent);
+                        } else {
+                            intent = new Intent(context, IdentificationActivity_New.class);
+                            intent.putExtra(PAYLOAD, abhaProfileResponse);
+                            intent.putExtra("accessToken", accessToken);
+                            startActivity(intent);
+                        }
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        cpd.dismiss();
+                        Timber.tag("checkExistingUserAPI").e("onError: %s", e.toString());
+                    }
+                })).start();
+
+    }
+
     private void checkUserExist(String abhaAddress, AbhaProfileResponse abhaProfileResponse) {
 
         sessionManager = new SessionManager(context);
@@ -657,11 +702,11 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                         Intent intent;
                         if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
                             abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
-                            abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
+                            abhaProfileResponse.setUuiD(response.getData().getUuid());
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
-                            intent.putExtra(INTENT_PATIENT_UUID, response.getData().getUuid());
+                            intent.putExtra("patient_detail", true);
                             startActivity(intent);
                         } else {
                             intent = new Intent(context, IdentificationActivity_New.class);
@@ -730,21 +775,13 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 } else {
                                     // Already user exist -> than take to Patient Registration screen.
 
-
                                     if (otpVerificationResponse.getABHAProfile().getMobile() != null && otpVerificationResponse.getABHAProfile().getMobile().equalsIgnoreCase(mobileNo)) {
-                                        Intent intent = new Intent(context, IdentificationActivity_New.class);
-                                        intent.putExtra("payload", otpVerificationResponse);
-                                        intent.putExtra("accessToken", accessToken);
-                                        startActivity(intent);
-                                        finish();
+                                        checkUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0),otpVerificationResponse);
                                     } else {
                                         MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();
                                         dialog.openMobileNumberVerificationDialog(accessToken, otpVerificationResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
-                                            Intent intent = new Intent(context, IdentificationActivity_New.class);
-                                            intent.putExtra("payload", otpVerificationResponse);
-                                            intent.putExtra("accessToken", accessToken);
-                                            startActivity(intent);
-                                            finish();
+                                            checkUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0),otpVerificationResponse);
+
                                         });
                                         dialog.show(getSupportFragmentManager(), "");
                                     }

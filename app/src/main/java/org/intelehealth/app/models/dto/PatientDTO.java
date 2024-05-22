@@ -87,6 +87,16 @@ public class PatientDTO implements Serializable {
     @Expose
     private String abhaNumber;
 
+    private Boolean isExist;
+
+    public Boolean getIsExist() {
+        return isExist;
+    }
+
+    public void setIsExist(Boolean isExist) {
+        this.isExist = isExist;
+    }
+
     public String getUuid() {
         return uuid;
     }
