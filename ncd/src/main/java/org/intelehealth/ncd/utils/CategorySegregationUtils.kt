@@ -20,55 +20,57 @@ class CategorySegregationUtils(private val resources: Resources) {
         when (category) {
 
             Constants.ANEMIA_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (isHistoryOfAnemiaPresent(attribute.value)) {
-                    removePatientsFromList(patientList, attribute)
-                }
-
-                if (isCurrentlyTakingAnemiaMedication(attribute.value) ||
-                    isThereAFollowUpWithAnemiaPHC(attribute.value)
+                if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(
+                        attribute.value
+                    ) || isThereAFollowUpWithAnemiaPHC(attribute.value))
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.ANEMIA_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfAnemiaPresent(attribute.value)) {
+                if (!isHistoryOfAnemiaPresent(attribute.value) || !isCurrentlyTakingAnemiaMedication(
+                        attribute.value
+                    ) && !isThereAFollowUpWithAnemiaPHC(attribute.value)
+                ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.DIABETES_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (isHistoryOfDiabetesPresent(attribute.value)) {
-                    removePatientsFromList(patientList, attribute)
-                }
-
-                if (isCurrentlyTakingDiabetesMedication(attribute.value) ||
-                    isThereAFollowUpWithDiabetesPHC(attribute.value)
+                if (isHistoryOfDiabetesPresent(attribute.value) && (isCurrentlyTakingDiabetesMedication(
+                        attribute.value
+                    ) || isThereAFollowUpWithDiabetesPHC(attribute.value))
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.DIABETES_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfDiabetesPresent(attribute.value)) {
+                if (!isHistoryOfDiabetesPresent(attribute.value) || !isCurrentlyTakingDiabetesMedication(
+                        attribute.value
+                    ) && !isThereAFollowUpWithDiabetesPHC(attribute.value)
+                ) {
                     removePatientsFromList(patientList, attribute)
+
                 }
             }
 
             Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (isHistoryOfHypertensionPresent(attribute.value)) {
-                    removePatientsFromList(patientList, attribute)
-                }
-
-                if (isCurrentlyTakingHypertensionMedication(attribute.value) ||
-                    isThereAFollowUpWithHypertensionPHC(attribute.value)
+                if (isHistoryOfHypertensionPresent(attribute.value) && (isCurrentlyTakingHypertensionMedication(
+                        attribute.value
+                    ) || isThereAFollowUpWithHypertensionPHC(attribute.value))
                 ) {
                     removePatientsFromList(patientList, attribute)
+
                 }
             }
 
             Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfHypertensionPresent(attribute.value)) {
+                if (!isHistoryOfHypertensionPresent(attribute.value) || !isCurrentlyTakingHypertensionMedication(
+                        attribute.value
+                    ) && !isThereAFollowUpWithHypertensionPHC(attribute.value)
+                ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
@@ -100,37 +102,37 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
 
         if (patientAge >= Constants.ANEMIA_EXCLUSION_AGE) {
-            if (!isHistoryOfAnemiaPresent(medicalHistoryJson)) {
-                if (!isCurrentlyTakingAnemiaMedication(medicalHistoryJson) ||
-                    !isThereAFollowUpWithAnemiaPHC(medicalHistoryJson)
-                ) {
-                    diseaseList.add(resources.getString(R.string.tab_anemia_screening))
-                }
-            } else {
+            if (!isHistoryOfAnemiaPresent(medicalHistoryJson) || !isCurrentlyTakingAnemiaMedication(
+                    medicalHistoryJson
+                ) && !isThereAFollowUpWithAnemiaPHC(medicalHistoryJson)
+            ) {
+                diseaseList.add(resources.getString(R.string.tab_anemia_screening))
+            }
+
+            if (isHistoryOfAnemiaPresent(medicalHistoryJson) && (isCurrentlyTakingAnemiaMedication(
+                    medicalHistoryJson
+                ) || isThereAFollowUpWithAnemiaPHC(medicalHistoryJson))
+            ) {
                 diseaseList.add(resources.getString(R.string.tab_anemia_follow_up))
             }
         }
 
         if (patientAge >= Constants.HYPERTENSION_EXCLUSION_AGE) {
-            if (!isHistoryOfHypertensionPresent(medicalHistoryJson)) {
-                if (isCurrentlyTakingDiabetesMedication(medicalHistoryJson) ||
-                    isThereAFollowUpWithDiabetesPHC(medicalHistoryJson)
-                ) {
-                    diseaseList.add(resources.getString(R.string.tab_hypertension_screening))
-                }
-            } else {
+            if (!isHistoryOfHypertensionPresent(medicalHistoryJson) || !isCurrentlyTakingHypertensionMedication(medicalHistoryJson) && !isThereAFollowUpWithHypertensionPHC(medicalHistoryJson)) {
+                diseaseList.add(resources.getString(R.string.tab_hypertension_screening))
+            }
+
+            if (isHistoryOfHypertensionPresent(medicalHistoryJson) && (isCurrentlyTakingHypertensionMedication(medicalHistoryJson) || isThereAFollowUpWithHypertensionPHC(medicalHistoryJson))) {
                 diseaseList.add(resources.getString(R.string.tab_hypertension_follow_up))
             }
         }
 
         if (patientAge >= Constants.DIABETES_EXCLUSION_AGE) {
-            if (!isHistoryOfDiabetesPresent(medicalHistoryJson)) {
-                if (isCurrentlyTakingHypertensionMedication(medicalHistoryJson) ||
-                    isThereAFollowUpWithHypertensionPHC(medicalHistoryJson)
-                ) {
-                    diseaseList.add(resources.getString(R.string.tab_diabetes_screening))
-                }
-            } else {
+            if (isHistoryOfDiabetesPresent(medicalHistoryJson) && (isCurrentlyTakingDiabetesMedication(medicalHistoryJson) || isThereAFollowUpWithDiabetesPHC(medicalHistoryJson))){
+                diseaseList.add(resources.getString(R.string.tab_diabetes_screening))
+            }
+
+            if (isHistoryOfDiabetesPresent(medicalHistoryJson) && (isCurrentlyTakingDiabetesMedication(medicalHistoryJson) || isThereAFollowUpWithDiabetesPHC(medicalHistoryJson))) {
                 diseaseList.add(resources.getString(R.string.tab_diabetes_follow_up))
             }
         }
