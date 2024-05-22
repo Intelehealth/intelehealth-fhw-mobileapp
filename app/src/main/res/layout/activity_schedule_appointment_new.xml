@@ -25,7 +25,8 @@
             android:id="@+id/iv_date_selector"
             android:layout_width="@dimen/iv_time_height_width"
             android:layout_height="@dimen/iv_time_height_width"
-            android:src="@drawable/ui2_ic_calendar" />
+            android:src="@drawable/ui2_ic_calendar"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/tv_selected_month_year"
@@ -53,7 +54,8 @@
                 android:layout_height="@dimen/iv_time_height_width"
                 android:layout_marginEnd="@dimen/iv_prev_month_margin_end"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ui2_ic_chevron_left" />
+                android:src="@drawable/ui2_ic_chevron_left"
+                app:tint="@color/colorPrimary" />
 
             <ImageView
                 android:id="@+id/iv_next_month1"
@@ -123,15 +125,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/tv_slot_time_margin_top"
-                    android:drawableStart="@drawable/ui2_ic_sunrise"
                     android:drawablePadding="@dimen/tv_slot_time_drawable_padding"
-                    android:drawableTint="@color/colorPrimary1"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/morning"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/tv_slot_time_text_size"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ui2_ic_sunrise"
+                    app:drawableTint="@color/colorAccent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_morning_time_slots"
@@ -144,15 +146,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/tv_slot_time_noon_margin_top"
-                    android:drawableStart="@drawable/ui2_ic_afternoon"
                     android:drawablePadding="@dimen/tv_slot_time_drawable_padding"
-                    android:drawableTint="@color/colorPrimary1"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/afternoon"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/tv_slot_time_text_size"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ui2_ic_afternoon"
+                    app:drawableTint="@color/colorAccent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_afternoon_time_slots"
@@ -165,15 +167,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/tv_slot_time_margin_top"
-                    android:drawableStart="@drawable/ui2_ic_sunset"
                     android:drawablePadding="@dimen/tv_slot_time_drawable_padding"
-                    android:drawableTint="@color/colorPrimary1"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/evening"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/tv_slot_time_text_size"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ui2_ic_sunset"
+                    app:drawableTint="@color/colorAccent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_evening_time_slots"

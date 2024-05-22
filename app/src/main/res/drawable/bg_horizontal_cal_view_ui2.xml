@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="50dp"
     android:height="59dp"
     android:viewportWidth="50"
-    android:viewportHeight="59"
-    >
+    android:viewportHeight="59">
 
     <group>
 
-        <clip-path
-            android:pathData="M8 0H42C46.4183 0 50 3.58172 50 8V51C50 55.4183 46.4183 59 42 59H8C3.58172 59 0 55.4183 0 51V8C0 3.58172 3.58172 0 8 0Z"
-            />
+        <clip-path android:pathData="M8 0H42C46.4183 0 50 3.58172 50 8V51C50 55.4183 46.4183 59 42 59H8C3.58172 59 0 55.4183 0 51V8C0 3.58172 3.58172 0 8 0Z" />
 
         <path
             android:pathData="M8 0H42C46.4183 0 50 3.58172 50 8V51C50 55.4183 46.4183 59 42 59H8C3.58172 59 0 55.4183 0 51V8C0 3.58172 3.58172 0 8 0Z"
             android:strokeWidth="2"
-            android:strokeColor="#EFE8FF"
-            />
+            android:fillColor="@color/selector_color_appointment_date_bg"
+            android:strokeColor="@color/selector_color_appointment_date_stroke" />
 
     </group>
 

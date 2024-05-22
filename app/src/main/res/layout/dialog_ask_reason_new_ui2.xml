@@ -152,7 +152,7 @@
                 android:layout_width="74dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/btn_cancel_ask"
-                android:background="@drawable/darkblue_bg_button"
+                android:background="@drawable/ui2_common_primary_bg"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingTop="16dp"

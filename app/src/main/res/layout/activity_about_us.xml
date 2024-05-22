@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/frame_10021"
     tools:context=".activities.aboutus.AboutUsActivity">
 
@@ -154,6 +155,7 @@
                     android:id="@+id/info_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:tint="?attr/colorPrimary"
                     android:src="@drawable/info_blue_svg" />
 
                 <TextView
