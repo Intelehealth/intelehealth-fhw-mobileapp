@@ -102,17 +102,11 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
 
         if (patientAge >= Constants.ANEMIA_EXCLUSION_AGE) {
-            if (!isHistoryOfAnemiaPresent(medicalHistoryJson) || !isCurrentlyTakingAnemiaMedication(
-                    medicalHistoryJson
-                ) && !isThereAFollowUpWithAnemiaPHC(medicalHistoryJson)
-            ) {
+            if (!isHistoryOfAnemiaPresent(medicalHistoryJson) || !isCurrentlyTakingAnemiaMedication(medicalHistoryJson) && !isThereAFollowUpWithAnemiaPHC(medicalHistoryJson)) {
                 diseaseList.add(resources.getString(R.string.tab_anemia_screening))
             }
 
-            if (isHistoryOfAnemiaPresent(medicalHistoryJson) && (isCurrentlyTakingAnemiaMedication(
-                    medicalHistoryJson
-                ) || isThereAFollowUpWithAnemiaPHC(medicalHistoryJson))
-            ) {
+            if (isHistoryOfAnemiaPresent(medicalHistoryJson) && (isCurrentlyTakingAnemiaMedication(medicalHistoryJson) || isThereAFollowUpWithAnemiaPHC(medicalHistoryJson))) {
                 diseaseList.add(resources.getString(R.string.tab_anemia_follow_up))
             }
         }
@@ -128,7 +122,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
 
         if (patientAge >= Constants.DIABETES_EXCLUSION_AGE) {
-            if (isHistoryOfDiabetesPresent(medicalHistoryJson) && (isCurrentlyTakingDiabetesMedication(medicalHistoryJson) || isThereAFollowUpWithDiabetesPHC(medicalHistoryJson))){
+            if (!isHistoryOfDiabetesPresent(medicalHistoryJson) || !isCurrentlyTakingDiabetesMedication(medicalHistoryJson) && !isCurrentlyTakingDiabetesMedication(medicalHistoryJson)) {
                 diseaseList.add(resources.getString(R.string.tab_diabetes_screening))
             }
 

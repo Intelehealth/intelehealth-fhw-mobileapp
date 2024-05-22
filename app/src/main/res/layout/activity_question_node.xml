@@ -91,7 +91,8 @@
             android:layout_centerVertical="true"
             android:visibility="visible"
             app:rippleColor="@color/amber"
-            app:srcCompat="@drawable/ic_back_arrow" />
+            app:srcCompat="@drawable/ic_back_arrow"
+            app:useCompatPadding="true" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_back"
@@ -101,7 +102,8 @@
             android:layout_centerVertical="true"
             android:visibility="visible"
             app:rippleColor="@color/amber"
-            app:srcCompat="@drawable/ic_forward_arrow" />
+            app:srcCompat="@drawable/ic_forward_arrow"
+            app:useCompatPadding="true" />
 
     </RelativeLayout>
 
