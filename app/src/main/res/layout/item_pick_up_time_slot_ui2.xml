@@ -21,7 +21,7 @@
         android:gravity="center"
         android:hint="10:30 AM"
         android:lineHeight="@dimen/tv_slot_time_line_height"
-        android:textColor="@color/textColorGray"
+        android:textColor="@color/selector_color_appointment_text_time"
         android:textSize="@dimen/tv_slot_time_text_size1"
         android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
         android:gravity="center"
         android:paddingHorizontal="8dip"
         android:text="30 minutes"
-        android:textColor="@color/textColorGray"
+        android:textColor="@color/selector_color_appointment_text_time"
         android:textSize="@dimen/tv_slot_time_duration"
         android:textStyle="normal"
         android:visibility="gone" />

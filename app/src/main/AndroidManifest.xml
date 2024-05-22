@@ -351,7 +351,7 @@
         <activity
             android:name=".appointmentNew.ScheduleAppointmentActivity_New"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"

@@ -35,10 +35,9 @@
                 android:paddingHorizontal="@dimen/padding_10"
                 android:paddingVertical="@dimen/padding_10"
                 android:text="@string/yes"
-                android:textColor="@color/ui2_black_text_color"
+                android:textColor="@color/selector_color_associate_sym_text"
                 android:textSize="12sp"
                 android:textStyle="normal"
-                app:drawableTint="?attr/colorAccent"
                 app:drawableStartCompat="@drawable/ic_baseline_check_18_green" />
 
             <TextView
@@ -53,10 +52,9 @@
                 android:paddingHorizontal="@dimen/padding_10"
                 android:paddingVertical="@dimen/padding_10"
                 android:text="@string/no"
-                android:textColor="@color/ui2_black_text_color"
+                android:textColor="@color/selector_color_associate_sym_text"
                 android:textSize="12sp"
                 android:textStyle="normal"
-                app:drawableTint="?attr/colorAccent"
                 app:drawableStartCompat="@drawable/ic_baseline_close_18_green" />
 
 

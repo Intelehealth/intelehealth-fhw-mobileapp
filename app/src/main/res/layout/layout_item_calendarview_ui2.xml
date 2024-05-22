@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="40dp"
     android:id="@+id/parent_calview"
+    android:layout_width="40dp"
     android:layout_height="40dp"
-    android:layout_marginBottom="20dp">
+    android:layout_marginBottom="20dp"
+    android:background="@drawable/selector_calendar_date">
 
     <TextView
         android:id="@+id/tv_date_newview"
@@ -12,7 +13,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:text="1"
-        android:textColor="@color/textColorBlack"
+        android:textColor="@color/selector_color_calendar_date"
         android:textSize="13sp" />
 
 

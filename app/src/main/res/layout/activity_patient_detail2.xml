@@ -185,7 +185,6 @@
                     android:id="@+id/cv_past_visits"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="@dimen/margin_24"
@@ -209,7 +208,7 @@
                             <ImageView
                                 android:layout_width="44dp"
                                 android:layout_height="44dp"
-                                android:background="@color/colorPrimaryLightCard"
+                                android:background="@drawable/rounded_blue_bg_shape"
                                 android:padding="12dip"
                                 android:src="@drawable/icons8_activity_history_24" />
 
@@ -267,7 +266,7 @@
                             <ImageView
                                 android:layout_width="44dp"
                                 android:layout_height="44dp"
-                                android:background="@color/colorPrimaryLightCard"
+                                android:background="@drawable/rounded_blue_bg_shape"
                                 android:padding="12dip"
                                 android:src="@drawable/icons8_activity_history_24" />
 
