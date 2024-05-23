@@ -90,6 +90,7 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_margin="5dp"
+                    app:tint="?attr/colorPrimary"
                     android:src="@drawable/edit"/>
 
                 <TextView
@@ -100,7 +101,7 @@
                     android:textAlignment="center"
                     android:layout_gravity="center"
                     android:fontFamily="@font/lato_bold"
-                    android:textColor="#2E1E91"/>
+                    android:textColor="?attr/colorPrimary"/>
 
             </LinearLayout>
         </RelativeLayout>

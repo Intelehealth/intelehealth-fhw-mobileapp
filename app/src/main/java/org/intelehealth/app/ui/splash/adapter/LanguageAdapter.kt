@@ -32,7 +32,7 @@ class LanguageAdapter(context: Context, languages: List<ActiveLanguage>) :
     fun select(position: Int, language: ActiveLanguage) {
         getList().forEach { it.selected = false }
         language.selected = true
-        getList().toMutableList().set(position, language)
+        getList().toMutableList()[position] = language
         notifyItemRangeChanged(0, itemCount)
     }
 }

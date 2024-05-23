@@ -1,8 +1,10 @@
 package org.intelehealth.app.utilities;
 import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
@@ -24,6 +26,7 @@ public class TooltipWindow {
     public TooltipWindow(Context ctx) {
         this.ctx = ctx;
         tipWindow = new PopupWindow(ctx);
+        tipWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         contentView = inflater.inflate(R.layout.tooltip_layout, null);
         tooltipText = contentView.findViewById(R.id.tooltip_text);

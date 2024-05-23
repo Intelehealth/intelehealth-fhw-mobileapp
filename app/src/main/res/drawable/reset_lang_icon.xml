@@ -3,12 +3,12 @@
     android:height="@dimen/edittext_height_44dp"
     android:viewportWidth="119"
     android:viewportHeight="44">
-  <path
-      android:pathData="M8,0.5L111,0.5A7.5,7.5 0,0 1,118.5 8L118.5,36A7.5,7.5 0,0 1,111 43.5L8,43.5A7.5,7.5 0,0 1,0.5 36L0.5,8A7.5,7.5 0,0 1,8 0.5z"
-      android:fillColor="#EFE8FF"/>
-  <path
-      android:strokeWidth="1"
-      android:pathData="M8,0.5L111,0.5A7.5,7.5 0,0 1,118.5 8L118.5,36A7.5,7.5 0,0 1,111 43.5L8,43.5A7.5,7.5 0,0 1,0.5 36L0.5,8A7.5,7.5 0,0 1,8 0.5z"
-      android:fillColor="#00000000"
-      android:strokeColor="#EFE8FF"/>
+    <path
+        android:fillColor="@color/colorPrimaryLightCard"
+        android:pathData="M8,0.5L111,0.5A7.5,7.5 0,0 1,118.5 8L118.5,36A7.5,7.5 0,0 1,111 43.5L8,43.5A7.5,7.5 0,0 1,0.5 36L0.5,8A7.5,7.5 0,0 1,8 0.5z" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M8,0.5L111,0.5A7.5,7.5 0,0 1,118.5 8L118.5,36A7.5,7.5 0,0 1,111 43.5L8,43.5A7.5,7.5 0,0 1,0.5 36L0.5,8A7.5,7.5 0,0 1,8 0.5z"
+        android:strokeWidth="1"
+        android:strokeColor="@color/colorPrimaryLightCard" />
 </vector>

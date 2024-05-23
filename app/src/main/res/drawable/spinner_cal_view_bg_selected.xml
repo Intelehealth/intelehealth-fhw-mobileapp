@@ -6,7 +6,7 @@
     android:viewportHeight="44">
     <path
         android:pathData="M8,0L140,0A8,8 0,0 1,148 8L148,36A8,8 0,0 1,140 44L8,44A8,8 0,0 1,0 36L0,8A8,8 0,0 1,8 0z"
-        android:fillColor="#EFE8FF"/>
+        android:fillColor="@color/colorPrimaryLightCard"/>
     <path
         android:pathData="M121,19.5L126,24.5L131,19.5"
         android:strokeLineJoin="round"

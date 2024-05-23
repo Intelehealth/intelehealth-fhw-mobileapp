@@ -614,11 +614,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (disableNow) {
             mSubmitButton.setClickable(false);
             mSubmitButton.setEnabled(false);
-            mSubmitButton.setBackgroundResource(R.drawable.ui2_common_primary_bg_disabled_1);
+//            mSubmitButton.setBackgroundResource(R.drawable.ui2_common_primary_bg_disabled_1);
         } else {
             mSubmitButton.setClickable(true);
             mSubmitButton.setEnabled(true);
-            mSubmitButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+//            mSubmitButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
         }
     }
 

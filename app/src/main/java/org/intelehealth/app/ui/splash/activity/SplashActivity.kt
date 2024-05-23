@@ -122,11 +122,14 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
     private fun handleButtonClickListener() {
         binding.btnNextToIntro.setOnClickListener {
-            setupLanguage()
-            Intent(this@SplashActivity, IntroScreensActivity_New::class.java).apply {
-                startActivity(this)
+            adapter.getList().find { it.selected }?.let {
+                sessionManager.appLanguage = it.code
+                setupLanguage()
+                Intent(this@SplashActivity, IntroScreensActivity_New::class.java).apply {
+                    startActivity(this)
+                }
+                finish()
             }
-            finish()
         }
     }
 
@@ -360,7 +363,6 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         view ?: return
         if (view.id == R.id.layout_rb_choose_language) {
             val lang = view.tag as ActiveLanguage
-            sessionManager.appLanguage = lang.code
             adapter.select(position, lang)
         }
     }

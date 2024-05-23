@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_8"
@@ -27,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:background="@drawable/normal_white_reounded_bg"
-                android:drawableStart="@drawable/ic_baseline_check_18_green"
                 android:drawablePadding="@dimen/padding_7"
                 android:gravity="center"
                 android:lineSpacingExtra="1sp"
@@ -35,16 +35,16 @@
                 android:paddingHorizontal="@dimen/padding_10"
                 android:paddingVertical="@dimen/padding_10"
                 android:text="@string/yes"
-                android:textColor="@color/ui2_black_text_color"
+                android:textColor="@color/selector_color_associate_sym_text"
                 android:textSize="12sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                app:drawableStartCompat="@drawable/ic_baseline_check_18_green" />
 
             <TextView
                 android:id="@+id/tv_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/normal_white_reounded_bg"
-                android:drawableStart="@drawable/ic_baseline_close_18_green"
                 android:drawablePadding="@dimen/padding_7"
                 android:gravity="center"
                 android:lineSpacingExtra="1sp"
@@ -52,9 +52,10 @@
                 android:paddingHorizontal="@dimen/padding_10"
                 android:paddingVertical="@dimen/padding_10"
                 android:text="@string/no"
-                android:textColor="@color/ui2_black_text_color"
+                android:textColor="@color/selector_color_associate_sym_text"
                 android:textSize="12sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                app:drawableStartCompat="@drawable/ic_baseline_close_18_green" />
 
 
         </LinearLayout>

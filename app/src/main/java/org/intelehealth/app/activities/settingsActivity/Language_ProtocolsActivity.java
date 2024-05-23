@@ -482,9 +482,12 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
                         mTask = new DownloadMindMaps(context, alertDialog, "home", true);
                         mindmapURL = res.getMindmap().trim();
                         sessionManager.setLicenseKey(key);
+                        Log.e("MindMapURL", "Successfully get MindMap URL"+mindmapURL);
+                        Log.e("MindMapURL", "Successfully get MindMap URL"+sessionManager.getLicenseKey());
                         /**
                          * Showing snackbar custom view on success of Protocols udpated...
                          */
+                        // TODO : we need to catch the status of download then only show the message
                         showSnackBarAndRemoveLater(getResources().getString(R.string.protocols_successfully_changed));
                         checkExistingMindMaps();
                         //  alertDialog.dismiss();

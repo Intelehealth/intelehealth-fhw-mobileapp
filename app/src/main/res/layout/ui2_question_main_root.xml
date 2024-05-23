@@ -167,10 +167,10 @@
                         android:id="@+id/btn_skip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_8dp"
                         android:background="@drawable/ui2_common_button_bg_submit"
                         android:drawablePadding="8dip"
                         android:paddingHorizontal="@dimen/margin_16"
-                        android:layout_marginTop="@dimen/std_8dp"
                         android:text="@string/skip_new"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
@@ -182,10 +182,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_24"
+                        android:layout_marginTop="@dimen/std_8dp"
                         android:background="@drawable/ui2_common_button_bg_submit"
                         android:drawablePadding="8dip"
                         android:paddingHorizontal="@dimen/margin_16"
-                        android:layout_marginTop="@dimen/std_8dp"
                         android:text="@string/submit"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
@@ -194,7 +194,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
 
 
         </LinearLayout>
