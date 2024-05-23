@@ -45,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
                 android:layout_toEndOf="@+id/card_member_image"
+                android:layout_toStartOf="@+id/status_lay"
                 android:ellipsize="end"
                 android:lineSpacingExtra="3sp"
                 android:maxLines="1"
@@ -195,10 +196,11 @@
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
-                android:id="@+id/llPriorityTagTodayAppointmentItem"
+                android:id="@+id/status_lay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/margin_10"
                 android:layout_gravity="top|end|center"
                 android:layout_marginEnd="@dimen/margin_8"
                 android:contentDescription="Today Appointment List Item Priority Tag Linear Layout"

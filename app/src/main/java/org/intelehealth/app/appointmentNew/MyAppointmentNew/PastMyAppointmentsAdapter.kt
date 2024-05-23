@@ -168,14 +168,12 @@ class PastMyAppointmentsAdapter(
         var search_gender: TextView
         var status_tv: TextView
         var ivProfileImage: ImageView
-        var IvPriorityTag: LinearLayout
 
         init {
             cardParent = itemView.findViewById(R.id.card_todays_appointments1)
             tvPatientName = itemView.findViewById(R.id.tv_patient_name_todays)
             ivProfileImage = itemView.findViewById(R.id.profile_image_todays)
             tvDate = itemView.findViewById(R.id.tv_date_appointment_todays)
-            IvPriorityTag = itemView.findViewById(R.id.llPriorityTagTodayAppointmentItem)
             cvPrescPending = itemView.findViewById(R.id.cvPrescPendingTodayAppointment)
             cvPrescRx = itemView.findViewById(R.id.cvPrescRxTodayAppointment)
             search_gender = itemView.findViewById(R.id.search_gender)

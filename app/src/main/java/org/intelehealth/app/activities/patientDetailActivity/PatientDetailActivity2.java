@@ -368,24 +368,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
             }
         });
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "Sync Done!");
-                refresh.clearAnimation();
-                syncAnimator.cancel();
-                recreate();
-            }
-        };
-        IntentFilter filterSend = new IntentFilter();
-        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        ContextCompat.registerReceiver(
-                context,
-                mBroadcastReceiver,
-                filterSend,
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
@@ -401,10 +384,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private BroadcastReceiver mBroadcastReceiver;
     private ObjectAnimator syncAnimator;
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -1919,11 +1902,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
             try {
                 openmrsID_txt.setText(patientsDAO.getOpenmrsId(patientDTO.getUuid()));
-
+                setTitle(openmrsID_txt.getText());
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-            setTitle(openmrsID_txt.getText());
         }
     }
 
@@ -1937,6 +1919,34 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 ContextCompat.RECEIVER_NOT_EXPORTED
         );
 
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
+                Log.v(TAG, "Sync Done!");
+                try {
+                    refresh.clearAnimation();
+                    syncAnimator.cancel();
+                    recreate();
+                }catch (Exception e){}
+            }
+        };
+
+
+
+         // sometimes crash happens whenever we register mBroadcastReceiver on oncreate and unregister from ondestroy
+         // because the onreceive function listen the broadcaster receiver even out activity is on background mode
+         // So that's why registering the mBroadcastReceiver on onstart and destroying it from onstop
+
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+        ContextCompat.registerReceiver(
+                context,
+                mBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
+
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
@@ -1944,8 +1954,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     public void onStop() {
         super.onStop();
-        unregisterReceiver(reMyreceive);
         try {
+            unregisterReceiver(reMyreceive);
+            // sometimes crash happens whenever we register mBroadcastReceiver on oncreate and unregister from ondestroy
+            // because the onreceive function listen the broadcaster receiver even out activity is on background mode
+            // So that's why registering the mBroadcastReceiver on onstart and destroying it from onstop
+            unregisterReceiver(mBroadcastReceiver);
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
