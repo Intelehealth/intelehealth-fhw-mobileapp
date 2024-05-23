@@ -1450,7 +1450,7 @@ The disclosure of personal information to third parties shall be only for identi
 
     <string name="aboutus_termscondition">আমাৰ <a href="https://intelehealth.org/terms-of-use">চৰ্ত আৰু নিয়মসমূহ</a> চাওক</string>
     <string name="visit_intelehealth_for_more">অধিক জানিবলৈ আমাৰ ৱেবছাইট intelehealth.org চাওক</string>
-    <string name="aboutus_text">Intelehealth is a non-profit delivering high-quality healthcare where there is no doctor via telemedicine. Using our open-source technology platform that\'s driven by an innovative digital health assistant, we connect patients and frontline health workers at the last mile with doctors, diagnostics &amp; medications.\n\nIntelehealth has reached millions of patients, connecting thousands of health workers and doctors to deliver health services for communicable and non communicable diseases. We have worked in partnership with Ministries of Health in India &amp; Kyrgyzstan as well as organizations like UNICEF, Jhpiego, MSF, Ekal Arogya and many more. Intelehealth has been recognized by the World Economic Forum and Niti Aayog India as an impactful Digital Public Good.</string>
+    <string name="aboutus_text">ইণ্টেলিহেল্থ হৈছে উচ্চ-মানদণ্ডৰ স্বাস্থ্যসেৱা প্ৰদান কৰা এটা লাভৰহিত এপ্প য\'ত টেলিমেডিচিনৰ পৰামৰ্শ দিয়া হয়, কোনো চিকিৎসক নাথাকে। এক অভিনৱ ডিজিটেল স্বাস্থ্য সহায়কৰ দ্বাৰা চালিত আমাৰ মুক্ত-উৎস প্ৰযুক্তিসম্পন্ন প্লেটফৰ্মখন ব্যৱহাৰ কৰি, আমি ৰোগী আৰু আগশাৰীৰ স্বাস্থ্য কৰ্মীসকলক একেবাৰে শেষ বিন্দুলৈকে বিভিন্ন চিকিৎসক, ৰোগ নিৰ্ণয় কৰা কাৰ্য আৰু ঔষধ-পাতিবোৰৰ সৈতে সংযোগ স্থাপন কৰি দিওঁ। \n\সংক্ৰামক আৰু অসংক্ৰামক ৰোগসমূহৰ বাবে স্বাস্থ্য সেৱা প্ৰদান কৰিবলৈ হাজাৰ হাজাৰ স্বাস্থ্য কৰ্মী আৰু চিকিৎসকক সংযোজিত কৰি ইণ্টেলিহেল্থ লাখ লাখ ৰোগীৰ ওচৰত উপনীত হৈছে। আমি ভাৰত আৰু কিৰ্গিস্তানৰ স্বাস্থ্য মন্ত্ৰালয়ৰ লগতে ইউনিচেফ, জাপিগো (Jhpiego), এমএছএফ, একল আৰোগ্য আদিৰ দৰে বহুতো সংগঠনৰ লগত অংশীদাৰীত্ব স্থাপন কৰি কাম কৰিছোঁ। ৱৰ্ল্ড ইকনমিক ফৰাম আৰু নীতি আয়োগ ইণ্ডিয়াৰ দ্বাৰা ইণ্টেলিহেল্থ-ক এক প্ৰভাৱশালী ডিজিটেল পাব্লিক গুড হিচাপে স্বীকৃতি দিয়া হৈছে।</string>
     <string name="add_patient">ৰোগী যোগ কৰক</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">হেল্ল\' ব্লে‍ংক ফ্ৰেগমেণ্ট</string>
@@ -1884,49 +1884,49 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="token_expired">টোকেনৰ ম্যাদ উকলি গৈছে</string>
     <string name="your_session_has_expired_please_log_in_again">আপোনাৰ চেশ্যনৰ ম্যাদ উকলি গৈছে। অনুগ্ৰহ কৰি পুনৰ লগ ইন কৰক।</string>
     <string name="forgot_username_link"><u>Forgot username?</u></string>
-    <string name="forgot_username_txt">Forgot username?</string>
-    <string name="enter_mobile_no_given_text">Please make sure your mobile number is updated in the profile section before proceeding</string>
-    <string name="username_sent_title">Username Sent</string>
-    <string name="username_sent_desc">Your username has been sent via SMS to your registered mobile number.</string>
-    <string name="teleconsultation_consent_title">Teleconsultation Consent</string>
-    <string name="processing_personal_data">Processing Personal Data</string>
-    <string name="unable_to_load_data_please_try_again">Unable to load data. Please try again later!</string>
-    <string name="no_of_days">No. of days</string>
-    <string name="timings">Timings</string>
+    <string name="forgot_username_txt">ব্যৱহাৰকৰ্তানাম পাহৰিলে?</string>
+    <string name="enter_mobile_no_given_text">আগবঢ়াৰ আগতে প্ৰ\'ফাইল খণ্ডটোত থকা আপোনাৰ মোবাইল নম্বৰ আপডেট কৰাটো অনুগ্ৰহ কৰি নিশ্চিত কৰক</string>
+    <string name="username_sent_title">ব্যৱহাৰকৰ্তানাম প্ৰেৰণ কৰা হ\'ল</string>
+    <string name="username_sent_desc">আপোনাৰ ব্যৱহাৰকৰ্তানাম এছএমএছ যোগে আপোনাৰ পঞ্জীয়নভুক্ত মোবাইল নম্বৰলৈ প্ৰেৰণ কৰা হৈছে।</string>
+    <string name="teleconsultation_consent_title">টেলিপৰামৰ্শ সন্মতি</string>
+    <string name="processing_personal_data">ব্যক্তিগত তথ্য কামত লগাই থকা হৈছে</string>
+    <string name="unable_to_load_data_please_try_again">তথ্য লোড কৰিবলৈ অসমৰ্থ। অনুগ্ৰহ কৰি পিছত পুনৰ চেষ্টা কৰক!</string>
+    <string name="no_of_days">দিনৰ সংখ্যা</string>
+    <string name="timings">সময়</string>
     <string name="bullet">\u2022</string>
-    <string name="u2022_strength">• Strength</string>
-    <string name="u2022_no_of_days">• No. of days</string>
-    <string name="u2022_timings">• Timings</string>
-    <string name="u2022_remarks">• Remarks</string>
-    <string name="the_from_date_cannot_be_greater_than_the_to_date">The \'from\' date cannot be greater than the \'to\' date</string>
-    <string name="the_to_date_cannot_be_less_than_the_from_date">The \'to\' date cannot be less than the \'from\' date</string>
+    <string name="u2022_strength">• শক্তি</string>
+    <string name="u2022_no_of_days">• দিনৰ সংখ্যা</string>
+    <string name="u2022_timings">• সময়</string>
+    <string name="u2022_remarks">• মন্তব্য</string>
+    <string name="the_from_date_cannot_be_greater_than_the_to_date">ইয়াৰ \'পৰা\' তাৰিখ \'লৈ\' তাৰিখতকৈ পিছৰ হ'ব নালাগিব</string>
+    <string name="the_to_date_cannot_be_less_than_the_from_date">অন্য তথ্য প্ৰবিষ্ট কৰক</string>
 
 
-    <string name="no_notifications_yet">No Notifications Yet</string>
-    <string name="this_visit_is_completed">This visit is completed.</string>
-    <string name="confirmation">Confirmation</string>
-    <string name="delete">Delete</string>
-    <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
+    <string name="no_notifications_yet">এতিয়ালৈকে কোনো জাননী নাই</string>
+    <string name="this_visit_is_completed">এই সাক্ষাৎকাৰ সম্পূৰ্ণ কৰা হ\'ল।</string>
+    <string name="confirmation">নিশ্চয়তা</string>
+    <string name="delete">বিলোপ কৰক</string>
+    <string name="are_you_sure_you_want_to_delete_all_notifications">আপুনি সকলো জাননী বিলোপ কৰিব খোজাটো নিশ্চিতনে?</string>
 
-    <string name="guardian_name_non_required">Guardian Name</string>
-    <string name="guardian_name_required">Guardian Name*</string>
-    <string name="enter_guardian_name">Enter Guardian Name</string>
-    <string name="guardian_type_required">Guardian Type*</string>
-    <string name="guardian_type_non_required">Guardian Type</string>
-    <string name="select_guardian_type">Select Guardian Type</string>
-    <string name="contact_type_required">Contact Type*</string>
-    <string name="contact_type_non_required">Contact Type</string>
-    <string name="emergency_contact_number_required">Emergency Contact Number*</string>
-    <string name="emergency_contact_number_non_required">Emergency Contact Number</string>
-    <string name="emergency_contact_name_required">Emergency Contact Name*</string>
-    <string name="emergency_contact_name_non_required">Emergency Contact Name</string>
-    <string name="enter_emergency_contact_name">Enter Emergency Contact name</string>
-    <string name="phone_number_and_emergency_number_can_not_be_the_same">Phone Number and Emergency Number cannot be the same</string>
+    <string name="guardian_name_non_required">অভিভাৱকৰ নাম</string>
+    <string name="guardian_name_required">অভিভাৱকৰ নাম*</string>
+    <string name="enter_guardian_name">অভিভাৱকৰ নাম প্ৰবিষ্ট কৰক</string>
+    <string name="guardian_type_required">অভিভাৱকৰ প্ৰকাৰ*</string>
+    <string name="guardian_type_non_required">অভিভাৱকৰ প্ৰকাৰ</string>
+    <string name="select_guardian_type">অভিভাৱকৰ প্ৰকাৰ বাছনি কৰক</string>
+    <string name="contact_type_required">যোগাযোগৰ প্ৰকাৰ*</string>
+    <string name="contact_type_non_required">যোগাযোগৰ প্ৰকাৰ</string>
+    <string name="emergency_contact_number_required">জৰুৰীকালীন যোগাযোগ নম্বৰ*</string>
+    <string name="emergency_contact_number_non_required">জৰুৰীকালীন যোগাযোগ নম্বৰ</string>
+    <string name="emergency_contact_name_required">জৰুৰীকালীন যোগাযোগ নাম*</string>
+    <string name="emergency_contact_name_non_required">জৰুৰীকালীন যোগাযোগ নাম</string>
+    <string name="enter_emergency_contact_name">জৰুৰীকালীন যোগাযোগ নাম প্ৰবিষ্ট কৰক</string>
+    <string name="phone_number_and_emergency_number_can_not_be_the_same">ফোন নম্বৰ আৰু জৰুৰীকালীন নম্বৰ একেই হ\'ব নোৱাৰিব</string>
 
-    <string name="enter_other_information_txt">Enter other information</string>
-    <string name="blood_group_txt">Blood Group</string>
-    <string name="eg_a_ve">Eg. A +ve</string>
-    <string name="dont_know">Don\'t know</string>
-    <string name="universal_donor">( Universal Donor)</string>
-    <string name="universal_recipient">( Universal Recipient )</string>
+    <string name="enter_other_information_txt">অন্য তথ্য প্ৰবিষ্ট কৰক</string>
+    <string name="blood_group_txt">তেজৰ গ্ৰুপ</string>
+    <string name="eg_a_ve">যেনে A +ve</string>
+    <string name="dont_know">নাজানো</string>
+    <string name="universal_donor">(বিশ্বজনীন দাতা)</string>
+    <string name="universal_recipient">(বিশ্বজনীন গ্ৰহীতা)</string>
 </resources>
