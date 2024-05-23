@@ -916,4 +916,9 @@
     <string name="delete">हटवा</string>
     <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
     <string name="view_prescription_lbl">View Prescription</string>
+    <string name="past">भूतकाळ</string>
+    <string name="missed">Missed</string>
+    <string name="sorted_by_descending_order">Sorted By Descending order</string>
+    <string name="sorted_by_ascending_order">Sorted By Ascending order</string>
+    <string name="over">" Over"</string>
 </resources>

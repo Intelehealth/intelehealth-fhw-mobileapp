@@ -1894,6 +1894,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="no_of_days">দিনৰ সংখ্যা</string>
     <string name="timings">সময়</string>
     <string name="bullet">\u2022</string>
+
     <string name="u2022_strength">• শক্তি</string>
     <string name="u2022_no_of_days">• দিনৰ সংখ্যা</string>
     <string name="u2022_timings">• সময়</string>
@@ -1929,4 +1930,12 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="dont_know">নাজানো</string>
     <string name="universal_donor">(বিশ্বজনীন দাতা)</string>
     <string name="universal_recipient">(বিশ্বজনীন গ্ৰহীতা)</string>
+
+    <string name="profile_picture_is_mandatory">Profile picture is mandatory</string>
+    <string name="past">অতীত</string>
+    <string name="missed">Missed</string>
+    <string name="sorted_by_descending_order">Sorted By Descending order</string>
+    <string name="sorted_by_ascending_order">Sorted By Ascending order</string>
+    <string name="over">" Over"</string>
+
 </resources>

@@ -46,9 +46,11 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
+import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.enums.AppointmentTabType;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -264,7 +266,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         cardAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), MyAppointmentActivity.class);
+                Intent intent = new Intent(requireActivity(), MyAppointmentActivityNew.class);
                 startActivity(intent);
 
             }
@@ -415,17 +417,17 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     private void getUpcomingAppointments() {
         Executors.newSingleThreadExecutor().execute(() -> {
             //recyclerview for upcoming appointments
-            int totalUpcomingApps = 0;
+            /*int totalUpcomingApps = 0;
             //SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             String currentDate = dateFormat1.format(new Date());
             String endDate = dateFormat1.format(DateUtils.addYears(new Date(), 1));
 
             List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersV1(currentDate, endDate, "");
-            List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
+            List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();*/
 
             try {
-                if (appointmentInfoList.size() > 0) {
+               /* if (appointmentInfoList.size() > 0) {
                     for (int i = 0; i < appointmentInfoList.size(); i++) {
                         AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
@@ -443,9 +445,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                     totalUpcomingApps = upcomingAppointmentsList.size();
                 } else {
                     totalUpcomingApps = 0;
-                }
+                }*/
 
-                int finalTotalUpcomingApps = totalUpcomingApps;
+                int finalTotalUpcomingApps = new AppointmentDAO().getAppointmentCountsByStatus(AppointmentTabType.UPCOMING);;
                 if (mUpcomingAppointmentCountTextView != null) {
                     Activity activity = getActivity();
                     if (isAdded() && activity != null) {

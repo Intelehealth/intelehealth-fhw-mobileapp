@@ -39,6 +39,7 @@ import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.BundleKeys;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -179,6 +180,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("fromThirdScreen", true);
         bundle.putBoolean("patient_detail", true);
+        bundle.putBoolean(BundleKeys.FROM_EDIT, true);
         fragment.setArguments(bundle); // passing data to Fragment
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, fragment).commit();

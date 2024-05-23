@@ -42,7 +42,6 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
@@ -66,6 +65,7 @@ import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
+import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
@@ -151,7 +151,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         tvTitle.setText(getResources().getString(R.string.appointment_details));
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
         ivBack.setOnClickListener(v -> {
-            Intent intent = new Intent(AppointmentDetailsActivity.this, MyAppointmentActivity.class);
+            Intent intent = new Intent(AppointmentDetailsActivity.this, MyAppointmentActivityNew.class);
             startActivity(intent);
         });
 
@@ -933,6 +933,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
     private final ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == AppConstants.EVENT_APPOINTMENT_BOOKING) {
             Toast.makeText(AppointmentDetailsActivity.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
+            finish();
         }
     });
 

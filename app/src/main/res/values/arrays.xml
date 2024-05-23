@@ -619,8 +619,7 @@
         <item>Primary</item>
         <item>Secondary</item>
         <item>Higher Secondary</item>
-        <item>Graduation &amp; Higher</item>
-        <item>Bachelors &amp; Equivalent</item>
+        <item>Graduate</item>
         <item>Masters &amp; Higher</item>
     </string-array>
 
@@ -677,8 +676,7 @@
         <item>प्रथम</item>
         <item>माध्यमिक</item>
         <item>उच्च माध्यमिक</item>
-        <item>स्नातक और उच्चतर</item>
-        <item>स्नातक एवं समकक्ष</item>
+        <item>स्नातक</item>
         <item>परास्नातक एवं उच्चतर</item>
     </string-array>
 

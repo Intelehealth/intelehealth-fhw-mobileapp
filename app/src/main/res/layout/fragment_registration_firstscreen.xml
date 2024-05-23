@@ -20,60 +20,85 @@
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginEnd="@dimen/margin_24">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/img_profile"
-                android:layout_width="@dimen/patregist_profileimg_icon"
-                android:layout_height="@dimen/patregist_profileimg_icon"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:elevation="0dp"
-                app:cardCornerRadius="30dp">
-
-
-                <ImageView
-                    android:id="@+id/patient_imgview"
+            <RelativeLayout
+                android:id="@+id/add_picture_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
+                >
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/img_profile"
                     android:layout_width="@dimen/patregist_profileimg_icon"
                     android:layout_height="@dimen/patregist_profileimg_icon"
-                    android:src="@drawable/avatar1" />
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:elevation="0dp"
+                    app:cardCornerRadius="30dp">
 
 
-            </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:id="@+id/patient_imgview"
+                        android:layout_width="@dimen/patregist_profileimg_icon"
+                        android:layout_height="@dimen/patregist_profileimg_icon"
+                        android:src="@drawable/avatar1" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/img_profile"
-                android:layout_marginStart="-20dip"
-                android:layout_toEndOf="@+id/img_profile"
-                android:background="@drawable/rounded_icon_white_bg"
-                android:elevation="8dip"
-                android:src="@drawable/lense_with_camera_icon" />
+                </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/add_picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_profile"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:gravity="top"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/add_a_picture"
-                android:textAppearance="@style/blur_txtview"
-                android:textColor="@null"
-                android:textSize="@null"
-                android:translationY="-1.39sp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/img_profile"
+                    android:layout_marginStart="-20dip"
+                    android:layout_toEndOf="@+id/img_profile"
+                    android:elevation="8dip"
+                    android:src="@drawable/lense_with_camera_icon" />
+
+                <TextView
+                    android:id="@+id/add_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_profile"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:gravity="top"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/add_a_picture"
+                    android:textAppearance="@style/blur_txtview"
+                    android:textColor="@null"
+                    android:textSize="@null"
+                    android:translationY="-1.39sp" />
+
+                <TextView
+                    android:id="@+id/profile_image_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:layout_below="@+id/add_picture"
+                    android:text="@string/profile_picture_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+            </RelativeLayout>
 
 
             <LinearLayout
                 android:id="@+id/linear_firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/add_picture"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_below="@+id/add_picture_lay"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/first_name_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -117,11 +142,14 @@
                 android:id="@+id/linear_middlename"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_firstname"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/middle_name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -166,11 +194,14 @@
                 android:id="@+id/linear_lastname"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_middlename"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/last_name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -216,11 +247,14 @@
                 android:id="@+id/linear_gender"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_lastname"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/gender_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -230,6 +264,7 @@
                     android:textSize="@null" />
 
                 <RadioGroup
+                    android:id="@+id/gender_radio_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
@@ -293,11 +328,14 @@
                 android:id="@+id/linear_dob"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_gender"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/dob_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -348,11 +386,14 @@
                 android:id="@+id/linear_age"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_dob"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/age_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -402,15 +443,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_age"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/guardian_name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/guardian_name_required"
+                    android:text="@string/guardian_name_non_required"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -451,16 +494,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_guardian_name"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/guardian_type_title"
+                    android:id="@+id/guardian_type_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/guardian_type_required"
+                    android:text="@string/guardian_type_non_required"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -503,12 +547,15 @@
                 android:id="@+id/linear_phone_num"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_guardian_type"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/phone_num_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -574,16 +621,18 @@
                 android:id="@+id/linear_contact_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_phone_num"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/contact_type_title"
+                    android:id="@+id/contact_type_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/contact_type_required"
+                    android:text="@string/contact_type_non_required"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -626,16 +675,18 @@
                 android:id="@+id/linear_em_contact_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_contact_type"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/em_contact_name_title"
+                    android:id="@+id/em_contact_name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/emergency_contact_name_required"
+                    android:text="@string/emergency_contact_name_non_required"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
@@ -675,16 +726,19 @@
                 android:id="@+id/linear_emergency_contact_num"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/linear_em_contact_name"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/em_contact_num_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/emergency_contact_number_required"
+                    android:text="@string/emergency_contact_number_non_required"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 

@@ -15,4 +15,6 @@ class RegFieldViewModel(private val repository: RegFieldRepository) : BaseViewMo
     fun fetchEnabledAddressRegFields() = repository.getAllEnabledGroupField(FieldGroup.ADDRESS)
 
     fun fetchEnabledOtherRegFields() = repository.getAllEnabledGroupField(FieldGroup.OTHER)
+
+    fun fetchEnabledAllRegFields() = repository.getAllEnabledLiveFields()
 }

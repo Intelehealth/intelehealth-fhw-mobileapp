@@ -62,6 +62,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
     public void initUpdateFragmentOnEvent(int tab, UpdateFragmentOnEvent listener) {
         Log.v(TAG, "initUpdateFragmentOnEvent");
         mUpdateFragmentOnEventHashMap.put(tab, listener);
+
     }
 
     @Override

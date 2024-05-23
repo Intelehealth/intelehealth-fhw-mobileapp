@@ -29,12 +29,16 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/postal_code_lay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <TextView
+                        android:id="@+id/postal_code_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
@@ -77,13 +81,16 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/country_lay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <TextView
+                        android:id="@+id/country_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
@@ -127,9 +134,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/postal_country"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
+                    android:id="@+id/state_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -196,12 +206,16 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/district_lay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <TextView
+                        android:id="@+id/district_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
@@ -257,13 +271,16 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/vill_town_city_lay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <TextView
+                        android:id="@+id/vill_town_city_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
@@ -325,9 +342,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_distr_city"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
+                    android:id="@+id/address1_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -368,13 +388,17 @@
 
             <!--Address 2-->
             <LinearLayout
+                android:id="@+id/address2_lay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_address1"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
+                    android:id="@+id/address2_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"

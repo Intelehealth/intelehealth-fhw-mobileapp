@@ -900,4 +900,9 @@
     <string name="universal_donor">(ಯುನಿವರ್ಸಲ್ ಡೋನರ್)</string>
     <string name="universal_recipient">(ಯೂನಿವರ್ಸಲ್ ರೆಸಿಪಿಯೆಂಟ್‌ )</string>
     <string name="view_prescription_lbl">View Prescription</string>
+    <string name="past">ಹಿಂದಿನ</string>
+    <string name="missed">Missed</string>
+    <string name="sorted_by_descending_order">Sorted By Descending order</string>
+    <string name="sorted_by_ascending_order">Sorted By Ascending order</string>
+    <string name="over">" Over"</string>
 </resources>

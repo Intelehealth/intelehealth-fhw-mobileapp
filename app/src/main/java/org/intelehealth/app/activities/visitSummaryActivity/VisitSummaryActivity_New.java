@@ -116,7 +116,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
-import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
+import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
@@ -2668,7 +2668,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     void navigateToMyAppointment() {
         Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
-        Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivity.class);
+        Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivityNew.class);
         startActivity(in);
         finish();
     }
