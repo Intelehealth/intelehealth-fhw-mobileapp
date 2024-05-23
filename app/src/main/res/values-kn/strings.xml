@@ -1193,7 +1193,9 @@
     <string name="title_un_uploaded_visit_reminder_desc">ಹಲೋ, ಇನ್ನೂ ಕೆಲವು ಭೇಟಿಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಬೇಕಾಗಿದೆ, ದಯವಿಟ್ಟು ಕ್ರಮ ತೆಗೆದುಕೊಳ್ಳಿ.</string>
     <string name="you_have_unuploaded_visits">ನೀವು ಮತ್ತು %1$s ಅಪ್‌ಲೋಡ್ ಮಾಡದ ಭೇಟಿಗಳನ್ನು ಹೊಂದಿದ್ದೀರಿ</string>
 
-    <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">ನಿಮ್ಮ "ಕುಟುಂಬದ ಸದಸ್ಯ" ಅಥವಾ "ವೈಯಕ್ತಿಕ" WhatsApp ಖಾತೆಯೊಂದಿಗೆ ಸಂಯೋಜಿತವಾಗಿರುವ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಯಾವುದು?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">ನಿಮ್ಮ ಕುಟುಂಬದ ಸದಸ್ಯ WhatsApp ಖಾತೆಯೊಂದಿಗೆ ಸಂಯೋಜಿತವಾಗಿರುವ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಯಾವುದು?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">ನಿಮ್ಮ ವೈಯಕ್ತಿಕ WhatsApp ಖಾತೆಯೊಂದಿಗೆ ಸಂಯೋಜಿತವಾಗಿರುವ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಯಾವುದು?</string>
+
     <string name="i_dont_know">ನನಗೆ ಗೊತ್ತಿಲ್ಲ</string>
     <string name="can_ekal_send_a_summary_of_visit_to_you">ನಮ್ಮ ಭೇಟಿಯ ಸಾರಾಂಶದ ಉಚಿತ WhatsApp ಸಂದೇಶವನ್ನು ಏಕಲ್ ನಿಮಗೆ ಕಳುಹಿಸಬಹುದೇ?</string>
 

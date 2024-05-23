@@ -1086,7 +1086,9 @@
     <string name="title_un_uploaded_visit_reminder_desc">ହ।ଲୋ , କିଛି ପରିଦର୍ଶନ ଅଛି ଅପଲୋଡ଼ ହେବା ପାଇଁ, ଦୟାକରି ଚେଷ୍ଟା ଜାରି ରଖ</string>
     <string name="you_have_unuploaded_visits">ତୁମର %1$s ଅପଲୋଡ଼ ନ ହୋଇଥିବା ପରିଦର୍ଶନ</string>
 
-    <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">ପରିବାର ସଦସ୍ୟ” କିମ୍ବା “ବ୍ୟକ୍ତିଗତ”  Whatsapp ଆକାଉଣ୍ଟ୍ ସହିତ ମୋବାଇଲ୍ ନମ୍ବର କ’ଣ ଜଡିତ?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">ପରିବାର ସଦସ୍ୟ Whatsapp ଆକାଉଣ୍ଟ୍ ସହିତ ମୋବାଇଲ୍ ନମ୍ବର କ’ଣ ଜଡିତ?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">ବ୍ୟକ୍ତିଗତ Whatsapp ଆକାଉଣ୍ଟ୍ ସହିତ ମୋବାଇଲ୍ ନମ୍ବର କ’ଣ ଜଡିତ?</string>
+
     <string name="i_dont_know">ମୁଁ ଜାଣେ ନାହିଁ|</string>
     <string name="can_ekal_send_a_summary_of_visit_to_you">ଏକଲ୍ ଆପଣଙ୍କ ଭ୍ରମଣର ସାରାଂଶର ଏକ ମାଗଣା Whatsapp ବାର୍ତ୍ତା ପଠାଇ ପାରିବ କି?</string>
 

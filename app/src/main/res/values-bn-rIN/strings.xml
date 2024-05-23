@@ -1193,7 +1193,8 @@
     <string name="title_un_uploaded_visit_reminder_desc">হ্যালো, কিছু ভিজিট আছে যা আপলোড করা বাকি আছে, অনুগ্রহ করে ব্যবস্থা নিন।</string>
     <string name="you_have_unuploaded_visits">আপনার %1$s টি আন-আপলোড করা ভিজিট আছে৷</string>
 
-    <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">পরিবারের সদস্য" বা "ব্যক্তিগত" হোয়াটসঅ্যাপ অ্যাকাউন্টের সাথে যুক্ত মোবাইল নম্বরটি কী?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">পরিবারের সদস্য হোয়াটসঅ্যাপ অ্যাকাউন্টের সাথে যুক্ত মোবাইল নম্বরটি কী?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">ব্যক্তিগত হোয়াটসঅ্যাপ অ্যাকাউন্টের সাথে যুক্ত মোবাইল নম্বরটি কী?</string>
     <string name="i_dont_know">আমি জানি না</string>
     <string name="can_ekal_send_a_summary_of_visit_to_you">একল কি আপনাকে আমাদের সফরের সারাংশের একটি বিনামূল্যের হোয়াটসঅ্যাপ বার্তা পাঠাতে পারে?</string>
 

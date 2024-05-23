@@ -1020,10 +1020,10 @@
                                 android:visibility="gone">
 
                                 <TextView
+                                    android:id="@+id/tv_whatsapp_number_family_personal"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="5dp"
-                                    android:text="@string/what_is_the_phone_number_associated_with_the_whatsapp_account"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Space

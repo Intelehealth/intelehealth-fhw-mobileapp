@@ -1207,7 +1207,9 @@
     <string name="title_un_uploaded_visit_reminder_desc">नमस्कार, कुछ विज़िट हैं जिन्हें अपलोड किया जाना बाकी है, कृपया कार्रवाई करें।</string>
     <string name="you_have_unuploaded_visits">आपके पास %1$s अन-अपलोड किए गए वीडियो हैं।</string>
 
-    <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">आपके "परिवार के सदस्य" या "व्यक्तिगत" व्हाट्सएप से जुड़ा मोबाइल नंबर क्या है?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">परिवार के सदस्य व्हाट्सएप से जुड़ा मोबाइल नंबर क्या है?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">व्यक्तिगत व्हाट्सएप से जुड़ा मोबाइल नंबर क्या है?</string>
+
     <string name="i_dont_know">मुझे नहीं पता</string>
     <string name="can_ekal_send_a_summary_of_visit_to_you">क्या एकल आपको हमारी यात्रा के सारांश का एक मुफ्त व्हाट्सएप संदेश भेज सकता है?</string>
 

@@ -1046,7 +1046,9 @@
     <string name="title_un_uploaded_visit_reminder_desc">नमस्कार , काही भेटी आहेत ज्या अजून अपलोड कराय च्या आहेत</string>
     <string name="you_have_unuploaded_visits">तुमच्याकडे अपलोड न केलेल्या %1$s भेटी आहेत.</string>
 
-    <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">तुमच्या “कुटुंब सदस्य” किंवा “वैयक्तिक” WhatsApp खात्याशी संबंधित मोबाईल नंबर काय आहे?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">तुमच्या कुटुंब सदस्य WhatsApp खात्याशी संबंधित मोबाईल नंबर काय आहे?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">तुमच्या वैयक्तिक WhatsApp खात्याशी संबंधित मोबाईल नंबर काय आहे?</string>
+
     <string name="i_dont_know">मला माहित नाही</string>
     <string name="can_ekal_send_a_summary_of_visit_to_you">एकल तुम्हाला आपल्या भेटीचा सारांश मोफत व्हॉट्सॲप मेसेज पाठवू शकेल का?</string>
 

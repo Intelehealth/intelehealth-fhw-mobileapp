@@ -2321,7 +2321,13 @@ public class IdentificationActivity extends AppCompatActivity implements
         whatsappSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0 && position < 3) {
+                String item = (String) parent.getItemAtPosition(position);
+
+                if (item.equalsIgnoreCase(getString(R.string.yes_personal))) {
+                    binding.tvWhatsappNumberFamilyPersonal.setText(getString(R.string.what_is_the_phone_number_associated_with_your_personal_whatsapp_account));
+                    whatsAppDataLayout.setVisibility(View.VISIBLE);
+                } else if (item.equalsIgnoreCase(getString(R.string.yes_family_member))) {
+                    binding.tvWhatsappNumberFamilyPersonal.setText(getString(R.string.what_is_the_phone_number_associated_with_your_family_member_whatsapp_account));
                     whatsAppDataLayout.setVisibility(View.VISIBLE);
                 } else {
                     whatsAppDataLayout.setVisibility(View.GONE);

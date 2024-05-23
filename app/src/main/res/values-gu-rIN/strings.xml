@@ -1003,7 +1003,7 @@
     <!--    Marital Status -->
     <string name="what_is_your_marital_status">ની વૈવાહિક સ્થિતિ શું છે?*</string>
     <string name="currently_married">વર્તમાનમાં વિવાહિત</string>
-<!--    <string name="married_gauna_not_performed">પરણિત, ગૌણ પરફોર્મ કર્યું નથી</string>-->
+    <!--    <string name="married_gauna_not_performed">પરણિત, ગૌણ પરફોર્મ કર્યું નથી</string>-->
     <string name="widowed">વિધવા</string>
     <string name="divorced">છૂટાછેડવાળા</string>
     <string name="separated">અલગ</string>
@@ -1195,7 +1195,9 @@
     <string name="title_un_uploaded_visit_reminder_desc">નમસ્કાર, કેટલીક મુલાકાતો છે જે અપલોડ કરવાની બાકી છે, કૃપા કરીને પગલાં લો.</string>
     <string name="you_have_unuploaded_visits">તમારી પાસે %1$s મુલાકાતો અપલોડ કરવાની બાકી છે.</string>
 
-    <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">તમારા "કુટુંબના સભ્ય" અથવા "વ્યક્તિગત" WhatsApp એકાઉન્ટ સાથે સંકળાયેલ મોબાઇલ નંબર શું છે?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">તમારા કુટુંબના સભ્ય WhatsApp એકાઉન્ટ સાથે સંકળાયેલ મોબાઇલ નંબર શું છે?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">તમારા વ્યક્તિગત WhatsApp એકાઉન્ટ સાથે સંકળાયેલ મોબાઇલ નંબર શું છે?</string>
+
     <string name="i_dont_know">અથવા મને ખબર નથી</string>
     <string name="can_ekal_send_a_summary_of_visit_to_you">શું એકલ તમને અમારી મુલાકાતના સારાંશનો મફત WhatsApp સંદેશ મોકલી શકે છે?</string>
 

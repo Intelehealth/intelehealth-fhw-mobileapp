@@ -1239,7 +1239,8 @@
     <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
     <string name="tab_general">General</string>
 
-    <string name="what_is_the_phone_number_associated_with_the_whatsapp_account">What is the mobile number associated with your “family member” or “personal” WhatsApp account?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">What is the mobile number associated with your family member WhatsApp account?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">What is the mobile number associated with your or personal WhatsApp account?</string>
     <string name="i_dont_know">I don\’t know</string>
     <string name="can_ekal_send_a_summary_of_visit_to_you">Can Ekal send a free WhatsApp message of the summary of our visit to you?</string>
 
