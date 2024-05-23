@@ -85,6 +85,7 @@
                         android:layout_marginBottom="5dp"
                         android:background="@drawable/ui2_ic_filter_bg"
                         android:padding="@dimen/my_appointment_padding"
+                        app:tint="?attr/colorPrimary"
                         android:src="@drawable/ui2_ic_filter" />
 
                     <ImageView
@@ -96,6 +97,7 @@
                         android:layout_marginBottom="5dp"
                         android:background="@drawable/ui2_ic_filter_bg"
                         android:padding="@dimen/my_appointment_padding"
+                        app:tint="?attr/colorPrimary"
                         android:src="@drawable/sort" />
                 </LinearLayout>
 
