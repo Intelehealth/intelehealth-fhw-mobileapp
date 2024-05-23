@@ -268,12 +268,9 @@ public class LoginActivityNew extends AppCompatActivity {
             }
         });
 
-        etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(final View v, boolean hasFocus) {
-                if (hasFocus) {
-                    appBarLayout.setExpanded(false, true);
-                }
+        etUsername.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                appBarLayout.setExpanded(false, true);
             }
         });
 
