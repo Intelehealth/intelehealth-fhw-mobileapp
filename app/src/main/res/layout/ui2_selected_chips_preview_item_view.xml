@@ -11,7 +11,7 @@
     android:maxLines="1"
     android:padding="@dimen/padding_10"
     android:text="Headache"
-    android:textColor="@color/colorPrimary"
+    android:textColor="?attr/colorPrimary"
     android:textSize="12sp"
     android:textStyle="bold" />
 

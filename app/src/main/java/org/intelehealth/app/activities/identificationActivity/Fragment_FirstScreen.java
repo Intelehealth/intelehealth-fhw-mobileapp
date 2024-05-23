@@ -224,9 +224,11 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             frag1_nxt_btn_main.setText(getString(R.string.save));
 
 
-        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addpatient_icon));
-        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addresslocation_icon_unselected));
-        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.other_icon_unselected));
+        personal_icon.setSelected(true);
+
+//        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addpatient_icon));
+//        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addresslocation_icon_unselected));
+//        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.other_icon_unselected));
 
 
         // next btn click

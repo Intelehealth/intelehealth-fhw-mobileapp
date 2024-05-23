@@ -90,15 +90,15 @@ public class PickUpTimeSlotsAdapter extends RecyclerView.Adapter<PickUpTimeSlots
     }
 
     public void changeToSelect(int selectedPos, int position, PickUpTimeSlotsAdapter.GenericViewHolder holder) {
-
-        if (selectedPos == position) {
-            holder.tvTime.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
-            holder.layoutParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_selcted_time_slot_ui2));
-        } else {
-
-            holder.layoutParent.setBackground(ContextCompat.getDrawable(context,R.drawable.ui2_bg_disabled_time_slot));
-            holder.tvTime.setTextColor(ContextCompat.getColor(context,R.color.textColorGray));
-        }
+        holder.layoutParent.setSelected(selectedPos == position);
+//        if (selectedPos == position) {
+//            holder.tvTime.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
+//            holder.layoutParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_selcted_time_slot_ui2));
+//        } else {
+//
+//            holder.layoutParent.setBackground(ContextCompat.getDrawable(context,R.drawable.ui2_bg_disabled_time_slot));
+//            holder.tvTime.setTextColor(ContextCompat.getColor(context,R.color.textColorGray));
+//        }
     }
 
 

@@ -169,6 +169,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             emContactNameTr,emContactTypeTr,emContactNumberTr,postalCodeTr,countryTr,
             stateTr, districtTr,villageCityTr,addressOneTr,addressTwoTr,nidTr,occupationTr,socialCategoryTr,
             educationTr,economicCategoryTr;
+
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -1436,16 +1437,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientstate.setText(getStateTranslated(state, sessionManager.getAppLanguage()));
 
         // setting district and city
-        if (patientDTO.getCityvillage() != null) {
+
+        String district = null;
+        String city_village = patientDTO.getCityvillage();
+        if (patientDTO.getCityvillage() != null && patientDTO.getCityvillage().length() > 0) {
             String[] district_city = patientDTO.getCityvillage().trim().split(":");
-            String district = null;
-            String city_village = null;
             if (district_city.length == 2) {
                 district = district_city[0];
                 city_village = district_city[1];
-            }else {
-                city_village = patientDTO.getCityvillage();
             }
+        }
+
 
             if (district != null) {
                 patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
@@ -1727,6 +1729,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && mAgeYears > -1) {
             guardianNameTr.setVisibility(View.VISIBLE);
             guardianTypeTr.setVisibility(View.VISIBLE);
+
             //guardian type
             if (patientDTO.getGuardianType() != null && !patientDTO.getGuardianType().equals("")) {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1748,6 +1751,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } else {
             guardianNameTr.setVisibility(View.GONE);
             guardianTypeTr.setVisibility(View.GONE);
+
         }
 
         //contact type

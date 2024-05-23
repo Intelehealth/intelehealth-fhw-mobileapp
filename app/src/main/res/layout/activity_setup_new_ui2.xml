@@ -96,6 +96,7 @@
                         android:layout_centerInParent="true"
                         android:layout_marginHorizontal="10dp"
                         android:layout_toEndOf="@id/enterDetailsTV"
+                        app:tint="?attr/colorPrimary"
                         android:src="@drawable/ui2_ic_info_question_mark" />
 
                 </RelativeLayout>

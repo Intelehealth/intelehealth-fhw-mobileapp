@@ -86,6 +86,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -159,6 +160,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private PatientDTO patientDTO;
     private CommonVisitData mCommonVisitData;
 
+    private boolean mHasLicence = false;
+
 
     private void startVisit() {
         // before starting, we determine if it is new visit for a returning patient
@@ -214,7 +217,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         mCommonVisitData.setEncounterUuidVitals(encounterVitals);
         //intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
 
-        encounterAdultIntials  = "";
+        encounterAdultIntials = "";
         mCommonVisitData.setEncounterUuidAdultIntial(encounterAdultIntials);
         //intent2.putExtra("encounterUuidAdultIntial", "");
 
@@ -239,6 +242,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
+        if (!sessionManager.getLicenseKey().isEmpty())
+            mHasLicence = true;
         mSummaryFrameLayout = findViewById(R.id.fl_steps_summary);
         mStep1ProgressBar = findViewById(R.id.prog_bar_step1);
         mStep2ProgressBar = findViewById(R.id.prog_bar_step2);
@@ -282,10 +288,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth()); //intent.getFloatExtra("float_ageYear_Month", 0);
             mCommonVisitData.setPatientAgeYearMonth(float_ageYear_Month);
-
-
-
-
 
 
             String[] temp = String.valueOf(float_ageYear_Month).split("\\.");
@@ -645,7 +647,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), insertionLocale);
             //}
-            insertionWithLocaleJsonString = jsonObject.toString().replace("\\/","/");
+            insertionWithLocaleJsonString = jsonObject.toString().replace("\\/", "/");
             Log.v(TAG, insertionWithLocaleJsonString);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -683,7 +685,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             }
         }
         String fileLocation = "physExam.json";
-        Node filterNode = loadFileToNode(fileLocation);
+        Node filterNode = loadFileToNode(fileLocation, true);
         ArrayList<String> selectedExamsList = new ArrayList<>(selectedExams);
         Log.v(TAG, "selectedExamsList- " + new Gson().toJson(selectedExamsList));
         physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, fileLocation), selectedExamsList);
@@ -708,18 +710,32 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private Node loadPastMedicalHistory() {
         String fileLocation = "patHist.json";
-        return loadFileToNode(fileLocation);
+        return loadFileToNode(fileLocation, true);
     }
 
     private Node mFamilyHistoryNode;
 
     private Node loadFamilyHistory() {
         String fileLocation = "famHist.json";
-        return loadFileToNode(fileLocation);
+        return loadFileToNode(fileLocation, true);
     }
 
-    private Node loadFileToNode(String fileLocation) {
-        JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
+    private Node loadFileToNode(String fileName, boolean isForRootFile) {
+        JSONObject currentFile = null;
+        if (!sessionManager.getLicenseKey().isEmpty()) {
+            if (isForRootFile) {
+                try {
+                    currentFile = new JSONObject(Objects.requireNonNull(FileUtils.readFileRoot(fileName, this)));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else
+                currentFile = FileUtils.encodeJSONFromFile(this, fileName);
+        } else {
+            currentFile = FileUtils.encodeJSON(this, fileName);
+        }
+
         Node mainNode = new Node(currentFile);
         mainNode.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
         return mainNode;
@@ -729,8 +745,18 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private void loadChiefComplainNodeForSelectedNames(List<ReasonData> selectedComplains) {
         for (int i = 0; i < selectedComplains.size(); i++) {
-            String fileLocation = "engines/" + selectedComplains.get(i).getReasonName() + ".json";
-            JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
+            String fileName = selectedComplains.get(i).getReasonName() + ".json";
+            String fileLocation = "engines/" + fileName;
+            JSONObject currentFile = null;
+
+
+            if (!sessionManager.getLicenseKey().isEmpty()) {
+                currentFile = FileUtils.encodeJSONFromFile(this, fileName);
+            } else {
+                currentFile = FileUtils.encodeJSON(this, fileLocation);
+            }
+
+
             Node mainNode = new Node(currentFile);
             List<Node> optionList = new ArrayList<>();
             Node associateSymptoms = null;
@@ -1126,7 +1152,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                 jsonObject.put("l-" + sessionManager.getAppLanguage(), physicalStringLocale);
                 //}
-                physicalStringWithLocaleJsonString = jsonObject.toString().replace("\\/","/");
+                physicalStringWithLocaleJsonString = jsonObject.toString().replace("\\/", "/");
                 Timber.tag(TAG).v(physicalStringWithLocaleJsonString);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1207,7 +1233,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), patientHistoryLocale);
             //}
-            patientHistoryWithLocaleJsonString = jsonObject.toString().replace("\\/","/");
+            patientHistoryWithLocaleJsonString = jsonObject.toString().replace("\\/", "/");
             Log.v(TAG, patientHistoryWithLocaleJsonString);
 
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
@@ -1224,7 +1250,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject1.put("l-" + sessionManager.getAppLanguage(), familyHistoryLocale);
             //}
-            familyHistoryWithLocaleJsonString = jsonObject1.toString().replace("\\/","/");
+            familyHistoryWithLocaleJsonString = jsonObject1.toString().replace("\\/", "/");
             Log.v(TAG, familyHistoryWithLocaleJsonString);
 
         } catch (JSONException e) {

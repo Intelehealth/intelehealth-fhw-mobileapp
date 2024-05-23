@@ -53,7 +53,7 @@ public class HorizontalCalendarViewAdapter extends RecyclerView.Adapter<Horizont
         //changeToSelect(selectedPos == position ? Color.parseColor("#ca3854") : Color.BLACK, holder);
         Log.d(TAG, "onBindViewHolder: selected month : " + calendarModel.getSelectedMonthForDays());
         Log.d(TAG, "onBindViewHolder: currentMonth : " + currentMonth);
-        makeTodaysDateSelected(calendarModel, holder, currentMonth);
+//        makeTodaysDateSelected(calendarModel, holder, currentMonth);
 
         holder.cardParent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,13 +76,15 @@ public class HorizontalCalendarViewAdapter extends RecyclerView.Adapter<Horizont
     private void makeTodaysDateSelected(CalendarModel calendarModel, HorizontalCalendarViewAdapter.MyViewHolder holder, int currentMonth) {
         if (String.valueOf(currentMonth).trim().equals(calendarModel.getSelectedMonthForDays().trim()) && calendarModel.isCurrentDate) {
             holder.tvDay.setText(context.getString(R.string.today));
-            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_selected));
-            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
-            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
+            holder.cardParent.setSelected(true);
+//            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_selected));
+//            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
+//            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
         } else {
-            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_ui2));
-            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
-            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
+            holder.cardParent.setSelected(false);
+//            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_ui2));
+//            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
+//            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
         }
     }
 
@@ -92,19 +94,19 @@ public class HorizontalCalendarViewAdapter extends RecyclerView.Adapter<Horizont
     public void changeToSelect(int selectedPos, int position, HorizontalCalendarViewAdapter.MyViewHolder holder) {
         Log.d(TAG, "changeToSelect: selectedPos : " + selectedPos);
         Log.d(TAG, "changeToSelect: position : " + position);
-
-        if (selectedPos == position) {
-            Log.d(TAG, "changeToSelect: in true");
-            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_selected));
-            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
-            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
-        } else {
-            Log.d(TAG, "changeToSelect: in false");
-
-            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_ui2));
-            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
-            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
-        }
+        holder.cardParent.setSelected(selectedPos == position);
+//        if (selectedPos == position) {
+//            Log.d(TAG, "changeToSelect: in true");
+//            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_selected));
+//            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
+//            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
+//        } else {
+//            Log.d(TAG, "changeToSelect: in false");
+//
+//            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_ui2));
+//            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
+//            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
+//        }
     }
 
     @Override

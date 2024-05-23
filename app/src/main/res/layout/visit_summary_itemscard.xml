@@ -32,7 +32,10 @@
                     android:id="@+id/vitals_header_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/fu_card_margin_sides">
+                    android:layout_marginStart="@dimen/fu_card_margin_sides"
+                    android:layout_marginTop="@dimen/fu_card_margin_sides"
+                    android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <ImageView
                         android:id="@+id/ivVitalIcon"
@@ -103,6 +106,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="?attr/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -112,7 +116,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -538,6 +542,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="?attr/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -547,7 +552,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -888,6 +893,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="?attr/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -897,7 +903,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -1055,6 +1061,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="?attr/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -1064,7 +1071,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -1125,6 +1132,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="?attr/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -1134,7 +1142,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="12sp" />
 
                         </LinearLayout>

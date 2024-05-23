@@ -392,7 +392,6 @@
                     android:layout_below="@+id/ll_1"
                     android:layout_marginStart="@dimen/tv_reschedule_time_margin_start"
                     android:layout_marginTop="@dimen/tv_reschedule_time_margin_top"
-                    android:layout_toEndOf="@+id/fu_details_calendar"
                     android:drawableStart="@drawable/ui2_ic_time"
                     android:drawablePadding="@dimen/tv_reschedule1_time_drawable_padding"
                     android:drawableTint="@color/colorPrimary1"
@@ -661,7 +660,7 @@
                     android:paddingEnd="@dimen/common_button_padding_right"
                     android:paddingBottom="@dimen/common_button_padding_bottom"
                     android:text="@string/cancel"
-                    android:textColor="@color/buttonColorRed"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/btn_visit_text_size" />
 
                 <Button
@@ -678,7 +677,7 @@
                     android:paddingEnd="@dimen/common_button_padding_right"
                     android:paddingBottom="@dimen/common_button_padding_bottom"
                     android:text="@string/reschedule"
-                    android:textColor="@color/buttonColorRed"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/btn_visit_text_size" />
             </LinearLayout>
 

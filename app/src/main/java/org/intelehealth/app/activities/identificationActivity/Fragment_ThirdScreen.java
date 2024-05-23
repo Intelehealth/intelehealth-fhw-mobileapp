@@ -235,9 +235,13 @@ public class Fragment_ThirdScreen extends Fragment {
             }
         });
 
-        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addpatient_icon_done));
-        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.addresslocation_icon_done));
-        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.other_icon));
+
+        personal_icon.setActivated(true);
+        address_icon.setActivated(true);
+        other_icon.setSelected(true);
+//        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addpatient_icon_done));
+//        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addresslocation_icon_done));
+//        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.other_icon));
 
         frag3_btn_back.setOnClickListener(v -> {
             onBackInsertIntoPatientDTO();
