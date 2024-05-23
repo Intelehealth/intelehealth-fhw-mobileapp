@@ -1460,7 +1460,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             } else {
                 village.setText(getResources().getString(R.string.no_city_added));
             }
-        }
 
         // end - city and district
 
@@ -2320,4 +2319,4 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
-}
+    }
