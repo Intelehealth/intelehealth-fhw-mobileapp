@@ -1345,8 +1345,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="confirm_new_password_1">নতুন পাছৱৰ্ড নিশ্চিত কৰক</string>
     <string name="enter_current_password">বৰ্তমানৰ পাছৱৰ্ড দিয়ক</string>
     <string name="change_password">পাছৱৰ্ড সলাওক</string>
-    <string name="password_match">নতুন পাছৱৰ্ড আৰু নিশ্চিত পাছৱৰ্ড একে হ\'ব লাগিব।</string>
-    <string name="password_changed_successfully">পাছৱৰ্ড সফলতাৰে সলনি হ\'ল</string>
+    <string name="password_match">নতুন পাছৱৰ্ড আৰু নিশ্চিত পাছৱৰ্ড একে হ ব লাগিব।</string>
+    <string name="password_changed_successfully">পাছৱৰ্ড সফলতাৰে সলনি হ ল</string>
     <string name="the_password_has_been_successfully_changed">পাছৱৰ্ডটো সফলতাৰে সলনি কৰা হৈছে!</string>
     <string name="username_not_found">ইউজাৰ নেম পোৱা নগ\'ল</string>
     <string name="mobile_not_registered">মোবাইল নম্বৰ পঞ্জীয়ন কৰা হোৱা নাই</string>
@@ -1730,7 +1730,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="details">সবিশেষ</string>
     <string name="name">নাম</string>
     <string name="no_information">কোনো তথ্য নাই</string>
-    <string name="no_information_with_bullet">\u2022 অৰ্হতা</string>
+    <string name="no_information_with_bullet">• অৰ্হতা</string>
     <string name="qualification">অৰ্হতা</string>
     <string name="advice">পৰামৰ্শ</string>
     <string name="referred_specialist">ৰেফাৰ কৰা বিশেষজ্ঞ</string>
@@ -1894,12 +1894,11 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="no_of_days">দিনৰ সংখ্যা</string>
     <string name="timings">সময়</string>
     <string name="bullet">\u2022</string>
-
     <string name="u2022_strength">• শক্তি</string>
     <string name="u2022_no_of_days">• দিনৰ সংখ্যা</string>
     <string name="u2022_timings">• সময়</string>
     <string name="u2022_remarks">• মন্তব্য</string>
-    <string name="the_from_date_cannot_be_greater_than_the_to_date">ইয়াৰ \'পৰা\' তাৰিখ \'লৈ\' তাৰিখতকৈ পিছৰ হ\'ব নালাগিব</string>
+    <string name="the_from_date_cannot_be_greater_than_the_to_date">ইয়াৰ পৰা তাৰিখ লৈ তাৰিখতকৈ পিছৰ হ ব নালাগিব</string>
     <string name="the_to_date_cannot_be_less_than_the_from_date">অন্য তথ্য প্ৰবিষ্ট কৰক</string>
 
 
