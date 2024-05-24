@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -71,6 +72,16 @@ import java.util.Locale;
  */
 public class Node implements Serializable {
     private boolean isDataCapture;
+    /**
+     * we are putting the validation of data type using below attribute
+     * ******************************************************************
+     * "input-type": "number" -
+     * "validation": "5.0-17.0" - we can set the max and min i.e. range of the value for it by using "-". here 5.0 is MIN and 17.0 is the MAX
+     * ***********************************************************
+     * "input-type": "date"  -
+     * "validation": "MAX_TODAY" - it will set the max date is today in calender
+     * "validation": "MIN_TODAY" - it will set the min date is today in calender
+     */
     private String validation = ""; // MAX_TODAY , MIN_TODAY
     private String id;
     private String text;
@@ -1935,6 +1946,7 @@ public class Node implements Serializable {
     public static void askNumber(final Node node, Activity context, final QuestionsAdapter adapter) {
 
         final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+        numberDialog.setCancelable(false);
         numberDialog.setTitle(R.string.question_number_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
@@ -1942,8 +1954,18 @@ public class Node implements Serializable {
        /* final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(1000);*/
+        double max = 0d;
+        double min = 0d;
+        String validation = node.getValidation();
+        if (validation != null) {
+            min = Double.parseDouble(validation.split("-")[0]);
+            max = Double.parseDouble(validation.split("-")[1]);
+        }
+        double finalMin = min;
+        double finalMax = max;
         EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
         et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
+
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1951,14 +1973,22 @@ public class Node implements Serializable {
                 String value = String.valueOf(numberPicker.getValue());*/
                 String value = et_enter_value.getText().toString();
 
-                if (!et_enter_value.getText().toString().equalsIgnoreCase("")) {
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
-                    } else {
-                        node.addLanguage(et_enter_value.getText().toString());
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                if (!value.equalsIgnoreCase("")) {
+                    double valueDouble = Double.parseDouble(value);
+
+                    if ((finalMin != 0 && finalMax != 0) && valueDouble < finalMin || valueDouble > finalMax) {
+                        Toast.makeText(context, context.getString(R.string.hemoglobin_error, String.valueOf(finalMin), String.valueOf(finalMax)), Toast.LENGTH_SHORT).show();
+                        node.setSelected(false);
+
+                    }else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
+                        } else {
+                            node.addLanguage(et_enter_value.getText().toString());
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
                     }
-                    node.setSelected(true);
                 } else {
                     node.setSelected(false);
                     //} else {
@@ -2638,6 +2668,7 @@ public class Node implements Serializable {
     public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
         final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+        numberDialog.setCancelable(false);
         numberDialog.setTitle(R.string.question_number_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
@@ -2645,6 +2676,15 @@ public class Node implements Serializable {
       /*  final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(1000);*/
+        double max = 0d;
+        double min = 0d;
+        String validation = node.getValidation();
+        if (validation != null) {
+            min = Double.parseDouble(validation.split("-")[0]);
+            max = Double.parseDouble(validation.split("-")[1]);
+        }
+        double finalMin = min;
+        double finalMax = max;
         EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
         et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -2656,15 +2696,22 @@ public class Node implements Serializable {
                 if (value.trim().isEmpty()) {
                     node.setSelected(false);
                 } else {
+                    double valueDouble = Double.parseDouble(value);
 
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", value));
+                    if ((finalMin != 0 && finalMax != 0) && valueDouble < finalMin || valueDouble > finalMax) {
+                        Toast.makeText(context, context.getString(R.string.hemoglobin_error, String.valueOf(finalMin), String.valueOf(finalMax)), Toast.LENGTH_SHORT).show();
+                        node.setSelected(false);
+
                     } else {
-                        node.addLanguage(" " + value);
-                        node.setText(value);
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", value));
+                        } else {
+                            node.addLanguage(" " + value);
+                            node.setText(value);
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
                     }
-                    node.setSelected(true);
                 }
 
                 adapter.notifyDataSetChanged();
