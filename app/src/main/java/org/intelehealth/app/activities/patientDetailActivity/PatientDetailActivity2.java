@@ -2319,4 +2319,4 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
-    }
+}
