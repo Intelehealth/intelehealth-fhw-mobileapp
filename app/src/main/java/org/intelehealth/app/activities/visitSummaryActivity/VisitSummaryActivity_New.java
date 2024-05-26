@@ -33,6 +33,7 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -73,6 +74,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,6 +88,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -112,6 +115,7 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
+import org.intelehealth.app.adapter.PdfPrintAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -150,9 +154,11 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.LayoutCaptureUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.PdfGenerationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
@@ -172,6 +178,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -350,6 +357,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private CommonVisitData mCommonVisitData;
 
     private SpecializationViewModel viewModel;
+
+    private ScrollView scrollView;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -2275,6 +2284,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void initUI() {
+        scrollView = findViewById(R.id.scroll_view);
         // textview - start
         filter_framelayout = findViewById(R.id.filter_framelayout);
         filter = findViewById(R.id.filter);
@@ -3210,6 +3220,29 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     public void openAll(View view) {
+    }
+
+    public void captureScrollView(View view) {
+        String filePath = new File(AppConstants.PDF_PATH, "/visit_summary_"+System.currentTimeMillis() + ".pdf").getPath();
+        Bitmap bitmap = LayoutCaptureUtils.captureScrollView(scrollView);
+        PdfGenerationUtils.generatePDF(bitmap, filePath);
+        // Optionally recycle the bitmap to free memory
+        bitmap.recycle();
+        printPDF(filePath);
+    }
+
+    private void printPDF(String filePath) {
+        File file = new File(filePath);
+        Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", file);
+
+        PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
+        try {
+            PrintDocumentAdapter printAdapter = new PdfPrintAdapter(this, uri);
+            printManager.print("PDF Print", printAdapter, new PrintAttributes.Builder().build());
+        } catch (Exception e) {
+            Toast.makeText(this, "Error printing PDF", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 
 
