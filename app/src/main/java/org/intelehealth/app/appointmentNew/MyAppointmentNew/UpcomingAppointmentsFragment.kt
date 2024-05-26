@@ -73,9 +73,8 @@ class UpcomingAppointmentsFragment : Fragment() {
     private var listener: UpdateAppointmentsCount? = null
     private var nsvToday: NestedScrollView? = null
     private val upcomingLimit = 15
+    private var totalData = 0;
     private var offset = 0
-    private var completedStart = 0
-    private var cancelledStart = 0
     private var isUpcomingFullyLoaded = false
     private var upcomingAppointmentInfoList: MutableList<AppointmentInfo>? = null
     private val upcomingSearchList: MutableList<AppointmentInfo> = ArrayList()
@@ -215,15 +214,10 @@ class UpcomingAppointmentsFragment : Fragment() {
         }
 
         nsvToday?.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            if (v.getChildAt(v.childCount - 1) != null) {
-                if (scrollY > oldScrollY) {
-                    if (upcomingAppointmentInfoList != null && upcomingAppointmentInfoList!!.size == 0) {
-                        isUpcomingFullyLoaded = true
-                    }
-                    if (!isUpcomingFullyLoaded) {
-                        setMoreDataIntoUpcomingRecyclerView()
-                    }
-                }
+            val view = v.getChildAt(v.childCount - 1)
+            val bottom: Int = view.bottom - (v.height + v.scrollY)
+            if (bottom == 0) {
+                setMoreDataIntoUpcomingRecyclerView()
             }
         }
         searchPatient()
@@ -259,7 +253,7 @@ class UpcomingAppointmentsFragment : Fragment() {
         if (upcomingSearchList.size > 0) {
             return
         }
-        if (isUpcomingFullyLoaded) {
+        if ((activity as MyAppointmentActivityNew).totalUpcoming <= (upcomingAppointmentInfoList?.size?:0)) {
             return
         }
         showShortToast(requireActivity(),getString(R.string.loading_more))
@@ -348,7 +342,7 @@ class UpcomingAppointmentsFragment : Fragment() {
                         }
                         error.printStackTrace()
                     })
-            
+
             disposables.add(upcomingAppointmentDisposable)
         }
 

@@ -45,6 +45,8 @@ import retrofit2.Response
 
 class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     NetworkUtils.InternetCheckUpdateInterface, MyAppointmentLoadingListener {
+    var totalUpcoming: Int = -1
+    var totalPast: Int = -1
     private lateinit var loadingDialog: androidx.appcompat.app.AlertDialog
     private var bottomNav: BottomNavigationView? = null
     private var tabLayout: TabLayout? = null
@@ -166,6 +168,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
             .observeOn(AndroidSchedulers.mainThread())
             .concatMap {
                 tabLayout?.getTabAt(0)?.text = getString(R.string.upcoming) + " (" + it + ")"
+                totalUpcoming = it
                 getCountObserver(AppointmentTabType.PAST)
             }
             .subscribeOn(Schedulers.io())
@@ -173,6 +176,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
             .subscribe(
                 {
                     tabLayout?.getTabAt(1)?.text = getString(R.string.past) + " (" + it + ")"
+                    totalPast = it
                 },
                 { error ->
                     error.printStackTrace()
