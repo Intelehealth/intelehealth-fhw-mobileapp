@@ -61,7 +61,7 @@
                     android:fontFamily="@font/lato_bold"
                     android:gravity="top"
                     android:lineSpacingExtra="1sp"
-                    android:text="@string/_visit_summary"
+                    android:text="@string/visit_preview"
                     android:textAppearance="@style/label"
                     android:textSize="@dimen/toolbar_text_size"
                     android:textStyle="bold"
@@ -69,41 +69,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/margin_20"
-                android:layout_weight="0.3"
-                android:layout_gravity="end"
-                android:gravity="end"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/refresh"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/margin_20dp"
-                    android:background="@null"
-                    android:src="@drawable/ic_refreshbtn" />
-
-                <ImageButton
-                    android:id="@+id/downloadbtn"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/margin_5"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:visibility="gone"
-                    android:src="@drawable/download_icon_toolbar" />
-
-                <ImageButton
-                    android:id="@+id/filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:src="@drawable/three_dots_menu" />
-
-            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
     <!--Toolbar - end-->
@@ -114,6 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_btn_relative"
         android:layout_below="@+id/relativeCardview"
+        android:scrollbars="none"
         android:fillViewport="true">
 
         <RelativeLayout
@@ -179,17 +145,17 @@
                                 android:layout_toEndOf="@+id/profile"
                                 android:orientation="vertical">
 
-                                <RelativeLayout
+                                <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:weightSum="8">
 
                                     <TextView
                                         android:id="@+id/textView_name_value"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/lato_bold"
-                                        android:maxWidth="120dp"
-                                        android:maxLines="1"
+                                        android:layout_weight="7"
                                         android:ellipsize="end"
                                         android:gravity="center_vertical"
                                         tools:text="Srinivas Bandi Srinivas BB Bandi Srinivas B Bandi BBB Srinivas"
@@ -201,29 +167,19 @@
 
                                     <TextView
                                         android:id="@+id/textView_gender_value"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="@dimen/fu_male_margin_start"
-                                        android:layout_toEndOf="@+id/textView_name_value"
-                                        android:layout_centerVertical="true"
+                                        android:layout_weight="1"
                                         android:text="@string/misc_txt"
 
                                         android:textAppearance="@style/label_misc_txt_14sp"
                                         android:textColor="@null"
                                         />
 
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_vertical"
-                                        android:layout_toEndOf="@id/textView_gender_value"
-                                        android:layout_marginStart="@dimen/fu_male_margin_start"
-                                        android:onClick="editPatientInfo"
-                                        android:padding="@dimen/margin_4"
-                                        android:src="@drawable/ic_icno8_edit" />
 
 
-                                </RelativeLayout>
+                                </LinearLayout>
 
                                 <!-- Caption -->
                                 <TextView
@@ -253,6 +209,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
+                                android:visibility="gone"
                                 android:src="@drawable/ui2_ic_chevron_down" />
 
                         </LinearLayout>
@@ -366,6 +323,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
+                    android:visibility="gone"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
                     android:background="@null"
                     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_up_24"
@@ -446,7 +404,10 @@
                             android:id="@+id/addnotes_vd_header_relative"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/fu_card_margin_sides">
+                            android:layout_marginStart="@dimen/fu_card_margin_sides"
+                            android:layout_marginTop="@dimen/fu_card_margin_sides"
+                            android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                            android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                             <ImageView
                                 android:id="@+id/ivVisitAddNotes"
@@ -470,7 +431,8 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:background="@null"
-                                android:src="@drawable/ui2_ic_chevron_down" />
+                                android:src="@drawable/ui2_ic_chevron_down"
+                                android:visibility="gone" />
                         </RelativeLayout>
 
                         <!--Expanded Vitals-->
@@ -666,6 +628,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:background="@null"
+                                android:visibility="gone"
                                 android:src="@drawable/ui2_ic_chevron_down" />
                         </RelativeLayout>
 
@@ -788,6 +751,7 @@
                         android:padding="@dimen/margin_8"
                         android:layout_toEndOf="@+id/doc_speciality_title_1"
                         android:background="@null"
+                        android:visibility="gone"
                         app:tint="?attr/colorPrimary"
                         android:src="@drawable/question_mark_helpicon" />
 
@@ -816,14 +780,17 @@
         android:paddingBottom="@dimen/fu_card_margin_sides">
 
         <LinearLayout
-            android:id="@+id/btn_bottom_printshare"
+            android:id="@+id/btn_bottom_vs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="visible"
-            android:weightSum="2">
+            android:weightSum="2"
+            tools:visibility="visible">
+
+
             <Button
-                android:id="@+id/preview_bt_with_prescription_lay"
+                android:id="@+id/print_bt"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginStart="@dimen/margin_24"
@@ -833,46 +800,14 @@
                 android:background="@drawable/ui2_common_primary_bg"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
-                android:text="@string/preview"
+                android:text="@string/action_print"
                 android:visibility="visible"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/btnPrescriptionView"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginHorizontal="@dimen/margin_24"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/view_prescription_lbl"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
-            <!--<Button
-                android:id="@+id/btn_vs_print"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:backgroundTint="@color/grey_button_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/action_print"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btn_vs_share"
+                android:id="@+id/share_bt"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_alignParentBottom="true"
@@ -884,70 +819,6 @@
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
                 android:text="@string/share"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />-->
-
-        </LinearLayout>
-
-        <!--Visit Details - end -->
-
-        <LinearLayout
-            android:id="@+id/btn_bottom_vs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:weightSum="2"
-            tools:visibility="visible">
-
-            <Button
-                android:id="@+id/btn_vs_appointment"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/appointment"
-                android:visibility="gone"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/preview_bt_with_save_visit_lay"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/preview"
-                android:visibility="visible"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btn_vs_sendvisit"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/common_edittext_margin_top"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/send_visit_button"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />

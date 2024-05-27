@@ -1936,5 +1936,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="sorted_by_descending_order">Sorted By Descending order</string>
     <string name="sorted_by_ascending_order">Sorted By Ascending order</string>
     <string name="over">" Over"</string>
+    <string name="preview">Preview</string>
+    <string name="visit_preview">Visit Preview</string>
+    <string name="whatsapp_not_installed_on_your_device">WhatsApp not installed on your device</string>
 
 </resources>

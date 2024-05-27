@@ -21,7 +21,7 @@ class PdfGenerationUtils {
             val canvas = page.canvas
             canvas.drawBitmap(bitmap, 0f, 0f, null)
             document.finishPage(page)
-            //FileOutputStream(filePath).use { fos -> document.writeTo(fos) }
+            FileOutputStream(filePath).use { fos -> document.writeTo(fos) }
             document.close()
             return document
         }

@@ -805,4 +805,7 @@
     <string name="universal_donor">( Universal Donor)</string>
     <string name="universal_recipient">( Universal Recipient )</string>
     <string name="view_prescription_lbl">View Prescription</string>
+    <string name="preview">Preview</string>
+    <string name="visit_preview">Visit Preview</string>
+    <string name="whatsapp_not_installed_on_your_device">WhatsApp not installed on your device</string>
 </resources>

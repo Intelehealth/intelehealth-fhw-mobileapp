@@ -20,6 +20,7 @@ import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -60,6 +61,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -92,6 +94,7 @@ import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.print.PrintHelper;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -177,7 +180,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -202,11 +204,10 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 /**
- * Created by: Prajwal Waingankar On: 2/Nov/2022
- * Github: prajwalmw
+ * Created by: Tanvir 0n 27-05-24 : 2:18 PM
  */
-public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
-    private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
+public class VisitSummaryActivityPreview extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
+    private static final String TAG = VisitSummaryActivityPreview.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     //SQLiteDatabase db;
     Button btn_vs_sendvisit;
@@ -215,8 +216,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
     private RelativeLayout add_additional_doc;
-    private LinearLayout btn_bottom_printshare, btn_bottom_vs;
-    private Button preview_with_prescription_lay,preview_with_save_visit_lay;
+    private LinearLayout btn_bottom_vs;
+    private Button visit_summary_preview;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
@@ -226,7 +227,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
     ArrayList<String> physicalExams;
-    VisitSummaryActivity_New.DownloadPrescriptionService downloadPrescriptionService;
+    VisitSummaryActivityPreview.DownloadPrescriptionService downloadPrescriptionService;
     private RecyclerView mAdditionalDocsRecyclerView, mPhysicalExamsRecyclerView, cc_recyclerview;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager, mPhysicalExamsLayoutManager;
     private RecyclerView.LayoutManager cc_recyclerview_gridlayout;
@@ -237,8 +238,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     boolean hasLicense = false;
     private boolean hasPrescription = false;
     private boolean isRespiratory = false, uploaded = false, downloaded = false;
-    Button uploadButton, /*btn_vs_print, btn_vs_share,*/
-            mViewPrescriptionButton;
     ImageView ivPrescription;   // todo: not needed here
 
     Patient patient = new Patient();
@@ -331,7 +330,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     ImageButton editAddDocs;
     ImageButton btn_up_special_vd_header;
 
-    ImageView profile_image, downloadbtn;
+    ImageView profile_image;
     String profileImage = "";
     String profileImage1 = "";
     ImagesDAO imagesDAO = new ImagesDAO();
@@ -340,13 +339,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-    private ImageButton backArrow, priority_hint, refresh, filter;
+    private ImageButton backArrow, priority_hint;
     private NetworkUtils networkUtils;
     private static final int SCHEDULE_LISTING_INTENT = 2001;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     private static final int DIALOG_CAMERA_PERMISSION_REQUEST = 3000;
     private static final int DIALOG_GALLERY_PERMISSION_REQUEST = 4000;
-    Button btnAppointment, openall_btn;
+    Button openall_btn;
     private FrameLayout filter_framelayout;
     private View hl_2;
     private boolean priorityVisit = false;
@@ -359,6 +358,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private SpecializationViewModel viewModel;
 
     private ScrollView scrollView;
+
+    Button printBt, shareBt;
+    private Bitmap bitmap;
+    private String filePath;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -377,7 +380,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             args.setPatientName(patientName);
             args.setVisitId(visitUUID);
             args.setNurseId(encounterDTO.getProvideruuid());
-            IDAChatActivity.startChatActivity(VisitSummaryActivity_New.this, args);
+            IDAChatActivity.startChatActivity(VisitSummaryActivityPreview.this, args);
         } else {
             //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
             Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
@@ -437,9 +440,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visit_summary_new);
+        setContentView(R.layout.activity_visit_summary_preview);
         setupSpecialization();
-        context = VisitSummaryActivity_New.this;
+        context = VisitSummaryActivityPreview.this;
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -452,7 +455,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         fetchingIntent();
         setViewsData();
         expandableCardVisibilityHandling();
-        tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
+        tipWindow = new TooltipWindow(VisitSummaryActivityPreview.this);
+
+        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                scrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                captureScrollView(scrollView);
+            }
+        });
 
     }
 
@@ -538,53 +549,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 physicalExams.addAll(selectedExams);
             }
 
-/*
-            Log.v(TAG, "inte_value: \n: " + patientUuid + "\n" +
-                    visitUuid + "\n" +
-                    patientGender + "\n" +
-                    encounterVitals + "\n" +
-                    encounterUuidAdultIntial + "\n" +
-                    EncounterAdultInitial_LatestVisit + "\n" +
-                    patientName + "\n" +
-                    float_ageYear_Month + "\n" +
-                    intentTag + "\n" +
-                    isPastVisit + "\n");
-*/
             queryData(String.valueOf(patientUuid));
         }
-
-       /* // todo: testing - start
-        patientUuid = "5beb27c8-4bae-4d8e-91a1-1fa5dabb51c8";
-        visitUuid = "f133d3ca-f448-44c0-b1b4-5889f85e7d5a";
-        patientGender = "M";
-        encounterVitals = "1c4b19a7-0c1d-48a8-a0a0-a9222018ccef";
-        encounterUuidAdultIntial = "e4e5b1f1-72cf-437f-978f-c42a4a0d1183";
-        EncounterAdultInitial_LatestVisit = "";
-        mSharedPreference = this.getSharedPreferences(
-                "visit_summary", Context.MODE_PRIVATE);
-        patientName = "Testing Banana";
-        float_ageYear_Month = 48.0f;
-        intentTag = "new";
-        isPastVisit = false;
-//            hasPrescription = intent.getStringExtra("hasPrescription");
-
-      //  Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
-        Set<String> selectedExams = new HashSet<>();
-        selectedExams.add("");
-        selectedExams.add("Abdomen:Distension");
-        selectedExams.add("Abdomen:Scars");
-        selectedExams.add("Abdomen:Peristaltic sound");
-        selectedExams.add("Physical Growth:Sexual Maturation");
-        selectedExams.add("Abdomen:Tenderness");
-        selectedExams.add("Abdomen:Lumps");
-        selectedExams.add("Abdomen:Rebound tenderness");
-
-        if (physicalExams == null) physicalExams = new ArrayList<>();
-        physicalExams.clear();
-        if (selectedExams != null && !selectedExams.isEmpty()) {
-            physicalExams.addAll(selectedExams);
-        }
-        // todo: testing - end*/
 
 
         // receiver
@@ -602,7 +568,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             editFamHist.setVisibility(View.GONE);
             editMedHist.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
-            uploadButton.setVisibility(View.GONE);
 //            btnSignSubmit.setVisibility(View.GONE);// todo: uncomment handle later.
             invalidateOptionsMenu();
         } else {
@@ -654,9 +619,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 editAddDocs.setVisibility(View.GONE);
                 add_additional_doc.setVisibility(View.GONE);
 
-                btn_bottom_printshare.setVisibility(View.VISIBLE);
-                btn_bottom_vs.setVisibility(View.GONE);
-
                 doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
                 // vs_add_notes.setVisibility(View.GONE);
@@ -674,19 +636,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     tvAddNotesValueVS.setText(addnotes_value);
                 }
             } else {
-                //TODO : Hide for beta release
-                /*editVitals.setVisibility(View.VISIBLE);
-                editComplaint.setVisibility(View.VISIBLE);
-                cc_details_edit.setVisibility(View.VISIBLE);
-                ass_symp_edit.setVisibility(View.VISIBLE);
-                editPhysical.setVisibility(View.VISIBLE);
-                editFamHist.setVisibility(View.VISIBLE);
-                editMedHist.setVisibility(View.VISIBLE);
-                editAddDocs.setVisibility(View.VISIBLE);*/
                 editVitals.setVisibility(View.VISIBLE);
                 editComplaint.setVisibility(View.VISIBLE);
-                //cc_details_edit.setVisibility(View.VISIBLE);
-                //ass_symp_edit.setVisibility(View.VISIBLE);
                 editPhysical.setVisibility(View.VISIBLE);
                 editFamHist.setVisibility(View.VISIBLE);
                 editMedHist.setVisibility(View.VISIBLE);
@@ -694,8 +645,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 add_additional_doc.setVisibility(View.VISIBLE);
 
-                btn_bottom_printshare.setVisibility(View.GONE);
-                btn_bottom_vs.setVisibility(View.VISIBLE);
 
                 doc_speciality_card.setVisibility(View.VISIBLE);
                 special_vd_card.setVisibility(View.GONE);
@@ -720,28 +669,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             flag.setEnabled(false);
             flag.setClickable(false);
         }
-        btn_bottom_printshare.setVisibility(View.GONE);
-        btn_bottom_vs.setVisibility(View.VISIBLE);
         Timber.tag(TAG).d("has prescription::%s", hasPrescription);
         updateUIState();
 
-        //here we changing the appointment button behavior
-        //based on appointment status
-        if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.CANCELLED)) {
-            btnAppointment.setText(getString(R.string.appointment));
-        } else if (new AppointmentDAO().checkAppointmentStatus(visitUUID).equals(AppConstants.BOOKED)) {
-            btnAppointment.setText(getString(R.string.reschedule));
-            doesAppointmentExist = true;
-        }
     }
 
     private void updateUIState() {
         if (hasPrescription) {
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
-
-            btn_bottom_printshare.setVisibility(View.VISIBLE);
-            btn_bottom_vs.setVisibility(View.GONE);
 
             add_additional_doc.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
@@ -759,182 +695,20 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private int mOpenCount = 0;
 
     private void expandableCardVisibilityHandling() {
-        openall_btn.setOnClickListener(v -> {
 
-//            Drawable drawable = openall_btn.getDrawable();
-            if (mOpenCount == 0) {
-                openall_btn.setText(getResources().getString(R.string.close_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
-                vs_vitals_header_expandview.setVisibility(View.VISIBLE);
-                vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
-                vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
-                vs_medhist_header_expandview.setVisibility(View.VISIBLE);
-                vd_special_header_expandview.setVisibility(View.VISIBLE);
-                vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
-                mOpenCount = 6;
-            } else {
-                openall_btn.setText(getResources().getString(R.string.open_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
-                vs_vitals_header_expandview.setVisibility(View.GONE);
-                vs_visitreason_header_expandview.setVisibility(View.GONE);
-                vs_phyexam_header_expandview.setVisibility(View.GONE);
-                vs_medhist_header_expandview.setVisibility(View.GONE);
-                vd_special_header_expandview.setVisibility(View.GONE);
-                vd_addnotes_header_expandview.setVisibility(View.GONE);
-                mOpenCount = 0;
-            }
+        vs_header_expandview.setVisibility(View.VISIBLE);
 
-        });
+        vs_vitals_header_expandview.setVisibility(View.VISIBLE);
 
-        btn_up_header.setOnClickListener(v -> {
-            if (vs_header_expandview.getVisibility() == View.VISIBLE)
-                vs_header_expandview.setVisibility(View.GONE);
-            else vs_header_expandview.setVisibility(View.VISIBLE);
-        });
+        vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
 
-/*
-        btn_up_vitals_header.setOnClickListener(v -> {
-            if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE)
-                vs_vitals_header_expandview.setVisibility(View.GONE);
-            else
-                vs_vitals_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
-        vitals_header_relative.setOnClickListener(v -> {
-            if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE) {
-                vs_vitals_header_expandview.setVisibility(View.GONE);
-                mOpenCount--;
-                if (mOpenCount == 0) {
-                    openall_btn.setText(getResources().getString(R.string.open_all));
-                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
-                }
-            } else {
-                mOpenCount++;
-                vs_vitals_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setText(getResources().getString(R.string.close_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
-            }
-        });
+        vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
 
-/*
-        btn_up_visitreason_header.setOnClickListener(v -> {
-            if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE)
-                vs_visitreason_header_expandview.setVisibility(View.GONE);
-            else
-                vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
-        chiefcomplaint_header_relative.setOnClickListener(v -> {
-            if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE) {
-                vs_visitreason_header_expandview.setVisibility(View.GONE);
-                mOpenCount--;
-                if (mOpenCount == 0) {
-                    openall_btn.setText(getResources().getString(R.string.open_all));
-                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
-                }
-            } else {
-                mOpenCount++;
-                vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setText(getResources().getString(R.string.close_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
-            }
-        });
+        vs_medhist_header_expandview.setVisibility(View.VISIBLE);
 
-/*
-        btn_up_phyexam_header.setOnClickListener(v -> {
-            if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE)
-                vs_phyexam_header_expandview.setVisibility(View.GONE);
-            else
-                vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
-        physExam_header_relative.setOnClickListener(v -> {
-            if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE) {
-                vs_phyexam_header_expandview.setVisibility(View.GONE);
-                mOpenCount--;
-                if (mOpenCount == 0) {
-                    openall_btn.setText(getResources().getString(R.string.open_all));
-                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
-                }
-            } else {
-                mOpenCount++;
-                vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setText(getResources().getString(R.string.close_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
-            }
-        });
+        vd_special_header_expandview.setVisibility(View.VISIBLE);
 
-/*
-        btn_up_medhist_header.setOnClickListener(v -> {
-            if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE)
-                vs_medhist_header_expandview.setVisibility(View.GONE);
-            else
-                vs_medhist_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
-        pathistory_header_relative.setOnClickListener(v -> {
-            if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE) {
-                vs_medhist_header_expandview.setVisibility(View.GONE);
-                mOpenCount--;
-                if (mOpenCount == 0) {
-                    openall_btn.setText(getResources().getString(R.string.open_all));
-                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
-                }
-            } else {
-                mOpenCount++;
-                vs_medhist_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setText(getResources().getString(R.string.close_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
-            }
-        });
-
-/*
-        btn_up_special_vd_header.setOnClickListener(v -> {
-            if (vd_special_header_expandview.getVisibility() == View.VISIBLE)
-                vd_special_header_expandview.setVisibility(View.GONE);
-            else
-                vd_special_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
-        special_vd_header_relative.setOnClickListener(v -> {
-            if (vd_special_header_expandview.getVisibility() == View.VISIBLE) {
-                vd_special_header_expandview.setVisibility(View.GONE);
-                mOpenCount--;
-                if (mOpenCount == 0) {
-                    openall_btn.setText(getResources().getString(R.string.open_all));
-                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
-                }
-            } else {
-                mOpenCount++;
-                vd_special_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setText(getResources().getString(R.string.close_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
-            }
-        });
-
-/*
-        btn_up_addnotes_vd_header.setOnClickListener(v -> {
-            if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE)
-                vd_addnotes_header_expandview.setVisibility(View.GONE);
-            else
-                vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
-        addnotes_vd_header_relative.setOnClickListener(v -> {
-            if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE) {
-                vd_addnotes_header_expandview.setVisibility(View.GONE);
-                mOpenCount--;
-                if (mOpenCount == 0) {
-                    openall_btn.setText(getResources().getString(R.string.open_all));
-                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
-                }
-            } else {
-                mOpenCount++;
-                vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setText(getResources().getString(R.string.close_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
-            }
-        });
+        vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
     }
 
     private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
@@ -1061,7 +835,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (hasLicense) {
                 obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, CONFIG_FILE_NAME)))); //Load the config file
             } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity_New.this, mFileName)));
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivityPreview.this, mFileName)));
             }
             if (obj.getBoolean("mCelsius")) {
                 tempcel.setVisibility(View.VISIBLE);
@@ -1187,677 +961,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         }
 
-
-        flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                priorityVisit = isChecked;
-                try {
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    encounterDAO.setEmergency(visitUuid, isChecked);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-            }
-        });
-        // Priority data - end
-
-        // edit listeners - start
-        editVitals.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
-//                intent1.putExtra("patientUuid", patientUuid);
-//                intent1.putExtra("visitUuid", visitUuid);
-//                intent1.putExtra("gender", patientGender);
-//                intent1.putExtra("encounterUuidVitals", encounterVitals);
-//                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-//                intent1.putExtra("name", patientName);
-//                intent1.putExtra("tag", "edit");
-//                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-//                intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VITAL);
-
-                mCommonVisitData.setEditFor(VisitCreationActivity.STEP_1_VITAL);
-                mCommonVisitData.setIntentTag("edit");
-                intent1.putExtra("CommonVisitData", mCommonVisitData);
-
-                //startActivity(intent1);
-                mStartForEditVisit.launch(intent1);
-            }
-        });
-
-        // complaint
-        editComplaint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final MaterialAlertDialogBuilder complaintDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                complaintDialog.setTitle(getString(R.string.visit_summary_complaint));
-                final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
-                complaintDialog.setView(convertView);
-
-                final TextView complaintText = convertView.findViewById(R.id.textView_entry);
-                if (complaint.getValue() != null) {
-                    complaintText.setText(Html.fromHtml(complaintLocalString));
-                }
-                complaintText.setEnabled(false);
-
-                /*complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                        //  textInput.setTitle(R.string.question_text_input);
-                        final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
-                        View convertView = inflater.inflate(R.layout.dialog_edittext, null);
-                        textInput.setView(convertView);
-
-                        //   final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
-                        EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
-                        Button sharebtn = convertView.findViewById(R.id.sharebtn);
-                        sharebtn.setVisibility(View.GONE);
-
-                        if (complaint.getValue() != null) {
-                            dialogEditText.setText(Html.fromHtml(complaint.getValue()));
-                        } else {
-                            dialogEditText.setText("");
-                        }
-                        Log.v("complai", "complai: " + complaint.getValue());
-                        //  textInput.setView(dialogEditText);
-                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
-                                if (complaint.getValue() != null) {
-                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
-                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
-                                }
-                                updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
-                                dialog.dismiss();
-                            }
-                        });
-                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        AlertDialog alertDialog = textInput.create();
-                        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-                        int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-                        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                        alertDialog.show();
-
-                        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                        Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                        nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                        Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                        neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
-
-                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-                        dialogInterface.dismiss();
-                    }
-                });*/
-
-                complaintDialog.setNegativeButton(getString(R.string.edit), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //Deleting the old image in physcial examination
-                        if (obsImgdir.exists()) {
-                            ImagesDAO imagesDAO = new ImagesDAO();
-
-                            try {
-                                List<String> imageList = imagesDAO.getImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
-                                for (String obsImageUuid : imageList) {
-                                    String imageName = obsImageUuid + ".jpg";
-                                    new File(obsImgdir, imageName).deleteOnExit();
-                                }
-                                imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
-                            } catch (DAOException e1) {
-                                FirebaseCrashlytics.getInstance().recordException(e1);
-                            }
-                        }
-
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
-//                        intent1.putExtra("patientUuid", patientUuid);
-//                        intent1.putExtra("visitUuid", visitUuid);
-//                        intent1.putExtra("gender", patientGender);
-//                        intent1.putExtra("encounterUuidVitals", encounterVitals);
-//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-//                        intent1.putExtra("name", patientName);
-//                        intent1.putExtra("tag", "edit");
-//                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-//                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON);
-
-                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_2_VISIT_REASON);
-                        mCommonVisitData.setIntentTag("edit");
-                        intent1.putExtra("CommonVisitData", mCommonVisitData);
-                        //startActivity(intent1);
-                        mStartForEditVisit.launch(intent1);
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                complaintDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                //complaintDialog.show();
-                AlertDialog alertDialog = complaintDialog.create();
-                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-                int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                alertDialog.show();
-
-                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, R.color.colorPrimary));
-                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                nb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
-
-                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-            }
-        });
-
-        // physical exam
-        editPhysical.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final MaterialAlertDialogBuilder physicalDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                physicalDialog.setTitle(getString(R.string.visit_summary_on_examination));
-                final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
-                physicalDialog.setView(convertView);
-
-                final TextView physicalText = convertView.findViewById(R.id.textView_entry);
-                if (phyExam.getValue() != null)
-                    physicalText.setText(Html.fromHtml(physicalExamLocaleString));
-                physicalText.setEnabled(false);
-
-                /*physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                        //  textInput.setTitle(R.string.question_text_input);
-                        final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
-                        View convertView = inflater.inflate(R.layout.dialog_edittext, null);
-                        textInput.setView(convertView);
-
-                        //   final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
-                        EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
-                        Button sharebtn = convertView.findViewById(R.id.sharebtn);
-                        sharebtn.setVisibility(View.GONE);
-
-                        if (phyExam.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
-                        else
-                            dialogEditText.setText("");
-                        //  textInput.setView(dialogEditText);
-                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                phyExam.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
-                                if (phyExam.getValue() != null) {
-                                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
-                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
-                                }
-                                updateDatabase(phyExam.getValue(), UuidDictionary.PHYSICAL_EXAMINATION);
-                                dialog.dismiss();
-                            }
-                        });
-                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        //  AlertDialog dialog = textInput.show();
-                        AlertDialog alertDialog = textInput.create();
-                        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-                        int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-                        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                        alertDialog.show();
-
-                        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                        Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                        nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                        Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                        neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
-
-                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-                        dialogInterface.dismiss();
-                    }
-                });*/
-
-                physicalDialog.setNegativeButton(getString(R.string.edit), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (obsImgdir.exists()) {
-                            ImagesDAO imagesDAO = new ImagesDAO();
-
-                            try {
-                                List<String> imageList = imagesDAO.getImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
-                                for (String obsImageUuid : imageList) {
-                                    String imageName = obsImageUuid + ".jpg";
-                                    new File(obsImgdir, imageName).deleteOnExit();
-                                }
-                                imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
-                            } catch (DAOException e1) {
-                                FirebaseCrashlytics.getInstance().recordException(e1);
-                            }
-                        }
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
-//                        intent1.putExtra("patientUuid", patientUuid);
-//                        intent1.putExtra("visitUuid", visitUuid);
-//                        intent1.putExtra("gender", patientGender);
-//                        intent1.putExtra("encounterUuidVitals", encounterVitals);
-//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-//                        intent1.putExtra("name", patientName);
-//                        intent1.putExtra("tag", "edit");
-//                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-//                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
-
-                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
-                        mCommonVisitData.setIntentTag("edit");
-                        intent1.putExtra("CommonVisitData", mCommonVisitData);
-                        //startActivity(intent1);
-                        mStartForEditVisit.launch(intent1);
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                physicalDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                AlertDialog alertDialog = physicalDialog.create();
-                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-                int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                alertDialog.show();
-
-                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                nb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
-
-                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-            }
-        });
-
-        // medical history
-        editMedHist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final MaterialAlertDialogBuilder historyDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                historyDialog.setTitle(getString(R.string.visit_summary_medical_history));
-                final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
-                historyDialog.setView(convertView);
-
-                final TextView historyText = convertView.findViewById(R.id.textView_entry);
-                if (patHistory.getValue() != null)
-                    historyText.setText(Html.fromHtml(patientHistoryLocaleString));
-                historyText.setEnabled(false);
-
-                /*historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                        //  textInput.setTitle(R.string.question_text_input);
-                        final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
-                        View convertView = inflater.inflate(R.layout.dialog_edittext, null);
-                        textInput.setView(convertView);
-
-                        //   final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
-                        EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
-                        Button sharebtn = convertView.findViewById(R.id.sharebtn);
-                        sharebtn.setVisibility(View.GONE);
-
-                        if (patHistory.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(patHistory.getValue()));
-                        else
-                            dialogEditText.setText("");
-                        //    textInput.setView(dialogEditText);
-                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //patHistory.setValue(dialogEditText.getText().toString());
-                                patHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
-
-                                if (patHistory.getValue() != null) {
-                                    historyText.setText(Html.fromHtml(patHistory.getValue()));
-                                    patHistView.setText(Html.fromHtml(patHistory.getValue()));
-                                }
-                                updateDatabase(patHistory.getValue(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
-                                dialog.dismiss();
-                            }
-                        });
-                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-//                        AlertDialog dialog = textInput.show();
-//                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, dialog);
-//                        dialogInterface.dismiss();
-
-                        AlertDialog alertDialog = textInput.create();
-                        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-                        int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-                        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                        alertDialog.show();
-
-                        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                        Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                        nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                        Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                        neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
-
-                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-                        dialogInterface.dismiss();
-                    }
-                });*/
-
-                historyDialog.setNegativeButton(getString(R.string.edit), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
-//                        intent1.putExtra("patientUuid", patientUuid);
-//                        intent1.putExtra("visitUuid", visitUuid);
-//                        intent1.putExtra("gender", patientGender);
-//                        intent1.putExtra("encounterUuidVitals", encounterVitals);
-//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-//                        intent1.putExtra("name", patientName);
-//                        intent1.putExtra("tag", "edit");
-//                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-//                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
-
-                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
-                        mCommonVisitData.setIntentTag("edit");
-                        intent1.putExtra("CommonVisitData", mCommonVisitData);
-                        //startActivity(intent1);
-                        mStartForEditVisit.launch(intent1);
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                historyDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-//                historyDialog.show();
-                AlertDialog alertDialog = historyDialog.create();
-                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-                int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                alertDialog.show();
-
-                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                nb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
-
-                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-                //  dialogInterface.dismiss();
-            }
-        });
-
-        // family history
-        editFamHist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                //final MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this,R.style.AlertDialogStyle);
-                famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
-                final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
-                famHistDialog.setView(convertView);
-
-                final TextView famHistText = convertView.findViewById(R.id.textView_entry);
-                if (famHistory.getValue() != null)
-                    famHistText.setText(Html.fromHtml(familyHistoryLocaleString));
-                famHistText.setEnabled(false);
-
-                /*famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                        // final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                        //  textInput.setTitle(R.string.question_text_input);
-                        final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
-                        View convertView = inflater.inflate(R.layout.dialog_edittext, null);
-                        textInput.setView(convertView);
-
-                        //  final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
-                        EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
-                        Button sharebtn = convertView.findViewById(R.id.sharebtn);
-                        sharebtn.setVisibility(View.GONE);
-
-                        if (famHistory.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
-                        else
-                            dialogEditText.setText("");
-                        //    textInput.setView(dialogEditText);
-                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //famHistory.setValue(dialogEditText.getText().toString());
-                                famHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
-
-                                if (famHistory.getValue() != null) {
-                                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
-                                    famHistView.setText(Html.fromHtml(famHistory.getValue()));
-                                }
-                                updateDatabase(famHistory.getValue(), UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
-                                dialog.dismiss();
-                            }
-                        });
-                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                      *//*  AlertDialog alertDialog = textInput.show();
-                        dialogInterface.dismiss();
-                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-*//*
-                        AlertDialog alertDialog = textInput.create();
-                        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-                        int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-                        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                        alertDialog.show();
-
-                        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                        Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                        nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                        Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                        neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
-
-                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-                        dialogInterface.dismiss();
-                    }
-                });*/
-
-                famHistDialog.setNeutralButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                famHistDialog.setNegativeButton(R.string.edit, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
-//                        intent1.putExtra("patientUuid", patientUuid);
-//                        intent1.putExtra("visitUuid", visitUuid);
-//                        intent1.putExtra("gender", patientGender);
-//                        intent1.putExtra("encounterUuidVitals", encounterVitals);
-//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-//                        intent1.putExtra("name", patientName);
-//                        intent1.putExtra("tag", "edit");
-//                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-//                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
-
-                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_5_FAMILY_HISTORY);
-                        mCommonVisitData.setIntentTag("edit");
-                        intent1.putExtra("CommonVisitData", mCommonVisitData);
-
-                        //startActivity(intent1);
-                        mStartForEditVisit.launch(intent1);
-                        dialogInterface.dismiss();
-                    }
-                });
-
-//                famHistDialog.show();
-                AlertDialog alertDialog = famHistDialog.create();
-                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-                int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                alertDialog.show();
-
-                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                // pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                nb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                //nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
-                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-            }
-        });
-        // edit listeners - end
-
-        // upload btn click - start
-      /*  uploadButton.setOnClickListener(v -> {
-            visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), "Send visit?",
-                    "Are you sure you want to send the visit to the doctor?",
-                    "Yes", "No");
-        });*/
-
-
-        uploadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                if(NetworkConnection.isOnline(context)){
-                visitSendDialog(context, ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_close_visit_icon), getResources().getString(R.string.send_visit), getResources().getString(R.string.are_you_sure_you_want_to_send_visit), getResources().getString(R.string.yes), getResources().getString(R.string.no));
-//                }else {
-//                    Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
-//                }
-            }
-        });
-        // upload btn click - end
-
-        // json based presc header - start
         jsonBasedPrescTitle();
-        // json based presc header - end
 
-        downloadbtn.setOnClickListener(v -> {
-            checkPerm();
-        });
-
-        filter.setOnClickListener(v -> {
-            // filter options
-            if (filter_framelayout.getVisibility() == View.VISIBLE)
-                filter_framelayout.setVisibility(View.GONE);
-            else filter_framelayout.setVisibility(View.VISIBLE);
-        });
-
-        reminder.setOnClickListener(v -> {
-            // filter options
-            Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
-            startActivity(intent);
-            if (filter_framelayout.getVisibility() == View.VISIBLE)
-                filter_framelayout.setVisibility(View.GONE);
-            else filter_framelayout.setVisibility(View.VISIBLE);
-        });
-
-        incomplete_act.setOnClickListener(v -> {
-            // filter options
-//            Intent intent = new Intent(VisitSummaryActivity_New.this, EndVisitActivity.class);
-//            startActivity(intent);
-            if (filter_framelayout.getVisibility() == View.VISIBLE)
-                filter_framelayout.setVisibility(View.GONE);
-            else filter_framelayout.setVisibility(View.VISIBLE);
-
-            showEndVisitConfirmationDialog();
-        });
-
-        archieved_notifi.setOnClickListener(v -> {
-            // filter options
-            if (filter_framelayout.getVisibility() == View.VISIBLE)
-                filter_framelayout.setVisibility(View.GONE);
-            else filter_framelayout.setVisibility(View.VISIBLE);
-        });
     }
 
     private void setupSpecializationDataSpinner(List<Specialization> specializations) {
@@ -1890,42 +995,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             speciality_selected = special_value;
         }
 
-        speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i != 0) {
-                    Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                    Specialization specialization = (Specialization) view.getTag(R.id.speciality_spinner);
-                    speciality_selected = specialization.getName();
-                    String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
-                    vd_special_value.setText(" " + Node.bullet + "  " + value);
-                    Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
-                    Log.d("ResUtils", "SPINNER_Selected_final: " + value);
-                } else {
-                    speciality_selected = "";
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
-    private void showEndVisitConfirmationDialog() {
-        if (!hasPrescription) {
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), action -> {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    checkIfAppointmentExistsForVisit(visitUUID);
-                }
-            });
-        } else {
-            triggerEndVisit();
-        }
-    }
 
     private void checkIfAppointmentExistsForVisit(String visitUUID) {
         // First check if there is an appointment or not
@@ -1987,7 +1058,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     doWebViewPrint_downloadBtn();
                 } else {
                     DialogUtils dialogUtils = new DialogUtils();
-                    dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_prescription_available), getResources().getString(R.string.no_prescription_title), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
+                    dialogUtils.showCommonDialog(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_prescription_available), getResources().getString(R.string.no_prescription_title), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
                         @Override
                         public void onDialogActionDone(int action) {
                         }
@@ -2180,7 +1251,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void showSpecialisationDialog() {
         DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.please_select_specialization_msg), "", true, getResources().getString(R.string.okay), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+        dialogUtils.showCommonDialog(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.please_select_specialization_msg), "", true, getResources().getString(R.string.okay), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
             @Override
             public void onDialogActionDone(int action) {
 
@@ -2223,7 +1294,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void checkPerm(int item) {
         if (item == 0) {
             if (checkAndRequestPermissions(item)) {
-                Intent cameraIntent = new Intent(VisitSummaryActivity_New.this, CameraActivity.class);
+                Intent cameraIntent = new Intent(VisitSummaryActivityPreview.this, CameraActivity.class);
                 String imageName = UUID.randomUUID().toString();
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
@@ -2231,7 +1302,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         } else if (item == 1) {
             if (checkAndRequestPermissions(item)) {
-                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 galleryActivityResult.launch(intent);
             }
         }
@@ -2285,9 +1356,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void initUI() {
         scrollView = findViewById(R.id.scroll_view);
+
+        printBt = findViewById(R.id.print_bt);
+        shareBt = findViewById(R.id.share_bt);
         // textview - start
         filter_framelayout = findViewById(R.id.filter_framelayout);
-        filter = findViewById(R.id.filter);
 
         reminder = findViewById(R.id.reminder);
         reminder.setText(getResources().getString(R.string.action_home));
@@ -2301,9 +1374,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         hl_2.setVisibility(View.GONE);
 
         backArrow = findViewById(R.id.backArrow);
-        refresh = findViewById(R.id.refresh);
         profile_image = findViewById(R.id.profile_image);
-        downloadbtn = findViewById(R.id.downloadbtn);
         nameView = findViewById(R.id.textView_name_value);
         genderView = findViewById(R.id.textView_gender_value);
         //OpenMRS Id
@@ -2315,24 +1386,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 //        android:hint="@string/leave_a_note_for_doctor"
         etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
-        etAdditionalNotesVS.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                etAdditionalNotesVS.setHint("");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().equalsIgnoreCase(""))
-                    etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
-                else etAdditionalNotesVS.setHint("");
-            }
-        });
         // textview - end
 
         // up-down btn - start
@@ -2450,35 +1503,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // edit - end
 
         // Bottom Buttons - start
-        btn_bottom_printshare = findViewById(R.id.btn_bottom_printshare);   // linear: print - share
         /*btn_vs_print = findViewById(R.id.btn_vs_print);   // print
         btn_vs_share = findViewById(R.id.btn_vs_share);   // share*/
-        mViewPrescriptionButton = findViewById(R.id.btnPrescriptionView);   // share*/
 
         btn_bottom_vs = findViewById(R.id.btn_bottom_vs);   // appointment - upload
-        uploadButton = findViewById(R.id.btn_vs_sendvisit);
 
-        mViewPrescriptionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(VisitSummaryActivity_New.this, PrescriptionActivity.class);
-                in.putExtra("patientname", patientName);
-                in.putExtra("patientUuid", patientUuid);
-                in.putExtra("patient_photo", patient.getPatient_photo());
-                in.putExtra("visit_ID", visitUUID);
-                in.putExtra("visit_startDate", "");
-                in.putExtra("gender", patient.getGender());
-                in.putExtra("encounterUuidVitals", encounterVitals);
-                in.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                String age = DateAndTimeUtils.getAge_FollowUp(patient.getDate_of_birth(), VisitSummaryActivity_New.this);
-
-                in.putExtra("age", age);
-                in.putExtra("tag", "VISITSUMMARY");
-                in.putExtra("followupDate", "");
-                in.putExtra("openmrsID", patient.getOpenmrs_id());
-                startActivity(in);
-            }
-        });
         /*btn_vs_print.setOnClickListener(v -> {
             try {
                 doWebViewPrint_Button();
@@ -2491,9 +1520,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             sharePresc();
         });*/
         // Bottom Buttons - end
-        refresh.setOnClickListener(v -> {
-            syncNow(VisitSummaryActivity_New.this, refresh, syncAnimator);
-        });
 
         // file set
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -2501,68 +1527,87 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         add_additional_doc = findViewById(R.id.add_additional_doc);
 
-        // navigation for book appointmnet
-        btnAppointment = findViewById(R.id.btn_vs_appointment);
-        btnAppointment.setOnClickListener(v -> {
-            if (!NetworkConnection.isOnline(context)) {
-                setAppointmentButtonStatus();
-                Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (priorityVisit) {
-                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (!isVisitSpecialityExists) {
-                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (doesAppointmentExist) {
-                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment, patientName);
-                rescheduleAppointment(VisitSummaryActivity_New.this, getResources().getString(R.string.reschedule_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
-                return;
-            }
-
-            Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
-            in.putExtra("visitUuid", visitUuid);
-            in.putExtra("patientUuid", patientUuid);
-            in.putExtra("patientName", patientName);
-            in.putExtra("appointmentId", 0);
-            in.putExtra("actionTag", "new_schedule");
-            in.putExtra("openMrsId", patient.getOpenmrs_id());
-            in.putExtra("speciality", speciality_selected);
-            in.putExtra("requestCode",AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
-            mStartForScheduleAppointment.launch(in);
-        });
-
-        preview_with_prescription_lay = findViewById(R.id.preview_bt_with_prescription_lay);
-        preview_with_save_visit_lay = findViewById(R.id.preview_bt_with_save_visit_lay);
-        preview_with_prescription_lay.setOnClickListener(new View.OnClickListener() {
+        printBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navigateToPreview();
+                printOperation();
             }
         });
 
-        preview_with_save_visit_lay.setOnClickListener(new View.OnClickListener() {
+        shareBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navigateToPreview();
+                shareOperation();
             }
         });
     }
 
-    private void navigateToPreview() {
-        Intent intent = new Intent(VisitSummaryActivity_New.this,VisitSummaryActivityPreview.class);
-        intent.putExtras(getIntent());
-        startActivity(intent);
+    private void shareOperation() {
+        PdfGenerationUtils.generatePDF(bitmap, filePath);
+        share();
+    }
+
+    private boolean isWhatsAppInstalled() {
+        PackageManager packageManager = getPackageManager();
+        try {
+            packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    private void share() {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivityPreview.this);
+        final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivityPreview.this);
+        View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
+        alertdialogBuilder.setView(convertView);
+
+        EditText editText = convertView.findViewById(R.id.editText_mobileno);
+        Button sharebtn = convertView.findViewById(R.id.sharebtn);
+
+        editText.setText(patient.getPhone_number());
+        File pdfFile = new File(filePath);
+        sharebtn.setOnClickListener(v -> {
+            if (!editText.getText().toString().equalsIgnoreCase("")) {
+                if (!isWhatsAppInstalled()) {
+                    Toast.makeText(this, R.string.whatsapp_not_installed_on_your_device, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String phoneNumber =  editText.getText().toString();
+
+                Uri pdfUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", pdfFile);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_STREAM, pdfUri);
+                intent.setType("application/pdf"); // Change the MIME type according to your file type
+                intent.setPackage("com.whatsapp");
+                intent.putExtra("jid", phoneNumber + "@s.whatsapp.net"); // Replace "phoneNumber" with actual number
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                startActivity(intent);
+
+            } else {
+                Toast.makeText(this, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        alertDialog.show();
+
+
+    }
+
+    private void printOperation() {
+        printImage(bitmap);
     }
 
 
-    private void rescheduleAppointment(VisitSummaryActivity_New context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
+    private void rescheduleAppointment(VisitSummaryActivityPreview context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
@@ -2573,7 +1618,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
 
-        icon.setImageDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_book_app_red));
+        icon.setImageDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_book_app_red));
 
         dialog_title.setText(title);
         tvInfo.setText(Html.fromHtml(subTitle));
@@ -2591,7 +1636,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         yesButton.setOnClickListener(v -> {
             alertDialog.dismiss();
-            askReasonForRescheduleAppointment(VisitSummaryActivity_New.this);
+            askReasonForRescheduleAppointment(VisitSummaryActivityPreview.this);
         });
 
         alertDialog.show();
@@ -2622,23 +1667,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rb_no_doctor) {
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_selected_green));
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.doctor_is_not_available));
                     mEngReason = "Doctor is not available";
                 } else if (checkedId == R.id.rb_no_patient) {
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_selected_green));
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_selected_green));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.patient_is_not_available));
                     mEngReason = "Patient is not available";
                 } else if (checkedId == R.id.rb_other_ask) {
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_selected_green));
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
                     reasonEtv.setText("");
                     reasonEtv.setVisibility(View.VISIBLE);
                 }
@@ -2653,7 +1698,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             String reason = reasonEtv.getText().toString().trim();
 
             if (reason.isEmpty()) {
-                Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VisitSummaryActivityPreview.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
             } else {
                 AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(visitUUID);
                 Intent in = new Intent(context, ScheduleAppointmentActivity_New.class);
@@ -2668,7 +1713,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 in.putExtra("app_start_day", appointmentInfo.getSlotDay());
                 in.putExtra("rescheduleReason", mEngReason);
                 in.putExtra("speciality", speciality_selected);
-                in.putExtra("requestCode",AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
+                in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
                 mStartForScheduleAppointment.launch(in);
             }
         });
@@ -2701,276 +1746,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     });
 
     void navigateToMyAppointment() {
-        if(!isFinishing() && !isDestroyed()){
-            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
-            Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivityNew.class);
+        if (!isFinishing() && !isDestroyed()) {
+            Toast.makeText(VisitSummaryActivityPreview.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
+            Intent in = new Intent(VisitSummaryActivityPreview.this, MyAppointmentActivityNew.class);
             startActivity(in);
             finish();
-        }else {
-            Log.d("CCCCCV","Destry"+VisitSummaryActivity_New.this);
-        }
-    }
-
-    private void sharePresc() {
-        if (hasPrescription) {
-            MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
-            final LayoutInflater inflater = LayoutInflater.from(context);
-            View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
-            alertdialogBuilder.setView(convertView);
-
-            EditText editText = convertView.findViewById(R.id.editText_mobileno);
-            Button sharebtn = convertView.findViewById(R.id.sharebtn);
-
-           /* AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            EditText editText = new EditText(this);
-            editText.setInputType(InputType.TYPE_CLASS_PHONE);
-
-            InputFilter inputFilter = new InputFilter() {
-                @Override
-                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                    return null;
-                }
-            };*/
-
-            String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-            String prescription_link = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, PRESCRIPTION_LINK);
-            String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
-            editText.setText(patient.getPhone_number());
-
-//                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
-
-            //  editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
-           /* LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
-                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            editText.setLayoutParams(layoutParams);
-            alertDialog.setView(editText);
-*/
-            //   alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
-            sharebtn.setOnClickListener(v -> {
-                if (!editText.getText().toString().equalsIgnoreCase("")) {
-                    String phoneNumber = /*"+91" +*/ editText.getText().toString();
-                    String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
-                    Log.d("PPPPP", prescription_link);
-                    // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
-
-                    // isreturningWhatsapp = true;
-
-                } else {
-                    Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
-                }
-
-            });
-
-            AlertDialog alertDialog = alertdialogBuilder.create();
-            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-            alertDialog.show();
-
-//            alertDialog.setPositiveButton(getResources().getString(R.string.share),
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int which) {
-//
-//                            if (!editText.getText().toString().equalsIgnoreCase("")) {
-//                                String phoneNumber = /*"+91" +*/ editText.getText().toString();
-//                                String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-//                                        + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
-//
-//                                // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-//                                startActivity(new Intent(Intent.ACTION_VIEW,
-//                                        Uri.parse(
-//                                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-//                                                        phoneNumber, whatsappMessage))));
-//
-//                                // isreturningWhatsapp = true;
-//
-//                            } else {
-//                                Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-
-           /* AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
         } else {
-            /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
-            alertDialog.setPositiveButton(getResources().getString(R.string.ok),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
-            AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
-
-            Toast.makeText(context, getResources().getString(R.string.download_prescription_first_before_sharing), Toast.LENGTH_SHORT).show();
+            Log.d("CCCCCV", "Destry" + VisitSummaryActivityPreview.this);
         }
     }
 
-/*
-    private void setGenderAgeLocal(Context context, TextView genderView, Patient patient, SessionManager sessionManager) {
-        //  1. Age
-        String age = DateAndTimeUtils.getAge_FollowUp(patient.getDate_of_birth(), this.context);
-        String gender = patient.getGender();
-
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            } else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            } else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            } else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else {
-            genderView.setText(gender + " " + age);
-        }
-    }
-*/
-
-    private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
-
-        if (speciality_selected == null || speciality_selected.isEmpty()) {
-            showSelectSpeciliatyErrorDialog();
-            return;
-        }
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
-        alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.dialog_icon);
-        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
-        Button positive_btn = convertView.findViewById(R.id.positive_btn);
-        Button negative_btn = convertView.findViewById(R.id.negative_btn);
-
-        icon.setImageDrawable(drawable);
-        dialog_title.setText(title);
-        dialog_subtitle.setText(subTitle);
-        positive_btn.setText(positiveBtnTxt);
-        negative_btn.setText(negativeBtnTxt);
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-        negative_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
-        });
-
-        positive_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
-            visitUploadBlock();
-        });
-
-        if (!isFinishing() && !isDestroyed()) {
-            alertDialog.show();
-        }
-    }
 
     private void visitUploadBlock() {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -2979,7 +1764,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
             viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
-                String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
+                String value = ResUtils.getStringResourceByName(VisitSummaryActivityPreview.this, specialization.getSKey());
                 vd_special_value.setText(" " + Node.bullet + "  " + value);
             });
 
@@ -3079,7 +1864,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
                             sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
-                            Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+                            Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.dialog_visit_sent_success_icon);
                             setAppointmentButtonStatus();
                             visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
 
@@ -3100,7 +1885,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             }
                             fetchingIntent();
                         } else {
-                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivityPreview.this);
                         }
                         uploaded = true;
                     }
@@ -3108,7 +1893,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } else {
                 add_additional_doc.setVisibility(View.GONE);
                 fetchingIntent();
-                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivityPreview.this);
             }
         } else {
             showSelectSpeciliatyErrorDialog();
@@ -3120,14 +1905,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      */
     private void setAppointmentButtonStatus() {
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-        //added the logic because we will enable appointment button when visit is exist only
-        if (isVisitSpecialityExists && NetworkConnection.isOnline(context)) {
-            btnAppointment.setBackground(getDrawable(R.drawable.ui2_common_primary_bg));
-            btnAppointment.setEnabled(true);
-        } else {
-            btnAppointment.setBackground(getDrawable(R.drawable.ui2_bg_disabled_time_slot));
-            btnAppointment.setEnabled(false);
-        }
 
     }
 
@@ -3190,7 +1967,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 physcialExaminationDownloadText.setVisibility(View.GONE);
             }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
-            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity_New.this, LinearLayoutManager.HORIZONTAL, false);
+            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivityPreview.this, LinearLayoutManager.HORIZONTAL, false);
             mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
             mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
         } catch (DAOException e) {
@@ -3242,8 +2019,28 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     public void openAll(View view) {
+
     }
 
+    public void captureScrollView(View view) {
+        filePath = new File(AppConstants.PDF_PATH, "/visit_summary_" + System.currentTimeMillis() + ".pdf").getPath();
+        bitmap = LayoutCaptureUtils.captureScrollView(scrollView);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bitmap.recycle();
+    }
+
+    private void printImage(Bitmap bitmap) {
+        // Initialize the PrintHelper
+        PrintHelper printHelper = new PrintHelper(this);
+        printHelper.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+
+        // Print the bitmap
+        printHelper.printBitmap("Print Image", bitmap);
+    }
 
 
 
@@ -4080,7 +2877,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         if (flag) {
                             saveImage(filePath);
                         } else
-                            Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VisitSummaryActivityPreview.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -4605,12 +3402,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
-        if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_internet_available));
-        } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_no_internet));
-        }
         setAppointmentButtonStatus();
     }
 
@@ -4957,7 +3748,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
                     @Override
                     public void success(String path) {
-                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VisitSummaryActivityPreview.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -4971,7 +3762,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
                     @Override
                     public void success(String path) {
-                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VisitSummaryActivityPreview.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -5013,7 +3804,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
                 @Override
                 public void success(String path) {
-                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VisitSummaryActivityPreview.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -5054,7 +3845,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
                 @Override
                 public void success(String path) {
-                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VisitSummaryActivityPreview.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -5098,7 +3889,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
                 @Override
                 public void success(String path) {
-                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VisitSummaryActivityPreview.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
