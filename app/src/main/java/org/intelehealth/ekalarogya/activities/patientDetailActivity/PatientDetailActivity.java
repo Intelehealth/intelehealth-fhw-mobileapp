@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -126,7 +125,7 @@ public class PatientDetailActivity extends BaseActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit, button_sevika_advice, householdSurvey;
+    Button newVisit, buttonSevikaAdvice, householdSurvey;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -170,7 +169,7 @@ public class PatientDetailActivity extends BaseActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
-        button_sevika_advice = findViewById(R.id.button_sevika_advice);
+        buttonSevikaAdvice = findViewById(R.id.button_sevika_advice);
         householdSurvey = findViewById(R.id.button_household_survey);
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
@@ -230,8 +229,8 @@ public class PatientDetailActivity extends BaseActivity {
 
         setDisplay(patientUuid);
 
-        button_sevika_advice.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        button_sevika_advice.setTextColor(getResources().getColor(R.color.white));
+        buttonSevikaAdvice.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        buttonSevikaAdvice.setTextColor(getResources().getColor(R.color.white));
 
         householdSurvey.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         householdSurvey.setTextColor(getResources().getColor(R.color.white));
@@ -252,7 +251,7 @@ public class PatientDetailActivity extends BaseActivity {
             }
         });
 
-        button_sevika_advice.setOnClickListener(new View.OnClickListener() {
+        buttonSevikaAdvice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startVisitConfirmation("Sevika");
@@ -279,7 +278,6 @@ public class PatientDetailActivity extends BaseActivity {
 
     private void startVisitConfirmation(String startNewAdviceBy) {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
         if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
             alertDialogBuilder.setMessage(getResources().getString(R.string.start_newadvice_confirmation_msg));
         } else {
@@ -291,6 +289,7 @@ public class PatientDetailActivity extends BaseActivity {
                 dialogInterface.dismiss();
             }
         });
+
         alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -299,7 +298,6 @@ public class PatientDetailActivity extends BaseActivity {
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.show();
-        //alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
     }
 
@@ -1131,19 +1129,19 @@ public class PatientDetailActivity extends BaseActivity {
             }
             past_visit = false;
 
-            if (button_sevika_advice.isEnabled()) {
-                button_sevika_advice.setEnabled(false);
+            if (buttonSevikaAdvice.isEnabled()) {
+                buttonSevikaAdvice.setEnabled(false);
             }
-            if (button_sevika_advice.isClickable()) {
-                button_sevika_advice.setClickable(false);
+            if (buttonSevikaAdvice.isClickable()) {
+                buttonSevikaAdvice.setClickable(false);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    button_sevika_advice.setBackgroundColor
+                    buttonSevikaAdvice.setBackgroundColor
                             (getColor(R.color.divider));
-                    button_sevika_advice.setTextColor(getColor(R.color.white));
+                    buttonSevikaAdvice.setTextColor(getColor(R.color.white));
                 } else {
-                    button_sevika_advice.setBackgroundColor(getResources().getColor(R.color.divider));
-                    button_sevika_advice.setTextColor(getResources().getColor(R.color.white));
+                    buttonSevikaAdvice.setBackgroundColor(getResources().getColor(R.color.divider));
+                    buttonSevikaAdvice.setTextColor(getResources().getColor(R.color.white));
                 }
             }
 
