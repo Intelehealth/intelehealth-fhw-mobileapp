@@ -114,5 +114,6 @@
     <string name="universal_donor">( Universal Donor)</string>
     <string name="universal_recipient">( Universal Recipient )</string>
     <string name="view_prescription_lbl">View Prescription</string>
+    <string name="facility_to_visit">Facility to visit</string>
 
 </resources>

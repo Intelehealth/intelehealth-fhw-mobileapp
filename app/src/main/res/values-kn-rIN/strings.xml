@@ -905,4 +905,5 @@
     <string name="sorted_by_descending_order">Sorted By Descending order</string>
     <string name="sorted_by_ascending_order">Sorted By Ascending order</string>
     <string name="over">" Over"</string>
+    <string name="facility_to_visit">Facility to visit</string>
 </resources>

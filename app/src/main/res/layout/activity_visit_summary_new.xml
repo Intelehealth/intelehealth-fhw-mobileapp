@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    >
+<RelativeLayout
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -747,6 +750,53 @@
                             android:paddingBottom="@dimen/margin_10" />
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvFacilityToVisit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:layout_below="@+id/special_vd_card"
+                    android:elevation="16dp"
+                    app:cardCornerRadius="@dimen/margin_5"
+                    app:cardElevation="@dimen/margin_5">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/fu_card_margin_sides">
+
+                        <TextView
+                            android:id="@+id/tvFacilityToVisitTitle"
+                            style="@style/vs_title_head_14sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/facility_to_visit"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/spinnerFacilityToVisit"
+                            style="@style/AppTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_below="@+id/tvFacilityToVisitTitle"
+                            android:layout_marginTop="@dimen/fu_margin_start"
+                            android:layout_marginBottom="@dimen/margin_16dp"
+                            android:entries="@array/speciality_values"
+                            android:gravity="center_vertical"
+                            android:hint="@string/select_speciality"
+                            android:paddingStart="@dimen/fu_margin_start"
+                            android:paddingTop="@dimen/margin_10"
+                            android:paddingBottom="@dimen/margin_10" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+
             </RelativeLayout>
 
             <!--            Priority Visit-->
@@ -956,3 +1006,4 @@
         android:src="@drawable/icons8_chat_new" />
 
 </RelativeLayout>
+</layout>

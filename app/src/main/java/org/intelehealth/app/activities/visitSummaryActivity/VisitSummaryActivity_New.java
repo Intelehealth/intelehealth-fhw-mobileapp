@@ -63,6 +63,7 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -87,6 +88,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -112,6 +115,8 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -129,6 +134,7 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.databinding.ActivityVisitSummaryNewBinding;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
@@ -350,6 +356,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private CommonVisitData mCommonVisitData;
 
     private SpecializationViewModel viewModel;
+    private ActivityVisitSummaryNewBinding mBinding;
+    private List<FacilityToVisitModel> facilityList = null;
+    private FacilityToVisitModel selectedFacilityToVisit = null;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -428,9 +437,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visit_summary_new);
+
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_visit_summary_new);
+
         setupSpecialization();
+        setFacilityToVisitSpinner();
         context = VisitSummaryActivity_New.this;
+
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -1905,6 +1918,44 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
+    private List<FacilityToVisitModel> getFacilityList() {
+        facilityList = new ArrayList<FacilityToVisitModel>();
+        facilityList.add(new FacilityToVisitModel("1", "Asha"));
+        facilityList.add(new FacilityToVisitModel("2", "AWW"));
+        facilityList.add(new FacilityToVisitModel("3", "HWC/AAM"));
+        facilityList.add(new FacilityToVisitModel("4", "CHC"));
+        facilityList.add(new FacilityToVisitModel("5", "DH"));
+        facilityList.add(new FacilityToVisitModel("6", "Medical"));
+        facilityList.add(new FacilityToVisitModel("7", "Collage AB - PVT"));
+        facilityList.add(new FacilityToVisitModel("8", "Hospital Other"));
+        return facilityList;
+    }
+
+    private void setFacilityToVisitSpinner() {
+        if (facilityList == null || facilityList.isEmpty()) {
+            facilityList = getFacilityList();
+        }
+
+        FacilityToVisitArrayAdapter arrayAdapter = new FacilityToVisitArrayAdapter(this, facilityList);
+        mBinding.spinnerFacilityToVisit.setAdapter(arrayAdapter);
+        mBinding.spinnerFacilityToVisit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+//                    Timber.tag("SPINNER").d("SPINNER_Selected: %s", adapterView.getItemAtPosition(i).toString());
+                    selectedFacilityToVisit = facilityList.get(i);
+                } else {
+                    selectedFacilityToVisit = null;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
     private void showEndVisitConfirmationDialog() {
         if (!hasPrescription) {
             DialogUtils dialogUtils = new DialogUtils();
@@ -2524,7 +2575,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             in.putExtra("actionTag", "new_schedule");
             in.putExtra("openMrsId", patient.getOpenmrs_id());
             in.putExtra("speciality", speciality_selected);
-            in.putExtra("requestCode",AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
+            in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
             mStartForScheduleAppointment.launch(in);
         });
     }
@@ -2636,7 +2687,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 in.putExtra("app_start_day", appointmentInfo.getSlotDay());
                 in.putExtra("rescheduleReason", mEngReason);
                 in.putExtra("speciality", speciality_selected);
-                in.putExtra("requestCode",AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
+                in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
                 mStartForScheduleAppointment.launch(in);
             }
         });
@@ -2669,13 +2720,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     });
 
     void navigateToMyAppointment() {
-        if(!isFinishing() && !isDestroyed()){
+        if (!isFinishing() && !isDestroyed()) {
             Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
             Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivityNew.class);
             startActivity(in);
             finish();
-        }else {
-            Log.d("CCCCCV","Destry"+VisitSummaryActivity_New.this);
+        } else {
+            Log.d("CCCCCV", "Destry" + VisitSummaryActivity_New.this);
         }
     }
 
