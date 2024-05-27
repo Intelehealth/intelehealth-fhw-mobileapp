@@ -77,25 +77,25 @@ public class ProviderDAO {
 
     public List<String> getProvidersList() throws DAOException {
         List<String> providersList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+//        db.beginTransaction();
+        String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid";
+        Cursor cursor = db.rawQuery(query, new String[]{});
         try {
-            String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid";
-            Cursor cursor = db.rawQuery(query, new String[]{});
+
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     providersList.add(cursor.getString(cursor.getColumnIndexOrThrow("given_name")) + cursor.getString(cursor.getColumnIndexOrThrow("family_name")));
 
                 }
             }
-            cursor.close();
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
-            db.endTransaction();
-
+//            db.endTransaction();
+            cursor.close();
         }
         return providersList;
 
@@ -103,25 +103,25 @@ public class ProviderDAO {
 
     public List<String> getProvidersUuidList() throws DAOException {
         List<String> providersList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+//        db.beginTransaction();
+        String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid";
+        Cursor cursor = db.rawQuery(query, new String[]{});
         try {
-            String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid";
-            Cursor cursor = db.rawQuery(query, new String[]{});
+
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     providersList.add(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-
                 }
             }
-            cursor.close();
-            db.setTransactionSuccessful();
+
+//            db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
-            db.endTransaction();
-
+//            db.endTransaction();
+            cursor.close();
         }
         return providersList;
 
@@ -130,11 +130,11 @@ public class ProviderDAO {
     public String getProviderGiven_Lastname(String uuid) throws DAOException {
         String fullname = "";
         String givenname = "", familyname = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+//        db.beginTransaction();
+        String query = "select * from tbl_provider where uuid = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{uuid});
         try {
-            String query = "select * from tbl_provider where uuid = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{uuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     givenname = cursor.getString(cursor.getColumnIndexOrThrow("given_name"));
@@ -142,14 +142,12 @@ public class ProviderDAO {
                     fullname = givenname + " " + familyname;
                 }
             }
-            cursor.close();
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
-            db.endTransaction();
-
+            cursor.close();
         }
 
         if (!fullname.equalsIgnoreCase(""))
@@ -160,13 +158,13 @@ public class ProviderDAO {
     }
 
     public ProviderDTO getLoginUserDetails(String uuid) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         ProviderDTO providerDTO = null;
 
-        db.beginTransaction();
+//        db.beginTransaction();
+        String query = "select * from tbl_provider where uuid = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{uuid});
         try {
-            String query = "select * from tbl_provider where uuid = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{uuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     providerDTO = new ProviderDTO();
@@ -185,27 +183,25 @@ public class ProviderDAO {
 
                 }
             }
-            cursor.close();
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
-            db.endTransaction();
-
+//            db.endTransaction();
+            cursor.close();
         }
         return providerDTO;
 
     }
 
     public ProviderDTO getProviderInfo(String uuid) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         ProviderDTO providerDTO = null;
-
-        db.beginTransaction();
+        String query = "select * from tbl_provider where uuid = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{uuid});
+//        db.beginTransaction();
         try {
-            String query = "select * from tbl_provider where uuid = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{uuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     providerDTO = new ProviderDTO();
@@ -224,14 +220,13 @@ public class ProviderDAO {
 
                 }
             }
-            cursor.close();
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
-            db.endTransaction();
-
+//            db.endTransaction();
+            cursor.close();
         }
         return providerDTO;
 
@@ -281,7 +276,7 @@ public class ProviderDAO {
         String[] whereargs = {uuid};
         try {
             values.put("sync", synced);
-           // values.put("uuid", uuid);
+            // values.put("uuid", uuid);
             int i = db.update("tbl_provider", values, whereclause, whereargs);
             Logger.logD("profile", "updated" + i);
             db.setTransactionSuccessful();
@@ -300,11 +295,11 @@ public class ProviderDAO {
     public List<ProviderDTO> unsyncedProviderDetails(String uuid) throws DAOException {
         Log.d(TAG, "unsyncedProviderDetails: uuid : " + uuid);
         List<ProviderDTO> providerDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+//        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_provider where  uuid=? AND (sync = ? OR sync=?) COLLATE NOCASE", new String[]{uuid, "0", "false"});
+        ProviderDTO providerProfileDTO = new ProviderDTO();
         try {
-            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_provider where  uuid=? AND (sync = ? OR sync=?) COLLATE NOCASE", new String[]{uuid, "0", "false"});
-            ProviderDTO providerProfileDTO = new ProviderDTO();
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     providerProfileDTO = new ProviderDTO();
@@ -323,18 +318,19 @@ public class ProviderDAO {
                     providerDTOList.add(providerProfileDTO);
                 }
             }
-            idCursor.close();
-            db.setTransactionSuccessful();
+
+//            db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
-
+//            db.endTransaction();
+            idCursor.close();
         }
 
         return providerDTOList;
     }
+
     public boolean updateLoggedInUserProfileImage(String imagepath, String uuid) throws DAOException {
 
         boolean isUpdated = false;

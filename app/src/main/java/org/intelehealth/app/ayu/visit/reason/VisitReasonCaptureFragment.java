@@ -138,7 +138,7 @@ public class VisitReasonCaptureFragment extends Fragment {
 
         // TODO: we are adding this below string array for keeping these two protocol enable for search also
         mFinalEnabledMMList.clear();
-        String[] mindmapsNames = new String[]{"Abdominal Pain", "Diarrhea", "Fever", "Hypertension"};//, "Menstrual disorder"};//getVisitReasonFilesNamesOnly();
+        String[] mindmapsNames = new String[]{"Abdominal Pain", "Diarrhea", "Fever", "Hypertension screening"};//, "Menstrual disorder"};//getVisitReasonFilesNamesOnly();
 
         for (String mindmapsName : mindmapsNames) {
             String fileLocation = "engines/" + mindmapsName + ".json";
