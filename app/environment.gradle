@@ -45,6 +45,14 @@ android {
             archivesBaseName = "intelehealth_biocon-" + versionName + " - " + date
         }
 
+        bmgf {
+            dimension client
+            applicationId "org.intelehealth.bmgf"
+            versionCode 1
+            versionName '1.0'
+            archivesBaseName = "intelehealth_bmgf-" + versionName + " - " + date
+        }
+
         // This flavor used to handle different type of endpoint
         dev {
             dimension server
@@ -74,6 +82,8 @@ android {
             domain = "KF"
         } else if (name.contains("biocon")) {
             domain = "BIOCON"
+        } else if (name.contains("bmgf")) {
+            domain = "BMGF"
         } else {
             domain = "IDA"
         }
