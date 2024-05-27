@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_horizontal_view"
     android:layout_width="@dimen/tv_cal_view_date_width"
     android:layout_height="@dimen/tv_cal_view_date_height"
     android:layout_marginTop="@dimen/tv_cal_view_date_margin_top"
     android:layout_marginEnd="@dimen/tv_cal_view_date_margin_end"
-    android:layout_marginBottom="@dimen/tv_cal_view_date_margin_bottom"
-    android:background="@drawable/bg_horizontal_cal_view_ui2">
+    android:layout_marginBottom="@dimen/tv_cal_view_date_margin_bottom">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/selector_appointment_date_bg"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|top"
             android:hint="20"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/selector_color_appointment_text"
             android:textSize="@dimen/tv_cal_view_date_text_size"
             android:textStyle="bold" />
 
@@ -33,10 +33,10 @@
             android:layout_marginTop="@dimen/tv_cal_view_date_day_margin_top"
             android:gravity="center"
             android:hint="wed"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/selector_color_appointment_text"
             android:textSize="@dimen/tv_cal_view_date_day_text_size"
             android:textStyle="bold" />
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

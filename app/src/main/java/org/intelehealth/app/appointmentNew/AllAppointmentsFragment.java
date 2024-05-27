@@ -54,6 +54,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
+import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
@@ -137,7 +138,7 @@ public class AllAppointmentsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLocale(getContext());
-        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(1, new UpdateFragmentOnEvent() {
+        ((MyAppointmentActivityNew) getActivity()).initUpdateFragmentOnEvent(1, new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
                 Log.v(TAG, "onStart");
@@ -304,7 +305,7 @@ public class AllAppointmentsFragment extends Fragment {
         }
         filtersList = new ArrayList<>();
         filtersListNew = new ArrayList<>();
-        updateCardBackgrounds("upcoming");
+        updateCardBackgrounds(cardUpcomingAppointments);
 
         nsvToday = parentView.findViewById(R.id.nsv_today);
         nsvToday.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -349,10 +350,14 @@ public class AllAppointmentsFragment extends Fragment {
      */
     private void fragmentResultListener() {
         getParentFragmentManager().setFragmentResultListener("requestKey", AllAppointmentsFragment.this, (requestKey, bundle) -> {
-            String selectedDate = bundle.getString("selectedDate");
-            if(selectedDate != null){
-                String whichDate = bundle.getString("whichDate");
-                if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
+            String selectedDate = bundle.getString(SELECTED_DATE);
+            if (selectedDate != null) {
+                String whichDate = bundle.getString(WHICH_DATE);
+                if (!whichDate.isEmpty() && whichDate.equals(FROM_DATE)) {
+                    if (!toDate.isEmpty() && DateAndTimeUtils.isAfter(selectedDate, toDate, D_FORMAT_dd_M_yyyy)) {
+                        Toast.makeText(requireContext(), R.string.the_from_date_cannot_be_greater_than_the_to_date, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     fromDate = selectedDate;
                     String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -364,7 +369,11 @@ public class AllAppointmentsFragment extends Fragment {
                     dismissDateFilterDialog();
                 }
 
-                if (!whichDate.isEmpty() && whichDate.equals("todate")) {
+                if (!whichDate.isEmpty() && whichDate.equals(TO_DATE)) {
+                    if (!fromDate.isEmpty() && DateAndTimeUtils.isBefore(selectedDate, fromDate, D_FORMAT_dd_M_yyyy)) {
+                        Toast.makeText(requireContext(), R.string.the_to_date_cannot_be_less_than_the_from_date, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     toDate = selectedDate;
                     String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -446,15 +455,15 @@ public class AllAppointmentsFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void clickListeners() {
         cardUpcomingAppointments.setOnClickListener(v -> {
-            updateCardBackgrounds("upcoming");
+            updateCardBackgrounds(cardUpcomingAppointments);
             updateMAinLayoutAsPerOptionSelected("upcoming");
         });
         cardCancelledAppointments.setOnClickListener(v -> {
-            updateCardBackgrounds("cancelled");
+            updateCardBackgrounds(cardCancelledAppointments);
             updateMAinLayoutAsPerOptionSelected("cancelled");
         });
         cardCompletedAppointments.setOnClickListener(v -> {
-            updateCardBackgrounds("completed");
+            updateCardBackgrounds(cardCompletedAppointments);
             updateMAinLayoutAsPerOptionSelected("completed");
         });
 
@@ -623,26 +632,30 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
 
-    private void updateCardBackgrounds(String cardName) {
+    private void updateCardBackgrounds(View view) {
+        cardCancelledAppointments.setSelected(false);
+        cardCompletedAppointments.setSelected(false);
+        cardUpcomingAppointments.setSelected(false);
+        view.setSelected(true);
         // update all 3 cards background as per selection
-        if (cardName.equals("upcoming")) {
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
-        } else if (cardName.equals("cancelled")) {
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
-        } else if (cardName.equals("completed")) {
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
-        }
+//        if (cardName.equals("upcoming")) {
+//            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
+//        } else if (cardName.equals("cancelled")) {
+//            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//
+//            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
+//        } else if (cardName.equals("completed")) {
+//            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//
+//            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
+//        }
 
     }
 
@@ -696,7 +709,7 @@ public class AllAppointmentsFragment extends Fragment {
                     rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_selected_green));
                     rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
                     rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
-                    updateCardBackgrounds("upcoming");
+                    updateCardBackgrounds(cardUpcomingAppointments);
                     updateMAinLayoutAsPerOptionSelected("upcoming");
                 }
 
@@ -708,7 +721,7 @@ public class AllAppointmentsFragment extends Fragment {
                     rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
                     rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_selected_green));
                     rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
-                    updateCardBackgrounds("cancelled");
+                    updateCardBackgrounds(cardCancelledAppointments);
                     updateMAinLayoutAsPerOptionSelected("cancelled");
 
                 }
@@ -721,7 +734,7 @@ public class AllAppointmentsFragment extends Fragment {
                     rbUpcoming.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
                     rbCancelled.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_circle));
                     rbCompleted.setButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_selected_green));
-                    updateCardBackgrounds("completed");
+                    updateCardBackgrounds(cardCompletedAppointments);
 
                     updateMAinLayoutAsPerOptionSelected("completed");
 
@@ -798,10 +811,10 @@ public class AllAppointmentsFragment extends Fragment {
             rvUpcomingApp.setVisibility(View.VISIBLE);
             noDataFoundForUpcoming.setVisibility(View.GONE);
 
-            upcomingAppointmentInfoList.forEach(appointmentInfo -> {
-                String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
-                appointmentInfo.setPatientProfilePhoto(patientProfilePath);
-            });
+            for (AppointmentInfo info : upcomingAppointmentInfoList) {
+                String patientProfilePath = getPatientProfile(info.getPatientId());
+                info.setPatientProfilePhoto(patientProfilePath);
+            }
 
             upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), upcomingAppointmentInfoList, "upcoming");
             rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
@@ -826,10 +839,10 @@ public class AllAppointmentsFragment extends Fragment {
             rvCancelledApp.setVisibility(View.VISIBLE);
             noDataFoundForCancelled.setVisibility(View.GONE);
 
-            cancelledAppointmentInfoList.forEach(appointmentInfo -> {
-                String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
-                appointmentInfo.setPatientProfilePhoto(patientProfilePath);
-            });
+            for (AppointmentInfo info : cancelledAppointmentInfoList) {
+                String patientProfilePath = getPatientProfile(info.getPatientId());
+                info.setPatientProfilePhoto(patientProfilePath);
+            }
 
             cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledAppointmentInfoList, "cancelled");
             rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
@@ -983,7 +996,7 @@ public class AllAppointmentsFragment extends Fragment {
             }, 2000);
         }
     }
-  
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
@@ -992,7 +1005,7 @@ public class AllAppointmentsFragment extends Fragment {
             String whichDate = bundle.getString(WHICH_DATE);
             if (!whichDate.isEmpty() && whichDate.equals(FROM_DATE)) {
                 if (!toDate.isEmpty() && DateAndTimeUtils.isAfter(selectedDate, toDate, D_FORMAT_dd_M_yyyy)) {
-                    Toast.makeText(requireContext(),"The 'from' date cannot be greater than the 'to' date",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "The 'from' date cannot be greater than the 'to' date", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 fromDate = selectedDate;
@@ -1004,10 +1017,11 @@ public class AllAppointmentsFragment extends Fragment {
                     tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
                 }
                 dismissDateFilterDialog();
-             }
+            }
+
             if (!whichDate.isEmpty() && whichDate.equals(TO_DATE)) {
                 if (!fromDate.isEmpty() && DateAndTimeUtils.isBefore(selectedDate, fromDate, D_FORMAT_dd_M_yyyy)) {
-                    Toast.makeText(requireContext(),"The 'to' date cannot be less than the 'from' date",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "The 'to' date cannot be less than the 'from' date", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 toDate = selectedDate;

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_today"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollIndicators="none"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:id="@+id/layout_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/today_apps_parent_margin_top"
+            android:orientation="vertical"
+            android:paddingBottom="40dp">
+
+            <RelativeLayout
+                android:id="@+id/top_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/et_search_patient_height"
+                    android:layout_marginTop="@dimen/ma_icon_margin_top"
+                    android:layout_toStartOf="@+id/filter_lay"
+                    android:background="@drawable/ui2_background_input_field_new">
+
+                    <EditText
+                        android:id="@+id/et_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/iv_clear_all"
+                        android:background="@null"
+                        android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                        android:drawablePadding="@dimen/find_patient_icon_padding"
+                        android:drawableTint="@color/iconTintGrayBottomNav"
+                        android:hint="@string/search_patient"
+                        android:imeOptions="actionSearch"
+                        android:importantForAutofill="no"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/common_edittext_padding_left"
+                        android:paddingTop="@dimen/common_edittext_padding_top"
+                        android:paddingEnd="@dimen/common_edittext_padding_right"
+                        android:paddingBottom="@dimen/common_edittext_padding_bottom1"
+                        android:singleLine="true"
+                        android:textSize="@dimen/common_hint_text_size" />
+
+                    <ImageView
+                        android:id="@+id/iv_clear"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ui2_ic_close_drawer"
+                        android:visibility="gone"
+                        app:tint="@color/colorPrimary"
+                        tools:visibility="visible" />
+
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/filter_lay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true">
+
+                    <ImageView
+                        android:id="@+id/filter_im"
+                        android:layout_width="@dimen/icon_filters_width"
+                        android:layout_height="@dimen/icon_filters_height"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/ma_icon_margin_start"
+                        android:layout_marginTop="@dimen/ma_icon_margin_top"
+                        android:layout_marginEnd="@dimen/ma_icon_margin_end"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/ui2_ic_filter_bg"
+                        android:padding="@dimen/my_appointment_padding"
+                        app:tint="?attr/colorPrimary"
+                        android:src="@drawable/ui2_ic_filter" />
+
+                    <ImageView
+                        android:id="@+id/sort_im"
+                        android:layout_width="@dimen/icon_filters_width"
+                        android:layout_height="@dimen/icon_filters_height"
+                        android:layout_marginTop="@dimen/ma_icon_margin_top"
+                        android:layout_marginEnd="@dimen/ma_icon_margin_end"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/ui2_ic_filter_bg"
+                        android:padding="@dimen/my_appointment_padding"
+                        app:tint="?attr/colorPrimary"
+                        android:src="@drawable/sort" />
+                </LinearLayout>
+
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_results_for"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_lay"
+                android:layout_marginStart="@dimen/results_for_margin_start"
+                android:layout_marginTop="@dimen/results_for_margin_top"
+                android:lineHeight="@dimen/results_for_line_height"
+                android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
+                android:text="@string/results_for"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/results_for_text_size"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:id="@+id/scroll_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_results_for">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipgroup_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/chip_group_apps_height"
+                    android:layout_marginTop="@dimen/chip_group_apps_margin_top" />
+            </HorizontalScrollView>
+            <LinearLayout
+                android:id="@+id/layout_parent_past"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/scroll_chips"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:id="@+id/layout_upcoming"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_upcoming_appointments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/lists_apps_margin_top"
+                        android:visibility="visible"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_past_appointments_ui2_new" />
+
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/layout_no_data_found_upcoming"
+                    layout="@layout/layout_no_data_found_ui2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/filter_frame_past_appointments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="55dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <include layout="@layout/layout_filter_past_appointments_ui2" />
+
+            </FrameLayout>
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

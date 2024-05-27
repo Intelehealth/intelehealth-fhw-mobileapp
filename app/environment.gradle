@@ -45,16 +45,28 @@ android {
             archivesBaseName = "intelehealth_biocon-" + versionName + " - " + date
         }
 
+        bmgf {
+            dimension client
+            applicationId "org.intelehealth.bmgf"
+            versionCode 1
+            versionName '1.0'
+            archivesBaseName = "intelehealth_bmgf-" + versionName + " - " + date
+        }
+
+        // This flavor used to handle different type of endpoint
         dev {
             dimension server
+            buildConfigField "boolean", "ACTIVE_CRASH", "false"
         }
 
         staging {
             dimension server
+            buildConfigField "boolean", "ACTIVE_CRASH", "true"
         }
 
         production {
             dimension server
+            buildConfigField "boolean", "ACTIVE_CRASH", "true"
         }
     }
 
@@ -70,6 +82,8 @@ android {
             domain = "KF"
         } else if (name.contains("biocon")) {
             domain = "BIOCON"
+        } else if (name.contains("bmgf")) {
+            domain = "BMGF"
         } else {
             domain = "IDA"
         }
@@ -87,6 +101,7 @@ android {
     }
 }
 
+// Generating different type of endpoint base on selected variant or app
 def buildVariantConfigField(clientServer, variant) {
     clientServer = clientServer.concat("_")
     def serverUrl = "SERVER_URL"

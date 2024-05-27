@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/card_name_openmrsid"
@@ -29,7 +30,7 @@
                 android:id="@+id/personal_info_icon"
                 android:layout_width="@dimen/edittext_height_44dp"
                 android:layout_height="@dimen/edittext_height_44dp"
-                android:src="@drawable/addpatient_icon_unselected" />
+                android:src="@drawable/addpatient_icon" />
 
             <TextView
                 android:id="@+id/label"
@@ -79,28 +80,29 @@
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
 
             <LinearLayout
+                android:id="@+id/personal_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_change_patdetail"
                 android:layout_alignParentEnd="true"
-                android:paddingHorizontal="4dp"
-                android:id="@+id/personal_edit">
+                android:background="@drawable/edit_change_patdetail"
+                android:paddingHorizontal="4dp">
 
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_margin="5dp"
-                    android:src="@drawable/edit"/>
+                    android:src="@drawable/edit"
+                    app:tint="?attr/colorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/change"
-                    android:textSize="12sp"
-                    android:textAlignment="center"
                     android:layout_gravity="center"
                     android:fontFamily="@font/lato_bold"
-                    android:textColor="#2E1E91"/>
+                    android:text="@string/change"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -120,8 +122,11 @@
                 android:shrinkColumns="1">
 
                 <TableRow
+                    android:id="@+id/name_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="visible"
+                    tools:visibility="visible"
                     android:layout_weight="2">
 
                     <TextView
@@ -131,8 +136,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/name"
                         android:drawablePadding="5dp"
+                        android:text="@string/name"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -150,8 +155,11 @@
 
                 <!--Gender-->
                 <TableRow
+                    android:id="@+id/gender_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -162,8 +170,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/gender"
                         android:drawablePadding="5dp"
+                        android:text="@string/gender"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -181,8 +189,11 @@
 
                 <!--Date of birth-->
                 <TableRow
+                    android:id="@+id/dob_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -193,8 +204,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/date_of_birth"
                         android:drawablePadding="5dp"
+                        android:text="@string/date_of_birth"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -212,8 +223,11 @@
 
                 <!--Age-->
                 <TableRow
+                    android:id="@+id/age_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
@@ -224,8 +238,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/age"
                         android:drawablePadding="5dp"
+                        android:text="@string/age"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -241,8 +255,77 @@
                         android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
+                <!--Guardian Name-->
+                <TableRow
+                    android:id="@+id/guardian_name_table_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="5dp"
+                        android:text="@string/guardian_name_non_required"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/guardian_name_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
+                <!--Guardian Type-->
+                <TableRow
+                    android:id="@+id/guardian_type_table_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="5dp"
+                        android:text="@string/guardian_type_non_required"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/guardian_type_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
                 <!--Phone number-->
                 <TableRow
+                    android:id="@+id/phone_num_tr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/margin_4"
@@ -255,8 +338,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/phone_number"
                         android:drawablePadding="5dp"
+                        android:text="@string/phone_number"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -267,6 +350,108 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="+91 9876543210"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
+                <!--Contact Type-->
+                <TableRow
+                    android:id="@+id/contact_type_tr"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="5dp"
+                        android:text="@string/contact_type_non_required"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/contact_type_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
+                <!--Emergency contact name-->
+                <TableRow
+                    android:id="@+id/em_contact_name_tr"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="5dp"
+                        android:text="@string/emergency_contact_name_non_required"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/em_contact_name_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
+                <!--Emergency contact number-->
+                <TableRow
+                    android:id="@+id/em_contact_num_tr"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="5dp"
+                        android:text="@string/emergency_contact_number_non_required"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/em_contact_number_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
                         android:textSize="@dimen/find_patient_hint_size" />

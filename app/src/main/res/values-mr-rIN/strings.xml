@@ -23,21 +23,21 @@
 
 
     //Database Schema Names
-    <string name="db_first_name">first_name</string>
-    <string name="db_middle_name">middle_name</string>
-    <string name="db_last_name">last_name</string>
-    <string name="db_dob">date_of_birth</string>
-    <string name="db_phone_number">phone_number</string>
-    <string name="db_address_line1">address1</string>
-    <string name="db_address_line2">address2</string>
-    <string name="db_city">city_village</string>
-    <string name="db_state">state_province</string>
-    <string name="db_postal_code">postal_code</string>
-    <string name="db_country">country</string>
-    <string name="db_gender">gender</string>
-    <string name="db_patient_id1">patient_identifier1</string>
-    <string name="db_patient_id2">patient_identifier2</string>
-    <string name="db_patient_id3">patient_identifier3</string>
+    <string name="db_first_name" translatable="false">नाव</string>
+    <string name="db_middle_name">वडिलांचे/पतीचे/मधले नाव</string>
+    <string name="db_last_name">आडनाव</string>
+    <string name="db_dob">जन्मतारीख</string>
+    <string name="db_phone_number">फोन नंबर/दूरध्वनी क्रमांक</string>
+    <string name="db_address_line1">पत्ता - ओळ १</string>
+    <string name="db_address_line2">पत्ता - ओळ २</string>
+    <string name="db_city">शहराचे/गावाचे नाव</string>
+    <string name="db_state">राज्य/प्रभाग</string>
+    <string name="db_postal_code">पिन कोड</string>
+    <string name="db_country">देशाचे नाव</string>
+    <string name="db_gender">लिंग</string>
+    <string name="db_patient_id1">रुग्णाविषयी माहिती_१</string>
+    <string name="db_patient_id2">रुग्णाविषयी माहिती_२</string>
+    <string name="db_patient_id3">रुग्णाविषयी माहिती_३</string>
 
     //Login Screen
     <string name="title_activity_login">इंटेलहेल्थ</string>
@@ -387,8 +387,8 @@
 
     <!--DB Backup-->
 
-    <string name="db_backup_complete" translatable="false">Database Backup Complete!</string>
-    <string name="db_restore_complete" translatable="false">Database Restore Complete!</string>
+    <string name="db_backup_complete" translatable="false">डेटाबेस बॅकअप पूर्ण!</string>
+    <string name="db_restore_complete" translatable="false">डेटाबेस पुनर्संचय पूर्ण!</string>
 
     <!--Cloud Backup-->
 
@@ -737,10 +737,10 @@
     <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
     <string name="doctor_is_not_available">Doctor is not available</string>
     <string name="patient_is_not_available">Patient is not available</string>
-    <string name="others">Others</string>
-    <string name="please_enter_the_reason_details">Please enter the reason details</string>
-    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
-    <string name="please_enter_reason_txt">Please enter the reason!</string>
+    <string name="others">इतर</string>
+    <string name="please_enter_the_reason_details">कृपया कारण तपशील प्रविष्ट करा</string>
+    <string name="save_amp_proceed"><![CDATA[जतन करा आणि पुढे जा]]></string>
+    <string name="please_enter_reason_txt">कृपया कारण प्रविष्ट करा!</string>
 
     <string name = "diagnosis">निदान</string>
     <string name="primary">प्राथमिक</string>
@@ -810,7 +810,7 @@
 
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">त्यानंतर प्रोटोकॉल डाउनलोड केला जातो। प्रोटोकॉल डाउनलोडची पुनरावृत्ती करण्यासाठी \'होय\' दाबा। डेमो प्रोटोकॉलसह सातत्यासाठी \'नाही\' दाबा।</string>
-    <string name="app_version_string">App Version - %1$s</string>
+    <string name="app_version_string">वापरकर्ता: %1$s, ऐप संस्करण: %2$s</string>
     <string name="no_visit_created">No visit created</string>
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
     <string name="height_cm">Height (cm)</string>
@@ -903,4 +903,22 @@
     <string name="u2022_no_of_days">• No. of days</string>
     <string name="u2022_timings">• Timings</string>
     <string name="u2022_remarks">• Remarks</string>
+    <string name="the_from_date_cannot_be_greater_than_the_to_date">The \'from\' date cannot be greater than the \'to\' date</string>
+    <string name="enter_other_information_txt">Enter other information</string>
+    <string name="blood_group_txt">Blood Group</string>
+    <string name="eg_a_ve">Eg. A +ve</string>
+    <string name="dont_know">Don\'t know</string>
+    <string name="universal_donor">( Universal Donor)</string>
+    <string name="universal_recipient">( Universal Recipient )</string>
+    <string name="no_notifications_yet">No Notifications Yet</string>
+    <string name="this_visit_is_completed">This visit is completed.</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="delete">हटवा</string>
+    <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
+    <string name="view_prescription_lbl">View Prescription</string>
+    <string name="past">भूतकाळ</string>
+    <string name="missed">Missed</string>
+    <string name="sorted_by_descending_order">Sorted By Descending order</string>
+    <string name="sorted_by_ascending_order">Sorted By Ascending order</string>
+    <string name="over">" Over"</string>
 </resources>

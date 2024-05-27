@@ -1,8 +1,8 @@
 package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +24,12 @@ import com.google.android.flexbox.JustifyContent;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
@@ -39,6 +41,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,23 +87,22 @@ public class VisitReasonCaptureFragment extends Fragment {
         super.onAttach(context);
         mActionListener = (VisitCreationActionListener) context;
         sessionManager = new SessionManager(context);
-          mRawReasonDataList = getVisitReasonFilesNamesOnly();
+        mRawReasonDataList = getVisitReasonFilesNamesOnly();
     }
 
-    public static VisitReasonCaptureFragment newInstance(Intent intent, boolean isEditMode, boolean cleanEdit) {
+    public static VisitReasonCaptureFragment newInstance(CommonVisitData commonVisitData, boolean isEditMode, boolean cleanEdit) {
         VisitReasonCaptureFragment fragment = new VisitReasonCaptureFragment();
         fragment.mIsEditMode = isEditMode;
-        fragment.patientUuid = intent.getStringExtra("patientUuid");
-        fragment.visitUuid = intent.getStringExtra("visitUuid");
-        fragment.encounterVitals = intent.getStringExtra("encounterUuidVitals");
-        fragment.encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-        fragment.EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
-        fragment.state = intent.getStringExtra("state");
-        fragment.patientName = intent.getStringExtra("name");
-        fragment.patientGender = intent.getStringExtra("gender");
-        fragment.intentTag = intent.getStringExtra("tag");
-        //fragment.mEditFor = intent.getIntExtra("edit_for", STEP_1_VITAL);
-        fragment.float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+        fragment.patientUuid = commonVisitData.getPatientUuid();//intent.getStringExtra("patientUuid");
+        fragment.visitUuid = commonVisitData.getVisitUuid(); // intent.getStringExtra("visitUuid");
+        fragment.encounterVitals = commonVisitData.getEncounterUuidVitals();//intent.getStringExtra("encounterUuidVitals");
+        fragment.encounterAdultIntials = commonVisitData.getEncounterUuidAdultIntial();//intent.getStringExtra("encounterUuidAdultIntial");
+        fragment.EncounterAdultInitial_LatestVisit = commonVisitData.getEncounterAdultInitialLatestVisit();//intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+        fragment.state = commonVisitData.getState();//intent.getStringExtra("state");
+        fragment.patientName = commonVisitData.getPatientName();//intent.getStringExtra("name");
+        fragment.patientGender = commonVisitData.getPatientGender();//intent.getStringExtra("gender");
+        fragment.intentTag = commonVisitData.getIntentTag();//intent.getStringExtra("tag");
+        fragment.float_ageYear_Month = commonVisitData.getPatientAgeYearMonth();//intent.getFloatExtra("float_ageYear_Month", 0);
         return fragment;
     }
 
@@ -143,8 +145,14 @@ public class VisitReasonCaptureFragment extends Fragment {
 
         for (ReasonData data : mindmapReasonDataList) {
             String mindMapName = data.getReasonName();
-            String fileLocation = "engines/" + mindMapName + ".json";
-            JSONObject currentFile = FileUtils.encodeJSON(getActivity(), fileLocation);
+            JSONObject currentFile = null;
+            if (!sessionManager.getLicenseKey().isEmpty()) {
+                currentFile = FileUtils.encodeJSONFromFile(requireActivity(), mindMapName + ".json");
+            }else{
+                String fileLocation = "engines/" + mindMapName + ".json";
+                currentFile = FileUtils.encodeJSON(getActivity(), fileLocation);
+            }
+
             Node mainNode = new Node(currentFile);
             if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age())) {
                 mFinalEnabledMMList.add(mindMapName);
@@ -328,7 +336,19 @@ public class VisitReasonCaptureFragment extends Fragment {
     private List<ReasonData> getVisitReasonFilesNamesOnly() {
         List<ReasonData> reasonDataList = new ArrayList<ReasonData>();
         try {
-            String[] temp = getActivity().getApplicationContext().getAssets().list("engines");
+            String[] temp = null;
+            Log.e("MindMapURL", "Successfully get MindMap URL"+sessionManager.getLicenseKey());
+            if (!sessionManager.getLicenseKey().isEmpty()) {
+                File base_dir = new File(requireActivity().getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
+                File[] files = base_dir.listFiles();
+                temp = new String[files.length];
+                for (int i = 0; i < files.length; i++) {
+                    temp[i] = files[i].getName();
+                }
+            } else {
+                temp = getActivity().getApplicationContext().getAssets().list("engines");
+
+            }
             for (String s : temp) {
                 String fileName = s.split(".json")[0];
                 ReasonData reasonData = new ReasonData();
@@ -348,7 +368,17 @@ public class VisitReasonCaptureFragment extends Fragment {
     private String[] getVisitReasonFiles() {
         String[] fileNames = new String[0];
         try {
-            fileNames = getActivity().getApplicationContext().getAssets().list("engines");
+            if (!sessionManager.getLicenseKey().isEmpty()) {
+                File base_dir = new File(requireActivity().getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
+                File[] files = base_dir.listFiles();
+                fileNames = new String[files.length];
+                for (int i = 0; i < files.length; i++) {
+                    fileNames[i] = files[i].getName();
+                }
+            }else{
+                fileNames = getActivity().getApplicationContext().getAssets().list("engines");
+
+            }
         } catch (IOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

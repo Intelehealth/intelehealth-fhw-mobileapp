@@ -13,15 +13,15 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_gravity="center"
-            android:src="@drawable/first" />
+            android:contentDescription="@string/intro_title_1"
+            android:src="@drawable/intro_image_1" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/intro_heading_margin_top"
             android:gravity="center"
-            android:lineHeight="@dimen/intro_heading_line_height"
-            android:text="@string/who_we_are"
+            android:text="@string/intro_title_1"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/introscreen_title"
             android:textStyle="bold" />
@@ -35,7 +35,7 @@
             android:gravity="center"
             android:justificationMode="inter_word"
             android:lineHeight="@dimen/intro_description_line_height"
-            android:text="@string/who_we_are_intro"
+            android:text="@string/intro_tagline_1"
             android:textColor="@color/textColorGray"
             android:textSize="@dimen/introscreen_content" />
     </LinearLayout>

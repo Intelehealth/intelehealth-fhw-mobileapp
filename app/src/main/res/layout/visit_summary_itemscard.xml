@@ -32,7 +32,10 @@
                     android:id="@+id/vitals_header_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/fu_card_margin_sides">
+                    android:layout_marginStart="@dimen/fu_card_margin_sides"
+                    android:layout_marginTop="@dimen/fu_card_margin_sides"
+                    android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <ImageView
                         android:id="@+id/ivVitalIcon"
@@ -103,6 +106,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="?attr/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -112,7 +116,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -401,6 +405,38 @@
                                 android:textSize="@dimen/find_patient_hint_size" />
                         </TableRow>
 
+                        <!--Blood group-->
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:layout_weight="2">
+
+                            <TextView
+                                android:id="@+id/textView_blood_group_lbl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/bullet_gray"
+                                android:drawablePadding="5dp"
+                                android:text="@string/blood_group_txt"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+
+                            <TextView
+                                android:id="@+id/textView_blood_group"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/no_information"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/textview_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </TableRow>
+
 
                     </TableLayout>
                 </RelativeLayout>
@@ -506,6 +542,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="?attr/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -515,7 +552,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -856,6 +893,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="?attr/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -865,7 +903,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -1023,6 +1061,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="?attr/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -1032,7 +1071,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -1093,6 +1132,7 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
+                                app:tint="?attr/colorPrimary"
                                 android:src="@drawable/edit" />
 
                             <TextView
@@ -1102,7 +1142,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/change"
                                 android:textAlignment="center"
-                                android:textColor="#2E1E91"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="12sp" />
 
                         </LinearLayout>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
@@ -862,6 +864,24 @@ public class DateAndTimeUtils {
         Date date = null;
         try {
             date = inputFormat.parse(dateToConvert);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return outputFormat.format(date);
+    }
+
+    @NonNull
+    public static String convertDateToDdMmYyyyHhMmFormat(String dateToConvert, String time) {
+        Log.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
+
+        java.text.DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+        // java.text.DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy"); //gives month name
+        java.text.DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy, HH:mm");
+
+        Date date = null;
+        try {
+            date = inputFormat.parse(dateToConvert+" "+time);
         } catch (ParseException e) {
             e.printStackTrace();
         }

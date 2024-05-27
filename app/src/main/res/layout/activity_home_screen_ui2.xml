@@ -21,11 +21,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@drawable/top_rounded_whitebg"
-            android:foregroundTint="@color/colorPrimary"
+            android:foregroundTint="?colorPrimary"
             app:elevation="8dip"
             app:itemBackground="@drawable/bottom_nav_tab_background"
             app:itemIconSize="@dimen/bottom_nav_icon_size"
-            app:itemRippleColor="@color/colorPrimary2"
+            app:itemIconTint="@color/color_bottom_nav_icon"
+            app:itemRippleColor="?attr/colorPrimary"
             app:itemTextColor="@drawable/ui2_selector_for_all_bottomnavs"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/menu_home_footer" />
@@ -62,7 +63,7 @@
         android:fitsSystemWindows="false"
         app:headerLayout="@layout/nav_header_home_ui2"
         app:itemIconPadding="@dimen/itemIconPadding_drawer"
-        app:itemIconTint="@color/colorPrimary"
+        app:itemIconTint="?colorPrimary"
         app:menu="@menu/activity_home_menu_drawer_ui2"
         app:theme="@style/NavigationDrawerItemStyle">
 

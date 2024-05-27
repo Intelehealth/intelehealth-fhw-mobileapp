@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="?colorPrimary"
     android:orientation="vertical"
     tools:context=".activities.setupActivity.SetupActivityNew">
 
@@ -96,6 +96,7 @@
                         android:layout_centerInParent="true"
                         android:layout_marginHorizontal="10dp"
                         android:layout_toEndOf="@id/enterDetailsTV"
+                        app:tint="?attr/colorPrimary"
                         android:src="@drawable/ui2_ic_info_question_mark" />
 
                 </RelativeLayout>
@@ -209,7 +210,8 @@
                     android:gravity="end"
                     android:text="@string/forgot_username_link"
                     android:textColor="@color/textColorGray"
-                    android:textSize="@dimen/common_label_text_size" />
+                    android:textSize="@dimen/common_label_text_size"
+                    android:visibility="gone" />
 
                 <TextView
                     style="@style/TextviewInputTitleStyle"

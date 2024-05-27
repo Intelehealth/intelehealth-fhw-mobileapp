@@ -27,6 +27,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
+import org.intelehealth.config.Config;
 import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
@@ -75,6 +76,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     @Override
     public void onCreate() {
         super.onCreate();
+        new Config.Builder(BuildConfig.SERVER_URL + ":4004");
         sIntelehealthApplication = this;
         inteleHealthDatabaseHelper = InteleHealthDatabaseHelper.getInstance(sIntelehealthApplication);
         //For Vector Drawables Backward Compatibility(<API 21)
@@ -124,12 +126,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     }
 
     private void configureCrashReporting() {
+
 //        CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
 //                //.disabled(BuildConfig.DEBUG) // comment by Venu as per intelesafe
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
-
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(BuildConfig.ACTIVE_CRASH);
 
     }
 

@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -109,6 +110,12 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.tv_spo2)).setText(mVitalsObject.getSpo2() + " %");
             else
                 ((TextView) view.findViewById(R.id.tv_spo2)).setText(getString(R.string.ui2_no_information));
+
+            if (mVitalsObject.getBloodGroup() != null && !mVitalsObject.getBloodGroup().isEmpty())
+                ((TextView) view.findViewById(R.id.tv_blood_group)).setText(VisitUtils.getBloodPressureEnStringFromCode(mVitalsObject.getBloodGroup()));
+            else
+                ((TextView) view.findViewById(R.id.tv_blood_group)).setText(getString(R.string.ui2_no_information));
+
 
             if (mVitalsObject.getResp() != null && !mVitalsObject.getResp().isEmpty())
                 ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(mVitalsObject.getResp() + " " + getResources().getString(R.string.breaths_min));

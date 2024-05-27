@@ -787,6 +787,7 @@
                         android:padding="@dimen/margin_8"
                         android:layout_toEndOf="@+id/doc_speciality_title_1"
                         android:background="@null"
+                        app:tint="?attr/colorPrimary"
                         android:src="@drawable/question_mark_helpicon" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -820,8 +821,21 @@
             android:orientation="horizontal"
             android:visibility="visible"
             android:weightSum="2">
-
             <Button
+                android:id="@+id/btnPrescriptionView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginHorizontal="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:layout_weight="2"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:lineHeight="@dimen/button_line_height"
+                android:padding="@dimen/margin_12"
+                android:text="@string/view_prescription_lbl"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_button_text_size"
+                android:textStyle="bold" />
+            <!--<Button
                 android:id="@+id/btn_vs_print"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
@@ -854,7 +868,7 @@
                 android:text="@string/share"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
+                android:textStyle="bold" />-->
 
         </LinearLayout>
 

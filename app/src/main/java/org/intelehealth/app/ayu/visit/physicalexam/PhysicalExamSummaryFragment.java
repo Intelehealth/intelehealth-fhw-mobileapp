@@ -2,7 +2,6 @@ package org.intelehealth.app.ayu.visit.physicalexam;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -46,7 +46,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
 
     private String mSummaryString;
 
-    public static PhysicalExamSummaryFragment newInstance(Intent intent, String values, boolean isEditMode) {
+    public static PhysicalExamSummaryFragment newInstance(CommonVisitData commonVisitData, String values, boolean isEditMode) {
         PhysicalExamSummaryFragment fragment = new PhysicalExamSummaryFragment();
         fragment.mSummaryString = values;
         fragment.mIsEditMode = isEditMode;

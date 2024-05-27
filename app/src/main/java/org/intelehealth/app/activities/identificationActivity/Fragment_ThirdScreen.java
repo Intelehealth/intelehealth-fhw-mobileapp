@@ -57,6 +57,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +66,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -80,12 +82,20 @@ import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.utilities.BundleKeys;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.PatientRegConfigKeys;
+import org.intelehealth.app.utilities.PatientRegFieldsUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
+import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
+import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.PatientRegistrationFields;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -105,7 +115,11 @@ public class Fragment_ThirdScreen extends Fragment {
     private Spinner mCasteSpinner, mEducationSpinner, mEconomicstatusSpinner;
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag3_btn_back, frag3_btn_next;
-    private TextView mRelationNameErrorTextView, mOccupationErrorTextView, mCasteErrorTextView, mEducationErrorTextView, mEconomicErrorTextView;
+    private TextView mNidErrorTextView, mRelationNameErrorTextView, mOccupationErrorTextView, mCasteErrorTextView,
+            mEducationErrorTextView, mEconomicErrorTextView, nationalIdTv, occupationTv,
+            socialCategoryTv, educationTv, economicCategoryTv;
+
+    LinearLayout nationalIdLay, occupationLay, socialCategoryLay, educationLay, economicCategoryLay;
     ImagesDAO imagesDAO = new ImagesDAO();
     private Fragment_SecondScreen secondScreen;
     boolean fromThirdScreen = false, fromSecondScreen = false;
@@ -114,6 +128,10 @@ public class Fragment_ThirdScreen extends Fragment {
     String patientID_edit;
     boolean patient_detail = false;
 
+    RegFieldViewModel regFieldViewModel;
+
+    List<PatientRegistrationFields> patientRegistrationFields;
+    private boolean isEditMode = false;
 
     @Nullable
     @Override
@@ -148,42 +166,22 @@ public class Fragment_ThirdScreen extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sessionManager = new SessionManager(getActivity());
 
-        personal_icon = getActivity().findViewById(R.id.addpatient_icon);
-        address_icon = getActivity().findViewById(R.id.addresslocation_icon);
-        other_icon = getActivity().findViewById(R.id.other_icon);
-        frag3_btn_back = getActivity().findViewById(R.id.frag3_btn_back);
-        frag3_btn_next = getActivity().findViewById(R.id.frag3_btn_next);
+        //config viewmodel initialization
+        RegFieldRepository repository = new RegFieldRepository(ConfigDatabase.getInstance(getActivity()).patientRegFieldDao());
+        RegFieldViewModelFactory factory = new RegFieldViewModelFactory(repository);
+        regFieldViewModel = new ViewModelProvider(this, factory).get(RegFieldViewModel.class);
 
-        mRelationNameEditText = view.findViewById(R.id.relation_edittext);
-        mNationalIDEditText = view.findViewById(R.id.national_ID_editText);
-        mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(24)}); //all capital input
+        initUi();
 
-        mOccupationEditText = view.findViewById(R.id.occupation_editText);
-        mCasteSpinner = view.findViewById(R.id.caste_spinner);
-        mEducationSpinner = view.findViewById(R.id.education_spinner);
-        mEconomicstatusSpinner = view.findViewById(R.id.economicstatus_spinner);
-
-        mRelationNameErrorTextView = view.findViewById(R.id.relation_error);
-        mOccupationErrorTextView = view.findViewById(R.id.occupation_error);
-        mCasteErrorTextView = view.findViewById(R.id.caste_error);
-        mEducationErrorTextView = view.findViewById(R.id.education_error);
-        mEconomicErrorTextView = view.findViewById(R.id.economic_error);
-
-
-        mRelationNameEditText.addTextChangedListener(new MyTextWatcher(mRelationNameEditText));
-        mRelationNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
-
-        /*mNationalIDEditText.addTextChangedListener(new MyTextWatcher(mNationalIDEditText));
-        mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(18), inputFilter_Others});*/ //maxlength 25
-
-        mOccupationEditText.addTextChangedListener(new MyTextWatcher(mOccupationEditText));
-        mOccupationEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+        fetchRegConfig();
 
         secondScreen = new Fragment_SecondScreen();
+        Bundle args = getArguments();
         if (getArguments() != null) {
-            patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
-            fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
-            patient_detail = getArguments().getBoolean("patient_detail");
+            patientDTO = (PatientDTO) args.getSerializable("patientDTO");
+            fromSecondScreen = args.getBoolean("fromSecondScreen");
+            patient_detail = args.getBoolean("patient_detail");
+            isEditMode = args.getBoolean(BundleKeys.FROM_EDIT, false);
             if (patient_detail) {
                 frag3_btn_back.setVisibility(View.GONE);
                 frag3_btn_next.setText(getString(R.string.save));
@@ -237,9 +235,13 @@ public class Fragment_ThirdScreen extends Fragment {
             }
         });
 
-        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addpatient_icon_done));
-        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addresslocation_icon_done));
-        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.other_icon));
+
+        personal_icon.setActivated(true);
+        address_icon.setActivated(true);
+        other_icon.setSelected(true);
+//        personal_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addpatient_icon_done));
+//        address_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.addresslocation_icon_done));
+//        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.other_icon));
 
         frag3_btn_back.setOnClickListener(v -> {
             onBackInsertIntoPatientDTO();
@@ -262,7 +264,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 casteAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mCasteSpinner.setAdapter(casteAdapter);
-            mCasteSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
+            mCasteSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
 
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
@@ -279,7 +281,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 educationAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mEducationSpinner.setAdapter(educationAdapter);
-            mEducationSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
+            mEducationSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -295,7 +297,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 economicStatusAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
             mEconomicstatusSpinner.setAdapter(economicStatusAdapter);
-            mEconomicstatusSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.popup_menu_background));
+            mEconomicstatusSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
         } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -310,7 +312,79 @@ public class Fragment_ThirdScreen extends Fragment {
 
         if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().isEmpty())
             mNationalIDEditText.setText(patientDTO.getNationalID());
+    }
 
+    /**
+     * fetching reg config from local db
+     */
+    private void fetchRegConfig() {
+        if (getActivity() != null) {
+            regFieldViewModel.fetchEnabledOtherRegFields()
+                    .observe(getActivity(), it -> {
+                                patientRegistrationFields = it;
+                                configAllFields();
+                                updateUiFromSecondAndThirdFrag();
+                            }
+                    );
+        }
+    }
+
+
+    /**
+     * changing fields status based on config data
+     */
+    private void configAllFields() {
+        for (PatientRegistrationFields fields : patientRegistrationFields) {
+            switch (fields.getIdKey()) {
+                case PatientRegConfigKeys.NATIONAL_ID -> {
+                    PatientRegFieldsUtils.Companion.configField(
+                            isEditMode,
+                            fields,
+                            nationalIdLay,
+                            mNationalIDEditText,
+                            null,
+                            nationalIdTv
+                    );
+                }
+                case PatientRegConfigKeys.OCCUPATION -> PatientRegFieldsUtils.Companion.configField(
+                        isEditMode,
+                        fields,
+                        occupationLay,
+                        mOccupationEditText,
+                        null,
+                        occupationTv
+                );
+                case PatientRegConfigKeys.SOCIAL_CATEGORY -> PatientRegFieldsUtils.Companion.configField(
+                        isEditMode,
+                        fields,
+                        socialCategoryLay,
+                        mCasteSpinner,
+                        null,
+                        socialCategoryTv
+                );
+                case PatientRegConfigKeys.EDUCATION -> {
+                    PatientRegFieldsUtils.Companion.configField(
+                            isEditMode,
+                            fields,
+                            educationLay,
+                            mEducationSpinner,
+                            null,
+                            educationTv
+                    );
+                }
+                case PatientRegConfigKeys.ECONOMIC_CATEGORY -> PatientRegFieldsUtils.Companion.configField(
+                        isEditMode,
+                        fields,
+                        economicCategoryLay,
+                        mEconomicstatusSpinner,
+                        null,
+                        economicCategoryTv
+                );
+            }
+        }
+    }
+
+    private void updateUiFromSecondAndThirdFrag() {
         // setting screen in edit for spinners...
         if (fromThirdScreen || fromSecondScreen) {
             //caste
@@ -459,6 +533,55 @@ public class Fragment_ThirdScreen extends Fragment {
         }
     }
 
+    private void initUi() {
+        personal_icon = getActivity().findViewById(R.id.addpatient_icon);
+        address_icon = getActivity().findViewById(R.id.addresslocation_icon);
+        other_icon = getActivity().findViewById(R.id.other_icon);
+        frag3_btn_back = getActivity().findViewById(R.id.frag3_btn_back);
+        frag3_btn_next = getActivity().findViewById(R.id.frag3_btn_next);
+
+        //layout
+        nationalIdLay = view.findViewById(R.id.linear_national_ID);
+        occupationLay = view.findViewById(R.id.linear_occupation);
+        socialCategoryLay = view.findViewById(R.id.linear_caste);
+        educationLay = view.findViewById(R.id.linear_education);
+        economicCategoryLay = view.findViewById(R.id.linear_economicstatus);
+
+        //title
+        nationalIdTv = view.findViewById(R.id.national_ID_title);
+        occupationTv = view.findViewById(R.id.occupation_title);
+        socialCategoryTv = view.findViewById(R.id.caste_title);
+        educationTv = view.findViewById(R.id.education_title);
+        economicCategoryTv = view.findViewById(R.id.economicstatus_title);
+
+        mRelationNameEditText = view.findViewById(R.id.relation_edittext);
+        mNationalIDEditText = view.findViewById(R.id.national_ID_editText);
+        mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(24)}); //all capital input
+
+        mOccupationEditText = view.findViewById(R.id.occupation_editText);
+        mCasteSpinner = view.findViewById(R.id.caste_spinner);
+        mEducationSpinner = view.findViewById(R.id.education_spinner);
+        mEconomicstatusSpinner = view.findViewById(R.id.economicstatus_spinner);
+
+        mNidErrorTextView = view.findViewById(R.id.national_ID_error);
+        mRelationNameErrorTextView = view.findViewById(R.id.relation_error);
+        mOccupationErrorTextView = view.findViewById(R.id.occupation_error);
+        mCasteErrorTextView = view.findViewById(R.id.caste_error);
+        mEducationErrorTextView = view.findViewById(R.id.education_error);
+        mEconomicErrorTextView = view.findViewById(R.id.economic_error);
+
+
+        mRelationNameEditText.addTextChangedListener(new MyTextWatcher(mRelationNameEditText));
+        mRelationNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+
+        /*mNationalIDEditText.addTextChangedListener(new MyTextWatcher(mNationalIDEditText));
+        mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(18), inputFilter_Others});*/ //maxlength 25
+
+        mOccupationEditText.addTextChangedListener(new MyTextWatcher(mOccupationEditText));
+        mOccupationEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+
+    }
+
     class MyTextWatcher implements TextWatcher {
         EditText editText;
 
@@ -505,9 +628,9 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
-        patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
-        patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
-        patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
+        patientDTO.setCaste(mCasteSpinner.getSelectedItem()==null?"":StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
+        patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem()==null?"":mEducationSpinner.getSelectedItem().toString()));
+        patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem()==null?"":mEconomicstatusSpinner.getSelectedItem().toString()));
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
@@ -522,12 +645,87 @@ public class Fragment_ThirdScreen extends Fragment {
     }
 
     private void onPatientCreateClicked() {
+        //nid
+        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.NATIONAL_ID)) {
+            if (mNationalIDEditText.getText().toString().equals("") &&
+                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.NATIONAL_ID)) {
+                mNidErrorTextView.setVisibility(View.VISIBLE);
+                mNidErrorTextView.setText(getString(R.string.error_field_required));
+                mNationalIDEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mNationalIDEditText.requestFocus();
+                return;
+            } else {
+                mNidErrorTextView.setVisibility(View.GONE);
+                mNationalIDEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+
+        //occupation
+        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.OCCUPATION)) {
+            if (mNationalIDEditText.getText().toString().equals("") &&
+                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.OCCUPATION)) {
+                mOccupationErrorTextView.setVisibility(View.VISIBLE);
+                mOccupationErrorTextView.setText(getString(R.string.error_field_required));
+                mOccupationEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mOccupationEditText.requestFocus();
+                return;
+            } else {
+                mOccupationErrorTextView.setVisibility(View.GONE);
+                mOccupationEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+
+        //social category
+        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.SOCIAL_CATEGORY)) {
+            if (mCasteSpinner.getSelectedItemPosition() == 0 &&
+                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.SOCIAL_CATEGORY)) {
+                mCasteErrorTextView.setVisibility(View.VISIBLE);
+                mCasteErrorTextView.setText(getString(R.string.error_field_required));
+                mCasteSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mCasteSpinner.requestFocus();
+                return;
+            } else {
+                mCasteErrorTextView.setVisibility(View.GONE);
+                mCasteSpinner.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+
+        //education
+        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EDUCATION)) {
+            if (mEducationSpinner.getSelectedItemPosition() == 0 &&
+                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EDUCATION)) {
+                mEducationErrorTextView.setVisibility(View.VISIBLE);
+                mEducationErrorTextView.setText(getString(R.string.error_field_required));
+                mEducationSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mEducationSpinner.requestFocus();
+                return;
+            } else {
+                mEducationErrorTextView.setVisibility(View.GONE);
+                mEducationSpinner.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+
+        //economic category
+        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ECONOMIC_CATEGORY)) {
+            if (mEconomicstatusSpinner.getSelectedItemPosition() == 0 &&
+                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ECONOMIC_CATEGORY)) {
+                mEconomicErrorTextView.setVisibility(View.VISIBLE);
+                mEconomicErrorTextView.setText(getString(R.string.error_field_required));
+                mEconomicstatusSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mEconomicstatusSpinner.requestFocus();
+                return;
+            } else {
+                mEconomicErrorTextView.setVisibility(View.GONE);
+                mEconomicstatusSpinner.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
-        patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
-        patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
-        patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
+        patientDTO.setCaste(mCasteSpinner.getSelectedItem() == null?"":StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
+        patientDTO.setEducation(mEducationSpinner.getSelectedItem() == null?"":StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
+        patientDTO.setEconomic(mEconomicstatusSpinner.getSelectedItem() == null?"":StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();

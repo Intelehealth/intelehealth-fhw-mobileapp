@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_marginStart="@dimen/margin_10"
+    android:layout_marginTop="@dimen/margin_10"
+    android:layout_marginEnd="@dimen/margin_30"
+    android:layout_marginBottom="@dimen/margin_10"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/completed_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_5"
+            android:weightSum="10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/completed_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:button="@drawable/ui2_ic_circle"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:padding="@dimen/radio_gender_padding"
+                android:paddingStart="10dp"
+                android:paddingEnd="@dimen/radio_gender_padding_end"
+                android:text="@string/completed"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/common_info_text_size" />
+
+            <ImageView
+                android:id="@+id/completed_im"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:src="@drawable/check"
+                android:visibility="gone"
+                app:tint="?attr/colorPrimary"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/notifi_divider_color"
+            app:layout_constraintTop_toBottomOf="@+id/completed_lay" />
+
+        <LinearLayout
+            android:id="@+id/cancelled_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_5"
+            android:weightSum="10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view1">
+
+            <TextView
+                android:id="@+id/cancelled_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:button="@drawable/ui2_ic_circle"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:padding="@dimen/radio_gender_padding"
+                android:paddingStart="10dp"
+                android:paddingEnd="@dimen/radio_gender_padding_end"
+                android:text="@string/cancelled"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/common_info_text_size" />
+
+            <ImageView
+                android:id="@+id/cancelled_im"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:src="@drawable/check"
+                android:visibility="gone"
+                app:tint="?attr/colorPrimary"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/notifi_divider_color"
+            app:layout_constraintTop_toBottomOf="@+id/cancelled_lay" />
+
+        <LinearLayout
+            android:id="@+id/missed_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_5"
+            android:weightSum="10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view1"
+            app:layout_constraintTop_toTopOf="@id/view2">
+
+            <TextView
+                android:id="@+id/missed_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:button="@drawable/ui2_ic_circle"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:padding="@dimen/radio_gender_padding"
+                android:paddingStart="10dp"
+                android:paddingEnd="@dimen/radio_gender_padding_end"
+                android:text="@string/missed"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/common_info_text_size" />
+
+            <ImageView
+                android:id="@+id/missed_im"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:src="@drawable/check"
+                android:visibility="gone"
+                app:tint="?attr/colorPrimary"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -10,9 +10,7 @@ import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,23 +20,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-
-import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity;
 import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
+import org.intelehealth.app.models.IntroContent;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class IntroScreensActivity_New extends AppCompatActivity {
@@ -118,9 +108,9 @@ public class IntroScreensActivity_New extends AppCompatActivity {
             public void onPageSelected(int position) {
                 //dot not showing when its calling first time from here
                 //that's why skipping first time call
-                if(position == 0 && !dotFromCallback){
+                if (position == 0 && !dotFromCallback) {
                     dotFromCallback = true;
-                }else if(dotFromCallback){
+                } else if (dotFromCallback) {
                     addBottomDots1(position);
                     page = position;
                 }
@@ -215,15 +205,15 @@ public class IntroScreensActivity_New extends AppCompatActivity {
         }
     }*/
 
-    public class MyViewpagerAdapter extends FragmentStateAdapter {
+    public static class MyViewpagerAdapter extends FragmentStateAdapter {
 
         private final ArrayList<Fragment> introFragments = new ArrayList<>();
 
         public MyViewpagerAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);
-            introFragments.add(SlideFragment.newInstance(ViewType.ONE));
-            introFragments.add(SlideFragment.newInstance(ViewType.TWO));
-            introFragments.add(SlideFragment.newInstance(ViewType.THREE));
+            introFragments.add(SlideFragment.newInstance(IntroContent.getContent(fragmentActivity, ViewType.ONE)));
+            introFragments.add(SlideFragment.newInstance(IntroContent.getContent(fragmentActivity, ViewType.TWO)));
+            introFragments.add(SlideFragment.newInstance(IntroContent.getContent(fragmentActivity, ViewType.THREE)));
         }
 
         @NonNull

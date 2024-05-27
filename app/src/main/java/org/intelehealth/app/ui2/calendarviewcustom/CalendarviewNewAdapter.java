@@ -61,16 +61,14 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
         CalendarviewModel calendarModel = listOfDates.get(position);
         holder.tvDate.setText(calendarModel.getDate() + "");
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() == currentMonthNew && tag.equalsIgnoreCase("unclicked")) {
-            if(calendarModel.getDate() == currentDay){
+            if (calendarModel.getDate() == currentDay) {
                 if (calendarModel.getDate() < 15 && count == 0) {
                     selectedPos = position;
                     todayDatePosition = position;
-                }
-                else if (calendarModel.getDate() > 24 && count == 1) {
+                } else if (calendarModel.getDate() > 24 && count == 1) {
                     selectedPos = position;
                     todayDatePosition = position;
-                }
-                else if(calendarModel.getDate() >= 15 && calendarModel.getDate() <= 24) {
+                } else if (calendarModel.getDate() >= 15 && calendarModel.getDate() <= 24) {
                     selectedPos = position;
                     todayDatePosition = position;
                 }
@@ -99,28 +97,28 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
 
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() == currentMonthNew) {
             if (calendarModel.isPrevMonth || calendarModel.isNextMonth || calendarModel.isCurrentMonthCompletedDate()) {
-                holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.edittextBorder));
+                holder.tvDate.setTextColor(ContextCompat.getColor(context, R.color.edittextBorder));
             }
         } else {
             if (calendarModel.isPrevMonth || calendarModel.isNextMonth) {
-                holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.edittextBorder));
+                holder.tvDate.setTextColor(ContextCompat.getColor(context, R.color.edittextBorder));
             }
         }
 
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() > currentMonthNew) {
-            if(!whichDate.equalsIgnoreCase("fromdate") && !whichDate.equalsIgnoreCase("todate")) {
-                holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.edittextBorder));
+            if (!whichDate.equalsIgnoreCase("fromdate") && !whichDate.equalsIgnoreCase("todate")) {
+                holder.tvDate.setTextColor(ContextCompat.getColor(context, R.color.edittextBorder));
                 holder.tvDate.setClickable(false);
                 holder.layoutParent.setClickable(false);
             }
         }
 
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() == currentMonthNew && position > todayDatePosition) {
-           if(!whichDate.equalsIgnoreCase("fromdate") && !whichDate.equalsIgnoreCase("todate")) {
-               holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.edittextBorder));
-               holder.tvDate.setClickable(false);
-               holder.layoutParent.setClickable(false);
-           }
+            if (!whichDate.equalsIgnoreCase("fromdate") && !whichDate.equalsIgnoreCase("todate")) {
+                holder.tvDate.setTextColor(ContextCompat.getColor(context, R.color.edittextBorder));
+                holder.tvDate.setClickable(false);
+                holder.layoutParent.setClickable(false);
+            }
         }
 
     }
@@ -155,18 +153,23 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
 
     public void changeToSelect(int selectedPos, int position, MyViewHolder holder, CalendarviewModel calendarModel) {
         Log.d(TAG, "changeToSelect: position : " + position);
-        if (selectedPos == position) {
-            Log.d(TAG, "changeToSelect: in true");
-            holder.layoutParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_selected_date_custom_calview_ui2));
-            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.textColorBlack));
-            if (calendarModel.isPrevMonth || calendarModel.isNextMonth) {
-                holder.layoutParent.setBackground(null);
-            }
-        } else {
-            Log.d(TAG, "changeToSelect: in false");
-            holder.layoutParent.setBackground(null);
-            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.textColorBlack));
+        holder.layoutParent.setSelected(selectedPos == position);
+        if (calendarModel.isPrevMonth || calendarModel.isNextMonth) {
+            holder.layoutParent.setSelected(false);
         }
+//        if (selectedPos == position) {
+//            Log.d(TAG, "changeToSelect: in true");
+////            holder.layoutParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_selected_date_custom_calview_ui2));
+////            holder.tvDate.setTextColor(ContextCompat.getColor(context, R.color.textColorBlack));
+//            if (calendarModel.isPrevMonth || calendarModel.isNextMonth) {
+////                holder.layoutParent.setBackground(null);
+//                holder.layoutParent.setSelected(false);
+//            }
+//        } else {
+//            Log.d(TAG, "changeToSelect: in false");
+////            holder.layoutParent.setBackground(null);
+////            holder.tvDate.setTextColor(ContextCompat.getColor(context, R.color.textColorBlack));
+//        }
     }
 
 }

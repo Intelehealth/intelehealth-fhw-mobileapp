@@ -1,3 +1,52 @@
+24 May, 2024
+- PNG need to be convert into vector
+
+20 May, 2024
+- Visit summery change icon color
+- Visit reason change icon color
+- Physical Exam change icon color
+- Protoclo-> Associate symptoms
+- Priority visit help icon
+- Gender radio button
+- Follow up and appoinment text color need to check with team
+- Prescription received label
+- Prescription PDF color code
+- Protocol button theme
+-
+
+16 May, 2024
+- Patient registration success dialog icon - Done
+- Start visit button - Done
+- Vital summery change icon - Done
+- confirm visit reason dialog -> selected reason bg - Done
+- Visit summery add additional doc - Done
+
+17 May, 2024
+- Prescription received/pending tabs icon
+- Visit details icons
+
+# if we disable the vital screen
+-
+
+Configurability
+- Step 1
+- Created the environment.gradle
+- Added all application env with applicationId and different
+version code and name
+- Added different type of endpoint to manage auto build
+- dynamically generate the build variant whenever change from
+build variant window
+- Add all resource, assets and logo on specific project folder
+- Auto generate all base config as per build variant
+- Selected namma build variant and build the project
+- You can see the default Intelehealth app already installed in mobile
+- Build and install namma app from same source code through build config
+- You can see that launcher icon and color theme has been changed
+- this are all one time setup config, next time you just need to add resource, logo, endpoint
+and application id only
+
+
+
 Completed
 - 3328
 - 3322

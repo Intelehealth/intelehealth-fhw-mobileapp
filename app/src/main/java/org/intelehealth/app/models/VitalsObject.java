@@ -12,6 +12,7 @@ public class VitalsObject {
     private String temperature;
     private String spo2;
     private String resp;
+    private String bloodGroup;
 
     public String getPatientUuid() {
         return patientUuid;
@@ -91,5 +92,13 @@ public class VitalsObject {
 
     public void setResp(String resp) {
         this.resp = resp;
+    }
+
+    public String getBloodGroup() {
+        return bloodGroup;
+    }
+
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
     }
 }

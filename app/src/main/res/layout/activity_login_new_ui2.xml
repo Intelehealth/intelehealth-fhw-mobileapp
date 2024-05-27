@@ -12,6 +12,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_splash_bg"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -19,14 +20,14 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_collapsing_layout_height"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/gray_0_0"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlways"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:title="@string/login">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
+                android:background="@color/color_splash_bg"
                 android:orientation="vertical">
 
                 <TextView
@@ -37,7 +38,7 @@
                     android:fontFamily="@font/lato_regular"
                     android:gravity="center_horizontal"
                     android:text="@string/welcome_back"
-                    android:textColor="@color/textColorWhite"
+                    android:textColor="@color/color_tagline_text"
                     android:textSize="@dimen/title_text_size"
                     android:textStyle="bold" />
 
@@ -51,7 +52,7 @@
                     android:text="@string/please_login"
                     android:textColor="@color/textColorWhite"
                     android:textSize="@dimen/common_info_text_size"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <ImageView
                     android:layout_width="@dimen/image_intelehealth_login_width"
@@ -59,14 +60,13 @@
                     android:layout_below="@+id/tv_please_continue"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/image_intelehealth_margin_top"
-                    android:src="@drawable/ui2_ic_intelehealth_logo" />
+                    android:src="@drawable/splash_logo" />
 
             </RelativeLayout>
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/login_collapsing_toolbar_height"
-                android:background="@drawable/btn_rounded_primarybg"
+                android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
@@ -118,7 +118,8 @@
                         android:layout_width="@dimen/tv_login_details_info_height_width"
                         android:layout_height="@dimen/tv_login_details_info_height_width"
                         android:layout_gravity="center_vertical|center_horizontal"
-                        android:src="@drawable/ui2_ic_info_question_mark" />
+                        android:src="@drawable/ui2_ic_info_question_mark"
+                        app:tint="?attr/colorPrimary" />
                 </LinearLayout>
 
 
@@ -153,6 +154,7 @@
 
                         />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <TextView
                     android:id="@+id/tv_forgot_username"
                     android:layout_width="match_parent"
@@ -162,7 +164,8 @@
                     android:gravity="end"
                     android:text="@string/forgot_username_link"
                     android:textColor="@color/textColorGray"
-                    android:textSize="@dimen/common_label_text_size" />
+                    android:textSize="@dimen/common_label_text_size"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_username_error"

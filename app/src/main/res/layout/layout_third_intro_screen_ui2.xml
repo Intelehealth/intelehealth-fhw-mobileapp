@@ -13,7 +13,7 @@ android:layout_height="match_parent">
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_gravity="center"
-        android:src="@drawable/third" />
+        android:src="@drawable/intro_image_3" />
 
     <TextView
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@ android:layout_height="match_parent">
         android:layout_marginTop="@dimen/intro_heading_margin_top"
         android:gravity="center"
         android:lineHeight="@dimen/intro_heading_line_height"
-        android:text="@string/provide_prescriptions"
+        android:text="@string/intro_title_3"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/introscreen_title"
         android:textStyle="bold" />
@@ -35,7 +35,7 @@ android:layout_height="match_parent">
         android:gravity="center"
         android:justificationMode="inter_word"
         android:lineHeight="@dimen/intro_description_line_height"
-        android:text="@string/provide_prescriptions_intro"
+        android:text="@string/intro_tagline_3"
         android:textColor="@color/textColorGray"
         android:textSize="@dimen/introscreen_content" />
 </LinearLayout>

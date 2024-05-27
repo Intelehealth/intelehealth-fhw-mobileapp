@@ -12,17 +12,15 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.se.omapi.Session;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -39,9 +37,8 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
+import org.intelehealth.fcm.utils.NotificationBroadCast;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executors;
@@ -69,6 +66,8 @@ public class VisitActivity extends BaseActivity implements
     private int refreshCount = 0;
     private AlertDialog loadingDialog;
     private int currentTabPos = 0;
+    private NotificationReceiver notificationReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +77,8 @@ public class VisitActivity extends BaseActivity implements
         networkUtils = new NetworkUtils(this, this);
         ibBack = findViewById(R.id.vector);
         refresh = findViewById(R.id.refresh);
-
+        notificationReceiver =new  NotificationReceiver();
+        notificationReceiver.registerNotificationReceiver(this);
         ibBack.setOnClickListener(v -> {
             Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);
@@ -156,6 +156,7 @@ public class VisitActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
+        notificationReceiver.unregisterNotificationReceiver(this);
     }
 
     public void configureTabLayout() {
@@ -297,4 +298,27 @@ public class VisitActivity extends BaseActivity implements
             new SyncUtils().syncBackground();
         }
     }
+
+    public class NotificationReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(NotificationBroadCast.CUSTOM_ACTION)) {
+                // FCM A added action received
+                String moduleName = intent.getStringExtra(NotificationBroadCast.FCM_MODULE);
+                syncNow(refresh);
+            }
+        }
+
+        public void registerNotificationReceiver(Context context) {
+            IntentFilter filter = new IntentFilter(NotificationBroadCast.CUSTOM_ACTION);
+            LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
+        }
+
+        public void unregisterNotificationReceiver(Context context) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+        }
+    }
+
+
 }

@@ -12,8 +12,8 @@
         android:layout_height="@dimen/hamburger_height"
         android:layout_marginStart="@dimen/common_all_card_start_margin"
         android:layout_marginTop="@dimen/hamburger_margin_top"
-        android:background="?attr/selectableItemBackground"
         android:layout_marginEnd="@dimen/hamburger_margin_top"
+        android:background="?attr/selectableItemBackground"
         android:foregroundGravity="center_horizontal"
         android:visibility="visible"
         app:srcCompat="@drawable/ui2_ic_arrow_back_new" />
@@ -37,8 +37,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/image_home_toolbar_icon_margintop"
         android:layout_toStartOf="@+id/imageview_notifications_common"
-        android:foregroundGravity="center_horizontal"
         android:background="@null"
+        android:foregroundGravity="center_horizontal"
         android:src="@drawable/ic_refreshbtn"
         android:tooltipText="Tooltip"
         android:visibility="visible" />

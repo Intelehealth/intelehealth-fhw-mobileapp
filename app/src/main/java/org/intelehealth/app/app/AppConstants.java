@@ -1,6 +1,7 @@
 package org.intelehealth.app.app;
 
 
+import android.content.Context;
 import android.os.Environment;
 
 import androidx.work.Constraints;
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AppConstants {
     //Constants
-    public static final String DATABASE_NAME = "localrecords.db";
+    public static final String DATABASE_NAME = BuildConfig.FLAVOR_client + "-localrecords.db";
     public static final int DATABASE_VERSION = 4;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
@@ -204,11 +205,19 @@ public class AppConstants {
     // OBS IMAGE TYPE
     public static final String IMAGE_ADDITIONAL_DOC = "ADDITIONAL_DOC";
 
-    public static final int EVENT_APPOINTMENT_BOOKING = 3992;
+    public static final int EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY = 3992;
+    public static final int EVENT_APPOINTMENT_BOOKING_APPOINTMENT_DETAILS = 3993;
 
     //status of appointment
     public static final String CANCELLED = "cancelled";
     public static final String BOOKED = "booked";
 
+    public static String getAppPlayStoreUrl(Context context) {
+        return "https://play.google.com/store/apps/details?id=" + context.getApplicationContext().getPackageName();
+    }
+
+    public static String getAppMarketUrl(Context context) {
+        return "market://details?id=" + context.getApplicationContext().getPackageName();
+    }
 }
 

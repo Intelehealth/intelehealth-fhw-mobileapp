@@ -181,6 +181,11 @@
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".appointmentNew.MyAppointmentNew.MyAppointmentActivityNew"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".activities.help.activities.ChatSupportHelpActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
@@ -201,7 +206,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
+            android:name=".ui.splash.activity.SplashActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -212,7 +217,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.notification.NotificationActivity"
+            android:name=".activities.notification.view.NotificationActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
@@ -351,7 +356,7 @@
         <activity
             android:name=".appointmentNew.ScheduleAppointmentActivity_New"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"

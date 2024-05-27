@@ -54,12 +54,19 @@ public class NodeAdapterUtils {
     }
 
     public static String getTheChiefComplainNameWRTLocale(Context context, String chiefComplainName) {
-        String fileLocation = "engines/" + chiefComplainName + ".json";
-        JSONObject currentFile = FileUtils.encodeJSON(context, fileLocation);
+
+        JSONObject currentFile = null;
+        if (!new SessionManager(context).getLicenseKey().isEmpty()) {
+            currentFile = FileUtils.encodeJSONFromFile(context, chiefComplainName + ".json");
+        }else{
+            String fileLocation = "engines/" + chiefComplainName + ".json";
+            currentFile = FileUtils.encodeJSON(context, fileLocation);
+        }
+        //JSONObject currentFile = FileUtils.encodeJSON(context, fileLocation);
         if (currentFile != null) {
             Node mainNode = new Node(currentFile);
             return mainNode.findDisplay();
-        } else return context.getString(R.string.no_data_found);
+        } else return "";
     }
 
 

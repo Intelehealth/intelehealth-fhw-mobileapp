@@ -39,6 +39,7 @@ import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
+import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -102,7 +103,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLocale(getContext());
-        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(0, new UpdateFragmentOnEvent() {
+        ((MyAppointmentActivityNew) getActivity()).initUpdateFragmentOnEvent(0, new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
                 Log.v(TAG, "onStart");
@@ -202,11 +203,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             resetData();
         });
 
-        cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-        cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-        layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-        cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
-
+//        cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//        cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//        layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//        cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
+        cardUpcomingAppointments.setSelected(true);
         layoutUpcoming.setVisibility(View.VISIBLE);
         layoutCompleted.setVisibility(View.VISIBLE);
         layoutCancelled.setVisibility(View.VISIBLE);
@@ -386,10 +387,9 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     private void clickListeners() {
         cardUpcomingAppointments.setOnClickListener(v -> {
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setSelected(false);
+            cardCompletedAppointments.setSelected(false);
+            cardUpcomingAppointments.setSelected(true);
 
             layoutUpcoming.setVisibility(View.VISIBLE);
             layoutCompleted.setVisibility(View.VISIBLE);
@@ -403,11 +403,15 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         });
         cardCancelledAppointments.setOnClickListener(v -> {
 
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+//            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//
+//            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
 
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setSelected(true);
+            cardCompletedAppointments.setSelected(false);
+            cardUpcomingAppointments.setSelected(false);
 
             layoutUpcoming.setVisibility(View.GONE);
             layoutCompleted.setVisibility(View.VISIBLE);
@@ -421,11 +425,15 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
         });
         cardCompletedAppointments.setOnClickListener(v -> {
-            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+//            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//
+//            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
 
-            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setSelected(false);
+            cardCompletedAppointments.setSelected(true);
+            cardUpcomingAppointments.setSelected(false);
 
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.GONE);
@@ -641,7 +649,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
                 Log.v("onFailure", t.getMessage());
                 //log out operation if response code is 401
-                new NavigationUtils().logoutOperation(getActivity(),t);
+                new NavigationUtils().logoutOperation(getActivity(), t);
             }
         });
     }

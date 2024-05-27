@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,12 +12,8 @@ import android.os.Looper;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -30,16 +24,15 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.ui.splash.activity.SplashActivity;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Locale;
@@ -69,49 +62,22 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         ivBack = findViewById(R.id.iv_setup_privacy_back);
         termsAndPrivacyPolicy();
 
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SetupPrivacyNoteActivity_New.this, SplashScreenActivity.class);
-                startActivity(intent);
-            }
+        ivBack.setOnClickListener(v -> {
+            Intent intent = new Intent(SetupPrivacyNoteActivity_New.this, SplashActivity.class);
+            startActivity(intent);
         });
 
-        btnSetup.getBackground().setAlpha(60);
+//        btnSetup.getBackground().setAlpha(60);
         chkBoxPrivacyPolicy = findViewById(R.id.checkbox_privacy_policy);
-        btnSetup.setEnabled(false);
+        chkBoxPrivacyPolicy.setOnCheckedChangeListener((compoundButton, b) -> btnSetup.setEnabled(b));
+        btnSetup.setEnabled(chkBoxPrivacyPolicy.isChecked());
 
-        chkBoxPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (((CompoundButton) view).isChecked()) {
-                    chkBoxPrivacyPolicy.setButtonDrawable(ContextCompat.getDrawable(SetupPrivacyNoteActivity_New.this,R.drawable.ui2_ic_checkbox_checked));
-                    btnSetup.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ui2_common_primary_bg));
-                    btnSetup.setEnabled(true);
-                } else {
-                    btnSetup.getBackground().setAlpha(60);
-                    chkBoxPrivacyPolicy.setButtonDrawable(ContextCompat.getDrawable(SetupPrivacyNoteActivity_New.this,R.drawable.ui2_ic_default_checkbox));
-                    btnSetup.setEnabled(false);
-                }
-            }
-        });
-
-        if (chkBoxPrivacyPolicy.isChecked()) {
-            btnSetup.getBackground().setAlpha(0);
-        } else {
-            btnSetup.getBackground().setAlpha(60);
-        }
-
-        btnSetup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (chkBoxPrivacyPolicy.isChecked()) {
-                    btnSetup.setBackground(ContextCompat.getDrawable(SetupPrivacyNoteActivity_New.this, R.drawable.ui2_common_primary_bg));
-                    customDialog = new CustomDialog(SetupPrivacyNoteActivity_New.this);
-                    customDialog.showDialog1();
-                } else {
-                    showSnackBarAndRemoveLater();
-                }
+        btnSetup.setOnClickListener(v -> {
+            if (chkBoxPrivacyPolicy.isChecked()) {
+                customDialog = new CustomDialog(SetupPrivacyNoteActivity_New.this);
+                customDialog.showDialog1();
+            } else {
+                showSnackBarAndRemoveLater();
             }
         });
 

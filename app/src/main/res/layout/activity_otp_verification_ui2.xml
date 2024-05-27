@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_parent_otp"
     android:layout_width="match_parent"
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
         android:orientation="vertical">
 
         <ImageView
@@ -23,7 +24,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="@dimen/back_arrow_forgot_margin_start"
             android:layout_marginTop="@dimen/back_arrow_demo1_width"
-            android:src="@drawable/ic_baseline_arrow_back_24" />
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:tint="@color/white" />
 
         <LinearLayout
             android:id="@+id/rv_help_info"
@@ -38,10 +40,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/iv_help_info_otp"
-                android:drawableTint="@color/iconTintWhite"
                 android:text="@string/help"
-                android:textColor="@color/textColorWhite"
+                android:textColor="@color/white"
                 android:textSize="@dimen/common_hint_text_size" />
 
             <ImageView
@@ -50,7 +50,7 @@
                 android:layout_height="@dimen/back_arrow_demo1_width"
                 android:layout_marginStart="@dimen/iv_help_info_margin_start"
                 android:src="@drawable/info_svg"
-                android:tint="@color/white" />
+                app:tint="@color/white" />
 
         </LinearLayout>
 
@@ -62,7 +62,7 @@
             android:layout_marginTop="@dimen/forgot_password_top_margin"
             android:gravity="center_horizontal"
             android:text="@string/forgot_password"
-            android:textColor="@color/textColorWhite"
+            android:textColor="@color/white"
             android:textSize="@dimen/title_text_size"
             android:textStyle="bold" />
 
@@ -74,7 +74,7 @@
             android:layout_marginTop="@dimen/margin_10"
             android:gravity="center_horizontal"
             android:text="@string/forgot_password_instruction"
-            android:textColor="@color/textColorWhite"
+            android:textColor="@color/white"
             android:textSize="@dimen/common_hint_text_size" />
 
         <ImageView
