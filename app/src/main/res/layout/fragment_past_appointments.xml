@@ -150,7 +150,7 @@
                         android:visibility="visible"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="1"
-                        tools:listitem="@layout/item_todays_appointments_ui2_new" />
+                        tools:listitem="@layout/item_past_appointments_ui2_new" />
 
                 </LinearLayout>
 

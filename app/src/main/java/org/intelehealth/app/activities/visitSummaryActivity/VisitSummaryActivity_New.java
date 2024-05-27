@@ -2524,6 +2524,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             in.putExtra("actionTag", "new_schedule");
             in.putExtra("openMrsId", patient.getOpenmrs_id());
             in.putExtra("speciality", speciality_selected);
+            in.putExtra("requestCode",AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
             mStartForScheduleAppointment.launch(in);
         });
     }
@@ -2635,6 +2636,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 in.putExtra("app_start_day", appointmentInfo.getSlotDay());
                 in.putExtra("rescheduleReason", mEngReason);
                 in.putExtra("speciality", speciality_selected);
+                in.putExtra("requestCode",AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
                 mStartForScheduleAppointment.launch(in);
             }
         });
@@ -2653,7 +2655,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private final ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         int resultCode = result.getResultCode();
         boolean appointmentResult = sessionManager.getAppointmentResult();
-        if (resultCode == AppConstants.EVENT_APPOINTMENT_BOOKING) {
+        if (resultCode == AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY) {
             navigateToMyAppointment();
         }
         //sometimes RESULT_CANCELED calls even we need to handle event
@@ -2667,10 +2669,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     });
 
     void navigateToMyAppointment() {
-        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
-        Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivityNew.class);
-        startActivity(in);
-        finish();
+        if(!isFinishing() && !isDestroyed()){
+            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
+            Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivityNew.class);
+            startActivity(in);
+            finish();
+        }else {
+            Log.d("CCCCCV","Destry"+VisitSummaryActivity_New.this);
+        }
     }
 
     private void sharePresc() {
@@ -2929,7 +2935,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             visitUploadBlock();
         });
 
-        alertDialog.show();
+        if (!isFinishing() && !isDestroyed()) {
+            alertDialog.show();
+        }
     }
 
     private void visitUploadBlock() {

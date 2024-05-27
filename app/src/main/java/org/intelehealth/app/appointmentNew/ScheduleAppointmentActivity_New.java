@@ -65,8 +65,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,6 +99,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
     String openMrsId;
     AlertDialog alertDialog;
     String actionTag = "";
+    int requestCode = 0;
     String app_start_date, app_start_time, app_start_day;
     String rescheduleReason;
     NetworkUtils networkUtils;
@@ -105,6 +108,8 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
     private SessionManager sessionManager;
     private BroadcastReceiver mBroadcastReceiver;
     private boolean isRescheduled = false;
+
+    Set<Integer> broadcasterReceiverStatusMap = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +137,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
 
         //for reschedule appointment as per old flow
         actionTag = getIntent().getStringExtra("actionTag").toLowerCase();
+        requestCode = getIntent().getIntExtra("requestCode",0);
         if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("rescheduleappointment")) {
 
             tvPrevSelectedAppDetails.setVisibility(View.VISIBLE);
@@ -177,21 +183,33 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
                 Log.v(TAG, "onReceive  flag=  " + mIsPendingForAppointmentSave);
                 Log.v(TAG, "onReceive JOB =  " + intent.getIntExtra("JOB", -1));
                 if (mIsPendingForAppointmentSave) {
-                    mStatusCount = mStatusCount + intent.getIntExtra("JOB", -1);
+                    mStatusCount = 0;
+                    broadcasterReceiverStatusMap.add(intent.getIntExtra("JOB", -1));
+                    //sometimes the broadcaster receiver returning same status multipple times
+                    //that's why added those values on SET then calculating
+                    for(int status : broadcasterReceiverStatusMap){
+                        mStatusCount+=status;
+                    }
+                    //mStatusCount = mStatusCount + intent.getIntExtra("JOB", -1);
                     if (mStatusCount == AppConstants.SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE) {
                         if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing()) {
-                            mSyncAlertDialog.dismiss();
+                            if (!isFinishing() && !isDestroyed()) {
+                                mSyncAlertDialog.dismiss();
+                            }
                         }
 
                         //saving result status to shared pref to handle the result in worse case
                         sessionManager.setAppointmentResult(true);
-                        ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
-                        ScheduleAppointmentActivity_New.this.finish();
+                        ScheduleAppointmentActivity_New.this.setResult(requestCode);
+                        finish();
                     }
                 } else {
                     Log.v(TAG, "Sync Done!");
-                    if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing())
-                        mSyncAlertDialog.dismiss();
+                    if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing()) {
+                        if (!isFinishing() && !isDestroyed()) {
+                            mSyncAlertDialog.dismiss();
+                        }
+                    }
                     Intent newIntent = getIntent();
                     newIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -717,7 +735,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
                 mIsPendingForAppointmentSave = true;
             }, 100);
         } else {
-            ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
+            ScheduleAppointmentActivity_New.this.setResult(requestCode);
             finish();
         }
     }
