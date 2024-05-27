@@ -74,6 +74,7 @@
                     android:layout_marginTop="@dimen/ma_icon_margin_top"
                     android:layout_marginEnd="@dimen/ma_icon_margin_end"
                     android:layout_marginBottom="5dp"
+                    app:tint="?attr/colorPrimary"
                     android:background="@drawable/ui2_ic_filter_bg"
                     android:padding="@dimen/my_appointment_padding"
                     android:src="@drawable/sort" />

@@ -20,8 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_collapsing_layout_height"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/gray_0_0"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlways"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:title="@string/login">
 
             <RelativeLayout
@@ -66,8 +66,7 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/login_collapsing_toolbar_height"
-                android:background="@color/color_splash_bg"
+                android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
