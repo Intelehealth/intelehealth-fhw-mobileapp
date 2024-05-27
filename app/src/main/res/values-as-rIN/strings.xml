@@ -1870,7 +1870,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="this_feature_is_not_available_in_offline_mode">এই বৈশিষ্ট্য অফলাইন অৱস্থাত উপলব্ধ নহয়।</string>
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">আপুনি অফলাইন! ভিডিঅ\'ৰ বাবে ইণ্টাৰনেটৰ সৈতে সংযোগ কৰক।</string>
     <string name="follow_up_date_arrived">আপোনাৰ ফ’ল’-আপৰ সময় আহি পৰিছে। অনুগ্ৰহ কৰি আপোনাৰ অনুসৰণ ভিজিট আৰম্ভ কৰিবলৈ বৰ্তমানৰ ভিজিট শেষ কৰক।</string>
-
     <string name="confirm_cancel_appointment">এপইণ্টমেণ্ট বাতিল কৰক?</string>
     <string name="confirm_cancel_appointment_message">এই ভিজিটৰ লগত জড়িত এপইণ্টমেণ্ট আছে আৰু ভ্ৰমণ শেষ কৰিলেও এপইণ্টমেণ্ট বাতিল হ’ব। আপুনি নিশ্চিত নেকি যে আপুনি আগবাঢ়িব বিচাৰে?</string>
     <string name="prescription_not_received_because_the_visit_has_been_ended">The prescription hasn\'t been received as the visit has been ended.</string>
@@ -1898,7 +1897,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="u2022_no_of_days">• দিনৰ সংখ্যা</string>
     <string name="u2022_timings">• সময়</string>
     <string name="u2022_remarks">• মন্তব্য</string>
-    <string name="the_from_date_cannot_be_greater_than_the_to_date">ইয়াৰ পৰা তাৰিখ লৈ তাৰিখতকৈ পিছৰ হ ব নালাগিব</string>
+    <string name="the_from_date_cannot_be_greater_than_the_to_date">ইয়াৰ \'পৰা\' তাৰিখ \'লৈ\' তাৰিখতকৈ পিছৰ হ\'ব নালাগিব</string>
+
     <string name="the_to_date_cannot_be_less_than_the_from_date">অন্য তথ্য প্ৰবিষ্ট কৰক</string>
 
 

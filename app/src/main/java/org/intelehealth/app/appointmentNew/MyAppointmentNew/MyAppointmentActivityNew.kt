@@ -8,7 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,7 +31,6 @@ import org.intelehealth.app.appointmentNew.UpdateAppointmentsCount
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent
 import org.intelehealth.app.enums.AppointmentTabType
 import org.intelehealth.app.shared.BaseActivity
-import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.MyAppointmentLoadingListener
@@ -43,16 +42,16 @@ import org.intelehealth.app.utilities.exception.DAOException
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Objects
 
 class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     NetworkUtils.InternetCheckUpdateInterface, MyAppointmentLoadingListener {
+    var totalUpcoming: Int = -1
+    var totalPast: Int = -1
     private lateinit var loadingDialog: androidx.appcompat.app.AlertDialog
     private var bottomNav: BottomNavigationView? = null
     private var tabLayout: TabLayout? = null
     var viewPager: ViewPager2? = null
     var networkUtils: NetworkUtils? = null
-    var ivIsInternet: ImageView? = null
     private val syncAnimator: ObjectAnimator? = null
     private var mIsInternetAvailable = false
     private val mUpdateFragmentOnEventHashMap = HashMap<Int, UpdateFragmentOnEvent>()
@@ -80,7 +79,17 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     private fun loadAllAppointments() {
         Log.v(TAG, "loadAllAppointments")
         val baseurl = BuildConfig.SERVER_URL + ":3004"
-        val tabIndex = tabLayout!!.selectedTabPosition
+        var tabIndex = 0
+        if (!isFinishing && !isDestroyed) {
+            tabIndex = tabLayout?.selectedTabPosition ?: 0
+        } else {
+            try {
+                Thread.sleep(2000)
+                loadAllAppointments()
+                return
+            } catch (_: Exception) {
+            }
+        }
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
             mUpdateFragmentOnEventHashMap[tabIndex]?.onFinished(AppConstants.EVENT_FLAG_START)
         if (NetworkConnection.isCapableNetwork(this)) {
@@ -111,7 +120,10 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                         }
 
                         Log.v(TAG, "onFinished - " + Gson().toJson(slotInfoResponse))
-                        setTabCount()
+                        if (!isFinishing && !isDestroyed) {
+                            setTabCount()
+                        }
+
                         mUpdateFragmentOnEventHashMap[tabIndex]?.onFinished(AppConstants.EVENT_FLAG_SUCCESS)
                     }
 
@@ -130,25 +142,20 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     private fun initUI() {
         val toolbar = findViewById<View>(R.id.toolbar_my_appointments)
         val tvTitle = toolbar.findViewById<TextView>(R.id.tv_screen_title_common)
-        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common)
         val ivBackArrow = toolbar.findViewById<ImageView>(R.id.iv_back_arrow_common)
         tvTitle.text = resources.getString(R.string.my_appointments)
 
-        ivIsInternet?.setOnClickListener {
-            SyncUtils.syncNow(
-                this@MyAppointmentActivityNew,
-                ivIsInternet,
-                syncAnimator
-            )
-        }
         ivBackArrow.setOnClickListener { v: View? ->
             val intent = Intent(this@MyAppointmentActivityNew, HomeScreenActivity_New::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
 
         configureTabLayout()
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
+        WindowCompat.getInsetsController(window,window.decorView).isAppearanceLightStatusBars = true
         window.statusBarColor = Color.WHITE
+
         bottomNav = findViewById(R.id.bottom_nav_my_appointments)
         bottomNav?.setOnItemSelectedListener(navigationItemSelectedListener)
         bottomNav?.itemIconTintList = null
@@ -161,6 +168,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
             .observeOn(AndroidSchedulers.mainThread())
             .concatMap {
                 tabLayout?.getTabAt(0)?.text = getString(R.string.upcoming) + " (" + it + ")"
+                totalUpcoming = it
                 getCountObserver(AppointmentTabType.PAST)
             }
             .subscribeOn(Schedulers.io())
@@ -168,6 +176,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
             .subscribe(
                 {
                     tabLayout?.getTabAt(1)?.text = getString(R.string.past) + " (" + it + ")"
+                    totalPast = it
                 },
                 { error ->
                     error.printStackTrace()
@@ -238,50 +247,82 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
         super.onStop()
         try {
             //unregister receiver for internet check
-            networkUtils!!.unregisterNetworkReceiver()
+            networkUtils?.unregisterNetworkReceiver()
         } catch (e: IllegalArgumentException) {
             e.printStackTrace()
+        }
+
+        if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
+            loadingDialog.dismiss()
         }
     }
 
     override fun onStart() {
         super.onStart()
         //register receiver for internet check
-        networkUtils!!.callBroadcastReceiver()
+        try {
+            networkUtils?.callBroadcastReceiver()
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+        }
     }
 
     override fun onStartUpcoming() {
         if (!onStartPast) {
-            loadingDialog = DialogUtils().showCommonLoadingDialog(
-                this,
-                getString(R.string.loading),
-                getString(R.string.please_wait)
-            )
+            try {
+                if (!isFinishing && !isDestroyed) {
+                    loadingDialog = DialogUtils().showCommonLoadingDialog(
+                        this,
+                        getString(R.string.loading),
+                        getString(R.string.please_wait)
+                    )
+                }
+            } catch (e: Exception) {
+                Log.d("EEEEE", "" + e.message)
+            }
         }
         onStartUpcoming = true
     }
 
     override fun onStartPast() {
         if (!onStartUpcoming) {
-            loadingDialog = DialogUtils().showCommonLoadingDialog(
-                this,
-                getString(R.string.loading),
-                getString(R.string.please_wait)
-            )
+            try {
+                if (!isFinishing && !isDestroyed) {
+                    loadingDialog = DialogUtils().showCommonLoadingDialog(
+                        this,
+                        getString(R.string.loading),
+                        getString(R.string.please_wait)
+                    )
+                }
+            } catch (e: Exception) {
+                Log.d("EEEEE", "" + e.message)
+            }
         }
         onStartPast = true
     }
 
     override fun onStopUpcoming() {
         if (loadingDialog.isShowing) {
-            loadingDialog.dismiss()
+            try {
+                if (!isFinishing && !isDestroyed) {
+                    loadingDialog.dismiss()
+                }
+            } catch (e: Exception) {
+                Log.d("EEEEE", "" + e.message)
+            }
         }
 
     }
 
     override fun onStopPast() {
         if (loadingDialog.isShowing) {
-            loadingDialog.dismiss()
+            try {
+                if (!isFinishing && !isDestroyed) {
+                    loadingDialog.dismiss()
+                }
+            } catch (e: Exception) {
+                Log.d("EEEEE_DIS", "" + e.message)
+            }
         }
 
     }
@@ -289,7 +330,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
     //update ui as per internet availability
     override fun updateUIForInternetAvailability(isInternetAvailable: Boolean) {
         mIsInternetAvailable = isInternetAvailable
-        if (isInternetAvailable) {
+        /*if (isInternetAvailable) {
             ivIsInternet?.setImageDrawable(
                 ContextCompat.getDrawable(
                     this,
@@ -303,7 +344,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                     R.drawable.ui2_ic_no_internet
                 )
             )
-        }
+        }*/
     }
 
     override fun onDestroy() {

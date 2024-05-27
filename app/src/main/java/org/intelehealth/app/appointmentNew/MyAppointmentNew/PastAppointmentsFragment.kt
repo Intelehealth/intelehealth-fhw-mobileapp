@@ -280,15 +280,10 @@ class PastAppointmentsFragment :
         filtersListNew = ArrayList()
         nsvToday = parentView!!.findViewById(R.id.nsv_today)
         nsvToday?.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            if (v.getChildAt(v.childCount - 1) != null) {
-                if (scrollY > oldScrollY) {
-                    if (pastAppointmentInfoList != null && pastAppointmentInfoList!!.size == 0) {
-                        isPastFullyLoaded = true
-                    }
-                    if (!isPastFullyLoaded) {
-                        setMoreDataIntoUpcomingRecyclerView()
-                    }
-                }
+            val view = v.getChildAt(v.childCount - 1)
+            val bottom: Int = view.bottom - (v.height + v.scrollY)
+            if (bottom == 0) {
+                setMoreDataIntoUpcomingRecyclerView()
             }
         }
         sortIm?.setOnClickListener(View.OnClickListener { sortList() })
@@ -354,7 +349,7 @@ class PastAppointmentsFragment :
         if (pastSearchList.size > 0) {
             return
         }
-        if (isPastFullyLoaded) {
+        if ((activity as MyAppointmentActivityNew).totalPast <= (pastAppointmentInfoList?.size?:0)) {
             return
         }
         showShortToast(requireActivity(),getString(R.string.loading_more))

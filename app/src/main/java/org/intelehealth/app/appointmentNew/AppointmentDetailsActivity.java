@@ -48,6 +48,7 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.cloudmessaging.CloudMessagingReceiver;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -565,6 +566,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                 in.putExtra("actionTag", "new_schedule");
                 in.putExtra("openMrsId", openmrsID);
                 in.putExtra("speciality", visit_speciality);
+                in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_APPOINTMENT_DETAILS);
                 mStartForScheduleAppointment.launch(in);
             }
         });
@@ -913,6 +915,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                     in.putExtra("app_start_day", app_start_day);
                     in.putExtra("rescheduleReason", mEngReason);
                     in.putExtra("speciality", visit_speciality);
+                    in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_APPOINTMENT_DETAILS);
 
                     Log.d(TAG, "onClick: speciality : " + visit_speciality);
                     mStartForScheduleAppointment.launch(in);
@@ -931,7 +934,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
     }
 
     private final ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == AppConstants.EVENT_APPOINTMENT_BOOKING) {
+        if (result.getResultCode() == AppConstants.EVENT_APPOINTMENT_BOOKING_APPOINTMENT_DETAILS) {
             Toast.makeText(AppointmentDetailsActivity.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
             finish();
         }

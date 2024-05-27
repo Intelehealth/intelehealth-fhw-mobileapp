@@ -205,7 +205,8 @@ public class AppConstants {
     // OBS IMAGE TYPE
     public static final String IMAGE_ADDITIONAL_DOC = "ADDITIONAL_DOC";
 
-    public static final int EVENT_APPOINTMENT_BOOKING = 3992;
+    public static final int EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY = 3992;
+    public static final int EVENT_APPOINTMENT_BOOKING_APPOINTMENT_DETAILS = 3993;
 
     //status of appointment
     public static final String CANCELLED = "cancelled";

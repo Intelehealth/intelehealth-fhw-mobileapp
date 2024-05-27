@@ -587,19 +587,18 @@ public class AppointmentDAO {
             String query = "";
             if (appointmentTabType == AppointmentTabType.UPCOMING) {
                 query = "SELECT count(*) "
-                        + "FROM tbl_appointments a "
-                        + "WHERE a.status = 'booked' "
+                        + "from tbl_patient p, tbl_appointments a "
+                        + "where p.uuid = a.patient_id "
+                        + "AND a.status = 'booked' "
                         + "AND  (datetime(a.slot_js_date) >= datetime('now'))";
                 cursor = db.rawQuery(query, new String[]{});
             } else if (appointmentTabType == AppointmentTabType.PAST) {
                 query = "select count(*) "
-                        + "from  tbl_appointments a "
-                        + "where (datetime(a.slot_js_date) < datetime('now'))";
+                        + "from tbl_patient p, tbl_appointments a "
+                        + "where p.uuid = a.patient_id "
+                        + "and (datetime(a.slot_js_date) < datetime('now'))";
                 cursor = db.rawQuery(query, new String[]{});
             }
-
-            Log.d("CCCCCC", "" + query);
-
             db.setTransactionSuccessful();
             db.endTransaction();
 
