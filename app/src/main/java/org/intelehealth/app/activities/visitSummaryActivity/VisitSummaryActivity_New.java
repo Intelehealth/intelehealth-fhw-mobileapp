@@ -20,6 +20,7 @@ import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -66,6 +67,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -111,6 +113,7 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.identificationActivity.Fragment_FirstScreen;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
@@ -149,6 +152,8 @@ import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
+import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
+import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
@@ -457,7 +462,44 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setViewsData();
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
+        mBinding.etFollowup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              showDatePickerDialog();
+            }
+        });
 
+    }
+
+    private void showDatePickerDialog() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                context,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    String selectedDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                    mBinding.etFollowup.setText(selectedDate);
+                },
+                year, month, day);
+
+        // Disable past dates
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+
+        // Handling the Cancel button click
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
+            if (which == DatePickerDialog.BUTTON_NEGATIVE) {
+                // Handle the cancel button action here if needed
+                dialog.dismiss();
+            }
+        });
+
+        datePickerDialog.show();
+        // Change button colors dynamically after the dialog is shown
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
     }
 
     private void setupSpecialization() {
