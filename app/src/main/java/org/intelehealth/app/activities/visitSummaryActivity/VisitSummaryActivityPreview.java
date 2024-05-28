@@ -7,20 +7,17 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPati
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
-import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
-import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,7 +34,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -53,21 +49,16 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 import android.provider.MediaStore;
-import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -86,12 +77,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.print.PrintHelper;
@@ -102,6 +93,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -113,18 +108,16 @@ import com.google.gson.Gson;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
-import org.intelehealth.app.activities.visit.PrescriptionActivity;
+import org.intelehealth.app.adapter.PdfPrintDocumentAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
-import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
@@ -215,7 +208,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
-    private RelativeLayout add_additional_doc;
+    private RelativeLayout add_additional_doc,add_doc_relative;
     private LinearLayout btn_bottom_vs;
     private Button visit_summary_preview;
     private TextInputEditText etAdditionalNotesVS;
@@ -308,6 +301,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     TextView respiratoryText;
     TextView tempfaren;
     TextView tempcel;
+    TextView blur_txtview;
     String medHistory;
     String baseDir;
     String filePathPhyExam;
@@ -337,7 +331,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     private WebView mWebView;
     public static String prescription1;
     public static String prescription2;
-    private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
+    private CardView doc_speciality_card, special_vd_card, addnotes_vd_card, profileImageCard;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
     private ImageButton backArrow, priority_hint;
     private NetworkUtils networkUtils;
@@ -457,14 +451,45 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivityPreview.this);
 
-        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                scrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                captureScrollView(scrollView);
-            }
-        });
+        scrollView.setDrawingCacheEnabled(true);
+        scrollView.buildDrawingCache();
+        AlertDialog loadingDialog = new DialogUtils().showCommonLoadingDialog(
+                this,
+                getString(R.string.loading),
+                getString(R.string.please_wait)
+        );
 
+        removeUnnecessaryView();
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                captureScrollView(scrollView);
+                loadingDialog.dismiss();
+            }
+        }, 5000);
+
+
+    }
+
+    private void removeUnnecessaryView() {
+        editVitals.setVisibility(View.GONE);
+        editComplaint.setVisibility(View.GONE);
+        cc_details_edit.setVisibility(View.GONE);
+        ass_symp_edit.setVisibility(View.GONE);
+        editPhysical.setVisibility(View.GONE);
+        editFamHist.setVisibility(View.GONE);
+        editMedHist.setVisibility(View.GONE);
+        editAddDocs.setVisibility(View.GONE);
+
+        openall_btn.setVisibility(View.GONE);
+        btn_up_vitals_header.setVisibility(View.GONE);
+        btn_up_visitreason_header.setVisibility(View.GONE);
+        btn_up_phyexam_header.setVisibility(View.GONE);
+        btn_up_medhist_header.setVisibility(View.GONE);
+        btn_up_special_vd_header.setVisibility(View.GONE);
+        btn_up_addnotes_vd_header.setVisibility(View.GONE);
     }
 
     private void setupSpecialization() {
@@ -605,9 +630,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             } catch (DAOException e) {
                 e.printStackTrace();
             }
-            boolean isAllowForEdit = !isVisitSpecialityExists; //&& !isCompletedExitedSurvey && isPrescriptionReceived;
-            // Edit btn visibility based on user coming from Visit Details screen - Start
-            //if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+            boolean isAllowForEdit = false;
             if (!isAllowForEdit) {
                 editVitals.setVisibility(View.GONE);
                 editComplaint.setVisibility(View.GONE);
@@ -643,7 +666,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 editMedHist.setVisibility(View.VISIBLE);
                 editAddDocs.setVisibility(View.VISIBLE);
 
-                add_additional_doc.setVisibility(View.VISIBLE);
+                add_additional_doc.setVisibility(View.GONE);
 
 
                 doc_speciality_card.setVisibility(View.VISIBLE);
@@ -684,7 +707,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         } else {
             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
             int visibility = isVisitSpecialityExists ? View.GONE : View.VISIBLE;
-            add_additional_doc.setVisibility(visibility);
             editAddDocs.setVisibility(visibility);
             if (recyclerViewAdapter != null) {
                 recyclerViewAdapter.hideCancelBtnAddDoc(visibility == View.GONE);
@@ -742,14 +764,23 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         }
 
         if (patient.getPatient_photo() != null) {
-            RequestBuilder<Drawable> requestBuilder = Glide.with(context).asDrawable().sizeMultiplier(0.3f);
-            Glide.with(context).load(patient.getPatient_photo()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(context)
+                    .asDrawable()
+                    .sizeMultiplier(0.3f);
+
+            Glide.with(context).load(patient.getPatient_photo())
+                    .thumbnail(requestBuilder)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(profile_image);
+
+            profileImageCard.setRadius(R.dimen.cardcornerradius_imagev);
         } else {
             profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
         }
-        // photo - end
 
-        // header title set
+
         nameView.setText(patientName);
 
         gender_tv = patientGender;
@@ -896,34 +927,26 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             for (File file : fileList)
                 rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
 
+            if(rowListItem.size() == 0){
+                add_doc_relative.setVisibility(View.GONE);
+            }else {
+                add_doc_relative.setVisibility(View.VISIBLE);
+            }
+
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
             mAdditionalDocsRecyclerView.setHasFixedSize(true);
             mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, isVisitSpecialityExists);
-//            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-//
-//            } else {
-//                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, false);
-//            }
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this,
+                    encounterUuidAdultIntial,
+                    rowListItem, AppConstants.IMAGE_PATH,
+                    this,
+                    true
+            );
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
             add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
 
-
-            editAddDocs.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                /*Intent addDocs = new Intent(VisitSummaryActivity_New.this, AdditionalDocumentsActivity.class);
-                addDocs.putExtra("patientUuid", patientUuid);
-                addDocs.putExtra("visitUuid", visitUuid);
-                addDocs.putExtra("encounterUuidVitals", encounterVitals);
-                addDocs.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                startActivity(addDocs);*/
-                    selectImage();
-                }
-            });
-            // additional doc data - end
         }
 
 
@@ -931,14 +954,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-        if (isVisitSpecialityExists) {
-            speciality_spinner.setEnabled(false);
-            flag.setEnabled(false);
-            flag.setClickable(false);
-        } else {
-            flag.setEnabled(true);
-            flag.setClickable(true);
-        }
+        flag.setClickable(false);
 
 
         // todo: speciality code comes in upload btn as well so add that too....later...
@@ -953,12 +969,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-
-            if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
-                flag.setChecked(true);
-                flag.setEnabled(false);
-                priorityVisit = true;
-            }
         }
 
         jsonBasedPrescTitle();
@@ -966,63 +976,34 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     private void setupSpecializationDataSpinner(List<Specialization> specializations) {
-        //spinner is being populated with the speciality values...
-//        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
-
-//        List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
         //Hashmap to List<String> add all value
         SpecializationArrayAdapter stringArrayAdapter = new SpecializationArrayAdapter(this, specializations);
         speciality_spinner.setAdapter(stringArrayAdapter);
-        //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
-//        if (items != null) {
+
         specializations.add(0, new Specialization("select_specialization_text",
                 getString(R.string.select_specialization_text)));
-//            stringArrayAdapter = new SpecializationArrayAdapter(this, specializations);
-//            speciality_spinner.setAdapter(stringArrayAdapter);
-//        } else {
-//            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
-//            speciality_spinner.setAdapter(stringArrayAdapter);
-//        }
 
         if (special_value != null) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
+
             speciality_spinner.setSelection(spinner_position);
             Specialization sp = stringArrayAdapter.getItem(spinner_position);
             String displayValue = ResUtils.getStringResourceByName(this, sp.getSKey());
             vd_special_value.setText(" " + Node.bullet + "  " + displayValue);
             speciality_selected = special_value;
-        }
 
-    }
-
-
-    private void checkIfAppointmentExistsForVisit(String visitUUID) {
-        // First check if there is an appointment or not
-        AppointmentDAO appointmentDAO = new AppointmentDAO();
-        if (!appointmentDAO.doesAppointmentExistForVisit(visitUUID)) {
-            triggerEndVisit();
-            return;
-        }
-
-        String appointmentDateTime = appointmentDAO.getTimeAndDateForAppointment(visitUUID);
-        boolean isCurrentTimeAfterAppointmentTime = DateAndTimeUtils.isCurrentDateTimeAfterAppointmentTime(appointmentDateTime);
-
-        // Next, check if the time for appointment is passed. In case the time has passed, we don't need to cancel the appointment as it is automatically completed.
-        if (isCurrentTimeAfterAppointmentTime) {
-            triggerEndVisit();
-            return;
-        }
-
-        // In case the appointment time is not passed, only in that case, we will display the dialog for ending the appointment.
-        new DialogUtils().triggerEndAppointmentConfirmationDialog(this, action -> {
-            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                cancelAppointment(visitUUID);
-                triggerEndVisit();
+            if(spinner_position == 0){
+                doc_speciality_card.setVisibility(View.GONE);
+            }else {
+                doc_speciality_card.setVisibility(View.VISIBLE);
             }
-        });
+            speciality_spinner.setEnabled(false);
+        }
+
     }
+
 
     private void cancelAppointment(String visitUUID) {
         AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(visitUUID);
@@ -1035,13 +1016,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }
 
-    //    private void endVisit(){
-//        if (!hasPrescription) {
-//            checkIfAppointmentExistsForVisit(visitUUID);
-//        } else {
-//            triggerEndVisit();
-//        }
-//    }
     private void triggerEndVisit() {
 
         String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
@@ -1328,30 +1302,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             }
         });
 
-        /*final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
-        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this);
-        builder.setTitle(R.string.additional_doc_image_picker_title);
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (item == 0) {
-                    checkPerm(item);
-                } else if (item == 1) {
-                    checkPerm(item);
-                } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        //  builder.show();
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        alertDialog.show();*/
-
     }
 
     private void initUI() {
@@ -1404,6 +1354,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         special_vd_header_relative = findViewById(R.id.special_vd_header_relative);
         btn_up_addnotes_vd_header = findViewById(R.id.btn_up_addnotes_vd_header);
         addnotes_vd_header_relative = findViewById(R.id.addnotes_vd_header_relative);
+        add_doc_relative = findViewById(R.id.add_doc_relative);
 
         vs_header_expandview = findViewById(R.id.vs_header_expandview);
         vs_vitals_header_expandview = findViewById(R.id.vs_vitals_header_expandview);
@@ -1428,6 +1379,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
         priority_hint = findViewById(R.id.priority_hint);
+        profileImageCard = findViewById(R.id.profile);
 
         priority_hint.setOnClickListener(v -> {
             if (!tipWindow.isTooltipShown())
@@ -1543,7 +1495,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     private void shareOperation() {
-        PdfGenerationUtils.generatePDF(bitmap, filePath);
+        filePath = PdfGenerationUtils.generatePDF(this,bitmap,"/visit_summary_" + System.currentTimeMillis() + ".pdf");
         share();
     }
 
@@ -1558,89 +1510,29 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     private void share() {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivityPreview.this);
-        final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivityPreview.this);
-        View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
-        alertdialogBuilder.setView(convertView);
-
-        EditText editText = convertView.findViewById(R.id.editText_mobileno);
-        Button sharebtn = convertView.findViewById(R.id.sharebtn);
-
-        editText.setText(patient.getPhone_number());
+        if(!isWhatsAppInstalled()){
+            Toast.makeText(this,R.string.whatsapp_not_installed_on_your_device,Toast.LENGTH_SHORT).show();
+            return;
+        }
         File pdfFile = new File(filePath);
-        sharebtn.setOnClickListener(v -> {
-            if (!editText.getText().toString().equalsIgnoreCase("")) {
-                if (!isWhatsAppInstalled()) {
-                    Toast.makeText(this, R.string.whatsapp_not_installed_on_your_device, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                String phoneNumber =  editText.getText().toString();
+        Uri pdfUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", pdfFile);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, pdfUri);
+        intent.setType("application/pdf"); // Change the MIME type according to your file type
+        intent.setPackage("com.whatsapp");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-                Uri pdfUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", pdfFile);
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_STREAM, pdfUri);
-                intent.setType("application/pdf"); // Change the MIME type according to your file type
-                intent.setPackage("com.whatsapp");
-                intent.putExtra("jid", phoneNumber + "@s.whatsapp.net"); // Replace "phoneNumber" with actual number
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                startActivity(intent);
-
-            } else {
-                Toast.makeText(this, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
-            }
-
-        });
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        alertDialog.show();
+        startActivity(intent);
 
 
     }
 
     private void printOperation() {
-        printImage(bitmap);
+        ///printImage(bitmap);
+        filePath = PdfGenerationUtils.generatePDF(context,bitmap, "/visit_summary_" + System.currentTimeMillis() + ".pdf");
+        printPDF(filePath);
     }
 
-
-    private void rescheduleAppointment(VisitSummaryActivityPreview context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
-        alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.iv_dialog_image);
-        TextView dialog_title = convertView.findViewById(R.id.tv_title_book_app);
-        TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
-        Button noButton = convertView.findViewById(R.id.button_no_appointment);
-        Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
-
-        icon.setImageDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_book_app_red));
-
-        dialog_title.setText(title);
-        tvInfo.setText(Html.fromHtml(subTitle));
-        yesButton.setText(positiveBtnTxt);
-        noButton.setText(negativeBtnTxt);
-
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-        noButton.setOnClickListener(v -> alertDialog.dismiss());
-
-        yesButton.setOnClickListener(v -> {
-            alertDialog.dismiss();
-            askReasonForRescheduleAppointment(VisitSummaryActivityPreview.this);
-        });
-
-        alertDialog.show();
-    }
 
     private void askReasonForRescheduleAppointment(Context context) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
@@ -1795,14 +1687,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             }
             // Additional Notes - End
 
-            if (isVisitSpecialityExists) {
-                speciality_spinner.setEnabled(false);
-                flag.setEnabled(false);
-                flag.setClickable(false);
-            } else {
-                flag.setEnabled(true);
-                flag.setClickable(true);
-            }
 
             if (flag.isChecked()) {
                 priorityVisit = true;
@@ -1877,11 +1761,9 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                             if (isVisitSpecialityExists) {
                                 speciality_spinner.setEnabled(false);
-                                flag.setEnabled(false);
-                                flag.setClickable(false);
+
                             } else {
-                                flag.setEnabled(true);
-                                flag.setClickable(true);
+
                             }
                             fetchingIntent();
                         } else {
@@ -1967,7 +1849,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 physcialExaminationDownloadText.setVisibility(View.GONE);
             }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
-            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivityPreview.this, LinearLayoutManager.HORIZONTAL, false);
+            mPhysicalExamsLayoutManager = new GridLayoutManager(VisitSummaryActivityPreview.this, 2, LinearLayoutManager.VERTICAL, false);
             mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
             mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
         } catch (DAOException e) {
@@ -2023,8 +1905,10 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     public void captureScrollView(View view) {
-        filePath = new File(AppConstants.PDF_PATH, "/visit_summary_" + System.currentTimeMillis() + ".pdf").getPath();
-        bitmap = LayoutCaptureUtils.captureScrollView(scrollView);
+        try {
+            bitmap = LayoutCaptureUtils.captureScrollView(scrollView);
+        } catch (Exception e) {
+        }
     }
 
     @Override
@@ -2042,6 +1926,22 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         printHelper.printBitmap("Print Image", bitmap);
     }
 
+    private void printPDF(String filePath) {
+        PrintAttributes printAttributes = new PrintAttributes.Builder()
+                .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                .setResolution(new PrintAttributes.Resolution("res1", "Resolution", 300, 300))
+                .setMinMargins(PrintAttributes.Margins.NO_MARGINS)
+                .build();
+
+        PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
+        try {
+            PrintDocumentAdapter printAdapter = new PdfPrintDocumentAdapter(this, filePath);
+            printManager.print("PDF Print", printAdapter, printAttributes);
+        } catch (Exception e) {
+            Toast.makeText(this, "Error printing PDF", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
 
 
     // download pres service class
@@ -2644,33 +2544,17 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 }
             }
 
-          /*  HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
-            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity_New.this,
-                    LinearLayoutManager.HORIZONTAL, false);
-            mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
-            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);*/
 
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
             mAdditionalDocsRecyclerView.setHasFixedSize(true);
             mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, isVisitSpecialityExists);
-//            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-//                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, true);
-//            } else {
-//                recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, false);
-//            }
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this, true);
+
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
             add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
 
-//            if (recyclerViewAdapter != null) {
-//                if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-//                    recyclerViewAdapter.hideCancelBtnAddDoc(true);
-//                } else {
-//                    recyclerViewAdapter.hideCancelBtnAddDoc(false);
-//                }
-//            }
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -2962,8 +2846,16 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    RequestBuilder<Drawable> requestBuilder = Glide.with(context).asDrawable().sizeMultiplier(0.3f);
-                    Glide.with(context).load(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(context)
+                            .asDrawable()
+                            .sizeMultiplier(0.3f);
+                    Glide.with(context).
+                            load(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg")
+                            .thumbnail(requestBuilder)
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(profile_image);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
                 boolean isImageDownloaded = false;
@@ -3141,41 +3033,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n").replace(Node.bullet, ""));
 
         String advice_web = stringToWeb(adviceReturned);
-        //    String advice_web = "";
-//        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
-//                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
-/*        String advice_doctor__ = medicalAdviceTextView.getText().toString()
-                .replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_")
-                .replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
-
-        if (advice_doctor__.indexOf("Start") != -1 ||
-                advice_doctor__.lastIndexOf(("Doctor_") + 9) != -1) {
-
-
-//        String advice_web = stringToWeb(medicalAdvice_string.trim().replace("\n\n", "\n"));
-//        Log.d("Hyperlink", "hyper_print: " + advice_web);
-//        String advice_split = new StringBuilder(medicalAdviceTextView.getText().toString())
-//                .delete(medicalAdviceTextView.getText().toString().indexOf("Start"),
-//                        medicalAdviceTextView.getText().toString().lastIndexOf("User")+6).toString();
-            //lastIndexOf("User") will give index of U of User
-            //so the char this will return is U...here User + 6 will return W eg: User\n\nWatch as +6 will give W
-
-            String advice_split = new StringBuilder(advice_doctor__)
-                    .delete(advice_doctor__.indexOf("Start"),
-                            advice_doctor__.lastIndexOf("Doctor_") + 9).toString();
-            //lastIndexOf("Doctor_") will give index of D of Doctor_
-            //so the char this will return is D...here Doctor_ + 9 will return W eg: Doctor_\n\nWatch as +9 will give W
-
-
-//        String advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
-//        Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
-            advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
-        } else {
-            advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
-        }*/
-
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
 

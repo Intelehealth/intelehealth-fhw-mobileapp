@@ -315,7 +315,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cardview_head"
-                android:layout_marginTop="@dimen/margin_40dp">
+                >
 
                 <Button
                     android:id="@+id/openall_btn"
@@ -343,7 +343,6 @@
                 android:id="@+id/add_notes_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fu_card_margin_sides"
                 android:layout_below="@+id/vitalsRelativeLayout">
 
                 <!--Visit Summary-->
@@ -516,7 +515,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/add_notes_relative"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
-                android:layout_marginTop="@dimen/margin_20"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
                 android:visibility="visible">
 
@@ -543,6 +541,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/recy_additional_documents"
                     android:layout_marginTop="@dimen/fu_margin_start"
+                    android:visibility="gone"
                     android:background="@drawable/visit_summary_add_doc_cardbg">
 
                     <ImageButton
@@ -577,8 +576,7 @@
                 android:id="@+id/relative_speciality_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/add_doc_relative"
-                android:layout_marginTop="@dimen/margin_16">
+                android:layout_below="@+id/add_doc_relative">
 
 
                 <androidx.cardview.widget.CardView
@@ -719,7 +717,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relative_speciality_block"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
-                android:layout_marginTop="24dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
                 android:layout_marginBottom="65dp"
                 android:elevation="16dp"
