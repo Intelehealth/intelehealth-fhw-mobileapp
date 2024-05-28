@@ -708,8 +708,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
+                        Log.d(TAG, "onFinish: ");
                         mOnItemSelection.onAllAnswered(true);
-
                     }
                 });
 
@@ -721,8 +721,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onSelect(Node data) {
                 Log.v(TAG, new Gson().toJson(data));
-                mItemList.get(position).setSelected(false);
-                mItemList.get(position).setDataCaptured(false);
+                mItemList.get(position).setSelected(true);
+                mItemList.get(position).setDataCaptured(true);
                 VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
                 for (int i = 0; i < mItemList.get(position).getOptionsList().size(); i++) {
                     if (mItemList.get(position).getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {

@@ -160,6 +160,11 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                                 if (genericViewHolder.currentComplainNodeOptionsIndex - index >= 1) {
                                     return;
                                 }
+
+                                node.setSelected(true);
+                                node.setDataCaptured(true);
+                                genericViewHolder.questionsListingAdapter.geItems().get(index).setSelected(true);
+                                genericViewHolder.questionsListingAdapter.geItems().get(index).setDataCaptured(true);
                                 if (isSkipped) {
                                     genericViewHolder.questionsListingAdapter.geItems().get(index).setSelected(false);
                                     genericViewHolder.questionsListingAdapter.geItems().get(index).setDataCaptured(false);
@@ -196,7 +201,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                             }
 
                             @Override
-                            public void onImageRemoved(int nodeIndex,int imageIndex, String imagee) {
+                            public void onImageRemoved(int nodeIndex, int imageIndex, String imagee) {
 
                             }
                         });
@@ -304,9 +309,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
         Button skipButton = view.findViewById(R.id.btnSkipVisitReasonInputText);
 
-        if(node.isDataCaptured()) {
+        if (node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);
-        }else{
+        } else {
             AdapterUtils.setToDefault(skipButton);
         }
 
@@ -362,7 +367,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                        } else{
+                        } else {
                             node.addLanguage(editText.getText().toString());
                         }
 
@@ -470,9 +475,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         });
         //holder.skipButton.setVisibility(View.GONE);
 
-        if(node.isDataCaptured()) {
+        if (node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);
-        }else{
+        } else {
             AdapterUtils.setToDefault(skipButton);
         }
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
