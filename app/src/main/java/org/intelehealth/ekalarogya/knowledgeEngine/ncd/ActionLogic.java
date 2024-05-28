@@ -24,12 +24,38 @@ public class ActionLogic {
                 List<String> associateOperatorList = new ArrayList<>();
                 for (int j = 0; j < targetValues.length; j++) {
                     CheckInfoData checkInfoData = checkInfoDataList.get(j);
-                    SourceData sourceData = sourceDataInfoValueList.get(j);
+                    SourceData sourceData = sourceDataInfoValueList.size()==1 ? sourceDataInfoValueList.get(0) : sourceDataInfoValueList.get(j);
                     if (checkInfoData.isHavingAssociateCondition())
                         associateOperatorList.add(checkInfoData.getAssociateOperator());
                     if (sourceData.getDataType().equals(ValidationConstants.INTEGER)) {
                         int valA = Integer.parseInt(sourceData.getValue());
                         int valB = Integer.parseInt(targetValues[j]);
+                        if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_GREATER_THAN)) {
+                            // pass condition
+                            conditionsPassStatuList.add(valA > valB);
+
+                        } else if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_LESS_THAN)) {
+                            // pass condition
+                            conditionsPassStatuList.add(valA < valB);
+
+                        } else if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_GREATER_THAN_EQUAL)) {
+                            // pass condition
+                            conditionsPassStatuList.add(valA >= valB);
+
+                        } else if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_LESS_THAN_EQUAL)) {
+
+                            // pass condition
+                            conditionsPassStatuList.add(valA <= valB);
+
+                        } else if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_EQUAL)) {
+
+                            // pass condition
+                            conditionsPassStatuList.add(valA == valB);
+
+                        }
+                    }else if (sourceData.getDataType().equals(ValidationConstants.DOUBLE)) {
+                        double valA = Double.parseDouble(sourceData.getValue());
+                        double valB = Double.parseDouble(targetValues[j]);
                         if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_GREATER_THAN)) {
                             // pass condition
                             conditionsPassStatuList.add(valA > valB);
@@ -93,6 +119,66 @@ public class ActionLogic {
                 //Ex: "check": "EQUAL"
                 // "IF": "Refer to DH/CHC/RH",
             }
+        }
+
+
+        return null;
+    }
+
+    public static ActionResult foundGeneralSingleMatching(SourceData sourceData, CheckInfoData checkInfoData, List<Action> actionList) {
+        ActionResult actionResult = new ActionResult();
+        boolean isFinalPass = false;
+        for (int i = 0; i < actionList.size(); i++) {
+            Action action = actionList.get(i);
+            String conditionStatement = action.getIfCondition();
+
+
+            if (sourceData.getDataType().equals(ValidationConstants.INTEGER)) {
+                int valA = Integer.parseInt(sourceData.getValue());
+                int valB = Integer.parseInt(conditionStatement);
+                if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_GREATER_THAN)) {
+                    // pass condition
+                    isFinalPass = valA > valB;
+
+
+                } else if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_LESS_THAN)) {
+                    // pass condition
+                    isFinalPass = valA < valB;
+                } else if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_GREATER_THAN_EQUAL)) {
+                    // pass condition
+                    isFinalPass = valA >= valB;
+
+
+                } else if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_LESS_THAN_EQUAL)) {
+
+                    // pass condition
+                    isFinalPass = valA <= valB;
+
+                } else if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_EQUAL)) {
+
+                    // pass condition
+                    isFinalPass = valA == valB;
+
+                }
+            } else if (sourceData.getDataType().equals(ValidationConstants.STRING)) {
+                String valA = sourceData.getValue();
+                if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_EQUAL)) {
+
+                    // pass condition
+                    isFinalPass = valA.equals(conditionStatement);
+
+                }
+            }
+
+
+            if (isFinalPass) {
+                actionResult.setTarget(action.getThenCondition());
+                actionResult.setTargetData(action.getData());
+                actionResult.setInsideNodeDataUpdate(action.getData() == null);
+                return actionResult;
+            }
+
+
         }
 
 

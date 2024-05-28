@@ -643,6 +643,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             mQuestionListingadapter.setForNCDProtocol(mCurrentNode.getIsNcdProtocol());
             recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
             setTitle(patientName + ": " + mCurrentNode.findDisplay());
+            getSupportActionBar().setSubtitle(mgender + "/" + (int) float_ageYear_Month + " Yrs");
         } else {
             Toast.makeText(context, context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             return;
@@ -669,15 +670,21 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                             Toast.makeText(QuestionNodeActivity.this, "Please answer!", Toast.LENGTH_SHORT).show();
                         } else {
                             //mCurrentNodeIndex += 1;
-                            NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false);
+                            NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null);
 
                             mCurrentNode = ncdValidationResult.getUpdatedNode();
                             if (ncdValidationResult.isReadyToEndTheScreening()) {
                                 Toast.makeText(QuestionNodeActivity.this, "Screening done!", Toast.LENGTH_SHORT).show();
                             } else {
-                                if (ncdValidationResult.getTargetNodeID()==null && !ncdValidationResult.isReadyToEndTheScreening()) {
+                                if (ncdValidationResult.getTargetNodeID() == null && !ncdValidationResult.isReadyToEndTheScreening()) {
                                     mCurrentNodeIndex += 1;
+                                    // need to check the autofill node
+                                    if(mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()){
+                                        NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null);
+                                        mCurrentNode = autoFillResult.getUpdatedNode();
+                                    }
                                     question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
+
                                     decideToDisplayTheActionButtons();
                                 } else {
                                     for (int i = 0; i < mCurrentNode.getOptionsList().size(); i++) {
@@ -692,13 +699,19 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 }
                             }
                         }
+                        question_recyclerView.getAdapter().notifyItemChanged(mCurrentNodeIndex);
                     }
                 });
                 backButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mCurrentNodeIndex -= 1;
+                        if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex) != null)
+                            while (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getHidden()) {
+                                mCurrentNodeIndex -= 1;
+                            }
                         question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
+                        question_recyclerView.getAdapter().notifyItemChanged(mCurrentNodeIndex);
                         decideToDisplayTheActionButtons();
                     }
                 });
@@ -841,6 +854,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 mQuestionListingadapter.setForNCDProtocol(mCurrentNode.getIsNcdProtocol());
                 //setTitle(patientName + ": " + currentNode.getText());
                 setTitle(patientName + ": " + mCurrentNode.findDisplay());
+
+                getSupportActionBar().setSubtitle(mgender + "/" + (int) float_ageYear_Month + " Yrs");
             }
         }
     }

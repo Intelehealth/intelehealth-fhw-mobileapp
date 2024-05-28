@@ -1,5 +1,6 @@
 package org.intelehealth.ekalarogya.activities.questionNodeActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -332,6 +333,19 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             itemViewHolder.mChipText.setText(thisNode.findDisplay());
 
             Node groupNode = mGroupNode.getOption(mGroupPos);
+            // TODO : need to extract this logic form adapted
+            if(isForNCDProtocol){
+                if(thisNode.getInputType()==null || thisNode.getInputType().isEmpty()){
+                    if(thisNode.getPop_up()!=null && !thisNode.getPop_up().isEmpty()){
+                        //thisNode.setSelected(true);
+                        //thisNode.generatePopUpFromCurrentNode((Activity) context);
+                        thisNode.setLanguage(thisNode.getPop_up());
+                        thisNode.setSelected(true);
+                        groupNode.setSelected(true);
+                        thisNode.setDataCapture(true);
+                    }
+                }
+            }
 
             if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())
                     || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected())
@@ -351,6 +365,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
                 //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
             }
+
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -440,6 +455,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                             }
                             _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
                             notifyDataSetChanged();
+
                         }
                     } else {
                         Toast.makeText(mContext, "Some issue with the mindmaps.", Toast.LENGTH_SHORT).show();

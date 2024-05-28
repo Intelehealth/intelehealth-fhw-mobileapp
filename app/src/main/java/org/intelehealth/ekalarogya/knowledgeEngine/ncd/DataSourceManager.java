@@ -50,4 +50,35 @@ public class DataSourceManager {
         }
         return sourceDataInfoList;
     }
+
+    public static SourceData getValuesForDataSourceFromTargetNode(SourceData sourceDataInfo, Node rootNode) {
+        List<Node> questionsNode = rootNode.getOptionsList();
+        for (int i = 0; i < questionsNode.size(); i++) {
+            Node tempNode = questionsNode.get(i);
+            if (tempNode.getText().equals(sourceDataInfo.getDataName())) {
+
+                if (tempNode.isTerminal()) {
+                    sourceDataInfo.setValue(tempNode.getLanguage());
+                } else {
+                    if(tempNode.getOptionsList().size()==1){
+                        // expected here values are in language key
+                        sourceDataInfo.setValue(tempNode.getOptionsList().get(0).getLanguage());
+
+                    }else{
+                        // expected the selected option is the final value
+                        // expected only single choice
+                        for (int j = 0; j < tempNode.getOptionsList().size(); j++) {
+                            if(tempNode.getOptionsList().get(j).isSelected()){
+                                sourceDataInfo.setValue(tempNode.getOptionsList().get(j).getLanguage());
+                            }
+                        }
+                    }
+                }
+
+
+                break;
+            }
+        }
+        return sourceDataInfo;
+    }
 }

@@ -1,7 +1,11 @@
 package org.intelehealth.ekalarogya.knowledgeEngine.ncd;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ValidationRulesParser {
 
@@ -87,6 +91,25 @@ public class ValidationRulesParser {
         }
         return checkInfoDataList;
 
+
+    }
+
+    public static String getTheDateFromEncodedString(String targetDate) {
+        //"THEN": "+1M"
+        boolean isAddType = targetDate.startsWith("+");
+        char type = targetDate.charAt(targetDate.length() - 1);
+        int val = Integer.parseInt(targetDate.substring(1, targetDate.length() - 1));
+        Calendar cal = Calendar.getInstance();
+
+
+        switch (type) {
+            case 'M' -> cal.add(Calendar.MONTH, val);
+            case 'D' -> cal.add(Calendar.DAY_OF_MONTH, val);
+            case 'Y' -> cal.add(Calendar.YEAR, val);
+        }
+        Date date = cal.getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+        return simpleDateFormat.format(date);
 
     }
 
