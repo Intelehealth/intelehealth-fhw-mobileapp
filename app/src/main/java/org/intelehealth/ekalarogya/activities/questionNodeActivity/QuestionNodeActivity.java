@@ -36,6 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,6 +88,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     Boolean complaintConfirmed = false;
     SessionManager sessionManager = null;
     private float float_ageYear_Month;
+    private String intentAdviceFrom;
 
     //    Knowledge mKnowledge; //Knowledge engine
     // ExpandableListView questionListView;
@@ -150,6 +152,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+            intentAdviceFrom = intent.getStringExtra("advicefrom");
             complaints = intent.getStringArrayListExtra("complaints");
         }
         complaintDetails = new HashMap<>();
@@ -448,36 +451,45 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 removeDuplicateSymptoms();
                 complaintConfirmed = false;
             } else {
-                if (intentTag != null && intentTag.equals("edit")) {
-                    Log.i(TAG, "fabClick: update" + insertion);
 
-                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
-                        insertion = insertion.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
-                    }
+                if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
+                    insertion = insertion.replaceAll("Yes \\[Describe]", "")
+                            .replaceAll("Other \\[Describe]", "")
+                            .replaceAll("\\[Describe]", "");
+                }
 
-                    if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
-                        insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
-                    }
+                if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
+                    insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
+                            .replaceAll("Other \\[Describe]", "")
+                            .replaceAll("\\[Describe]", "");
+                }
 
-                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
-                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG, sessionManager);  // English to Regional - for HW to show in reg lang.
-                    Log.v("insertion_tag", "insertion_update: " + insertion);
-                    updateDatabase(insertion, UuidDictionary.CURRENT_COMPLAINT);  // updating data.
+                insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
+                insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG, sessionManager);  // English to Regional - for HW to show in reg lang.
+                updateDatabase(insertion, UuidDictionary.CURRENT_COMPLAINT);  // updating data.
 
-                    JSONObject object = new JSONObject();
-                    try {
-                        object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
-                        //  object.put("text_en", insertion_REG);
-                        updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
-                        Log.v("insertion_tag", "insertion_update_regional: " + object.toString());
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
+                    //  object.put("text_en", insertion_REG);
+                    updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
 
+                if (intentAdviceFrom.equalsIgnoreCase("Sevika")) {
+                    Intent intent = new Intent(QuestionNodeActivity.this, VisitSummaryActivity.class);
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("tag", intentTag);
+                    intent.putExtra("advicefrom", intentAdviceFrom);
+                    startActivity(intent);
+                } else if (intentTag != null && intentTag.equals("edit")) {
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
@@ -493,35 +505,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
                     startActivity(intent);
                 } else {
-                    Log.i(TAG, "fabClick: " + insertion);
-                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
-                        insertion = insertion.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
-                    }
-                    if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
-                        insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
-                    }
 
-                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
-                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG, sessionManager);  // English to Regional - for HW to show in reg lang.
-                    Log.v("insertion_tag", "insertion_insert: " + insertion);
-                    insertDb(insertion, UuidDictionary.CURRENT_COMPLAINT);    // inserting data.
-
-                    JSONObject object = new JSONObject();
-                    try {
-                        object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
-                        //   object.put("text_en", insertion_REG);
-                        insertDb(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // inserting regional data.
-                        Log.v("insertion_tag", "insertion_insert_regional: " + object.toString());
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    Intent intent = new Intent
-                            (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                    Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
