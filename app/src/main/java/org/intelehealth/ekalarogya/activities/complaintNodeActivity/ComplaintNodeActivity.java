@@ -78,6 +78,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     TextView tv_selectComplaint;
     RecyclerView list_recyclerView/*, rv_suggested_complaints*/;
     private float float_ageYear_Month;
+    private String intentAdviceFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
+            intentAdviceFrom = intent.getStringExtra("advicefrom");
         }
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
             encounterAdultIntials = UUID.randomUUID().toString();

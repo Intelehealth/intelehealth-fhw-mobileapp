@@ -49,6 +49,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.intelehealth.ekalarogya.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
@@ -371,10 +372,6 @@ public class PatientDetailActivity extends BaseActivity {
         // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
         // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
-        Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
-        int age = DateAndTimeUtils.getAgeInYear(patient_new.getDate_of_birth(), context);
-        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
-        intent2.putExtra("patientUuid", patientUuid);
         VisitDTO visitDTO = new VisitDTO();
         visitDTO.setUuid(uuid);
         visitDTO.setPatientuuid(patient_new.getUuid());
@@ -390,19 +387,45 @@ public class PatientDetailActivity extends BaseActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+        if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
+            navigateToComplaintScreen(visitUuid);
+        } else {
+            navigateToVitalsScreen(uuid);
+        }
+    }
+
+    private void navigateToComplaintScreen(String visitUuid) {
+        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+        int age = DateAndTimeUtils.getAgeInYear(patient_new.getDate_of_birth(), context);
+
+        Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
         intent2.putExtra("patientUuid", patientUuid);
-        intent2.putExtra("visitUuid", uuid);
+        intent2.putExtra("visitUuid", visitUuid);
         intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
         intent2.putExtra("encounterUuidAdultIntial", "");
         intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
         intent2.putExtra("name", fullName);
         intent2.putExtra("age", age);
         intent2.putExtra("tag", "new");
-        if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
-            intent2.putExtra("advicefrom", "Sevika");
-        } else {
-            intent2.putExtra("advicefrom", "Doctor");
-        }
+        intent2.putExtra("advicefrom", "Sevika");
+        intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+        startActivity(intent2);
+    }
+
+    private void navigateToVitalsScreen(String visitUuid) {
+        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+        int age = DateAndTimeUtils.getAgeInYear(patient_new.getDate_of_birth(), context);
+
+        Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
+        intent2.putExtra("patientUuid", patientUuid);
+        intent2.putExtra("visitUuid", visitUuid);
+        intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
+        intent2.putExtra("encounterUuidAdultIntial", "");
+        intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+        intent2.putExtra("name", fullName);
+        intent2.putExtra("age", age);
+        intent2.putExtra("tag", "new");
+        intent2.putExtra("advicefrom", "Doctor");
         intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
         startActivity(intent2);
     }

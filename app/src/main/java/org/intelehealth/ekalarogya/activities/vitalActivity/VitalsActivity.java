@@ -1536,6 +1536,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
+                intent.putExtra("advicefrom", intentAdviceFrom);
                 intent.putExtra("hasPrescription", "false");
                 startActivity(intent);
             } catch (DAOException dao) {
