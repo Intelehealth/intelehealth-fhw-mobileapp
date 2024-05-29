@@ -190,6 +190,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -208,10 +209,9 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
-    private RelativeLayout add_additional_doc,add_doc_relative;
+    private RelativeLayout add_additional_doc,add_doc_relative,doc_speciality_card;
     private LinearLayout btn_bottom_vs;
     private Button visit_summary_preview;
-    private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
     private float float_ageYear_Month;
@@ -223,6 +223,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     VisitSummaryActivityPreview.DownloadPrescriptionService downloadPrescriptionService;
     private RecyclerView mAdditionalDocsRecyclerView, mPhysicalExamsRecyclerView, cc_recyclerview;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager, mPhysicalExamsLayoutManager;
+    Spinner speciality_spinner;
     private RecyclerView.LayoutManager cc_recyclerview_gridlayout;
     private AdditionalDocumentAdapter recyclerViewAdapter;
     private ComplaintHeaderAdapter cc_adapter;
@@ -295,8 +296,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     TextView mCHWname;
     TextView add_docs_title, tvAddNotesValueVS, reminder, incomplete_act, archieved_notifi;
     String addnotes_value = "";
-    private TextInputLayout tilAdditionalNotesVS;
-
     TextView respiratory;
     TextView respiratoryText;
     TextView tempfaren;
@@ -314,7 +313,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
     String encounterUuid;
-    Spinner speciality_spinner;
     SwitchMaterial flag;
     private Handler mBackgroundHandler;
     private List<DocumentObject> rowListItem;
@@ -324,14 +322,15 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     ImageButton editAddDocs;
     ImageButton btn_up_special_vd_header;
 
-    ImageView profile_image;
+    CircleImageView profile_image;
     String profileImage = "";
     String profileImage1 = "";
     ImagesDAO imagesDAO = new ImagesDAO();
     private WebView mWebView;
     public static String prescription1;
     public static String prescription2;
-    private CardView doc_speciality_card, special_vd_card, addnotes_vd_card, profileImageCard;
+    private CardView  profileImageCard;
+    RelativeLayout special_vd_card,addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
     private ImageButton backArrow, priority_hint;
     private NetworkUtils networkUtils;
@@ -458,6 +457,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 getString(R.string.loading),
                 getString(R.string.please_wait)
         );
+        loadingDialog.setCancelable(false);
 
         removeUnnecessaryView();
 
@@ -642,12 +642,10 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 editAddDocs.setVisibility(View.GONE);
                 add_additional_doc.setVisibility(View.GONE);
 
-                doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
                 // vs_add_notes.setVisibility(View.GONE);
 
                 addnotes_vd_card.setVisibility(View.VISIBLE);
-                tilAdditionalNotesVS.setVisibility(View.GONE);
                 tvAddNotesValueVS.setVisibility(View.VISIBLE);
                 addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
                 if (!addnotes_value.equalsIgnoreCase("")) {
@@ -669,12 +667,10 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 add_additional_doc.setVisibility(View.GONE);
 
 
-                doc_speciality_card.setVisibility(View.VISIBLE);
                 special_vd_card.setVisibility(View.GONE);
                 // vs_add_notes.setVisibility(View.VISIBLE);
 
                 addnotes_vd_card.setVisibility(View.VISIBLE);
-                tilAdditionalNotesVS.setVisibility(View.VISIBLE);
                 tvAddNotesValueVS.setVisibility(View.GONE);
 
             }
@@ -684,7 +680,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
 
         if (!isVisitSpecialityExists) {
-            doc_speciality_card.setVisibility(View.VISIBLE);
             special_vd_card.setVisibility(View.GONE);
             flag.setEnabled(true);
             flag.setClickable(true);
@@ -699,7 +694,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
     private void updateUIState() {
         if (hasPrescription) {
-            doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
 
             add_additional_doc.setVisibility(View.GONE);
@@ -994,11 +988,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             vd_special_value.setText(" " + Node.bullet + "  " + displayValue);
             speciality_selected = special_value;
 
-            if(spinner_position == 0){
-                doc_speciality_card.setVisibility(View.GONE);
-            }else {
-                doc_speciality_card.setVisibility(View.VISIBLE);
-            }
+            doc_speciality_card.setVisibility(View.GONE);
             speciality_spinner.setEnabled(false);
         }
 
@@ -1331,15 +1321,9 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         idView = findViewById(R.id.textView_id_value);
         visitView = findViewById(R.id.textView_visit_value);
 
-        tilAdditionalNotesVS = findViewById(R.id.tilAdditionalNotesVS);
-        etAdditionalNotesVS = findViewById(R.id.etAdditionalNotesVS);
-
-//        android:hint="@string/leave_a_note_for_doctor"
-        etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
-        // textview - end
+        doc_speciality_card = findViewById(R.id.doc_speciality_card);
 
         // up-down btn - start
-        btn_up_header = findViewById(R.id.btn_up_header);
         openall_btn = findViewById(R.id.openall_btn);
         btn_up_vitals_header = findViewById(R.id.btn_up_vitals_header);
         vitals_header_relative = findViewById(R.id.vitals_header_relative);
@@ -1375,7 +1359,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         tempView = findViewById(R.id.textView_temp_value);
 
         vd_special_value = findViewById(R.id.vd_special_value);
-        doc_speciality_card = findViewById(R.id.doc_speciality_card);
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
         priority_hint = findViewById(R.id.priority_hint);
@@ -1534,254 +1517,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
 
-    private void askReasonForRescheduleAppointment(Context context) {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        View convertView = inflater.inflate(R.layout.dialog_ask_reason_new_ui2, null);
-        alertdialogBuilder.setView(convertView);
-
-        final TextView titleTextView = convertView.findViewById(R.id.titleTv_new);
-        titleTextView.setText(getString(R.string.please_select_your_reschedule_reason));
-        final EditText reasonEtv = convertView.findViewById(R.id.reasonEtv_new);
-        reasonEtv.setVisibility(View.GONE);
-        final RadioButton rb1 = convertView.findViewById(R.id.rb_no_doctor);
-        final RadioButton rb2 = convertView.findViewById(R.id.rb_no_patient);
-        final RadioButton rb3 = convertView.findViewById(R.id.rb_other_ask);
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-        final RadioGroup optionsRadioGroup = convertView.findViewById(R.id.rg_ask_reason);
-        optionsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rb_no_doctor) {
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_selected_green));
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
-                    reasonEtv.setVisibility(View.GONE);
-                    reasonEtv.setText(getString(R.string.doctor_is_not_available));
-                    mEngReason = "Doctor is not available";
-                } else if (checkedId == R.id.rb_no_patient) {
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_selected_green));
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
-                    reasonEtv.setVisibility(View.GONE);
-                    reasonEtv.setText(getString(R.string.patient_is_not_available));
-                    mEngReason = "Patient is not available";
-                } else if (checkedId == R.id.rb_other_ask) {
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_selected_green));
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_circle));
-                    reasonEtv.setText("");
-                    reasonEtv.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        final Button textView = convertView.findViewById(R.id.btn_save_ask);
-        final Button btnCancel = convertView.findViewById(R.id.btn_cancel_ask);
-
-        textView.setOnClickListener(v -> {
-            alertDialog.dismiss();
-            String reason = reasonEtv.getText().toString().trim();
-
-            if (reason.isEmpty()) {
-                Toast.makeText(VisitSummaryActivityPreview.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
-            } else {
-                AppointmentInfo appointmentInfo = new AppointmentDAO().getAppointmentByVisitId(visitUUID);
-                Intent in = new Intent(context, ScheduleAppointmentActivity_New.class);
-                in.putExtra("actionTag", "rescheduleAppointment");
-                in.putExtra("visitUuid", visitUUID);
-                in.putExtra("patientUuid", patientUuid);
-                in.putExtra("patientName", patientName);
-                in.putExtra("appointmentId", appointmentInfo.getId());
-                in.putExtra("openMrsId", patient.getOpenmrs_id());
-                in.putExtra("app_start_date", appointmentInfo.getSlotDate());
-                in.putExtra("app_start_time", appointmentInfo.getSlotTime());
-                in.putExtra("app_start_day", appointmentInfo.getSlotDay());
-                in.putExtra("rescheduleReason", mEngReason);
-                in.putExtra("speciality", speciality_selected);
-                in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
-                mStartForScheduleAppointment.launch(in);
-            }
-        });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-
-            }
-        });
-        alertDialog.show();
-
-    }
-
-
-    private final ActivityResultLauncher<Intent> mStartForScheduleAppointment = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        int resultCode = result.getResultCode();
-        boolean appointmentResult = sessionManager.getAppointmentResult();
-        if (resultCode == AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY) {
-            navigateToMyAppointment();
-        }
-        //sometimes RESULT_CANCELED calls even we need to handle event
-        //that's why added the logic when result is RESULT_CANCELED
-        else if (resultCode == RESULT_CANCELED) {
-            if (appointmentResult) {
-                navigateToMyAppointment();
-            }
-        }
-        sessionManager.setAppointmentResult(false);
-    });
-
-    void navigateToMyAppointment() {
-        if (!isFinishing() && !isDestroyed()) {
-            Toast.makeText(VisitSummaryActivityPreview.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
-            Intent in = new Intent(VisitSummaryActivityPreview.this, MyAppointmentActivityNew.class);
-            startActivity(in);
-            finish();
-        } else {
-            Log.d("CCCCCV", "Destry" + VisitSummaryActivityPreview.this);
-        }
-    }
-
-
-    private void visitUploadBlock() {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        Log.d("visitUUID", "upload_click: " + visitUUID);
-
-        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-        if (speciality_selected != null && !speciality_selected.isEmpty()) {
-            viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
-                String value = ResUtils.getStringResourceByName(VisitSummaryActivityPreview.this, specialization.getSKey());
-                vd_special_value.setText(" " + Node.bullet + "  " + value);
-            });
-
-            VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-            boolean isUpdateVisitDone = false;
-            try {
-                if (!isVisitSpecialityExists) {
-                    isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
-                }
-                Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
-            } catch (DAOException e) {
-                e.printStackTrace();
-                Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
-            }
-
-            // Additional Notes - Start
-            try {
-                String addnotes = etAdditionalNotesVS.getText().toString().trim();
-                Log.v("addnotes", "addnotes: " + addnotes);
-                if (!addnotes.equalsIgnoreCase("") && addnotes != null)
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
-                else
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);
-                // keeping raw string as we dont want regional lang data to be stored in DB.
-            } catch (DAOException e) {
-                e.printStackTrace();
-                Log.v("addnotes", "addnotes - error: " + e.getMessage());
-            }
-            // Additional Notes - End
-
-
-            if (flag.isChecked()) {
-                priorityVisit = true;
-                try {
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    encounterDAO.setEmergency(visitUuid, true);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-            }
-            if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-                String patientSelection = "uuid = ?";
-                String[] patientArgs = {String.valueOf(patient.getUuid())};
-                String table = "tbl_patient";
-                String[] columnsToReturn = {"openmrs_id"};
-                final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
-
-                if (idCursor.moveToFirst()) {
-                    do {
-                        patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
-                    } while (idCursor.moveToNext());
-                }
-                idCursor.close();
-            }
-
-            if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-            }
-
-            if (visitUUID == null || visitUUID.isEmpty()) {
-                String visitIDSelection = "uuid = ?";
-                String[] visitIDArgs = {visitUuid};
-                final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
-                if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
-                    visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
-                }
-                if (visitIDCursor != null) visitIDCursor.close();
-            }
-
-            if (!flag.isChecked()) {
-                //
-            }
-
-            if (NetworkConnection.isOnline(getApplication())) {
-                Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
-
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-//                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
-                        //Do something after 100ms
-                        SyncUtils syncUtils = new SyncUtils();
-                        boolean isSynced = syncUtils.syncForeground("visitSummary");
-                        if (isSynced) {
-                            // remove the local cache
-                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
-                            // ie. visit is uploded successfully.
-                            Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivityPreview.this, R.drawable.dialog_visit_sent_success_icon);
-                            setAppointmentButtonStatus();
-                            visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
-
-                            /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
-                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
-                            isSynedFlag = "1";
-                            //
-                            showVisitID();
-                            Log.d("visitUUID", "showVisitID: " + visitUUID);
-                            isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                            if (isVisitSpecialityExists) {
-                                speciality_spinner.setEnabled(false);
-
-                            } else {
-
-                            }
-                            fetchingIntent();
-                        } else {
-                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivityPreview.this);
-                        }
-                        uploaded = true;
-                    }
-                }, 4000);
-            } else {
-                add_additional_doc.setVisibility(View.GONE);
-                fetchingIntent();
-                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivityPreview.this);
-            }
-        } else {
-            showSelectSpeciliatyErrorDialog();
-        }
-    }
-
     /**
      * function to set appointment button status
      */
@@ -1789,42 +1524,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
 
     }
-
-    private void visitSentSuccessDialog(Context context, Drawable drawable, String title, String subTitle, String neutral) {
-
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
-        alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.dialog_icon);
-        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
-        Button positive_btn = convertView.findViewById(R.id.positive_btn);
-        Button negative_btn = convertView.findViewById(R.id.negative_btn);
-        negative_btn.setVisibility(View.GONE);  // as this view requires only one button so other button has hidden.
-
-        icon.setImageDrawable(drawable);
-        dialog_title.setText(title);
-        dialog_subtitle.setText(subTitle);
-        positive_btn.setText(neutral);
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-
-        positive_btn.setOnClickListener(v -> {
-            //commented to stop navigation bcz navigation from appointment
-          /*  Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
-            startActivity(intent);*/
-            alertDialog.dismiss();
-        });
-
-        alertDialog.show();
-    }
-
     private BroadcastReceiver broadcastReceiverForIamgeDownlaod = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -2403,18 +2102,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         downloadDoctorDetails();
     }
 
-
-    /*temperature convert*/
-    /*private String convertCtoF(String temperature) {
-        String resultVal;
-        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
-        double a = Double.parseDouble(temperature);
-        double b = (a * 9 / 5) + 32;
-        nf.format(b);
-        double roundOff = Math.round(b * 100.0) / 100.0;
-        resultVal = nf.format(roundOff);
-        return resultVal;
-    }*/
 
     /*PhysExam images downlaod*/
     private void physcialExaminationImagesDownload() {

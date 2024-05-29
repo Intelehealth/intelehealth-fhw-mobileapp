@@ -79,785 +79,706 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_btn_relative"
         android:layout_below="@+id/relativeCardview"
-        android:scrollbars="none"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
         <RelativeLayout
+            android:id="@+id/cardview_head"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frame_10021"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/toolbar_margin_left"
+            android:layout_marginTop="@dimen/fu_card_margin_updown"
+            android:layout_marginRight="@dimen/toolbar_margin_left">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_head"
+            <!-- Frame 100340 -->
+            <LinearLayout
+                android:id="@+id/frame_10034"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/frame_10021"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="@dimen/toolbar_margin_left"
-                android:layout_marginTop="@dimen/fu_card_margin_updown"
-                android:layout_marginRight="@dimen/toolbar_margin_left"
-                android:elevation="16dp"
-                app:cardCornerRadius="@dimen/margin_5"
-                app:cardElevation="@dimen/margin_5">
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
+                android:layout_marginBottom="@dimen/fu_margin_start"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
+                <!--1st-->
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-                    <!-- Frame 100340 -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/profile"
+                        android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                        android:layout_height="@dimen/patdetail_profile_imgview_14sp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_2dp"
+                        android:elevation="0dp"
+                        app:cardCornerRadius="@dimen/cardcornerradius_imagev">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profile_image"
+                            android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                            android:layout_height="@dimen/patdetail_profile_imgview_14sp"
+                            android:src="@drawable/avatar1"
+                            />
+                    </androidx.cardview.widget.CardView>
+
                     <LinearLayout
-                        android:id="@+id/frame_10034"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/fu_margin_start"
-                        android:layout_marginTop="@dimen/fu_margin_start"
-                        android:layout_marginEnd="@dimen/fu_margin_start"
-                        android:layout_marginBottom="@dimen/fu_margin_start"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:layout_toEndOf="@+id/profile"
+                        android:orientation="vertical">
 
-                        <!--1st-->
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <androidx.cardview.widget.CardView
-                                android:id="@+id/profile"
-                                android:layout_width="@dimen/patdetail_profile_imgview_14sp"
-                                android:layout_height="@dimen/patdetail_profile_imgview_14sp"
-                                android:layout_centerVertical="true"
-                                android:layout_marginStart="@dimen/margin_2dp"
-                                android:elevation="0dp"
-                                app:cardCornerRadius="@dimen/cardcornerradius_imagev">
-
-                                <ImageView
-                                    android:id="@+id/profile_image"
-                                    android:layout_width="@dimen/patdetail_profile_imgview_14sp"
-                                    android:layout_height="@dimen/patdetail_profile_imgview_14sp"
-                                    android:src="@drawable/avatar1" />
-                            </androidx.cardview.widget.CardView>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/fu_margin_start"
-                                android:layout_toEndOf="@+id/profile"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:weightSum="8">
-
-                                    <TextView
-                                        android:id="@+id/textView_name_value"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/lato_bold"
-                                        android:layout_weight="7"
-                                        android:ellipsize="end"
-                                        android:gravity="center_vertical"
-                                        tools:text="Srinivas Bandi Srinivas BB Bandi Srinivas B Bandi BBB Srinivas"
-                                        android:text="@string/fu_visit_name"
-                                        android:textAppearance="@style/label_16sp"
-                                        android:textColor="@null"
-                                        android:textSize="@dimen/txtsize_patdetail_16sp"
-                                        android:textStyle="bold" />
-
-                                    <TextView
-                                        android:id="@+id/textView_gender_value"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/fu_male_margin_start"
-                                        android:layout_weight="1"
-                                        android:text="@string/misc_txt"
-
-                                        android:textAppearance="@style/label_misc_txt_14sp"
-                                        android:textColor="@null"
-                                        />
-
-
-
-                                </LinearLayout>
-
-                                <!-- Caption -->
-                                <TextView
-                                    android:id="@+id/textView_id_value"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="0dp"
-                                    android:layout_marginTop="@dimen/margin_4"
-                                    android:layout_weight="1"
-                                    android:gravity="center_vertical"
-                                    android:text="@string/fu_openmrsID"
-                                    android:textAppearance="@style/caption_fu_openmrsId"
-                                    android:textColor="@null"
-                                    android:textSize="@dimen/txtsize_patdetail_14sp" />
-
-                            </LinearLayout>
-                        </RelativeLayout>
-
-                        <!--2nd-->
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:weightSum="8">
 
-                            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                                android:id="@+id/btn_up_header"
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/textView_name_value"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:background="@null"
-                                android:visibility="gone"
-                                android:src="@drawable/ui2_ic_chevron_down" />
+                                android:layout_weight="7"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/lato_bold"
+                                android:gravity="center_vertical"
+                                android:text="@string/fu_visit_name"
+                                android:textAppearance="@style/label_16sp"
+                                android:textColor="@null"
+                                android:textSize="@dimen/txtsize_patdetail_14sp"
+                                android:textStyle="bold"
+                                tools:text="Srinivas Bandi Srinivas BB Bandi Srinivas B Bandi BBB Srinivas" />
+
+                            <TextView
+                                android:id="@+id/textView_gender_value"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/fu_male_margin_start"
+                                android:layout_weight="1"
+                                android:text="@string/misc_txt"
+
+                                android:textAppearance="@style/label_misc_txt_14sp"
+                                android:textColor="@null" />
+
 
                         </LinearLayout>
+
+                        <!-- Caption -->
+                        <TextView
+                            android:id="@+id/textView_id_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/fu_openmrsID"
+                            android:textAppearance="@style/caption_fu_openmrsId"
+                            android:textColor="@null"
+                            android:textSize="@dimen/txtsize_patdetail_14sp" />
+
                     </LinearLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/vs_header_expandview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/frame_10034"
-                        android:visibility="gone"
-                        tools:visibility="visible">
-
-                        <View
-                            android:id="@+id/divider1"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="@dimen/fu_margin_start"
-                            android:layout_marginEnd="@dimen/fu_margin_start"
-                            android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                            android:background="@color/notifi_divider_color" />
-
-
-                        <TableLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider1"
-                            android:layout_marginStart="@dimen/fu_margin_start"
-                            android:layout_marginEnd="@dimen/fu_margin_start"
-                            android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:shrinkColumns="1">
-
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="2">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="2dp"
-                                    android:layout_marginEnd="@dimen/margin_5"
-                                    android:layout_weight="1"
-                                    android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/chw_worker"
-                                    android:drawablePadding="5dp"
-                                    android:textAppearance="@style/caption"
-                                    android:textColor="@color/hint_text_color"
-                                    android:textSize="@dimen/find_patient_hint_size" />
-
-                                <TextView
-                                    android:id="@+id/chw_details"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="Test:Kiran Devi Prakash"
-                                    android:textAppearance="@style/caption"
-                                    android:textColor="@color/textview_color"
-                                    android:textSize="@dimen/find_patient_hint_size" />
-                            </TableRow>
-
-                            <!--Gender-->
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/margin_4"
-                                android:layout_weight="2">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="2dp"
-                                    android:layout_marginEnd="@dimen/margin_5"
-                                    android:layout_weight="1"
-                                    android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/visitID"
-                                    android:drawablePadding="5dp"
-                                    android:textAppearance="@style/caption"
-                                    android:textColor="@color/hint_text_color"
-                                    android:textSize="@dimen/find_patient_hint_size" />
-
-                                <TextView
-                                    android:id="@+id/textView_visit_value"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="Test:XXX543573"
-                                    android:textAppearance="@style/caption"
-                                    android:textColor="@color/textview_color"
-                                    android:textSize="@dimen/find_patient_hint_size" />
-                            </TableRow>
-                        </TableLayout>
-                    </RelativeLayout>
-
-
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
 
-
-            <!--Vitals and Other cards - start-->
-            <RelativeLayout
-                android:id="@+id/vitalsRelativeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/cardview_head"
-                >
-
-                <Button
-                    android:id="@+id/openall_btn"
+                <!--2nd-->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:visibility="gone"
-                    android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:background="@null"
-                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_up_24"
-                    android:drawablePadding="2dp"
-                    android:onClick="openAll"
-                    android:text="@string/close_all"
-                    android:textColor="#7F7B92"
-                    android:textSize="@dimen/txtsize_patdetail_14sp" />
-<!--                android:src="@drawable/close_all_btn"-->
-                <include layout="@layout/visit_summary_itemscard" />
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
 
-            </RelativeLayout>
-            <!--Vitals and Other cards - end-->
-
-            <!--Additional notes - start-->
-            <RelativeLayout
-                android:id="@+id/add_notes_relative"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/vitalsRelativeLayout">
-
-                <!--Visit Summary-->
-
-                <RelativeLayout
-                    android:id="@+id/vs_add_notes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/toolbar_margin_left"
-                    android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:visibility="gone"
-                    tools:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/add_notes_title"
-                        style="@style/vs_title_head_14sp"
-                        android:layout_width="match_parent"
+                    <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/btn_up_header"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/additional_notes"
-                        android:textStyle="bold" />
+                        android:background="@null"
+                        android:src="@drawable/ui2_ic_chevron_down"
+                        android:visibility="gone" />
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/vs_notes_big_edittext_height"
-                        android:layout_below="@+id/add_notes_title"
-                        android:layout_marginTop="@dimen/margin_8"
-                        android:background="@drawable/edittext_border"
-                        android:gravity="top"
-                        android:hint="@string/leave_a_note_for_doctor"
-                        android:paddingStart="@dimen/fu_margin_start"
-                        android:paddingTop="@dimen/fu_margin_start"
-                        android:textColorHint="@color/edittext_hint_color"
-                        android:textSize="@dimen/find_patient_hint_size" />
-
-                </RelativeLayout>
-
-
-                <!--Visit Details - start-->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/addnotes_vd_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/toolbar_margin_left"
-                    android:layout_marginTop="@dimen/margin_5"
-                    android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:layout_marginBottom="@dimen/margin_10"
-                    android:elevation="16dp"
-                    android:visibility="visible"
-                    tools:visibility="visible"
-                    app:cardCornerRadius="@dimen/margin_5"
-                    app:cardElevation="@dimen/margin_5">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <RelativeLayout
-                            android:id="@+id/addnotes_vd_header_relative"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/fu_card_margin_sides"
-                            android:layout_marginTop="@dimen/fu_card_margin_sides"
-                            android:layout_marginEnd="@dimen/fu_card_margin_sides"
-                            android:layout_marginBottom="@dimen/fu_card_margin_sides">
-
-                            <ImageView
-                                android:id="@+id/ivVisitAddNotes"
-                                android:layout_width="@dimen/edittext_height_44dp"
-                                android:layout_height="@dimen/edittext_height_44dp"
-                                android:src="@drawable/add_notes_redicon" />
-
-                            <TextView
-                                style="@style/text_title_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginStart="@dimen/margin_8"
-                                android:layout_toEndOf="@+id/ivVisitAddNotes"
-                                android:text="@string/additional_notes" />
-
-                            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                                android:id="@+id/btn_up_addnotes_vd_header"
-                                android:layout_width="@dimen/fu_icon_width"
-                                android:layout_height="@dimen/fu_icon_height"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:background="@null"
-                                android:src="@drawable/ui2_ic_chevron_down"
-                                android:visibility="gone" />
-                        </RelativeLayout>
-
-                        <!--Expanded Vitals-->
-                        <RelativeLayout
-                            android:id="@+id/vd_addnotes_header_expandview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/addnotes_vd_header_relative"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-
-                            <View
-                                android:id="@+id/divider2"
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="@dimen/fu_margin_start"
-                                android:layout_marginEnd="@dimen/fu_margin_start"
-                                android:background="@color/notifi_divider_color" />
-
-                            <!--Personal Sub-Child-->
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/tilAdditionalNotesVS"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/divider2"
-                                android:scrollbars="vertical"
-                                android:fadeScrollbars="false"
-                                android:layout_marginStart="@dimen/fu_margin_start"
-                                android:layout_marginEnd="@dimen/fu_margin_start"
-                                android:layout_marginBottom="@dimen/margin_16dp"
-                                app:counterEnabled="true"
-                                app:counterMaxLength="1000"
-                                android:gravity="top">
-
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/etAdditionalNotesVS"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:minLines="3"
-                                    android:background="@drawable/edittext_border"
-                                    android:inputType="textMultiLine"
-                                    android:gravity="top"
-                                    android:padding="@dimen/fu_margin_start"
-                                    android:maxLength="1000"
-                                    android:textColorHint="@color/edittext_hint_color"
-                                    android:textSize="@dimen/find_patient_hint_size"
-                                    />
-
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-
-                            <TextView
-                                android:id="@+id/tvAddNotesValueVS"
-                                android:visibility="gone"
-                                tools:visibility="visible"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/divider2"
-                                android:layout_marginStart="@dimen/fu_margin_start"
-                                android:layout_marginTop="@dimen/fu_margin_start"
-                                android:layout_marginEnd="@dimen/fu_margin_start"
-                                android:layout_marginBottom="@dimen/margin_16dp"
-                                tools:text= "@string/no_notes_added_for_doctor" />
-
-                        </RelativeLayout>
-
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!--Visit Details - end-->
-
-            </RelativeLayout>
-            <!--Additional docs - end-->
-
+                </LinearLayout>
+            </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/add_doc_relative"
+                android:id="@+id/vs_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/add_notes_relative"
+                android:layout_below="@+id/frame_10034"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/divider1"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:shrinkColumns="1">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/chw_worker"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/chw_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Test:Kiran Devi Prakash"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+                    <!--Gender-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/visitID"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/textView_visit_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Test:XXX543573"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+                </TableLayout>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+        <!--Vitals and Other cards - start-->
+        <RelativeLayout
+            android:id="@+id/vitalsRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cardview_head"
+            android:layout_marginTop="@dimen/margin_10">
+
+            <Button
+                android:id="@+id/openall_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/toolbar_margin_left"
+                android:background="@null"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_up_24"
+                android:drawablePadding="2dp"
+                android:onClick="openAll"
+                android:text="@string/close_all"
+                android:textColor="#7F7B92"
+                android:textSize="@dimen/txtsize_patdetail_14sp"
+                android:visibility="gone" />
+            <!--                android:src="@drawable/close_all_btn"-->
+            <include layout="@layout/visit_summary_itemscard_preview" />
+
+        </RelativeLayout>
+        <!--Vitals and Other cards - end-->
+
+        <!--Additional notes - start-->
+        <RelativeLayout
+            android:id="@+id/add_notes_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vitalsRelativeLayout">
+
+            <!--Visit Summary-->
+
+            <RelativeLayout
+                android:id="@+id/vs_add_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
-                android:visibility="visible">
+                android:visibility="gone"
+                tools:visibility="gone">
 
                 <TextView
-                    android:id="@+id/add_docs_title"
+                    android:id="@+id/add_notes_title"
                     style="@style/vs_title_head_14sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_additional_document_2"
+                    android:text="@string/additional_notes"
                     android:textStyle="bold" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recy_additional_documents"
+                <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/add_docs_title"
+                    android:layout_height="@dimen/vs_notes_big_edittext_height"
+                    android:layout_below="@+id/add_notes_title"
                     android:layout_marginTop="@dimen/margin_8"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/additional_docs_listitem" />
-
-                <RelativeLayout
-                    android:id="@+id/add_additional_doc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/recy_additional_documents"
-                    android:layout_marginTop="@dimen/fu_margin_start"
-                    android:visibility="gone"
-                    android:background="@drawable/visit_summary_add_doc_cardbg">
-
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_additional_document"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/fu_margin_start"
-                        android:layout_marginTop="@dimen/fu_margin_start"
-                        android:layout_marginBottom="@dimen/fu_margin_start"
-                        android:background="@null"
-                        android:src="@drawable/add_doc_addbtn" />
-
-                    <TextView
-                        style="@style/blur_txtview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/fu_margin_start"
-                        android:layout_toEndOf="@+id/imagebutton_edit_additional_document"
-                        android:background="@null"
-                        android:text="@string/add_additional_documents_like" />
-
-                </RelativeLayout>
+                    android:background="@drawable/edittext_border"
+                    android:gravity="top"
+                    android:hint="@string/leave_a_note_for_doctor"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/fu_margin_start"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textSize="@dimen/find_patient_hint_size" />
 
             </RelativeLayout>
 
-            <!--Doctor Speciality card-->
 
+            <!--Visit Details - start-->
 
-            <!--Visibility - start -->
             <RelativeLayout
-                android:id="@+id/relative_speciality_block"
+                android:id="@+id/addnotes_vd_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/add_doc_relative">
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/special_vd_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/toolbar_margin_left"
-                    android:layout_marginTop="@dimen/margin_5"
-                    android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:layout_marginBottom="@dimen/margin_10"
-                    android:elevation="16dp"
-                    app:cardCornerRadius="@dimen/margin_5"
-                    app:cardElevation="@dimen/margin_5">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <RelativeLayout
-                            android:id="@+id/special_vd_header_relative"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/fu_card_margin_sides"
-                            android:layout_marginTop="@dimen/fu_card_margin_sides"
-                            android:layout_marginEnd="@dimen/fu_card_margin_sides"
-                            android:layout_marginBottom="@dimen/fu_card_margin_sides">
-
-                            <ImageView
-                                android:id="@+id/vs_icon"
-                                android:layout_width="@dimen/edittext_height_44dp"
-                                android:layout_height="@dimen/edittext_height_44dp"
-                                android:src="@drawable/speciality_red_icon" />
-
-                            <TextView
-                                style="@style/text_title_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginStart="@dimen/margin_8"
-                                android:layout_toEndOf="@+id/vs_icon"
-                                android:text="@string/doctor_speciality" />
-
-                            <ImageButton
-                                android:id="@+id/btn_up_special_vd_header"
-                                android:layout_width="@dimen/fu_icon_width"
-                                android:layout_height="@dimen/fu_icon_height"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:background="@null"
-                                android:visibility="gone"
-                                android:src="@drawable/ui2_ic_chevron_down" />
-                        </RelativeLayout>
-
-                        <!--Expanded Vitals-->
-                        <RelativeLayout
-                            android:id="@+id/vd_special_header_expandview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/special_vd_header_relative"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-
-                            <View
-                                android:id="@+id/divider"
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="@dimen/fu_margin_start"
-                                android:layout_marginEnd="@dimen/fu_margin_start"
-                                android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                                android:background="@color/notifi_divider_color" />
-
-                            <!--Personal Sub-Child-->
-
-                            <TextView
-                                android:id="@+id/vd_special_value"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/divider"
-                                android:layout_marginStart="@dimen/fu_margin_start"
-                                android:layout_marginEnd="@dimen/fu_margin_start"
-                                android:layout_marginBottom="@dimen/margin_16dp"
-                                android:text="Test General Physician" />
-
-                        </RelativeLayout>
-
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!--Visibility - end -->
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/doc_speciality_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/toolbar_margin_left"
-                    android:layout_marginTop="@dimen/margin_5"
-                    android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:layout_marginBottom="@dimen/margin_10"
-                    android:elevation="16dp"
-                    app:cardCornerRadius="@dimen/margin_5"
-                    app:cardElevation="@dimen/margin_5">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/fu_card_margin_sides">
-
-                        <TextView
-                            android:id="@+id/doc_speciality_title"
-                            style="@style/vs_title_head_14sp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/doctor_speciality"
-                            android:textColor="@color/colorPrimary"
-                            android:textStyle="bold" />
-
-                        <Spinner
-                            android:id="@+id/speciality_spinner"
-                            style="@style/AppTheme"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/edittext_height_44dp"
-                            android:layout_below="@+id/doc_speciality_title"
-                            android:layout_marginTop="@dimen/fu_margin_start"
-                            android:layout_marginBottom="@dimen/margin_16dp"
-                            android:entries="@array/speciality_values"
-                            android:gravity="center_vertical"
-                            android:hint="@string/select_speciality"
-                            android:paddingStart="@dimen/fu_margin_start"
-                            android:paddingTop="@dimen/margin_10"
-                            android:paddingBottom="@dimen/margin_10" />
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
-            </RelativeLayout>
-
-            <!--            Priority Visit-->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/relative_speciality_block"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
+                android:layout_marginTop="@dimen/margin_5"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
-                android:layout_marginBottom="65dp"
+                android:layout_marginBottom="@dimen/margin_10"
                 android:elevation="16dp"
-                app:cardCornerRadius="@dimen/margin_5"
-                app:cardElevation="@dimen/margin_5">
+                android:visibility="visible">
 
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:id="@+id/addnotes_vd_header_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_card_margin_sides"
+                    android:layout_marginTop="@dimen/fu_card_margin_sides"
+                    android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                    <ImageView
+                        android:id="@+id/ivVisitAddNotes"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/add_notes_redicon" />
 
                     <TextView
-                        android:id="@+id/doc_speciality_title_1"
-                        style="@style/vs_title_head_14sp"
+                        style="@style/text_title_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/fu_card_margin_sides"
-                        android:layout_marginTop="@dimen/fu_card_margin_sides"
-                        android:layout_marginBottom="@dimen/fu_card_margin_sides"
-                        android:text="@string/priority_visits"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold" />
+                        android:layout_marginStart="@dimen/margin_8"
+                        android:layout_toEndOf="@+id/ivVisitAddNotes"
+                        android:textSize="@dimen/txtsize_patdetail_14sp"
+                        android:text="@string/additional_notes" />
 
-                    <ImageButton
-                        android:id="@+id/priority_hint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:padding="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/doc_speciality_title_1"
-                        android:background="@null"
-                        android:visibility="gone"
-                        app:tint="?attr/colorPrimary"
-                        android:src="@drawable/question_mark_helpicon" />
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/flaggedcheckbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/btn_up_addnotes_vd_header"
+                        android:layout_width="@dimen/fu_icon_width"
+                        android:layout_height="@dimen/fu_icon_height"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/fu_card_margin_sides"
-                        android:theme="@style/AppTheme.switchColorStyle" />
+                        android:background="@null"
+                        android:src="@drawable/ui2_ic_chevron_down"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <!--Expanded Vitals-->
+                <RelativeLayout
+                    android:id="@+id/vd_addnotes_header_expandview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/addnotes_vd_header_relative"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <View
+                        android:id="@+id/divider2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:background="@color/notifi_divider_color" />
+
+                    <!--Personal Sub-Child-->
+
+
+
+                    <TextView
+                        android:id="@+id/tvAddNotesValueVS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divider2"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:visibility="gone"
+                        tools:text="@string/no_notes_added_for_doctor"
+                        tools:visibility="visible" />
 
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <!--Visit Details - end-->
 
         </RelativeLayout>
-    </ScrollView>
+        <!--Additional docs - end-->
 
-    <!--Visit Details - start -->
-    <RelativeLayout
-        android:id="@+id/bottom_btn_relative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:paddingTop="@dimen/fu_margin_start"
-        android:paddingBottom="@dimen/fu_card_margin_sides">
 
-        <LinearLayout
-            android:id="@+id/btn_bottom_vs"
+        <RelativeLayout
+            android:id="@+id/add_doc_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            android:weightSum="2"
-            tools:visibility="visible">
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_below="@+id/add_notes_relative"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginEnd="@dimen/toolbar_margin_left"
+            android:visibility="visible">
 
-
-            <Button
-                android:id="@+id/print_bt"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/action_print"
-                android:visibility="visible"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
+            <TextView
+                android:id="@+id/add_docs_title"
+                style="@style/vs_title_head_14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_additional_document_2"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/share_bt"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/common_edittext_margin_top"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/share"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recy_additional_documents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/add_docs_title"
+                android:layout_marginTop="@dimen/margin_8"
+                tools:itemCount="3"
+                tools:listitem="@layout/additional_docs_listitem" />
 
-        </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/add_additional_doc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recy_additional_documents"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:background="@drawable/visit_summary_add_doc_cardbg"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/imagebutton_edit_additional_document"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:background="@null"
+                    android:src="@drawable/add_doc_addbtn" />
+
+                <TextView
+                    style="@style/blur_txtview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_toEndOf="@+id/imagebutton_edit_additional_document"
+                    android:background="@null"
+                    android:text="@string/add_additional_documents_like" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!--Doctor Speciality card-->
+
+
+        <!--Visibility - start -->
+        <RelativeLayout
+            android:id="@+id/relative_speciality_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_doc_relative">
+
+            <RelativeLayout
+                android:id="@+id/special_vd_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/toolbar_margin_left"
+                android:layout_marginEnd="@dimen/toolbar_margin_left">
+
+            <RelativeLayout
+                android:id="@+id/special_vd_header_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                <ImageView
+                    android:id="@+id/vs_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/speciality_red_icon" />
+
+                <TextView
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_toEndOf="@+id/vs_icon"
+                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                    android:text="@string/doctor_speciality" />
+
+                <ImageButton
+                    android:id="@+id/btn_up_special_vd_header"
+                    android:layout_width="@dimen/fu_icon_width"
+                    android:layout_height="@dimen/fu_icon_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:src="@drawable/ui2_ic_chevron_down"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <!--Expanded Vitals-->
+            <RelativeLayout
+                android:id="@+id/vd_special_header_expandview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/special_vd_header_relative"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Personal Sub-Child-->
+
+                <TextView
+                    android:id="@+id/vd_special_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/divider"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/margin_16dp"
+                    android:text="Test General Physician" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+        <!--Visibility - end -->
+
+        <RelativeLayout
+            android:id="@+id/doc_speciality_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginEnd="@dimen/toolbar_margin_left"
+            android:layout_marginBottom="@dimen/margin_10">
+
+
+            <Spinner
+                android:id="@+id/speciality_spinner"
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_marginBottom="@dimen/margin_16dp"
+                android:entries="@array/speciality_values"
+                android:gravity="center_vertical"
+                android:hint="@string/select_speciality"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10" />
+        </RelativeLayout>
     </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/filter_framelayout"
+    <!--            Priority Visit-->
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/margin_45"
-        android:visibility="gone"
-        tools:visibility="gone">
+        android:layout_below="@+id/relative_speciality_block"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        android:layout_marginBottom="@dimen/mergin_30dp">
 
-        <include layout="@layout/notifi_filter_layout" />
+        <TextView
+            android:id="@+id/doc_speciality_title_1"
+            style="@style/vs_title_head_14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/fu_card_margin_sides"
+            android:layout_marginTop="@dimen/fu_card_margin_sides"
+            android:layout_marginBottom="@dimen/fu_card_margin_sides"
+            android:text="@string/priority_visits"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
 
-    </FrameLayout>
+        <ImageButton
+            android:id="@+id/priority_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/doc_speciality_title_1"
+            android:background="@null"
+            android:padding="@dimen/margin_8"
+            android:src="@drawable/question_mark_helpicon"
+            android:visibility="gone"
+            app:tint="?attr/colorPrimary" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/flaggedcheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/fu_card_margin_sides"
+            android:theme="@style/AppTheme.switchColorStyle" />
+
+    </RelativeLayout>
+
+</RelativeLayout></ScrollView>
+
+    <!--Visit Details - start -->
+<RelativeLayout
+android:id="@+id/bottom_btn_relative"
+android:layout_alignParentBottom="true"
+android:layout_height="wrap_content"
+android:layout_width="match_parent"
+android:paddingBottom="@dimen/fu_card_margin_sides"
+android:paddingTop="@dimen/fu_margin_start">
+
+<LinearLayout
+    android:id="@+id/btn_bottom_vs"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:visibility="visible"
+    android:weightSum="2"
+    tools:visibility="visible">
+
+
+    <Button
+        android:background="@drawable/ui2_common_primary_bg"
+        android:backgroundTint="@color/colorPrimaryLightCard"
+        android:id="@+id/print_bt"
+        android:layout_height="@dimen/fu_btn_size"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:layout_marginStart="@dimen/margin_24"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:textColor="@color/colorPrimary"
+        android:lineHeight="@dimen/button_line_height"
+        android:padding="@dimen/margin_12"
+        android:text="@string/action_print"
+        android:textSize="@dimen/common_button_text_size"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <Button
+        android:background="@drawable/ui2_common_primary_bg"
+        android:id="@+id/share_bt"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="92dip"
-        android:contentDescription="@string/chat_fab"
-        android:onClick="startVideoChat"
-        android:src="@drawable/icons8_video_call"
-        android:visibility="gone" />
+        android:layout_height="@dimen/fu_btn_size"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:layout_marginEnd="@dimen/margin_24"
+        android:layout_marginStart="@dimen/common_edittext_margin_top"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:lineHeight="@dimen/button_line_height"
+        android:padding="@dimen/margin_12"
+        android:text="@string/share"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_button_text_size"
+        android:textStyle="bold" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="80dip"
-        android:contentDescription="@string/chat_fab"
-        android:onClick="startTextChat"
-        android:src="@drawable/icons8_chat_new" />
-
+</LinearLayout>
 </RelativeLayout>
+
+<FrameLayout
+android:id="@+id/filter_framelayout"
+android:layout_alignParentEnd="true"
+android:layout_height="wrap_content"
+android:layout_marginTop="@dimen/margin_45"
+android:layout_width="wrap_content"
+android:visibility="gone"
+tools:visibility="gone">
+
+<include layout="@layout/notifi_filter_layout" />
+
+</FrameLayout>
+
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+android:contentDescription="@string/chat_fab"
+android:layout_alignParentBottom="true"
+android:layout_alignParentEnd="true"
+android:layout_height="wrap_content"
+android:layout_marginBottom="92dip"
+android:layout_marginEnd="16dp"
+android:layout_width="wrap_content"
+android:onClick="startVideoChat"
+android:src="@drawable/icons8_video_call"
+android:visibility="gone" />
+
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+android:contentDescription="@string/chat_fab"
+android:layout_alignParentBottom="true"
+android:layout_alignParentEnd="true"
+android:layout_height="wrap_content"
+android:layout_marginBottom="80dip"
+android:layout_marginEnd="16dp"
+android:layout_width="wrap_content"
+android:onClick="startTextChat"
+android:src="@drawable/icons8_chat_new"
+android:visibility="gone" />
+
+    </RelativeLayout>

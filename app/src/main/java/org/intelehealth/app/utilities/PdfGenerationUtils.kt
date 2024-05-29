@@ -1,10 +1,13 @@
 package org.intelehealth.app.utilities
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.pdf.PdfDocument
+import android.util.DisplayMetrics
 import android.util.Log
+import org.intelehealth.app.R
 import java.io.File
 import java.io.FileOutputStream
 
@@ -19,17 +22,22 @@ class PdfGenerationUtils {
 
         @JvmStatic
         fun generatePDF(context:Context,bitmap: Bitmap, fileName: String?): String {
-            val width = bitmap.width
-            val height =
-                if (bitmap.height < 6000) bitmap.height / 3
-                else if (bitmap.height in 6001..8000) bitmap.height / 4
-                else bitmap.height / 5
+            val displayMetrics = DisplayMetrics()
+            (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-            Log.d("HHHHH", "" + bitmap.height)
+            val page:Double = bitmap.height/(displayMetrics.heightPixels.toDouble() - context.resources.getDimension(R.dimen.mergin_30dp))
+            val width = bitmap.width
+            val fullHeight = bitmap.height/
+                    if(page.toInt() == 1) 2
+                    else if(page.toInt() == 0) 1
+                    else page.toInt()
+
+            val partialHeight = (bitmap.height - page.toInt() * fullHeight)
+
             val pdfDocument = PdfDocument()
 
             fun addPage(bp: Bitmap, pageNumber: Int) {
-                val bitmapPart = Bitmap.createScaledBitmap(bp, 595, 842, true)
+                val bitmapPart = Bitmap.createScaledBitmap(bp, 480, 1000, true)
                 val pageInfo =
                     PdfDocument.PageInfo.Builder(bitmapPart.width, bitmapPart.height, pageNumber)
                         .create()
@@ -42,40 +50,19 @@ class PdfGenerationUtils {
                 pdfDocument.finishPage(page)
             }
 
-            if (bitmap.height < 6000) {
-                val firstPart = Bitmap.createBitmap(bitmap, 0, 0, width, height)
-                val secondPart = Bitmap.createBitmap(bitmap, 0, height, width, height)
-                val thirdPart = Bitmap.createBitmap(bitmap, 0, height * 2, width, height)
-
-                addPage(firstPart, 1)
-                addPage(secondPart, 2)
-                addPage(thirdPart, 3)
-
+            val partList = mutableListOf<Bitmap>()
+            for (i in 0..page.toInt()) {
+                if(i == page.toInt()){
+                    if(partialHeight > context.resources.getDimension(R.dimen.mergin_30dp)){
+                        partList.add(Bitmap.createBitmap(bitmap, 0, fullHeight*i, width, partialHeight.toInt()))
+                    }
+                }else{
+                    partList.add(Bitmap.createBitmap(bitmap, 0, fullHeight*i, width, fullHeight))
+                }
             }
-            else if (bitmap.height in 6001..8000) {
-                val firstPart = Bitmap.createBitmap(bitmap, 0, 0, width, height)
-                val secondPart = Bitmap.createBitmap(bitmap, 0, height, width, height)
-                val thirdPart = Bitmap.createBitmap(bitmap, 0, height * 2, width, height)
-                val fourthPart = Bitmap.createBitmap(bitmap, 0, height * 3, width, height)
 
-                addPage(firstPart, 1)
-                addPage(secondPart, 2)
-                addPage(thirdPart, 3)
-                addPage(fourthPart, 4)
-
-            }
-            else if (8000 < bitmap.height) {
-                val firstPart = Bitmap.createBitmap(bitmap, 0, 0, width, height)
-                val secondPart = Bitmap.createBitmap(bitmap, 0, height, width, height)
-                val thirdPart = Bitmap.createBitmap(bitmap, 0, height * 2, width, height)
-                val fourthPart = Bitmap.createBitmap(bitmap, 0, height * 3, width, height)
-                val fifthPart = Bitmap.createBitmap(bitmap, 0, height * 4, width, height)
-
-                addPage(firstPart, 1)
-                addPage(secondPart, 2)
-                addPage(thirdPart, 3)
-                addPage(fourthPart, 4)
-                addPage(fifthPart, 5)
+            for(i in 1..partList.size){
+                addPage(partList[i-1], i)
             }
 
             val directory = context.filesDir

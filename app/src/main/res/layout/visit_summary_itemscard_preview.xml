@@ -1,0 +1,1168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/openall_btn">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <!--Vitals card-->
+
+
+        <RelativeLayout
+            android:id="@+id/vitalsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginEnd="@dimen/toolbar_margin_left">
+
+            <RelativeLayout
+                android:id="@+id/vitals_header_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides"
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides">
+
+                <ImageView
+                    android:id="@+id/ivVitalIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/vitals_icon" />
+
+                <TextView
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                    android:layout_toEndOf="@+id/ivVitalIcon"
+                    android:text="@string/visit_summary_vitals" />
+
+                <ImageButton
+                    android:id="@+id/btn_up_vitals_header"
+                    android:layout_width="@dimen/fu_icon_width"
+                    android:layout_height="@dimen/fu_icon_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:src="@drawable/ui2_ic_chevron_down" />
+            </RelativeLayout>
+
+            <!--Expanded Vitals-->
+            <RelativeLayout
+                android:id="@+id/vs_vitals_header_expandview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vitals_header_relative">
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Personal Sub-Child-->
+                <RelativeLayout
+                    android:id="@+id/vitals_details_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/divider1"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        style="@style/vs_title_head_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/details"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/imagebutton_edit_vitals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/edit_change_patdetail"
+                        android:paddingHorizontal="4dp">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/edit"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/change"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/vitals_details_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:shrinkColumns="1">
+
+                    <!--height-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/height_cm"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textView_height_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/no_information"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+                    <!--weight-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/weight_kg"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textView_weight_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/no_information"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+                    <!--BMI-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/visit_summary_bmi"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textView_bmi_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/no_information"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+                    <!--BP-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/visit_summary_bp"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textView_bp_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/no_information"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+                    <!--Pulse-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/visit_summary_pulse"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textView_pulse_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/no_information"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+                    <!--Temperature(F)-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/textView_temp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/bullet_gray"
+                                android:drawablePadding="5dp"
+                                android:text="@string/visit_summary_temperature"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/textView_temp_faren"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/bullet_gray"
+                                android:drawablePadding="5dp"
+                                android:text="@string/temperature_f"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="12sp" />
+                        </RelativeLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView_temp_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/no_information"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+
+                    <!--SpO2-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/table_spo2"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textView_pulseox_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/no_information"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+
+                    <!--Respiratory Rate-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:id="@+id/textView_respiratory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/respiratory_rate"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textView_respiratory_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/no_information"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+                    <!--Blood group-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:id="@+id/textView_blood_group_lbl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/blood_group_txt"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textView_blood_group"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/no_information"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+
+                </TableLayout>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+        <!--Visit Reason card-->
+
+        <RelativeLayout
+            android:id="@+id/visitReasonCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vitalsCard"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginEnd="@dimen/toolbar_margin_left">
+
+            <RelativeLayout
+                android:id="@+id/chiefcomplaint_header_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                <ImageView
+                    android:id="@+id/ivNoteIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/visit_reason_icon" />
+
+                <TextView
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                    android:layout_toEndOf="@+id/ivNoteIcon"
+                    android:text="@string/complaint_dialog_title" />
+
+                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/btn_up_visitreason_header"
+                    android:layout_width="@dimen/fu_icon_width"
+                    android:layout_height="@dimen/fu_icon_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:src="@drawable/ui2_ic_chevron_down" />
+            </RelativeLayout>
+
+            <!--Chief Complaint - expanded view-->
+            <RelativeLayout
+                android:id="@+id/vs_visitreason_header_expandview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/chiefcomplaint_header_relative">
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Chief Complaint Headers only title-->
+                <RelativeLayout
+                    android:id="@+id/cc_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/divider2"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        style="@style/vs_title_head_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="@string/chief_complaint"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/imagebutton_edit_complaint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/edit_change_patdetail"
+                        android:paddingHorizontal="4dp">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/edit"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/change"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cc_recyclerview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cc_title"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/cc_recycler_listitem" />
+                <!--
+                                <LinearLayout
+                                    android:id="@+id/cc_recyclerview"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="@dimen/margin_8"
+                                    android:layout_marginStart="@dimen/fu_margin_start"
+                                    android:layout_marginEnd="@dimen/fu_margin_start"
+                                    android:layout_below="@+id/cc_title">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Abdominal Pain"
+                                        android:paddingHorizontal="@dimen/margin_8"
+                                        android:layout_marginEnd="@dimen/margin_8"
+                                        android:paddingVertical="@dimen/margin_4"
+                                        android:textColor="@color/white"
+                                        android:textSize="12sp"
+                                        android:background="@drawable/ui2_common_primary_bg" />
+                                </LinearLayout>
+                -->
+                <!--End-->
+
+                <!--Personal Sub-Child-->
+                <RelativeLayout
+                    android:id="@+id/chiefcomplaint_details_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cc_recyclerview"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:id="@+id/details_personal_txtview2"
+                        style="@style/vs_title_head_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="@string/details"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/cc_details_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/edit_change_patdetail"
+                        android:paddingHorizontal="4dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/edit" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/change"
+                            android:textAlignment="center"
+                            android:textColor="#2E1E91"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_complain_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/details_personal_txtview2"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <!--                cc - data - start-->
+                <TextView
+                    android:id="@+id/textView_content_complaint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/chiefcomplaint_details_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:text="Test: here comes the data in html format."
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+                <!--Chief Complaint details - end-->
+
+
+                <!--Associated symp - start-->
+                <RelativeLayout
+                    android:id="@+id/associ_sym_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView_content_complaint"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:id="@+id/associ_sym_label_tv"
+                        style="@style/vs_title_head_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="@string/associated_symptoms"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/ass_symp_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/edit_change_patdetail"
+                        android:paddingHorizontal="4dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/edit" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/change"
+                            android:textAlignment="center"
+                            android:textColor="#2E1E91"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_associated_sympt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/associ_sym_relative"
+                    android:layout_marginHorizontal="@dimen/margin_24"
+                    android:layout_marginVertical="@dimen/margin_16"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <!--Patient - reports-->
+                <RelativeLayout
+                    android:id="@+id/reports_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/associ_sym_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/pat_reports_txtview1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/patient_reports"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/patientReports_txtview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pat_reports_txtview1"
+                        android:layout_marginStart="@dimen/margin_10"
+                        android:layout_marginTop="4dp"
+                        android:text="Test: Nausea, Anorexia, Constipation, Abdominal distinction / bloating, passing GAS, Restlessness, Injury, Breathlessness, Wheezing, Shortness of breath, Pain/Tightness of chest, Hemoptysis, Hoarseness, Naval congestion/Stuffy nose, Runny nose, Recurrent Diarrhea."
+                        android:textColor="@color/textview_color"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <!--Patient - Denies-->
+                <RelativeLayout
+                    android:id="@+id/denies_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/reports_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/margin_16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/pat_denies_txtview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/patient_denies"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/patientDenies_txtview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pat_denies_txtview"
+                        android:layout_marginStart="@dimen/margin_10"
+                        android:layout_marginTop="4dp"
+                        android:text="Test: Vomiting, Diarrhea, Fever, Belching/Burping, Blood in stool, change in frequency of urination, Color change in urine, Hiccups, Vaginal discharge(describe), Burning felling in a throat at night/early in the morning, Post nasal drip, Recent severe stress."
+                        android:textColor="@color/textview_color"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+
+                <!--Associated symp - end -->
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+        <!--    Phys exam card-->
+
+        <RelativeLayout
+            android:id="@+id/physExamCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/visitReasonCard"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginEnd="@dimen/toolbar_margin_left">
+
+            <RelativeLayout
+                android:id="@+id/physExam_header_relative"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                <ImageView
+                    android:id="@+id/vs_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/phys_exam_icon" />
+
+                <TextView
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                    android:layout_toEndOf="@+id/vs_icon"
+                    android:text="@string/physical_examination" />
+
+                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/btn_up_phyexam_header"
+                    android:layout_width="@dimen/fu_icon_width"
+                    android:layout_height="@dimen/fu_icon_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:src="@drawable/ui2_ic_chevron_down" />
+            </RelativeLayout>
+
+            <!--Expanable View-->
+            <RelativeLayout
+                android:id="@+id/vs_phyexam_header_expandview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/physExam_header_relative">
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Personal Sub-Child-->
+                <RelativeLayout
+                    android:id="@+id/physexam_details_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/divider"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        style="@style/vs_title_head_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="@string/general_exams"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/imagebutton_edit_physexam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/edit_change_patdetail"
+                        android:paddingHorizontal="4dp">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/edit"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/change"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_physical_exam_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_16"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/physFindingsView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/physexam_details_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:text="here comes the phys exam data in html format."
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recy_physexam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/physFindingsView"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:reverseLayout="true"
+                    tools:listitem="@layout/general_exam_images_listitem" />
+
+                <TextView
+                    android:id="@+id/physcial_examination_download"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recy_physexam"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:fontFamily="@font/lato_medium"
+                    android:text="@string/click_to_download_the_images"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                    android:visibility="visible" />
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <!--    Medical History Card-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/physExamCard"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginEnd="@dimen/toolbar_margin_left">
+
+            <RelativeLayout
+                android:id="@+id/pathistory_header_relative"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                <ImageView
+                    android:id="@+id/ivSummeryMedIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/med_history_icon" />
+
+                <TextView
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_toEndOf="@+id/ivSummeryMedIcon"
+                    android:text="@string/visit_summary_medical_history" />
+
+                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/btn_up_medhist_header"
+                    android:layout_width="@dimen/fu_icon_width"
+                    android:layout_height="@dimen/fu_icon_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:src="@drawable/ui2_ic_chevron_down" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/vs_medhist_header_expandview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pathistory_header_relative">
+
+                <View
+                    android:id="@+id/divider34"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Personal Sub-Child-->
+                <RelativeLayout
+                    android:id="@+id/pathist_details_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/divider34"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:id="@+id/details_personal_txtview21"
+                        style="@style/vs_title_head_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="@string/button_history"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/imagebutton_edit_pathist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/edit_change_patdetail"
+                        android:paddingHorizontal="4dp">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/edit"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/change"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_patient_history_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/details_personal_txtview21"
+
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/textView_content_pathist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pathist_details_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:text="Test: here comes the patient history data in html format."
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+
+                <!--Fam History-->
+                <!--Personal Sub-Child-->
+                <RelativeLayout
+                    android:id="@+id/famhist_details_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView_content_pathist"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:id="@+id/details_personal_txtview55"
+                        style="@style/vs_title_head_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="@string/visit_summary_family_history"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/imagebutton_edit_famhist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/edit_change_patdetail"
+                        android:paddingHorizontal="4dp">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/edit"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/change"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_family_history_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/details_personal_txtview55"
+                        android:layout_marginBottom="@dimen/margin_16"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/pathist_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/famhist_details_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/do_you_have_family_history"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textView_content_famhist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pathist_subtitle"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:text="Test: here comes data with bullets...."
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</ScrollView>
