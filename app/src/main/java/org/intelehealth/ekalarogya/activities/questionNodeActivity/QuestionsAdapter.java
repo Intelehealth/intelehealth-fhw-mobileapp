@@ -1,5 +1,6 @@
 package org.intelehealth.ekalarogya.activities.questionNodeActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -12,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -23,17 +23,17 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.ImmutableList;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.ekalarogya.activities.questionNodeActivity.adapters.AssociatedSysAdapter;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.knowledgeEngine.Node;
 import org.intelehealth.ekalarogya.knowledgeEngine.PhysicalExam;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Sagar Shimpi
@@ -50,6 +50,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     String _mCallingClass;
     boolean isAssociateSym;
     boolean showPopUp;
+    private boolean isForNCDProtocol = false;
 
 
     public void updateNode(Node currentNode) {
@@ -65,8 +66,21 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
     @Override
     public void setVisibility(boolean data) {
-        showPopUp=data;
+        showPopUp = data;
     }
+
+    public boolean isForNCDProtocol() {
+        return isForNCDProtocol;
+    }
+
+    public void setForNCDProtocol(boolean forNCDProtocol) {
+        isForNCDProtocol = forNCDProtocol;
+    }
+
+    public int getCurrentPosition() {
+        return pos;
+    }
+
 
     public interface FabClickListener {
         void fabClickedAtEnd();
@@ -166,14 +180,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         }
 
 
-
         holder.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (showPopUp){
-                    Toast.makeText(context,"Select all the answers",Toast.LENGTH_LONG).show();
+                if (showPopUp) {
+                    Toast.makeText(context, "Select all the answers", Toast.LENGTH_LONG).show();
 
-                }else {
+                } else {
                     _mListener.fabClickedAtEnd();
                 }
 
@@ -209,6 +222,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             }
         }
     }
+
     @Override
     public int getItemViewType(int position) {
         pos = position;
@@ -249,7 +263,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 groupNode = currentNode;
                 if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                     chipList = currentNode.getOptionsList().get(0).getOptionsList();
-                }else{
+                } else {
                     Node node = currentNode.getOptionsList().get(pos);
                     for (int i = 0; i < node.getOptionsList().size(); i++) {
                         chipList.add(node.getOptionsList().get(i));
@@ -261,15 +275,15 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             int groupPos = (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName()) ||
                     (isAssociateSym && currentNode.getOptionsList().size() == 1)) ? 0 : pos;
 
-            if(groupNode.getOption(groupPos).getText().equalsIgnoreCase("Associated symptoms")
+            if (groupNode.getOption(groupPos).getText().equalsIgnoreCase("Associated symptoms")
                     || groupNode.getOption(groupPos).getText().equalsIgnoreCase("जुड़े लक्षण")
                     || groupNode.getOption(groupPos).getText().equalsIgnoreCase("संबद्ध लक्षणे")
                     || groupNode.getOption(groupPos).getText().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
                     || groupNode.getOption(groupPos).getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")) {
-                associatedSysAdapter=new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
+                associatedSysAdapter = new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
                 rvChips.setAdapter(associatedSysAdapter);
 
-            }   else {
+            } else {
                 chipsAdapter = new ComplaintNodeListAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
                 rvChips.setAdapter(chipsAdapter);
             }
@@ -290,6 +304,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         private QuestionsAdapter.FabClickListener _mListener;
         String _mCallingClass;
         private int physExamNodePos;
+
 
         public ComplaintNodeListAdapter(Context context, List<Node> nodes, Node groupNode, int groupPos,
                                         QuestionsAdapter.FabClickListener listener, String callingClass, int nodePos) {
@@ -318,6 +333,19 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             itemViewHolder.mChipText.setText(thisNode.findDisplay());
 
             Node groupNode = mGroupNode.getOption(mGroupPos);
+            // TODO : need to extract this logic form adapted
+            if(isForNCDProtocol){
+                if(thisNode.getInputType()==null || thisNode.getInputType().isEmpty()){
+                    if(thisNode.getPop_up()!=null && !thisNode.getPop_up().isEmpty()){
+                        //thisNode.setSelected(true);
+                        //thisNode.generatePopUpFromCurrentNode((Activity) context);
+                        thisNode.setLanguage(thisNode.getPop_up());
+                        thisNode.setSelected(true);
+                        groupNode.setSelected(true);
+                        thisNode.setDataCapture(true);
+                    }
+                }
+            }
 
             if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())
                     || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected())
@@ -327,12 +355,17 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                     || thisNode.isSelected()) {
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                 itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+                if (thisNode.isDataCapture())
+                    itemViewHolder.mChipText.setText(thisNode.getLanguage());
+                else
+                    itemViewHolder.mChipText.setText(thisNode.findDisplay());
             } else {
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                 itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
                 //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
                 //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
             }
+
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -422,9 +455,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                             }
                             _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
                             notifyDataSetChanged();
+
                         }
-                    }
-                    else {
+                    } else {
                         Toast.makeText(mContext, "Some issue with the mindmaps.", Toast.LENGTH_SHORT).show();
                     }
 
@@ -470,6 +503,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         public int getItemCount() {
             return (mNodesFilter != null ? mNodesFilter.size() : 0);
         }
+
 
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             TextView mChipText;

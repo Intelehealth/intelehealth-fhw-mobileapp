@@ -1172,6 +1172,8 @@
     <string name="title_un_uploaded_visit_reminder">আন-আপলোড কৰা ভ্ৰমণ সোঁৱৰাই দিয়া</string>
     <string name="title_un_uploaded_visit_reminder_desc">নমস্কাৰ, কিছুমান ভ্ৰমণ আছে যিবোৰ এতিয়াও আপলোড কৰা হোৱা নাই, অনুগ্ৰহ কৰি ব্যৱস্থা লওক।</string>
     <string name="you_have_unuploaded_visits">আপোনাৰ %1$s আন-আপল\'ড কৰা ভ্ৰমণ আছে।</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
 
     <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">আপোনাৰ পৰিয়ালৰ সদস্য হোৱাটছএপ একাউণ্টৰ লগত জড়িত মোবাইল নম্বৰটো কি?</string>
     <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">আপোনাৰ ব্যক্তিগত হোৱাটছএপ একাউণ্টৰ লগত জড়িত মোবাইল নম্বৰটো কি?</string>
