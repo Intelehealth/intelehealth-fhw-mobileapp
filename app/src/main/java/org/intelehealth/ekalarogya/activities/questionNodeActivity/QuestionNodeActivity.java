@@ -477,7 +477,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     throw new RuntimeException(e);
                 }
 
-                if (intentAdviceFrom.equalsIgnoreCase("Sevika")) {
+                if (intentAdviceFrom != null && intentAdviceFrom.equalsIgnoreCase("Sevika")) {
                     Intent intent = new Intent(QuestionNodeActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
@@ -489,36 +489,41 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("tag", intentTag);
                     intent.putExtra("advicefrom", intentAdviceFrom);
                     startActivity(intent);
-                } else if (intentTag != null && intentTag.equals("edit")) {
-                    Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
-                    intent.putExtra("patientUuid", patientUuid);
-                    intent.putExtra("visitUuid", visitUuid);
-                    intent.putExtra("encounterUuidVitals", encounterVitals);
-                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("tag", intentTag);
-
-                    Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-                    sessionManager.setVisitSummary(patientUuid, selectedExams);
-
-                    startActivity(intent);
                 } else {
+                    Intent intent;
 
-                    Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
-                    intent.putExtra("patientUuid", patientUuid);
-                    intent.putExtra("visitUuid", visitUuid);
-                    intent.putExtra("encounterUuidVitals", encounterVitals);
-                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-                    intent.putExtra("tag", intentTag);
-                    Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-                    sessionManager.setVisitSummary(patientUuid, selectedExams);
+                    if (intentTag != null && intentTag.equals("edit")) {
+                        intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("advicefrom", intentAdviceFrom);
+                        intent.putExtra("tag", intentTag);
 
+                        Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                        sessionManager.setVisitSummary(patientUuid, selectedExams);
+
+                    } else {
+
+                        intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent.putExtra("advicefrom", intentAdviceFrom);
+                        intent.putExtra("tag", intentTag);
+                        Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                        sessionManager.setVisitSummary(patientUuid, selectedExams);
+
+                    }
                     startActivity(intent);
                 }
             }

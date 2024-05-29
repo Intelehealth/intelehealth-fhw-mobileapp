@@ -372,6 +372,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         intent.putExtra("name", patientName);
                         intent.putExtra("advicefrom", intentAdviceFrom);
                         intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent.putExtra("advicefrom", intentAdviceFrom);
                         if (intentTag != null) {
                             intent.putExtra("tag", intentTag);
                         }
