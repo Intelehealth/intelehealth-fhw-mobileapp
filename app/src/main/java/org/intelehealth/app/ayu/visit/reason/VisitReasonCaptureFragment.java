@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
@@ -351,6 +352,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
             for (String s : temp) {
                 String fileName = s.split(".json")[0];
+                Timber.tag("VisitReasonCaptureFragment").d("File name=>%s", fileName);
                 ReasonData reasonData = new ReasonData();
                 reasonData.setReasonName(fileName);
                 reasonData.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), fileName));
