@@ -23,6 +23,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -877,7 +878,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private void onPatientCreateClicked() {
         uuid = UUID.randomUUID().toString();
         Log.v(TAG, "reltion: " + patientID_edit + ", " + patientdto.toString());
-        if (!patient_detail && patientdto.getUuid().isEmpty()) {
+        if (!patient_detail && TextUtils.isEmpty(patientdto.getUuid())) {
             patientdto.setUuid(uuid);
         }else {
             patientdto.setIsExist(true);

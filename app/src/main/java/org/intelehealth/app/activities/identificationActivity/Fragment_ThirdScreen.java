@@ -705,7 +705,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
                 isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
             } else {
-                if (patientDTO.getIsExist()) {
+                if (patientDTO.getIsExist()!=null && patientDTO.getIsExist()) {
                     isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
                     isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
                 } else {
