@@ -24,7 +24,7 @@ import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 public class VisitAttributeListDAO {
     private long createdRecordsCount = 0;
 
-    public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS) throws DAOException {
+    public boolean insertVisitAttributeList(List<VisitAttributeDTO> visitAttributeDTOS) throws DAOException {
 
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -62,7 +62,9 @@ public class VisitAttributeListDAO {
             values.put("sync", "1");
 
             if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d")
-                    || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(UuidDictionary.ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK)) {
+                    || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(UuidDictionary.ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK)
+                    || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(AppConstants.IS_NCD_VISIT_ATTRIBUTE)
+            ) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 if (createdRecordsCount != -1) {
                     Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
