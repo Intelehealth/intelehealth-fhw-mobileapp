@@ -16,7 +16,7 @@ import org.intelehealth.klivekit.utils.extensions.viewModelByFactory
  * Mob   : +919727206702
  **/
 abstract class CoreCallLogActivity : AppCompatActivity() {
-    protected val callLogViewModel: CallLogViewModel by viewModelByFactory {
+    private val callLogViewModel: CallLogViewModel by viewModelByFactory {
         CallLogViewModel(CallLogRepository(WebRtcDatabase.getInstance(this).rtcCallLogDao()))
     }
 

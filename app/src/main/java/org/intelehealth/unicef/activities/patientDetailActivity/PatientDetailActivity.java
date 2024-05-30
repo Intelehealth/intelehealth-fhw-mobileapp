@@ -78,6 +78,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.bumptech.glide.Glide;
@@ -417,7 +418,12 @@ public class PatientDetailActivity extends LocalConfigActivity {
 
     @Override
     protected void onStart() {
-        registerReceiver(reMyreceive, filter);
+        ContextCompat.registerReceiver(
+                this,
+                reMyreceive,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
         super.onStart();
     }
 

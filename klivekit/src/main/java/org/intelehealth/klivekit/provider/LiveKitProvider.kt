@@ -12,6 +12,7 @@ import io.livekit.android.room.participant.VideoTrackPublishDefaults
 import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalVideoTrackOptions
+import io.livekit.android.room.track.VideoPreset169
 import io.livekit.android.room.track.VideoPreset43
 import org.intelehealth.klivekit.utils.AudioType
 import org.webrtc.EglBase
@@ -57,7 +58,7 @@ object LiveKitProvider {
     private fun provideVideoPublishTrack() = VideoTrackPublishDefaults(
         videoEncoding = VideoPreset43.VGA.encoding
 //        videoEncoding = VideoPreset169.VGA.encoding,
-//        videoCodec = VideoCodec.H264.codecName
+//            videoCodec = VideoCodec.VP8.codecName
     )
 
     private fun provideRoomOptions(
@@ -90,13 +91,5 @@ object LiveKitProvider {
             )
         )
     )
-
-    private fun AudioSwitchHandler.updateAudioSetting(audioType: AudioType) {
-        selectDevice(getAudioDevice(this, audioType))
-        start()
-    }
-
-    private fun getAudioDevice(audioHandler: AudioSwitchHandler, audioType: AudioType) =
-        audioHandler.availableAudioDevices.find { it.name == audioType.value }
 
 }

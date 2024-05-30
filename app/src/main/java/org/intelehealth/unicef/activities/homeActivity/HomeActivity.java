@@ -54,6 +54,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -895,7 +896,12 @@ public class HomeActivity extends LocalConfigActivity {
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(
+                this,
+                syncBroadcastReceiver,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
         showBadge();
     }
 

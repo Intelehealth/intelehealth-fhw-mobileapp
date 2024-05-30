@@ -53,15 +53,10 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 }.also { arg ->
                     if (isAppInForeground()) {
                         arg.callMode = CallMode.INCOMING
-                        arg.className = UnicefVideoActivity::class.java.name
                         CallHandlerUtils.saveIncomingCall(context, arg)
                         context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
                     } else {
-                        CallHandlerUtils.operateIncomingCall(
-                            it,
-                            arg,
-                            UnicefVideoActivity::class.java
-                        )
+                        CallHandlerUtils.operateIncomingCall(it, arg)
                     }
                 }
             } else {

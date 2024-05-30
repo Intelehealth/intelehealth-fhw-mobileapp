@@ -12,7 +12,7 @@ import org.intelehealth.klivekit.chat.model.ChatMessage
 import org.intelehealth.klivekit.utils.getApplicationName
 import java.util.Locale
 
-@Database(entities = [ChatMessage::class, RtcCallLog::class], version = 1)
+@Database(entities = [ChatMessage::class, RtcCallLog::class], version = 1, exportSchema = false)
 abstract class WebRtcDatabase : RoomDatabase() {
     abstract fun chatDao(): ChatDao
 

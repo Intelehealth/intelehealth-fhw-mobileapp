@@ -11,6 +11,8 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
@@ -102,7 +104,8 @@ public class AwsS3Utils {
                     Log.v("AwsS3Utils", "saveFileToS3Cloud - fileName : " + fileName);
                     //Log.v("AwsS3Utils", "saveFileToS3Cloud - mimeType : " + mimeType);
                     BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(propertyReader.getAwsAccessID(), propertyReader.getAwsSecretKey());
-                    AmazonS3Client amazonS3Client = new AmazonS3Client(basicAWSCredentials);
+
+                    AmazonS3Client amazonS3Client = new AmazonS3Client(basicAWSCredentials, Region.getRegion(Regions.DEFAULT_REGION));
 
                     PutObjectRequest por = new PutObjectRequest(propertyReader.getAwsS3BucketName(), fileName, tempFile);
                     //new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/"+PICTURE_NAME));

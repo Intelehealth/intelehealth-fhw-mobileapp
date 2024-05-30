@@ -3,8 +3,6 @@ package org.intelehealth.klivekit.call.ui.activity
 import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.media.AudioDeviceInfo
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.Ringtone
 import android.media.RingtoneManager
@@ -58,19 +56,31 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     protected lateinit var args: RtcArgs
     private var isDeclined: Boolean = false
     protected val videoCallViewModel: VideoCallViewModel by viewModelByFactory {
-        args = if (intent.hasExtra(RTC_ARGS)) {
-            IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-                ?: throw NullPointerException("arg is null!")
-        } else RtcArgs.dummy()
+        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+                ?: getDataFromSharedPref()
 
         VideoCallViewModel(args.url ?: "", args.appToken ?: "", application)
     }
 
     private val socketViewModel: SocketViewModel by viewModelByFactory {
         args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-            ?: throw NullPointerException("args is null!")
+                ?: getDataFromSharedPref()
 //        val url: String = Constants.BASE_URL + "?userId=" + args.nurseId + "&name=" + args.nurseId
         SocketViewModel(args)
+    }
+
+    /**
+     * getting args from shared pref
+     * if in case rtc args is null
+     */
+    private fun getDataFromSharedPref(): RtcArgs {
+        val preferenceHelper = PreferenceHelper(RtcEngine.appContext)
+        val messageBody = preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, "")
+        if (messageBody.isEmpty()) {
+            throw NullPointerException("arg is null!")
+        } else {
+            return Gson().fromJson(messageBody, RtcArgs::class.java)
+        }
     }
 
     private val permissionRegistry: PermissionRegistry by lazy {
@@ -81,8 +91,11 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         PreferenceHelper(applicationContext)
     }
 
-    private val neededPermissions =
-        arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
+    private val neededPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) arrayOf(
+        Manifest.permission.MANAGE_OWN_CALLS,
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.CAMERA
+    ) else arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
 
 
     // initiate the incoming call ringtone
@@ -91,9 +104,9 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         RingtoneManager.getRingtone(applicationContext, notification)
     }
 
-    private val audioManager: AudioManager by lazy {
-        applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-    }
+//    private val audioManager: AudioManager by lazy {
+//        applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+//    }
 
 //    private val mediaPlayer: MediaPlayer by lazy {
 //        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
@@ -103,11 +116,19 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 //    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.addFlags(
-            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        } else {
+            this.window.addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            )
+        }
+        this.window.addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
         )
+
         super.onCreate(savedInstanceState)
         videoCallViewModel.room.initVideoRenderer(getLocalVideoRender())
         videoCallViewModel.room.initVideoRenderer(getRemoteVideoRender())
@@ -115,22 +136,6 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         initView()
 //        observeLiveData()
 //        observerSocketEvent()
-        setAudioHighVolume()
-    }
-
-    private fun setAudioHighVolume() {
-//        audioManager.setStreamVolume(
-//            AudioManager.MODE_IN_COMMUNICATION,
-//            audioManager.getStreamMaxVolume(AudioManager.MODE_IN_COMMUNICATION),
-//            0
-//        )
-//
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            audioManager.availableCommunicationDevices.firstOrNull { it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER }
-                ?.let { audioManager.setCommunicationDevice(it) }
-        } else {
-            audioManager.isSpeakerphoneOn = true
-        }
     }
 
     private fun initView() {
@@ -169,22 +174,23 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.localCameraMirrorStatus.observe(this) {}
         videoCallViewModel.remoteParticipantDisconnected.observe(this) {
             if (it && isDeclined.not()) sayBye(
-                getString(R.string.left_the_call, args.doctorName)
+                getString(
+                    R.string.left_the_call, args.doctorName
+                )
             )
         }
         videoCallViewModel.cameraPosition.observe(this) { onCameraPositionChanged(it) }
         socketViewModel.eventCallRejectByDoctor.observe(this) {
             if (it && isDeclined.not()) sayBye(
                 getString(
-                    R.string.call_rejected_by,
-                    args.doctorName
+                    R.string.call_rejected_by, args.doctorName
                 )
             )
         }
         socketViewModel.eventCallCancelByDoctor.observe(this) {
             Timber.e { "args ${args.toJson()}" }
-            if (it && args.isIncomingCall() && isDeclined.not()
-                && args.isCallAccepted().not() && args.isMissedCall().not()
+            if (it && args.isIncomingCall() && isDeclined.not() && args.isCallAccepted()
+                    .not() && args.isMissedCall().not()
             ) {
                 args.callStatus = CallStatus.MISSED
                 CallHandlerUtils.notifyCallNotification(args, this)
@@ -214,6 +220,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             Timber.e { "Call time up ${Calendar.getInstance().time}" }
             videoCallViewModel.stopCallTimeoutTimer()
             showToast(getString(R.string.call_time_up))
+            if (args.isIncomingCall()) {
+                args.callStatus = CallStatus.MISSED
+                CallHandlerUtils.notifyCallNotification(args, this@CoreVideoCallActivity)
+            }
         }
     }
 
@@ -270,6 +280,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     private fun extractRtcParams() {
+        setupRtcArgsSharedPref()
         intent ?: return
         if (intent.hasExtra(RTC_ARGS)) {
             IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)?.let {
@@ -293,6 +304,19 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * setting up rtc args if its empty
+     */
+    private fun setupRtcArgsSharedPref() {
+        val intent = intent ?: Intent()
+        if (!intent.hasExtra(RTC_ARGS)) {
+            intent.putExtra(
+                RTC_ARGS,
+                Gson().fromJson(preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, ""), RtcArgs::class.java)
+            )
+        }
+    }
+
     private fun handleCallByStatus() {
         if (args.isCallOnGoing()) {
             return
@@ -304,14 +328,14 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             onIncomingCall()
             stopService(
                 Intent(
-                    this@CoreVideoCallActivity,
-                    HeadsUpNotificationService::class.java
+                    this@CoreVideoCallActivity, HeadsUpNotificationService::class.java
                 )
             )
         } else onGoingCall()
     }
 
     private fun startConnecting() {
+        Timber.d { "permissions ${neededPermissions.size}" }
         permissionRegistry.requestPermissions(neededPermissions).observe(this) {
             if (it.allGranted()) {
                 startCallTimer()
@@ -323,7 +347,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     open fun playRingtone() {
 //        mediaPlayer.prepare()
 //        mediaPlayer.start()
-        if (!ringtone.isPlaying) {
+        if (!ringtone.isPlaying && args.sound) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 ringtone.isLooping = true
             }
@@ -334,7 +358,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     open fun stopRingtone() {
 //        Timber.e { "stopRingtone ${mediaPlayer.isPlaying}" }
 //        if (mediaPlayer.isPlaying) mediaPlayer.stop()
-//        Timber.e { "stopRingtone ${ringtone.isPlaying}" }
+        Timber.e { "stopRingtone ${ringtone.isPlaying}" }
         if (ringtone.isPlaying) ringtone.stop()
     }
 

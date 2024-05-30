@@ -86,4 +86,5 @@
     <string name="select_spinner">ଚୟନ କରିବା</string>
     <string name="call_swipe_up">ଆଘାତ ହେବା</string>
     <string name="release_now">ଏବେ ଖଲାସ ହେବା</string>
+    <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
 </resources>

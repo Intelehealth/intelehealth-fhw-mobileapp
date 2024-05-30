@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
-import androidx.core.graphics.rotationMatrix
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -476,7 +475,6 @@ open class CallViewModel(
 
     // Create and publish local audio/video tracks
     private suspend fun setupLocalTrack() {
-        Timber.d { "setupLocalTrack" }
         withContext(coroutineContext) {
             val localParticipant = room.localParticipant
             localParticipant.setMicrophoneEnabled(true)
@@ -497,12 +495,12 @@ open class CallViewModel(
             )
 
             if (room.audioHandler is AudioSwitchHandler) {
-                audioHandler = room.audioHandler as AudioSwitchHandler
-                Timber.e { "Before Selected audio =>${audioHandler.selectedAudioDevice?.name}" }
-                updateAudioSetting(SPEAKER_PHONE)
+                audioHandler = room.audioHandler as AudioSwitchHandler;
             }
 
-//            Timber.e { "After Selected audio => ${audioHandler.selectedAudioDevice?.name}" }
+            Timber.e { "Before Selected audio => ${audioHandler.selectedAudioDevice?.name}" }
+            updateAudioSetting(SPEAKER_PHONE)
+            Timber.e { "After Selected audio => ${audioHandler.selectedAudioDevice?.name}" }
 //            val audioTrack = localParticipant.createAudioTrack(
 //                "audio",
 //                this@CallViewModel.options.audioTrackCaptureDefaults!!

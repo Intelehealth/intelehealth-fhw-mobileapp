@@ -970,7 +970,12 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(
+                context,
+                syncBroadcastReceiver,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
 //        requestPermission();
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();

@@ -14,6 +14,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.databinding.AnimCallActionButtonBinding
 
@@ -35,10 +36,10 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     private var arrowVisibility = true
 
     interface SwipeEventListener {
-        fun onTap(view: View) {}
-        fun onReleased(view: View) {}
-        fun onSwipe(view: View) {}
-        fun onCompleted(view: View) {}
+        fun onTap(view: View)
+        fun onReleased(view: View)
+        fun onSwipe(view: View)
+        fun onCompleted(view: View)
     }
 
     constructor(context: Context) : this(context, null, 0)
@@ -110,6 +111,14 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                 }
 
                 MotionEvent.ACTION_UP -> {
+                    Timber.tag(TAG).d("ACTION_UP")
+                    if (swipe > MIN_SWIPE_DISTANCE) {
+                        Timber.tag(TAG).d("$swipe > $MIN_SWIPE_DISTANCE")
+                        if (::swipeEventListener.isInitialized) swipeEventListener.onCompleted(this)
+                    } else {
+                        if (::swipeEventListener.isInitialized) swipeEventListener.onReleased(this)
+                    }
+
                     view.animate().alpha(1f)
                         .y(viewY)
                         .scaleX(1.0f)
@@ -118,8 +127,6 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                     binding.tvSwipeHint.isInvisible = true
                     binding.swipeUpIndicator.isVisible = arrowVisibility
                     bounceAnimator.start()
-                    if (::swipeEventListener.isInitialized) swipeEventListener.onReleased(this)
-                    complete(swipe)
                 }
 
                 MotionEvent.ACTION_DOWN -> {
@@ -136,15 +143,12 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                 }
             }
 
-            view.performClick()
         }
         return true
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun complete(swiped: Float) {
         if (swiped > MIN_SWIPE_DISTANCE) {
-            binding.fabAction.setOnTouchListener(null)
             if (::swipeEventListener.isInitialized) swipeEventListener.onCompleted(this)
         }
     }

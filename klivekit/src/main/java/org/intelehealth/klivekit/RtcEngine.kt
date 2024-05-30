@@ -5,7 +5,6 @@ import android.content.Context
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.livekit.android.ConnectOptions
-import io.livekit.android.audio.AudioSwitchHandler
 import io.livekit.android.room.Room
 import org.intelehealth.klivekit.call.ui.activity.CallLogActivity
 import org.intelehealth.klivekit.call.ui.activity.VideoCallActivity
@@ -74,6 +73,7 @@ class RtcEngine private constructor(
     fun saveConfig(context: Context) {
         val preferenceHelper = PreferenceHelper(context)
         preferenceHelper.save(RTC_CONFIG, Gson().toJson(this))
+        appContext = context
     }
 
     fun toJson(): String = Gson().toJson(this)
@@ -85,10 +85,6 @@ class RtcEngine private constructor(
         @SuppressLint("StaticFieldLeak")
         @Volatile
         var room: Room? = null
-
-//        @SuppressLint("StaticFieldLeak")
-//        @JvmStatic
-//        val audioHandler: AudioSwitchHandler? = null
 
         fun getConfig(context: Context): RtcEngine? {
             val preferenceHelper = PreferenceHelper(context)
@@ -115,5 +111,7 @@ class RtcEngine private constructor(
         }
 
         fun leaveRoom() = room?.disconnect() ?: Timber.e { "Room not disconnect" }
+
+        lateinit var appContext: Context
     }
 }

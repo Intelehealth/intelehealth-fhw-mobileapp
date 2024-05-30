@@ -30,7 +30,7 @@ object IntentUtils {
      * @return Intent ChatCallActivity intent to start
      */
     fun getCallActivityIntent(messageBody: RtcArgs, context: Context): Intent? {
-        return messageBody.className?.let {
+        return RtcEngine.getConfig(context)?.callIntentClass?.let {
             val callClass: Class<*> = Class.forName(it)
             return@let Intent(context, callClass).apply {
                 putExtra(RTC_ARGS, messageBody)

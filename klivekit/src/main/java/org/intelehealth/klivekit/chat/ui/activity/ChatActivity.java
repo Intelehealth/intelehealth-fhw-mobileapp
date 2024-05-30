@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,6 +43,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amazonaws.HttpMethod;
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;
@@ -54,6 +56,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
@@ -116,9 +119,11 @@ public class ChatActivity extends AppCompatActivity {
 
 
     protected void setupActionBar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(mPatientName);
-//        getSupportActionBar().setSubtitle(m);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(mPatientName);
+            getSupportActionBar().setSubtitle(openMrsId);
+        }
     }
 
     protected void initiateView() {
@@ -362,7 +367,12 @@ public class ChatActivity extends AppCompatActivity {
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
-        registerReceiver(mBroadcastReceiver, filterSend);
+        ContextCompat.registerReceiver(
+                this,
+                mBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     private void showCharLimitToast() {
@@ -375,7 +385,8 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() > 0 && charSequence.length() >= 1000) {
-                    Toast.makeText(ChatActivity.this, "You reach to max limit of 1000 chars", Toast.LENGTH_LONG).show();
+                    String alertMsg = getString(R.string.chat_text_reach_to_limit);
+                    Toast.makeText(ChatActivity.this, alertMsg, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -405,7 +416,9 @@ public class ChatActivity extends AppCompatActivity {
         mEmptyTextView.setText(getString(R.string.loading));
         String url = Constants.GET_ALL_MESSAGE_URL + mFromUUId + "/" + mToUUId + "/" + mPatientUUid;
         Log.v(TAG, "getAllMessages - " + url);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.v(TAG, "getAllMessages -response - " + response.toString());
@@ -525,31 +538,26 @@ public class ChatActivity extends AppCompatActivity {
 //        mChatListingAdapter.refresh(response.getData());
         Log.v(TAG, "postMessages - inputJsonObject - " + chatMessage.toJson());
         try {
+            Log.d(TAG, "postMessages: URL=>" + Constants.SEND_MESSAGE_URL);
             JsonObjectRequest objectRequest = new JsonObjectRequest(
                     Request.Method.POST,
                     Constants.SEND_MESSAGE_URL,
-                    new JSONObject(chatMessage.toJson()), new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Log.v(TAG, "postMessages - response - " + response.toString());
-                    try {
-                        ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
-                        mMessageEditText.setText("");
-//                        getAllMessages(false);
-                        msg.setMessageStatus(MessageStatus.SENT.getValue());
-                        mChatListingAdapter.updatedMessage(msg);
-                        mLoadingLinearLayout.setVisibility(View.GONE);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.v(TAG, "postMessages - onErrorResponse - " + error.getMessage());
+                    new JSONObject(chatMessage.toJson()), response -> {
+                Log.v(TAG, "postMessages - response - " + response.toString());
+                try {
+                    ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
+                    mMessageEditText.setText("");
+                    //                        getAllMessages(false);
+                    msg.setMessageStatus(MessageStatus.SENT.getValue());
+                    mChatListingAdapter.updatedMessage(msg);
                     mLoadingLinearLayout.setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
+
+            }, error -> {
+                Log.e(TAG, "postMessages - onErrorResponse - " + error.getMessage());
+                mLoadingLinearLayout.setVisibility(View.GONE);
             });
             mRequestQueue.add(objectRequest);
         } catch (JSONException e) {
@@ -915,11 +923,13 @@ public class ChatActivity extends AppCompatActivity {
         if (url.endsWith(".pdf")) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
         } else {
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                    .asDrawable().sizeMultiplier(0.1f);
             Glide.with(this)
                     .load(url)
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .thumbnail(0.1f)
+                    .thumbnail(requestBuilder)
                     .into((ImageView) findViewById(R.id.preview_img));
             findViewById(R.id.image_preview_ll).setVisibility(View.VISIBLE);
         }

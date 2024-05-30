@@ -6,6 +6,9 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -18,10 +21,13 @@ import android.os.IBinder
 import android.os.PowerManager
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.os.VibratorManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.IntentCompat
 import com.github.ajalt.timberkt.Timber
+import com.google.gson.Gson
 import io.socket.emitter.Emitter
+import org.intelehealth.klivekit.RtcEngine
 import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallConstants
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
@@ -29,9 +35,11 @@ import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.call.utils.CallNotificationHandler
 import org.intelehealth.klivekit.call.utils.IntentUtils
+import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
+import org.intelehealth.klivekit.utils.extensions.startSupportedForeground
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.random.Random
@@ -72,7 +80,14 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     }
 
     private val vibratorService by lazy {
-        getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager =
+                getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(VIBRATOR_SERVICE) as Vibrator
+        }
     }
 
     private val powerManager by lazy {
@@ -90,8 +105,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
     private val wakeLock: PowerManager.WakeLock by lazy {
         powerManager.newWakeLock(
-            PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-            "lock:proximity_screen_off"
+            PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "lock:proximity_screen_off"
         )
     }
 
@@ -112,11 +126,9 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     private fun emitter(event: String) = Emitter.Listener {
         when (event) {
 
-            SocketManager.EVENT_NO_ANSWER,
-            SocketManager.EVENT_CALL_REJECT_BY_DR -> stopSelf()
+            SocketManager.EVENT_NO_ANSWER, SocketManager.EVENT_CALL_REJECT_BY_DR -> stopSelf()
 
-            SocketManager.EVENT_CALL_TIME_UP,
-            SocketManager.EVENT_CALL_CANCEL_BY_DR -> {
+            SocketManager.EVENT_CALL_TIME_UP, SocketManager.EVENT_CALL_CANCEL_BY_DR -> {
                 if (!isDuplicateCancelEvent) {
                     isDuplicateCancelEvent = true
                     rtcArgs?.let {
@@ -215,7 +227,8 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
             CallNotificationHandler.outGoingCallNotificationBuilder(messageBody, this)
 
         notificationManager.notify(notificationId, notificationCompatBuilder.build())
-        startForeground(notificationId, notificationCompatBuilder.build())
+        startSupportedForeground(notificationId, notificationCompatBuilder.build())
+
 
         playRingtoneInEarpiece(messageBody)
 
@@ -247,7 +260,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
         CallNotificationHandler.getOnGoingCallNotificationBuilder(this, messageBody).apply {
             notificationManager.notify(notificationId, build())
-            startForeground(notificationId, build())
+            startSupportedForeground(notificationId, build())
         }
 
         if (messageBody.isVideoCall().not()) {
@@ -265,6 +278,9 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
             )
         }
 
+        val preferenceHelper = PreferenceHelper(RtcEngine.appContext)
+        preferenceHelper.save(PreferenceHelper.MESSAGE_BODY,Gson().toJson(messageBody))
+
         val notificationCompatBuilder =
             CallNotificationHandler.getIncomingNotificationBuilder(this, messageBody)
 
@@ -272,7 +288,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         notification.flags = Notification.FLAG_INSISTENT
 
         notificationManager.notify(notificationId, notification)
-        startForeground(notificationId, notification)
+        startSupportedForeground(notificationId, notification)
         if (ringtone.isPlaying) ringtone.stop()
         if (normalStatus) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -297,7 +313,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     }
 
     private fun destroySetting() {
-        ringtone.stop()
+        if (ringtone.isPlaying) ringtone.stop()
         vibratorService.cancel()
 
         if (isTimerRunning) {

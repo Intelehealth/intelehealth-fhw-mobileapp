@@ -77,4 +77,5 @@
     <string name="select_spinner">নির্বাচন করুন</string>
     <string name="call_swipe_up">উপরে জান</string>
     <string name="release_now">এখন মুক্তি</string>
+    <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
 </resources>
