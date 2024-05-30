@@ -52,6 +52,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.ekalarogya.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -319,14 +320,15 @@ public class PatientDetailActivity extends BaseActivity {
         encounterDTO.setVisituuid(uuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
         encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
 
-        try {
-            encounterDAO.createEncountersToDB(encounterDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+        if (!startNewAdviceBy.equalsIgnoreCase("Sevika")) {
+            try {
+                encounterDAO.createEncountersToDB(encounterDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
         }
 
         InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
@@ -388,9 +390,19 @@ public class PatientDetailActivity extends BaseActivity {
         }
 
         if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
-            navigateToComplaintScreen(visitUuid);
+            insertIsNcdSevikaVisitAttribute(uuid);
+            navigateToComplaintScreen(uuid);
         } else {
             navigateToVitalsScreen(uuid);
+        }
+    }
+
+    private void insertIsNcdSevikaVisitAttribute(String visitUuid) {
+        VisitAttributeListDAO dao = new VisitAttributeListDAO();
+        try {
+            boolean isInserted = dao.insertIsNcdVisitAttribute(visitUuid, "true");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
         }
     }
 

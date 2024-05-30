@@ -62,8 +62,7 @@ public class VisitAttributeListDAO {
             values.put("sync", "1");
 
             if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d")
-                    || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(UuidDictionary.ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK))
-            {
+                    || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(UuidDictionary.ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK)) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 if (createdRecordsCount != -1) {
                     Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
@@ -136,6 +135,34 @@ public class VisitAttributeListDAO {
         }
 
         Log.d("isInserted", "isInserted: " + isInserted);
+        return isInserted;
+    }
+
+    public boolean insertIsNcdVisitAttribute(String visitUuid, String isNcdVisit) throws DAOException {
+        boolean isInserted = false;
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try {
+            values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
+            values.put("visit_uuid", visitUuid);
+            values.put("value", isNcdVisit);
+            values.put("visit_attribute_type_uuid", AppConstants.IS_NCD_VISIT_ATTRIBUTE);
+            values.put("voided", "0");
+            values.put("sync", "0");
+
+            long count = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (count != -1) {
+                isInserted = true;
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
         return isInserted;
     }
 
