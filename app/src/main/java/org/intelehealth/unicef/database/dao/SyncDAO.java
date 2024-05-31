@@ -228,6 +228,7 @@ public class SyncDAO {
                         Intent broadcast = new Intent();
                         broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                        broadcast.setPackage(context.getPackageName());
                         context.sendBroadcast(broadcast);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
 //                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
@@ -251,17 +252,18 @@ public class SyncDAO {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
                         if (fromActivity.equalsIgnoreCase("home")) {
-                           // Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
                             //Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
-                           // Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
                         }
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
 //                        }
-                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                        IntelehealthApplication.getAppContext()
+                                .sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION).setPackage(context.getPackageName())
+                                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
                     }
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
@@ -301,6 +303,7 @@ public class SyncDAO {
                /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
                 IntelehealthApplication.getAppContext().startService(intent);*/
                 IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .setPackage(context.getPackageName())
                         .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
             }
 
@@ -308,6 +311,7 @@ public class SyncDAO {
             public void onFailure(Call<ResponseDTO> call, Throwable t) {
                 Logger.logD("pull data", "exception" + t.getMessage());
                 IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .setPackage(context.getPackageName())
                         .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
             }
         });
@@ -449,7 +453,7 @@ public class SyncDAO {
                                 //providerDAO.updateProviderProfileSync(sessionManager.getProviderID(), "true");
 
                                 //ui2.0 for provider profile details
-                                if(pushResponseApiCall.getData().getProviderlist()!=null) {
+                                if (pushResponseApiCall.getData().getProviderlist() != null) {
                                     Log.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());
                                     for (int i = 0; i < pushResponseApiCall.getData().getProviderlist().size(); i++) {
                                         try {
