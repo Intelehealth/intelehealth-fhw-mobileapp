@@ -7,9 +7,16 @@ import android.graphics.Canvas
 import android.graphics.pdf.PdfDocument
 import android.util.DisplayMetrics
 import android.util.Log
+import com.itextpdf.text.Document
+import com.itextpdf.text.DocumentException
+import com.itextpdf.text.pdf.PdfWriter
+import com.itextpdf.tool.xml.XMLWorkerHelper
 import org.intelehealth.app.R
+import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
+import java.nio.charset.StandardCharsets
 
 
 /**
@@ -72,6 +79,25 @@ class PdfGenerationUtils {
             pdfDocument.writeTo(FileOutputStream(file))
             pdfDocument.close()
             return file.absolutePath
+        }
+
+        @JvmStatic
+        fun generatePDFFromHtml(context: Context,htmlContent:String,fileName: String?): String {
+            Log.d("HHHHHHHH",htmlContent)
+            val document = Document()
+            try {
+                val writer = PdfWriter.getInstance(document, FileOutputStream("${context.filesDir}/$fileName"))
+                document.open()
+                XMLWorkerHelper.getInstance()
+                    .parseXHtml(writer, document, ByteArrayInputStream(htmlContent.toByteArray(StandardCharsets.UTF_8)))
+                document.close()
+                return "${context.filesDir}/$fileName"
+            } catch (e: DocumentException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            return ""
         }
 
     }

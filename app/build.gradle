@@ -79,6 +79,15 @@ android {
         jvmTarget = '17'
     }
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE-LGPL-3.txt'
+        exclude 'META-INF/LICENSE-LGPL-2.1.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE-W3C-TEST'
+        exclude 'META-INF/LICENSE-GPL-2.txt'
+        exclude 'META-INF/LICENSE-GPL-3.txt'
+    }
+
 }
 dependencies {
     implementation project(':klivekit')
@@ -164,6 +173,8 @@ dependencies {
     //for tooltip
     implementation 'com.github.piruin:quickaction:2.4.3'
 
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     implementation 'com.hbb20:ccp:2.6.1'
     implementation 'androidx.viewpager2:viewpager2:1.1.0-beta02'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
@@ -173,6 +184,22 @@ dependencies {
     implementation 'com.github.EusebiuCandrea:ToolTipPopupWordTV:1.0.1'//
     implementation 'com.github.zerobranch:SwipeLayout:1.3.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
+
+    implementation ('org.apache.pdfbox:pdfbox:2.0.24') {
+        exclude group: 'xml-apis', module: 'xml-apis'
+        exclude group: 'org.apache.commons', module: 'commons-logging'
+    }
+    implementation ('org.xhtmlrenderer:flying-saucer-core:9.1.22') {
+        exclude group: 'xml-apis', module: 'xml-apis'
+        exclude group: 'org.apache.commons', module: 'commons-logging'
+    }
+    implementation ('org.xhtmlrenderer:flying-saucer-pdf-itext5:9.1.22') {
+        exclude group: 'xml-apis', module: 'xml-apis'
+        exclude group: 'org.apache.commons', module: 'commons-logging'
+    }
+
+    implementation 'com.itextpdf:itext7-core:7.1.15'
+    implementation 'com.itextpdf.tool:xmlworker:5.5.13.2'
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
