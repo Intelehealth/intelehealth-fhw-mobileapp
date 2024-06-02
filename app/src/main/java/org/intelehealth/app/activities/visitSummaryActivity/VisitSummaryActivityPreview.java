@@ -3698,7 +3698,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                             .append(ContextCompat.getString(this, R.string.details))
                             .append("</h3>")
                             .append("</b>")
-                            .append("<br>")
+                            .append("")
                             .append(valueArray[0]);
                     visitSummaryPdfData.setChiefComplain(chifComplainStringBuilder.toString());
                 }
